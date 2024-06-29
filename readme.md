@@ -99,3 +99,7 @@ git rebase origin/pat_dev_rama
 ----------------------------
 Prototipo en Figma
 https://www.figma.com/proto/PiZQnYZZuHU4U49uI4zne0/Buscador-OEA-y-E%26E?node-id=4-505&source=email_invite&starting-point-node-id=4%3A505
+
+----------------------------
+Prototipo 2
+https://www.figma.com/proto/PiZQnYZZuHU4U49uI4zne0/Buscador-OEA-y-E%26E?page-id=785%3A4982&node-id=849-1153&viewport=860%2C266%2C0.25&t=IZDdyMg7nVic8JxW-1&scaling=min-zoom&content-scaling=fixed

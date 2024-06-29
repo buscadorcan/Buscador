@@ -1,56 +1,41 @@
-
 using System.Data;
 using WebApp.Repositories.IRepositories;
-using WebApp.Models.Dtos;
-using WebApp.Service;
 using WebApp.Models;
+using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-    public class UsuarioEndpointPermisoRepository : IUsuarioEndpointPermisoRepository
+    public class UsuarioEndpointPermisoRepository : BaseRepository, IUsuarioEndpointPermisoRepository
     {
-        private readonly SqlServerDbContext _bd;
-
-        public UsuarioEndpointPermisoRepository(SqlServerDbContext dbContext)
+        private readonly IJwtService _jwtService;
+        public UsuarioEndpointPermisoRepository (
+            IJwtService jwtService,
+            ILogger<EndpointRepository> logger,
+            IDbContextFactory dbContextFactory
+        ) : base(dbContextFactory, logger)
         {
-            _bd = dbContext;
+            _jwtService = jwtService;
+        }
+        public UsuarioEndpointPermiso? FindByEndpointId(int endpointId)
+        {
+            return ExecuteDbOperation(context => context.UsuarioEndpointPermiso.FirstOrDefault(c => c.IdEndpoint == endpointId));
         }
 
-        public UsuarioEndpointPermiso GetUsuarioEndpointPermiso(int endpointId)
+        public ICollection<UsuarioEndpointPermiso> FindAll()
         {
-            return _bd.UsuarioEndpointPermiso.FirstOrDefault(c => c.IdEndpoint == endpointId);
+            return ExecuteDbOperation(context => context.UsuarioEndpointPermiso.OrderBy(c => c.IdUsuarioEndpointPermiso).ToList());
         }
 
-        public ICollection<UsuarioEndpointPermiso> GetUsuarioEndpointPermisos()
+        public bool Create(UsuarioEndpointPermiso usuarioEndpointPermiso)
         {
-            return _bd.UsuarioEndpointPermiso.OrderBy(c => c.IdUsuarioEndpointPermiso).ToList();
-        }
+            usuarioEndpointPermiso.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            usuarioEndpointPermiso.IdUserModifica = usuarioEndpointPermiso.IdUserCreacion;
 
-        public async Task<UsuarioEndpointPermiso> Registro(UsuarioEndpointPermisoRegistroDto usuarioEndpointPermisoRegistroDto)
-        {
-            UsuarioEndpointPermiso usuarioEndpointPermiso = new UsuarioEndpointPermiso()
+            return ExecuteDbOperation(context =>
             {
-                IdUsuario = usuarioEndpointPermisoRegistroDto.IdUsuario,
-                IdEndpoint = usuarioEndpointPermisoRegistroDto.IdEndpoint,
-                Accion = usuarioEndpointPermisoRegistroDto.Accion,
-                FechaCreacion = DateTime.Now,
-                FechaModifica = DateTime.Now
-            };
-
-            _bd.UsuarioEndpointPermiso.Add(usuarioEndpointPermiso);
-            await _bd.SaveChangesAsync();
-            return usuarioEndpointPermiso;
-        }
-
-        public bool IsUniqueUser(string nombre, string url)
-        {
-            var endpointbd = _bd.Endpoint.FirstOrDefault(u => u.Nombre == nombre && u.Url == url);
-            if (endpointbd == null)
-            {
-                return true;
-            }
-
-            return false;
+                context.UsuarioEndpointPermiso.Add(usuarioEndpointPermiso);
+                return context.SaveChanges() >= 0;
+            });
         }
     }
 }

@@ -1,42 +1,33 @@
-﻿using System.Data;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
-using WebApp.Service;
+using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-  public class OrganizacionFullTextRepository(SqlServerDbContext dbContext) : IOrganizacionFullTextRepository
+  public class OrganizacionFullTextRepository : BaseRepository, IOrganizacionFullTextRepository
   {
-    private readonly SqlServerDbContext _bd = dbContext;
+      public OrganizacionFullTextRepository(
+          ILogger<UsuarioRepository> logger,
+          IDbContextFactory dbContextFactory
+      ) : base(dbContextFactory, logger)
+      {
+      }
 
-    public OrganizacionFullText create(OrganizacionFullText data)
+    public OrganizacionFullText Create(OrganizacionFullText data)
     {
-      data.IdOrganizacionFullText = 0;
-      _bd.OrganizacionFullText.Add(data);
-      _bd.SaveChanges();
-      return data;
+        data.IdOrganizacionFullText = 0;
+
+        return ExecuteDbOperation(context => {
+            context.OrganizacionFullText.Add(data);
+            context.SaveChanges();
+            return data;
+        });
     }
 
-    public OrganizacionFullText find(int Id)
+    public OrganizacionFullText? FindById(int id)
     {
-      return _bd.OrganizacionFullText.AsNoTracking().FirstOrDefault(u => u.IdOrganizacionFullText == Id);
-    }
-
-    public ICollection<OrganizacionFullText> findAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public OrganizacionFullText findBy(OrganizacionFullText dataLake)
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool update(OrganizacionFullText newRecord)
-    {
-      throw new NotImplementedException();
+      return ExecuteDbOperation(context => context.OrganizacionFullText.AsNoTracking().FirstOrDefault(u => u.IdOrganizacionFullText == id));
     }
   }
 }

@@ -1,24 +1,24 @@
-using System.Net;
 using System.Net.Mail;
 using WebApp.Service.IService;
 
-namespace WebApp.Service {
-    public class EmailService (IConfiguration configuration, ILogger<EmailService> logger) : IEmailService
+namespace WebApp.Service
+{
+    public class EmailService(
+        ISmtpClientFactory smtpClientFactory,
+        IConfiguration configuration,
+        ILogger<EmailService> logger
+    ) : IEmailService
     {
+        private readonly ISmtpClientFactory _smtpClientFactory = smtpClientFactory;
         private readonly IConfiguration _configuration = configuration;
         private readonly ILogger<EmailService> _logger = logger;
         public async Task EnviarCorreoAsync(string destinatario, string asunto, string cuerpo)
         {
-            var smtpClient = new SmtpClient(_configuration["EmailSettings:SmtpServer"])
-            {
-                Port = int.Parse(_configuration["EmailSettings:Port"]),
-                Credentials = new NetworkCredential(_configuration["EmailSettings:Username"], _configuration["EmailSettings:Password"]),
-                EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSsl"])
-            };
+            var smtpClient = _smtpClientFactory.CreateSmtpClient();
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(_configuration["EmailSettings:From"]),
+                From = new MailAddress(_configuration["EmailSettings:From"] ?? ""),
                 Subject = asunto,
                 Body = cuerpo,
                 IsBodyHtml = true,

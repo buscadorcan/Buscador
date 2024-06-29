@@ -1,54 +1,44 @@
-
 using System.Data;
 using WebApp.Repositories.IRepositories;
-using WebApp.Models.Dtos;
-using WebApp.Service;
+using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-    public class EndpointRepository : IEndpointRepository
+    public class EndpointRepository : BaseRepository, IEndpointRepository
     {
-        private readonly SqlServerDbContext _bd;
-
-        public EndpointRepository(SqlServerDbContext dbContext)
+        private readonly IJwtService _jwtService;
+        public EndpointRepository (
+            IJwtService jwtService,
+            ILogger<EndpointRepository> logger,
+            IDbContextFactory dbContextFactory
+        ) : base(dbContextFactory, logger)
         {
-            _bd = dbContext;
+            _jwtService = jwtService;
         }
-
-        public Models.Endpoint GetEndpoint(int endpointId)
+        public Models.Endpoint? FindById(int idEndpoint)
         {
-            return _bd.Endpoint.FirstOrDefault(c => c.IdEndpoint == endpointId);
+            return ExecuteDbOperation(context => context.Endpoint.FirstOrDefault(c => c.IdEndpoint == idEndpoint));
         }
-
-        public ICollection<Models.Endpoint> GetEndpoints()
+        public ICollection<Models.Endpoint> FindAll()
         {
-            return _bd.Endpoint.OrderBy(c => c.IdEndpoint).ToList();
+            return ExecuteDbOperation(context => context.Endpoint.OrderBy(c => c.IdEndpoint).ToList());
         }
-
-        public async Task<Models.Endpoint> Registro(EndpointRegistroDto endpointRegistroDto)
+        public bool Create(Models.Endpoint endpoint)
         {
-            Models.Endpoint endpoint = new Models.Endpoint()
+            endpoint.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            endpoint.IdUserModifica = endpoint.IdUserCreacion;
+
+            return ExecuteDbOperation(context =>
             {
-                Nombre = endpointRegistroDto.Nombre,
-                Url = endpointRegistroDto.Url,
-                FechaCreacion = DateTime.Now,
-                FechaModifica = DateTime.Now
-            };
-
-            _bd.Endpoint.Add(endpoint);
-            await _bd.SaveChangesAsync();
-            return endpoint;
+                context.Endpoint.Add(endpoint);
+                return context.SaveChanges() >= 0;
+            });
         }
-
-        public bool IsUniqueUser(string nombre, string url)
+        public bool IsUniqueUserUrl(string nombre, string url)
         {
-            var endpointbd = _bd.Endpoint.FirstOrDefault(u => u.Nombre == nombre && u.Url == url);
-            if (endpointbd == null)
-            {
-                return true;
-            }
-
-            return false;
+            return ExecuteDbOperation(context => {
+                return context.Endpoint.FirstOrDefault(u => u.Nombre == nombre && u.Url == url) == null;
+            });
         }
     }
 }

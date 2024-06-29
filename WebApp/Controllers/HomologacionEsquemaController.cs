@@ -1,113 +1,121 @@
 using WebApp.Models;
-using WebApp.Models.Dtos;
 using WebApp.Repositories.IRepositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using SharedApp.Models.Dtos;
+using SharedApp.Models;
 
 namespace WebApp.Controllers
 {
-  [Route("api/homologacion_esquema")]
-  [ApiController]
-  [ProducesResponseType(StatusCodes.Status403Forbidden)]
-  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  public class HomologacionEsquemaController(ILogger<HomologacionEsquemaController> logger, IHomologacionEsquemaRepository vhRepo, IMapper mapper) : ControllerBase
-  {
-    private readonly IHomologacionEsquemaRepository _vhRepo = vhRepo;
-    private readonly IMapper _mapper = mapper;
-    private readonly ILogger<HomologacionEsquemaController> _logger = logger;
-
-    [Authorize]
-    [HttpGet]
-    public IActionResult GetHomologacionEsquemas()
+    [Route("api/homologacion_esquema")]
+    [ApiController]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class HomologacionEsquemaController(
+        IHomologacionEsquemaRepository iRepo,
+        IMapper mapper
+    ) : BaseController
     {
-      try {
-        var records = _vhRepo.findAll();
-        var dtos = records.Select(item => _mapper.Map<HomologacionEsquemaDto>(item)).ToList();
-        return Ok(dtos);
-      }
-      catch (Exception e) {
-        _logger.LogError(e, $"Error en {nameof(GetHomologacionEsquemas)}");
-        return StatusCode(500, "Error en el servidor");
-      }
-    }
-
-    [Authorize]
-    [HttpGet("{id:int}")]
-    public IActionResult GetHomologacionEsquema(int Id) {
-      try {
-        var record = _vhRepo.find(Id);
-        if (record == null) {
-          return NotFound();
-        }
-
-        var dto = _mapper.Map<HomologacionEsquemaDto>(record);
-        return Ok(dto);
-      }
-      catch (Exception e) {
-        _logger.LogError(e, $"Error en {nameof(GetHomologacionEsquema)}");
-        return StatusCode(500, "Error en el servidor");
-      }
-    }
-
-    [Authorize]
-    [HttpPut("{id:int}")]
-    public IActionResult ActualizarHomologacionEsquema(int Id, [FromBody] HomologacionEsquemaDto dto)
-    {
-      try {
-        if (dto == null || Id != dto.IdHomologacionEsquema)
+        private readonly IHomologacionEsquemaRepository _iRepo = iRepo;
+        private readonly IMapper _mapper = mapper;
+        [Authorize]
+        [HttpGet]
+        public IActionResult FindAll()
         {
-          return BadRequest(ModelState);
+            try
+            {
+                return Ok(new RespuestasAPI {
+                    Result = _iRepo.FindAll().Select(item => _mapper.Map<HomologacionEsquemaDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindAll));
+            }
         }
+        [Authorize]
+        [HttpGet("{id:int}")]
+        public IActionResult FindById(int Id) {
+            try
+            {
+                var record = _iRepo.FindById(Id);
 
-        var record = _mapper.Map<HomologacionEsquema>(dto);
-        _vhRepo.update(record);
+                if (record == null)
+                {
+                    return NotFoundResponse("Reguistro no encontrado");
+                }
 
-        return Ok();
-      }
-      catch (Exception e)
-      {
-        _logger.LogError(e, $"Error en {nameof(ActualizarHomologacionEsquema)}");
-        return StatusCode(500, "Error en el servidor");
-      }
-    }
-
-    [Authorize]
-    [HttpPost]
-    public IActionResult RegistrarHomologacionEsquema([FromBody] HomologacionEsquemaDto dto)
-    {
-      try {
-        var record = _mapper.Map<HomologacionEsquema>(dto);
-        _vhRepo.create(record);
-
-        return Ok();
-      }
-      catch (Exception e)
-      {
-        _logger.LogError(e, $"Error en {nameof(RegistrarHomologacionEsquema)}");
-        return StatusCode(500, "Error en el servidor");
-      }
-    }
-    [Authorize]
-    [HttpDelete("{Id:int}")]
-    public IActionResult EliminarHomologacionEsquema(int Id)
-    {
-      try {
-        var record = _vhRepo.find(Id);
-
-        if (record == null) {
-          return NotFound();
+                return Ok(new RespuestasAPI {
+                    Result = _mapper.Map<HomologacionEsquemaDto>(record)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindById));
+            }
         }
-        record.Estado = "X";
+        [Authorize]
+        [HttpPut("{id:int}")]
+        public IActionResult Update(int id, [FromBody] HomologacionEsquemaDto dto)
+        {
+            try
+            {
+                dto.IdHomologacionEsquema = id;
+                var homologacion = _mapper.Map<HomologacionEsquema>(dto);
 
-        _vhRepo.update(record);
-        return Ok();
-      }
-      catch (Exception e) {
-        _logger.LogError(e, $"Error en {nameof(EliminarHomologacionEsquema)}");
-        return StatusCode(500, "Error en el servidor");
-      }
+                return Ok(new RespuestasAPI {
+                    IsSuccess = _iRepo.Update(homologacion)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Update));
+            }
+        }
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create([FromBody] HomologacionEsquemaDto dto)
+        {
+            try
+            {
+                var record = _mapper.Map<HomologacionEsquema>(dto);
+
+                return Ok(new RespuestasAPI {
+                    IsSuccess = _iRepo.Create(record)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Create));
+            }
+        }
+        [Authorize]
+        [HttpDelete("{id:int}")]
+        public IActionResult Deactive(int id)
+        {
+            try
+            {
+                var record = _iRepo.FindById(id);
+
+                if (record == null)
+                {
+                    return NotFoundResponse("Reguistro no encontrado");
+                }
+
+                record.Estado = "X";
+
+                return Ok(new RespuestasAPI {
+                    IsSuccess = _iRepo.Update(record)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Deactive));
+            }
+        }
     }
-  }
 }

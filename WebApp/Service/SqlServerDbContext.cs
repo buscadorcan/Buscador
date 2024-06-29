@@ -5,16 +5,7 @@ namespace WebApp.Service
 {
     public class SqlServerDbContext : DbContext
     {
-        public SqlServerDbContext()
-        {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            ChangeTracker.LazyLoadingEnabled = false;
-        }
-        public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options) : base(options)
-        {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            ChangeTracker.LazyLoadingEnabled = false;
-        }
+        public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options) : base(options) { }
         // modulo de seguridad
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Models.Endpoint> Endpoint { get; set; }
@@ -23,8 +14,6 @@ namespace WebApp.Service
         public DbSet<VwGrilla> VwGrilla { get; set; }
         public DbSet<VwFiltro> VwFiltro { get; set; }
         public DbSet<VwDimension> VwDimension { get; set; }
-        public DbSet<Vista> Vista { get; set; }
-        public DbSet<HomologacionEsquemaVista> HomologacionEsquemaVista { get; set; }
         // modulo de busquedas
         public DbSet<Homologacion> Homologacion { get; set; }
         public DbSet<DataLakeOrganizacion> DataLakeOrganizacion { get; set; }

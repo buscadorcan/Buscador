@@ -1,14 +1,10 @@
-using WebApp.Service.IService;
-
 namespace WebApp.WorkerService
 {
   public class BackgroundExcelService : BackgroundService
   {
-    private int countProceso = 0;
     private readonly string? _configLogPath;
     private readonly IConfiguration? _config;
     readonly ILogger<BackgroundExcelService> _logger;
-    private IExcelService _excelService;
     private readonly IServiceProvider _services;
 
     public BackgroundExcelService(ILogger<BackgroundExcelService> logger, IConfiguration config, IServiceProvider provider)

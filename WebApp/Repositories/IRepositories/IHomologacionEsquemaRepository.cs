@@ -4,9 +4,9 @@ namespace WebApp.Repositories.IRepositories {
   public interface IHomologacionEsquemaRepository
   {
 
-    bool update(HomologacionEsquema data);
-    bool create(HomologacionEsquema data);
-    HomologacionEsquema find(int Id);
-    ICollection<HomologacionEsquema> findAll();
+    bool Update(HomologacionEsquema data);
+    bool Create(HomologacionEsquema data);
+    HomologacionEsquema? FindById(int Id);
+    ICollection<HomologacionEsquema> FindAll();
   }
 }

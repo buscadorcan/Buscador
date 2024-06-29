@@ -1,6 +1,4 @@
-using WebApp.Models.Dtos;
 using WebApp.Repositories.IRepositories;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
 
@@ -11,78 +9,81 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public class CatalogosController : ControllerBase
+    public class CatalogosController(
+        ICatalogosRepository vhRepo
+    ) : BaseController
     {
-        private readonly IVwHomologacionRepository _vhRepo;
-        // protected RespuestasAPI _respuestaApi;
-        private readonly IMapper _mapper;
-        private readonly ILogger<CatalogosController> _logger;
-
-        public CatalogosController(ILogger<CatalogosController> logger, IVwHomologacionRepository vhRepo, IMapper mapper)
-        {
-            _vhRepo = vhRepo;
-            _mapper = mapper;
-            _logger = logger;
-        }
-
+        private readonly ICatalogosRepository _vhRepo = vhRepo;
         [HttpGet("etiquetas_grilla")]
         public IActionResult ObtenerEtiquetaGrilla()
         {
-            return GetCatalogData(_vhRepo.ObtenerEtiquetaGrilla, "Error obteniendo datos de Etiqueta Grilla");
+            try
+            {
+                return Ok(new RespuestasAPI {
+                    Result = _vhRepo.ObtenerEtiquetaGrilla()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerEtiquetaGrilla));
+            }
         }
 
         [HttpGet("etiquetas_filtro")]
         public IActionResult ObtenerEtiquetaFiltros()
         {
-            return GetCatalogData(_vhRepo.ObtenerEtiquetaFiltros, "Error obteniendo datos de Etiqueta Grilla");
+            try
+            {
+                return Ok(new RespuestasAPI {
+                    Result = _vhRepo.ObtenerEtiquetaFiltros()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerEtiquetaFiltros));
+            }
         }
         [HttpGet("dimension")]
         public IActionResult ObtenerDimension()
         {
-            return GetCatalogData(_vhRepo.ObtenerDimension, "Error obteniendo datos de Dimensión");
+            try
+            {
+                return Ok(new RespuestasAPI {
+                    Result = _vhRepo.ObtenerDimension()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerDimension));
+            }
         }
         [HttpGet("grupo")]
         public IActionResult ObtenerGrupos()
         {
-            return GetCatalogData(_vhRepo.ObtenerGrupos, "Error obteniendo datos de Dimensión");
-        }
-
-        [HttpGet("filtro_detalles/{IdHomologacion:int}", Name = "ObtenerFiltroDetalles")]
-        public IActionResult ObtenerFiltroDetalles(int IdHomologacion)
-        {
             try
             {
-                var data = _vhRepo.ObtenerFiltroDetalles(IdHomologacion);
-
-                var catalogDtoList = data.Select(item => _mapper.Map<CatalogosDto>(item)).ToList();
-
-                return Ok(catalogDtoList);
+                return Ok(new RespuestasAPI {
+                    Result = _vhRepo.ObtenerGrupos()
+                });
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    new {
-                        statusCode = 500,
-                        message = "Error obteniendo datos de Filtros Detalle"
-                    });
+                return HandleException(e, nameof(ObtenerGrupos));
             }
         }
 
-        private IActionResult GetCatalogData(Func<IEnumerable<object>> getData, string errorMessage)
+        [HttpGet("filtro_detalles/{idHomologacion:int}", Name = "ObtenerFiltroDetalles")]
+        public IActionResult ObtenerFiltroDetalles(int idHomologacion)
         {
             try
             {
-                var data = getData();
-
-                var catalogDtoList = data.Select(item => _mapper.Map<CatalogosDto>(item)).ToList();
-
-                return Ok(catalogDtoList);
+                return Ok(new RespuestasAPI {
+                    Result = _vhRepo.ObtenerFiltroDetalles(idHomologacion)
+                });
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message);
-                return StatusCode(500, errorMessage);
+                return HandleException(e, nameof(ObtenerFiltroDetalles));
             }
         }
     }
