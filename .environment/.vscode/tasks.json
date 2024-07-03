@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "Generate coverage report",
+          "command": "reportgenerator",
+          "type": "shell",
+          "args": [
+              "-reports:${workspaceFolder}/WebApp.Tests/TestResults/lcov.info",
+              "-targetdir:${workspaceFolder}/WebApp.Tests/TestResults/coveragereport"
+          ],
+          "problemMatcher": []
+      }
+  ]
+}

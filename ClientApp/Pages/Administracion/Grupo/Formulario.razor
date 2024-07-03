@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Authorization;
 @using ClientApp.Services.IService
 @using ClientApp.Models;
+@using SharedApp.Models.Dtos
 @attribute [Authorize]
 
 <PageTitle>Formulario de Esquema</PageTitle>
@@ -19,7 +20,7 @@
             <hr style="background-color:aliceblue" />
 
             <div class="form-row py-2">
-                <label class="col-form-label">Código Homologado</label>
+                <label class="col-form-label">Vista Código Homologado</label>
                 <div class="col">
                     <InputText @bind-Value="homologacion.NombreHomologado" class="form-control" placeholder="ingresar..." />
                     <ValidationMessage For="(()=>homologacion.NombreHomologado)" />

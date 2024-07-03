@@ -1,6 +1,7 @@
 using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace WebApp.Controllers
 {
@@ -18,7 +19,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<BuscadorDto>{
                     Result = _vhRepo.PsBuscarPalabra(paramJSON, PageNumber, RowsPerPage)
                 });
             }
@@ -27,12 +28,13 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(PsBuscarPalabra));
             }
         }
-        [HttpGet("homologacionEsquemaTodo")]
+        
+        [HttpGet("homologacionEsquemaTodo")]  
         public IActionResult FnHomologacionEsquemaTodo()
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<EsquemaDto>>{
                     Result = _vhRepo.FnHomologacionEsquemaTodo()
                 });
             }
@@ -41,12 +43,13 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
+        
         [HttpGet("homologacionEsquema/{idHomologacionEsquema}")]
         public IActionResult FnHomologacionEsquema(int idHomologacionEsquema)
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<HomologacionEsquemaDto>{
                     Result = _vhRepo.FnHomologacionEsquema(idHomologacionEsquema)
                 });
             }
@@ -55,12 +58,13 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
+        
         [HttpGet("homologacionEsquemaDato/{idHomologacionEsquema}/{idDataLakeOrganizacion}")]
         public IActionResult FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion)
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<FnHomologacionEsquemaDataDto>>{
                     Result = _vhRepo.FnHomologacionEsquemaDato(idHomologacionEsquema, idDataLakeOrganizacion)
                 });
             }

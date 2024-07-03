@@ -28,7 +28,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<HomologacionEsquemaDto>>{
                     Result = _iRepo.FindAll().Select(item => _mapper.Map<HomologacionEsquemaDto>(item)).ToList()
                 });
             }
@@ -49,7 +49,7 @@ namespace WebApp.Controllers
                     return NotFoundResponse("Reguistro no encontrado");
                 }
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<HomologacionEsquemaDto>{
                     Result = _mapper.Map<HomologacionEsquemaDto>(record)
                 });
             }
@@ -67,7 +67,7 @@ namespace WebApp.Controllers
                 dto.IdHomologacionEsquema = id;
                 var homologacion = _mapper.Map<HomologacionEsquema>(dto);
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool>{
                     IsSuccess = _iRepo.Update(homologacion)
                 });
             }
@@ -84,7 +84,7 @@ namespace WebApp.Controllers
             {
                 var record = _mapper.Map<HomologacionEsquema>(dto);
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool>{
                     IsSuccess = _iRepo.Create(record)
                 });
             }
@@ -108,7 +108,7 @@ namespace WebApp.Controllers
 
                 record.Estado = "X";
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool>{
                     IsSuccess = _iRepo.Update(record)
                 });
             }

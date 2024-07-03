@@ -7,5 +7,6 @@ namespace SharedApp.Models.Dtos
     public int MostrarWebOrden { get; set; }
     public string? MostrarWeb { get; set; }
     public string? TooltipWeb { get; set; }
+    public string? VistaNombre { get; set; }
   }
 }

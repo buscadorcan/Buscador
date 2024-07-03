@@ -34,7 +34,7 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
-        public bool IsUniqueUserUrl(string nombre, string url)
+        public bool IsUniqueUserUrl(string? nombre, string? url)
         {
             return ExecuteDbOperation(context => {
                 return context.Endpoint.FirstOrDefault(u => u.Nombre == nombre && u.Url == url) == null;

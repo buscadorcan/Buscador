@@ -4,14 +4,15 @@ using ClientApp.Helpers;
 using ClientApp.Models;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
+using SharedApp.Models;
 
 namespace ClientApp.Services {
-    public class HomologacionEsquemaRepository : IHomologacionEsquemaRepository
+    public class HomologacionEsquemaService : IHomologacionEsquemaService
     {
         private readonly HttpClient _httpClient;
         private string url = $"{Inicializar.UrlBaseApi}api/homologacion_esquema";
 
-        public HomologacionEsquemaRepository(HttpClient httpClient)
+        public HomologacionEsquemaService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -34,14 +35,14 @@ namespace ClientApp.Services {
         {
             var response = await _httpClient.GetAsync($"{url}/{idHomologacionEsquema}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<HomologacionEsquema>();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<HomologacionEsquema>>()).Result;
         }
 
         public async Task<List<HomologacionEsquema>> GetHomologacionEsquemasAsync()
         {
             var response = await _httpClient.GetAsync($"{url}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<HomologacionEsquema>>();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionEsquema>>>()).Result;
         }
 
         public async Task<RespuestaRegistro> RegistrarOActualizar(HomologacionEsquema registro)

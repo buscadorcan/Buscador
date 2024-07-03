@@ -12,5 +12,7 @@ namespace SharedApp.Models.Dtos
     public string? NombreHomologado { get; set; }
     public string? InfoExtraJson { get; set; }
     public string? CodigoHomologacion { get; set; }
+    public int AnchoColumna { get; set; }
+    public string? CustomMostrarWeb { get; set; }
   }
 }

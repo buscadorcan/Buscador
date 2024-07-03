@@ -16,5 +16,10 @@
             "password": "Password12345"
         }
     ],
-    "CodeGPT.apiKey": "OpenAI"
+    "CodeGPT.apiKey": "OpenAI",
+    "dotnet-test-explorer.autoExpandTree": true,
+    "dotnet-test-explorer.autoWatch": true,
+    "dotnet-test-explorer.treeMode": "full",
+    "dotnet-test-explorer.testArguments": "/p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./TestResults/lcov.info /p:ExcludeByFile=\"**/Models/**/*.cs%2c**/Service/**/*.cs%2c**/Program.cs%2c**/WorkerService/**.cs\"",
+    "dotnet-test-explorer.testProjectPath": "**/*.Tests.csproj"
 }

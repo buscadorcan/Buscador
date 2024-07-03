@@ -1,6 +1,7 @@
 using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -19,7 +20,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<VwGrilla>>{
                     Result = _vhRepo.ObtenerEtiquetaGrilla()
                 });
             }
@@ -34,7 +35,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<VwFiltro>>{
                     Result = _vhRepo.ObtenerEtiquetaFiltros()
                 });
             }
@@ -48,7 +49,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<VwDimension>>{
                     Result = _vhRepo.ObtenerDimension()
                 });
             }
@@ -62,7 +63,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<Homologacion>>{
                     Result = _vhRepo.ObtenerGrupos()
                 });
             }
@@ -77,7 +78,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<IVwHomologacion>>{
                     Result = _vhRepo.ObtenerFiltroDetalles(idHomologacion)
                 });
             }

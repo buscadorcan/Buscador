@@ -33,7 +33,7 @@ namespace WebApp.Controllers
                     return BadRequestResponse("El endpoint ya existe");
                 }
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool>{
                     IsSuccess = _usRepo.Create(_mapper.Map<Models.Endpoint>(endpointDto))
                 });
             }
@@ -51,7 +51,7 @@ namespace WebApp.Controllers
             {
                 var listaEndpoint = _usRepo.FindAll();
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<EndpointDto>>{
                     Result = _mapper.Map<List<EndpointDto>>(listaEndpoint)
                 });
             }
@@ -73,7 +73,7 @@ namespace WebApp.Controllers
                     return NotFoundResponse("Endpoint no encontrado");
                 }
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<EndpointDto>{
                     Result = _mapper.Map<EndpointDto>(itemEndpoint)
                 });
             }

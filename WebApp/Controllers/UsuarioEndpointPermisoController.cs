@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool>{
                     IsSuccess = _iRepo.Create(_mapper.Map<UsuarioEndpointPermiso>(data))
                 });
             }
@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<UsuarioEndpointPermisoDto>>{
                     Result = _mapper.Map<List<UsuarioEndpointPermisoDto>>(_iRepo.FindAll())
                 });
             }
@@ -67,7 +67,7 @@ namespace WebApp.Controllers
                     return NotFoundResponse("Registro no encontrado");
                 }
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<UsuarioDto>{
                     Result = _mapper.Map<UsuarioDto>(itemUsuario)
                 });
             }

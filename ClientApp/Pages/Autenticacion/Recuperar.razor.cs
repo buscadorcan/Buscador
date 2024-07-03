@@ -9,26 +9,35 @@ namespace ClientApp.Pages.Autenticacion
     {
         private Button saveButton = default!;
         private UsuarioRecuperacionDto usuarioRecuperacion = new UsuarioRecuperacionDto();
-        public string alertMessage { get; set; }
+        public string? alertMessage { get; set; }
         [Inject]
-        public IServiceAutenticacion servicioAutenticacion { get; set; }
+        public IServiceAutenticacion? servicioAutenticacion { get; set; }
         [Inject]
-        public NavigationManager navigationManager { get; set; }
+        public NavigationManager? navigationManager { get; set; }
         private async Task RecuperarClave()
         {
-            saveButton.ShowLoading("Verificando...");
-            var result = await servicioAutenticacion.Recuperar(usuarioRecuperacion);
-
-            if (result.IsSuccess)
+            try
             {
-                navigationManager.NavigateTo("/acceder");
-            }
-            else
-            {
-                alertMessage = string.Join(";", result.ErrorMessages);
-            }
+                if (servicioAutenticacion != null)
+                {
+                    saveButton.ShowLoading("Verificando...");
+                    var result = await servicioAutenticacion.Recuperar<object>(usuarioRecuperacion);
 
-            saveButton.HideLoading();
+                    if (result.IsSuccess)
+                    {
+                        navigationManager?.NavigateTo("/acceder");
+                    }
+                    else
+                    {
+                        alertMessage = string.Join(";", result.ErrorMessages);
+                    }
+                    saveButton.HideLoading();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             await Task.CompletedTask;
         }
     }

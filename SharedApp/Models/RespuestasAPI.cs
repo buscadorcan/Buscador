@@ -2,7 +2,7 @@ using System.Net;
 
 namespace SharedApp.Models
 {
-    public class RespuestasAPI
+    public class RespuestasAPI<T>
     {
         public RespuestasAPI()
         {
@@ -14,6 +14,6 @@ namespace SharedApp.Models
         public HttpStatusCode StatusCode { get; set; }
         public bool IsSuccess { get; set; }
         public List<string> ErrorMessages { get; set; }
-        public object? Result { get; set; }
+        public T? Result { get; set; }
     }
 }

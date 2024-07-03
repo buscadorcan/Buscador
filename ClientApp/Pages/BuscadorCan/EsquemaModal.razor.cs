@@ -9,13 +9,22 @@ namespace ClientApp.Pages.BuscadorCan
     {
         Tabs tabs = default!;
         [Parameter]
-        public DataHomologacionEsquema dataLake { get; set; }
+        public DataHomologacionEsquema? dataLake { get; set; }
         [Inject]
-        private IBusquedaService servicio { get; set; }
-        private List<HomologacionEsquema>? listaEsquemas;
+        private IBusquedaService? servicio { get; set; }
+        private List<HomologacionEsquema>? listaEsquemas = new List<HomologacionEsquema>();
         protected override async Task OnInitializedAsync()
         {
-            listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync();
+            try
+            {
+                if (servicio != null) {
+                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

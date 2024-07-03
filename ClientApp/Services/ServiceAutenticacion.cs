@@ -25,33 +25,35 @@ namespace ClientApp.Services
             _localStorage = localStorage;
             _estadoProveedorAutenticacion = estadoProveedorAutenticacion;
         }
-        public async Task<RespuestasAPI> Acceder(UsuarioAutenticacionDto usuarioAutenticacionDto)
+        public async Task<RespuestasAPI<UsuarioAutenticacionRespuestaDto>> Acceder(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
             var content = JsonConvert.SerializeObject(usuarioAutenticacionDto);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var response = await _cliente.PostAsync($"{Inicializar.UrlBaseApi}api/usuarios/login", bodyContent);
             var contentTemp = await response.Content.ReadAsStringAsync();
-            var respuesta = JsonConvert.DeserializeObject<RespuestasAPI>(contentTemp);
+            var respuesta = JsonConvert.DeserializeObject<RespuestasAPI<UsuarioAutenticacionRespuestaDto>>(contentTemp);
 
             if (response.IsSuccessStatusCode)
             {
-                var result = JsonConvert.DeserializeObject<UsuarioAutenticacionRespuestaDto>(respuesta.Result.ToString());
+                if (respuesta != null) {
+                    var result = respuesta.Result;
 
-                await _localStorage.SetItemAsync(Inicializar.Token_Local, result.Token);
-                await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result.Usuario.Email);
-                await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result.Usuario.Rol);
-                ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioLogueado(result.Token);
-                _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
+                    await _localStorage.SetItemAsync(Inicializar.Token_Local, result?.Token);
+                    await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
+                    await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.Rol);
+                    ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioLogueado(result?.Token ?? "");
+                    _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result?.Token);
+                }
             }
 
-            return respuesta;
+            return respuesta ?? new RespuestasAPI<UsuarioAutenticacionRespuestaDto>();
         }
-        public async Task<RespuestasAPI> Recuperar(UsuarioRecuperacionDto usuarioRecuperacionDto) {
+        public async Task<RespuestasAPI<T>?> Recuperar<T>(UsuarioRecuperacionDto usuarioRecuperacionDto) {
             var content = JsonConvert.SerializeObject(usuarioRecuperacionDto);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var response = await _cliente.PostAsync($"{Inicializar.UrlBaseApi}api/usuarios/recuperar", bodyContent);
             var contentTemp = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<RespuestasAPI>(contentTemp);
+            return JsonConvert.DeserializeObject<RespuestasAPI<T>>(contentTemp);
         }
 
         public async Task Salir()
@@ -60,6 +62,6 @@ namespace ClientApp.Services
             await _localStorage.RemoveItemAsync(Inicializar.Datos_Usuario_Local);
             ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioSalir();
             _cliente.DefaultRequestHeaders.Authorization = null;
-        }   
+        }
     }
 }

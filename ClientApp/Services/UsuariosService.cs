@@ -5,15 +5,15 @@ using ClientApp.Models;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
 using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Services {
-    // Crea un servicio que maneje la lógica para llamar al API REST y obtener los datos.
-    public class UsuariosRepository : IUsuariosRepository
+    public class UsuariosService : IUsuariosService
     {
         private readonly HttpClient _httpClient;
         private string url = $"{Inicializar.UrlBaseApi}api/usuarios";
 
-        public UsuariosRepository(HttpClient httpClient)
+        public UsuariosService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -22,14 +22,14 @@ namespace ClientApp.Services {
         {
             var response = await _httpClient.GetAsync($"{url}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<UsuarioDto>>();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<UsuarioDto>>>()).Result;
         }
 
         public async Task<UsuarioDto> GetUsuarioAsync(int IdUsuario)
         {
             var response = await _httpClient.GetAsync($"{url}/{IdUsuario}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<UsuarioDto>();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<UsuarioDto>>()).Result;
         }
         public async Task<RespuestaRegistro> RegistrarOActualizar(UsuarioDto registro)
         {

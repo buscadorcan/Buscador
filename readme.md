@@ -6,6 +6,8 @@
     - Docker
     - Database Client JDBC
     - turder client /  Postman 
+    - .NET Core Test Explorer
+    - Coverage Gutters
   - 
 3. crear la base de datos
   - .devcontainer\database\query\canShemma.sql
@@ -36,6 +38,13 @@
       - Controllers para los repositories del CAN_DB
       - Controllers para los repositories de CAN : Col, ecu, bov, peru
 
+5. Configurar tests
+  - dotnet add package Microsoft.AspNetCore.Mvc.Testing
+  - dotnet add package moq
+  - dotnet add package coverlet.msbuild
+  - dotnet tool install -g dotnet-reportgenerator-globaltool
+  - Las líneas guardadas en los archivos dentro de la carpeta .vscode agregarlas a los archivos del mismo nombre dentro de la carpeta .vscode enla raíz del proyecto, si no existen los archivos crearlos con las líneas indicadas, se puede copiar y pegar si no existen.
+  - Una vez hecho esto se puede ejecutar los tests desde el `.NET Core Test Explorer` Y luego de ejecutados los tests se genera el archivo necesario para los reportes y podemos ejecutar el Task que creamos en el paso anterior desde el menú Terminal -> Run Task y allí seleccionamos el task que creamos anteriormente `Generate coverage report`
 
 dotnet run
 

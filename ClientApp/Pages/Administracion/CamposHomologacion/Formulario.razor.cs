@@ -1,49 +1,51 @@
 using BlazorBootstrap;
-using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
     public partial class Formulario
     {
         private Button saveButton = default!;
-        private VwHomologacion homologacion = new VwHomologacion();
-        private VwHomologacion homologacionGrupo = new VwHomologacion();
+        private HomologacionDto homologacion = new HomologacionDto();
+        private HomologacionDto homologacionGrupo = new HomologacionDto();
         [Inject]
-        public IHomologacionRepository homologacionRepository { get; set; }
+        public IHomologacionService? iHomologacionService { get; set; }
         [Inject]
-        public NavigationManager navigationManager { get; set; }
+        public NavigationManager? navigationManager { get; set; }
         [Parameter]
         public int? Id { get; set; }
         [Parameter]
         public int? IdPadre { get; set; }
         [Inject]
-        public Services.ToastService toastService { get; set; }
+        public Services.ToastService? toastService { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            homologacionGrupo = await homologacionRepository.GetHomologacionAsync((int) IdPadre);
+            homologacionGrupo = await iHomologacionService.GetHomologacionAsync((int) IdPadre);
             if (Id > 0) {
-                homologacion = await homologacionRepository.GetHomologacionAsync(Id.Value);
+                homologacion = await iHomologacionService.GetHomologacionAsync(Id.Value);
             } else {
                 homologacion.IdHomologacionGrupo = IdPadre;
                 homologacion.InfoExtraJson = "{}";
                 homologacion.MascaraDato = "TEXTO";
+                homologacion.CodigoHomologacion = "";
+                homologacion.SiNoHayDato = "";
             }
         }
         private async Task GuardarHomologacion()
         {
             saveButton.ShowLoading("Guardando...");
 
-            var result = await homologacionRepository.RegistrarOActualizar(homologacion);
+            var result = await iHomologacionService.RegistrarOActualizar(homologacion);
             if (result.registroCorrecto)
             {
-                toastService.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                navigationManager.NavigateTo("/campos-homologacion");
+                toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                navigationManager?.NavigateTo("/campos-homologacion");
             }
             else
             {
-                toastService.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
+                toastService?.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
             }
 
             saveButton.HideLoading();

@@ -1,7 +1,7 @@
 using ClientApp.Models;
 
 namespace ClientApp.Services.IService {
-    public interface IHomologacionEsquemaRepository
+    public interface IHomologacionEsquemaService
     {
         Task<List<HomologacionEsquema>> GetHomologacionEsquemasAsync();
         Task<HomologacionEsquema> GetHomologacionEsquemaAsync(int idHomologacionEsquema);

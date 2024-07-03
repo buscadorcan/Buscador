@@ -1,3 +1,14 @@
+/*----------------------------------------------------------------------------------------\
+|    ©Copyright 2K24												BUSCADOR ANDINO		  |
+|-----------------------------------------------------------------------------------------|
+| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
+\-----------------------------------------------------------------------------------------/
+  [App]            : Buscador Andino											
+	- Date         : 2K24.JUN.25	
+	- Author       : patricio.paccha														
+	- Version	   : 1.0										
+	- Description  : Crea la base de datos del buscador andino
+\----------------------------------------------------------------------------------------*/
 USE MASTER;
 GO
 IF EXISTS (SELECT * FROM sys.databases WHERE name = 'CAN_DB')
@@ -22,10 +33,9 @@ ALTER DATABASE [CAN_DB] SET COMPATIBILITY_LEVEL = 160
 GO
 
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
     EXEC [CAN_DB].[dbo].[sp_fulltext_database] @action = 'enable'
-end
 GO
+
 ALTER DATABASE [CAN_DB] SET ANSI_NULL_DEFAULT OFF 
 GO
 ALTER DATABASE [CAN_DB] SET ANSI_NULLS OFF 
@@ -84,5 +94,5 @@ ALTER DATABASE [CAN_DB] SET TARGET_RECOVERY_TIME = 60 SECONDS
 GO
 ALTER DATABASE [CAN_DB] SET QUERY_STORE = ON
 GO
-ALTER DATABASE [CAN_DB] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
-GO
+-- ALTER DATABASE [CAN_DB] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+-- GO

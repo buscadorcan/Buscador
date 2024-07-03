@@ -17,7 +17,7 @@ namespace WebApp.Repositories
         {
             
         }
-        public object PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
+        public BuscadorDto PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
         {
             return ExecuteDbOperation(context => {
                 var rowsTotal = new SqlParameter
@@ -35,7 +35,7 @@ namespace WebApp.Repositories
                     rowsTotal
                 ).AsNoTracking().ToList();
 
-                return new {
+                return new BuscadorDto{
                     Data = lstTem.Select(c => new FnHomologacionEsquemaDataDto()
                     {
                         IdDataLakeOrganizacion = c.IdDataLakeOrganizacion,
@@ -46,7 +46,7 @@ namespace WebApp.Repositories
                 };
             });
         }
-        public ICollection<EsquemaDto> FnHomologacionEsquemaTodo()
+        public List<EsquemaDto> FnHomologacionEsquemaTodo()
         {
             return ExecuteDbOperation(context => {
                 return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo()").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
@@ -58,7 +58,7 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<HomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
-        public ICollection<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion)
+        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion)
         {
             return ExecuteDbOperation(context => {
                 var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idDataLakeOrganizacion})").AsNoTracking().ToList();

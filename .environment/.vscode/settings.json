@@ -1,0 +1,4 @@
+{
+  "dotnet-test-explorer.testArguments": "/p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./TestResults/lcov.info /p:ExcludeByFile=\"**/Models/**/*.cs%2c**/Service/**/*.cs%2c**/Program.cs%2c**/WorkerService/**.cs%2c**/BaseApp/*.cs\"",
+  "dotnet-test-explorer.testProjectPath": "**/*.Tests.csproj"
+}

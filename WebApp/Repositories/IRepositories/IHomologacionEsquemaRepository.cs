@@ -7,6 +7,6 @@ namespace WebApp.Repositories.IRepositories {
     bool Update(HomologacionEsquema data);
     bool Create(HomologacionEsquema data);
     HomologacionEsquema? FindById(int Id);
-    ICollection<HomologacionEsquema> FindAll();
+    List<HomologacionEsquema> FindAll();
   }
 }

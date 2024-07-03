@@ -14,6 +14,7 @@ namespace WebApp.Service.IService
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private int[] filters = [5, 6];
       private int executionIndex = 0;
+      private bool deleted = false;
 
       public Boolean ImportarExcel(string path) 
       {
@@ -48,8 +49,8 @@ namespace WebApp.Service.IService
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                   dataLake = getDatalake(dataTable, i, dataLake);
+                  deleteOldRecords(int.Parse(dataTable.Rows[i][4].ToString() ?? ""));
                   DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(dataTable, i, dataLake);
-
                   addOrganizacionFullText(dataTable, i, dataLakeOrganizacion.IdDataLakeOrganizacion);
                 }
               }
@@ -68,9 +69,9 @@ namespace WebApp.Service.IService
           return buildDatalake(dataTable, row);
         } else
         {
-          if (dataTable.Rows[row][0].ToString().Equals(dataLake?.DataTipo?.ToString()) &&
-              dataTable.Rows[row][1].ToString().Equals(dataLake?.DataSistemaOrigen?.ToString()) &&
-              dataTable.Rows[row][2].ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()))
+          if (dataTable.Rows[row][0]?.ToString().Equals(dataLake?.DataTipo?.ToString()) == true &&
+              dataTable.Rows[row][1]?.ToString().Equals(dataLake?.DataSistemaOrigen?.ToString()) == true &&
+              dataTable.Rows[row][2]?.ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()) == true)
           {
             if (DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900") > dataLake.DataSistemaFecha)
             {
@@ -113,12 +114,12 @@ namespace WebApp.Service.IService
         }
       }
 
-      DataLakeOrganizacion addDataLakeOrganizacion(DataTable dataTable, int row, DataLake dataLake)
+      DataLakeOrganizacion addDataLakeOrganizacion(DataTable dataTable, int row, DataLake? dataLake)
       {
-        return _repositoryDLO.create(new DataLakeOrganizacion
+        return _repositoryDLO.Create(new DataLakeOrganizacion
           {
             IdDataLakeOrganizacion = 0,
-            IdDataLake = dataLake.IdDataLake,
+            IdDataLake = dataLake?.IdDataLake,
             IdHomologacionEsquema = int.Parse(dataTable.Rows[row][4].ToString() ?? ""),
             DataEsquemaJson = buildDataLakeJson(dataTable, row),
             Estado = "A"
@@ -136,7 +137,7 @@ namespace WebApp.Service.IService
         {
           foreach (int filter in filters)
           {
-            Homologacion homologacion = _repositoryH.FindByMostrarWeb(dataTable.Rows[row][filter].ToString());
+            Homologacion? homologacion = _repositoryH.FindByMostrarWeb(dataTable.Rows[row][filter].ToString());
             if (homologacion == null) { continue; }
 
             _repositoryOFT.Create(new OrganizacionFullText
@@ -173,6 +174,13 @@ namespace WebApp.Service.IService
           json += "{ \"IdHomologacion\": \"" + dataTable.Columns[col].ColumnName + "\", \"Data\": \"" + dataTable.Columns[col].ColumnName + " " + dataTable.Rows[row][col].ToString() + "\" },";
         }
         return json.TrimEnd(',') + "]";
+      }
+
+      bool deleteOldRecords(int IdHomologacionEsquema)
+      {
+        if (deleted) { return true; }
+        deleted = true;
+        return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema);
       }
   }
 }

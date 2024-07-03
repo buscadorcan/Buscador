@@ -2,6 +2,7 @@
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization;
 @using ClientApp.Models;
+@using SharedApp.Models.Dtos
 @attribute [Authorize]
 
 <PageTitle>Homologación Esquemas</PageTitle>
@@ -19,8 +20,8 @@
         @context.MostrarWeb
         <input type="hidden" value="@context.IdHomologacionEsquema" />
     </GridColumn>
-    <GridColumn TItem="HomologacionEsquema" HeaderText="Tooltip Web" PropertyName="Tooltip Web" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-        @context.TooltipWeb
+    <GridColumn TItem="HomologacionEsquema" HeaderText="Nombre Vista" PropertyName="Nombre Vista" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+        @context.VistaNombre
     </GridColumn>
     <GridColumn TItem="HomologacionEsquema" HeaderText="Columnas" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
         <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context.IdHomologacionEsquema)">

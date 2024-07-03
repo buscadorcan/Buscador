@@ -1,29 +1,36 @@
-using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
     public partial class Index
     {
-        private IndexGrilla childComponentRef;
         [Inject]
-        public IVwHomologacionRepository vwHomologacionRepository { get; set; }
-        private List<VwHomologacion>? listaEtiquetasFiltros;
-        private List<List<VwHomologacion>>? listadeOpciones = new List<List<VwHomologacion>>();
+        public ICatalogosService? iCatalogosService { get; set; }
+        private IndexGrilla? childComponentRef;
+        private List<HomologacionDto>? listaEtiquetasFiltros = new List<HomologacionDto>();
+        private List<List<HomologacionDto>?> listadeOpciones = new List<List<HomologacionDto>?>();
         private List<List<int>> selectedValues = new List<List<int>>();
         private BuscarRequest buscarRequest = new BuscarRequest();
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                listaEtiquetasFiltros = await vwHomologacionRepository.GetHomologacionAsync("etiquetas_filtro");
+                if (iCatalogosService != null) {
+                    listaEtiquetasFiltros = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("etiquetas_filtro");
 
-                foreach(var opciones in listaEtiquetasFiltros)
-                {
-                    listadeOpciones.Add(await vwHomologacionRepository.GetHomologacionDetalleAsync("filtro_detalles", opciones.IdHomologacion));
+                    if (listaEtiquetasFiltros != null)
+                    {
+                        foreach(var opciones in listaEtiquetasFiltros)
+                        {
+                            listadeOpciones.Add(await iCatalogosService.GetHomologacionDetalleAsync<List<HomologacionDto>>("filtro_detalles", opciones.IdHomologacion));
+                        }
+                    }
                 }
-            } catch (Exception) { }
+            } catch (Exception e) {
+                Console.WriteLine(e);
+            }
         }
         private void CambiarSeleccion(int selectedValue, int index)
         {
@@ -43,7 +50,12 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task BuscarPalabraRequest()
         {
-            await childComponentRef.grid.ResetPageNumber();
+            if (childComponentRef != null && childComponentRef.grid != null)
+            {
+                await childComponentRef.grid.ResetPageNumber();
+            }
+
+            await Task.CompletedTask;
         }
     }
 }

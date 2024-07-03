@@ -4,11 +4,11 @@ namespace WebApp.Repositories.IRepositories {
   public interface IDataLakeOrganizacionRepository
   {
 
-    bool update(DataLakeOrganizacion data);
-    DataLakeOrganizacion create(DataLakeOrganizacion data);
-    DataLakeOrganizacion find(int Id);
-    DataLakeOrganizacion findBy(DataLakeOrganizacion dataLakeOrganizacion);
-    ICollection<DataLakeOrganizacion> findAll();
-    int getLastId();
+    bool Update(DataLakeOrganizacion data);
+    DataLakeOrganizacion Create(DataLakeOrganizacion data);
+    DataLakeOrganizacion? FindById(int Id);
+    ICollection<DataLakeOrganizacion> FindAll();
+    int GetLastId();
+    bool DeleteOldRecords(int IdHomologacionEsquema);
   }
 }

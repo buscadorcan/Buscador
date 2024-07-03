@@ -34,7 +34,9 @@ namespace WebApp.Controllers
                     return BadRequestResponse("El nombre de usuario o password son incorrectos");
                 }
 
-                return Ok(new RespuestasAPI { Result = result });
+                return Ok(new RespuestasAPI<UsuarioAutenticacionRespuestaDto> {
+                    Result = result
+                });
             }
             catch (Exception e)
             {
@@ -53,7 +55,7 @@ namespace WebApp.Controllers
                     return BadRequestResponse("El nombre de usuario es incorrecto");
                 }
 
-                return Ok(new RespuestasAPI { Result = true });
+                return Ok(new RespuestasAPI<bool> { });
             }
             catch (Exception e)
             {
@@ -72,7 +74,7 @@ namespace WebApp.Controllers
                     return BadRequestResponse("El nombre de usuario ya existe");
                 }
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool> {
                     IsSuccess = _iRepo.Create(_mapper.Map<Usuario>(dto))
                 });
             }
@@ -87,7 +89,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<List<UsuarioDto>> {
                     Result = _mapper.Map<List<UsuarioDto>>(_iRepo.FindAll())
                 });
             }
@@ -109,7 +111,7 @@ namespace WebApp.Controllers
                     return NotFoundResponse("Usuario no encontrado");
                 }
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<UsuarioDto> {
                     Result = _mapper.Map<UsuarioDto>(itemUsuario)
                 });
             }
@@ -127,7 +129,7 @@ namespace WebApp.Controllers
                 dto.IdUsuario = idUsuario;
                 var usuario = _mapper.Map<Usuario>(dto);
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool> {
                     IsSuccess = _iRepo.Update(usuario)
                 });
             }
@@ -151,7 +153,7 @@ namespace WebApp.Controllers
 
                 usuario.Estado = "X";
 
-                return Ok(new RespuestasAPI {
+                return Ok(new RespuestasAPI<bool> {
                     IsSuccess = _iRepo.Update(usuario)
                 });
             }

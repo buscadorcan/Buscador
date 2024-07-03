@@ -116,10 +116,13 @@ namespace WebApp.Repositories
                 string clave = _passwordService.GenerateTemporaryPassword(8);
                 usuario.Clave = _hashService.GenerateHash(clave);
 
+                context.Usuario.Update(usuario);
+                var result = context.SaveChanges() >= 0;
+                Console.WriteLine($"Envío de Clave Temporal Su nueva clave temporal es: {clave}");
+
                 await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Envío de Clave Temporal", $"Su nueva clave temporal es: {clave}");
 
-                context.Usuario.Update(usuario);
-                return context.SaveChanges() >= 0;
+                return result;
             });
         }
     }

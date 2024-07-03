@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace DataAccess
 {
+  [ExcludeFromCodeCoverage]
     public class DataLog
     {
         public void CreateDataBaseLog()

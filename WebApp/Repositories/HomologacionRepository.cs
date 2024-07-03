@@ -33,7 +33,7 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.Homologacion.AsNoTracking().FirstOrDefault(u => u.IdHomologacion == id));
         }
-        public Homologacion? FindByMostrarWeb(string filter)
+        public Homologacion? FindByMostrarWeb(string? filter)
         {
           return ExecuteDbOperation(context => context.Homologacion.AsNoTracking().FirstOrDefault(u => u.MostrarWeb == filter));
         }
