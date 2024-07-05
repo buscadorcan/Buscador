@@ -56,7 +56,7 @@
         <div>
             <label class="col-form-label">Vistas</label>
         </div>
-        <Dropdown AutoClose="true">
+        @* <Dropdown AutoClose="true">
             <DropdownToggleButton Color="ButtonColor.Secondary">
                 @if (vistaSelected?.VistaNombre != null)
                 {
@@ -72,10 +72,10 @@
                     <DropdownItem @onclick="() => CambiarSeleccionVista(opcion)">@opcion.VistaNombre</DropdownItem>
                 }
             </DropdownMenu>
-        </Dropdown>
+        </Dropdown> *@
     </div>
     <div class="col-md-12 py-2">
-        <Grid @ref="grid" TItem="HomologacionEsquemaVistaDto" class="table table-hover table-bordered table-striped" DataProvider="HomologacionDataProvider" Responsive="true">
+        @* <Grid @ref="grid" TItem="HomologacionEsquemaVistaDto" class="table table-hover table-bordered table-striped" DataProvider="HomologacionDataProvider" Responsive="true">
             <GridColumn TItem="HomologacionEsquemaVistaDto" HeaderText="Esquema" PropertyName="NombreHomologado">
                 @context.NombreHomologado
             </GridColumn>
@@ -89,12 +89,12 @@
                     StringComparison="StringComparison.Ordinal"
                 />
             </GridColumn>
-        </Grid>
+        </Grid> *@
         <div class="py-2">
             <hr style="background-color:aliceblue" />
-            <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarHomologacionEsquemaVista()">
+            @* <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarHomologacionEsquemaVista()">
                 Guardar
-            </Button>
+            </Button> *@
         </div>
     </div>
 </div>

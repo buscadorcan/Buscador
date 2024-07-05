@@ -17,14 +17,12 @@ builder.Services.AddScoped(sp => new HttpClient {
 });
 
 builder.Services.AddScoped<IBusquedaService, BusquedaService>();
-builder.Services.AddScoped<IVistaService, VistaService>();
-builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IServiceAutenticacion, ServiceAutenticacion>();
-builder.Services.AddScoped<IVwHomologacionRepository, VwHomologacionRepository>();
-builder.Services.AddScoped<IHomologacionRepository, HomologacionRepository>();
-builder.Services.AddScoped<IHomologacionEsquemaRepository, HomologacionEsquemaRepository>();
+builder.Services.AddScoped<ICatalogosService, CatalogosService>();
+builder.Services.AddScoped<IHomologacionService, HomologacionService>();
+builder.Services.AddScoped<IHomologacionEsquemaService, HomologacionEsquemaService>();
 builder.Services.AddSingleton<ClientApp.Services.ToastService>();
-builder.Services.AddScoped<IHomologacionEsquemaVistaService, HomologacionEsquemaVistaService>();
 
 builder.Services.AddBlazoredLocalStorage();
 

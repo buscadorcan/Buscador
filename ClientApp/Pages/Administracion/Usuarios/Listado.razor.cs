@@ -1,7 +1,7 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
-using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Usuarios
 {
@@ -9,13 +9,15 @@ namespace ClientApp.Pages.Administracion.Usuarios
     {
         private List<UsuarioDto>? listaUsuarios;
         [Inject]
-        IUsuariosRepository usuariosRepository { get; set; }
+        IUsuariosService? iUsuariosService { get; set; }
         private async Task<GridDataProviderResult<UsuarioDto>> UsuariosDataProvider(GridDataProviderRequest<UsuarioDto> request)
         {
-            if (listaUsuarios is null)
-                listaUsuarios = await usuariosRepository.GetUsuariosAsync();
+            if (listaUsuarios is null && iUsuariosService != null)
+            {
+                listaUsuarios = await iUsuariosService.GetUsuariosAsync();
+            }
 
-            return await Task.FromResult(request.ApplyTo(listaUsuarios));
+            return await Task.FromResult(request.ApplyTo(listaUsuarios ?? []));
         }
     }
 }

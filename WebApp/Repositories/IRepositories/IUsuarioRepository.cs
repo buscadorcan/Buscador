@@ -5,12 +5,12 @@ namespace WebApp.Repositories.IRepositories
 {
     public interface IUsuarioRepository
     {
-        Usuario find(int usuarioId);
-        bool create(Usuario usuario);
-        bool update(Usuario usuario);
-        bool isUniqueUser(string usuario);
-        ICollection<Usuario> findAll();
-        Task<UsuarioAutenticacionRespuestaDto> login(UsuarioAutenticacionDto usuarioAutenticacionDto);
-        Task<bool> Recuperar(UsuarioRecuperacionDto usuarioRecuperacionDto);
+        Usuario? FindById(int idUsuario);
+        bool Create(Usuario usuario);
+        bool Update(Usuario usuario);
+        bool IsUniqueUser(string usuario);
+        ICollection<Usuario> FindAll();
+        UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto);
+        Task<bool> RecoverAsync(UsuarioRecuperacionDto usuarioRecuperacionDto);
     }
 }

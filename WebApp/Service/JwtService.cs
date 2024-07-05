@@ -1,21 +1,23 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.Service.IService;
 
 namespace WebApp.Service
 {
-    public class JwtService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IJwtService
+    public class JwtService(
+        IConfiguration configuration,
+        IHttpContextAccessor httpContextAccessor,
+        IJwtFactory jwtFactory
+    ) : IJwtService
     {
         private readonly IConfiguration _configuration = configuration;
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-
+        private readonly IJwtFactory _jwtFactory = jwtFactory;
         public string GenerateJwtToken(int userId)
         {
             var secret = _configuration.GetValue<string>("ApiSettings:Secreta");
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
+            var tokenHandler = _jwtFactory.CreateTokenHandler();
+            var signingCredentials = _jwtFactory.CreateSigningCredentials(secret ?? "");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -23,8 +25,8 @@ namespace WebApp.Service
                 {
                     new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 }),
-                Expires= DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = signingCredentials
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -34,21 +36,13 @@ namespace WebApp.Service
         public int GetUserIdFromToken(string token)
         {
             var secret = _configuration.GetValue<string>("ApiSettings:Secreta");
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
+            var tokenHandler = _jwtFactory.CreateTokenHandler();
+            var validationParameters = _jwtFactory.CreateTokenValidationParameters(secret ?? "");
 
             try
             {
-                var tokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-
                 SecurityToken securityToken;
-                var claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+                var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
 
                 var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
@@ -64,7 +58,7 @@ namespace WebApp.Service
             }
         }
 
-        public string GetTokenFromHeader()
+        public string? GetTokenFromHeader()
         {
             var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
             if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))

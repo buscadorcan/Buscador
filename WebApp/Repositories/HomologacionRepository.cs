@@ -1,61 +1,58 @@
 ﻿using System.Data;
-using System.Linq.Expressions;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
-using WebApp.Service;
+using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-  public class HomologacionRepository(SqlServerDbContext dbContext) : IHomologacionRepository
-  {
-    private readonly SqlServerDbContext _bd = dbContext;
-
-    public bool create(Homologacion data)
+    public class HomologacionRepository : BaseRepository, IHomologacionRepository
     {
-        data.FechaCreacion = DateTime.Now;   
-        data.FechaModifica = DateTime.Now;
-
-        _bd.Homologacion.Add(data);
-        return _bd.SaveChanges() >= 0 ? true : false;
-    }
-
-    public Homologacion find(int Id)
-    {
-      return _bd.Homologacion.AsNoTracking().FirstOrDefault(u => u.IdHomologacion == Id);
-    }
-
-    public Homologacion? findByMostrarWeb(string filter)
-    {
-      return _bd.Homologacion.AsNoTracking().FirstOrDefault(u => u.MostrarWeb == filter);
-    }
-
-    public ICollection<Homologacion> findByParent(int valor)
-    {
-      return _bd.Homologacion.Where(c => c.IdHomologacionGrupo == valor && c.Estado.Equals("A")).OrderBy(c => c.MostrarWebOrden).ToList();
-    }
-
-    public bool update(Homologacion newRecord)
-    {
-      var currentRecord = _bd.Homologacion.FirstOrDefault(u => u.IdHomologacion == newRecord.IdHomologacion);
-      newRecord.FechaModifica = DateTime.Now;
-
-      PropertyInfo[] propiedades = typeof(Homologacion).GetProperties();
-
-      foreach (PropertyInfo propiedad in propiedades)
-      {
-        object valorModificado = propiedad.GetValue(newRecord);
-        object valorExistente = propiedad.GetValue(currentRecord);
-
-        if (valorModificado != null && !object.Equals(valorModificado, valorExistente))
+        private readonly IJwtService _jwtService;
+        public HomologacionRepository(
+            IJwtService jwtService,
+            ILogger<UsuarioRepository> logger,
+            IDbContextFactory dbContextFactory
+        ) : base(dbContextFactory, logger)
         {
-            propiedad.SetValue(currentRecord, valorModificado);
+            _jwtService = jwtService;
         }
-      }
 
-      _bd.Homologacion.Update(currentRecord);
-      return _bd.SaveChanges() >= 0 ? true : false;
+        public bool Create(Homologacion data)
+        {
+            data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            data.IdUserModifica = data.IdUserCreacion;
+
+            return ExecuteDbOperation(context =>
+            {
+                context.Homologacion.Add(data);
+                return context.SaveChanges() >= 0;
+            });
+        }
+        public Homologacion? FindById(int id)
+        {
+            return ExecuteDbOperation(context => context.Homologacion.AsNoTracking().FirstOrDefault(u => u.IdHomologacion == id));
+        }
+        public Homologacion? FindByMostrarWeb(string? filter)
+        {
+          return ExecuteDbOperation(context => context.Homologacion.AsNoTracking().FirstOrDefault(u => u.MostrarWeb == filter));
+        }
+        public ICollection<Homologacion> FindByParent(int parentId)
+        {
+          return ExecuteDbOperation(context => context.Homologacion.Where(c => c.IdHomologacionGrupo == parentId && c.Estado.Equals("A")).OrderBy(c => c.MostrarWebOrden).ToList());
+        }
+
+        public bool Update(Homologacion newRecord)
+        {
+            return ExecuteDbOperation(context => {
+                var _exits = MergeEntityProperties(context, newRecord, u => u.IdHomologacion == newRecord.IdHomologacion);
+
+                _exits.FechaModifica = DateTime.Now;
+                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+
+                context.Homologacion.Update(_exits);
+                return context.SaveChanges() >= 0;
+            });
+        }
     }
-  }
 }

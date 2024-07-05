@@ -1,6 +1,7 @@
 @page "/"
 @page "/persona"
 @using ClientApp.Models;
+@using SharedApp.Models.Dtos
 @using Newtonsoft.Json;
 
 <PageTitle>Buscador Andino</PageTitle>
@@ -30,17 +31,19 @@
                             <div class="span2">
                                 <Dropdown AutoClose="true" style="max-width: 100%; min-width: 100%">
                                     <DropdownToggleButton Color="ButtonColor.Secondary">
-                                        @listaEtiquetasFiltros[currentIndex].MostrarWeb
+                                        @listaEtiquetasFiltros?[currentIndex].MostrarWeb
                                     </DropdownToggleButton>
                                     <DropdownMenu>
-                                        @foreach (var opcion in listadeOpciones[currentIndex]) {
-                                            <DropdownItem @onclick="() => CambiarSeleccion(opcion.IdHomologacion, currentIndex)">
-                                                @if (selectedValues != null && selectedValues.Count > currentIndex && selectedValues[currentIndex].Contains(opcion.IdHomologacion))
-                                                {
-                                                    <Icon Name="IconName.Check" />
-                                                }
-                                                @opcion.MostrarWeb
-                                            </DropdownItem>
+                                        @if (listadeOpciones?[currentIndex] != null) {
+                                            foreach (var opcion in listadeOpciones[currentIndex] ?? []) {
+                                                <DropdownItem @onclick="() => CambiarSeleccion(opcion.IdHomologacion, currentIndex)">
+                                                    @if (selectedValues != null && selectedValues.Count > currentIndex && selectedValues[currentIndex].Contains(opcion.IdHomologacion))
+                                                    {
+                                                        <Icon Name="IconName.Check" />
+                                                    }
+                                                    @opcion.MostrarWeb
+                                                </DropdownItem>
+                                            }
                                         }
                                     </DropdownMenu>
                                 </Dropdown>
@@ -50,6 +53,10 @@
                 </div>
             </div>
         </div>
-        <IndexGrilla @ref="childComponentRef" buscarRequest="@buscarRequest" selectedValues="@selectedValues" />
+        <IndexGrilla
+            @ref="childComponentRef"
+            buscarRequest="@buscarRequest"
+            selectedValues="@selectedValues"
+        />
     </div>
 </div>

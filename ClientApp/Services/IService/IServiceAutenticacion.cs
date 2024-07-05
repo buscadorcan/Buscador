@@ -5,8 +5,8 @@ namespace ClientApp.Services.IService
 {
     public interface IServiceAutenticacion
     {
-        Task<RespuestasAPI> Acceder(UsuarioAutenticacionDto usuarioAutenticacionDto);
-        Task<RespuestasAPI> Recuperar(UsuarioRecuperacionDto usuarioRecuperacionDto);
+        Task<RespuestasAPI<UsuarioAutenticacionRespuestaDto>> Acceder(UsuarioAutenticacionDto usuarioAutenticacionDto);
+        Task<RespuestasAPI<T>?> Recuperar<T>(UsuarioRecuperacionDto usuarioRecuperacionDto);
         Task Salir();
     }
 }

@@ -3,6 +3,7 @@ using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -13,21 +14,33 @@ namespace ClientApp.Pages.BuscadorCan
         [Parameter]
         public int IdDataLakeOrganizacion { get; set; }
         [Inject]
-        private IBusquedaService servicio { get; set; }
-        private HomologacionEsquema homologacionEsquema;
-        private IEnumerable<VwHomologacion> Columnas;
-        private IEnumerable<DataHomologacionEsquema> resultados;
+        private IBusquedaService? servicio { get; set; }
+        private HomologacionEsquema? homologacionEsquema;
+        private List<HomologacionDto>? Columnas;
+        private List<DataHomologacionEsquema>? resultados;
         protected override async Task OnInitializedAsync()
         {
-            homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(IdHomologacionEsquema);
-            Columnas = JsonConvert.DeserializeObject<List<VwHomologacion>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
+            try
+            {
+                if (servicio != null)
+                {
+                    homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(IdHomologacionEsquema);
+                    Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
         private async Task<GridDataProviderResult<DataHomologacionEsquema>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataHomologacionEsquema> request)
         {
-            if (resultados is null)
+            if (resultados is null && servicio != null)
+            {
                 resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdHomologacionEsquema, IdDataLakeOrganizacion);
+            }
 
-            return await Task.FromResult(request.ApplyTo(resultados));
+            return await Task.FromResult(request.ApplyTo(resultados ?? []));
         }
     }
 }

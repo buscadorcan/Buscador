@@ -1,28 +1,31 @@
 using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace WebApp.Controllers
 {
     [Route("api/buscador")]
-    [ApiController]
-    public class BuscadorController(ILogger<BuscadorController> logger, IBuscadorRepository vhRepo) : ControllerBase
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class BuscadorController(IBuscadorRepository vhRepo) : BaseController
     {
         private readonly IBuscadorRepository _vhRepo = vhRepo;
-        // protected RespuestasAPI? _respuestaApi;
-        private readonly ILogger<BuscadorController> _logger = logger;
-
         [HttpGet("buscarPalabra")]
         public IActionResult PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
         {
             try
             {
-                return Ok(_vhRepo.PsBuscarPalabra(paramJSON, PageNumber, RowsPerPage));
+                return Ok(new RespuestasAPI<BuscadorDto>{
+                    Result = _vhRepo.PsBuscarPalabra(paramJSON, PageNumber, RowsPerPage)
+                });
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error en {nameof(PsBuscarPalabra)}");
-                return StatusCode(500, "Error en el servidor");
+                return HandleException(e, nameof(PsBuscarPalabra));
             }
         }
         
@@ -31,12 +34,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(_vhRepo.FnHomologacionEsquemaTodo());
+                return Ok(new RespuestasAPI<List<EsquemaDto>>{
+                    Result = _vhRepo.FnHomologacionEsquemaTodo()
+                });
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error en {nameof(FnHomologacionEsquemaTodo)}");
-                return StatusCode(500, "Error en el servidor");
+                return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
         
@@ -45,12 +49,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(_vhRepo.FnHomologacionEsquema(idHomologacionEsquema));
+                return Ok(new RespuestasAPI<HomologacionEsquemaDto>{
+                    Result = _vhRepo.FnHomologacionEsquema(idHomologacionEsquema)
+                });
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error en {nameof(FnHomologacionEsquema)}");
-                return StatusCode(500, "Error en el servidor");
+                return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
         
@@ -59,12 +64,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(_vhRepo.FnHomologacionEsquemaDato(idHomologacionEsquema, idDataLakeOrganizacion));
+                return Ok(new RespuestasAPI<List<FnHomologacionEsquemaDataDto>>{
+                    Result = _vhRepo.FnHomologacionEsquemaDato(idHomologacionEsquema, idDataLakeOrganizacion)
+                });
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error en {nameof(FnHomologacionEsquemaDato)}");
-                return StatusCode(500, "Error en el servidor");
+                return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
     }

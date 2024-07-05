@@ -1,6 +1,6 @@
 @page "/grupos"
 @layout AdminLayout
-@using ClientApp.Models;
+@using SharedApp.Models.Dtos
 
 <PageTitle>Homologación</PageTitle>
 
@@ -10,22 +10,22 @@
     <Grid
         Id="sortableGrid"
         @ref="grid"
-        TItem="VwHomologacion"
+        TItem="HomologacionDto"
         class="table table-hover table-bordered table-striped"
         DataProvider="HomologacionDataProvider"
         Responsive="true"
     >
-        <GridColumn TItem="VwHomologacion" HeaderText="Código Homologado" PropertyName="NombreHomologado" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
+        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
             @context.NombreHomologado
             <input type="hidden" value="@context.IdHomologacion" />
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
+        <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
             @context.MostrarWeb
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Tooltip Web" PropertyName="TooltipWeb" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
+        <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
             @context.TooltipWeb
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Editar" Filterable="false" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
+        <GridColumn TItem="HomologacionDto" HeaderText="Editar" Filterable="false" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
             <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{context.IdHomologacion}")" Size="Size.Small">
                 <Icon Name="IconName.PencilSquare" />
             </Button>

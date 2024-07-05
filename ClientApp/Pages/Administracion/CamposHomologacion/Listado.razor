@@ -1,6 +1,6 @@
 @page "/campos-homologacion"
 @layout AdminLayout
-@using ClientApp.Models
+@using SharedApp.Models.Dtos
 
 <PageTitle>Campos Homologación</PageTitle>
 
@@ -37,35 +37,35 @@
     <Grid
         Id="sortableGrid"
         @ref="grid"
-        TItem="VwHomologacion"
+        TItem="HomologacionDto"
         class="table table-hover table-bordered table-striped"
         DataProvider="HomologacionDataProvider"
         Responsive="true"
         AllowFiltering="true"
     >
-        <GridColumn TItem="VwHomologacion" HeaderText="Código Homologado" PropertyName="NombreHomologado">
+        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
             @context.NombreHomologado
             <input type="hidden" value="@context.IdHomologacion" />
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
+        <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
             @context.MostrarWeb
             <input type="hidden" value="@context.IdHomologacion" />
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
+        <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
             @context.TooltipWeb
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
+        <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
             @context.MascaraDato
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
+        <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
             @context.SiNoHayDato
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Editar" Filterable="false">
+        <GridColumn TItem="HomologacionDto" HeaderText="Editar" Filterable="false">
             <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-campos-homologacion/{homologacionSelected.IdHomologacion}/{context.IdHomologacion}")" Size="Size.Small">
                 <Icon Name="IconName.PencilSquare" />
             </Button>
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Eliminar" Filterable="false">
+        <GridColumn TItem="HomologacionDto" HeaderText="Eliminar" Filterable="false">
             <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdHomologacion)" Size="Size.Small">
                 <Icon Name="IconName.Trash3" />
             </Button>

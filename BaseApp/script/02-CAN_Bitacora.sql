@@ -13,7 +13,7 @@ use CAN_DB
 go
 
 DROP TABLE if exists dbo.LogScript;
-GO;
+GO
 
 CREATE TABLE dbo.LogScript (
 	 [IdLogScript]	[BIGINT]		NOT NULL	PRIMARY KEY CLUSTERED IDENTITY(1,1)

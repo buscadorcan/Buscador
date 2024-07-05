@@ -3,7 +3,7 @@
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization;
 @using ClientApp.Services.IService
-@using ClientApp.Models;
+@using SharedApp.Models.Dtos
 @attribute [Authorize]
 
 <PageTitle>Formulario de Esquema</PageTitle>
@@ -18,6 +18,14 @@
             </h3>
 
             <hr style="background-color:aliceblue" />
+
+            <div class="form-row py-2">
+                <label class="col-form-label">Nombre de Vista</label>
+                <div class="col">
+                    <InputText @bind-Value="homologacionEsquema.VistaNombre" class="form-control" placeholder="Nombre de vista..." />
+                    <ValidationMessage For="(()=>homologacionEsquema.VistaNombre)" />
+                </div>
+            </div>
 
             <div class="form-row py-2">
                 <label class="col-form-label">Texto a Mostrar en la Web</label>
@@ -40,11 +48,11 @@
                 <label class="col-form-label">Buscar y agregar campo homologado</label>
                 <div class="col">
                     <AutoComplete @bind-Value="homologacionName"
-                        TItem="VwHomologacion"
+                        TItem="HomologacionDto"
                         DataProvider="VwHomologacionDataProvider"
                         PropertyName="CustomMostrarWeb"
                         Placeholder="Buscar..."
-                        OnChanged="(VwHomologacion vwHomologacion) => OnAutoCompleteChanged(vwHomologacion)"
+                        OnChanged="(HomologacionDto vwHomologacion) => OnAutoCompleteChanged(vwHomologacion)"
                     />
                 </div>
             </div>
@@ -52,24 +60,24 @@
     </div>
 </EditForm>
 <div class="py-2">
-    <Grid TItem="VwHomologacion" class="table table-hover table-bordered table-striped" Data="lista" Responsive="true" FixedHeader="true" Height="350" Id="sortableGrid">
-        <GridColumn TItem="VwHomologacion" HeaderText="Código Homologado" PropertyName="NombreHomologado">
+    <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="lista" Responsive="true" FixedHeader="true" Height="350" Id="sortableGrid">
+        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
             @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado
             <input type="hidden" value="@context.IdHomologacion" />
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
+        <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
             @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
+        <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
             @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
+        <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
             @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
+        <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
             @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato
         </GridColumn>
-        <GridColumn TItem="VwHomologacion" HeaderText="Eliminar">
+        <GridColumn TItem="HomologacionDto" HeaderText="Eliminar">
             <Button Color="ButtonColor.Danger" Outline="true" @onclick="() => EliminarElemento(context.IdHomologacion)" Size="Size.Small">
                 <Icon Name="IconName.Trash3" />
             </Button>

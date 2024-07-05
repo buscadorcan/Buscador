@@ -10,41 +10,46 @@ namespace ClientApp.Pages.Autenticacion
     {
         private Button saveButton = default!;
         private UsuarioAutenticacionDto usuarioAutenticacion = new UsuarioAutenticacionDto();
-
-        public string UrlRetorno { get; set; }
-
-        public string alertMessage { get; set; }
-
+        public string? UrlRetorno { get; set; }
+        public string? alertMessage { get; set; }
         [Inject]
-        public IServiceAutenticacion servicioAutenticacion { get; set; }
-
+        public IServiceAutenticacion? servicioAutenticacion { get; set; }
         [Inject]
-        public NavigationManager navigationManager { get; set; }
-
+        public NavigationManager? navigationManager { get; set; }
         private async Task AccesoUsuario()
         {
-            saveButton.ShowLoading("Verificando...");
-            var result = await servicioAutenticacion.Acceder(usuarioAutenticacion);
-            if (result.IsSuccess)
+            try
             {
-                var urlAbsoluta = new Uri(navigationManager.Uri);
-                var parametrosQuery = HttpUtility.ParseQueryString(urlAbsoluta.Query);
-                UrlRetorno = parametrosQuery["returnUrl"];
-                if (string.IsNullOrEmpty(UrlRetorno))
+                if (servicioAutenticacion != null)
                 {
-                    navigationManager.NavigateTo("/administracion");
-                }
-                else
-                {
-                    navigationManager.NavigateTo("/" + UrlRetorno);
+                    saveButton.ShowLoading("Verificando...");
+                    var result = await servicioAutenticacion.Acceder(usuarioAutenticacion);
+                    Console.WriteLine(result);
+                    if (result.IsSuccess)
+                    {
+                        var urlAbsoluta = new Uri(navigationManager?.Uri ?? "");
+                        var parametrosQuery = HttpUtility.ParseQueryString(urlAbsoluta.Query);
+                        UrlRetorno = parametrosQuery["returnUrl"];
+                        if (string.IsNullOrEmpty(UrlRetorno))
+                        {
+                            navigationManager?.NavigateTo("/administracion");
+                        }
+                        else
+                        {
+                            navigationManager?.NavigateTo("/" + UrlRetorno);
+                        }
+                    }
+                    else
+                    {
+                        alertMessage = string.Join(";", result.ErrorMessages);
+                    }
+                    saveButton.HideLoading();
                 }
             }
-            else
+            catch (Exception e)
             {
-                alertMessage = string.Join(";", result.ErrorMessages);
+                Console.WriteLine(e);
             }
-            saveButton.HideLoading();
-
             await Task.CompletedTask;
         }
     }

@@ -4,26 +4,27 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Esquemas
 {
     public partial class Listado
     {
         private Modal modal = default!;
-        private Grid<HomologacionEsquema> grid;
-        public event Action DataLoaded;
+        private Grid<HomologacionEsquema>? grid;
+        public event Action? DataLoaded;
         private IEnumerable<HomologacionEsquema>? listaHomologacionEsquemas;
         [Inject]
-        private IHomologacionEsquemaRepository homologacionEsquemaRepository { get; set; }
+        private IHomologacionEsquemaService? iHomologacionEsquemaService { get; set; }
         [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
+        protected IJSRuntime? JSRuntime { get; set; }
         [Inject]
-        public IVwHomologacionRepository vwHomologacionRepository { get; set; }
-        private List<VwHomologacion>? listaVwHomologacion;
+        public ICatalogosService? vwHomologacionRepository { get; set; }
+        private List<HomologacionDto>? listaVwHomologacion;
 
         protected override async Task OnInitializedAsync()
         {
-            listaVwHomologacion = await vwHomologacionRepository.GetHomologacionAsync("dimension");
+            listaVwHomologacion = await vwHomologacionRepository.GetHomologacionAsync<List<HomologacionDto>>("dimension");
 
             DataLoaded += async () => {
                 if (!(listaHomologacionEsquemas is null)) {
@@ -35,7 +36,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private async Task<GridDataProviderResult<HomologacionEsquema>> EsquemasDataProvider(GridDataProviderRequest<HomologacionEsquema> request)
         {
             if (listaHomologacionEsquemas is null)
-                listaHomologacionEsquemas = await homologacionEsquemaRepository.GetHomologacionEsquemasAsync();
+                listaHomologacionEsquemas = await iHomologacionEsquemaService.GetHomologacionEsquemasAsync();
 
             DataLoaded?.Invoke();
 
@@ -46,18 +47,18 @@ namespace ClientApp.Pages.Administracion.Esquemas
         {
             for (int i = 0; i < sortedIds.Length; i += 1)
             {
-                HomologacionEsquema homo = listaHomologacionEsquemas.FirstOrDefault(h => h.IdHomologacionEsquema == int.Parse(sortedIds[i]));
+                HomologacionEsquema? homo = listaHomologacionEsquemas.FirstOrDefault(h => h.IdHomologacionEsquema == int.Parse(sortedIds[i]));
                 if (homo != null && homo.MostrarWebOrden != i + 1)
                 {
                     homo.MostrarWebOrden = i + 1;
-                    await homologacionEsquemaRepository.RegistrarOActualizar(homo);
+                    await iHomologacionEsquemaService.RegistrarOActualizar(homo);
                 }
             }
             await grid.RefreshDataAsync();
         }
         private async Task OnDeleteClick(int IdHomologacionEsquema)
         {
-            var respuesta = await homologacionEsquemaRepository.EliminarHomologacionEsquema(IdHomologacionEsquema);
+            var respuesta = await iHomologacionEsquemaService.EliminarHomologacionEsquema(IdHomologacionEsquema);
             if (respuesta.registroCorrecto) {
                 listaHomologacionEsquemas = listaHomologacionEsquemas.Where(c => c.IdHomologacionEsquema != IdHomologacionEsquema);
                 await grid.RefreshDataAsync();
@@ -66,7 +67,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private async void showModal(int IdHomologacionEsquema)
         {
             var homo = listaHomologacionEsquemas.FirstOrDefault(c => c.IdHomologacionEsquema == IdHomologacionEsquema);
-            var columnas = JsonConvert.DeserializeObject<List<VwHomologacion>>(homo.EsquemaJson);
+            var columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homo.EsquemaJson);
 
             var parameters = new Dictionary<string, object>();
             parameters.Add("columnas", columnas);

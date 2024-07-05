@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using SharedApp.Models;
 
 namespace WebApp.Models
 {
@@ -16,6 +15,8 @@ namespace WebApp.Models
     public int MostrarWebOrden { get; set; }
     [Required]
     public string? MostrarWeb { get; set; }
+    [Required]
+    public string? VistaNombre { get; set; }
     public string? TooltipWeb { get; set; }
   }
 }

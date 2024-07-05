@@ -1,85 +1,77 @@
 ﻿using System.Data;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
-using WebApp.Service;
+using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-  public class DataLakeOrganizacionRepository(SqlServerDbContext dbContext) : IDataLakeOrganizacionRepository
+  public class DataLakeOrganizacionRepository : BaseRepository, IDataLakeOrganizacionRepository
   {
-    private readonly SqlServerDbContext _bd = dbContext;
+      public DataLakeOrganizacionRepository(
+          ILogger<UsuarioRepository> logger,
+          IDbContextFactory dbContextFactory
+      ) : base(dbContextFactory, logger)
+      {
+      }
 
-    public DataLakeOrganizacion create(DataLakeOrganizacion data)
+    public DataLakeOrganizacion Create(DataLakeOrganizacion data)
     {
       data.IdDataLakeOrganizacion = 0;
-      _bd.DataLakeOrganizacion.Add(data);
-      _bd.SaveChanges();
-      return data;
+
+      return ExecuteDbOperation(context => {
+          context.DataLakeOrganizacion.Add(data);
+          context.SaveChanges();
+          return data;
+      });
     }
 
-    public DataLakeOrganizacion find(int Id)
+    public DataLakeOrganizacion? FindById(int Id)
     {
-      return _bd.DataLakeOrganizacion.AsNoTracking().FirstOrDefault(u => u.IdDataLakeOrganizacion == Id);
+      return ExecuteDbOperation(context => context.DataLakeOrganizacion.AsNoTracking().FirstOrDefault(u => u.IdDataLakeOrganizacion == Id));
     }
 
-    public ICollection<DataLakeOrganizacion> findAll()
+    public ICollection<DataLakeOrganizacion> FindAll()
     {
-      return _bd.DataLakeOrganizacion.AsNoTracking().Where(c => c.Estado.Equals("A", StringComparison.Ordinal)).OrderBy(c => c.IdDataLakeOrganizacion).ToList();
+      return ExecuteDbOperation(context => context.DataLakeOrganizacion.AsNoTracking().Where(c => c.Estado != null && c.Estado.Equals("A", StringComparison.Ordinal)).OrderBy(c => c.IdDataLakeOrganizacion).ToList());
     }
 
-    public DataLakeOrganizacion findBy(DataLakeOrganizacion dataLake)
+    public bool Update(DataLakeOrganizacion newRecord)
     {
-      throw new NotImplementedException();
+      return ExecuteDbOperation(context => {
+          var currentRecord = MergeEntityProperties(context, newRecord, u => u.IdDataLakeOrganizacion == newRecord.IdDataLake);
+          context.DataLakeOrganizacion.Update(currentRecord);
+          return context.SaveChanges() >= 0;
+      });
     }
 
-    public bool update(DataLakeOrganizacion newRecord)
+    public int GetLastId()
     {
-      var currentRecord = _bd.DataLakeOrganizacion.FirstOrDefault(u => u.IdDataLakeOrganizacion == newRecord.IdDataLake);
+      return ExecuteDbOperation(context => context.DataLakeOrganizacion.AsNoTracking().Max(c => c.IdDataLakeOrganizacion));
+    }
 
-      PropertyInfo[] propiedades = typeof(DataLake).GetProperties();
+    public bool DeleteOldRecords(int IdHomologacionEsquema)
+    {
+      return ExecuteDbOperation(context => {
+        var records = context.DataLakeOrganizacion.Where(c => c.IdHomologacionEsquema == IdHomologacionEsquema).ToList();
+        var deletedRecordIds = new List<int?>();
 
-      foreach (PropertyInfo propiedad in propiedades)
-      {
-        object valorModificado = propiedad.GetValue(newRecord);
-        object valorExistente = propiedad.GetValue(currentRecord);
-
-        if (valorModificado != null && !object.Equals(valorModificado, valorExistente))
+        foreach (var record in records)
         {
-          propiedad.SetValue(currentRecord, valorModificado);
+          record.Estado = "X";
+          deletedRecordIds.Add(record.IdDataLakeOrganizacion);
         }
-      }
 
-      _bd.DataLakeOrganizacion.Update(currentRecord);
-      return _bd.SaveChanges() >= 0 ? true : false;
-    }
+        context.DataLakeOrganizacion.UpdateRange(records);
+        context.SaveChanges();
 
-    public int getLastId()
-    {
-      return _bd.DataLakeOrganizacion.AsNoTracking().Max(c => c.IdDataLakeOrganizacion);
-    }
+        var deletedOrganizacionFullTextRecords = context.OrganizacionFullText.Where(o => deletedRecordIds.Contains(o.IdDataLakeOrganizacion)).ToList();
+        Console.WriteLine($"Deleted OrganizacionFullText records: {deletedOrganizacionFullTextRecords.Count}");
+        context.OrganizacionFullText.RemoveRange(deletedOrganizacionFullTextRecords);
+        context.SaveChanges();
 
-    public bool deleteOldRecords(int IdHomologacionEsquema)
-    {
-      var records = _bd.DataLakeOrganizacion.Where(c => c.IdHomologacionEsquema == IdHomologacionEsquema).ToList();
-      var deletedRecordIds = new List<int?>();
-
-      foreach (var record in records)
-      {
-        record.Estado = "X";
-        deletedRecordIds.Add(record.IdDataLakeOrganizacion);
-      }
-
-      _bd.DataLakeOrganizacion.UpdateRange(records);
-      _bd.SaveChanges();
-
-      var deletedOrganizacionFullTextRecords = _bd.OrganizacionFullText.Where(o => deletedRecordIds.Contains(o.IdDataLakeOrganizacion)).ToList();
-      Console.WriteLine($"Deleted OrganizacionFullText records: {deletedOrganizacionFullTextRecords.Count}");
-      _bd.OrganizacionFullText.RemoveRange(deletedOrganizacionFullTextRecords);
-      _bd.SaveChanges();
-
-      return true;
+        return true;
+      });
     }
   }
 }

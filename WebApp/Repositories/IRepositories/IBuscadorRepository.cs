@@ -1,11 +1,11 @@
-using WebApp.Models.Dtos;
+using SharedApp.Models.Dtos;
 
 namespace WebApp.Repositories.IRepositories {
     public interface IBuscadorRepository
     {
-        object PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage);
-        ICollection<EsquemaDto> FnHomologacionEsquemaTodo();
-        HomologacionEsquemaDto FnHomologacionEsquema(int idHomologacionEsquema);
-        ICollection<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion);
+        BuscadorDto PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage);
+        List<EsquemaDto> FnHomologacionEsquemaTodo();
+        HomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema);
+        List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion);
     }
 }

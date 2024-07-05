@@ -2,64 +2,75 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using WebApp.Models.Dtos;
+using SharedApp.Models.Dtos;
 using WebApp.Repositories.IRepositories;
-using WebApp.Service;
+using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-    public class BuscadorRepository: IBuscadorRepository
+    public class BuscadorRepository : BaseRepository, IBuscadorRepository
     {
-        private readonly SqlServerDbContext _bd;
-        public BuscadorRepository(SqlServerDbContext dbContext)
+        public BuscadorRepository(
+            ILogger<UsuarioRepository> logger,
+            IDbContextFactory dbContextFactory
+        ) : base(dbContextFactory, logger)
         {
-            _bd = dbContext;
+            
         }
-        public object PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
+        public BuscadorDto PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
         {
-            var rowsTotal = new SqlParameter
-            {
-                ParameterName = "@RowsTotal",
-                SqlDbType = SqlDbType.Int,
-                Direction = ParameterDirection.Output
-            };
+            return ExecuteDbOperation(context => {
+                var rowsTotal = new SqlParameter
+                {
+                    ParameterName = "@RowsTotal",
+                    SqlDbType = SqlDbType.Int,
+                    Direction = ParameterDirection.Output
+                };
 
-            var lstTem = _bd.Database.SqlQueryRaw<FnHomologacionEsquemaData>(
-                "exec psBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
-                new SqlParameter("@paramJSON", paramJSON),
-                new SqlParameter("@PageNumber", PageNumber),
-                new SqlParameter("@RowsPerPage", RowsPerPage),
-                rowsTotal
-            ).AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQueryRaw<FnHomologacionEsquemaData>(
+                    "exec psBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
+                    new SqlParameter("@paramJSON", paramJSON),
+                    new SqlParameter("@PageNumber", PageNumber),
+                    new SqlParameter("@RowsPerPage", RowsPerPage),
+                    rowsTotal
+                ).AsNoTracking().ToList();
 
-            return new {
-                Data = lstTem.Select(c => new FnHomologacionEsquemaDataDto()
+                return new BuscadorDto{
+                    Data = lstTem.Select(c => new FnHomologacionEsquemaDataDto()
+                    {
+                        IdDataLakeOrganizacion = c.IdDataLakeOrganizacion,
+                        DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
+                    })
+                    .ToList(),
+                    TotalCount = (int) rowsTotal.Value
+                };
+            });
+        }
+        public List<EsquemaDto> FnHomologacionEsquemaTodo()
+        {
+            return ExecuteDbOperation(context => {
+                return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo()").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
+            });
+        }
+        public HomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
+        {
+            return ExecuteDbOperation(context => {
+                return context.Database.SqlQuery<HomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
+            });
+        }
+        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion)
+        {
+            return ExecuteDbOperation(context => {
+                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idDataLakeOrganizacion})").AsNoTracking().ToList();
+
+                return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
                 {
                     IdDataLakeOrganizacion = c.IdDataLakeOrganizacion,
-                    DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson)
+                    IdHomologacionEsquema = c.IdHomologacionEsquema,
+                    DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
                 })
-                .ToList(),
-                TotalCount = (int) rowsTotal.Value
-            };
-        }
-        public ICollection<EsquemaDto> FnHomologacionEsquemaTodo()
-        {
-            return _bd.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo()").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
-        }
-        public HomologacionEsquemaDto FnHomologacionEsquema(int idHomologacionEsquema)
-        {
-            return _bd.Database.SqlQuery<HomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
-        }
-        public ICollection<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion)
-        {
-            var lstTem = _bd.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idDataLakeOrganizacion})").AsNoTracking().ToList();
-            return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
-            {
-                IdDataLakeOrganizacion = c.IdDataLakeOrganizacion,
-                IdHomologacionEsquema = c.IdHomologacionEsquema,
-                DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson)
-            })
-            .ToList();
+                .ToList();
+            });
         }
     }
 }

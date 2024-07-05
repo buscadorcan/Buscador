@@ -24,9 +24,7 @@ DROP TABLE if exists dbo.Usuario;
 DROP TABLE if exists dbo.EndPointWeb;
 DROP TABLE if exists dbo.DataLakePersona;
 DROP TABLE if exists dbo.DataLakeOrganizacion;
-DROP TABLE if exists dbo.HomologacionEsquemaVista;
 DROP TABLE if exists dbo.DataLake;
-DROP TABLE if exists dbo.Vista;
 DROP TABLE if exists dbo.HomologacionEsquema;
 DROP TABLE if exists dbo.Homologacion;
 GO
@@ -126,13 +124,15 @@ CREATE TABLE dbo.HomologacionEsquema(
     ,MostrarWeb					NVARCHAR(200) NOT NULL DEFAULT('GRILLA')
 	,TooltipWeb					NVARCHAR(200) NOT NULL DEFAULT('')
     ,EsquemaJson				NVARCHAR(max) NOT NULL DEFAULT('{}')
+    ,VistaNombre				NVARCHAR(200) NOT NULL DEFAULT('')
 	,Estado						NVARCHAR(1) NOT NULL DEFAULT('A')
 	,FechaCreacion				DATETIME	NOT NULL DEFAULT(GETDATE())
     ,FechaModifica				DATETIME	NOT NULL DEFAULT(GETDATE())  
     ,IdUserCreacion				INT			NOT NULL DEFAULT(0)
     ,IdUserModifica				INT			NOT NULL DEFAULT(0)  
-	
+
     --,CONSTRAINT  [PK_HE_IdHomologacionEsquema]	PRIMARY KEY CLUSTERED (IdHomologacionEsquema) 
+    ,CONSTRAINT  UK_HE_VistaNombre		        UNIQUE (VistaNombre)
     ,CONSTRAINT  [CK_HE_EsquemaJson]			CHECK   (ISJSON(EsquemaJson) = 1 )
     ,CONSTRAINT  [CK_HE_Estado]				    CHECK   (Estado IN ('A', 'X'))
 );
@@ -178,39 +178,6 @@ CREATE TABLE dbo.DataLakePersona(
     ,CONSTRAINT  [CK_DKP_DataEsquemaJson]	CHECK   (ISJSON(DataEsquemaJson) = 1 )
     ,CONSTRAINT  [CK_DKP_Estado]			CHECK   (Estado IN ('A', 'X'))
 );
-
-CREATE TABLE dbo.Vista (
-	 IdVista			 	INT IDENTITY(1,1)	NOT NULL
-    ,IdHomologacionSistema	INT					NOT NULL 
-    ,VistaNombre			NVARCHAR(50)		NOT NULL
-
-	,Estado					NVARCHAR(1)  NOT NULL DEFAULT('A')
-    ,FechaCreacion			DATETIME	 NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica			DATETIME	 NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion			INT			 NOT NULL DEFAULT(0)
-    ,IdUserModifica			INT			 NOT NULL DEFAULT(0)  
-	
-	,CONSTRAINT  [PK_V_IdVista]					PRIMARY KEY CLUSTERED (IdVista) 
-    ,CONSTRAINT  [CK_V_Estado]					CHECK   (Estado IN ('A', 'X'))
-);
-
-CREATE TABLE dbo.HomologacionEsquemaVista (
-	 IdHomologacionEsquemaVista	INT IDENTITY(1,1)	NOT NULL
-    ,IdHomologacionEsquema		INT					NOT NULL 
-    ,IdVista					INT					NOT NULL 
-    ,IdHomologacion				INT					NOT NULL 
-    ,VistaColumna				NVARCHAR(50)		NOT NULL
-	
-	,Estado					NVARCHAR(1)  NOT NULL DEFAULT('A')
-    ,FechaCreacion			DATETIME	 NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica			DATETIME	 NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion			INT			 NOT NULL DEFAULT(0)
-    ,IdUserModifica			INT			 NOT NULL DEFAULT(0)  
-	
-	,CONSTRAINT  [PK_HEV_IdHEV]		PRIMARY KEY CLUSTERED (IdHomologacionEsquemaVista) 
-    ,CONSTRAINT  [FK_HEV_IdVista]	FOREIGN KEY (IdVista)				REFERENCES Vista(IdVista)
-    ,CONSTRAINT  [CK_HEV_Estado]	CHECK   (Estado IN ('A', 'X'))
-)
 
 CREATE TABLE dbo.WebSiteLog (
      IdWebSiteLog		INT IDENTITY(1,1) NOT NULL
@@ -337,31 +304,7 @@ EXEC dbo.setDiccionario	'dbo.WebSiteLog'    ,'IdWebSiteLog		','PK'
 EXEC dbo.setDiccionario	'dbo.WebSiteLog'    ,'TextoBusquedo		','Texto Busquedo por el usario'
 EXEC dbo.setDiccionario	'dbo.WebSiteLog'    ,'FiltroUsado		','Filtro usado para la Busqueda por el usario'
 EXEC dbo.setDiccionario	'dbo.WebSiteLog'    ,'FechaCreacion		','Fecha de creación del registro en la tabla'
-GO
-
-EXEC dbo.setDiccionario	'dbo.Vista'    , NULL                    ,'Almacena vistas de los sistemas' 
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'IdVista			 	','PK'
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'IdHomologacionSistema	','FK'
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'VistaNombre			','Nombre de la vista'
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'Estado					','Estado del registro (A= activo, X= Eliminado lógico)'
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'FechaCreacion				','Fecha de creación del registro en la tabla'
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'FechaModifica				','Fecha de actualización del registro en la tabla'
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'IdUserCreacion			    ','Identificador del usuario que crea el registro'
-EXEC dbo.setDiccionario	'dbo.Vista'    ,'IdUserModifica			    ','Identificador del usuario que modifica el registro'
-	
-
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    , NULL                       ,'Almacena la relacion de la vista con los esquemas' 
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'IdHomologacionEsquemaVista','PK'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'IdHomologacionEsquema	  ','FK'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'IdVista					  ','FK'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'IdHomologacion			  ','FK'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'VistaColumna			  ','nombre de la columnas de la vista a homologar'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'Estado					  ','Estado del registro (A= activo, X= Eliminado lógico)'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'FechaCreacion				','Fecha de creación del registro en la tabla'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'FechaModifica				','Fecha de actualización del registro en la tabla'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'IdUserCreacion			    ','Identificador del usuario que crea el registro'
-EXEC dbo.setDiccionario	'dbo.HomologacionEsquemaVista'    ,'IdUserModifica			    ','Identificador del usuario que modifica el registro'
-	
+GO	
 
 EXEC DBO.Bitacora 'Se documento :
                     dbo.Usuario, 
@@ -372,9 +315,7 @@ EXEC DBO.Bitacora 'Se documento :
                     dbo.DataLake, 
                     dbo.DataLakeOrganizacion, 
                     dbo.DataLakePersona, 
-                    dbo.WebSiteLog, 
-					dbo.Vista,
-					dbo.HomologacionEsquemaVista'
+                    dbo.WebSiteLog'
 GO
 
 EXEC DBO.getDiccionario '   dbo.Usuario, 
@@ -385,7 +326,5 @@ EXEC DBO.getDiccionario '   dbo.Usuario,
                             dbo.DataLake, 
                             dbo.DataLakeOrganizacion, 
                             dbo.DataLakePersona, 
-                            dbo.WebSiteLog, 
-							dbo.Vista,
-							dbo.HomologacionEsquemaVista'
+                            dbo.WebSiteLog'
 GO

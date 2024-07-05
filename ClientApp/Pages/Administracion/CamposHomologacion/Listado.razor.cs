@@ -1,54 +1,57 @@
 using BlazorBootstrap;
-using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
     public partial class Listado
     {
-        private VwHomologacion? homologacionSelected;
-        private Grid<VwHomologacion>? grid;
-        private List<VwHomologacion>? listaHomologacions = new List<VwHomologacion>();
+        private HomologacionDto? homologacionSelected;
+        private Grid<HomologacionDto>? grid;
+        private List<HomologacionDto>? listaHomologacions = new List<HomologacionDto>();
         [Inject]
-        private IVwHomologacionRepository? vwHomologacionRepository { get; set; }
+        private ICatalogosService? iCatalogosService { get; set; }
         [Inject]
-        private IHomologacionRepository? homologacionRepository { get; set; }
-        private List<VwHomologacion>? listaVwHomologacion;
+        private IHomologacionService? iHomologacionService { get; set; }
+        private List<HomologacionDto>? listaVwHomologacion;
         public event Action? DataLoaded;
         [Inject]
         protected IJSRuntime? JSRuntime { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            listaVwHomologacion = await vwHomologacionRepository.GetHomologacionAsync("grupo");
+            if (iCatalogosService != null)
+            {
+                listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupo");
 
-            DataLoaded += async () => {
-                if (!(listaHomologacions is null)) {
-                    await Task.Delay(2000);
-                    await JSRuntime.InvokeVoidAsync("initSortable", DotNetObjectReference.Create(this));
-                }
-            };
+                DataLoaded += async () => {
+                    if (!(listaHomologacions is null) && JSRuntime != null) {
+                        await Task.Delay(2000);
+                        await JSRuntime.InvokeVoidAsync("initSortable", DotNetObjectReference.Create(this));
+                    }
+                };
+            }
         }
-        private async Task<GridDataProviderResult<VwHomologacion>> HomologacionDataProvider(GridDataProviderRequest<VwHomologacion> request)
+        private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {
             if (homologacionSelected != null)
             {
-                listaHomologacions = await homologacionRepository.GetHomologacionsAsync(homologacionSelected.IdHomologacion);
+                listaHomologacions = await iHomologacionService.GetHomologacionsAsync(homologacionSelected.IdHomologacion);
             }
 
             DataLoaded?.Invoke();
 
-            return await Task.FromResult(request.ApplyTo(listaHomologacions));
+            return await Task.FromResult(request.ApplyTo(listaHomologacions ?? []));
         }
         private async Task OnDeleteClick(int IdHomologacion)
         {
-            var respuesta = await homologacionRepository.EliminarHomologacion(IdHomologacion);
+            var respuesta = await iHomologacionService.EliminarHomologacion(IdHomologacion);
             if (respuesta.registroCorrecto) {
                 await grid.RefreshDataAsync();
             }
         }
-        private async void OnAutoCompleteChanged(VwHomologacion _vwHomologacionSelected)
+        private async void OnAutoCompleteChanged(HomologacionDto _vwHomologacionSelected)
         {
             homologacionSelected = _vwHomologacionSelected;
             await grid.RefreshDataAsync();
@@ -58,11 +61,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         {
             for (int i = 0; i < sortedIds.Length; i += 1)
             {
-                VwHomologacion homo = listaHomologacions.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i]));
+                HomologacionDto homo = listaHomologacions.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i]));
                 if (homo != null && homo.MostrarWebOrden != i + 1)
                 {
                     homo.MostrarWebOrden = i + 1;
-                    await homologacionRepository.RegistrarOActualizar(homo);
+                    await iHomologacionService.RegistrarOActualizar(homo);
                 }
             }
             await Task.CompletedTask;

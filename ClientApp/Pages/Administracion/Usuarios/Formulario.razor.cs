@@ -1,7 +1,7 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
-using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Usuarios
 {
@@ -10,18 +10,18 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private Button saveButton = default!;
         private UsuarioDto usuario = new UsuarioDto();
         [Inject]
-        public IUsuariosRepository usuariosRepository { get; set; }
+        public IUsuariosService? iUsuariosService { get; set; }
         [Inject]
-        public NavigationManager navigationManager { get; set; }
+        public NavigationManager? navigationManager { get; set; }
         [Parameter]
         public int? Id { get; set; }
         [Inject]
-        public Services.ToastService toastService { get; set; }
+        public Services.ToastService? toastService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            if (Id > 0) {
-                usuario = await usuariosRepository.GetUsuarioAsync(Id.Value);
+            if (Id > 0 && iUsuariosService != null) {
+                usuario = await iUsuariosService.GetUsuarioAsync(Id.Value);
                 usuario.Clave = null;
             } else {
                 usuario.Rol = "USER";
@@ -32,15 +32,18 @@ namespace ClientApp.Pages.Administracion.Usuarios
         {
             saveButton.ShowLoading("Guardando...");
 
-            var result = await usuariosRepository.RegistrarOActualizar(usuario);
-            if (result.registroCorrecto)
+            if (iUsuariosService != null)
             {
-                toastService.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                navigationManager.NavigateTo("/usuarios");
-            }
-            else
-            {
-                toastService.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
+                var result = await iUsuariosService.RegistrarOActualizar(usuario);
+                if (result.registroCorrecto)
+                {
+                    toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                    navigationManager?.NavigateTo("/usuarios");
+                }
+                else
+                {
+                    toastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
+                }
             }
 
             saveButton.HideLoading();

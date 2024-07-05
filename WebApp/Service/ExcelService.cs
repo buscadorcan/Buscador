@@ -1,10 +1,8 @@
 
 using ExcelDataReader;
-using WebApp.Service.IService;
 using WebApp.Models;
 using System.Data;
 using WebApp.Repositories.IRepositories;
-using WebApp.Repositories;
 
 namespace WebApp.Service.IService
 {
@@ -14,21 +12,12 @@ namespace WebApp.Service.IService
       private IDataLakeOrganizacionRepository _repositoryDLO = dataLakeOrganizacionRepository;
       private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
-      private string[] sheets = ["GRILLA", "ESQ_01", "ESQ_02"];
       private int[] filters = [5, 6];
       private int executionIndex = 0;
       private bool deleted = false;
 
       public Boolean ImportarExcel(string path) 
       {
-        // bool result = true;
-        // foreach (string sheet in sheets)
-        // {
-        //   executionIndex = Array.IndexOf(sheets, sheet);
-        //   Console.WriteLine("Execution Index: " + executionIndex + " Sheet: " + sheet);
-        //   result = result && Leer(path, sheet);
-        // }
-        // Leer(path, "GRILLA");
         return Leer(path);;
       }
 
@@ -56,12 +45,11 @@ namespace WebApp.Service.IService
               {
                 executionIndex = DataSet.Tables.IndexOf(dataTable);
                 Console.WriteLine("Execution Index: " + executionIndex + " Sheet: " + dataTable.TableName);
-                deleted = false;
-                DataLake dataLake = null;
+                DataLake? dataLake = null;
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                   dataLake = getDatalake(dataTable, i, dataLake);
-                  deleteOldRecords(int.Parse(dataTable.Rows[i][4].ToString()));
+                  deleteOldRecords(int.Parse(dataTable.Rows[i][4].ToString() ?? ""));
                   DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(dataTable, i, dataLake);
                   addOrganizacionFullText(dataTable, i, dataLakeOrganizacion.IdDataLakeOrganizacion);
                 }
@@ -73,25 +61,24 @@ namespace WebApp.Service.IService
             }
           }
         }
-        return true;
       }
 
-      DataLake getDatalake(DataTable dataTable, int row, DataLake dataLake)
+      DataLake? getDatalake(DataTable dataTable, int row, DataLake? dataLake)
       {
         if (dataLake == null) {
           return buildDatalake(dataTable, row);
         } else
         {
-          if (dataTable.Rows[row][0].ToString().Equals(dataLake?.DataTipo?.ToString()) &&
-              dataTable.Rows[row][1].ToString().Equals(dataLake?.DataSistemaOrigen?.ToString()) &&
-              dataTable.Rows[row][2].ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()))
+          if (dataTable.Rows[row][0]?.ToString().Equals(dataLake?.DataTipo?.ToString()) == true &&
+              dataTable.Rows[row][1]?.ToString().Equals(dataLake?.DataSistemaOrigen?.ToString()) == true &&
+              dataTable.Rows[row][2]?.ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()) == true)
           {
             if (DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900") > dataLake.DataSistemaFecha)
             {
               dataLake.DataSistemaFecha = DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900");
               dataLake.Estado = "A";
               dataLake.DataFechaCarga = DateTime.Now;
-              return _repositoryDL.update(dataLake);
+              return _repositoryDL.Update(dataLake);
             }
             return dataLake;
           } else 
@@ -101,7 +88,7 @@ namespace WebApp.Service.IService
         }
       }
 
-      DataLake buildDatalake(DataTable dataTable, int row)
+      DataLake? buildDatalake(DataTable dataTable, int row)
       {
         DataLake tmpDataLake = new DataLake
         {
@@ -110,11 +97,11 @@ namespace WebApp.Service.IService
           DataSistemaOrigenId = dataTable.Rows[row][2].ToString()
         };
 
-        var existingDataLake = _repositoryDL.findBy(tmpDataLake);
+        var existingDataLake = _repositoryDL.FindBy(tmpDataLake);
         if (existingDataLake != null)
         {
           existingDataLake.DataSistemaFecha = DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900");
-          existingDataLake = _repositoryDL.update(existingDataLake);
+          existingDataLake = _repositoryDL.Update(existingDataLake);
           return existingDataLake;
         }
         else
@@ -122,18 +109,18 @@ namespace WebApp.Service.IService
           tmpDataLake.DataSistemaFecha = DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900");
           tmpDataLake.Estado = "A";
           tmpDataLake.DataFechaCarga = DateTime.Now;
-          tmpDataLake = _repositoryDL.create(tmpDataLake);
+          tmpDataLake = _repositoryDL.Create(tmpDataLake);
           return tmpDataLake;
         }
       }
 
-      DataLakeOrganizacion addDataLakeOrganizacion(DataTable dataTable, int row, DataLake dataLake)
+      DataLakeOrganizacion addDataLakeOrganizacion(DataTable dataTable, int row, DataLake? dataLake)
       {
-        return _repositoryDLO.create(new DataLakeOrganizacion
+        return _repositoryDLO.Create(new DataLakeOrganizacion
           {
             IdDataLakeOrganizacion = 0,
-            IdDataLake = dataLake.IdDataLake,
-            IdHomologacionEsquema = int.Parse(dataTable.Rows[row][4].ToString()),
+            IdDataLake = dataLake?.IdDataLake,
+            IdHomologacionEsquema = int.Parse(dataTable.Rows[row][4].ToString() ?? ""),
             DataEsquemaJson = buildDataLakeJson(dataTable, row),
             Estado = "A"
           });
@@ -150,10 +137,10 @@ namespace WebApp.Service.IService
         {
           foreach (int filter in filters)
           {
-            Homologacion homologacion = _repositoryH.findByMostrarWeb(dataTable.Rows[row][filter].ToString());
+            Homologacion? homologacion = _repositoryH.FindByMostrarWeb(dataTable.Rows[row][filter].ToString());
             if (homologacion == null) { continue; }
 
-            _repositoryOFT.create(new OrganizacionFullText
+            _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
               IdDataLakeOrganizacion = dataLakeOrganizacionId,
@@ -164,7 +151,7 @@ namespace WebApp.Service.IService
         }
         for (int col = 7; col < columnsCount; col++)
         {
-          result = _repositoryOFT.create(new OrganizacionFullText
+          result = _repositoryOFT.Create(new OrganizacionFullText
           {
             IdOrganizacionFullText = 0,
             IdDataLakeOrganizacion = dataLakeOrganizacionId,
@@ -193,7 +180,7 @@ namespace WebApp.Service.IService
       {
         if (deleted) { return true; }
         deleted = true;
-        return _repositoryDLO.deleteOldRecords(IdHomologacionEsquema);
+        return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema);
       }
   }
 }

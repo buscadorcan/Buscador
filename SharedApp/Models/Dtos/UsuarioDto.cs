@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SharedApp.Models
+namespace SharedApp.Models.Dtos
 {
     public class UsuarioDto
     {

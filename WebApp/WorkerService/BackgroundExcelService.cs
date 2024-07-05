@@ -4,11 +4,9 @@ namespace WebApp.WorkerService
 {
   public class BackgroundExcelService : BackgroundService
   {
-    private int countProceso = 0;
     private readonly string? _configLogPath;
     private readonly IConfiguration? _config;
     readonly ILogger<BackgroundExcelService> _logger;
-    private IExcelService _excelService;
     private readonly IServiceProvider _services;
 
     public BackgroundExcelService(ILogger<BackgroundExcelService> logger, IConfiguration config, IServiceProvider provider)
@@ -28,8 +26,8 @@ namespace WebApp.WorkerService
 
               using (var scope = _services.CreateScope())
               {
-                var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
-                excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx");
+                // var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
+                // excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx");
                 // var service = scope.ServiceProvider.GetRequiredService<IImportadorService>();
                 // service.Importar(Array.Empty<string>());
               }
