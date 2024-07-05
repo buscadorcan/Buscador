@@ -98,7 +98,7 @@ CREATE TABLE dbo.UsuarioEndPointWebPermiso (
 
 CREATE TABLE dbo.Homologacion (
      IdHomologacion     	INT IDENTITY(1,1) NOT NULL
-    ,IdHomologacionGrupo	INT DEFAULT	  (NULL) 
+    ,IdHomologacionGrupo	INT DEFAULT(NULL) 
     ,MostrarWebOrden		INT DEFAULT(0) 
     ,MostrarWeb				NVARCHAR(90)  NOT NULL
 	,TooltipWeb				NVARCHAR(200) NOT NULL DEFAULT('')
@@ -113,6 +113,7 @@ CREATE TABLE dbo.Homologacion (
     ,IdUserCreacion			INT			 NOT NULL DEFAULT(0)
     ,IdUserModifica			INT			 NOT NULL DEFAULT(0)  
 	
+	,CONSTRAINT  [PK_H_IdHomologacion] primary KEY CLUSTERED (IdHomologacion) 
     ,CONSTRAINT  [CK_H_InfoExtraJson]       CHECK   (ISJSON(InfoExtraJson) = 1 )
     ,CONSTRAINT  [CK_H_MascaraDato]			CHECK   (MascaraDato IN ('TEXTO', 'FECHA', 'NUMERICO'))
     ,CONSTRAINT  [CK_H_Estado]				CHECK   (Estado IN ('A', 'X'))
@@ -131,10 +132,10 @@ CREATE TABLE dbo.HomologacionEsquema(
     ,IdUserCreacion				INT			NOT NULL DEFAULT(0)
     ,IdUserModifica				INT			NOT NULL DEFAULT(0)  
 
-    --,CONSTRAINT  [PK_HE_IdHomologacionEsquema]	PRIMARY KEY CLUSTERED (IdHomologacionEsquema) 
-    ,CONSTRAINT  UK_HE_VistaNombre		        UNIQUE (VistaNombre)
+    ,CONSTRAINT  [PK_HE_IdHomologacionEsquema]	PRIMARY KEY CLUSTERED (IdHomologacionEsquema) 
     ,CONSTRAINT  [CK_HE_EsquemaJson]			CHECK   (ISJSON(EsquemaJson) = 1 )
     ,CONSTRAINT  [CK_HE_Estado]				    CHECK   (Estado IN ('A', 'X'))
+     --,CONSTRAINT  UK_HE_VistaNombre		        UNIQUE (VistaNombre)
 );
 
 CREATE TABLE dbo.DataLake(

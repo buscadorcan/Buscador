@@ -18,35 +18,32 @@ RECONFIGURE;
 EXEC sp_configure 'Ad Hoc Distributed Queries', 1;
 RECONFIGURE;
 EXEC DBO.Bitacora 'sp_configure BULK INSERT'
- 
+
+SET IDENTITY_INSERT dbo.Homologacion ON;
 BULK INSERT dbo.Homologacion
 FROM 'C:\pat_mic\Buscador\BaseApp\script\00-Homologacion.csv'
 WITH (
     FIELDTERMINATOR = ';',
     ROWTERMINATOR = '\n',
     FIRSTROW = 2,
-    CODEPAGE = '65001' --para las tildes
+    CODEPAGE = '65001', --para las tildes
+	KEEPIDENTITY
 );
+SET IDENTITY_INSERT dbo.Homologacion OFF;
 EXEC DBO.Bitacora 'BULK INSERT dbo.Homologacion'
 
-
+SET IDENTITY_INSERT dbo.HomologacionEsquema ON;
 BULK INSERT dbo.HomologacionEsquema
 FROM 'C:\pat_mic\Buscador\BaseApp\script\00-HomologacionEsquema.csv'
 WITH (
     FIELDTERMINATOR = ';',
     ROWTERMINATOR = '\n',
     FIRSTROW = 2,
-    CODEPAGE = '65001' --para las tildes
+    CODEPAGE = '65001', --para las tildes
+	KEEPIDENTITY
 );
+SET IDENTITY_INSERT dbo.HomologacionEsquema OFF;
 EXEC DBO.Bitacora 'BULK INSERT dbo.HomologacionEsquema'
-
--- add CONSTRAINT
-alter table dbo.Homologacion add constraint  [PK_H_IdHomologacion]			primary KEY CLUSTERED (IdHomologacion) 
-alter table dbo.Vista		 add constraint  [FK_V_IdHomologacionSistema]	FOREIGN KEY (IdHomologacionSistema)	REFERENCES Homologacion(IdHomologacion)
-alter table dbo.HomologacionEsquemaVista add constraint  [FK_HEV_IdH]		FOREIGN KEY (IdHomologacion)		REFERENCES Homologacion(IdHomologacion)
-alter table dbo.HomologacionEsquema add constraint  [PK_HE_IdHomologacionEsquema]	PRIMARY KEY CLUSTERED (IdHomologacionEsquema) 
-alter table dbo.HomologacionEsquemaVista add constraint   [FK_HEV_IdHE]		FOREIGN KEY (IdHomologacionEsquema)	REFERENCES HomologacionEsquema(IdHomologacionEsquema)
-EXEC DBO.Bitacora 'Add CONSTRAINT dbo.Homologacion ,dbo.Vista, dbo.HomologacionEsquemaVista '
 
 
 DECLARE @CLAVE NVARCHAR(32);
@@ -56,11 +53,5 @@ INSERT INTO dbo.Usuario
 VALUES ('admin@gmail.com', 'admin', 'admin', '593961371400', @CLAVE, 'ADMIN', 0, 0);
 EXEC DBO.Bitacora 'INSERT INTO dbo.Usuario '
 
-
-
--- insert into Vista(IdHomologacionSistema, VistaNombre) values (12, 'vwEsq01');
--- insert into Vista(IdHomologacionSistema, VistaNombre) values (13, 'vwEsq01');
--- insert into Vista(IdHomologacionSistema, VistaNombre) values (14, 'vwEsq02');
--- insert into Vista(IdHomologacionSistema, VistaNombre) values (15, 'vwEsq02');
 
 EXEC DBO.Bitacora 
