@@ -1,0 +1,138 @@
+﻿IdHomologacion;IdHomologacionGrupo;MostrarWebOrden;MostrarWeb;TooltipWeb;MascaraDato;SiNoHayDato;InfoExtraJson;CodigoHomologacion;NombreHomologado;Estado;FechaCreacion;FechaModifica;IdUserCreacion;IdUserModifica
+1;;1;CAMPOS ESQUEMA;Campos de los esquemas a migrar;TEXTO;;{};KEY_DIM_ESQUEMA;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+2;;4;ONA;Filtro 1;TEXTO;;{};KEY_DIM_PAI_FIL;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+3;;5;Organismo;Buscar data;TEXTO;;{};KEY_DIM_ORG_FIL;org;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+4;;2;ESQUEMA;Filtro 3;TEXTO;;{};KEY_DIM_ESQ_FIL;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+5;;6;NORMA;Filtro 4;TEXTO;;{};KEY_DIM_NOR_FIL;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+6;;3;ESTADO;Filtro 5;TEXTO;;{};KEY_DIM_EST_FIL;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+7;;7;RECOMOCIMIENTO;Filtro 6;TEXTO;;{};KEY_DIM_REC_FIL;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+8;2;1;Bolivia;País de Bolivia para filtro;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+9;2;2;Colombia;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+10;2;3;Ecuador;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+11;2;4;Perú;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+12;3;2;DTA-IBMETRO;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+13;3;3;CONAC;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+14;3;1;SAE;SIstema de Ecuador;TEXTO;;{};;sis_sae;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+15;3;4;INACAL-DA;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+16;4;2;Organismo Certificación de Sistemas de Gestión;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+17;4;3;Organismo Certificación de Producto;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+18;4;4;Organismo Certificación de Personas;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+19;4;5;Organismo Inspección;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+20;4;0;Laboratorios Ensayo DOs;Laboratorio de ensayo es: Estudios basados en norma 175555;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+21;4;6;Laboratorios Calibración;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+22;4;7;Laboratorios Clínicos;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+23;4;8;Proveedores  Ensayos de aptitud;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+24;5;1;ISO/IEC 17021-1;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+25;5;2;ISO/IEC 7117;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+26;5;3;ISO/IEC 17024;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+27;5;4;ISO/IEC 17020;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+28;5;5;ISO/IEC 17025;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+29;5;6;ISO 15189;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+30;5;7;ISO 17034;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+31;5;8;ISO/IEC 17043;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+32;5;9;ISO/IEC 17029;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+33;6;1;Acreditado;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+34;6;2;Suspendido;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+35;6;3;Suspendido Parcialmente;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+36;6;4;Retirado;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+37;6;5;Inactivo;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+38;6;6;Vencido;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+39;7;1;Nacional;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+40;7;2;Internacional;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+41;1;1;Razón Social ONA;Organismos Nacionales de Acreditación de la Calidad;TEXTO;--;{};;OnaRazonSocial;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+42;1;5;Vigente a partir de;Vigente a partir de;TEXTO;--;{};;SgsVigenteApartirDe;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+43;1;1;Tipo de Certificación;Tipo de certificación de la calidad;TEXTO;--;{};;PrdTipoCertificacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+44;1;2;País;País de ejecución de ONA;TEXTO;--;{};;OnaPais;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+45;1;2;Producto  Proceso/  Servicio;Producto proceso o servicio;TEXTO;--;{};;PrdProductoProcesoServicio;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+46;1;3;Documento Normativo;Documento normativo de esquema Producto;TEXTO;--;{};;PrdDocumentoNormativo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+47;1;4;Esquema de Certificación;Esquema de certificación de producto;TEXTO;--;{};;PrdEsquemaCertificacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+48;1;73;Estado;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+49;1;74;Alcance Detalle;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+50;1;77;Alcance acreditado;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+51;1;2;Norma de Certificación;Norma de certificación;TEXTO;--;{};;SgsNorma;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+52;1;5;División NACE;División NACE de esquema Producto;TEXTO;--;{};;PrdDivisionNace;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+53;1;3;Ciudad;Ciudad de ONA;TEXTO;--;{};;OnaCiudad;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+54;1;1;Campo/ Sector  de Inspección;Campo/ Sector  de Inspección;TEXTO;--;{};;OinCampoSector;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+55;1;3;Sector IAF;Sector IAF;TEXTO;--;{};;SgsSectorIaf;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+56;1;4;Descripción;Descripción;TEXTO;--;{};;SgsDescripcion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+57;1;1;Nombre del OEC;Nombre del OEC;TEXTO;--;{};;OrgNombreComercial;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+58;1;72;oa_sitioweb;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+59;1;75;oa_logo;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+60;1;76;oa_descripcion;;TEXTO;;{};;;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+61;1;1;Sistema de Gestión;Sistema de Gestión;TEXTO;--;{};;SgsSistemaGestion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+62;1;6;Código CPA;Código CPA ayuda;TEXTO;--;{};;PrdCodigoCpa;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+63;1;2;Sub campo/Subsector de Inspección;Ayuda Sub campo/Subsector de Inspección;TEXTO;--;{};;OinSubcampoSubsector;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+64;1;3;Tipos de producto, servicio /Categoría de inspección;help Tipos de producto, servicio /Categoría de inspección;TEXTO;--;{};;OinTipoProductoServicioCategoria;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+65;1;4;Actividad de inspección;help Actividad de inspección;TEXTO;--;{};;OinActividad;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+66;1;5;Rango de inspección;help Rango de inspección;TEXTO;--;{};;OinRango;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+67;1;6;Documento normativo/ Procedimiento;help Documento normativo/ Procedimiento;TEXTO;--;{};;OinDocumentoNormativo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+68;1;7;Tipo de Organismo de Inspección;Help Tipo de Organismo de Inspección;TEXTO;--;{};;OinTipoOrganismo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+69;1;8;Vigente a partir de;Help Vigente a partir de;TEXTO;--;{};;OinVigenteApartirDe;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+70;1;7;Vigente a partir de;Vigente a partir de;TEXTO;--;{};;PrdVigenteApartirDe;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+71;1;0;Lugar de ejecución/ calibración;help Lugar de ejecución/ calibración;TEXTO;--;{};;ClbLugarEjecucion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+72;1;1;Magnitud;Help Magnitud;TEXTO;--;{};;ClbMagnitud;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+73;1;2;Instrumento;help Instrumento;TEXTO;--;{};;ClbInstrumento;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+74;1;3;Intervalo de medición;Help Intervalo de medición;TEXTO;--;{};;ClbIntervaloMedicion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+75;1;4;Incertidumbre  Expandida;help Incertidumbre  Expandida;TEXTO;-;{};;ClbIncertidumbreExpandida;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+76;1;5;Principio de medición/Técnica;Help  Principio de medición/Técnica;TEXTO;--;{};;ClbPrincipioMedicion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+77;1;6;Método de medición/Procedimiento;Help Método de medición/Procedimiento;TEXTO;--;{};;ClbMetodoMedicion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+78;1;7;Patrón utilizado;Help Patrón utilizado;TEXTO;--;{};;ClbPatronUtilizado;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+79;1;8;Vigente a partir de;Help Vigente a partir de;TEXTO;--;{};;ClbVigenteApartirDe;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+80;1;0;Lugar de ejecución;help Lugar de ejecución;TEXTO;--;{};;EsyLugarEjecucion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+81;1;1;Tipo de ensayo;Help Tipo de ensayo;TEXTO;--;{};;EsyTipoEnsayo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+82;1;2;Ensayo;Help Ensayo;TEXTO;--;{};;EsyEnsayo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+83;1;3;Muestra/Matriz;Help Muestra/Matriz;TEXTO;--;{};;EsyMuestra;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+84;1;4;Técnica;Help Técnica;TEXTO;--;{};;EsyTecnica;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+85;1;5;Intervalo de medición;Help Intervalo de medición;TEXTO;--;{};;EsyIntervaloMedicion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+86;1;6;Método / método de referencia / Procedimiento;Help Método / método de referencia / Procedimiento;TEXTO;--;{};;EsyMetodo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+87;1;7;Vigente a partir de;Help Vigente a partir de;TEXTO;--;{};;EsyVigenteApartirDe;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+88;1;0;Tipo de ensayo /Análisis;Help Tipo de ensayo /Análisis;TEXTO;--;{};;ClnTipoEnsayo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+89;1;1;Análisis;Help Análisis;TEXTO;--;{};;ClnAnalisis;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+90;1;2;Muestra /Matriz;Help Muestra /Matriz;TEXTO;--;{};;ClnMuestra;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+91;1;3;Intervalo de medición;Help Intervalo de medición;TEXTO;--;{};;ClnIntervaloMedicion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+92;1;4;Técnica;Help Técnica;TEXTO;--;{};;ClnTecnica;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+93;1;5;Método/Documento normativo/ Método de referencia;Help Método/Documento normativo/ Método de referencia;TEXTO;--;{};;ClnMetodo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+94;1;6;Vigente a partir de;Help Vigente a partir de;TEXTO;--;{};;ClnVigenteApartirDe;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+95;1;0;Tipo de Certificación de personas Especialidad;Help Tipo de Certificación de personas Especialidad;TEXTO;--;{};;CprTipoCertificacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+96;1;1;Categoría;Help Categoría;TEXTO;--;{};;CprCategoria;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+97;1;2;Documento Normativo;Help Documento Normativo;TEXTO;--;{};;CprDocumentoNormativo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+98;1;3;Esquema de Certificación;Help Esquema de Certificación;TEXTO;--;{};;CprEsquemaCertificacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+99;1;1;Tipo de actividad;Help Tipo de actividad;TEXTO;--;{};;OvvTipoActividad;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+100;1;2;Programa/esquema;Help Programa/esquema;TEXTO;--;{};;OvvPrograma;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+101;1;3;Sector;Help Sector;TEXTO;--;{};;OvvSector;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+102;1;4;Actividad;Help Actividad;TEXTO;--;{};;OvvActividad;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+103;1;5;Documento Normativo;Help Documento Normativo;TEXTO;--;{};;OvvDocumentoNormativo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+104;1;0;ONA;Abreviación de la Organización de Acreditación;TEXTO;--;{};;OnaAbreviacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+105;1;4;Dirección ONA;Dirección del Organismo Nacional de Acreditación;TEXTO;--;{};;OnaDireccion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+106;1;5;Página WEB;Página WEB ONA;TEXTO;--;{};;OnaWeb;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+107;1;6;Correo Electrónico;Correo Electrónico WEB;TEXTO;--;{};;OnaCorreo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+108;1;7;Teléfono;Teléfono ONA;TEXTO;--;{};;OnaTelefono;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+109;1;8;Icono;Icono ONA;TEXTO;--;{};;OnaLinkIcono;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+110;1;9;Logo;Logo ONA;TEXTO;--;{};;OnaLinkLogo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+111;1;0;Sector;Sector o nombre del esquema;TEXTO;--;{};;SyaSector;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+112;1;2;Razón Social de la Organización;Razón Social de la Organización OEC;TEXTO;--;{};;OrgRazonSocial;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+113;1;3;Código Único de acreditación;Código Único de acreditación;TEXTO;--;{};;OrgCodigoAcreditacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+114;1;4;País;País OEC;TEXTO;--;{};;OrgPais;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+115;1;5;Ciudad OEC;Ciudad OEC;TEXTO;--;{};;OrgCiudad;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+116;1;6;Dirección OEC;Dirección OEC;TEXTO;--;{};;OrgDireccion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+117;1;7;Página WEB OEC;Página WEB OEC;TEXTO;--;{};;OrgWeb;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+118;1;8;Correo Electrónico OEC;Correo Electrónico OEC;TEXTO;--;{};;OrgCorreo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+119;1;9;Teléfono de OEC;Teléfono de OEC;TEXTO;--;{};;OrgTelefono;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+120;1;10;Estado de acreditación;Estado de acreditación;TEXTO;--;{};;OrgEstadoAcreditacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+121;1;11;Esquema de acreditación;Esquema de acreditación;TEXTO;--;{};;OrgEsquemaAcreditado;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+122;1;12;Norma de acreditación;Norma de acreditación;TEXTO;--;{};;OrgNormaAcreditada;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+123;1;13;Reconocimiento;Reconocimiento;TEXTO;--;{};;OrgReconocimiento;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+124;1;1;Técnica;Técnica;TEXTO;--;{};;SyaTecnica;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+125;1;2;Ítem de ensayo de aptitud;Ítem de ensayo de aptitud;TEXTO;--;{};;SyaItemEnsayo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+126;1;3;Mensurando o característica;Mensurando o característica;TEXTO;--;{};;SyaMensurado;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+127;1;4;Método;Método para determinar el valor asignado y su incertidumbre;TEXTO;--;{};;SyaMetodo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+128;1;0;Tipo de Material de Referencia;Tipo de Material de Referencia;TEXTO;--;{};;PmrTipoMaterial;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+129;1;1;Nombre del material, matriz o ítem;Nombre del material, matriz o ítem;TEXTO;--;{};;PmrMaterial;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+130;1;2;Propiedades, característica;Propiedades, característica;TEXTO;--;{};;PmrPropiedad;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+131;1;3;Caracterización;Caracterización;TEXTO;--;{};;PmrCaracterizacion;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+132;1;4;Asignación del valor;Asignación del valor;TEXTO;--;{};;PmrAsignacionValor;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+133;1;15;Periodo de vigencia;Periodo de vigencia;TEXTO;--;{};;OrgPeriodoVigencia;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+134;1;0;Sitio o instalación del muestreo;Sitio o instalación del muestreo;TEXTO;--;{};;MtrSitio;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+135;1;1;Ítem muestreado;Ítem muestreado;TEXTO;--;{};;MtrItemMuestreado;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+136;1;2;Método de muestreo;Método de muestreo;TEXTO;--;{};;MtrMetodoMuestreo;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1
+137;1;3;Ensayos;Ensayos;TEXTO;--;{};;MtrEnsayos;A;2024-06-25 00:00:00;2024-06-26 00:00:00;1;1

@@ -1,0 +1,438 @@
+"idOrganizacion";"IdClinico";"ClnTipoEnsayo";"ClnAnalisis";"ClnMuestra";"ClnIntervaloMedicion";"ClnTecnica";"ClnMetodo";"ClnVigenteApartirDe"
+"297";"2";"En laboratorio";"Glucosa";"Suero";"--";"Espectrofotometría";"<p>GO-PD GO-POD</p>/SPINREACT Glucosa-LT";"--"
+"297";"2";"En laboratorio";"Urea";"Suero";"--";"Espectrofotometría";"<p>Ureasa-GLDH</p><p>Cinético</p>/SPINREACT Urea-LT";"--"
+"297";"2";"En laboratorio";"Ácido Úrico";"Suero";"--";"Espectrofotometría";"<p>Uricasa-POD</p>/SPINREACT Ácido úrico-LT";"--"
+"297";"2";"En laboratorio";"Creatinina";"Suero";"--";"Espectrofotometría";"<p>Jaffé</p><p>colorimétrico</p><p>Cinético</p>/SPINREACT Creatinina-J";"--"
+"297";"2";"En laboratorio";"Alanino amino transferasa";"Suero";"--";"Espectrofotometría";"<p>NADH. Cinético</p><p>UV.IFCC. rec</p>/SPINREACT TGP - LQ";"--"
+"297";"2";"En laboratorio";"Aspartato amino trasnferasa";"Suero";"--";"Espectrofotometría";"<p>NADH. Cinético</p><p>UV.IFCC. rec </p>/SPINREACT TGO - LQ";"--"
+"297";"2";"En laboratorio";"Bilirrubina total";"Suero";"--";"Espectrofotometría";"<p>2,4-</p><p>dicloroanilina</p><p>(DCA)</p>/Diasys
+Bilirrubina auto total FS";"--"
+"297";"2";"En laboratorio";"Gamma glutamil transferasa";"Suero";"--";"Espectrofotometría";"<p>Sustrato</p><p>carboxilado</p><p>cinético</p>/SPINREACT GGT - LQ";"--"
+"297";"2";"En laboratorio";"Lactato deshidrogenasa";"Suero";"--";"Espectrofotometría";"<p>Piruvato</p><p>Cinética UV</p><p>DCKC</p>/SPINREACT GGT - LQ";"--"
+"297";"2";"En laboratorio";"Proteínas Totales";"Suero";"--";"Espectrofotometría";"<p>Biuret</p><p>Colorimétrico </p>/SPINREACT Proteínas totales";"--"
+"297";"2";"En laboratorio";"Triglicéridos";"Suero";"--";"Espectrofotometría";"<p>GPO-POD</p><p>Enzimático</p><p>colorimétrico</p>/SPINREACT Triglicéridos - LQ";"--"
+"297";"2";"En laboratorio";"Colesterol";"Suero";"--";"Espectrofotometría";"<p>CHOD-POD</p><p>líquido</p>/SPINREACT Colesterol - LQ";"--"
+"276";"2";"En laboratorio";"Coproparasitario";"Heces,Suero";"--";"Microscópico";NULL;"--"
+"276";"2";"En laboratorio";"Urea";"Suero";"--";"Espectrofotometría";"<p>Ureasa/GLDH</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Glucosa";"Suero";"--";"Espectrofotometría";"<p>GOD - PAP</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Creatinina";"Suero";"--";"Espectrofotometría";"<p>Jaffe, Kinetic, without deproteinitation</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Ácido Úrico";"Suero";"--";"Espectrofotometría";"<p>Uricase PAP</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Colesterol";"Suero";"--";"Espectrofotometría";"<p>CHOD - PAP</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Colesterol HDL";"Suero";"--";"Espectrofotometría";"<p>Direct enzimatic test</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Colesterol LDL";"Suero";"--";"Espectrofotometría";"<p>Direct enzimatic test</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Triglicéridos";"Suero";"--";"Espectrofotometría";"<p>GPO-PAP</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Bilirrubina total";"Suero";"--";"Espectrofotometría";"<p>DPD&nbsp;</p>/PE-03";"--"
+"276";"2";"En laboratorio";"BILIRRUBINA D";"Suero";"--";"Espectrofotometría";"<p>DPD&nbsp;</p>/PE-03";"--"
+"276";"2";"En laboratorio";"TGO";"Suero";"--";"Espectrofotometría";"<p>IFCC mod without pyridoxal phosphatase</p>/PE-03";"--"
+"276";"2";"En laboratorio";"TGP";"Suero";"--";"Espectrofotometría";"<p>IFCC mod</p>/PE-03";"--"
+"276";"2";"En laboratorio";"FOSFATASA ALCALINA";"Suero";"--";"Espectrofotometría";"<p>DGKC, DEA Buffer</p>/PE-03";"--"
+"276";"2";"En laboratorio";"GGT";"Suero";"--";"Espectrofotometría";"<p>gamma- Glutamyl-3 carboxy-4-nitroanilide</p>/PE-03";"--"
+"276";"2";"En laboratorio";"Proteínas Totales";"Suero";"--";"Espectrofotometría";"<p>Buiret</p>/<p>PE-03</p>";"--"
+"276";"2";"En laboratorio";"Albumina";"Suero";"--";"Espectrofotometría";"<p>Bromocresol Green&nbsp;</p>/<p>PE-03</p>";"--"
+"276";"2";"En laboratorio";"Coproparasitario y coprológico manual";"Heces";"--";"Microscopia";"<p>MICROSCOPIA&nbsp;</p>/<p>PE-16</p>";"--"
+"276";"2";"En laboratorio";"Leucocitos, Plaquetas, Eritrocitos";"Sangre total + EDTA";"--";"Impedancia volumétrica Fotometría";"<p>Impedancia volumétrica Fotometría</p>/<p>PE - 18</p>";"--"
+"276";"2";"En laboratorio";"HGB (Hemoglobina)";"Sangre total + EDTA";"--";"Fotometría";"<p>Fotometría</p>/PE-18";"--"
+"276";"2";"En laboratorio";"HCT (Hematocrito)";"Sangre total + EDTA";"--";"Cálculo";"<p>Cálculo</p>/<p>PE-18</p>";"--"
+"276";"2";"En laboratorio";"WBC diferencial (LIN, MON, NEU, BAS, EOS)";"Sangre total + EDTA";"--";"Lectura por Láser";"<p>Lectura por Láser</p>/<p>PE-18</p>";"--"
+"286";"2";"En laboratorio";"Glucosa";"Suero";"--";"Espectrofotometría";"<p>Hexoquinase</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Urea";"Suero";"--";"Espectrofotometría";"<p class=""ql-align-center"">Urease, Kinetic</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Ácido Úrico";"Suero";"--";"Espectrofotometría";"<p>Urikase Peroxidase with ascorbate oxidase</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Alanino amino transferasa";"Suero";"--";"Espectrofotometría";"<p>Tris buffer without pyridoxal-5-phosphate</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Aspartato amino trasnferasa";"Suero";"--";"Espectrofotometría";"<p>Tris buffer without pyridoxal-5-phosphate</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Colesterol";"Suero";"--";"Espectrofotometría";"<p>Colesterol Oxidase</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Triglicéridos";"Suero";"--";"Espectrofotometría";"<p>Lipase GPO-PAP</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Bilirrubina total";"Suero";"--";"Espectrofotometría";"<p>Dichclorophenyl Diazonium</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Bilirrubina Directa / Bilirrubina Total";"Suero";"--";"Espectrofotometría";"<p>Dichclorophenyl Diazonium</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Colesterol HDL";"Suero";"--";"Espectrofotometría";"<p>Direct HDL</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Albúmina";"Suero";"--";"Espectrofotometría";"<p>Bromocresol Green (BCG)</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Fosfatasa Alcalina";"Suero";"--";"Espectrofotometría";"<p>AMP Optimised to IFCC</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"LDH";"Suero";"--";"Espectrofotometría";"<p>Lactate to piruval IFCC</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Proteínas Totales";"Suero";"--";"Espectrofotometría";"<p>Biuret reaction end point</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"GGT";"Suero";"--";"Espectrofotometría";"<p>Gama glutamil-3-carboxi-4-nitroanalide</p>/PT LAB 25";"--"
+"286";"2";"En laboratorio";"Elemental y Microscópico de Orina, Visual, Colorimétrico y Microscópico";"Orina";"--";"Examen Macroscópico/Examen Físico-Químico/Examen Microscópico";"<p>Examen macroscópico/Examen Físico-Químico/Examen Microscópico</p>/PT LAB 41";"--"
+"286";"2";"En laboratorio";"Coproparasitario, Microscópico";"Heces";"--";"Microscópico";"<p>Microscópico</p>/PT LAB 41";"--"
+"286";"2";"En laboratorio";"Alanino amino transferasa";"Heces";"--";"e-CLIA";"<p>55</p>/55";"--"
+"286";"2";"En laboratorio";"Sodio";"Suero";"--";"Ión Selectivo";"<p>NA</p>/SnapPark. 03112349. Código: PT LAB_39";"--"
+"286";"2";"En laboratorio";"Potasio";"Suero";"--";"Ión Selectivo";"<p>NA</p>/SnapPark. 03112349. Código: PT LAB_39";"--"
+"286";"2";"En laboratorio";"Cloro";"Suero";"--";"Ión Selectivo";"<p>NA</p>/SnapPark. 03112349. Código: PT LAB_39";"--"
+"286";"2";"En laboratorio";"Hormona Tiroestimiulante (TSH)";"Suero";"--";"e-CLIA";"<p>NA</p>/Elecsys TSH.11731459122. Código: PT LAB-35";"--"
+"286";"2";"En laboratorio";"Tiroxina libre, (FT4)";"Suero";"--";"e-CLIA";"<p>NA</p>/Elecsys FT4 III.07976836190. Código: PT LAB-35";"--"
+"286";"2";"En laboratorio";"Triyodotironina Libre (FT3)";"Suero";"--";"e-CLIA";"<p>NA</p>/Elecsys FT3 III.06437206190. Código: PT LAB-35";"--"
+"286";"2";"En laboratorio";"Plaquetas, Eritrocitos";"Sangre Total (EDTA)";"--";"Método de impedancia CC con enfoque hidrodinámico";"<p>Método de impedance CC con enfoque hidrodinámico</p>/<p>PT LAB-43</p>";"--"
+"286";"2";"En laboratorio";"WBC diferencial (LIN, MON, NEU, BAS, EOS)";"Sangre Total (EDTA)";"--";"Citometría de flujo con fluorescencia";"<p>Citometría de flujo con fluorescencia&nbsp;</p>/<p>PT LAB - 43</p>";"--"
+"286";"2";"En laboratorio";"HGB (Hemoglobina)";"Sangre Total (EDTA)";"--";"Método SLS sin cianuro";"<p>Método SLS sin cianuro</p>/<p>PT LAB - 43</p>";"--"
+"286";"2";"En laboratorio";"HCT (Hematocrito)";"Sangre Total (EDTA)";"--";"Cálculo";"<p>Cálculo</p>/<p>PT LAB-43</p>";"--"
+"286";"2";"En laboratorio";"Leucocitos";"Sangre Total (EDTA)";"--";"Citometría de flujo";"<p>Citometría de flujo</p>/<p>PT LAB - 43</p>";"--"
+"286";"2";"En laboratorio";"Estudio de extendido en frotis de sangre";"Sangre Total (EDTA)";"--";"Microscopia";"<p>Microscopia&nbsp;</p>/<p>PT LAB-43</p>";"--"
+"252";"2";"En laboratorio";"Ácido Úrico";"Suero";"--";"Espectrofotometría automatizada";"<p>Uricasa</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Albumina";"Suero";"--";"Espectrofotometría automatizada";"<p>Verde de Bromocresol</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"ALT";"Suero";"--";"Espectrofotometría automatizada";"<p>NADH (sin P- 5'- P)</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Amilasa";"Suero";"--";"Espectrofotometría automatizada";"<p>sustrato CNPG3</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Apolipoproteína B";"Suero";"--";"Espectrofotometría automatizada";"<p>Inmunoturbidimetría</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"AST";"Suero";"--";"Espectrofotometría automatizada";"<p>NADH (sin P- 5'- P)</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Bilirrubina directa";"Suero";"--";"Espectrofotometría automatizada";"<p>Reacción Diazo</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Bilirrubina total";"Suero";"--";"Espectrofotometría automatizada";"<p>Sal de diazonio</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"BUN (Urea)";"Suero";"--";"Espectrofotometría automatizada";"<p>Ureasa</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Calcio";"Suero";"--";"Espectrofotometría automatizada";"<p>Arsenazo III</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Colesterol";"Suero";"--";"Espectrofotometría automatizada";"<p>Enzimática</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Creatinina";"Suero";"--";"Espectrofotometría automatizada";"<p>Picrato Alcalino Cinético</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"F. Alcalina";"Suero";"--";"Espectrofotometría automatizada";"<p>p-nitrofenil fosfato</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Fósforo";"Suero";"--";"Espectrofotometría automatizada";"<p>Fosfomolibdato</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"GGT";"Suero";"--";"Espectrofotometría automatizada";"<p>Sustrato de L- gammaglutamil-3-carboxi- 4-nitroanilida</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Glucosa";"Suero";"--";"Espectrofotometría automatizada";"<p>hexocinasa/G-6-PDH</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"HDL-Colesterol";"Suero";"--";"Espectrofotometría automatizada";"<p>Detergente acelerador específico</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Hierro";"Suero";"--";"Espectrofotometría automatizada";"<p>Ferrene</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"LDH";"Suero";"--";"Espectrofotometría automatizada";"<p>Reacción directa: lactato a piruvato,</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"LDL-Colesterol";"Suero";"--";"Espectrofotometría automatizada";"<p>Por medición; detergente selectivo líquido</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Lipasa";"Suero";"--";"Espectrofotometría automatizada";"<p>Colorante de quinona</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Magnesio";"Suero";"--";"Espectrofotometría automatizada";"<p>Enzimática</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Proteínas Totales";"Suero";"--";"Espectrofotometría automatizada";"<p>Biuret</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Transferrina";"Suero";"--";"Espectrofotometría automatizada";"<p>Inmunoturbidimetría</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Triglicéridos";"Suero";"--";"Espectrofotometría automatizada";"<p>Glicerol fosfato oxidasa</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"HBA1C II (Hemoglobina Glicosilada)";"Sangre Total (EDTA)";"--";"HPLC";"<p>cromatografía no porosa de intercambio de iones de líquidos de alta resolución (HPLC)</p>/SGC-ILAB-POT-5.5.3.4";"--"
+"252";"2";"En laboratorio";"Beta Gonadotropina Coriónica Total (B- HCG)";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"Hormona Tiroestimiulante (TSH)";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"Triyodotironina Libre (FT3)";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"T3 (Triyodotironina) Total";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"Tiroxina libre, (FT4)";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"T4 (Tiroxina) Total";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"Antígeno Prostático Específico Total, (PSA-T)";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"Antígeno Prostático Específico Libre, (PSA-L)";"Suero";"--";"Quimioluminiscencia";"<p>Inmuno análisis quimioluminiscente de micro partículas (CMIA)</p>/SGS- ILAB- POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"Alfa Fetoproteínas (AFP)";"Suero";"--";"Quimioluminiscencia";"<p>Ensayo secuencial inmunométrico quimioluminiscente en fase sólida</p>/SGC-ILAB-POT-5.5.3.5";"--"
+"252";"2";"En laboratorio";"Fracción Beta de Gonadotrofina Coriónica Humana (B-HCG)";"Suero";"--";"Quimioluminiscencia";"<p>Ensayo secuencial inmunométrico quimioluminiscente en fase sólida</p>/SGC-ILAB-POT-5.5.3.5";"--"
+"252";"2";"En laboratorio";"Hormona de Crecimientos (GH)";"Suero";"--";"Quimioluminiscencia";"<p>Ensayo secuencial inmunométrico quimioluminiscente competitivo en fase sólida</p>/SGC-ILAB-POT-5.5.3.5";"--"
+"252";"2";"En laboratorio";"CA-125";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- CA-125-biotina. Acs anti- CA-125-Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"CA 15-3";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- CA 15-3-biotina. Acs anti- CA 15-3-Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"CA 19-9";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- CA19-9-biotina. Acs anti- CA 19-9-Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"CEA (Antígeno carcino embrionario)";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- CEA-biotina. Acs anti-CEA- Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Enolasa Neuro Específica (NSE)";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- NSE-biotina. Acs anti-NSE- Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Hormona Folículo Estimulante (FSH)";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- FSH-biotina. Acs anti-FSH- Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Hormona Luteinizante (LH)";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs antiLH-biotina. Acs anti-LH-Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Estradiol (E2)";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Competitivo.</p><p>Acs anti-estradiol-biotina, Peptido de estradiol- Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Testosterona";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Competitivo. Acs anti-testosterona- biotina, Peptido de testorena-Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Insulina";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs antiinsulina-biotina. Acsantiinsulina-Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Cortisol";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Competitivo. Acs anti-cortisolbiotina/ Péptido de cortisol-Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Biometría Hemática";"Sangre Total (EDTA)";"--";"Conteo automatizado";"<p>Citometría de flujo</p>/SGC-ILAB-POT-5.5.3.1";"--"
+"252";"2";"En laboratorio";"Hematíes, Plaquetas";"Sangre Total (EDTA)";"--";"Conteo automatizado";"<p>Enfoque hidrodinámico</p>/SGC-ILAB-POT-5.5.3.1";"--"
+"252";"2";"En laboratorio";"Leucocitos totales, Neutrófilos, Basófilos, Eosinófilos, Linfocitos, Monocitos, Reticulocitos";"Sangre Total (EDTA)";"--";"Conteo y diferencial automatizados";"<p>Citometría de flujo con láser semiconductor</p>/SGC-ILAB-POT-5.5.3.1";"--"
+"252";"2";"En laboratorio";"Estudio de extendido en frotis de sangre";"Sangre Total (EDTA)";"--";"Observación directa";"<p>Microscopía óptica</p>/SGC-ILAB-POT-5.5.3.1";"--"
+"252";"2";"En laboratorio";"Tiempo de Protrombina (TP)";"Plasma citratado";"--";"Coagulometría";"<p>Detección Coagulometrica por turbidimetría</p><p>&nbsp;</p>/SGC-ILAB-POT-5.5.3.3";"--"
+"252";"2";"En laboratorio";"Tiempo  Parcial de Tromboplastina (APTT)";"Plasma citratado";"--";"Coagulometría";"<p>Detección Coagulometrica por turbidimetría</p>/SGC-ILAB-POT-5.5.3.3";"--"
+"252";"2";"En laboratorio";"Fibrinógeno";"Plasma citratado";"--";"Coagulometría";"<p>Detección Coagulometrica por turbidimetría</p>/SGC-ILAB-POT-5.5.3.3";"--"
+"252";"2";"En laboratorio";"INR";"Plasma citratado";"--";"Coagulometría";"<p>Detección Coagulometrica por turbidimetría</p>/SGC-ILAB-POT-5.5.3.3";"--"
+"252";"2";"En laboratorio";"V.D.R.L";"Suero";"--";"Floculación";"<p>Detección de anticuerpos antitreponémicos inespecíficos</p>/SGC-ILAB-POT-5.5.3.32";"--"
+"252";"2";"En laboratorio";"Parathormona intacta (iPTH)";"Suero";"--";"Quimioluminiscencia";"<p>Inmunoanálisis Quimioluminiscencia de Micropartículas (CMIA) </p>/SGC-ILAB-POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"Vitamina D Total (25 OH (D3+D2)";"Suero";"--";"Quimioluminiscencia";"<p>Inmunoanálisis Quimioluminiscencia de Micropartículas (CMIA)</p>/SGC-ILAB-POT- 5.5.3.30";"--"
+"252";"2";"En laboratorio";"CA 72-4";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- CA 72-4 biotina. Acs anti-CA 72-4- Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"CYFRA 21-1";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich. Acs anti- CYFRA 21-1- biotina. Acs anti-CYFRA 21-1- Ru</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"HCG- beta cualitativa";"Suero";"--";"Inmunocromatografía";"<p>Inmunoensayo cromatográfico para la detección cualitativa de la gonadotropina coriónica humana</p>/SGC-ILAB-POT-5.5.3.28";"--"
+"252";"2";"En laboratorio";"17 Hidroxiprogesterona (17-OH)";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Ensayo en fase sólida, fluoroinmunométrico de tiempo resuelto, basado en una reacción de competencia</p>/SGC-ILAB-POT-5.5.3.34";"--"
+"252";"2";"En laboratorio";"TSH Neonatal";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Ensayo en fase sólida, fluoroinmunométrico de tiempo resuelto, basado en la técnica directa del sándwich</p>/SGC-ILAB-POT-5.5.3.34";"--"
+"252";"2";"En laboratorio";"Fenilalanina";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Ensayo enzimático automatizado</p>/SGC-ILAB-POT-5.5.3.34";"--"
+"252";"2";"En laboratorio";"Galactosa Total";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Método fluorescente de galactosa oxidasa</p>/SGC-ILAB-POT-5.5.3.34";"--"
+"252";"2";"En laboratorio";"Progesterona III";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Competitivo.</p><p>(Acs antiprogesterona-biotina,</p><p>Peptido de progesterona- Ru)</p>/SGC-ILAB-POT- 5.5.3.6";"--"
+"252";"2";"En laboratorio";"Creatin Kinasa (CK – Total)";"Suero";"--";"Espectrofotometría automatizada";"<p>NAC ( Nacetil-Lcisteína)</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Colinesterasa";"Suero";"--";"Espectrofotometría automatizada";"<p>Butiriltiocolina según la DGKC a 37°C&nbsp;</p>/SGC-ILAB-POT-5.5.3-2";"--"
+"252";"2";"En laboratorio";"Hemoglobina Glicosilada";"Sangre Total (EDTA)";"--";"Electroforesis capilar";"<p>Electroforesis capilar</p>/SGC-ILAB-POT5.5.3.31";"--"
+"252";"2";"En laboratorio";"Hematocrito";"Sangre Total (EDTA)";"--";"Automatizado";"<p>Calculo</p>/<p>SGC-ILAB-POT-5.5.3.1</p>";"--"
+"252";"2";"En laboratorio";"Sodio";"Suero";"--";"Electrodo selectivo para iones diluidos (indirecta)";"<p>Electrodo selectivo para iones diluidos (indirecta)&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Potasio";"Suero";"--";"Electrodo selectivo para iones diluidos (indirecta)";"<p>Electrodo selectivo para iones diluidos (indirecta)&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Cloro";"Suero";"--";"Electrodo selectivo para iones diluidos (indirecta)";"<p>Electrodo selectivo para iones diluidos (indirecta)&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Dehidroepiandrosterona Sulfato (DHEA-S)";"Suero";"--";"Quimioluminiscencia";"<p>Ensayo secuencial inmunométrico quimioluminiscente en Fase sólida / Competititivo</p>/<p>SGC-ILAB-POT-5.5.3.5 </p><p>SGC-ILAB-POT-5.5.3.40</p>";"--"
+"252";"2";"En laboratorio";"Inmunoglobulina E (IGE)";"Suero";"--";"Quimioluminiscencia";"<p>Ensayo secuencial inmunométrico quimioluminiscente en Fase sólida / No Competitivo o captura de anticuerpos</p>/<p>SGC-ILAB-POT-5.5.3.5 </p><p>SGC-ILAB-POT-5.5.3.40&nbsp;</p>";"--"
+"252";"2";"En laboratorio";"Prolactina (PRL)";"Suero";"--";"Quimioluminiscencia";"<p>Ensayo secuencial inmunométrico quimioluminiscente en Fase sólida / Sándwich</p>/<p>SGC-ILAB-POT-5.5.3.5 </p><p>SGC-ILAB-POT-5.5.3.40&nbsp;</p>";"--"
+"252";"2";"En laboratorio";"Tiempo  Parcial de Tromboplastina (APTT)";"Plasma citratado";"--";"Coagulometría";"<p>Detección Coagulometrica por turbidimetría</p>/<p>SGC-ILAB-POT-5.5.3.3</p>";"--"
+"252";"2";"En laboratorio";"Tiempo de Protrombina (TP)";"Plasma citratado";"--";"Coagulometría";"<p>Detección Coagulometrica por turbidimetría</p>/<p>SGC-ILAB-POT-5.5.3.3</p>";"--"
+"252";"2";"En laboratorio";"Fibrinógeno";"Plasma citratado";"--";"Coagulometría";"<p>Detección Coagulometrica por turbidimetría</p>/<p>SGC-ILAB-POT-5.5.3.3</p>";"--"
+"252";"2";"En laboratorio";"Leucocitos totales, Neutrófilos, Basófilos, Eosinófilos, Linfocitos, Monocitos, Reticulocitos";"Sangre Total (EDTA)";"--";"Conteo y diferencial automatizados";"<p>Citometría de flujo con láser semiconductor</p>/<p>SGC-ILAB-POT-5.5.3.1</p>";"--"
+"252";"2";"En laboratorio";"Glucosa, Hexokinase";"Suero";"--";"Espectrofotometría automatizada";"<p>hexocinasa/G-6-PDH&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"BUN (Urea)";"Suero";"--";"Espectrofotometría automatizada";"<p>Ureasa</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Creatinina";"Suero";"--";"Espectrofotometría automatizada";"<p>Picrato Alcalino Cinético</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Sodio";"Suero";"--";"Electrodo selectivo para iones diluidos (indirecta)";"<p>Electrodo selectivo para iones diluidos (indirecta)</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Creatin Kinasa (CK – Total)";"Suero";"--";"Espectrofotometría automatizada";"<p>NAC (Nacetil-L-Cisteína)</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Potasio";"Suero";"--";"Electrodo selectivo para iones diluidos (indirecta)";"<p>Electrodo selectivo para iones diluidos (indirecta)</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"AST";"Suero";"--";"Espectrofotometría automatizada";"<p>NADH (sin P- 5'-P)&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Triglicéridos";"Suero";"--";"Espectrofotometría automatizada";"<p>Glicerol fosfato oxidasa</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Cloro";"Suero";"--";"Electrodo selectivo para iones diluidos (indirecta)";"<p>Electrodo selectivo para iones diluidos (indirecta)</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"ALT";"Suero";"--";"Espectrofotometría automatizada";"<p>NADH (sin P-5'-P)&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"GGT / Gama glutamil- 3- carboxi – 4- nitroanalide";"Suero";"--";"Espectrofotometría automatizada";"<p>Sustrato de L-gammaglutamil-3-carboxi-4-nitroanilida&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Amilasa";"Suero";"--";"Espectrofotometría automatizada";"<p>Sustrato CNPG3</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"FOSFATASA ALCALINA";"Suero";"--";"Espectrofotometría automatizada";"<p>P-nitrofenil fosfato</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"CA (Calcio)";"Suero";"--";"Espectrofotometría automatizada";"<p>Arsenazo III&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Bilirrubina directa";"Suero";"--";"Espectrofotometría automatizada";"<p>Reacción Diazo</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Bilirrubina total";"Suero";"--";"Espectrofotometría automatizada";"<p>Sal de diazonio&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Hierro";"Suero";"--";"Espectrofotometría automatizada";"<p>Ferrene</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Fósforo";"Suero";"--";"Espectrofotometría automatizada";"<p>Fosfomolibdato&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Albumina, Bromocresol Green BCG";"Suero";"--";"Espectrofotometría automatizada";"<p>Verde de Bromocresol</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Proteínas Totales";"Suero";"--";"Espectrofotometría automatizada";"<p>Biuret</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"LDH";"Suero";"--";"Espectrofotometría automatizada";"<p>Reacción directa: lactato a piruvato,</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Lipasa";"Suero";"--";"Espectrofotometría automatizada";"<p>Colorante de quinona&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Ácido Úrico";"Suero";"--";"Espectrofotometría automatizada";"<p>Uricasa</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"LDL-Colesterol";"Suero";"--";"Espectrofotometría automatizada";"<p>Por medición; detergente selectivo líquido&nbsp;</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"HDL-Colesterol";"Suero";"--";"Espectrofotometría automatizada";"<p>Detergente acelerador específico</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Colesterol";"Suero";"--";"Espectrofotometría automatizada";"<p>Enzimática</p>/<p>SGC-ILAB-POT-5.5.3-2</p>";"--"
+"252";"2";"En laboratorio";"Hematocrito";"Sangre Total (EDTA)";"--";"Automatizado";"<p>Calculo</p>/<p>SGC-ILAB-POT-5.5.3.1</p>";"--"
+"252";"2";"En laboratorio";"Biometría Hemática";"Sangre Total (EDTA)";"--";"Conteo automatizado";"<p>Citometría de flujo</p>/<p>SGC-ILAB-POT-5.5.3.1</p>";"--"
+"252";"2";"En laboratorio";"Hematíes, Plaquetas";"Sangre Total (EDTA)";"--";"Conteo automatizado";"<p>Enfoque hidrodinámico</p>/<p>SGC-ILAB-POT-5.5.3.1</p>";"--"
+"252";"2";"En laboratorio";"Hemoglobina";"Sangre Total (EDTA)";"--";"Espectrofotometría automatizada";"<p>Laurilsulfato sódico (SLS) </p>/<p>SGC-ILAB-POT-5.5.3.1</p>";"--"
+"252";"2";"En laboratorio";"Estudio de extendido en frotis de sangre";"Sangre Total (EDTA)";"--";"Observación directa";"<p>Microscopía óptica</p>/<p>SGC-ILAB-POT-5.5.3.1&nbsp;</p>";"--"
+"252";"2";"En laboratorio";"Hemoglobina";"Sangre Total (EDTA)";"--";"Espectrofotometría automatizada";"<p>Laurilsulfato sódico (SLS)</p>/<p>SGC-ILAB-POT-5.5.3.1</p>";"--"
+"320";"2";"En laboratorio";NULL;"Suero";"--";"Quimioluminiscencia";"<p>Inmulite 2000 TSH rapida</p>/PAN-01 Fase Analítica";"--"
+"320";"2";"En laboratorio";NULL;"Suero";"--";"Quimioluminiscencia";"<p>Inmunometrico quimioluminiscente en fase solida</p>/Inmulite 2000 TSH rapida, PAN-01 Fase Analítica";"--"
+"346";"2";"En laboratorio";"Caracterización del virus de influenza AH1N1";"Hisopado Nasal";"--";"PCR tiempo real";"<p>NA</p>/<p>I-FLU-005</p>";"--"
+"346";"2";"En laboratorio";"Caracterización del virus de influenza A y B";"Hisopado Nasal";"--";"PCR tiempo real";"<p>NA</p>/<p>I-FLU-005</p>";"--"
+"346";"2";"En laboratorio";"Confirmación bacteriana Treponema pallidum.";"Suero Sanguineo";"--";"Microscopia";"<p>Inmunofluorescencia indirecta</p>/<p>I-BACT-021</p>";"--"
+"346";"2";"En laboratorio";"Confirmación bacteriana Treponema pallidum.";"Suero Sanguineo";"--";"Aglutinación en placa";"<p>Reacción antígeno - anticuerpo&nbsp;</p>/<p>I-BACT-035</p>";"--"
+"346";"2";"En laboratorio";"17 Hidroxiprogesterona (17-OH)";"Cepa aislada de muestra biológica";"--";"Adsorción de indicador fluorescente";"<p>111</p>/111";"--"
+"346";"2";"En laboratorio";"Identificación bacteria Haemofilus influenzae.";"Cepa aislada de muestra biológica";"--";"Identificación Bacteriana";"<p>Cultivo y antibiograma</p>/P-BACT-005";"--"
+"346";"2";"En laboratorio";"Identificación bacteria Streptococcus pneumoniae.";"Cepa aislada de muestra biológica";"--";"Identificación Bacteriana";"<p>Cultivo y antibiograma</p>/P-BACT-005";"--"
+"276";"2";"En laboratorio";"Elemental y Microscópico de Orina";"Orina";"--";"MICROSCOPIA comparación optoelectrónica del color";"<p>MANUAL / SEMIAUTOMATIZADO / AUTOMATIZADO&nbsp;</p>/<p>PE-16</p>";"--"
+"276";"2";"En laboratorio";"Fisicoquímico";"Orina";"--";"Fotometría";"<p>Fotometría</p>/<p>PE-16</p>";"--"
+"276";"2";"En laboratorio";"Microscópico";"Orina";"--";"Microscopia";"<p>Microscopia electrónica</p>/<p>PE-16</p>";"--"
+"276";"2";"En laboratorio";"Densidad";"Orina";"--";"Refractometría";"<p>Refractometría</p>/<p>PE-16</p>";"--"
+"263";"2";"En laboratorio";"Glucosa";"Suero";"--";"Espectrofotometría";"<p>GLUC3&nbsp;</p>/P30 Manejo del Equipo 
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"Urea";"Suero";"--";"Espectrofotometría";"<p>UREAL&nbsp;&nbsp;</p>/P30 Manejo del Equipo 
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"CREA (Creatinina)";"Suero";"--";"Espectrofotometría";"<p>CREJ2&nbsp;&nbsp;</p>/P30 Manejo del Equipo 
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"Ácido Úrico";"Suero";"--";"Espectrofotometría";"<p>UA2&nbsp;&nbsp;</p>/P30 Manejo del Equipo 
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"Alanino amino transferasa";"Suero";"--";"Espectrofotometría";"<p>ALTL</p>/P30 Manejo del Equipo 
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"Aspartato amino trasnferasa";"Suero";"--";"Espectrofotometría";"<p>ASTL&nbsp;</p>/P30 Manejo del Equipo 
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"Colesterol";"Suero";"--";"Espectrofotometría";"<p>CHOL2</p><p><br></p>/P30 Manejo del Equipo
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"Triglicéridos";"Suero";"--";"Espectrofotometría";"<p>TRIGL</p><p><br></p>/P30 Manejo del Equipo
+COBAS 6000 Módulo c501";"--"
+"263";"2";"En laboratorio";"TSH (Tirotropina – Hormona estimuladora de la tiroides)";"Suero";"--";"Electroquimioluminiscencia";"<p>TSH&nbsp;</p>/P34 Manejo del
+Equipo COBAS
+e411";"--"
+"263";"2";"En laboratorio";"T3 (Triyodotironina)";"Suero";"--";"Electroquimioluminiscencia";"<p>FT3 III&nbsp;</p>/P34 Manejo del
+Equipo COBAS
+e411";"--"
+"263";"2";"En laboratorio";"Tiroxina libre";"Suero";"--";"Electroquimioluminiscencia";"<p>FT4 II 2016-04</p>/P34 Manejo del
+Equipo COBAS
+e411";"--"
+"263";"2";"En laboratorio";"Biometría Hemática";"Sangre Total (EDTA)";"--";"Impedancia Fotometría";"<p>P31 Manejo del</p><p>Equipo&nbsp;</p>/ABX PENTRA XL 80";"--"
+"263";"2";"En laboratorio";"LEU, PLAQ, ERI, BAS";"Sangre Total (EDTA)";"--";"Impedancia";"<p>Impedancia&nbsp;</p>/P31 Manejo del equipo XN 550";"--"
+"263";"2";"En laboratorio";"HB";"Sangre Total (EDTA)";"--";"Método SLS sin cianuro";"<p>Fotometría&nbsp;</p>/P31 Manejo del equipo XN 550";"--"
+"263";"2";"En laboratorio";"WBC 5 DIF";"Sangre Total (EDTA)";"--";"Impedancia y Absorción de Luz";"<p>Impedancia y Absorción</p><p>de Luz</p>/Impedancia y Absorción
+de Luz";"--"
+"263";"2";"En laboratorio";"Extendido de Sangre Periférica";"Sangre Total (EDTA)";"--";"Microscopía óptica";"<p>Microscopía Óptica&nbsp;</p>/Manual";"--"
+"301";"2";"En laboratorio";"HGB / HCTO";"Sangre Total (EDTA)";"--";"Fotometría/CD";"<p>NA</p>/MPH-01
+Procedimientos de
+Hematología
+Automatizada";"--"
+"301";"2";"En laboratorio";"Estudio de extendido en sangre periférica";"Sangre Total (EDTA)";"--";"Microscopía óptica";"<p>NA</p>/MPH-01
+Procedimientos de
+Hematología
+Automatizada";"--"
+"301";"2";"En laboratorio";"Fosfatasa Alcalina";"Suero";"--";"Colorimetría";"<p>Colorimétrica</p><p>/etelendiamino-triacético</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"ALT (ALAT/GPT)";"Suero";"--";"Colorimetría Enzimática";"<p>IFCC sin activación por fosfato de piridoxal</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Alfa amilasa";"Suero";"--";"Colorimetría";"<p>Colorimétrica/p-nitrofenol</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"AST (ASAT/GOT)";"Suero";"--";"Colorimetría Enzimática";"<p>IFCC sin activación por fosfato de piridoxal</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"CA (Calcio)";"Suero";"--";"Colorimetría";"<p>Colorimétrico punto final</p><p>o-cresolphtaleína</p><p>complexona</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Creatincinasa (CK)";"Suero";"--";"Colorimetría Enzimática";"<p>Test UV Imidazol NADPH</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"CHOL (Colesterol)";"Suero";"--";"Colorimetría Enzimática";"<p>Enzimático, colorimétrico/</p><p>Aminofenazona</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"CREA (Creatinina)";"Suero";"--";"Colorimetría Enzimática";"<p>Cinético colorimétrico con</p><p>medición del blanco y</p><p>compensado/Ac pícrico</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Hierro";"Suero";"--";"Colorimetría";"<p>Colorimétrico / Ascorbato – FerroZine</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Gamma glutamil transferasa";"Suero";"--";"Colorimetría Enzimática";"<p>Test, color enzimático/</p><p>glicilglicina</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Glucosa";"Suero";"--";"Colorimetría Enzimática";"<p>Enzimática-colorimétrica/</p><p>Hexocinasa</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"HBA1C II (Hemoglobina Glicosilada)";"Sangre Total";"--";"Inmunoturbidimetría";"<p>Inmunoturbidimétrico/ Acs</p><p>anti-HbA1c</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"HDL-C plus (Colesterol HDL sin pretratamiento)";"Suero";"--";"Colorimetría Enzimática";"<p>Colorimétrico-enzimático,</p><p>homogéneo (Eupenicillium,</p><p>Pseudomonas spec.)</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"LDH (LDH optimada)";"Suero";"--";"Colorimetría Enzimática";"<p>UV / Piruvato + NADH</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Lipasa";"Suero";"--";"Colorimetría Enzimática";"<p>Enzimático/colorimétrico.</p><p>(6 metilresorufina)</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Magnesio";"Suero";"--";"Colorimetría";"<p>Colorimétrico de punto</p><p>final, Azul de Xilidil</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"PHOS (Fósforo inorgánico)";"Suero";"--";"Colorimetría";"<p>Punto final muestra en blanco</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Triglicéridos";"Suero";"--";"Colorimetría Enzimática";"<p>Enzimático/colorimétrico.</p><p>(clorofenol)</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Proteínas Totales";"Suero";"--";"Colorimetría";"<p>Colorimètrico/ Reactivo de</p><p>Biuret</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Transferrin ver.2 (Transferrina)";"Suero";"--";"Inmunoturbidimetría";"<p>Inmunoturbidimétrico/ Acs</p><p>anti-transferrina/NaCl</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"UA plus (Ácido úrico plus)";"Suero";"--";"Colorimetría Enzimática";"<p>Enzimàtico-colorimétrico/</p><p>aminofenazona</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"BUN (Urea)";"Suero";"--";"Colorimetría";"<p>UV- cinético/NADH-</p><p>cetoglutarato</p>/MPQC-01
+Procedimiento de
+química clínica
+automatizada";"--"
+"301";"2";"En laboratorio";"Alfa Fetoproteínas (AFP)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA / Acs anti-AFP</p><p>.Biotina y anti-AFP-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"CA-125 II (Antígeno de cáncer 125)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-CA-125-biotina.</p><p>Acs anti-CA-125-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"CA 15-3II (Antígeno de cáncer 15-3)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-CA 15-3-biotina.</p><p>Acs anti-CA 15-3-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"CA 19-9 (Antígeno carbohidrat 19-9)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-CA19-9-biotina.</p><p>Acs anti-CA 19-9-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"CA 72-4 (Antígeno de cáncer 72-4)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-CA 72-4-biotina.</p><p>Acs anti-CA 72-4-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"CEA (Antígeno carcino embrionario)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-CEA-biotina.</p><p>Acs anti-CEA-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"CK-MB";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-CK-MB-biotina.</p><p>Acs anti-CK-MB-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Cortisol";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo. (Acs</p><p>anti-cortisol-biotina/Pèptido</p><p>de cortisol-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Estradiol (E2)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo. (Acs</p><p>anti-estradiol-biotina,</p><p>Peptido de estradiol- Ru)</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Antígeno Prostático Específico Libre, (PSA-L)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich. Acs anti-</p><p>APE-biotina. Acs anti-APE-</p><p>Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Ferritina";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/anticuerposanti-ferritina-biotina, anticuerposanti-ferritina-Ru</p>/MPIQ-01
+
+Procedimientos de
+
+Inmunoquímica
+
+automatizada";"--"
+"301";"2";"En laboratorio";"Hormona Folículo Estimulante (FSH)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-HEF-biotina.</p><p>Acs anti-HEF-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Triyodotironina Libre (FT3)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo.</p><p>(Acs anti-FT3- Ru,</p><p>FT3-biotinado)</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Tiroxina libre, (FT4)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo.</p><p>(Acs anti-FT4- Ru,</p><p>FT4-biotinado)</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"HCG + B (Gonadotropina coriónica humana intacta + subunidad beta)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich. Acs anti-GCH-biotina. Acs anti-GCH-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Insulina";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich. Acsanti-insulina-biotina. Acsanti-insulina-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Hormona Luteinizante (LH)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-LH-biotina.</p><p>Acs anti-LH-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Progesterona II (Progesterona)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo. (Acs anti-progesterona-</p><p>biotina, Peptido de progesterona- Ru)</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Prolactine II (Prolactina)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-prolactina</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"T3 (Triyodotironina)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo.</p><p>(Acs anti-T3- Ru,</p><p>T3-biotina)</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"T4";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo.</p><p>(Acs anti-T4- Ru,</p><p>T4-biotina)</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Testosterona";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/Competitivo.</p><p><br></p><p>(Acsanti-testosterona-</p><p>biotina, Peptido de</p><p><br></p><p>testosterona- Ru)</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Antígeno Prostático Específico Total, (PSA-T)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-APE-biotina.</p><p>Acs anti-APE-Ru</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"TSH (Tirotropina – Hormona estimuladora de la tiroides)";"Suero";"--";"Enzimática quimioluminiscente";"<p>ECLIA/sandwich.</p><p>Acs anti-HET-biotina</p><p>Acs anti-HET-RU</p>/MPIQ-01
+Procedimientos de
+Inmunoquímica
+automatizada";"--"
+"301";"2";"En laboratorio";"Biometría Hemática";"Sangre Total (EDTA)";"--";"Citometría de flujo con láser semiconductor";"<p>NA</p>/<p>MPH-01 Procedimientos de Hematología Automatizada</p>";"--"
+"301";"2";"En laboratorio";"17 Hidroxiprogesterona (17-OH)";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Ensayo en fase sólida,fluoroinmunométrico de tiempo resuelto, basado en una reacción de competencia</p>/<p>MPTN-01 Procedimientos de Tamizaje Metabólico Neonatal&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"TSH Neonatal";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Ensayo en fase sólida, fluoroinmunométrico de tiempo resuelto, basado en la técnica directa del sándwich</p>/<p>MPTN-01 Procedimientos de Tamizaje Metabólico Neonatal&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"Fenilalanina";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Ensayo enzimático</p><p> automatizado</p>/<p>MPTN-01 Procedimientos de Tamizaje Metabólico Neonatal&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"Galactosa Total";"Sangre seca en papel filtro";"--";"Fluoroinmunoensayo";"<p>Método fluorescente de</p><p> galactosa oxidasa</p>/<p>MPTN-01 Procedimientos de Tamizaje Metabólico Neonatal&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"HIV+ p24";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Sándwich</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"HbsAg II";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Sándwich</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"ANTI-HCV";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/sandwich&nbsp;</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"ANTI-HAV IgM";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Sándwich&nbsp;</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"Anti-HBc IgM";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Sándwich&nbsp;</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"Anti-HBc II";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Sándwich</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"ANTI-HBe";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Sándwich&nbsp;</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"HBeAg";"Suero";"--";"Electroquimioluminiscencia";"<p>ECLIA/Sándwich</p>/<p>MPIQ-01 Procedimientos de Inmunoquímica Automatizada&nbsp;</p>";"--"
+"301";"2";"En laboratorio";"Tiempo de Protrombina (TP)";"Plasma citratado";"--";"Cronometría";"<p>MPCG-01</p><p>Procedimientos</p><p>coagulación</p><p>automatizada</p>/<p>MPCG-01 Procedimientos coagulación automatizada</p>";"--"
+"301";"2";"En laboratorio";"Fibrinógeno";"Plasma citratado";"--";"Cronometría";"<p>MPCG-01</p><p>Procedimientos</p><p>coagulación</p><p>automatizada</p>/<p>MPCG-01 Procedimientos coagulación automatizada</p>";"--"
+"301";"2";"En laboratorio";"Tiempo  Parcial de Tromboplastina (APTT)";"Plasma citratado";"--";"Cronometría";"<p>MPCG-01</p><p>Procedimientos</p><p>coagulación</p><p>automatizada</p>/<p>MPCG-01 Procedimientos coagulación automatizada</p>";"--"
+"301";"2";"En laboratorio";"INR";"Plasma citratado";"--";"Cronometría";"<p>MPCG-01</p><p>Procedimientos</p><p>coagulación</p><p>automatizada</p>/<p>MPCG-01 Procedimientos coagulación automatizada</p>";"--"
+"301";"2";"En laboratorio";"WBC, WBC 5 DIFF,NRBC";"Sangre Total (EDTA)";"--";"Citometría de flujo con láser semiconductor";"<p>NA</p>/<p>MPH-01 Procedimientos de Hematología Automatizada</p>";"--"
+"301";"2";"En laboratorio";"Albúmina";"Suero";"--";"Colorimetría";"<p>Colorimétrica punto final</p><p>verde bromocresol (BCG)</p>/<p>MPQC-01 Procedimiento de química clínica automatizada</p>";"--"
+"301";"2";"En laboratorio";"RBC, PLT, PLT-F";"Sangre Total (EDTA)";"--";"Citometría de flujo";"<p>NA</p>/<p>MPH-01 Procedimientos de Hematología Automatizada</p>";"--"

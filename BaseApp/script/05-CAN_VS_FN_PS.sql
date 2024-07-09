@@ -191,7 +191,7 @@ EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquema		', NULL ,'funcion para obten
 EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaTodo	', NULL ,'funcion para obtener todos los esquema'				
 EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaDato	', NULL ,'funcion para obtener un esquema y sus datos'				
 EXEC dbo.setDiccionario	'dbo.psBuscarPalabra			', NULL ,'procedimiento almacenado para la busqueda principal'				
-GO
+go
 
 EXEC DBO.Bitacora ' CREATE OR ALTER 
 					,dbo.vwFiltro					
