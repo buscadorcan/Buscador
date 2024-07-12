@@ -49,6 +49,8 @@ namespace WebApp.Extensions
             services.AddScoped<IDataLakeRepository, DataLakeRepository>();
             services.AddScoped<IDataLakeOrganizacionRepository, DataLakeOrganizacionRepository>();
             services.AddScoped<IOrganizacionFullTextRepository, OrganizacionFullTextRepository>();
+            services.AddScoped<IConexionRepository, ConexionRepository>();
+            services.AddScoped<IConectionStringBuilderService, ConectionStringBuilderService>();
 
             // WorkerService
             services.AddHostedService<BackgroundWorkerService>();

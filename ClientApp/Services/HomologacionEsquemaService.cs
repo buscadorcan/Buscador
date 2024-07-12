@@ -5,6 +5,7 @@ using ClientApp.Models;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
 using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Services {
     public class HomologacionEsquemaService : IHomologacionEsquemaService
@@ -31,21 +32,21 @@ namespace ClientApp.Services {
             }
         }
 
-        public async Task<HomologacionEsquema> GetHomologacionEsquemaAsync(int idHomologacionEsquema)
+        public async Task<HomologacionEsquemaDto> GetHomologacionEsquemaAsync(int idHomologacionEsquema)
         {
             var response = await _httpClient.GetAsync($"{url}/{idHomologacionEsquema}");
             response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<HomologacionEsquema>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<HomologacionEsquemaDto>>()).Result;
         }
 
-        public async Task<List<HomologacionEsquema>> GetHomologacionEsquemasAsync()
+        public async Task<List<HomologacionEsquemaDto>> GetHomologacionEsquemasAsync()
         {
             var response = await _httpClient.GetAsync($"{url}");
             response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionEsquema>>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionEsquemaDto>>>()).Result;
         }
 
-        public async Task<RespuestaRegistro> RegistrarOActualizar(HomologacionEsquema registro)
+        public async Task<RespuestaRegistro> RegistrarOActualizar(HomologacionEsquemaDto registro)
         {
             var content = JsonConvert.SerializeObject(registro);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");

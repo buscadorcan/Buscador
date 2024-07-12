@@ -2,6 +2,8 @@ using System.Net.Http.Json;
 using ClientApp.Helpers;
 using ClientApp.Models;
 using ClientApp.Services.IService;
+using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Services
 {
@@ -14,25 +16,33 @@ namespace ClientApp.Services
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/buscarPalabra?paramJSON={paramJSON}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<ResultDataHomologacionEsquema>();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ResultDataHomologacionEsquema>>()).Result;
         }
-        public async Task<List<HomologacionEsquema>> FnHomologacionEsquemaTodoAsync()
+        public async Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync()
         {
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaTodo");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<HomologacionEsquema>>();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionEsquemaDto>>>()).Result;
         }
-        public async Task<HomologacionEsquema> FnHomologacionEsquemaAsync(int idHomologacionEsquema)
+        public async Task<HomologacionEsquemaDto?> FnHomologacionEsquemaAsync(int idHomologacionEsquema)
         {
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquema/{idHomologacionEsquema}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<HomologacionEsquema>();
+
+            var result = await response.Content.ReadFromJsonAsync<RespuestasAPI<HomologacionEsquemaDto>>();
+
+            if (result != null)
+            {
+                return result.Result;
+            }
+
+            return default;
         }
         public async Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, int idDataLakeOrganizacion)
         {
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaDato/{idHomologacionEsquema}/{idDataLakeOrganizacion}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<DataHomologacionEsquema>>();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<DataHomologacionEsquema>>>()).Result;
         }
     }
 }

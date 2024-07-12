@@ -15,7 +15,7 @@ namespace ClientApp.Pages.BuscadorCan
         public int IdDataLakeOrganizacion { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
-        private HomologacionEsquema? homologacionEsquema;
+        private HomologacionEsquemaDto? homologacionEsquema;
         private List<HomologacionDto>? Columnas;
         private List<DataHomologacionEsquema>? resultados;
         protected override async Task OnInitializedAsync()

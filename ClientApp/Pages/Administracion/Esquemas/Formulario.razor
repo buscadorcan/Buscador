@@ -8,7 +8,7 @@
 
 <PageTitle>Formulario de Esquema</PageTitle>
 
-<EditForm Model="homologacionEsquema" OnValidSubmit="GuardarHomologacionEsquema" class="pt-4">
+<EditForm EditContext="@editContext" class="pt-4">
     <DataAnnotationsValidator />
 
     <div class="card border p-4">
@@ -86,7 +86,12 @@
 </div>
 <div class="py-2">
     <hr style="background-color:aliceblue" />
-    <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarHomologacionEsquema()">
+    <Button
+        @ref="saveButton"
+        Color="ButtonColor.Success"
+        Type="ButtonType.Submit"
+        @onclick="async () => await GuardarHomologacionEsquema()"
+    >
         Guardar
     </Button>
 </div>

@@ -1,7 +1,7 @@
 using BlazorBootstrap;
-using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
@@ -10,43 +10,65 @@ namespace ClientApp.Pages.Administracion.Esquemas
 {
     public partial class Formulario
     {
-        private string? homologacionName;
+        private EditContext? editContext;
         private Button saveButton = default!;
         public event Action? DataLoaded;
-        private HomologacionEsquema homologacionEsquema = new HomologacionEsquema();
-        [Inject]
-        public IHomologacionEsquemaService? iHomologacionEsquemaService { get; set; }
-        [Inject]
-        public IHomologacionService? iHomologacionService { get; set; }
-        [Inject]
-        public ICatalogosService? iCatalogosService { get; set; }
-        private List<HomologacionDto>? listaVwHomologacion;
-
-        [Inject]
-        public NavigationManager? navigationManager { get; set; }
-        [Inject]
-        protected IJSRuntime? JSRuntime { get; set; }
+        
         [Parameter]
         public int? Id { get; set; }
+        
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public IHomologacionEsquemaService? HomologacionEsquemaService { get; set; }
+        
+        [Inject]
+        public IBusquedaService? BusquedaService { get; set; }
+        
+        [Inject]
+        public IHomologacionService? HomologacionService { get; set; }
+        
+        [Inject]
+        public ICatalogosService? CatalogosService { get; set; }
+        
+        [Inject]
+        public NavigationManager? NavigationManager { get; set; }
+        
+        [Inject]
+        protected IJSRuntime? JSRuntime { get; set; }
+        
+        [Inject]
+        public Services.ToastService? ToastService { get; set; }
+        
+        private string? homologacionName;
+        private HomologacionEsquemaDto? homologacionEsquema = new();
+        private List<HomologacionDto>? listaVwHomologacion;
         private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
+
         protected override async Task OnInitializedAsync()
         {
-            if (iCatalogosService != null)
+            if (homologacionEsquema != null)
+                editContext = new EditContext(homologacionEsquema);
+
+            if (CatalogosService != null)
+                listaVwHomologacion = await CatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+
+            if (Id > 0 && HomologacionEsquemaService != null && BusquedaService != null)
             {
-                listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
-
-                if (Id > 0 && iHomologacionEsquemaService != null) {
-                    homologacionEsquema = await iHomologacionEsquemaService.GetHomologacionEsquemaAsync(Id.Value);
-
-                    lista = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson);
-                } else {
-                    homologacionEsquema.EsquemaJson = "{}";
+                homologacionEsquema = await BusquedaService.FnHomologacionEsquemaAsync(Id.Value);
+                if (homologacionEsquema != null)
+                {
+                    UpdateEditContext(homologacionEsquema);
+                    lista = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson ?? "[]");
                 }
             }
-            DataLoaded += async () => {
-                if (!(lista is null) && JSRuntime != null) {
+            else if (homologacionEsquema != null)
+            {
+                homologacionEsquema.EsquemaJson = "[]";
+            }
+
+            DataLoaded += async () =>
+            {
+                if (lista != null && JSRuntime != null)
+                {
                     await Task.Delay(2000);
                     await JSRuntime.InvokeVoidAsync("initSortable", DotNetObjectReference.Create(this));
                 }
@@ -54,65 +76,80 @@ namespace ClientApp.Pages.Administracion.Esquemas
 
             DataLoaded?.Invoke();
         }
+
+        private void UpdateEditContext(HomologacionEsquemaDto newModel)
+        {
+            editContext = new EditContext(newModel);
+        }
+
         private async Task GuardarHomologacionEsquema()
         {
             saveButton.ShowLoading("Guardando...");
 
-            homologacionEsquema.EsquemaJson = JsonConvert.SerializeObject(lista);
-
-            var result = await iHomologacionEsquemaService.RegistrarOActualizar(homologacionEsquema);
-            if (result.registroCorrecto)
+            if (homologacionEsquema != null && editContext != null && editContext.Validate())
             {
-                // guardar las nuevas posiciones
-                if (lista != null)
-                {
-                    foreach (var n in lista) {
-                        if (iHomologacionService != null)
-                            await iHomologacionService.RegistrarOActualizar(new HomologacionDto() {
-                                IdHomologacion = n.IdHomologacion,
-                                MostrarWebOrden = n.MostrarWebOrden
-                            });
-                    }
+                homologacionEsquema.EsquemaJson = JsonConvert.SerializeObject(lista?.Select(s => new { s.IdHomologacion }));
 
-                    toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                    navigationManager?.NavigateTo("/esquemas");
+                if (HomologacionEsquemaService != null)
+                {
+                    var result = await HomologacionEsquemaService.RegistrarOActualizar(homologacionEsquema);
+                    if (result.registroCorrecto)
+                    {
+                        if (lista != null)
+                        {
+                            foreach (var n in lista)
+                            {
+                                if (HomologacionService != null)
+                                    await HomologacionService.RegistrarOActualizar(new HomologacionDto { IdHomologacion = n.IdHomologacion, MostrarWebOrden = n.MostrarWebOrden });
+                            }
+
+                            ToastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                            NavigationManager?.NavigateTo("/esquemas");
+                        }
+                    }
+                    else
+                    {
+                        ToastService?.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
+                    }
                 }
             }
-            else
-            {
-                toastService?.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
-            }
-
             saveButton.HideLoading();
         }
+
         private void EliminarElemento(int elemento)
         {
-            lista = lista.Where(c => c.IdHomologacion != elemento).ToList();
+            lista = lista?.Where(c => c.IdHomologacion != elemento).ToList();
         }
+
         [JSInvokable]
         public async Task OnDragEnd(string[] sortedIds)
         {
             var tempList = new List<HomologacionDto>();
-            for (int i = 0; i < sortedIds.Length; i += 1)
+            for (int i = 0; i < sortedIds.Length; i++)
             {
-                HomologacionDto homo = lista.FirstOrDefault(h => h.IdHomologacion == Int32.Parse(sortedIds[i]));
-                homo.MostrarWebOrden = i + 1;
-                tempList.Add(homo);
+                var homo = lista?.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i]));
+                if (homo != null)
+                {
+                    homo.MostrarWebOrden = i + 1;
+                    tempList.Add(homo);
+                }
             }
             lista = tempList;
             await Task.CompletedTask;
         }
+
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {
-            if (listaVwHomologacion is null)
-                listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+            if (listaVwHomologacion == null && CatalogosService != null)
+                listaVwHomologacion = await CatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
 
-            return await Task.FromResult(request.ApplyTo(listaVwHomologacion.OrderBy(vmH => vmH.MostrarWebOrden)));
+            return await Task.FromResult(request.ApplyTo((listaVwHomologacion ?? new List<HomologacionDto>()).OrderBy(vmH => vmH.MostrarWebOrden)));
         }
-        private void OnAutoCompleteChanged(HomologacionDto _vwHomologacionSelected)
+
+        private void OnAutoCompleteChanged(HomologacionDto vwHomologacionSelected)
         {
-            _vwHomologacionSelected.MostrarWebOrden = lista.Count();
-            lista = lista.Append(_vwHomologacionSelected).ToList();
+            vwHomologacionSelected.MostrarWebOrden = lista?.Count() ?? 0;
+            lista = lista?.Append(vwHomologacionSelected).ToList();
         }
     }
 }

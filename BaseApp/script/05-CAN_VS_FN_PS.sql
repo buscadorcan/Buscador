@@ -103,7 +103,8 @@ RETURN
 	SELECT	 IdHomologacionEsquema	
 			,MostrarWebOrden	
 			,MostrarWeb	
-			,TooltipWeb	
+			,TooltipWeb
+			,VistaNombre
 			,(select dbo.fnHomologacionEsquemaCampo(IdHomologacionEsquema)) EsquemaJson
 	FROM	HomologacionEsquema		WITH (NOLOCK)
 	WHERE	IdHomologacionEsquema = @IdHomologacionEsquema	
