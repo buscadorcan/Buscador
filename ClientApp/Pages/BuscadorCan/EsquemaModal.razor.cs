@@ -2,6 +2,7 @@ using BlazorBootstrap;
 using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -12,7 +13,7 @@ namespace ClientApp.Pages.BuscadorCan
         public DataHomologacionEsquema? dataLake { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
-        private List<HomologacionEsquema>? listaEsquemas = new List<HomologacionEsquema>();
+        private List<HomologacionEsquemaDto>? listaEsquemas = new List<HomologacionEsquemaDto>();
         protected override async Task OnInitializedAsync()
         {
             try

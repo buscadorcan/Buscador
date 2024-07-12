@@ -1,11 +1,12 @@
 using ClientApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Services.IService {
     public interface IHomologacionEsquemaService
     {
-        Task<List<HomologacionEsquema>> GetHomologacionEsquemasAsync();
-        Task<HomologacionEsquema> GetHomologacionEsquemaAsync(int idHomologacionEsquema);
-        public Task<RespuestaRegistro> RegistrarOActualizar(HomologacionEsquema registro);
+        Task<List<HomologacionEsquemaDto>> GetHomologacionEsquemasAsync();
+        Task<HomologacionEsquemaDto> GetHomologacionEsquemaAsync(int idHomologacionEsquema);
+        public Task<RespuestaRegistro> RegistrarOActualizar(HomologacionEsquemaDto registro);
         Task<RespuestaRegistro> EliminarHomologacionEsquema(int idHomologacionEsquema);
     }
 }

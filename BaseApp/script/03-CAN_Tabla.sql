@@ -27,6 +27,7 @@ DROP TABLE if exists dbo.DataLakeOrganizacion;
 DROP TABLE if exists dbo.DataLake;
 DROP TABLE if exists dbo.HomologacionEsquema;
 DROP TABLE if exists dbo.Homologacion;
+DROP TABLE if exists dbo.Conexion;
 GO
 
 EXEC DBO.Bitacora 'DROP TABLE if exists 
@@ -40,7 +41,8 @@ dbo.DataLakePersona;
 dbo.DataLakeOrganizacion;
 dbo.DataLake;
 dbo.HomologacionEsquema;
-dbo.Homologacion '
+dbo.Homologacion;
+ dbo.Conexion '
 GO
 
 CREATE TABLE dbo.Usuario (
@@ -189,6 +191,32 @@ CREATE TABLE dbo.WebSiteLog (
 	,CONSTRAINT  [PK_WSL_WebSiteLog]		PRIMARY KEY CLUSTERED (IdWebSiteLog) 
 );
 
+CREATE TABLE dbo.Conexion (
+     IdConexion			INT IDENTITY(1,1) NOT NULL
+    ,IdUsuario			INT NOT NULL
+    ,IdSistema      INT NOT NULL
+    ,BaseDatos      NVARCHAR(100) NOT NULL
+    ,Host           NVARCHAR(100) NOT NULL
+    ,Puerto         INT NOT NULL
+    ,Usuario        NVARCHAR(100) NOT NULL
+    ,Contrasenia    NVARCHAR(100) NOT NULL
+    ,MotorBaseDatos NVARCHAR(100) NOT NULL
+    ,Filtros        NVARCHAR(MAX) NOT NULL DEFAULT('{}')
+    ,FechaConexion		DATETIME NOT NULL DEFAULT(GETDATE())
+    ,TiempoEspera    INT NOT NULL DEFAULT(0) -- Tiempo de espera en segundos
+    ,Estado			NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,FechaCreacion				DATETIME	NOT NULL DEFAULT(GETDATE())
+    ,FechaModifica				DATETIME	NOT NULL DEFAULT(GETDATE())  
+    ,IdUserCreacion				INT			NOT NULL DEFAULT(0)
+    ,IdUserModifica				INT			NOT NULL DEFAULT(0)  
+  
+  ,CONSTRAINT  [PK_C_IdConexion]		    PRIMARY KEY CLUSTERED (IdConexion) 
+    ,CONSTRAINT  [FK_C_IdUsuario]		    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario)
+    ,CONSTRAINT  [CK_C_Estado]			    CHECK   (Estado IN ('A', 'X'))
+    ,CONSTRAINT  [CK_C_MotorBaseDatos]  CHECK   (MotorBaseDatos IN ('MYSQL', 'SQLSERVER', 'SQLLITE'))
+    ,CONSTRAINT  [CK_C_Filtros]			CHECK   (ISJSON(Filtros) = 1 )
+);
+
 EXEC DBO.Bitacora 'CREATE TABLE
 dbo.Usuario, 
 dbo.EndPointWeb, 
@@ -198,7 +226,8 @@ dbo.HomologacionEsquema,
 dbo.DataLake, 
 dbo.DataLakeOrganizacion, 
 dbo.DataLakePersona, 
-dbo.WebSiteLog '
+dbo.WebSiteLog
+dbo.Conexion '
 GO
 
 EXEC dbo.setDiccionario	'dbo.Usuario'   , NULL                   ,'usuarios que gestionan el buscador andino' 
