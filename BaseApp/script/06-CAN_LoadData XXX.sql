@@ -19,27 +19,33 @@ EXEC sp_configure 'Ad Hoc Distributed Queries', 1;
 RECONFIGURE;
 EXEC DBO.Bitacora 'sp_configure BULK INSERT'
 
+/*-----------------------------------------------------------------------------------------/
+En local acá se debe colocar la ruta del archivo completa desde la raíz del disco
+en docker se la puede copiar a un directorio temporal del container para ejecutarla
+Desde la raiz del proyecto se peude copiar al docker usando los comandos:
+  - docker cp .\BaseApp\script\00-Homologacion.csv mssql-container:/tmp/
+  - docker cp .\BaseApp\script\00-HomologacionEsquema.csv mssql-container:/tmp/
+\----------------------------------------------------------------------------------------*/
+
 SET IDENTITY_INSERT dbo.Homologacion ON;
 BULK INSERT dbo.Homologacion
-FROM 'C:\pat_mic\Buscador\BaseApp\script\00-Homologacion.csv'
+FROM '/tmp/00-Homologacion.csv'
 WITH (
     FIELDTERMINATOR = ';',
     ROWTERMINATOR = '\n',
     FIRSTROW = 2,
-    CODEPAGE = '65001', --para las tildes
-	keepIdentity
+	KEEPIDENTITY
 );
 SET IDENTITY_INSERT dbo.Homologacion OFF;
 EXEC DBO.Bitacora 'BULK INSERT dbo.Homologacion'
 
 SET IDENTITY_INSERT dbo.HomologacionEsquema ON;
 BULK INSERT dbo.HomologacionEsquema
-FROM 'C:\pat_mic\Buscador\BaseApp\script\00-HomologacionEsquema.csv'
+FROM '/tmp/00-HomologacionEsquema.csv'
 WITH (
     FIELDTERMINATOR = ';',
     ROWTERMINATOR = '\n',
     FIRSTROW = 2,
-    CODEPAGE = '65001', --para las tildes
 	KEEPIDENTITY
 );
 SET IDENTITY_INSERT dbo.HomologacionEsquema OFF;

@@ -30,7 +30,7 @@ go
 IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = 'userSAE')
 BEGIN
     -- Crear el usuario
-    CREATE LOGIN userSAE WITH PASSWORD = 'passSAE';
+    CREATE LOGIN userSAE WITH PASSWORD = 'passSAE233';
     PRINT 'Usuario userSAE creado.';
 END
 ELSE

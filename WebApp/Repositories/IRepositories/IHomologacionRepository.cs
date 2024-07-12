@@ -8,5 +8,6 @@ namespace WebApp.Repositories.IRepositories {
         Homologacion? FindById(int id);
         Homologacion? FindByMostrarWeb(string? filter);
         ICollection<Homologacion> FindByParent(int parentId);
+        List<Homologacion> FindByIds(int[] ids);
     }
 }

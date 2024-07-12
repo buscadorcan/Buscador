@@ -20,7 +20,6 @@ namespace WebApp.Service
         public DbSet<HomologacionEsquema> HomologacionEsquema { get; set; }
         public DbSet<DataLake> DataLake { get; set; }
         public DbSet<OrganizacionFullText> OrganizacionFullText { get; set; }
-        // otras
         public DbSet<Conexion> Conexion { get; set; }
     }
 }

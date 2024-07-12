@@ -17,6 +17,7 @@ namespace WebApp.Repositories
         {
             _jwtService = jwtService;
         }
+        
         public bool Create(HomologacionEsquema data)
         {
             data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
@@ -28,14 +29,22 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
+        
         public HomologacionEsquema? FindById(int id)
         {
             return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().FirstOrDefault(u => u.IdHomologacionEsquema == id));
         }
+        
         public List<HomologacionEsquema> FindAll()
         {
             return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.MostrarWebOrden).ToList());
         }
+        
+        public List<HomologacionEsquema> FindAllWithViews()
+        {
+            return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().Where(c => c.Estado == "A" && !string.IsNullOrEmpty(c.VistaNombre.Trim())).OrderBy(c => c.MostrarWebOrden).ToList());
+        }
+
         public bool Update(HomologacionEsquema newRecord)
         {
           return ExecuteDbOperation(context => {

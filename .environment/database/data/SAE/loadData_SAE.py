@@ -4,13 +4,13 @@ import pyodbc
 import os
 
 #-------------- CONFIGURE -------------------#
-csv_directory = r'C:\pat_mic\Buscador\BaseApp\script\SAE'
+csv_directory = r'.'
 driver  = '{SQL Server}'
-server  = 'PAT-PC'
+server  = 'localhost,1434'
 db      = 'SAE'
 tcon    = 'yes'
-uname   = 'userSAE'
-pword   = 'passSAE'
+uname   = 'sa'
+pword   = 'pat_mic_DBKEY'
 
 def read_csv_load_db(file_name):
     file_path = os.path.join(csv_directory, file_name)
@@ -19,8 +19,16 @@ def read_csv_load_db(file_name):
         df = pd.read_csv(file_path, sep=';', encoding='latin1')
         df = df.replace({np.nan: None, '': None})
 
-        conn = pyodbc.connect(driver=driver, server=server, database=db, 
-                              trusted_connection=tcon, user=uname, password=pword)
+        connection_string = (
+            f"Driver={{SQL Server}};"
+            f"Server={server};"
+            f"Database={db};"
+            f"UID={uname};"
+            f"PWD={pword};"
+            f"Trusted_Connection=no"  # Importante: deshabilita la conexión confiable
+        )
+
+        conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
 
         table_name = file_name.split(".")[0]
