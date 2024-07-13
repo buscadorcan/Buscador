@@ -23,6 +23,7 @@ builder.Services.AddScoped<ICatalogosService, CatalogosService>();
 builder.Services.AddScoped<IHomologacionService, HomologacionService>();
 builder.Services.AddScoped<IHomologacionEsquemaService, HomologacionEsquemaService>();
 builder.Services.AddSingleton<ClientApp.Services.ToastService>();
+builder.Services.AddScoped<IDynamicService, DynamicService>();
 
 builder.Services.AddBlazoredLocalStorage();
 

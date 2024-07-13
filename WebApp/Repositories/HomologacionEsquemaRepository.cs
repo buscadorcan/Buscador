@@ -42,7 +42,7 @@ namespace WebApp.Repositories
         
         public List<HomologacionEsquema> FindAllWithViews()
         {
-            return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().Where(c => c.Estado == "A" && !string.IsNullOrEmpty(c.VistaNombre.Trim())).OrderBy(c => c.MostrarWebOrden).ToList());
+            return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().Where(c => c.Estado == "A" && c.VistaNombre != null && !string.IsNullOrEmpty(c.VistaNombre.Trim())).OrderBy(c => c.MostrarWebOrden).ToList());
         }
 
         public bool Update(HomologacionEsquema newRecord)
