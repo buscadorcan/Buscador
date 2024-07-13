@@ -19,11 +19,16 @@ namespace WebApp.Repositories
     {
       data.IdDataLakeOrganizacion = 0;
 
-      return ExecuteDbOperation(context => {
-          context.DataLakeOrganizacion.Add(data);
-          context.SaveChanges();
-          return data;
-      });
+      try {
+        return ExecuteDbOperation(context => {
+            context.DataLakeOrganizacion.Add(data);
+            context.SaveChanges();
+            return data;
+        });
+      } catch (Exception e) {
+        Console.WriteLine(e);
+        return null;
+      }
     }
 
     public DataLakeOrganizacion? FindById(int Id)

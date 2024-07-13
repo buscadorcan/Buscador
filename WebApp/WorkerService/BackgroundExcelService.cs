@@ -4,7 +4,7 @@ namespace WebApp.WorkerService
 {
   public class BackgroundExcelService : BackgroundService
   {
-    private readonly string? _configLogPath;
+    private string? _configLogPath;
     private readonly IConfiguration? _config;
     readonly ILogger<BackgroundExcelService> _logger;
     private readonly IServiceProvider _services;
@@ -28,8 +28,8 @@ namespace WebApp.WorkerService
               {
                 // var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
                 // excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx");
-                // var service = scope.ServiceProvider.GetRequiredService<IImportadorService>();
-                // service.Importar(Array.Empty<string>());
+                var service = scope.ServiceProvider.GetRequiredService<IImportadorService>();
+                service.Importar(Array.Empty<string>());
               }
               await Task.Delay(TimeSpan.FromMinutes(10000), stoppingToken);
             }
