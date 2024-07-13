@@ -12,8 +12,8 @@ namespace WebApp.Repositories
        public ConexionRepository(
             IJwtService jwtService,
             ILogger<ConexionRepository> logger,
-            IDbContextFactory dbContextFactory
-        ) : base(dbContextFactory, logger)
+            ISqlServerDbContextFactory sqlServerDbContextFactory
+        ) : base(sqlServerDbContextFactory, logger)
         {
             _jwtService = jwtService;
         }

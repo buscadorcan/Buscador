@@ -12,8 +12,8 @@ namespace WebApp.Repositories
         public HomologacionRepository(
             IJwtService jwtService,
             ILogger<UsuarioRepository> logger,
-            IDbContextFactory dbContextFactory
-        ) : base(dbContextFactory, logger)
+            ISqlServerDbContextFactory sqlServerDbContextFactory
+        ) : base(sqlServerDbContextFactory, logger)
         {
             _jwtService = jwtService;
         }

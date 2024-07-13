@@ -12,8 +12,8 @@ namespace WebApp.Repositories
     {
         public BuscadorRepository(
             ILogger<UsuarioRepository> logger,
-            IDbContextFactory dbContextFactory
-        ) : base(dbContextFactory, logger)
+            ISqlServerDbContextFactory sqlServerDbContextFactory
+        ) : base(sqlServerDbContextFactory, logger)
         {
             
         }

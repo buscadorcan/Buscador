@@ -12,7 +12,10 @@
 
         <EditForm Model="buscarRequest" OnValidSubmit="BuscarPalabraRequest" id="search-form" class="search-form clearfix" autocomplete="off">
             <InputText @bind-Value="buscarRequest.TextoBuscar" class="search-term required" type="text" style="box-sizing: content-box" placeholder="Ingrese Texto a buscar" />
+            <br />
+            <br />
             <input class="search-btn" type="submit" value="Buscar" />
+            <input class="search-btn" type="button" value="Búsqueda Exacta" @onclick="async () => await BuscarPalabraRequest(0)" />
             <div id="search-error-container"></div>
         </EditForm>
     </div>

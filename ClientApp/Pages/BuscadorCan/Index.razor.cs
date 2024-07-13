@@ -13,6 +13,7 @@ namespace ClientApp.Pages.BuscadorCan
         private List<List<HomologacionDto>?> listadeOpciones = new List<List<HomologacionDto>?>();
         private List<List<int>> selectedValues = new List<List<int>>();
         private BuscarRequest buscarRequest = new BuscarRequest();
+        private int ModoBuscar = 1;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -48,14 +49,19 @@ namespace ClientApp.Pages.BuscadorCan
                 selectedValues[index].Add(selectedValue);
             }
         }
-        private async Task BuscarPalabraRequest()
+        private async Task BuscarPalabraRequest(int modoBuscar)
         {
             if (childComponentRef != null && childComponentRef.grid != null)
             {
+                childComponentRef.ModoBuscar = modoBuscar;
                 await childComponentRef.grid.ResetPageNumber();
             }
 
             await Task.CompletedTask;
+        }
+        private async Task BuscarPalabraRequest()
+        {
+            await BuscarPalabraRequest(1);
         }
     }
 }
