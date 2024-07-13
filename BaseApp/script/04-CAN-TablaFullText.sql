@@ -25,13 +25,6 @@ CREATE TABLE OrganizacionFullText(
 );
 EXEC DBO.Bitacora 'CREATE TABLE OrganizacionFullText'
 
-CREATE FULLTEXT INDEX ON OrganizacionFullText
-( FullTextOrganizacion LANGUAGE 3082 )   --3082	Spanish 
-KEY INDEX [PK_IdOrganizacionFullText]
-ON OrganizacionFullText_cat
-WITH STOPLIST = SYSTEM;
-EXEC DBO.Bitacora 'CREATE FULLTEXT INDEX ON OrganizacionFullText'
-
 --SELECT fulltext_catalog_id, name FROM sys.fulltext_catalogs
 IF EXISTS (SELECT * FROM sys.fulltext_catalogs WHERE name = 'OrganizacionFullText_cat')
 begin
@@ -42,5 +35,11 @@ end
 CREATE FULLTEXT CATALOG OrganizacionFullText_cat WITH ACCENT_SENSITIVITY = OFF;
 GO
 
+CREATE FULLTEXT INDEX ON OrganizacionFullText
+( FullTextOrganizacion LANGUAGE 3082 )   --3082	Spanish 
+KEY INDEX [PK_IdOrganizacionFullText]
+ON OrganizacionFullText_cat
+WITH STOPLIST = SYSTEM;
+EXEC DBO.Bitacora 'CREATE FULLTEXT INDEX ON OrganizacionFullText'
 -- select * from sys.fulltext_catalogs;
 -- Select IdDataLakeOrganizacion from OrganizacionFullText WHERE CONTAINS((FullTextOrganizacion), 'empresa');

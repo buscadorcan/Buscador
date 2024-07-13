@@ -41,6 +41,11 @@ namespace WebApp.Repositories
         {
           return ExecuteDbOperation(context => context.Homologacion.Where(c => c.IdHomologacionGrupo == parentId && c.Estado.Equals("A")).OrderBy(c => c.MostrarWebOrden).ToList());
         }
+        
+        public List<Homologacion> FindByIds(int[] ids)
+        {
+            return ExecuteDbOperation(context => context.Homologacion.Where(c => ids.Contains(c.IdHomologacion)).OrderBy(c => c.MostrarWebOrden).ToList());
+        }
 
         public bool Update(Homologacion newRecord)
         {

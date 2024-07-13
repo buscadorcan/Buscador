@@ -29,6 +29,8 @@ DROP TABLE if exists dbo.HomologacionEsquema;
 DROP TABLE if exists dbo.Homologacion;
 DROP TABLE if exists dbo.Conexion;
 GO
+DROP TABLE if exists dbo.Conexion;
+GO
 
 EXEC DBO.Bitacora 'DROP TABLE if exists 
 dbo.WebSiteLog;

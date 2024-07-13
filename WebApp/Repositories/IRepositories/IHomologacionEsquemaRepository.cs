@@ -8,5 +8,6 @@ namespace WebApp.Repositories.IRepositories {
     bool Create(HomologacionEsquema data);
     HomologacionEsquema? FindById(int Id);
     List<HomologacionEsquema> FindAll();
+    List<HomologacionEsquema> FindAllWithViews();
   }
 }
