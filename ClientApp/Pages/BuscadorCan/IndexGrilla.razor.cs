@@ -21,6 +21,7 @@ namespace ClientApp.Pages.BuscadorCan
         public Grid<DataHomologacionEsquema>? grid;
         private List<HomologacionDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
+        public int ModoBuscar { get; set;}
         protected override async Task OnInitializedAsync()
         {
             try
@@ -40,6 +41,7 @@ namespace ClientApp.Pages.BuscadorCan
                 if (servicio != null)
                 {
                     ResultDataHomologacionEsquema result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(new {
+                        ModoBuscar = ModoBuscar,
                         TextoBuscar = buscarRequest?.TextoBuscar ?? "",
                         IdHomologacionFiltro = selectedValues?.SelectMany(list => list).Where(c => c != 0).ToList()
                     }), PageNumber, PageSize);

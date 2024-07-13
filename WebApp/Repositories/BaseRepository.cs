@@ -8,19 +8,19 @@ namespace WebApp.Repositories
     public abstract class BaseRepository
     {
         private readonly ILogger _logger;
-        private readonly IDbContextFactory _dbContextFactory;
+        private readonly ISqlServerDbContextFactory _sqlServerDbContextFactory;
 
-        protected BaseRepository(IDbContextFactory dbContextFactory, ILogger logger)
+        protected BaseRepository(ISqlServerDbContextFactory sqlServerDbContextFactory, ILogger logger)
         {
             _logger = logger;
-            _dbContextFactory = dbContextFactory;
+            _sqlServerDbContextFactory = sqlServerDbContextFactory;
         }
 
         protected TResult ExecuteDbOperation<TResult>(Func<SqlServerDbContext, TResult> operation)
         {
             try
             {
-                using (var context = _dbContextFactory.CreateDbContext())
+                using (var context = _sqlServerDbContextFactory.CreateDbContext())
                 {
                     return operation(context);
                 }
@@ -36,7 +36,7 @@ namespace WebApp.Repositories
         {
             try
             {
-                using (var context = _dbContextFactory.CreateDbContext())
+                using (var context = _sqlServerDbContextFactory.CreateDbContext())
                 {
                     return await operation(context);
                 }

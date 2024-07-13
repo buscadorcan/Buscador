@@ -8,9 +8,9 @@ namespace WebApp.Repositories
     public class CatalogosRepository : BaseRepository, ICatalogosRepository
     {
         public CatalogosRepository(
-            IDbContextFactory dbContextFactory,
-            ILogger<CatalogosRepository> logger
-        ) : base(dbContextFactory, logger)
+            ILogger<CatalogosRepository> logger,
+            ISqlServerDbContextFactory sqlServerDbContextFactory
+        ) : base(sqlServerDbContextFactory, logger)
         {
         }
         public List<VwGrilla> ObtenerEtiquetaGrilla()

@@ -10,8 +10,8 @@ namespace WebApp.Repositories
         public EndpointRepository (
             IJwtService jwtService,
             ILogger<EndpointRepository> logger,
-            IDbContextFactory dbContextFactory
-        ) : base(dbContextFactory, logger)
+            ISqlServerDbContextFactory sqlServerDbContextFactory
+        ) : base(sqlServerDbContextFactory, logger)
         {
             _jwtService = jwtService;
         }
