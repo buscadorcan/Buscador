@@ -196,23 +196,24 @@ CREATE TABLE dbo.WebSiteLog (
 CREATE TABLE dbo.Conexion (
      IdConexion			INT IDENTITY(1,1) NOT NULL
     ,IdUsuario			INT NOT NULL
-    ,IdSistema      INT NOT NULL
-    ,BaseDatos      NVARCHAR(100) NOT NULL
-    ,Host           NVARCHAR(100) NOT NULL
-    ,Puerto         INT NOT NULL
-    ,Usuario        NVARCHAR(100) NOT NULL
-    ,Contrasenia    NVARCHAR(100) NOT NULL
-    ,MotorBaseDatos NVARCHAR(100) NOT NULL
-    ,Filtros        NVARCHAR(MAX) NOT NULL DEFAULT('{}')
+    ,IdSistema          INT NOT NULL
+    ,BaseDatos          NVARCHAR(100) NOT NULL
+    ,Host               NVARCHAR(100) NOT NULL
+    ,Puerto             INT NOT NULL
+    ,Usuario            NVARCHAR(100) NOT NULL
+    ,Contrasenia        NVARCHAR(100) NOT NULL
+    ,MotorBaseDatos     NVARCHAR(100) NOT NULL
+    ,Filtros            NVARCHAR(MAX) NOT NULL DEFAULT('{}')
     ,FechaConexion		DATETIME NOT NULL DEFAULT(GETDATE())
-    ,TiempoEspera    INT NOT NULL DEFAULT(0) -- Tiempo de espera en segundos
-    ,Estado			NVARCHAR(1) NOT NULL DEFAULT('A')
-    ,FechaCreacion				DATETIME	NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica				DATETIME	NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion				INT			NOT NULL DEFAULT(0)
-    ,IdUserModifica				INT			NOT NULL DEFAULT(0)  
+    ,TiempoEspera       INT NOT NULL DEFAULT(0) -- Tiempo de espera en segundos
+
+    ,Estado			    NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
+    ,FechaModifica		DATETIME	NOT NULL DEFAULT(GETDATE())  
+    ,IdUserCreacion		INT			NOT NULL DEFAULT(0)
+    ,IdUserModifica		INT			NOT NULL DEFAULT(0)  
   
-  ,CONSTRAINT  [PK_C_IdConexion]		    PRIMARY KEY CLUSTERED (IdConexion) 
+    ,CONSTRAINT  [PK_C_IdConexion]		    PRIMARY KEY CLUSTERED (IdConexion) 
     ,CONSTRAINT  [FK_C_IdUsuario]		    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario)
     ,CONSTRAINT  [CK_C_Estado]			    CHECK   (Estado IN ('A', 'X'))
     ,CONSTRAINT  [CK_C_MotorBaseDatos]  CHECK   (MotorBaseDatos IN ('MYSQL', 'SQLSERVER', 'SQLLITE'))

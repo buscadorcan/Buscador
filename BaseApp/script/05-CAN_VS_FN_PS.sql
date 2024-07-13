@@ -136,10 +136,10 @@ RETURN
 GO
 
 CREATE OR ALTER PROCEDURE psBuscarPalabra ( @paramJSON NVARCHAR(max) = NULL , @PageNumber INT = 1, @RowsPerPage INT = 20, @RowsTotal INT = 0 OUTPUT) AS
-BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 10, "TextoBuscar": "H45", "IdHomologacionFiltro":["41","42","44"] }'; 
+BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar": "H45", "IdHomologacionFiltro":["41","42","44"] }'; 
 	BEGIN TRY
-		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON,'$.ModoBuscar')
 		DECLARE @TextoBuscar			NVARCHAR(200)	= LOWER(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
+		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON,'$.ModoBuscar')
 		DECLARE @IdHomologacionFiltro	NVARCHAR(200)	= JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro');
 		DECLARE @HomologacionFiltro		TABLE (IdHomologacion INT)
 		DECLARE @DataLakeOrgBusqueda	TABLE (IdDataLakeOrganizacion INT)
