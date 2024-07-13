@@ -16,6 +16,8 @@ namespace ClientApp.Pages.Administracion.Validacion
         private IBusquedaService? servicio { get; set; }
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        [Inject]
+        public IDynamicService? iDynamicService { get; set; }
         private Grid<EsquemaVista>? grid = default;
         private List<HomologacionDto>? listaOrganizaciones = new List<HomologacionDto>();
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
@@ -25,6 +27,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         private HomologacionEsquemaDto? esquemaSelected;
         private HomologacionDto? organizacionSelected;
         private List<EsquemaVista> listasHevd = new List<EsquemaVista>();
+        private List<string> NombresVistas { get; set; }
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null && iHomologacionEsquemaService != null)
@@ -38,6 +41,8 @@ namespace ClientApp.Pages.Administracion.Validacion
             organizacionSelected = _organizacionSelected;
             esquemaSelected = null;
 
+            NombresVistas = await iDynamicService.GetViewNames(organizacionSelected.IdHomologacion);
+
             listasHevd = new List<EsquemaVista>();
             if (grid != null)
                 await grid.RefreshDataAsync();
@@ -50,11 +55,15 @@ namespace ClientApp.Pages.Administracion.Validacion
 
             listasHevd = new List<EsquemaVista>();
 
+            var vistas = await iDynamicService.GetProperties(organizacionSelected.IdHomologacion, esquemaSelected.VistaNombre.Trim());
+
             foreach(var c in Columnas)
             {
+                var count = vistas.Count(n => n.NombreColumna != null && n.NombreColumna.Equals(c.NombreHomologado));
                 listasHevd.Add(new EsquemaVista {
                     NombreEsquema = c.NombreHomologado,
-                    IsValid = false
+                    NombreVista = count > 0 ? c.NombreHomologado : "",
+                    IsValid = count > 0
                 });
             }
 
