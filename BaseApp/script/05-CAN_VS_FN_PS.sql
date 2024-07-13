@@ -136,29 +136,53 @@ RETURN
 GO
 
 CREATE OR ALTER PROCEDURE psBuscarPalabra ( @paramJSON NVARCHAR(max) = NULL , @PageNumber INT = 1, @RowsPerPage INT = 20, @RowsTotal INT = 0 OUTPUT) AS
-BEGIN
-	IF  (@paramJSON is null)			
-		RETURN '{}';
-	--	DECLARE @paramJSON NVARCHAR(max) = N'{ "TextoBuscar": "or", "IdHomologacionFiltro":["41","42","44"] }'
-	DECLARE @BuscarPalabra			NVARCHAR(200)	= ltrim(rtrim(JSON_VALUE(@paramJSON,'$.TextoBuscar')))
-    DECLARE @HomologacionFiltro		TABLE (IdHomologacion INT)
-    DECLARE @DataLakeOrgBusqueda	TABLE (IdDataLakeOrganizacion INT)
-	 
-	IF  (LTRIM(RTRIM(@BuscarPalabra)) = '')	
-		RETURN '{}';
-
+BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar": "H45", "IdHomologacionFiltro":["41","42","44"] }'; 
+	BEGIN TRY
+		DECLARE @TextoBuscar			NVARCHAR(200)	= LOWER(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
+		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON,'$.ModoBuscar')
+		DECLARE @IdHomologacionFiltro	NVARCHAR(200)	= JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro');
+		DECLARE @HomologacionFiltro		TABLE (IdHomologacion INT)
+		DECLARE @DataLakeOrgBusqueda	TABLE (IdDataLakeOrganizacion INT)
+	END TRY
+	BEGIN CATCH
+		SELECT 'Error: @paramJSON formato incorrecto.';
+	END CATCH;
+	
 	INSERT	INTO @HomologacionFiltro
 	SELECT	DISTINCT value  
 	FROM	OPENJSON(JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro'))
+
+    IF @ModoBuscar IS NULL				SET @ModoBuscar				= 0
+    IF @TextoBuscar IS NULL				SET @TextoBuscar			= ''
+    IF @IdHomologacionFiltro IS NULL	SET @IdHomologacionFiltro	= ''
+
+	IF  (@TextoBuscar = '')	
+	begin
+		SET  @RowsTotal = 0;
+		SELECT  IdDataLakeOrganizacion, IdHomologacionEsquema, DataEsquemaJson
+		FROM	DataLakeOrganizacion WITH (NOLOCK) WHERE IdDataLakeOrganizacion = -1;
+		RETURN  0;
+	end
 	
 	-->	buscando la palabra
 	INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
 	SELECT	DISTINCT IdDataLakeOrganizacion
 	FROM	OrganizacionFullText
-	WHERE	FullTextOrganizacion LIKE '%' + @BuscarPalabra + '%'
+	WHERE
+	(	--  Exacto
+		(@ModoBuscar = 0 AND FullTextOrganizacion = @TextoBuscar )
+		--  Cercano
+	OR	(@ModoBuscar = 1 AND FullTextOrganizacion LIKE '%' + @TextoBuscar + '%')
+		--  Rapido
+	OR  (@ModoBuscar = 2 AND CONTAINS(FullTextOrganizacion, @TextoBuscar))
+		--  cercano
+	OR  (@ModoBuscar = 3 AND FREETEXT(FullTextOrganizacion, @TextoBuscar))
+	)
 	AND (	IdHomologacion IN (SELECT IdHomologacion FROM @HomologacionFiltro)
 			OR NOT EXISTS (SELECT 1 FROM @HomologacionFiltro)
 		)
+
+
 	--ORDER BY IdDataLakeOrganizacion  
 	--OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	--FETCH NEXT @RowsPerPage ROWS ONLY;
@@ -178,9 +202,10 @@ BEGIN
 END;
 GO
 
--- exec psBuscarPalabra N'{ "TextoBuscar": "5",
--- 						 "IdHomologacionFiltro":["41","42","44"]
--- 						}'
+ exec psBuscarPalabra N'{	"ModoBuscar": 1,
+							"TextoBuscar": "H45",
+ 							"IdHomologacionFiltro":[]
+ 						}', 1 , 5
 
 
 EXEC dbo.setDiccionario	'dbo.vwFiltro					', NULL ,'vista para los filtros de la pagina principal'

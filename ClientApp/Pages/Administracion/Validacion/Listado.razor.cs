@@ -4,7 +4,7 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 
-namespace ClientApp.Pages.Administracion.Homologacion
+namespace ClientApp.Pages.Administracion.Validacion
 {
     public partial class Listado
     {

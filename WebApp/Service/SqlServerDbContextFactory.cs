@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Service.IService;
 using WebApp.Service;
 
-public class SqlServerDbContextFactory(DbContextOptions<SqlServerDbContext> options) : IDbContextFactory
+public class SqlServerDbContextFactory(DbContextOptions<SqlServerDbContext> options) : ISqlServerDbContextFactory
 {
     private readonly DbContextOptions<SqlServerDbContext> _options = options;
     public SqlServerDbContext CreateDbContext()

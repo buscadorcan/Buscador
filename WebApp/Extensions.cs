@@ -19,11 +19,13 @@ namespace WebApp.Extensions
             services.AddDbContextPool<SqlServerDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("Mssql-CanDb")));
 
-            services.AddScoped<IDbContextFactory>(provider =>
+            services.AddScoped<ISqlServerDbContextFactory>(provider =>
             {
                 var options = provider.GetRequiredService<DbContextOptions<SqlServerDbContext>>();
                 return new SqlServerDbContextFactory(options);
             });
+
+            services.AddSingleton<IDbContextFactory, DbContextFactory>();
         }
 
         public static void ConfigureServices(this IServiceCollection services)
@@ -51,6 +53,7 @@ namespace WebApp.Extensions
             services.AddScoped<IOrganizacionFullTextRepository, OrganizacionFullTextRepository>();
             services.AddScoped<IConexionRepository, ConexionRepository>();
             services.AddScoped<IConectionStringBuilderService, ConectionStringBuilderService>();
+            services.AddScoped<IDynamicRepository, DynamicRepository>();
 
             // WorkerService
             services.AddHostedService<BackgroundWorkerService>();

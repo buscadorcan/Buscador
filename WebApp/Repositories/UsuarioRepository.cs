@@ -1,7 +1,6 @@
 using WebApp.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Service.IService;
-using SharedApp.Models;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
 
@@ -19,8 +18,8 @@ namespace WebApp.Repositories
             IHashService hashService,
             IPasswordService passwordService,
             ILogger<UsuarioRepository> logger,
-            IDbContextFactory dbContextFactory
-        ) : base(dbContextFactory, logger)
+            ISqlServerDbContextFactory sqlServerDbContextFactory
+        ) : base(sqlServerDbContextFactory, logger)
         {
             _jwtService = jwtService;
             _emailService = emailService;
