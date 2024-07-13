@@ -5,7 +5,7 @@ namespace WebApp.Repositories.IRepositories {
   {
 
     bool Update(DataLakeOrganizacion data);
-    DataLakeOrganizacion Create(DataLakeOrganizacion data);
+    DataLakeOrganizacion? Create(DataLakeOrganizacion data);
     DataLakeOrganizacion? FindById(int Id);
     ICollection<DataLakeOrganizacion> FindAll();
     int GetLastId();

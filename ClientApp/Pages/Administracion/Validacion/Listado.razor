@@ -58,6 +58,13 @@
                         <DropdownItem
                             @onclick="() => CambiarSeleccionEsquema(opcion)"
                         >
+                            @if (NombresVistas != null)
+                            {
+                                @if (NombresVistas.Count(c => c.Equals(opcion.VistaNombre)) > 0)
+                                {
+                                    <Icon Name="IconName.Check" />
+                                }
+                            }
                             @opcion.MostrarWeb
                         </DropdownItem>
                     }

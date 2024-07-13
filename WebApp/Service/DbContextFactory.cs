@@ -15,12 +15,9 @@ namespace WebApp.Service
                 case DatabaseType.SqlServer:
                     optionsBuilder.UseSqlServer(connectionString);
                     break;
-                // case DatabaseType.PostgreSql:
-                //     optionsBuilder.UseNpgsql(connectionString);
-                //     break;
-                // case DatabaseType.MySql:
-                //     optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-                //     break;
+                case DatabaseType.MySql:
+                    optionsBuilder.UseMySQL(connectionString);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(databaseType), databaseType, null);
             }
