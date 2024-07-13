@@ -23,8 +23,11 @@ namespace WebApp.Service.IService
       private string[] schemas =  [];
       private int[] hids = [];
       private int[] heids = [];
+      private string[] vids = [];
       private int[] filters = [];
       private bool deleted = false;
+      private bool saveIdVista = false;
+      private bool saveIdOrganizacion = false;
       
       public Boolean Importar(string[] vistas) 
       {
@@ -37,21 +40,27 @@ namespace WebApp.Service.IService
           HashSet<string> DBViews = homologacionEsquemas.Select(he => he.VistaNombre).Where(v => v != null).Select(v => v!).ToHashSet();
           HashSet<string> DBSchemas = homologacionEsquemas.Select(he => he.EsquemaJson).Where(v => v != null).Select(v => v!).ToHashSet();
           HashSet<int> HEIds = homologacionEsquemas.Select(he => he.IdHomologacionEsquema).Select(v => v!).ToHashSet();
+          HashSet<string> ViewIds = homologacionEsquemas.Select(he => he.IdVistaNombre).Select(v => v!).ToHashSet();
           if (DBViews.Count > 0) { views = DBViews.ToArray(); }
           if (DBSchemas.Count > 0) { schemas = DBSchemas.ToArray(); }
           if (HEIds.Count > 0) { heids = HEIds.ToArray(); }
-          Console.WriteLine("Vistas: " + string.Join(", ", DBViews));
-          Console.WriteLine("Esquemas: " + string.Join(", ", DBSchemas));
-          Console.WriteLine("Ids: " + string.Join(", ", HEIds));
+          if (ViewIds.Count > 0) { vids = ViewIds.ToArray(); }
+          // Console.WriteLine("Vistas: " + string.Join(", ", DBViews));
+          // Console.WriteLine("Esquemas: " + string.Join(", ", DBSchemas));
+          // Console.WriteLine("Ids: " + string.Join(", ", HEIds));
+          // Console.WriteLine("Vista Ids: " + string.Join(", ", ViewIds));
           
           foreach (Conexion conexion in conexiones)
           {
+            
+            if (!conexion.Migrar.Equals("S")) { continue; }
             currentConexion = conexion;
-            Console.WriteLine("Conexión: " + conexion.BaseDatos);
             filters = JArray.Parse(conexion.Filtros).ToObject<int[]>();
-            Console.WriteLine("Filtros: " + string.Join(", ", filters));
             connectionString = conectionStringBuilderService.BuildConnectionString(conexion);
             ImportarSistema(views, connectionString);
+            conexion.FechaConexion = DateTime.Now;
+            conexion.Migrar = "N";
+            _repositoryC.Update(conexion);
           }
 
           return true;
@@ -72,7 +81,6 @@ namespace WebApp.Service.IService
         {
           deleted = false;
           executionIndex = Array.IndexOf(views, view);
-          Console.WriteLine("Execution Index: " + executionIndex + " - View: " + view);
           result = result && Leer(view);
         }
         return result;
@@ -80,37 +88,25 @@ namespace WebApp.Service.IService
 
       public bool Leer(string viewName)
       {
-        Console.WriteLine("ViewName: " + viewName);
         string currentSchema = schemas[executionIndex];
-        Console.WriteLine("Schema: " + currentSchema);
         JArray schemaArray = JArray.Parse(currentSchema);
-        // Console.WriteLine("SchemaArray: " + schemaArray);
         int[] homologacionIds = Array.Empty<int>();
 
         foreach (JObject item in schemaArray)
         {
           int idHomologacion = item.Value<int>("IdHomologacion");
           homologacionIds = homologacionIds.Append(idHomologacion).ToArray();
-          Console.WriteLine("IdHomologacion: " + idHomologacion);
         }
-        Console.WriteLine("HomologacionIds: " + string.Join(", ", homologacionIds));
 
         List<Homologacion> homologaciones = _repositoryH.FindByIds(homologacionIds);
-        string selectFields = string.Join(", ", homologaciones.Select(h => h.NombreHomologado));
-        string selectQuery = $"SELECT {selectFields} FROM " + viewName;
-        Console.WriteLine("SelectFields: " + selectFields);
-        Console.WriteLine("SelectQuery: " + selectQuery);
-        int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
-        hids = newHomologacionIds;
-
-        foreach (Homologacion homologacion in homologaciones)
-        {
-          Console.WriteLine("MostrarWeb: " + homologacion.MostrarWeb);
-
-        }
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
+          int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
+          string[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
+          string selectQuery = buildSelectViewQuery(connection, viewName, newSelectFields, newHomologacionIds);
+          // Console.WriteLine("SelectQuery: " + selectQuery);
+
           SqlCommand command = new SqlCommand(selectQuery, connection);
           SqlDataAdapter adapter = new SqlDataAdapter(command);
           DataSet dataSet = new DataSet();
@@ -126,15 +122,12 @@ namespace WebApp.Service.IService
               return false;
             }
             DataColumnCollection columns = dataSet.Tables[0].Columns;
-            Console.WriteLine("Columns: " + string.Join(", ", columns.Cast<DataColumn>().Select(c => c.ColumnName)));
 
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
               dataLake = getDatalake(dataLake);
               if (dataLake == null) { return false; }
               
-              Console.WriteLine("DataLake: " + dataLake.IdDataLake);
-              Console.WriteLine("Esquema ID: " + heids[executionIndex]);
               deleteOldRecords(heids[executionIndex]);
 
               DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(row, dataLake, columns);
@@ -214,14 +207,18 @@ namespace WebApp.Service.IService
 
       DataLakeOrganizacion addDataLakeOrganizacion(DataRow row, DataLake dataLake, DataColumnCollection columns)
       {
-        return _repositoryDLO.Create(new DataLakeOrganizacion
-          {
-            IdDataLakeOrganizacion = 0,
-            IdDataLake = dataLake.IdDataLake,
-            IdHomologacionEsquema = heids[executionIndex],
-            DataEsquemaJson = buildDataLakeJson(row, columns),
-            Estado = "A"
-          });
+        DataLakeOrganizacion newDataLakeOrganizacion = new DataLakeOrganizacion
+        {
+          IdDataLakeOrganizacion = 0,
+          IdDataLake = dataLake.IdDataLake,
+          IdHomologacionEsquema = heids[executionIndex],
+          DataEsquemaJson = buildDataLakeJson(row, columns),
+          Estado = "A"
+        };
+        if (saveIdVista) { newDataLakeOrganizacion.IdVista = row[columns.Count - 1].ToString(); }
+        if (saveIdOrganizacion) { newDataLakeOrganizacion.IdOrganizacion = row[columns.Count - 2].ToString(); }
+
+        return _repositoryDLO.Create(newDataLakeOrganizacion);
       }
 
       bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, int dataLakeOrganizacionId)
@@ -239,7 +236,7 @@ namespace WebApp.Service.IService
               IdOrganizacionFullText = 0,
               IdDataLakeOrganizacion = dataLakeOrganizacionId,
               IdHomologacion = filter,
-              FullTextOrganizacion = homologacion.NombreHomologado + " " + homologacion.MostrarWeb
+              FullTextOrganizacion = homologacion.MostrarWeb.ToLower().Replace(" ", "")
             });
           }
         }
@@ -252,7 +249,7 @@ namespace WebApp.Service.IService
               IdOrganizacionFullText = 0,
               IdDataLakeOrganizacion = dataLakeOrganizacionId,
               IdHomologacion = hids[col],
-              FullTextOrganizacion = columns[col].ColumnName + " " + row[col].ToString()
+              FullTextOrganizacion = row[col].ToString().ToLower().Replace(" ", "")
             }) != null ? result : false;
           } catch (Exception ex)
           {
@@ -262,23 +259,82 @@ namespace WebApp.Service.IService
         }
         return result;
       }
-      
+
       string buildDataLakeJson(DataRow row, DataColumnCollection columns)
       {
+        int subtractFields = 0;
+        if (saveIdVista) { subtractFields++; }
+        if (saveIdOrganizacion) { subtractFields++; }
+
+        int fieldsCount = columns.Count - subtractFields;
         JArray dataLakeJson = [];
-        for (int col = 0; col < columns.Count; col++)
+        for (int col = 0; col < fieldsCount; col++)
         {
           dataLakeJson.Add(new JObject
           {
             { "IdHomologacion", hids[col] },
-            { "Data", columns[col].ColumnName + " " + row[col].ToString() }
+            { "Data", row[col].ToString() }
           });
         }
 
-        Console.WriteLine("DataLakeJson: " + dataLakeJson.ToString());
+        // Console.WriteLine("DataLakeJson: " + dataLakeJson.ToString());
         return dataLakeJson.ToString();
       }
-      
+
+      string buildSelectViewQuery(SqlConnection connection, string viewName, string[] selectFields, int[] homologacionIds)
+      {
+        List<int> newHomologacionIds = new List<int>();
+        List<string> newSelectFields = new List<string>();
+
+        foreach (string field in selectFields)
+        {
+          if (fieldExists(connection, viewName, field))
+          {
+            int homologacionId = homologacionIds[Array.IndexOf(selectFields, field)];
+            newHomologacionIds.Add(homologacionId);
+            newSelectFields.Add(field);
+          }
+          else
+          {
+            Console.WriteLine($"Field {field} does not exist in view {viewName}");
+            continue;
+          }
+        }
+        string newSelectFieldsStr = string.Join(", ", newSelectFields);
+       
+        if (fieldExists(connection, viewName, "IdOrganizacion")) {
+            newSelectFieldsStr += ", IdOrganizacion";
+            saveIdOrganizacion = true;
+        }
+        else {
+            Console.WriteLine("Field IdOrganizacion does not exist in view " + viewName);
+            saveIdOrganizacion = false;
+        }
+        if (fieldExists(connection, viewName, vids[executionIndex])) {
+          newSelectFieldsStr += ", " + vids[executionIndex];
+          saveIdVista = true;
+        }
+        else
+        {
+          Console.WriteLine("Field " + vids[executionIndex] + " does not exist in view " + viewName);
+          saveIdVista = false;
+        }
+        hids = newHomologacionIds.ToArray();
+
+        return $"SELECT {newSelectFieldsStr} FROM {viewName}";
+      }
+
+      bool fieldExists(SqlConnection connection, string viewName, string fieldName)
+      {
+        // This shall be validated through the conexion data base, tihi only works for SQL SERVER, it shall work for all the supported data bases
+        string query = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{viewName}' AND COLUMN_NAME = '{fieldName}'";
+        SqlCommand command = new SqlCommand(query, connection);
+        SqlDataAdapter adapter = new SqlDataAdapter(command);
+        DataSet dataSet = new DataSet();
+        adapter.Fill(dataSet);
+        return dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+      }
+
       bool deleteOldRecords(int IdHomologacionEsquema)
       {
         if (deleted) { return true; }

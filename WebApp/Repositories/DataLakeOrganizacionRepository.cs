@@ -59,20 +59,21 @@ namespace WebApp.Repositories
     {
       return ExecuteDbOperation(context => {
         var records = context.DataLakeOrganizacion.Where(c => c.IdHomologacionEsquema == IdHomologacionEsquema).ToList();
-        var deletedRecordIds = new List<int?>();
+        List<int> deletedRecordIds = records.Select(r => r.IdDataLakeOrganizacion).ToList();
 
-        foreach (var record in records)
-        {
-          record.Estado = "X";
-          deletedRecordIds.Add(record.IdDataLakeOrganizacion);
-        }
-
-        context.DataLakeOrganizacion.UpdateRange(records);
-        context.SaveChanges();
+        // foreach (var record in records)
+        // {
+        //   record.Estado = "X";
+        //   deletedRecordIds.Add(record.IdDataLakeOrganizacion);
+        // }
+        // context.DataLakeOrganizacion.UpdateRange(records);
+        // context.SaveChanges();
 
         var deletedOrganizacionFullTextRecords = context.OrganizacionFullText.Where(o => deletedRecordIds.Contains(o.IdDataLakeOrganizacion)).ToList();
-        Console.WriteLine($"Deleted OrganizacionFullText records: {deletedOrganizacionFullTextRecords.Count}");
         context.OrganizacionFullText.RemoveRange(deletedOrganizacionFullTextRecords);
+        context.SaveChanges();
+
+        context.DataLakeOrganizacion.RemoveRange(records);
         context.SaveChanges();
 
         return true;
