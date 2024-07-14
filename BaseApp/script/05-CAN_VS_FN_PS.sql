@@ -135,57 +135,154 @@ RETURN
 	AND		Estado				   = 'A'
 GO
 
+CREATE OR ALTER FUNCTION dbo.fn_SplitWords (@Text NVARCHAR(MAX))		
+RETURNS @Words TABLE (Word NVARCHAR(100))
+AS
+BEGIN
+    DECLARE @XML XML
+    SET @XML = CAST('<root><word>' + REPLACE(REPLACE(REPLACE(@Text, ' ', '</word><word>'), '.', ''), ',', '') + '</word></root>' AS XML)
+
+    INSERT INTO @Words (Word)
+    SELECT LTRIM(RTRIM(T.c.value('.', 'NVARCHAR(100)')))
+    FROM @XML.nodes('/root/word') T(c)
+    WHERE LTRIM(RTRIM(T.c.value('.', 'NVARCHAR(100)'))) <> ''
+
+    RETURN
+END
+GO
+
+CREATE OR ALTER FUNCTION dbo.fn_PredictWords (@Prefix NVARCHAR(100))	
+RETURNS @TopWords TABLE (Word NVARCHAR(100))
+AS
+BEGIN
+    INSERT INTO @TopWords (Word)
+    SELECT DISTINCT TOP 10 Word
+    FROM OrganizacionFullText WITH (NOLOCK)
+    CROSS APPLY dbo.fn_SplitWords(FullTextOrganizacion)
+    WHERE Word LIKE @Prefix + '%'
+    RETURN
+END
+GO
+
+CREATE OR ALTER FUNCTION dbo.fn_DropSpacesTabs (@input NVARCHAR(MAX))	
+RETURNS NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @pos INT;
+    DECLARE @length INT;
+    DECLARE @result NVARCHAR(MAX);
+    
+    SET @result = @input;
+    SET @pos = 1;
+    SET @length = LEN(@result);
+    
+    WHILE @pos < @length
+    BEGIN
+        IF SUBSTRING(@result, @pos, 1) IN (' ', CHAR(9)) AND SUBSTRING(@result, @pos + 1, 1) IN (' ', CHAR(9))
+        BEGIN
+            SET @result = STUFF(@result, @pos + 1, 1, '');
+            SET @length = LEN(@result);
+        END
+        ELSE
+        BEGIN
+            SET @pos = @pos + 1;
+        END
+    END
+    
+    RETURN @result;
+END;
+GO
+
 CREATE OR ALTER PROCEDURE psBuscarPalabra ( @paramJSON NVARCHAR(max) = NULL , @PageNumber INT = 1, @RowsPerPage INT = 20, @RowsTotal INT = 0 OUTPUT) AS
 BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar": "H45", "IdHomologacionFiltro":["41","42","44"] }'; 
-	BEGIN TRY
-		DECLARE @TextoBuscar			NVARCHAR(200)	= LOWER(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
-		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON,'$.ModoBuscar')
-		DECLARE @IdHomologacionFiltro	NVARCHAR(200)	= JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro');
+	
+	BEGIN TRY	
+		SELECT  @RowsTotal		= 0;
 		DECLARE @HomologacionFiltro		TABLE (IdHomologacion INT)
 		DECLARE @DataLakeOrgBusqueda	TABLE (IdDataLakeOrganizacion INT)
+		DECLARE @TextoBuscar			NVARCHAR(200)	= lower(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
+		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON,'$.ModoBuscar')
+		DECLARE @IdHomologacionFiltro	NVARCHAR(200)	= JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro');
 	END TRY
 	BEGIN CATCH
 		SELECT 'Error: @paramJSON formato incorrecto.';
 	END CATCH;
-	
-	INSERT	INTO @HomologacionFiltro
+
+	INSERT	INTO @HomologacionFiltro	
 	SELECT	DISTINCT value  
 	FROM	OPENJSON(JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro'))
+	IF		@IdHomologacionFiltro IS NULL	SELECT @IdHomologacionFiltro = ''
 
-    IF @ModoBuscar IS NULL				SET @ModoBuscar				= 0
-    IF @TextoBuscar IS NULL				SET @TextoBuscar			= ''
-    IF @IdHomologacionFiltro IS NULL	SET @IdHomologacionFiltro	= ''
-
-	IF  (@TextoBuscar = '')	
+	IF  @TextoBuscar IS NULL	
+	OR	@TextoBuscar = ''	
 	begin
-		SET  @RowsTotal = 0;
 		SELECT  IdDataLakeOrganizacion, IdHomologacionEsquema, DataEsquemaJson
 		FROM	DataLakeOrganizacion WITH (NOLOCK) WHERE IdDataLakeOrganizacion = -1;
-		RETURN  0;
+		--RETURN  0;
+	end
+ 
+	-->	Buscar exacta 
+	IF	@ModoBuscar IS NULL		
+	OR	@ModoBuscar <= 0 
+	OR	@ModoBuscar > 5	
+		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
+		SELECT	DISTINCT IdDataLakeOrganizacion
+		FROM	OrganizacionFullText
+		WHERE	FullTextOrganizacion = @TextoBuscar
+		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
+				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
+			)
+
+	--> Buscar palabra
+    IF  @ModoBuscar = 1
+		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
+		SELECT	DISTINCT IdDataLakeOrganizacion
+		FROM	OrganizacionFullText
+		WHERE	FullTextOrganizacion LIKE '%' + @TextoBuscar +'%'
+		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
+				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
+			)
+	
+	--> Buscar frase
+    IF  @ModoBuscar = 2
+	begin
+		SELECT	@TextoBuscar = '"*' + @TextoBuscar +'*"'
+		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
+		SELECT	DISTINCT IdDataLakeOrganizacion
+		FROM	OrganizacionFullText
+		WHERE	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
+				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
+			)
 	end
 	
-	-->	buscando la palabra
-	INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
-	SELECT	DISTINCT IdDataLakeOrganizacion
-	FROM	OrganizacionFullText
-	WHERE
-	(	--  Exacto
-		(@ModoBuscar = 0 AND FullTextOrganizacion = @TextoBuscar )
-		--  Cercano
-	OR	(@ModoBuscar = 1 AND FullTextOrganizacion LIKE '%' + @TextoBuscar + '%')
-		--  Rapido
-	OR  (@ModoBuscar = 2 AND CONTAINS(FullTextOrganizacion, @TextoBuscar))
-		--  cercano
-	OR  (@ModoBuscar = 3 AND FREETEXT(FullTextOrganizacion, @TextoBuscar))
-	)
-	AND (	IdHomologacion IN (SELECT IdHomologacion FROM @HomologacionFiltro)
-			OR NOT EXISTS (SELECT 1 FROM @HomologacionFiltro)
-		)
+	--> Buscar por palabras
+    IF  @ModoBuscar = 3
+	begin  
+		SELECT	@TextoBuscar = '"*' + REPLACE(dbo.fn_DropSpacesTabs(@TextoBuscar), ' ', '%') +'*"'
+		
+		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
+		SELECT	DISTINCT IdDataLakeOrganizacion
+		FROM	OrganizacionFullText
+		WHERE	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
+				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
+			)
+	end
 
-
-	--ORDER BY IdDataLakeOrganizacion  
-	--OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
-	--FETCH NEXT @RowsPerPage ROWS ONLY;
+	--> Buscar con sinonimos
+    IF  @ModoBuscar = 4
+	begin  
+		SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
+		--WHERE CONTAINS(CatName , 'FORMSOF (THESAURUS, Jon)')  INFLECTIONAL
+		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
+		SELECT	DISTINCT IdDataLakeOrganizacion
+		FROM	OrganizacionFullText
+		WHERE	CONTAINS(FullTextOrganizacion, @TextoBuscar )
+		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
+				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
+			)
+	end
 
 	IF  (@PageNumber = 1)
 		SELECT @RowsTotal = COUNT(*) FROM @DataLakeOrgBusqueda
@@ -199,13 +296,27 @@ BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar":
 	ORDER BY O.IdDataLakeOrganizacion  
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
+	
 END;
 GO
 
+--ModoBuscar 
+--0 = Buscar exacta 
+--1 = Buscar palabra
+--2 = Buscar frase
+--3 = Buscar por palabras
+--4 = Buscar con sinonimos
+--5 = Buscar vectorizacion
+
  exec psBuscarPalabra N'{	"ModoBuscar": 1,
-							"TextoBuscar": "H45",
+							"TextoBuscar": "sAe eca",
  							"IdHomologacionFiltro":[]
  						}', 1 , 5
+
+
+	SELECT	DISTINCT IdDataLakeOrganizacion
+	FROM	OrganizacionFullText
+	WHERE  FullTextOrganizacion like 'sis_sae SAE' 
 
 
 EXEC dbo.setDiccionario	'dbo.vwFiltro					', NULL ,'vista para los filtros de la pagina principal'
