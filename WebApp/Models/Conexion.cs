@@ -16,4 +16,5 @@ public class Conexion : BaseEntity
     public string? Filtros { get; set; }
     public DateTime? FechaConexion { get; set; }
     public int TiempoEspera { get; set; }
+    public string? Migrar { get; set; }
 }

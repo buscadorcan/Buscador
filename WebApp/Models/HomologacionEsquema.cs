@@ -9,6 +9,7 @@ namespace WebApp.Models
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdHomologacionEsquema { get; set; }
+    public string IdVistaNombre { get; set; }
     [Required]
     public string? EsquemaJson { get; set; }
     [Required]
@@ -17,6 +18,7 @@ namespace WebApp.Models
     public string? MostrarWeb { get; set; }
     [Required]
     public string? VistaNombre { get; set; }
+    public string? DataTipo { get; set; }
     public string? TooltipWeb { get; set; }
   }
 }
