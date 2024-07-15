@@ -157,7 +157,6 @@ CREATE TABLE dbo.DataLake(
 	,CONSTRAINT  [UK_DL_DataTipo]	CHECK (DataTipo IN ('ORGANIZACION', 'PERSONA','NO_DEFINIDO'))
     ,CONSTRAINT  [CK_DL_Estado]		CHECK   (Estado IN ('A', 'X'))
 );
-
  
 CREATE TABLE dbo.DataLakeOrganizacion(
      IdDataLakeOrganizacion INT IDENTITY(1,1) NOT NULL
@@ -197,7 +196,6 @@ CREATE TABLE dbo.WebSiteLog (
 	
 	,CONSTRAINT  [PK_WSL_WebSiteLog]		PRIMARY KEY CLUSTERED (IdWebSiteLog) 
 );
-
  
 CREATE TABLE dbo.Conexion (
      IdConexion			INT IDENTITY(1,1) NOT NULL
