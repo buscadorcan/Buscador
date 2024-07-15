@@ -44,5 +44,12 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<DataHomologacionEsquema>>>()).Result;
         }
+        public async Task<List<FnPredictWordsDto>> FnPredictWords(string word)
+        {
+            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/predictWords?word={word}");
+            response.EnsureSuccessStatusCode();
+
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<FnPredictWordsDto>>>()).Result;
+        }
     }
 }

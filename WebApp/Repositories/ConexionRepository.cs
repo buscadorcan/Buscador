@@ -19,6 +19,7 @@ namespace WebApp.Repositories
         }
         public bool Create(Conexion data)
         {
+            data.FechaConexion = DateTime.Now;
             data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
 

@@ -51,9 +51,9 @@ namespace ClientApp.Pages.Administracion.Esquemas
             if (CatalogosService != null)
                 listaVwHomologacion = await CatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
 
-            if (Id > 0 && HomologacionEsquemaService != null && BusquedaService != null)
+            if (Id > 0 && HomologacionEsquemaService != null && HomologacionEsquemaService != null)
             {
-                homologacionEsquema = await BusquedaService.FnHomologacionEsquemaAsync(Id.Value);
+                homologacionEsquema = await HomologacionEsquemaService.GetHomologacionEsquemaAsync(Id.Value);
                 if (homologacionEsquema != null)
                 {
                     UpdateEditContext(homologacionEsquema);
@@ -137,7 +137,6 @@ namespace ClientApp.Pages.Administracion.Esquemas
             lista = tempList;
             await Task.CompletedTask;
         }
-
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {
             if (listaVwHomologacion == null && CatalogosService != null)
@@ -145,7 +144,6 @@ namespace ClientApp.Pages.Administracion.Esquemas
 
             return await Task.FromResult(request.ApplyTo((listaVwHomologacion ?? new List<HomologacionDto>()).OrderBy(vmH => vmH.MostrarWebOrden)));
         }
-
         private void OnAutoCompleteChanged(HomologacionDto vwHomologacionSelected)
         {
             vwHomologacionSelected.MostrarWebOrden = lista?.Count() ?? 0;

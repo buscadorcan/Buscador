@@ -1,3 +1,4 @@
+using SharedApp.Data;
 using WebApp.Models;
 using WebApp.Service.IService;
 
@@ -7,12 +8,17 @@ namespace WebApp.Service
     {
         public string BuildConnectionString(Conexion conexion)
         {
-            return conexion.MotorBaseDatos switch
+            if (!Enum.TryParse(conexion.MotorBaseDatos, true, out DatabaseType databaseType))
             {
-                "MSSQL" => BuildSqlServerConnectionString(conexion),
-                "MYSQL" => BuildMysqlConnectionString(conexion),
-                "POSTGRES" => BuildPostgresConnectionString(conexion),
-                "SQLITE" => BuildSqliteConnectionString(conexion),
+                databaseType = DatabaseType.MSSQL;
+            }
+
+            return databaseType switch
+            {
+                DatabaseType.MSSQL => BuildSqlServerConnectionString(conexion),
+                DatabaseType.MYSQL => BuildMysqlConnectionString(conexion),
+                DatabaseType.POSTGRES => BuildPostgresConnectionString(conexion),
+                DatabaseType.SQLITE => BuildSqliteConnectionString(conexion),
                 _ => BuildSqlServerConnectionString(conexion)
             };
         }

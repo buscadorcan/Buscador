@@ -52,10 +52,10 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo()").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
             });
         }
-        public HomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
+        public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
         {
             return ExecuteDbOperation(context => {
-                return context.Database.SqlQuery<HomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
+                return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
         public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion)
@@ -70,6 +70,12 @@ namespace WebApp.Repositories
                     DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
                 })
                 .ToList();
+            });
+        }
+        public List<FnPredictWordsDto> FnPredictWords(string word)
+        {
+            return ExecuteDbOperation(context => {
+                return context.Database.SqlQuery<FnPredictWordsDto>($"select * from fn_PredictWords({word})").AsNoTracking().OrderBy(c => c.Word).ToList();
             });
         }
     }

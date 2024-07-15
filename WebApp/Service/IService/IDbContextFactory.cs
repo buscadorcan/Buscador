@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApp.Models;
+using SharedApp.Data;
 
 namespace WebApp.Service.IService
 {

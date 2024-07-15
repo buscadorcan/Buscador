@@ -1,5 +1,6 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using SharedApp.Data;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
@@ -12,7 +13,6 @@ namespace WebApp.Repositories
         private readonly IConectionStringBuilderService _connectionStringBuilderService;
         private readonly IDbContextFactory _dbContextFactory;
         private readonly ILogger<DynamicRepository> _logger;
-
         public DynamicRepository(
             IDbContextFactory dbContextFactory,
             ILogger<DynamicRepository> logger,
@@ -24,7 +24,6 @@ namespace WebApp.Repositories
             _dbContextFactory = dbContextFactory;
             _logger = logger;
         }
-
         public List<PropiedadesTablaDto> GetProperties(int idSystem, string viewName)
         {
             var conexion = GetConexion(idSystem);
@@ -54,7 +53,6 @@ namespace WebApp.Repositories
 
             return columnNames;
         }
-
         public List<string> GetViewNames(int idSystem)
         {
             var conexion = GetConexion(idSystem);
@@ -64,9 +62,24 @@ namespace WebApp.Repositories
 
             var viewNames = new List<string>();
             using var command = connection.CreateCommand();
-            command.CommandText = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS";
-            using var reader = command.ExecuteReader();
 
+            switch (conexion.MotorBaseDatos)
+            {
+                case "MYSQL":
+                    command.CommandText = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = DATABASE()";
+                    break;
+                case "POSTGRES":
+                    command.CommandText = "SELECT table_name FROM information_schema.views WHERE table_schema = 'public'";
+                    break;
+                case "SQLITE":
+                    command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'view'";
+                    break;
+                default:
+                    command.CommandText = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS";
+                    break;
+            }
+
+            using var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 viewNames.Add(reader.GetString(0));
@@ -74,14 +87,13 @@ namespace WebApp.Repositories
 
             return viewNames;
         }
-
         private DbContext GetContext(Conexion conexion)
         {
             var connectionString = _connectionStringBuilderService.BuildConnectionString(conexion);
             return conexion.MotorBaseDatos switch
             {
-                "MYSQL" => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.MySql),
-                _ => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.SqlServer)
+                "MYSQL" => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.MYSQL),
+                _ => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.MSSQL)
             };
         }
 

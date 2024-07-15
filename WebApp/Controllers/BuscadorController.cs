@@ -49,7 +49,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI<HomologacionEsquemaDto>{
+                return Ok(new RespuestasAPI<FnHomologacionEsquemaDto>{
                     Result = _vhRepo.FnHomologacionEsquema(idHomologacionEsquema)
                 });
             }
@@ -70,7 +70,21 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(FnHomologacionEsquemaTodo));
+                return HandleException(e, nameof(FnHomologacionEsquemaDato));
+            }
+        }
+        [HttpGet("predictWords")]
+        public IActionResult FnPredictWords(string word)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<FnPredictWordsDto>>{
+                    Result = _vhRepo.FnPredictWords(word)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FnPredictWords));
             }
         }
     }

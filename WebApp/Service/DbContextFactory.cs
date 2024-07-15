@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApp.Models;
+using SharedApp.Data;
 using WebApp.Service.IService;
 
 namespace WebApp.Service
@@ -12,10 +12,10 @@ namespace WebApp.Service
 
             switch (databaseType)
             {
-                case DatabaseType.SqlServer:
+                case DatabaseType.MSSQL:
                     optionsBuilder.UseSqlServer(connectionString);
                     break;
-                case DatabaseType.MySql:
+                case DatabaseType.MYSQL:
                     optionsBuilder.UseMySQL(connectionString);
                     break;
                 default:

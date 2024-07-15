@@ -8,5 +8,6 @@ namespace ClientApp.Services.IService {
         Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync();
         Task<HomologacionEsquemaDto?> FnHomologacionEsquemaAsync(int idHomologacionEsquema);
         Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, int idDataLakeOrganizacion);
+        Task<List<FnPredictWordsDto>> FnPredictWords(string word);
     }
 }
