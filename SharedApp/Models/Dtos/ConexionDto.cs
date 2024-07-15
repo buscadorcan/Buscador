@@ -3,7 +3,6 @@ namespace SharedApp.Models.Dtos
   public class ConexionDto
   {
     public int IdConexion { get; set; }
-    public int IdUsuario { get; set; }
     public int IdSistema { get; set; }
     public string? BaseDatos { get; set; }
     public string? Host { get; set; }

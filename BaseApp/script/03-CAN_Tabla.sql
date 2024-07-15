@@ -28,7 +28,6 @@ DROP TABLE if exists dbo.DataLake;
 DROP TABLE if exists dbo.HomologacionEsquema;
 DROP TABLE if exists dbo.Homologacion;
 DROP TABLE if exists dbo.Conexion;
-GO
 DROP TABLE if exists dbo.Conexion;
 GO
 
@@ -124,24 +123,24 @@ CREATE TABLE dbo.Homologacion (
 );
 
 CREATE TABLE dbo.HomologacionEsquema(
-	IdHomologacionEsquema     	INT IDENTITY(1,1) NOT NULL
+   IdHomologacionEsquema    INT IDENTITY(1,1) NOT NULL
   ,MostrarWebOrden			INT DEFAULT(1) NOT NULL
-  ,MostrarWeb					NVARCHAR(200) NOT NULL DEFAULT('GRILLA')
-	,TooltipWeb					NVARCHAR(200) NOT NULL DEFAULT('')
+  ,MostrarWeb				NVARCHAR(200) NOT NULL DEFAULT('GRILLA')
+  ,TooltipWeb				NVARCHAR(200) NOT NULL DEFAULT('')
   ,EsquemaJson				NVARCHAR(max) NOT NULL DEFAULT('{}')
-  ,DataTipo				NVARCHAR(15) NOT NULL DEFAULT('NO_DEFINIDO') 
-  ,VistaNombre				NVARCHAR(200) NOT NULL DEFAULT('')
-  ,IdVistaNombre      NVARCHAR(200) NOT NULL DEFAULT('')
-	,Estado						NVARCHAR(1) NOT NULL DEFAULT('A')
-	,FechaCreacion				DATETIME	NOT NULL DEFAULT(GETDATE())
-  ,FechaModifica				DATETIME	NOT NULL DEFAULT(GETDATE())  
-  ,IdUserCreacion				INT			NOT NULL DEFAULT(0)
-  ,IdUserModifica				INT			NOT NULL DEFAULT(0)  
+  ,DataTipo				    NVARCHAR(15)  NOT NULL DEFAULT('NO_DEFINIDO')	
+  ,VistaNombre				NVARCHAR(100) NOT NULL DEFAULT('')
+  ,IdVistaNombre			NVARCHAR(100) NOT NULL DEFAULT('')
+  ,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
+  ,FechaCreacion			DATETIME	NOT NULL DEFAULT(GETDATE())
+  ,FechaModifica			DATETIME	NOT NULL DEFAULT(GETDATE())  
+  ,IdUserCreacion			INT			NOT NULL DEFAULT(0)
+  ,IdUserModifica			INT			NOT NULL DEFAULT(0)  
 
   ,CONSTRAINT  [PK_HE_IdHomologacionEsquema]	PRIMARY KEY CLUSTERED (IdHomologacionEsquema) 
   ,CONSTRAINT  [CK_HE_EsquemaJson]			CHECK   (ISJSON(EsquemaJson) = 1 )
   ,CONSTRAINT  [CK_HE_Estado]				    CHECK   (Estado IN ('A', 'X'))
-	,CONSTRAINT  [UK_HE_DataTipo]	CHECK (DataTipo IN ('ORGANIZACION', 'PERSONA','NO_DEFINIDO'))
+  ,CONSTRAINT  [UK_HE_DataTipo]	CHECK (DataTipo IN ('ORGANIZACION', 'PERSONA','NO_DEFINIDO'))
   --,CONSTRAINT  UK_HE_VistaNombre		        UNIQUE (VistaNombre)
 );
 
@@ -159,11 +158,12 @@ CREATE TABLE dbo.DataLake(
     ,CONSTRAINT  [CK_DL_Estado]		CHECK   (Estado IN ('A', 'X'))
 );
 
+ 
 CREATE TABLE dbo.DataLakeOrganizacion(
      IdDataLakeOrganizacion INT IDENTITY(1,1) NOT NULL
     ,IdHomologacionEsquema	INT NOT NULL  --FOREIGN KEY REFERENCES HomologacionEsquema (IdHomologacionEsquema)
-    ,IdOrganizacion			NVARCHAR(200) NOT NULL DEFAULT('')
-    ,IdVista            NVARCHAR(200) NOT NULL DEFAULT('')
+    ,IdOrganizacion			NVARCHAR(32) NOT NULL DEFAULT('') 
+    ,IdVista				NVARCHAR(32) NOT NULL DEFAULT('')
     ,IdDataLake				INT NOT NULL  FOREIGN KEY REFERENCES DataLake (IdDataLake)
     ,DataEsquemaJson        NVARCHAR(max) NOT NULL DEFAULT('{}')
     ,DataFechaCarga			DATETIME	  NOT NULL DEFAULT(GETDATE())
@@ -171,7 +171,7 @@ CREATE TABLE dbo.DataLakeOrganizacion(
 	,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
 	
 	,CONSTRAINT  [PK_DLO_IdDataLakeOrganizacion]	PRIMARY KEY CLUSTERED (IdDataLakeOrganizacion) 
-    ,CONSTRAINT  [CK_DLO_DataEsquemaJson]		CHECK   (ISJSON(DataEsquemaJson) = 1 )
+    ,CONSTRAINT  [CK_DLO_DataEsquemaJson]			CHECK   (ISJSON(DataEsquemaJson) = 1 )
     ,CONSTRAINT  [CK_DLO_Estado]					CHECK   (Estado IN ('A', 'X'))
 );
 
@@ -198,28 +198,28 @@ CREATE TABLE dbo.WebSiteLog (
 	,CONSTRAINT  [PK_WSL_WebSiteLog]		PRIMARY KEY CLUSTERED (IdWebSiteLog) 
 );
 
+ 
 CREATE TABLE dbo.Conexion (
      IdConexion			INT IDENTITY(1,1) NOT NULL
-    ,IdUsuario			INT NOT NULL
     ,IdSistema          INT NOT NULL
     ,BaseDatos          NVARCHAR(100) NOT NULL
     ,Host               NVARCHAR(100) NOT NULL
-    ,Puerto             INT NOT NULL
+    ,Puerto             INT NOT NULL DEFAULT(0)
     ,Usuario            NVARCHAR(100) NOT NULL
     ,Contrasenia        NVARCHAR(100) NOT NULL
     ,MotorBaseDatos     NVARCHAR(100) NOT NULL
     ,Filtros            NVARCHAR(MAX) NOT NULL DEFAULT('{}')
     ,FechaConexion		DATETIME NOT NULL DEFAULT(GETDATE())
-    ,TiempoEspera    INT NOT NULL DEFAULT(0) -- Tiempo de espera en segundos
-    ,Migrar         NVARCHAR(1) NOT NULL DEFAULT('S') -- N= No migrar, S= Si migrar
-    ,Estado			NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,TiempoEspera		INT NOT NULL DEFAULT(0)				-- Tiempo de espera en segundos
+    ,Migrar				NVARCHAR(1) NOT NULL DEFAULT('S')	-- N= No migrar, S= Si migrar
+    
+	,Estado			NVARCHAR(1) NOT NULL DEFAULT('A')
     ,FechaCreacion				DATETIME	NOT NULL DEFAULT(GETDATE())
     ,FechaModifica				DATETIME	NOT NULL DEFAULT(GETDATE())  
     ,IdUserCreacion				INT			NOT NULL DEFAULT(0)
     ,IdUserModifica				INT			NOT NULL DEFAULT(0)  
   
     ,CONSTRAINT  [PK_C_IdConexion]		    PRIMARY KEY CLUSTERED (IdConexion) 
-    ,CONSTRAINT  [FK_C_IdUsuario]		    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario)
     ,CONSTRAINT  [CK_C_Estado]			    CHECK   (Estado IN ('A', 'X'))
     ,CONSTRAINT  [CK_C_Migrar]			    CHECK   (Migrar IN ('S', 'N'))
     ,CONSTRAINT  [CK_C_MotorBaseDatos]  CHECK   (MotorBaseDatos IN ('MYSQL', 'SQLSERVER', 'SQLLITE'))
