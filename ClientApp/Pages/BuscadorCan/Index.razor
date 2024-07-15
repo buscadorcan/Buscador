@@ -1,7 +1,7 @@
 @page "/"
 @page "/persona"
-@using ClientApp.Models;
-@using SharedApp.Models.Dtos
+@using SharedApp.Models.Dtos;
+@using SharedApp.Data;
 @using Newtonsoft.Json;
 
 <PageTitle>Buscador Andino</PageTitle>
@@ -11,11 +11,28 @@
         <h3 class="search-header">BUSCADOR SERVICIOS DE EVALUACIÓN DE LA CONFORMIDAD ACREDITADOS EN LA CAN</h3>
 
         <EditForm Model="buscarRequest" OnValidSubmit="BuscarPalabraRequest" id="search-form" class="search-form clearfix" autocomplete="off">
-            <InputText @bind-Value="buscarRequest.TextoBuscar" class="search-term required" type="text" style="box-sizing: content-box" placeholder="Ingrese Texto a buscar" />
+            <AutoComplete @bind-Value="TextSearch"
+                TItem="FnPredictWordsDto"
+                DataProvider="FnPredictWordsDtoDataProvider"
+                PropertyName="Word"
+                Placeholder="Ingrese Texto a buscar..."
+                OnChanged="(FnPredictWordsDto Word) => OnAutoCompleteChanged(Word)"
+            />
             <br />
-            <br />
-            <input class="search-btn" type="submit" value="Buscar" />
-            <input class="search-btn" type="button" value="Búsqueda Exacta" @onclick="async () => await BuscarPalabraRequest(0)" />
+            <Dropdown AutoClose="true" Split="true" style="padding: 5px;">
+                <DropdownActionButton @onclick="async () => await BuscarPalabraRequest()" Color="ButtonColor.Secondary">
+                    @ListTypeSearch.First(c => c.Id == ModoBuscar).Name
+                </DropdownActionButton>
+                <DropdownToggleButton Color="ButtonColor.Secondary" />
+                <DropdownMenu>
+                    @foreach(var item in ListTypeSearch)
+                    {
+                        <DropdownItem @onclick="async () => await BuscarPalabraRequest(item.Id)">
+                            @item.Name
+                        </DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
             <div id="search-error-container"></div>
         </EditForm>
     </div>

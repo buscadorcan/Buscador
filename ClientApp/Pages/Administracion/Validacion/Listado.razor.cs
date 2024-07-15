@@ -15,15 +15,10 @@ namespace ClientApp.Pages.Administracion.Validacion
         [Inject]
         private IBusquedaService? servicio { get; set; }
         [Inject]
-        public Services.ToastService? toastService { get; set; }
-        [Inject]
         public IDynamicService? iDynamicService { get; set; }
         private Grid<EsquemaVista>? grid = default;
         private List<HomologacionDto>? listaOrganizaciones = new List<HomologacionDto>();
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
-        private List<HomologacionDto>? listaHomologacions = new List<HomologacionDto>();
-        private List<PropiedadesTablaDto> propiedadesVista = new List<PropiedadesTablaDto>();
-        private List<HomologacionDto> Columnas = new List<HomologacionDto>();
         private HomologacionEsquemaDto? esquemaSelected;
         private HomologacionDto? organizacionSelected;
         private List<EsquemaVista> listasHevd = new List<EsquemaVista>();
@@ -51,7 +46,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         {
             esquemaSelected = _esquemaSelected;
             var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdHomologacionEsquema);
-            Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
+            var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
 
             listasHevd = new List<EsquemaVista>();
 
@@ -69,10 +64,6 @@ namespace ClientApp.Pages.Administracion.Validacion
 
             if (grid != null)
                 await grid.RefreshDataAsync();
-        }
-        private async Task<AutoCompleteDataProviderResult<PropiedadesTablaDto>> NombreColumnaDataProvider(AutoCompleteDataProviderRequest<PropiedadesTablaDto> request)
-        {
-            return await Task.FromResult(request.ApplyTo(propiedadesVista.OrderBy(p => p.NombreColumna)));
         }
         private async Task<GridDataProviderResult<EsquemaVista>> EsquemaVistaDataProvider(GridDataProviderRequest<EsquemaVista> request)
         {

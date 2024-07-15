@@ -16,7 +16,7 @@ namespace WebApp.Service.IService
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private IConexionRepository _repositoryC = conexionRepository;
       private string connectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
-      private readonly string defaultConnectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
+      // private readonly string defaultConnectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
       private Conexion? currentConexion = null;
       private int executionIndex = 0;
       private string[] views =  [];

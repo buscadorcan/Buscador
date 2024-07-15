@@ -1,0 +1,39 @@
+@page "/conexion"
+@layout AdminLayout
+@using SharedApp.Models.Dtos
+
+<PageTitle>Homologación</PageTitle>
+
+<h3>Validación de Campos</h3>
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
+    <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-conexion">Agregar Registro</Button>
+</div>
+
+<Grid @ref="grid" TItem="ConexionDto" class="table table-hover table-bordered table-striped" DataProvider="ConexionDtoDataProvider" Responsive="true">
+    <GridColumn TItem="ConexionDto" HeaderText="Motor Base Datos" PropertyName="MotorBaseDatos">
+        @context.MotorBaseDatos
+    </GridColumn>
+    <GridColumn TItem="ConexionDto" HeaderText="Base Datos" PropertyName="BaseDatos">
+        @context.BaseDatos
+    </GridColumn>
+    <GridColumn TItem="ConexionDto" HeaderText="Usuario" PropertyName="Usuario">
+        @context.Usuario
+    </GridColumn>
+    <GridColumn TItem="ConexionDto" HeaderText="Host" PropertyName="Host">
+        @context.Host
+    </GridColumn>
+    <GridColumn TItem="ConexionDto" HeaderText="Puerto" PropertyName="Puerto">
+        @context.Puerto
+    </GridColumn>
+    <GridColumn TItem="ConexionDto" HeaderText="Editar">
+        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdConexion}")" Size="Size.Small">
+            <Icon Name="IconName.PencilSquare" />
+        </Button>
+    </GridColumn>
+    <GridColumn TItem="ConexionDto" HeaderText="Eliminar">
+        <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdConexion)" Size="Size.Small">
+            <Icon Name="IconName.Trash3" />
+        </Button>
+    </GridColumn>
+</Grid>

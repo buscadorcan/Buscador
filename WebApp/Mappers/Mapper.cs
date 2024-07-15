@@ -20,7 +20,9 @@ namespace WebApp.Mappers
 
             CreateMap<Homologacion, HomologacionDto>();
             CreateMap<HomologacionDto, Homologacion>();
+
             CreateMap<Conexion, ConexionDto>();
+            CreateMap<ConexionDto, Conexion>();
         }
     }
 }
