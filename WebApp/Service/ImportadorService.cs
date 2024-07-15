@@ -236,7 +236,8 @@ namespace WebApp.Service.IService
               IdOrganizacionFullText = 0,
               IdDataLakeOrganizacion = dataLakeOrganizacionId,
               IdHomologacion = filter,
-              FullTextOrganizacion = homologacion.MostrarWeb.ToLower().Replace(" ", "")
+              FullTextOrganizacion = homologacion.MostrarWeb.ToLower()
+              // .Replace(" ", "")
             });
           }
         }
@@ -249,7 +250,8 @@ namespace WebApp.Service.IService
               IdOrganizacionFullText = 0,
               IdDataLakeOrganizacion = dataLakeOrganizacionId,
               IdHomologacion = hids[col],
-              FullTextOrganizacion = row[col].ToString().ToLower().Replace(" ", "")
+              FullTextOrganizacion = row[col].ToString().ToLower() 
+              // .Replace(" ", "")
             }) != null ? result : false;
           } catch (Exception ex)
           {

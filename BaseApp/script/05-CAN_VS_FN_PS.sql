@@ -135,31 +135,35 @@ RETURN
 	AND		Estado				   = 'A'
 GO
 
-CREATE OR ALTER FUNCTION dbo.fn_SplitWords (@Text NVARCHAR(MAX))		
-RETURNS @Words TABLE (Word NVARCHAR(100))
-AS
-BEGIN
-    DECLARE @XML XML
-    SET @XML = CAST('<root><word>' + REPLACE(REPLACE(REPLACE(@Text, ' ', '</word><word>'), '.', ''), ',', '') + '</word></root>' AS XML)
+--CREATE OR ALTER FUNCTION dbo.fn_SplitWords (@Text NVARCHAR(MAX))
+--RETURNS @Words TABLE (Word NVARCHAR(100))
+--AS
+--BEGIN
+--    DECLARE @XML XML
 
-    INSERT INTO @Words (Word)
-    SELECT LTRIM(RTRIM(T.c.value('.', 'NVARCHAR(100)')))
-    FROM @XML.nodes('/root/word') T(c)
-    WHERE LTRIM(RTRIM(T.c.value('.', 'NVARCHAR(100)'))) <> ''
+--    -- Reemplaza caracteres especiales
+--    SET @Text = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@Text, '&', '&amp;'), '<', '&lt;'), '>', '&gt;'), '''', '&apos;'), '"', '&quot;')
 
-    RETURN
-END
-GO
+--    -- Formatea el texto para XML
+--    SET @XML = CAST('<root><word>' + REPLACE(REPLACE(@Text, ' ', '</word><word>'), ',', '</word><word>') + '</word></root>' AS XML)
 
-CREATE OR ALTER FUNCTION dbo.fn_PredictWords (@Prefix NVARCHAR(100))	
-RETURNS @TopWords TABLE (Word NVARCHAR(100))
+--    INSERT INTO @Words (Word)
+--    SELECT LTRIM(RTRIM(T.c.value('.', 'NVARCHAR(100)')))
+--    FROM @XML.nodes('/root/word') T(c)
+--    WHERE LTRIM(RTRIM(T.c.value('.', 'NVARCHAR(100)'))) <> ''
+
+--    RETURN
+--END
+--GO
+
+CREATE OR ALTER FUNCTION dbo.fn_PredictWords (@Prefix NVARCHAR(100))
+RETURNS @TopWords TABLE (Word NVARCHAR(max))
 AS
 BEGIN
     INSERT INTO @TopWords (Word)
-    SELECT DISTINCT TOP 10 Word
+    SELECT DISTINCT TOP 10 FullTextOrganizacion
     FROM OrganizacionFullText WITH (NOLOCK)
-    CROSS APPLY dbo.fn_SplitWords(FullTextOrganizacion)
-    WHERE Word LIKE @Prefix + '%'
+    WHERE FullTextOrganizacion LIKE '%' + @Prefix + '%'
     RETURN
 END
 GO
@@ -246,7 +250,7 @@ BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar":
 	--> Buscar frase
     IF  @ModoBuscar = 2
 	begin
-		SELECT	@TextoBuscar = '"*' + @TextoBuscar +'*"'
+		SELECT	@TextoBuscar = '"' + @TextoBuscar +'"'
 		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
 		SELECT	DISTINCT IdDataLakeOrganizacion
 		FROM	OrganizacionFullText
@@ -305,18 +309,32 @@ GO
 --1 = Buscar palabra
 --2 = Buscar frase
 --3 = Buscar por palabras
---4 = Buscar con sinonimos
+--4 = Buscar con sinonimos    -->  leche (existe BD)    ----  lacteo (existir el sinonimo BD)
 --5 = Buscar vectorizacion
 
- exec psBuscarPalabra N'{	"ModoBuscar": 1,
-							"TextoBuscar": "sAe eca",
+ exec psBuscarPalabra N'{	"ModoBuscar": 2,
+							"TextoBuscar": "laboratorio de calificación de leche cruda",
  							"IdHomologacionFiltro":[]
  						}', 1 , 5
 
 
-	SELECT	DISTINCT IdDataLakeOrganizacion
+	SELECT	DISTINCT *
 	FROM	OrganizacionFullText
-	WHERE  FullTextOrganizacion like 'sis_sae SAE' 
+	--WHERE  FullTextOrganizacion like 'laboratorio de calificación de leche cruda' 
+	WHERE	CONTAINS(FullTextOrganizacion,  '"leche"' )
+	
+	SELECT	DISTINCT *
+	FROM	OrganizacionFullText
+	--WHERE  FullTextOrganizacion like 'laboratorio de calificación de leche cruda' 
+	WHERE	CONTAINS(FullTextOrganizacion,  '"lactosa"' )
+	
+SELECT *
+FROM OrganizacionFullText
+WHERE CONTAINS(FullTextOrganizacion, 'FORMSOF(THESAURUS, "leche")');
+ 
+ 	SELECT	DISTINCT IdDataLakeOrganizacion
+	FROM	OrganizacionFullText
+
 
 
 EXEC dbo.setDiccionario	'dbo.vwFiltro					', NULL ,'vista para los filtros de la pagina principal'
