@@ -288,6 +288,22 @@ BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar":
 			)
 	end
 
+	--> Buscar con vectorizacion
+    IF  @ModoBuscar = 5
+	begin  
+		--SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
+		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
+		SELECT o.IdDataLakeOrganizacion --, OFT.RANK  
+		FROM OrganizacionFullText AS o   
+		INNER JOIN FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  @TextoBuscar ) as OFT
+			--,LANGUAGE N'English', 2) AS OFT  
+		ON o.IdOrganizacionFullText = OFT.[KEY]  
+		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
+				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
+			)
+		ORDER BY RANK DESC;  
+	end
+
 	IF  (@PageNumber = 1)
 		SELECT @RowsTotal = COUNT(*) FROM @DataLakeOrgBusqueda
 
@@ -312,28 +328,40 @@ GO
 --4 = Buscar con sinonimos    -->  leche (existe BD)    ----  lacteo (existir el sinonimo BD)
 --5 = Buscar vectorizacion
 
- exec psBuscarPalabra N'{	"ModoBuscar": 2,
-							"TextoBuscar": "laboratorio de calificación de leche cruda",
- 							"IdHomologacionFiltro":[]
- 						}', 1 , 5
+-- exec psBuscarPalabra N'{	"ModoBuscar": 5,
+--							"TextoBuscar": "ecuador",
+-- 							"IdHomologacionFiltro":[]
+-- 						}', 1 , 5
 
 
-	SELECT	DISTINCT *
-	FROM	OrganizacionFullText
-	--WHERE  FullTextOrganizacion like 'laboratorio de calificación de leche cruda' 
-	WHERE	CONTAINS(FullTextOrganizacion,  '"leche"' )
+--	SELECT	DISTINCT *
+--	FROM	OrganizacionFullText
+--	--WHERE  FullTextOrganizacion like 'laboratorio de calificación de leche cruda' 
+--	WHERE	CONTAINS(FullTextOrganizacion,  '"cocoa"' )
 	
-	SELECT	DISTINCT *
-	FROM	OrganizacionFullText
-	--WHERE  FullTextOrganizacion like 'laboratorio de calificación de leche cruda' 
-	WHERE	CONTAINS(FullTextOrganizacion,  '"lactosa"' )
+--	SELECT	DISTINCT *
+--	FROM	OrganizacionFullText
+--	--WHERE  FullTextOrganizacion like 'laboratorio de calificación de leche cruda' 
+--	WHERE	CONTAINS(FullTextOrganizacion,  '"chocolate"' )
 	
-SELECT *
-FROM OrganizacionFullText
-WHERE CONTAINS(FullTextOrganizacion, 'FORMSOF(THESAURUS, "leche")');
+--SELECT *
+--FROM OrganizacionFullText
+--WHERE CONTAINS(FullTextOrganizacion, 'FORMSOF(THESAURUS, "cocoa")');
  
- 	SELECT	DISTINCT IdDataLakeOrganizacion
-	FROM	OrganizacionFullText
+
+ -- EXEC sys.sp_fulltext_load_thesaurus_file 1025, @loadOnlyIfNotLoaded = 1;
+ --	SELECT	 *
+	--FROM	OrganizacionFullText
+	
+ 
+	--SELECT o.*, OFT.RANK  
+	--FROM OrganizacionFullText AS o   
+	--INNER JOIN FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  'ecuador' ) as OFT
+	--	--,LANGUAGE N'English', 2) AS KEY_TBL  
+	--ON o.IdOrganizacionFullText = OFT.[KEY]  
+	--ORDER BY RANK DESC;  
+	--GO  
+
 
 
 
