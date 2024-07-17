@@ -20,8 +20,8 @@ CREATE TABLE OrganizacionFullText(
      IdOrganizacionFullText	 INT NOT NULL IDENTITY(1,1)
     ,IdDataLakeOrganizacion	 INT NOT NULL 
     ,IdHomologacion          INT NOT NULL
-    ,IdOrganizacion          INT NOT NULL
-    ,IdVista                 INT NOT NULL
+    ,IdOrganizacion          NVARCHAR(32) NOT NULL
+    ,IdVista                 NVARCHAR(32) NOT NULL
     ,FullTextOrganizacion    NVARCHAR(MAX) NULL			-- fulltext a considerear
     ,CONSTRAINT [PK_IdOrganizacionFullText] PRIMARY KEY CLUSTERED (IdOrganizacionFullText)  
 );

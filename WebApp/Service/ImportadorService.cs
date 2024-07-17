@@ -248,10 +248,11 @@ namespace WebApp.Service.IService
             result = _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
-              IdDataLakeOrganizacion = dataLakeOrganizacionId,
+              IdDataLakeOrganizacion = dataLakeOrganizacion.IdDataLakeOrganizacion,
               IdHomologacion = hids[col],
-              FullTextOrganizacion = row[col].ToString().ToLower() 
-              // .Replace(" ", "")
+              IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
+              IdVista = dataLakeOrganizacion.IdVista,
+              FullTextOrganizacion = row[col].ToString().ToLower().Trim()
             }) != null ? result : false;
           } catch (Exception ex)
           {
