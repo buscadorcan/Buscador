@@ -105,7 +105,6 @@ namespace WebApp.Service.IService
           int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
           string[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
           string selectQuery = buildSelectViewQuery(connection, viewName, newSelectFields, newHomologacionIds);
-          // Console.WriteLine("SelectQuery: " + selectQuery);
 
           SqlCommand command = new SqlCommand(selectQuery, connection);
           SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -133,7 +132,7 @@ namespace WebApp.Service.IService
               DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(row, dataLake, columns);
               if (dataLakeOrganizacion == null) { return false; }
 
-              addOrganizacionFullText(row, columns, dataLakeOrganizacion.IdDataLakeOrganizacion);
+              addOrganizacionFullText(row, columns, dataLakeOrganizacion);
             }
           }
           catch (Exception ex)
@@ -221,7 +220,7 @@ namespace WebApp.Service.IService
         return _repositoryDLO.Create(newDataLakeOrganizacion);
       }
 
-      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, int dataLakeOrganizacionId)
+      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, DataLakeOrganizacion dataLakeOrganizacion)
       {
         Boolean result = true;
         if (executionIndex == 0)
@@ -234,10 +233,11 @@ namespace WebApp.Service.IService
             _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
-              IdDataLakeOrganizacion = dataLakeOrganizacionId,
+              IdDataLakeOrganizacion = dataLakeOrganizacion.IdDataLakeOrganizacion,
               IdHomologacion = filter,
-              FullTextOrganizacion = homologacion.MostrarWeb.ToLower()
-              // .Replace(" ", "")
+              IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
+              IdVista = dataLakeOrganizacion.IdVista,
+              FullTextOrganizacion = homologacion.MostrarWeb.ToLower().Trim()
             });
           }
         }
