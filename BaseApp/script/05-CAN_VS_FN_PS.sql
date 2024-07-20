@@ -262,7 +262,7 @@ BEGIN
 	IF  @TextoBuscar IS NULL	
 	OR	@TextoBuscar = ''	
 	begin
-		SELECT  IdDataLakeOrganizacion, IdHomologacionEsquema, DataEsquemaJson
+		SELECT  IdOrganizacion, IdVista, IdHomologacionEsquema, DataEsquemaJson
 		FROM	DataLakeOrganizacion  (NOLOCK) 
 		WHERE	IdOrganizacion = -1;
 		RETURN  0;
@@ -410,9 +410,11 @@ BEGIN
 		WHERE	O.Estado = 'A'
 		AND		IdHomologacionEsquema = @IdHomologacionEsquema
 
-	SELECT  O.IdOrganizacion IdDataLakeOrganizacion,  -- cambiar por IdOrganizacion
-			O.IdHomologacionEsquema,
-			O.DataEsquemaJson
+	SELECT  DISTINCT
+			 O.IdOrganizacion 
+			,O.IdVista 
+			,O.IdHomologacionEsquema
+			,O.DataEsquemaJson
 	FROM	DataLakeOrganizacion O WITH (NOLOCK)
 	JOIN	@Organizacion B ON B.IdOrganizacion = O.IdOrganizacion
 	WHERE	O.Estado = 'A'
