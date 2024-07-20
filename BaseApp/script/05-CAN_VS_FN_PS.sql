@@ -17,20 +17,24 @@ EXEC DBO.Bitacora '@script','05-CAN_VS_FN_PS.sql'
 GO
 
 CREATE OR ALTER VIEW vwFiltro AS 
-	SELECT	 IdHomologacion
-			,MostrarWeb		
-			,TooltipWeb	
-			,MostrarWebOrden
-	FROM	Homologacion		WITH(NOLOCK)
-	WHERE	CodigoHomologacion	IN
-	( -- codigo 		EtiquetaColumna
-	 'KEY_DIM_PAI_FIL'  -- 'Pais origen'               ,1    'filtro 1')
-	,'KEY_DIM_ORG_FIL'  -- 'Organismo de Acreditación' ,2    'filtro 2')
-	,'KEY_DIM_ESQ_FIL'  -- 'Esquena de Acreditación'   ,3    'filtro 3')
-	,'KEY_DIM_NOR_FIL'  -- 'Norma Acreditada'          ,4    'filtro 4')
-	,'KEY_DIM_EST_FIL'  -- 'Estado'                    ,5    'filtro 5')
-	,'KEY_DIM_REC_FIL'  -- 'Reconocimiento'            ,6    'filtro 6')
-	)
+	SELECT IdHomologacion ,MostrarWeb ,TooltipWeb ,MostrarWebOrden ,'FiltroPais' NombreFiltro		
+	FROM Homologacion (NOLOCK)	WHERE CodigoHomologacion	='KEY_DIM_PAI_FIL'  -- 'PAIS '          ,2    'filtro 1')
+	UNION
+	SELECT IdHomologacion ,MostrarWeb ,TooltipWeb ,MostrarWebOrden ,'FiltroOna' NombreFiltro		
+	FROM Homologacion (NOLOCK) 	WHERE CodigoHomologacion	='KEY_DIM_ORG_FIL'  -- 'ONA'			,3    'filtro 2')
+	UNION
+	SELECT IdHomologacion ,MostrarWeb ,TooltipWeb ,MostrarWebOrden ,'FiltroEsquema' NombreFiltro	
+	FROM Homologacion (NOLOCK) 	WHERE CodigoHomologacion	='KEY_DIM_ESQ_FIL'  -- 'ESQUEMA'		,4    'filtro 3')
+	UNION
+	SELECT IdHomologacion ,MostrarWeb ,TooltipWeb ,MostrarWebOrden ,'FiltroNorma' NombreFiltro		
+	FROM Homologacion (NOLOCK) 	WHERE CodigoHomologacion	='KEY_DIM_NOR_FIL'  -- 'NORMA'          ,5    'filtro 4')
+	UNION
+	SELECT IdHomologacion ,MostrarWeb ,TooltipWeb ,MostrarWebOrden ,'FiltroEstado' NombreFiltro		
+	FROM Homologacion (NOLOCK)	WHERE CodigoHomologacion	='KEY_DIM_EST_FIL'  -- 'ESTADO'         ,6    'filtro 5')
+	UNION
+	SELECT IdHomologacion ,MostrarWeb ,TooltipWeb ,MostrarWebOrden ,'FiltroRecomocimiento' NombreFiltro 
+	FROM Homologacion (NOLOCK) 	WHERE CodigoHomologacion	='KEY_DIM_REC_FIL'  -- 'RECOMOCIMIENTO' ,7    'filtro 6')
+
 GO
 
 CREATE OR ALTER VIEW vwDimension AS 
@@ -44,7 +48,7 @@ CREATE OR ALTER VIEW vwDimension AS
 			,H.NombreHomologado + ' / ' + H.MostrarWeb AS CustomMostrarWeb
 	FROM    Homologacion H		WITH (NOLOCK)
 	JOIN	(	SELECT DISTINCT IdHomologacion
-				FROM	Homologacion		WITH (NOLOCK)
+				FROM	Homologacion		(NOLOCK)
 				WHERE	CodigoHomologacion  NOT IN ('KEY_DIM_PAI_FIL', 'KEY_DIM_ORG_FIL')
 			)   HG	ON H.IdHomologacionGrupo = HG.IdHomologacion
 GO
@@ -67,10 +71,18 @@ GO
 CREATE OR ALTER FUNCTION fnFiltroDetalle (	@IdHomologacionGrupo	INT )  
 RETURNS TABLE AS
 RETURN
-	SELECT	IdHomologacion,     MostrarWeb,     TooltipWeb,	MostrarWebOrden
-	FROM	dbo.Homologacion    WITH (NOLOCK)
-	WHERE	IdHomologacionGrupo = @IdHomologacionGrupo and Estado = 'A'
+	SELECT	DISTINCT upper(FullTextOrganizacion) 'MostrarWeb'
+	FROM	OrganizacionFullText  (NOLOCK)			---> and Estado = 'A'
+	WHERE	CASE 
+			WHEN @IdHomologacionGrupo = 2 THEN CASE WHEN IdHomologacion = 114 THEN 1 ELSE 0 END	-->	PAIS		   ('OrgPais': ecuador, peru ,....)
+			WHEN @IdHomologacionGrupo = 3 THEN CASE WHEN IdHomologacion = 104 THEN 1 ELSE 0 END	-->	ONA			   ('OnaAbreviacion': SAE,..)
+			WHEN @IdHomologacionGrupo = 4 THEN CASE WHEN IdHomologacion = 121 THEN 1 ELSE 0 END	-->	ESQUEMA		   ('OrgEsquemaAcreditado': CALIBRACIÓN, CLÍNICOS,..)
+			WHEN @IdHomologacionGrupo = 5 THEN CASE WHEN IdHomologacion = 122 THEN 1 ELSE 0 END	-->	NORMA		   ('OrgNormaAcreditada': NTE INEN-ISO/IEC17043: ,..)
+			WHEN @IdHomologacionGrupo = 6 THEN CASE WHEN IdHomologacion = 120 THEN 1 ELSE 0 END	-->	ESTADO		   ('OrgEstadoAcreditado')
+			WHEN @IdHomologacionGrupo = 7 THEN CASE WHEN IdHomologacion = 123 THEN 1 ELSE 0 END	-->	RECOMOCIMIENTO ('OrgReconocimiento': INTERNACIONAL, NACIONAL)
+			END = 1;
 GO
+--> select * from fnFiltroDetalle (4)  
 
 CREATE OR ALTER FUNCTION fnHomologacionEsquemaCampo ( @IdHomologacionEsquema INT )  
 --RETURNS TABLE AS
@@ -86,7 +98,7 @@ BEGIN
 						FROM	Homologacion	H	WITH (NOLOCK)
 						JOIN	(	SELECT DISTINCT IdHomologacion
 									FROM  OPENJSON((	SELECT	EsquemaJson
-														FROM	HomologacionEsquema		WITH (NOLOCK)
+														FROM	HomologacionEsquema		(NOLOCK)
 														WHERE	IdHomologacionEsquema = @IdHomologacionEsquema
 												  ))
 									WITH (IdHomologacion INT '$.IdHomologacion')
@@ -111,28 +123,35 @@ RETURN
 	AND		Estado = 'A'
 GO
 
-CREATE OR ALTER FUNCTION fnHomologacionEsquemaTodo ( )  
+--select * from fnHomologacionEsquemaTodo ( 368)
+
+CREATE OR ALTER FUNCTION fnHomologacionEsquemaTodo ( @IdOrganizacion VARCHAR(16))  
 RETURNS TABLE AS
 RETURN
-	SELECT	 IdHomologacionEsquema	
-			,MostrarWebOrden	
-			,MostrarWeb	
-			,TooltipWeb	
-	FROM	HomologacionEsquema		WITH (NOLOCK)
-	WHERE	MostrarWebOrden > 1	
-	AND		Estado = 'A'
+	SELECT	 DISTINCT
+			 he.IdHomologacionEsquema	
+			,he.MostrarWebOrden	
+			,he.MostrarWeb	
+			,he.TooltipWeb	
+	FROM	HomologacionEsquema		he (NOLOCK)
+	JOIN	DataLakeOrganizacion	dl (NOLOCK)	ON he.IdHomologacionEsquema = dl.IdHomologacionEsquema
+	WHERE	he.MostrarWebOrden > 1	
+	AND		he.Estado = 'A'
+	AND		dl.IdOrganizacion = @IdOrganizacion
 GO
 
-CREATE OR ALTER FUNCTION fnHomologacionEsquemaDato (  @IdHomologacionEsquema INT, @IdDataLakeOrganizacion INT )  
+--select * from fnHomologacionEsquemaDato ( 5, '368' ) (@IdHomologacionEsquema , @IdOrganizacion )
+
+CREATE OR ALTER FUNCTION fnHomologacionEsquemaDato (  @IdHomologacionEsquema INT, @IdOrganizacion VARCHAR(16) )  
 RETURNS TABLE AS
 RETURN
 	SELECT	 IdDataLakeOrganizacion	
 			,IdHomologacionEsquema
 			,DataEsquemaJson
-	FROM	DataLakeOrganizacion	 WITH (NOLOCK)	
-	WHERE	IdDataLakeOrganizacion = @IdDataLakeOrganizacion
-	AND		IdHomologacionEsquema  = @IdHomologacionEsquema
-	AND		Estado				   = 'A'
+	FROM	DataLakeOrganizacion	(NOLOCK)	
+	WHERE	IdHomologacionEsquema	= @IdHomologacionEsquema
+	AND		IdOrganizacion			= @IdOrganizacion
+	AND		Estado					= 'A'
 GO
 
 --CREATE OR ALTER FUNCTION dbo.fn_SplitWords (@Text NVARCHAR(MAX))
@@ -198,66 +217,115 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE psBuscarPalabra ( @paramJSON NVARCHAR(max) = NULL , @PageNumber INT = 1, @RowsPerPage INT = 20, @RowsTotal INT = 0 OUTPUT) AS
-BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar": "H45", "IdHomologacionFiltro":["41","42","44"] }'; 
-	
+BEGIN 
+--DECLARE @paramJSON NVARCHAR(MAX) = 
+--N'{		 "ModoBuscar"			:3
+--		,"TextoBuscar"			:"salmonella"
+--		,"FiltroPais"			:["ecuador"]
+--		,"FiltroOna"			:[]
+--		,"FiltroEsquema"		:[]
+--		,"FiltroNorma"			:[]
+--		,"FiltroEstado"			:["acreditado"]
+--		,"FiltroRecomocimiento"	:["nacional"]
+--}';
 	BEGIN TRY	
-		SELECT  @RowsTotal		= 0;
-		DECLARE @HomologacionFiltro		TABLE (IdHomologacion INT)
-		DECLARE @DataLakeOrgBusqueda	TABLE (IdDataLakeOrganizacion INT)
+		SELECT  @RowsTotal				= 0;
+		DECLARE @FiltroPais				NVARCHAR(400)	 
+		DECLARE @FiltroOna				NVARCHAR(400)	 
+		DECLARE @FiltroEsquema			NVARCHAR(400)	 
+		DECLARE @FiltroNorma			NVARCHAR(400)	 
+		DECLARE @FiltroEstado			NVARCHAR(400)	 
+		DECLARE @FiltroRecomocimiento	NVARCHAR(400)	 
+		DECLARE @Organizacion			TABLE (IdOrganizacion INT )
+		DECLARE @FiltroBusqueda			TABLE (IdHomologacion INT , Texto NVARCHAR(100))
+		DECLARE @IdHomologacionEsquema	INTEGER			=( SELECT TOP 1 IdHomologacionEsquema from HomologacionEsquema (NOLOCK) order by MostrarWebOrden)
 		DECLARE @TextoBuscar			NVARCHAR(200)	= lower(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
-		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON,'$.ModoBuscar')
-		DECLARE @IdHomologacionFiltro	NVARCHAR(200)	= JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro');
+		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON, '$.ModoBuscar			')
 	END TRY
 	BEGIN CATCH
-		SELECT 'Error: @paramJSON formato incorrecto.';
+		  SELECT ERROR_NUMBER() ,ERROR_SEVERITY() ,ERROR_STATE() ,ERROR_PROCEDURE() ,ERROR_LINE() ,ERROR_MESSAGE()		 
 	END CATCH;
 
-	INSERT	INTO @HomologacionFiltro	
-	SELECT	DISTINCT value  
-	FROM	OPENJSON(JSON_QUERY(@paramJSON, '$.IdHomologacionFiltro'))
-	IF		@IdHomologacionFiltro IS NULL	SELECT @IdHomologacionFiltro = ''
+	INSERT  INTO @FiltroBusqueda	
+	SELECT	DISTINCT 114, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroPais'))			-->	PAIS		   : IdHomologacion = 114
+	UNION
+	SELECT	DISTINCT 104, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroOna'))			-->	ONA			   : IdHomologacion = 104
+	UNION
+	SELECT	DISTINCT 121, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroEsquema'))		-->	ESQUEMA		   : IdHomologacion = 121
+	UNION
+	SELECT	DISTINCT 122, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroNorma'))			-->	NORMA		   : IdHomologacion = 122
+	UNION
+	SELECT	DISTINCT 120, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroEstado'))			-->	ESTADO		   : IdHomologacion = 120
+	UNION
+	SELECT	DISTINCT 123, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroRecomocimiento'))	-->	RECOMOCIMIENTO : IdHomologacion = 123	
 
 	IF  @TextoBuscar IS NULL	
 	OR	@TextoBuscar = ''	
 	begin
 		SELECT  IdDataLakeOrganizacion, IdHomologacionEsquema, DataEsquemaJson
-		FROM	DataLakeOrganizacion WITH (NOLOCK) WHERE IdDataLakeOrganizacion = -1;
-		--RETURN  0;
+		FROM	DataLakeOrganizacion  (NOLOCK) 
+		WHERE	IdOrganizacion = -1;
+		RETURN  0;
 	end
  
 	-->	Buscar exacta 
 	IF	@ModoBuscar IS NULL		
 	OR	@ModoBuscar <= 0 
 	OR	@ModoBuscar > 5	
-		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
-		SELECT	DISTINCT IdDataLakeOrganizacion
-		FROM	OrganizacionFullText
-		WHERE	FullTextOrganizacion = @TextoBuscar
-		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
-				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
-			)
+		INSERT	INTO @Organizacion (IdOrganizacion)
+		SELECT DISTINCT o.IdOrganizacion  
+		FROM	OrganizacionFullText o  (NOLOCK)
+		JOIN	(	select distinct IdOrganizacion  
+					from OrganizacionFullText  (NOLOCK)
+					where FullTextOrganizacion =  @TextoBuscar
+				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
+		WHERE	(	EXISTS 
+					(	SELECT	1 
+						FROM	@FiltroBusqueda fb 
+						WHERE	fb.IdHomologacion = o.IdHomologacion 
+						AND		fb.Texto		  = o.FullTextOrganizacion
+					)
+					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+				)
 
 	--> Buscar palabra
     IF  @ModoBuscar = 1
-		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
-		SELECT	DISTINCT IdDataLakeOrganizacion
-		FROM	OrganizacionFullText
-		WHERE	FullTextOrganizacion LIKE '%' + @TextoBuscar +'%'
-		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
-				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
-			)
-	
+		INSERT	INTO @Organizacion (IdOrganizacion)
+		SELECT DISTINCT o.IdOrganizacion  
+		FROM	OrganizacionFullText o  (NOLOCK)
+		JOIN	(	select  distinct IdOrganizacion  
+					from	OrganizacionFullText  (NOLOCK)
+					where	FullTextOrganizacion LIKE '%' + @TextoBuscar +'%'
+				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
+		WHERE	(	EXISTS 
+					(	SELECT	1 
+						FROM	@FiltroBusqueda fb 
+						WHERE	fb.IdHomologacion = o.IdHomologacion 
+						AND		fb.Texto		  = o.FullTextOrganizacion
+					)
+					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+				)
+
 	--> Buscar frase
     IF  @ModoBuscar = 2
 	begin
 		SELECT	@TextoBuscar = '"' + @TextoBuscar +'"'
-		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
-		SELECT	DISTINCT IdDataLakeOrganizacion
-		FROM	OrganizacionFullText
-		WHERE	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
-		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
-				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
-			)
+		
+		INSERT	INTO @Organizacion (IdOrganizacion)
+		SELECT DISTINCT o.IdOrganizacion  
+		FROM	OrganizacionFullText o  (NOLOCK)
+		JOIN	(	select  distinct IdOrganizacion  
+					from	OrganizacionFullText  (NOLOCK)
+					where	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
+		WHERE	(	EXISTS 
+					(	SELECT	1 
+						FROM	@FiltroBusqueda fb 
+						WHERE	fb.IdHomologacion = o.IdHomologacion 
+						AND		fb.Texto		  = o.FullTextOrganizacion
+					)
+					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+				)
 	end
 	
 	--> Buscar por palabras
@@ -265,13 +333,21 @@ BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar":
 	begin  
 		SELECT	@TextoBuscar = '"*' + REPLACE(dbo.fn_DropSpacesTabs(@TextoBuscar), ' ', '%') +'*"'
 		
-		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
-		SELECT	DISTINCT IdDataLakeOrganizacion
-		FROM	OrganizacionFullText
-		WHERE	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
-		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
-				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
-			)
+		INSERT	INTO @Organizacion (IdOrganizacion)
+		SELECT DISTINCT o.IdOrganizacion  
+		FROM	OrganizacionFullText o  (NOLOCK)
+		JOIN	(	select  distinct IdOrganizacion  
+					from	OrganizacionFullText  (NOLOCK)
+					where	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
+		WHERE	(	EXISTS 
+					(	SELECT	1 
+						FROM	@FiltroBusqueda fb 
+						WHERE	fb.IdHomologacion = o.IdHomologacion 
+						AND		fb.Texto		  = o.FullTextOrganizacion
+					)
+					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+				)
 	end
 
 	--> Buscar con sinonimos
@@ -279,41 +355,69 @@ BEGIN --  DECLARE @paramJSON NVARCHAR(MAX) = N'{ "ModoBuscar": 3, "TextoBuscar":
 	begin  
 		SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
 		--WHERE CONTAINS(CatName , 'FORMSOF (THESAURUS, Jon)')  INFLECTIONAL
-		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
-		SELECT	DISTINCT IdDataLakeOrganizacion
-		FROM	OrganizacionFullText
-		WHERE	CONTAINS(FullTextOrganizacion, @TextoBuscar )
-		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
-				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
-			)
+		
+		INSERT	INTO @Organizacion (IdOrganizacion)
+		SELECT DISTINCT o.IdOrganizacion  
+		FROM	OrganizacionFullText o  (NOLOCK)
+		JOIN	(	select  distinct IdOrganizacion  
+					from	OrganizacionFullText  (NOLOCK)
+					where	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
+		WHERE	(	EXISTS 
+					(	SELECT	1 
+						FROM	@FiltroBusqueda fb 
+						WHERE	fb.IdHomologacion = o.IdHomologacion 
+						AND		fb.Texto		  = o.FullTextOrganizacion
+					)
+					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+				)
 	end
 
 	--> Buscar con vectorizacion
     IF  @ModoBuscar = 5
 	begin  
 		--SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
-		INSERT	INTO @DataLakeOrgBusqueda (IdDataLakeOrganizacion)
-		SELECT o.IdDataLakeOrganizacion --, OFT.RANK  
-		FROM OrganizacionFullText AS o   
-		INNER JOIN FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  @TextoBuscar ) as OFT
+		--INSERT	INTO @Organizacion (IdOrganizacion)
+		--SELECT o.IdOrganizacion --, OFT.RANK  
+		--FROM OrganizacionFullText AS o   
+		--INNER JOIN FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  'chocolate' ) as OFT
+		--	--,LANGUAGE N'English', 2) AS OFT  
+		--ON o.IdOrganizacionFullText = OFT.[KEY]  
+		--ORDER BY RANK DESC;  
+
+		INSERT	INTO @Organizacion (IdOrganizacion)
+		SELECT DISTINCT o.IdOrganizacion  --, OFT.RANK  
+		FROM	OrganizacionFullText o  (NOLOCK)
+		JOIN	FREETEXTTABLE(OrganizacionFullText.IdOrganizacion, FullTextOrganizacion,  @TextoBuscar ) as OFT
 			--,LANGUAGE N'English', 2) AS OFT  
-		ON o.IdOrganizacionFullText = OFT.[KEY]  
-		AND (	IdHomologacion IN	(SELECT IdHomologacion FROM @HomologacionFiltro)
-				OR NOT EXISTS		(SELECT IdHomologacion FROM @HomologacionFiltro)
-			)
+		ON	o.IdOrganizacionFullText	= OFT.[KEY]  
+		AND o.IdOrganizacion			= OFT.IdOrganizacion 	 
+		WHERE	(	EXISTS 
+					(	SELECT	1 
+						FROM	@FiltroBusqueda fb 
+						WHERE	fb.IdHomologacion = o.IdHomologacion 
+						AND		fb.Texto		  = o.FullTextOrganizacion
+					)
+					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+				)
 		ORDER BY RANK DESC;  
 	end
 
 	IF  (@PageNumber = 1)
-		SELECT @RowsTotal = COUNT(*) FROM @DataLakeOrgBusqueda
+		SELECT  @RowsTotal = COUNT(*) --FROM @DataLakeOrgBusqueda
+		FROM	DataLakeOrganizacion O (NOLOCK)
+		JOIN	@Organizacion		 B ON B.IdOrganizacion = O.IdOrganizacion
+		WHERE	O.Estado = 'A'
+		AND		IdHomologacionEsquema = @IdHomologacionEsquema
 
-	SELECT  O.IdDataLakeOrganizacion,
+	SELECT  O.IdOrganizacion IdDataLakeOrganizacion,  -- cambiar por IdOrganizacion
 			O.IdHomologacionEsquema,
 			O.DataEsquemaJson
-	FROM DataLakeOrganizacion O WITH (NOLOCK)
-	JOIN @DataLakeOrgBusqueda B ON B.IdDataLakeOrganizacion = O.IdDataLakeOrganizacion
-	WHERE O.Estado = 'A'
-	ORDER BY O.IdDataLakeOrganizacion  
+	FROM	DataLakeOrganizacion O WITH (NOLOCK)
+	JOIN	@Organizacion B ON B.IdOrganizacion = O.IdOrganizacion
+	WHERE	O.Estado = 'A'
+	AND		IdHomologacionEsquema = @IdHomologacionEsquema
+	ORDER BY O.IdOrganizacion  
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
 	
@@ -328,10 +432,24 @@ GO
 --4 = Buscar con sinonimos    -->  leche (existe BD)    ----  lacteo (existir el sinonimo BD)
 --5 = Buscar vectorizacion
 
--- exec psBuscarPalabra N'{	"ModoBuscar": 5,
---							"TextoBuscar": "ecuador",
--- 							"IdHomologacionFiltro":[]
--- 						}', 1 , 5
+-- exec psBuscarPalabra N'{		 
+--		 "ModoBuscar"			:3
+--		,"TextoBuscar"			:"salmonella"
+--		,"FiltroPais"			:["ecuador"]
+--		,"FiltroOna"			:[]
+--		,"FiltroEsquema"		:[]
+--		,"FiltroNorma"			:[]
+--		,"FiltroEstado"			:["acreditado"]
+--		,"FiltroRecomocimiento"	:["nacional"]
+--}',1,10;
+
+
+--UPDATE Conexion set Migrar ='S'
+--GO
+--UPDATE Homologacion
+--set NombreHomologado ='OrgEstadoAcreditado'
+--where IdHomologacion = 120
+--go
 
 
 --	SELECT	DISTINCT *
