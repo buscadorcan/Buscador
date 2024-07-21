@@ -161,8 +161,8 @@ CREATE TABLE dbo.DataLake(
 CREATE TABLE dbo.DataLakeOrganizacion(
      IdDataLakeOrganizacion INT IDENTITY(1,1) NOT NULL
     ,IdHomologacionEsquema	INT NOT NULL  --FOREIGN KEY REFERENCES HomologacionEsquema (IdHomologacionEsquema)
-    ,IdOrganizacion			NVARCHAR(32) NOT NULL DEFAULT('') 
-    ,IdVista				NVARCHAR(32) NOT NULL DEFAULT('')
+    ,IdOrganizacion			NVARCHAR(32) DEFAULT('') 
+    ,IdVista				NVARCHAR(32) DEFAULT('')
     ,IdDataLake				INT NOT NULL  FOREIGN KEY REFERENCES DataLake (IdDataLake)
     ,DataEsquemaJson        NVARCHAR(max) NOT NULL DEFAULT('{}')
     ,DataFechaCarga			DATETIME	  NOT NULL DEFAULT(GETDATE())

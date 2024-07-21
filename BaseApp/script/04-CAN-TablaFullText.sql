@@ -12,7 +12,6 @@
 
 USE CAN_DB;
 GO
-
 EXEC DBO.Bitacora '@script','04-CAN-TablaFullText.sql'
 
 DROP TABLE if exists dbo.OrganizacionFullText;
@@ -25,23 +24,25 @@ CREATE TABLE OrganizacionFullText(
     ,FullTextOrganizacion    NVARCHAR(MAX) NULL			-- fulltext a considerear
     ,CONSTRAINT [PK_IdOrganizacionFullText] PRIMARY KEY CLUSTERED (IdOrganizacionFullText)  
 );
-EXEC DBO.Bitacora 'CREATE TABLE OrganizacionFullText'
 
---SELECT fulltext_catalog_id, name FROM sys.fulltext_catalogs
 IF EXISTS (SELECT * FROM sys.fulltext_catalogs WHERE name = 'OrganizacionFullText_cat')
-begin
-	DROP FULLTEXT INDEX ON OrganizacionFullText;
 	DROP FULLTEXT CATALOG [OrganizacionFullText_cat];
-end
-
-CREATE FULLTEXT CATALOG OrganizacionFullText_cat WITH ACCENT_SENSITIVITY = OFF;
+GO
+CREATE FULLTEXT CATALOG OrganizacionFullText_cat WITH ACCENT_SENSITIVITY = ON AS DEFAULT ;
 GO
 
-CREATE FULLTEXT INDEX ON OrganizacionFullText
-( FullTextOrganizacion LANGUAGE 3082 )   --3082	Spanish 
+CREATE FULLTEXT INDEX ON OrganizacionFullText( 
+	FullTextOrganizacion LANGUAGE 3082			-->  3082	Spanish
+)     
 KEY INDEX [PK_IdOrganizacionFullText]
-ON OrganizacionFullText_cat
+ON	OrganizacionFullText_cat
 WITH STOPLIST = SYSTEM;
-EXEC DBO.Bitacora 'CREATE FULLTEXT INDEX ON OrganizacionFullText'
--- select * from sys.fulltext_catalogs;
--- Select IdDataLakeOrganizacion from OrganizacionFullText WHERE CONTAINS((FullTextOrganizacion), 'empresa');
+
+
+--> actualizar el archivo:  con los sinonimos : C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\FTData\tsesn.xml
+EXEC sys.sp_fulltext_load_thesaurus_file 3082;
+
+EXEC sp_fulltext_service 'update_languages'  
+
+ 
+EXEC DBO.Bitacora 'CREATE FULLTEXT CATALOG y INDEX ON OrganizacionFullText'

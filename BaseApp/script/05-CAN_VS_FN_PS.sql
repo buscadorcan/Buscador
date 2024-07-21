@@ -236,7 +236,7 @@ BEGIN
 		DECLARE @FiltroNorma			NVARCHAR(400)	 
 		DECLARE @FiltroEstado			NVARCHAR(400)	 
 		DECLARE @FiltroRecomocimiento	NVARCHAR(400)	 
-		DECLARE @Organizacion			TABLE (IdOrganizacion INT )
+		DECLARE @Organizacion			TABLE (IdOrganizacion NVARCHAR(16) , IdVista NVARCHAR(16) )
 		DECLARE @FiltroBusqueda			TABLE (IdHomologacion INT , Texto NVARCHAR(100))
 		DECLARE @IdHomologacionEsquema	INTEGER			=( SELECT TOP 1 IdHomologacionEsquema from HomologacionEsquema (NOLOCK) order by MostrarWebOrden)
 		DECLARE @TextoBuscar			NVARCHAR(200)	= lower(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
@@ -259,25 +259,17 @@ BEGIN
 	UNION
 	SELECT	DISTINCT 123, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroRecomocimiento'))	-->	RECOMOCIMIENTO : IdHomologacion = 123	
 
-	IF  @TextoBuscar IS NULL	
-	OR	@TextoBuscar = ''	
-	begin
-		SELECT  IdOrganizacion, IdVista, IdHomologacionEsquema, DataEsquemaJson
-		FROM	DataLakeOrganizacion  (NOLOCK) 
-		WHERE	IdOrganizacion = -1;
-		RETURN  0;
-	end
- 
 	-->	Buscar exacta 
 	IF	@ModoBuscar IS NULL		
 	OR	@ModoBuscar <= 0 
 	OR	@ModoBuscar > 5	
-		INSERT	INTO @Organizacion (IdOrganizacion)
-		SELECT DISTINCT o.IdOrganizacion  
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista
 		FROM	OrganizacionFullText o  (NOLOCK)
-		JOIN	(	select distinct IdOrganizacion  
-					from OrganizacionFullText  (NOLOCK)
-					where FullTextOrganizacion =  @TextoBuscar
+		JOIN	(	select  distinct IdOrganizacion  
+					from	OrganizacionFullText  (NOLOCK)
+					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
+					or		(FullTextOrganizacion = @TextoBuscar)
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
@@ -290,12 +282,13 @@ BEGIN
 
 	--> Buscar palabra
     IF  @ModoBuscar = 1
-		INSERT	INTO @Organizacion (IdOrganizacion)
-		SELECT DISTINCT o.IdOrganizacion  
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista 
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	(	select  distinct IdOrganizacion  
 					from	OrganizacionFullText  (NOLOCK)
-					where	FullTextOrganizacion LIKE '%' + @TextoBuscar +'%'
+					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
+					or		FullTextOrganizacion LIKE '%' + @TextoBuscar +'%'
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
@@ -311,12 +304,13 @@ BEGIN
 	begin
 		SELECT	@TextoBuscar = '"' + @TextoBuscar +'"'
 		
-		INSERT	INTO @Organizacion (IdOrganizacion)
-		SELECT DISTINCT o.IdOrganizacion  
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista 
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	(	select  distinct IdOrganizacion  
 					from	OrganizacionFullText  (NOLOCK)
-					where	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
+					or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
@@ -333,12 +327,13 @@ BEGIN
 	begin  
 		SELECT	@TextoBuscar = '"*' + REPLACE(dbo.fn_DropSpacesTabs(@TextoBuscar), ' ', '%') +'*"'
 		
-		INSERT	INTO @Organizacion (IdOrganizacion)
-		SELECT DISTINCT o.IdOrganizacion  
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	(	select  distinct IdOrganizacion  
 					from	OrganizacionFullText  (NOLOCK)
-					where	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
+					or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
@@ -356,12 +351,13 @@ BEGIN
 		SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
 		--WHERE CONTAINS(CatName , 'FORMSOF (THESAURUS, Jon)')  INFLECTIONAL
 		
-		INSERT	INTO @Organizacion (IdOrganizacion)
-		SELECT DISTINCT o.IdOrganizacion  
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	(	select  distinct IdOrganizacion  
 					from	OrganizacionFullText  (NOLOCK)
-					where	CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
+					or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
@@ -384,14 +380,15 @@ BEGIN
 		--	--,LANGUAGE N'English', 2) AS OFT  
 		--ON o.IdOrganizacionFullText = OFT.[KEY]  
 		--ORDER BY RANK DESC;  
-
-		INSERT	INTO @Organizacion (IdOrganizacion)
-		SELECT DISTINCT o.IdOrganizacion  --, OFT.RANK  
+		--SELECT	@TextoBuscar = isnull(@TextoBuscar,'')
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+		SELECT	o.IdOrganizacion  , o.IdVista  --, OFT.RANK  
 		FROM	OrganizacionFullText o  (NOLOCK)
-		JOIN	FREETEXTTABLE(OrganizacionFullText.IdOrganizacion, FullTextOrganizacion,  @TextoBuscar ) as OFT
+		JOIN	FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  @TextoBuscar ) as OFT
+		--JOIN	FREETEXTTABLE(OrganizacionFullText.IdOrganizacion, FullTextOrganizacion,  @TextoBuscar ) as OFT
 			--,LANGUAGE N'English', 2) AS OFT  
 		ON	o.IdOrganizacionFullText	= OFT.[KEY]  
-		AND o.IdOrganizacion			= OFT.IdOrganizacion 	 
+		--AND o.IdOrganizacion			= OFT.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
 						FROM	@FiltroBusqueda fb 
@@ -418,6 +415,7 @@ BEGIN
 	FROM	DataLakeOrganizacion O WITH (NOLOCK)
 	JOIN	@Organizacion B ON B.IdOrganizacion = O.IdOrganizacion
 	WHERE	O.Estado = 'A'
+	AND		B.IdVista = O.IdVista
 	AND		IdHomologacionEsquema = @IdHomologacionEsquema
 	ORDER BY O.IdOrganizacion  
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
@@ -429,8 +427,10 @@ GO
 --ModoBuscar 
 --0 = Buscar exacta 
 --1 = Buscar palabra
+
 --2 = Buscar frase
 --3 = Buscar por palabras
+
 --4 = Buscar con sinonimos    -->  leche (existe BD)    ----  lacteo (existir el sinonimo BD)
 --5 = Buscar vectorizacion
 
@@ -469,7 +469,7 @@ GO
 --WHERE CONTAINS(FullTextOrganizacion, 'FORMSOF(THESAURUS, "cocoa")');
  
 
- -- EXEC sys.sp_fulltext_load_thesaurus_file 1025, @loadOnlyIfNotLoaded = 1;
+ -- EXEC sys.sp_fulltext_load_thesaurus_file 3082, @loadOnlyIfNotLoaded = 1;
  --	SELECT	 *
 	--FROM	OrganizacionFullText
 	
