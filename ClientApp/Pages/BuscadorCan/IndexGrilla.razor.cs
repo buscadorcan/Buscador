@@ -12,13 +12,15 @@ namespace ClientApp.Pages.BuscadorCan
         [Parameter]
         public BuscarRequest? buscarRequest { get; set; }
         [Parameter]
-        public List<List<int>>? selectedValues { get; set; }
+        public List<FiltrosBusquedaSeleccion>? selectedValues { get; set; }
+        [Parameter]
+        public List<HomologacionDto>? listaEtiquetasFiltros { get; set; }
         [Inject]
         public IBusquedaService? servicio { get; set; }
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
         private Modal modal = default!;
-        public Grid<DataHomologacionEsquema>? grid;
+        public Grid<BuscadorResultadoDataDto>? grid;
         private List<HomologacionDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
         public int ModoBuscar { get; set;}
@@ -34,20 +36,25 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine(e);
             }
         }
-        private async Task<List<DataHomologacionEsquema>> BuscarEsquemas(int PageNumber, int PageSize)
+        private async Task<List<BuscadorResultadoDataDto>> BuscarEsquemas(int PageNumber, int PageSize)
         {
-            var listDataHomologacionEsquema = new List<DataHomologacionEsquema>();
+            var listBuscadorResultadoDataDto = new List<BuscadorResultadoDataDto>();
             try {
                 if (servicio != null)
                 {
-                    ResultDataHomologacionEsquema result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(new {
+                    var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(new {
                         ModoBuscar = ModoBuscar,
                         TextoBuscar = buscarRequest?.TextoBuscar ?? "",
-                        IdHomologacionFiltro = selectedValues?.SelectMany(list => list).Where(c => c != 0).ToList()
+                        FiltroPais = selectedValues?.FirstOrDefault( c => c.Id == 2)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
+                        FiltroOna = selectedValues?.FirstOrDefault( c => c.Id == 3)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
+                        FiltroNorma = selectedValues?.FirstOrDefault( c => c.Id == 5)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
+                        FiltroEsquema = selectedValues?.FirstOrDefault( c => c.Id == 4)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
+                        FiltroEstado = selectedValues?.FirstOrDefault( c => c.Id == 6)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
+                        FiltroRecomocimiento = selectedValues?.FirstOrDefault( c => c.Id == 7)?.Seleccion?.Where(c => c != null ).ToList() ?? []
                     }), PageNumber, PageSize);
 
                     if (!(result.Data is null)) {
-                        listDataHomologacionEsquema = result.Data;
+                        listBuscadorResultadoDataDto = result.Data;
                     }
 
                     if (PageNumber == 1) {
@@ -58,19 +65,19 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine(e);
             }
 
-            return listDataHomologacionEsquema;
+            return listBuscadorResultadoDataDto;
         }
-        private async Task<GridDataProviderResult<DataHomologacionEsquema>> ResultadoBusquedaDataProvider(GridDataProviderRequest<DataHomologacionEsquema> request)
+        private async Task<GridDataProviderResult<BuscadorResultadoDataDto>> ResultadoBusquedaDataProvider(GridDataProviderRequest<BuscadorResultadoDataDto> request)
         {
-            return await Task.FromResult(new GridDataProviderResult<DataHomologacionEsquema> {
+            return await Task.FromResult(new GridDataProviderResult<BuscadorResultadoDataDto> {
                 Data = await BuscarEsquemas(request.PageNumber, request.PageSize),
                 TotalCount = totalCount
             });
         }
-        private async void showModal(DataHomologacionEsquema dataLake)
+        private async void showModal(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
-            parameters.Add("dataLake", dataLake);
+            parameters.Add("resultData", resultData);
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
     }

@@ -10,7 +10,7 @@ namespace ClientApp.Pages.BuscadorCan
     {
         Tabs tabs = default!;
         [Parameter]
-        public DataHomologacionEsquema? dataLake { get; set; }
+        public BuscadorResultadoDataDto? resultData { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private List<HomologacionEsquemaDto>? listaEsquemas = new List<HomologacionEsquemaDto>();
@@ -19,7 +19,7 @@ namespace ClientApp.Pages.BuscadorCan
             try
             {
                 if (servicio != null) {
-                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync();
+                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync(resultData.IdOrganizacion);
                 }
             }
             catch (Exception e)

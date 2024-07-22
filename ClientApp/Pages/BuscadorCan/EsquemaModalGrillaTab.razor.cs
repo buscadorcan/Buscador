@@ -12,7 +12,7 @@ namespace ClientApp.Pages.BuscadorCan
         [Parameter]
         public int IdHomologacionEsquema { get; set; }
         [Parameter]
-        public int IdDataLakeOrganizacion { get; set; }
+        public string? IdOrganizacion { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
@@ -37,7 +37,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdHomologacionEsquema, IdDataLakeOrganizacion);
+                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdHomologacionEsquema, IdOrganizacion);
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));

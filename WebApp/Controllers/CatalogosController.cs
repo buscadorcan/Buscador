@@ -2,6 +2,7 @@ using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
 using WebApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace WebApp.Controllers
 {
@@ -78,7 +79,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI<List<IVwHomologacion>>{
+                return Ok(new RespuestasAPI<List<FnFiltroDetalleDto>>{
                     Result = _vhRepo.ObtenerFiltroDetalles(idHomologacion)
                 });
             }

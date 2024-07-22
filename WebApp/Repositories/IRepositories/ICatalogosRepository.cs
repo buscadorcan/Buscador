@@ -1,3 +1,4 @@
+using SharedApp.Models.Dtos;
 using WebApp.Models;
 
 namespace WebApp.Repositories.IRepositories 
@@ -8,6 +9,6 @@ namespace WebApp.Repositories.IRepositories
         List<VwFiltro> ObtenerEtiquetaFiltros();
         List<VwDimension> ObtenerDimension();
         List<Homologacion> ObtenerGrupos();
-        List<IVwHomologacion> ObtenerFiltroDetalles(int IdHomologacion);
+        List<FnFiltroDetalleDto> ObtenerFiltroDetalles(int IdHomologacion);
     }
 }
