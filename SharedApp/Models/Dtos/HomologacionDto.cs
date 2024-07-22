@@ -14,5 +14,6 @@ namespace SharedApp.Models.Dtos
     public string? CodigoHomologacion { get; set; }
     public int AnchoColumna { get; set; }
     public string? CustomMostrarWeb { get; set; }
+    public string? NombreFiltro { get; set; }
   }
 }

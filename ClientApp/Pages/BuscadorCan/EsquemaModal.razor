@@ -1,5 +1,5 @@
 <Tabs @ref="tabs" EnableFadeEffect="true">
-    @if (listaEsquemas != null && dataLake != null) {
+    @if (listaEsquemas != null && resultData != null) {
         @foreach(var esquema in listaEsquemas) {
             <Tab>
                 <TitleTemplate>
@@ -9,7 +9,7 @@
                     <div class="py-2">
                         <EsquemaModalGrillaTab
                             IdHomologacionEsquema="@esquema.IdHomologacionEsquema"
-                            IdDataLakeOrganizacion="@dataLake.IdDataLakeOrganizacion"
+                            IdOrganizacion="@resultData.IdOrganizacion"
                         />
                     </div>
                 </Content>

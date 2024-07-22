@@ -11,7 +11,7 @@
         <h3 class="search-header">BUSCADOR SERVICIOS DE EVALUACIÓN DE LA CONFORMIDAD ACREDITADOS EN LA CAN</h3>
 
         <EditForm Model="buscarRequest" OnValidSubmit="BuscarPalabraRequest" id="search-form" class="search-form clearfix" autocomplete="off">
-            <AutoComplete @bind-Value="TextSearch"
+            <AutoComplete @bind-Value="buscarRequest.TextoBuscar"
                 TItem="FnPredictWordsDto"
                 DataProvider="FnPredictWordsDtoDataProvider"
                 PropertyName="Word"
@@ -55,9 +55,10 @@
                                     </DropdownToggleButton>
                                     <DropdownMenu>
                                         @if (listadeOpciones?[currentIndex] != null) {
+                                            var listaTmp = selectedValues.FirstOrDefault(c => c.Id == listaEtiquetasFiltros?[currentIndex].IdHomologacion);
                                             foreach (var opcion in listadeOpciones[currentIndex] ?? []) {
-                                                <DropdownItem @onclick="() => CambiarSeleccion(opcion.IdHomologacion, currentIndex)">
-                                                    @if (selectedValues != null && selectedValues.Count > currentIndex && selectedValues[currentIndex].Contains(opcion.IdHomologacion))
+                                                <DropdownItem @onclick="() => CambiarSeleccion(opcion.MostrarWeb, listaEtiquetasFiltros?[currentIndex].IdHomologacion)">
+                                                    @if (listaTmp != null && listaTmp.Seleccion.Contains(opcion.MostrarWeb))
                                                     {
                                                         <Icon Name="IconName.Check" />
                                                     }
@@ -77,6 +78,7 @@
             @ref="childComponentRef"
             buscarRequest="@buscarRequest"
             selectedValues="@selectedValues"
+            listaEtiquetasFiltros="@listaEtiquetasFiltros"
         />
     </div>
 </div>

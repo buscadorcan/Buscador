@@ -27,7 +27,7 @@ namespace WebApp.Repositories
                     Direction = ParameterDirection.Output
                 };
 
-                var lstTem = context.Database.SqlQueryRaw<FnHomologacionEsquemaData>(
+                var lstTem = context.Database.SqlQueryRaw<BuscadorResultadoData>(
                     "exec psBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
                     new SqlParameter("@paramJSON", paramJSON),
                     new SqlParameter("@PageNumber", PageNumber),
@@ -36,9 +36,11 @@ namespace WebApp.Repositories
                 ).AsNoTracking().ToList();
 
                 return new BuscadorDto{
-                    Data = lstTem.Select(c => new FnHomologacionEsquemaDataDto()
+                    Data = lstTem.Select(c => new BuscadorResultadoDataDto()
                     {
-                        IdDataLakeOrganizacion = c.IdDataLakeOrganizacion,
+                        IdOrganizacion = c.IdOrganizacion,
+                        IdVista = c.IdVista,
+                        IdHomologacionEsquema = c.IdHomologacionEsquema,
                         DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
                     })
                     .ToList(),
@@ -46,10 +48,10 @@ namespace WebApp.Repositories
                 };
             });
         }
-        public List<EsquemaDto> FnHomologacionEsquemaTodo()
+        public List<EsquemaDto> FnHomologacionEsquemaTodo(string idOrganizacion)
         {
             return ExecuteDbOperation(context => {
-                return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo()").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
+                return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo({idOrganizacion})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
             });
         }
         public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
@@ -58,10 +60,10 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
-        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, int idDataLakeOrganizacion)
+        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idOrganizacion)
         {
             return ExecuteDbOperation(context => {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idDataLakeOrganizacion})").AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idOrganizacion})").AsNoTracking().ToList();
 
                 return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
                 {

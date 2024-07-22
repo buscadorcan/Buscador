@@ -9,7 +9,7 @@ namespace ClientApp.Pages.Administracion.Validacion
     public partial class Listado
     {
         [Inject]
-        public ICatalogosService? iCatalogosService { get; set; }
+        public IHomologacionService? iHomologacionService { get; set; }
         [Inject]
         private IHomologacionEsquemaService? iHomologacionEsquemaService { get; set; }
         [Inject]
@@ -25,9 +25,9 @@ namespace ClientApp.Pages.Administracion.Validacion
         private List<string> NombresVistas { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            if (iCatalogosService != null && iHomologacionEsquemaService != null)
+            if (iHomologacionService != null && iHomologacionEsquemaService != null)
             {
-                listaOrganizaciones = await iCatalogosService.GetHomologacionDetalleAsync<List<HomologacionDto>>("filtro_detalles", 3);
+                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync(3);
                 listaHomologacionEsquemas = await iHomologacionEsquemaService.GetHomologacionEsquemasAsync();
             }
         }

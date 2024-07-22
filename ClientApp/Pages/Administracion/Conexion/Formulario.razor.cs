@@ -18,15 +18,17 @@ namespace ClientApp.Pages.Administracion.Conexion
         private ConexionDto conexion = new ConexionDto();
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
+        [Inject]
+        public IHomologacionService? iHomologacionService { get; set; }
         private List<HomologacionDto>? listaOrganizaciones = default;
         private string? homologacionName;
         private List<HomologacionDto>? listaVwHomologacion;
         private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
         protected override async Task OnInitializedAsync()
         {
-            if (iCatalogosService != null)
+            if (iHomologacionService != null)
             {
-                listaOrganizaciones = await iCatalogosService.GetHomologacionDetalleAsync<List<HomologacionDto>>("filtro_detalles", 3);
+                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync(3);
             }
             if (listaVwHomologacion == null && iCatalogosService != null)
                 listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
@@ -53,6 +55,7 @@ namespace ClientApp.Pages.Administracion.Conexion
             } else
             {
                 conexion.Filtros = "[]";
+                conexion.Migrar = "N";
             }
         }
         private async Task RegistrarConexion()

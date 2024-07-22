@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SharedApp.Models.Dtos;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -30,9 +31,9 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.Homologacion.Where(c => c.IdHomologacionGrupo == null).OrderBy(c => c.MostrarWebOrden).ToList());
         }
-        public List<IVwHomologacion> ObtenerFiltroDetalles(int IdHomologacion)
+        public List<FnFiltroDetalleDto> ObtenerFiltroDetalles(int IdHomologacion)
         {
-            return ExecuteDbOperation(context => context.Database.SqlQuery<IVwHomologacion>($"SELECT * FROM fnFiltroDetalle({IdHomologacion})").OrderBy( c => c.MostrarWebOrden).ToList());
+            return ExecuteDbOperation(context => context.Database.SqlQuery<FnFiltroDetalleDto>($"SELECT * FROM fnFiltroDetalle({IdHomologacion})").OrderBy( c => c.MostrarWeb).ToList());
         }
     }
 }

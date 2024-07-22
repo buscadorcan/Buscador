@@ -9,7 +9,7 @@
     {
         <Grid
             @ref="grid"
-            TItem="DataHomologacionEsquema"
+            TItem="BuscadorResultadoDataDto"
             class="table table-hover table-bordered table-striped"
             DataProvider="ResultadoBusquedaDataProvider"
             Responsive="true"
@@ -21,7 +21,7 @@
             ItemsPerPageText="Items por página"
         >
             @foreach(var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden)) {
-                <GridColumn TItem="DataHomologacionEsquema" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">
+                <GridColumn TItem="BuscadorResultadoDataDto" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">
                     <HeaderContent>
                         <Tooltip Title="@etiqueta.TooltipWeb">@etiqueta.MostrarWeb</Tooltip>
                     </HeaderContent>
@@ -30,12 +30,12 @@
                     </ChildContent>
                 </GridColumn>
             }
-            <GridColumn TItem="DataHomologacionEsquema" HeaderText="-">
+            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context)">
                     <Icon Name="IconName.Front" />
                 </Button>
             </GridColumn>
-            <GridColumn TItem="DataHomologacionEsquema" HeaderText="-">
+            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small">
                     <Icon Name="IconName.FileTypePdf" />
                 </Button>

@@ -14,10 +14,9 @@ namespace ClientApp.Pages.BuscadorCan
         public IBusquedaService? iBusquedaService { get; set; }
         private IndexGrilla? childComponentRef;
         private List<HomologacionDto>? listaEtiquetasFiltros = new List<HomologacionDto>();
-        private List<List<HomologacionDto>?> listadeOpciones = new List<List<HomologacionDto>?>();
-        private List<List<int>> selectedValues = new List<List<int>>();
+        private List<List<FnFiltroDetalleDto>?> listadeOpciones = new List<List<FnFiltroDetalleDto>?>();
+        private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
         private BuscarRequest buscarRequest = new BuscarRequest();
-        private string TextSearch = default!;
         private int ModoBuscar = 1;
         private List<Item> ListTypeSearch = new TypeSearch().ListTypeSearch;
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
@@ -32,7 +31,7 @@ namespace ClientApp.Pages.BuscadorCan
                     {
                         foreach(var opciones in listaEtiquetasFiltros)
                         {
-                            listadeOpciones.Add(await iCatalogosService.GetHomologacionDetalleAsync<List<HomologacionDto>>("filtro_detalles", opciones.IdHomologacion));
+                            listadeOpciones.Add(await iCatalogosService.GetHomologacionDetalleAsync<List<FnFiltroDetalleDto>>("filtro_detalles", opciones.IdHomologacion));
                         }
                     }
                 }
@@ -40,20 +39,26 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine(e);
             }
         }
-        private void CambiarSeleccion(int selectedValue, int index)
+        private void CambiarSeleccion(string selectedValue, int? id)
         {
-            while (selectedValues.Count <= index)
+            if (id != null)
             {
-                selectedValues.Add(new List<int>());
-            }
-
-            if (selectedValues[index].Contains(selectedValue))
-            {
-                selectedValues[index].Remove(selectedValue);
-            }
-            else
-            {
-                selectedValues[index].Add(selectedValue);
+                var sValue = selectedValues.FirstOrDefault(c => c.Id == id);
+                if (sValue != null) {
+                    if (sValue?.Seleccion?.Contains(selectedValue) ?? false)
+                    {
+                        sValue.Seleccion?.Remove(selectedValue);
+                    }
+                    else
+                    {
+                        sValue?.Seleccion?.Add(selectedValue);
+                    }
+                } else {
+                    selectedValues.Add(new FiltrosBusquedaSeleccion{
+                        Id = id,
+                        Seleccion = new List<string>(){ selectedValue }
+                    });
+                }
             }
         }
         private async Task BuscarPalabraRequest(int modoBuscar)
@@ -84,7 +89,20 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private void OnAutoCompleteChanged(FnPredictWordsDto _fnPredictWordsDto)
         {
-            buscarRequest.TextoBuscar = _fnPredictWordsDto.Word ?? "";
+            if (_fnPredictWordsDto?.Word != null)
+            {
+                buscarRequest.TextoBuscar = _fnPredictWordsDto.Word;
+            } else {
+                selectedValues = new List<FiltrosBusquedaSeleccion>();
+            }
+        }
+    }
+
+    public class FiltrosBusquedaSeleccion {
+        public int? Id { get; set; }
+        public List<string>? Seleccion { get; set; }
+        public FiltrosBusquedaSeleccion() {
+            Seleccion = new List<string>();
         }
     }
 }
