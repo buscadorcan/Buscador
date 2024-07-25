@@ -175,7 +175,7 @@ GO
 --END
 --GO
 
-CREATE OR ALTER FUNCTION dbo.fn_PredictWords (@Prefix NVARCHAR(100))
+CREATE OR ALTER FUNCTION fn_PredictWords (@Prefix NVARCHAR(100))
 RETURNS @TopWords TABLE (Word NVARCHAR(max))
 AS
 BEGIN
@@ -187,47 +187,71 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER FUNCTION dbo.fn_DropSpacesTabs (@input NVARCHAR(MAX))	
+--CREATE OR ALTER FUNCTION fn_DropSpacesTabs (@input NVARCHAR(MAX))	
+--RETURNS NVARCHAR(MAX)
+--AS
+--BEGIN
+--    DECLARE @pos INT;
+--    DECLARE @length INT;
+--    DECLARE @result NVARCHAR(MAX);
+    
+--	SET @result = REPLACE(@result, CHAR(9), ' ');  -- Tab
+--    SET @result = REPLACE(@result, CHAR(10), ' '); -- Line Feed
+--    SET @result = REPLACE(@result, CHAR(13), ' '); -- Carriage Return
+
+--    SET @result = @input;
+--    SET @pos = 1;
+--    SET @length = LEN(@result);
+    
+--    WHILE @pos < @length
+--    BEGIN
+--        IF SUBSTRING(@result, @pos, 1) IN (' ', CHAR(9)) AND SUBSTRING(@result, @pos + 1, 1) IN (' ', CHAR(9))
+--        BEGIN
+--            SET @result = STUFF(@result, @pos + 1, 1, '');
+--            SET @length = LEN(@result);
+--        END
+--        ELSE
+--        BEGIN
+--            SET @pos = @pos + 1;
+--        END
+--    END
+    
+--    RETURN @result;
+--END;
+
+CREATE OR ALTER FUNCTION fn_DropSpacesTabs (@input NVARCHAR(MAX))	
 RETURNS NVARCHAR(MAX)
 AS
 BEGIN
-    DECLARE @pos INT;
-    DECLARE @length INT;
     DECLARE @result NVARCHAR(MAX);
     
-    SET @result = @input;
-    SET @pos = 1;
-    SET @length = LEN(@result);
+    -- Reemplazar tabulaciones, saltos de línea y retornos de carro por espacios
+    SET @result = REPLACE(REPLACE(REPLACE(@input, CHAR(13), ' '), CHAR(10), ' '), CHAR(9), ' ');
     
-    WHILE @pos < @length
+    -- Eliminar espacios duplicados
+    WHILE CHARINDEX('  ', @result) > 0
     BEGIN
-        IF SUBSTRING(@result, @pos, 1) IN (' ', CHAR(9)) AND SUBSTRING(@result, @pos + 1, 1) IN (' ', CHAR(9))
-        BEGIN
-            SET @result = STUFF(@result, @pos + 1, 1, '');
-            SET @length = LEN(@result);
-        END
-        ELSE
-        BEGIN
-            SET @pos = @pos + 1;
-        END
+        SET @result = REPLACE(@result, '  ', ' ');
     END
     
-    RETURN @result;
+    -- Retornar el resultado
+    RETURN LTRIM(RTRIM(@result));
 END;
+
 GO
 
 CREATE OR ALTER PROCEDURE psBuscarPalabra ( @paramJSON NVARCHAR(max) = NULL , @PageNumber INT = 1, @RowsPerPage INT = 20, @RowsTotal INT = 0 OUTPUT) AS
 BEGIN 
---DECLARE @paramJSON NVARCHAR(MAX) = 
---N'{		 "ModoBuscar"			:3
---		,"TextoBuscar"			:"salmonella"
---		,"FiltroPais"			:["ecuador"]
---		,"FiltroOna"			:[]
---		,"FiltroEsquema"		:[]
---		,"FiltroNorma"			:[]
---		,"FiltroEstado"			:["acreditado"]
---		,"FiltroRecomocimiento"	:["nacional"]
---}';
+--exec psBuscarPalabra  	 
+--	N'{	"ExactaBuscar"			: 1
+--	,"TextoBuscar"			:"salmonella"
+--	,"FiltroPais"			:["ecuador"]
+--	,"FiltroOna"			:[]
+--	,"FiltroEsquema"		:[]
+--	,"FiltroNorma"			:[]
+--	,"FiltroEstado"			:["acreditado"]
+--	,"FiltroRecomocimiento"	:["nacional"]
+--}',1,10;
 	BEGIN TRY	
 		SELECT  @RowsTotal				= 0;
 		DECLARE @FiltroPais				NVARCHAR(400)	 
@@ -238,9 +262,9 @@ BEGIN
 		DECLARE @FiltroRecomocimiento	NVARCHAR(400)	 
 		DECLARE @Organizacion			TABLE (IdOrganizacion NVARCHAR(16) , IdVista NVARCHAR(16) )
 		DECLARE @FiltroBusqueda			TABLE (IdHomologacion INT , Texto NVARCHAR(100))
-		DECLARE @IdHomologacionEsquema	INTEGER			=( SELECT TOP 1 IdHomologacionEsquema from HomologacionEsquema (NOLOCK) order by MostrarWebOrden)
+		DECLARE @IdHomologacionEsquema	INTEGER			= (SELECT TOP 1 IdHomologacionEsquema from HomologacionEsquema (NOLOCK) order by MostrarWebOrden)
 		DECLARE @TextoBuscar			NVARCHAR(200)	= lower(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
-		DECLARE @ModoBuscar				INTEGER			= JSON_VALUE(@paramJSON, '$.ModoBuscar			')
+		DECLARE @ExactaBuscar			bit			= JSON_VALUE(@paramJSON, '$.ExactaBuscar')
 	END TRY
 	BEGIN CATCH
 		  SELECT ERROR_NUMBER() ,ERROR_SEVERITY() ,ERROR_STATE() ,ERROR_PROCEDURE() ,ERROR_LINE() ,ERROR_MESSAGE()		 
@@ -259,36 +283,14 @@ BEGIN
 	UNION
 	SELECT	DISTINCT 123, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroRecomocimiento'))	-->	RECOMOCIMIENTO : IdHomologacion = 123	
 
-	-->	Buscar exacta 
-	IF	@ModoBuscar IS NULL		
-	OR	@ModoBuscar <= 0 
-	OR	@ModoBuscar > 5	
-		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-		SELECT DISTINCT o.IdOrganizacion  , o.IdVista
-		FROM	OrganizacionFullText o  (NOLOCK)
-		JOIN	(	select  distinct IdOrganizacion  
-					from	OrganizacionFullText  (NOLOCK)
-					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
-					or		(FullTextOrganizacion = @TextoBuscar)
-				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
-		WHERE	(	EXISTS 
-					(	SELECT	1 
-						FROM	@FiltroBusqueda fb 
-						WHERE	fb.IdHomologacion = o.IdHomologacion 
-						AND		fb.Texto		  = o.FullTextOrganizacion
-					)
-					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-				)
-
-	--> Buscar palabra
-    IF  @ModoBuscar = 1
+	--> Busqueda Exacta: "word" , "phase"	
+    IF  @ExactaBuscar = 1  AND (@TextoBuscar IS NOT NULL OR @TextoBuscar <> '')
 		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
 		SELECT DISTINCT o.IdOrganizacion  , o.IdVista 
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	(	select  distinct IdOrganizacion  
 					from	OrganizacionFullText  (NOLOCK)
-					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
-					or		FullTextOrganizacion LIKE '%' + @TextoBuscar +'%'
+					where	FullTextOrganizacion = @TextoBuscar
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
@@ -299,65 +301,22 @@ BEGIN
 					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
 				)
 
-	--> Buscar frase
-    IF  @ModoBuscar = 2
+	--> Palabra		%	"",  "word" , "phase"   ( sinonimos + Rank)	
+	-->	Frase		%	"",  "word" , "phase"   ( sinonimos + stopWord + Rank)
+    --> IF  @ModoBuscar = 2
+	ELSE
 	begin
-		SELECT	@TextoBuscar = '"' + @TextoBuscar +'"'
-		
-		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-		SELECT DISTINCT o.IdOrganizacion  , o.IdVista 
-		FROM	OrganizacionFullText o  (NOLOCK)
-		JOIN	(	select  distinct IdOrganizacion  
-					from	OrganizacionFullText  (NOLOCK)
-					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
-					or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
-				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
-		WHERE	(	EXISTS 
-					(	SELECT	1 
-						FROM	@FiltroBusqueda fb 
-						WHERE	fb.IdHomologacion = o.IdHomologacion 
-						AND		fb.Texto		  = o.FullTextOrganizacion
-					)
-					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-				)
-	end
-	
-	--> Buscar por palabras
-    IF  @ModoBuscar = 3
-	begin  
-		SELECT	@TextoBuscar = '"*' + REPLACE(dbo.fn_DropSpacesTabs(@TextoBuscar), ' ', '%') +'*"'
-		
-		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-		SELECT DISTINCT o.IdOrganizacion  , o.IdVista
-		FROM	OrganizacionFullText o  (NOLOCK)
-		JOIN	(	select  distinct IdOrganizacion  
-					from	OrganizacionFullText  (NOLOCK)
-					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
-					or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
-				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
-		WHERE	(	EXISTS 
-					(	SELECT	1 
-						FROM	@FiltroBusqueda fb 
-						WHERE	fb.IdHomologacion = o.IdHomologacion 
-						AND		fb.Texto		  = o.FullTextOrganizacion
-					)
-					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-				)
-	end
-
-	--> Buscar con sinonimos
-    IF  @ModoBuscar = 4
-	begin  
-		SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
+		--DECLARE @TextoBuscar NVARCHAR(200) = 'leche	  nutri'
+		SELECT	@TextoBuscar = dbo.fn_DropSpacesTabs(isnull(@TextoBuscar,''))
+		--select * from fn_Split(@TextoBuscar,' ')
+		DECLARE @TextoBuscarSinonimo NVARCHAR(200) = 'FORMSOF(THESAURUS, "' + @TextoBuscar +'")'
 		--WHERE CONTAINS(CatName , 'FORMSOF (THESAURUS, Jon)')  INFLECTIONAL
-		
 		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
 		SELECT DISTINCT o.IdOrganizacion  , o.IdVista
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	(	select  distinct IdOrganizacion  
 					from	OrganizacionFullText  (NOLOCK)
-					where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
-					or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+					where	CONTAINS(FullTextOrganizacion,  @TextoBuscarSinonimo )
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
 		WHERE	(	EXISTS 
 					(	SELECT	1 
@@ -367,20 +326,7 @@ BEGIN
 					)
 					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
 				)
-	end
 
-	--> Buscar con vectorizacion
-    IF  @ModoBuscar = 5
-	begin  
-		--SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
-		--INSERT	INTO @Organizacion (IdOrganizacion)
-		--SELECT o.IdOrganizacion --, OFT.RANK  
-		--FROM OrganizacionFullText AS o   
-		--INNER JOIN FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  'chocolate' ) as OFT
-		--	--,LANGUAGE N'English', 2) AS OFT  
-		--ON o.IdOrganizacionFullText = OFT.[KEY]  
-		--ORDER BY RANK DESC;  
-		--SELECT	@TextoBuscar = isnull(@TextoBuscar,'')
 		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
 		SELECT	o.IdOrganizacion  , o.IdVista  --, OFT.RANK  
 		FROM	OrganizacionFullText o  (NOLOCK)
@@ -397,8 +343,86 @@ BEGIN
 					)
 					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
 				)
-		ORDER BY RANK DESC;  
+		ORDER BY RANK DESC; 
 	end
+	
+	----> Buscar por palabras
+ --   IF  @ModoBuscar = 3
+	--begin  
+	--	SELECT	@TextoBuscar = '"*' + REPLACE(dbo.fn_DropSpacesTabs(@TextoBuscar), ' ', '%') +'*"'
+		
+	--	INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+	--	SELECT DISTINCT o.IdOrganizacion  , o.IdVista
+	--	FROM	OrganizacionFullText o  (NOLOCK)
+	--	JOIN	(	select  distinct IdOrganizacion  
+	--				from	OrganizacionFullText  (NOLOCK)
+	--				where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
+	--				or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+	--			)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
+	--	WHERE	(	EXISTS 
+	--				(	SELECT	1 
+	--					FROM	@FiltroBusqueda fb 
+	--					WHERE	fb.IdHomologacion = o.IdHomologacion 
+	--					AND		fb.Texto		  = o.FullTextOrganizacion
+	--				)
+	--				OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+	--			)
+	--end
+
+	----> Buscar con sinonimos
+ --   IF  @ModoBuscar = 4
+	--begin  
+	--	SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
+	--	--WHERE CONTAINS(CatName , 'FORMSOF (THESAURUS, Jon)')  INFLECTIONAL
+		
+	--	INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+	--	SELECT DISTINCT o.IdOrganizacion  , o.IdVista
+	--	FROM	OrganizacionFullText o  (NOLOCK)
+	--	JOIN	(	select  distinct IdOrganizacion  
+	--				from	OrganizacionFullText  (NOLOCK)
+	--				where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
+	--				or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
+	--			)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
+	--	WHERE	(	EXISTS 
+	--				(	SELECT	1 
+	--					FROM	@FiltroBusqueda fb 
+	--					WHERE	fb.IdHomologacion = o.IdHomologacion 
+	--					AND		fb.Texto		  = o.FullTextOrganizacion
+	--				)
+	--				OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+	--			)
+	--end
+
+	----> Buscar con vectorizacion
+ --   IF  @ModoBuscar = 5
+	--begin  
+	--	--SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
+	--	--INSERT	INTO @Organizacion (IdOrganizacion)
+	--	--SELECT o.IdOrganizacion --, OFT.RANK  
+	--	--FROM OrganizacionFullText AS o   
+	--	--INNER JOIN FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  'chocolate' ) as OFT
+	--	--	--,LANGUAGE N'English', 2) AS OFT  
+	--	--ON o.IdOrganizacionFullText = OFT.[KEY]  
+	--	--ORDER BY RANK DESC;  
+	--	--SELECT	@TextoBuscar = isnull(@TextoBuscar,'')
+	--	INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
+	--	SELECT	o.IdOrganizacion  , o.IdVista  --, OFT.RANK  
+	--	FROM	OrganizacionFullText o  (NOLOCK)
+	--	JOIN	FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  @TextoBuscar ) as OFT
+	--	--JOIN	FREETEXTTABLE(OrganizacionFullText.IdOrganizacion, FullTextOrganizacion,  @TextoBuscar ) as OFT
+	--		--,LANGUAGE N'English', 2) AS OFT  
+	--	ON	o.IdOrganizacionFullText	= OFT.[KEY]  
+	--	--AND o.IdOrganizacion			= OFT.IdOrganizacion 	 
+	--	--WHERE	(	EXISTS 
+	--	--			(	SELECT	1 
+	--	--				FROM	@FiltroBusqueda fb 
+	--	--				WHERE	fb.IdHomologacion = o.IdHomologacion 
+	--	--				AND		fb.Texto		  = o.FullTextOrganizacion
+	--	--			)
+	--	--			OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+	--	--		)
+	--	ORDER BY RANK DESC;  
+	--end
 
 	IF  (@PageNumber = 1)
 		SELECT  @RowsTotal = COUNT(*) --FROM @DataLakeOrgBusqueda
@@ -420,7 +444,6 @@ BEGIN
 	ORDER BY O.IdOrganizacion  
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
-	
 END;
 GO
 
