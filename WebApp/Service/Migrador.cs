@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ImportadorService(IDataLakeRepository dataLakeRepository, IDataLakeOrganizacionRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
+  public class Migrador(IDataLakeRepository dataLakeRepository, IDataLakeOrganizacionRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IMigrador
     {
       private IDataLakeRepository _repositoryDL = dataLakeRepository;
       private IDataLakeOrganizacionRepository _repositoryDLO = dataLakeOrganizacionRepository;
@@ -16,7 +16,6 @@ namespace WebApp.Service.IService
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private IConexionRepository _repositoryC = conexionRepository;
       private string connectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
-      // private readonly string defaultConnectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
       private Conexion? currentConexion = null;
       private int executionIndex = 0;
       private string[] views =  [];
@@ -29,13 +28,12 @@ namespace WebApp.Service.IService
       private bool saveIdVista = false;
       private bool saveIdOrganizacion = false;
       
-      public Boolean Importar(string[] vistas) 
+      public Boolean Migrar(Conexion conexion) 
       {
+        if (conexion == null) { return false; }
+
         try
         {
-          // Agregar obtensión de vistas de base de datos
-          List<Conexion> conexiones = _repositoryC.FindAll();
-          ConectionStringBuilderService conectionStringBuilderService = new ConectionStringBuilderService();
           List<HomologacionEsquema> homologacionEsquemas = _repositoryHE.FindAllWithViews();
           HashSet<string> DBViews = homologacionEsquemas.Select(he => he.VistaNombre).Where(v => v != null).Select(v => v!).ToHashSet();
           HashSet<string> DBSchemas = homologacionEsquemas.Select(he => he.EsquemaJson).Where(v => v != null).Select(v => v!).ToHashSet();
@@ -50,18 +48,12 @@ namespace WebApp.Service.IService
           // Console.WriteLine("Ids: " + string.Join(", ", HEIds));
           // Console.WriteLine("Vista Ids: " + string.Join(", ", ViewIds));
           
-          foreach (Conexion conexion in conexiones)
-          {
-            
-            if (!conexion.Migrar.Equals("S")) { continue; }
-            currentConexion = conexion;
-            filters = JArray.Parse(conexion.Filtros).ToObject<int[]>();
-            connectionString = conectionStringBuilderService.BuildConnectionString(conexion);
-            ImportarSistema(views, connectionString);
-            conexion.FechaConexion = DateTime.Now;
-            conexion.Migrar = "N";
-            _repositoryC.Update(conexion);
-          }
+          if (!conexion.Migrar.Equals("S")) { return true; }
+          currentConexion = conexion;
+          filters = JArray.Parse(conexion.Filtros).ToObject<int[]>();
+          ConectionStringBuilderService conectionStringBuilderService = new ConectionStringBuilderService();
+          connectionString = conectionStringBuilderService.BuildConnectionString(conexion);
+          ImportarSistema(views, connectionString);
 
           return true;
         } catch (Exception ex)
@@ -73,7 +65,15 @@ namespace WebApp.Service.IService
 
       public bool ImportarSistema(string[] vistas, string connectionString) 
       {
-        if (connectionString != null){ this.connectionString = connectionString; }
+        if (connectionString == null)
+        {
+          return false;
+        }
+        else
+        { 
+          this.connectionString = connectionString;
+        }
+        
         bool result = true;
         if (vistas != null && vistas.Length > 0){ views = vistas; }
 
@@ -81,12 +81,12 @@ namespace WebApp.Service.IService
         {
           deleted = false;
           executionIndex = Array.IndexOf(views, view);
-          result = result && Leer(view);
+          result = result && Procesar(view);
         }
         return result;
       }
 
-      public bool Leer(string viewName)
+      public bool Procesar(string viewName)
       {
         string currentSchema = schemas[executionIndex];
         JArray schemaArray = JArray.Parse(currentSchema);
@@ -105,6 +105,7 @@ namespace WebApp.Service.IService
           int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
           string[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
           string selectQuery = buildSelectViewQuery(connection, viewName, newSelectFields, newHomologacionIds);
+          if (selectQuery == "") { return false; }
 
           SqlCommand command = new SqlCommand(selectQuery, connection);
           SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -115,22 +116,37 @@ namespace WebApp.Service.IService
             connection.Open();
             adapter.Fill(dataSet);
             DataLake? dataLake = null;
+            List<int> dataLakeIds = [];
             if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
             {
               Console.WriteLine("No tables found");
               return false;
             }
             DataColumnCollection columns = dataSet.Tables[0].Columns;
+            List<string> vistaIds = getExistingIdsFromVista(connection, viewName, vids[executionIndex]);
 
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
               dataLake = getDatalake(dataLake);
               if (dataLake == null) { return false; }
-              
-              deleteOldRecords(heids[executionIndex]);
 
               DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(row, dataLake, columns);
               if (dataLakeOrganizacion == null) { return false; }
+
+              // Se obtienen los registros de la organización que ya existian en el DataLake
+              dataLakeIds = _repositoryDL.FindByDataSistemaOrigenId(dataLake.DataSistemaOrigenId, dataLake.IdDataLake);
+
+              // Si se encuentar al menos un registro se procede a borrar los registros anteriores
+              if (dataLakeIds.Count > 0)
+              {
+                // Se borra las versiones anteriores de los registros migrados
+                deleteOldRecord(dataLakeOrganizacion.IdVista, dataLakeOrganizacion.IdOrganizacion, dataLakeIds);
+           
+                if (vistaIds.Count > 0) {
+                  // Se borra los registros que ya no existan en las vistas exepto los que se acaban de insertar
+                  _repositoryDLO.DeleteByExcludingVistaIds(vistaIds, dataLakeOrganizacion.IdOrganizacion, dataLakeIds, dataLakeOrganizacion.IdDataLakeOrganizacion);
+                }
+              }
 
               addOrganizacionFullText(row, columns, dataLakeOrganizacion);
             }
@@ -156,7 +172,7 @@ namespace WebApp.Service.IService
           return buildDatalake(homologacionOrg);
         } else
         {
-          if ("ORGANIZQCION"?.ToString().Equals(dataLake?.DataTipo?.ToString()) == true &&
+          if ("ORGANIZACION"?.ToString().Equals(dataLake?.DataTipo?.ToString()) == true &&
               homologacionOrg?.MostrarWeb?.Equals(dataLake?.DataSistemaOrigen?.ToString()) == true &&
               homologacionOrg?.IdHomologacion.ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()) == true)
           {
@@ -215,7 +231,13 @@ namespace WebApp.Service.IService
           Estado = "A"
         };
         if (saveIdVista) { newDataLakeOrganizacion.IdVista = row[columns.Count - 1].ToString(); }
-        if (saveIdOrganizacion) { newDataLakeOrganizacion.IdOrganizacion = row[columns.Count - 2].ToString(); }
+        if (saveIdOrganizacion) {
+          if(saveIdVista) {
+            newDataLakeOrganizacion.IdOrganizacion = row[columns.Count - 2].ToString(); 
+          } else {
+            newDataLakeOrganizacion.IdOrganizacion = row[columns.Count - 1].ToString();
+          }
+        }
 
         return _repositoryDLO.Create(newDataLakeOrganizacion);
       }
@@ -286,6 +308,12 @@ namespace WebApp.Service.IService
 
       string buildSelectViewQuery(SqlConnection connection, string viewName, string[] selectFields, int[] homologacionIds)
       {
+        if(!viewExists(connection, viewName))
+        {
+          Console.WriteLine($"View {viewName} does not exist");
+          return "";
+        }
+
         List<int> newHomologacionIds = new List<int>();
         List<string> newSelectFields = new List<string>();
 
@@ -305,14 +333,15 @@ namespace WebApp.Service.IService
         }
         string newSelectFieldsStr = string.Join(", ", newSelectFields);
        
+        // Agregamos el Id de la organización en caso de existir
         if (fieldExists(connection, viewName, "IdOrganizacion")) {
-            newSelectFieldsStr += ", IdOrganizacion";
-            saveIdOrganizacion = true;
+          newSelectFieldsStr += ", IdOrganizacion";
+          saveIdOrganizacion = true;
+        } else {
+          Console.WriteLine("Field IdOrganizacion does not exist in view " + viewName);
+          saveIdOrganizacion = false;
         }
-        else {
-            Console.WriteLine("Field IdOrganizacion does not exist in view " + viewName);
-            saveIdOrganizacion = false;
-        }
+        // Agregamos el Id de la vista en caso de existir
         if (fieldExists(connection, viewName, vids[executionIndex])) {
           newSelectFieldsStr += ", " + vids[executionIndex];
           saveIdVista = true;
@@ -323,13 +352,19 @@ namespace WebApp.Service.IService
           saveIdVista = false;
         }
         hids = newHomologacionIds.ToArray();
+        string selectString = $"SELECT {newSelectFieldsStr} FROM {viewName}";
+        // Seleccionamos solo los nuevos registros en caso de existir la fecha deconexión
+        if (fieldExists(connection, viewName, "OrgFechaActualizacion")) {
+          string onlyNewWhere = currentConexion?.FechaConexion != null ? $" WHERE OrgFechaActualizacion >= '{currentConexion?.FechaConexion}'" : "";
+          selectString = $"{selectString} {onlyNewWhere}";
+        } 
 
-        return $"SELECT {newSelectFieldsStr} FROM {viewName}";
+        return selectString;
       }
 
       bool fieldExists(SqlConnection connection, string viewName, string fieldName)
       {
-        // This shall be validated through the conexion data base, tihi only works for SQL SERVER, it shall work for all the supported data bases
+        // This shall be validated through the conexion data base, this only works for SQL SERVER, it shall work for all the supported data bases
         string query = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{viewName}' AND COLUMN_NAME = '{fieldName}'";
         SqlCommand command = new SqlCommand(query, connection);
         SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -338,11 +373,34 @@ namespace WebApp.Service.IService
         return dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
       }
 
-      bool deleteOldRecords(int IdHomologacionEsquema)
+      bool viewExists(SqlConnection connection, string viewName)
       {
-        if (deleted) { return true; }
-        deleted = true;
-        return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema);
+        // This shall be validated through the conexion data base, this only works for SQL SERVER, it shall work for all the supported data bases
+        string query = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE IN ('BASE TABLE', 'VIEW') AND TABLE_NAME = '{viewName}'";
+        SqlCommand command = new SqlCommand(query, connection);
+        SqlDataAdapter adapter = new SqlDataAdapter(command);
+        DataSet dataSet = new DataSet();
+        adapter.Fill(dataSet);
+        return dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+      }
+
+      bool deleteOldRecord(string idVista, string idOrganizacion, List<int> dataLakeIds)
+      {
+        return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, dataLakeIds);
+      }
+  
+      List<string> getExistingIdsFromVista(SqlConnection connection, string viewName, string idVista) {
+        string query = $"SELECT '{idVista}' FROM '{viewName}'";
+        SqlCommand command = new SqlCommand(query, connection);
+        SqlDataAdapter adapter = new SqlDataAdapter(command);
+        DataSet dataSet = new DataSet();
+        adapter.Fill(dataSet);
+        List<string> ids = new List<string>();
+        foreach (DataRow row in dataSet.Tables[0].Rows)
+        {
+          ids.Add(row[0].ToString());
+        }
+        return ids;
       }
   }
 }

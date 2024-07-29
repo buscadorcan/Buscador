@@ -9,5 +9,6 @@ namespace WebApp.Repositories.IRepositories {
     DataLake? FindById(int Id);
     DataLake? FindBy(DataLake dataLake);
     ICollection<DataLake> FindAll();
+    List<int> FindByDataSistemaOrigenId(string dataSistemaOrigenId, int idDataLake);
   }
 }

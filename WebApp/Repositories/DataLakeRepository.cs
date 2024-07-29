@@ -39,6 +39,13 @@ namespace WebApp.Repositories
       return ExecuteDbOperation(context => context.DataLake.AsNoTracking().Where(c => c.Estado != null && c.Estado.Equals("A")).OrderBy(c => c.DataFechaCarga).ToList());
     }
 
+    public List<int> FindByDataSistemaOrigenId(string dataSistemaOrigenId, int idDataLake)
+    {
+      return ExecuteDbOperation(context => context.DataLake.AsNoTracking()
+                                                  .Where(c => c.DataSistemaOrigenId == dataSistemaOrigenId && c.IdDataLake != idDataLake && c.Estado.Equals("A"))
+                                                  .OrderBy(c => c.DataFechaCarga).Select(c => c.IdDataLake).ToList());
+    }
+
     public DataLake? FindBy(DataLake dataLake)
     {
       return ExecuteDbOperation(context => {

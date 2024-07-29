@@ -41,7 +41,8 @@ namespace WebApp.Extensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IExcelService, ExcelService>();
-            services.AddScoped<IImportadorService, ImportadorService>();
+            services.AddScoped<IImportador, ImportadorService>();
+            services.AddScoped<IMigrador, Migrador>();
             services.AddScoped<IEndpointRepository, EndpointRepository>();
             services.AddScoped<IUsuarioEndpointPermisoRepository, UsuarioEndpointPermisoRepository>();
             services.AddScoped<IBuscadorRepository, BuscadorRepository>();

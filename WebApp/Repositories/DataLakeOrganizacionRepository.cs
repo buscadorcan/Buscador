@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
@@ -61,13 +62,45 @@ namespace WebApp.Repositories
         var records = context.DataLakeOrganizacion.Where(c => c.IdHomologacionEsquema == IdHomologacionEsquema).ToList();
         List<int> deletedRecordIds = records.Select(r => r.IdDataLakeOrganizacion).ToList();
 
-        // foreach (var record in records)
-        // {
-        //   record.Estado = "X";
-        //   deletedRecordIds.Add(record.IdDataLakeOrganizacion);
-        // }
-        // context.DataLakeOrganizacion.UpdateRange(records);
-        // context.SaveChanges();
+        var deletedOrganizacionFullTextRecords = context.OrganizacionFullText.Where(o => deletedRecordIds.Contains(o.IdDataLakeOrganizacion)).ToList();
+        context.OrganizacionFullText.RemoveRange(deletedOrganizacionFullTextRecords);
+        context.SaveChanges();
+
+        context.DataLakeOrganizacion.RemoveRange(records);
+        context.SaveChanges();
+
+        return true;
+      });
+    }
+
+    public bool DeleteOldRecord(string idVista, string idOrganizacion, List<int> dataLakeIds)
+    {
+      return ExecuteDbOperation(context => {
+        var records = context.DataLakeOrganizacion.Where(
+              c => c.IdVista == idVista &&
+                   c.IdOrganizacion == idOrganizacion &&
+                   dataLakeIds.Contains(c.IdDataLake)).ToList();
+        List<int> deletedRecordIds = records.Select(r => r.IdDataLakeOrganizacion).ToList();
+
+        var deletedOrganizacionFullTextRecords = context.OrganizacionFullText.Where(o => deletedRecordIds.Contains(o.IdDataLakeOrganizacion)).ToList();
+        context.OrganizacionFullText.RemoveRange(deletedOrganizacionFullTextRecords);
+        context.SaveChanges();
+
+        context.DataLakeOrganizacion.RemoveRange(records);
+        context.SaveChanges();
+
+        return true;
+      });
+    }
+
+    
+    public bool DeleteByExcludingVistaIds(List<string> idsVista, string idOrganizacion, List<int> dataLakeIds, int idDataLakeOrganizacion)
+    {
+      return ExecuteDbOperation(context => {
+        var records = context.DataLakeOrganizacion.AsNoTracking()
+          .Where(c => c.IdOrganizacion == idOrganizacion && !idsVista.Contains(c.IdVista) && dataLakeIds.Contains(c.IdDataLake) && c.IdDataLakeOrganizacion != idDataLakeOrganizacion)
+          .ToList();
+        List<int> deletedRecordIds = records.Select(r => r.IdDataLakeOrganizacion).ToList();
 
         var deletedOrganizacionFullTextRecords = context.OrganizacionFullText.Where(o => deletedRecordIds.Contains(o.IdDataLakeOrganizacion)).ToList();
         context.OrganizacionFullText.RemoveRange(deletedOrganizacionFullTextRecords);
