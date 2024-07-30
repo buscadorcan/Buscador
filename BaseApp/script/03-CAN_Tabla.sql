@@ -207,7 +207,7 @@ CREATE TABLE dbo.Conexion (
     ,Contrasenia        NVARCHAR(100) NOT NULL
     ,MotorBaseDatos     NVARCHAR(100) NOT NULL
     ,Filtros            NVARCHAR(MAX) NOT NULL DEFAULT('{}')
-    ,FechaConexion		DATETIME NOT NULL DEFAULT(GETDATE())
+    ,FechaConexion		DATETIME
     ,TiempoEspera		INT NOT NULL DEFAULT(0)				-- Tiempo de espera en segundos
     ,Migrar				NVARCHAR(1) NOT NULL DEFAULT('S')	-- N= No migrar, S= Si migrar
     

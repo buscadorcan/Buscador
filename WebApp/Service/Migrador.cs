@@ -105,6 +105,7 @@ namespace WebApp.Service.IService
           int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
           string[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
           string selectQuery = buildSelectViewQuery(connection, viewName, newSelectFields, newHomologacionIds);
+          Console.WriteLine("Select Query: " + selectQuery);
           if (selectQuery == "") { return false; }
 
           SqlCommand command = new SqlCommand(selectQuery, connection);
@@ -119,11 +120,12 @@ namespace WebApp.Service.IService
             List<int> dataLakeIds = [];
             if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
             {
-              Console.WriteLine("No tables found");
+              Console.WriteLine("No hay nuevos registros en la vista " + viewName);
               return false;
             }
             DataColumnCollection columns = dataSet.Tables[0].Columns;
             List<string> vistaIds = getExistingIdsFromVista(connection, viewName, vids[executionIndex]);
+            Console.WriteLine("VistaIds: " + string.Join(", ", vistaIds));
 
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
@@ -139,6 +141,7 @@ namespace WebApp.Service.IService
               // Si se encuentar al menos un registro se procede a borrar los registros anteriores
               if (dataLakeIds.Count > 0)
               {
+                Console.WriteLine("Se encontraron registros anteriores en el DataLake");
                 // Se borra las versiones anteriores de los registros migrados
                 deleteOldRecord(dataLakeOrganizacion.IdVista, dataLakeOrganizacion.IdOrganizacion, dataLakeIds);
            
@@ -146,6 +149,8 @@ namespace WebApp.Service.IService
                   // Se borra los registros que ya no existan en las vistas exepto los que se acaban de insertar
                   _repositoryDLO.DeleteByExcludingVistaIds(vistaIds, dataLakeOrganizacion.IdOrganizacion, dataLakeIds, dataLakeOrganizacion.IdDataLakeOrganizacion);
                 }
+              } else {
+                Console.WriteLine("No se encontraron registros anteriores en el DataLake");
               }
 
               addOrganizacionFullText(row, columns, dataLakeOrganizacion);
@@ -310,7 +315,7 @@ namespace WebApp.Service.IService
       {
         if(!viewExists(connection, viewName))
         {
-          Console.WriteLine($"View {viewName} does not exist");
+          Console.WriteLine($"Vista {viewName} no existe");
           return "";
         }
 
@@ -355,7 +360,7 @@ namespace WebApp.Service.IService
         string selectString = $"SELECT {newSelectFieldsStr} FROM {viewName}";
         // Seleccionamos solo los nuevos registros en caso de existir la fecha deconexión
         if (fieldExists(connection, viewName, "OrgFechaActualizacion")) {
-          string onlyNewWhere = currentConexion?.FechaConexion != null ? $" WHERE OrgFechaActualizacion >= '{currentConexion?.FechaConexion}'" : "";
+            string onlyNewWhere = currentConexion?.FechaConexion != null ? $" WHERE CAST(OrgFechaActualizacion AS DATE) >= CAST('{currentConexion?.FechaConexion?.ToString("yyyy-MM-dd")}' AS DATE)" : "";
           selectString = $"{selectString} {onlyNewWhere}";
         } 
 
@@ -376,7 +381,7 @@ namespace WebApp.Service.IService
       bool viewExists(SqlConnection connection, string viewName)
       {
         // This shall be validated through the conexion data base, this only works for SQL SERVER, it shall work for all the supported data bases
-        string query = $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE IN ('BASE TABLE', 'VIEW') AND TABLE_NAME = '{viewName}'";
+        string query = $"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE IN ('BASE TABLE', 'VIEW') AND TABLE_NAME = '{viewName}'";
         SqlCommand command = new SqlCommand(query, connection);
         SqlDataAdapter adapter = new SqlDataAdapter(command);
         DataSet dataSet = new DataSet();
@@ -390,7 +395,7 @@ namespace WebApp.Service.IService
       }
   
       List<string> getExistingIdsFromVista(SqlConnection connection, string viewName, string idVista) {
-        string query = $"SELECT '{idVista}' FROM '{viewName}'";
+        string query = $"SELECT {idVista} FROM {viewName}";
         SqlCommand command = new SqlCommand(query, connection);
         SqlDataAdapter adapter = new SqlDataAdapter(command);
         DataSet dataSet = new DataSet();

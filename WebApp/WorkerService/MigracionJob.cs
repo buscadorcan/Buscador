@@ -15,7 +15,7 @@ namespace WebApp.WorkerService
     public MigracionJob(ILogger<MigracionJob> logger, IConfiguration config, IServiceProvider provider)
     {
       _logger = logger;
-      _logger.LogInformation($"\n\n ♨️ Start Background Excel Service: {DateTime.Now}");
+      _logger.LogInformation($"\n\n ♨️ Start Background Migrations Job: {DateTime.Now}");
 
       _config = config;
       _configLogPath = _config?.GetConnectionString("LogPath") == null ? "": _config?.GetConnectionString("LogPath");
@@ -33,15 +33,17 @@ namespace WebApp.WorkerService
             var service = scope.ServiceProvider.GetRequiredService<IMigrador>();
             var conexionRepository = scope.ServiceProvider.GetRequiredService<IConexionRepository>();
             List<Conexion> conexiones = conexionRepository.FindAll();
-            // Agregar obtensión de vistas de base de datos
             foreach (var conexion in conexiones)
             {
+              Console.WriteLine($"Migrando conexión: {conexion.IdSistema}");
+              // [TODO]: Validar si tiempo configurado en conexion ya ha pasado
               if (service.Migrar(conexion))
               {
                 _logger.LogInformation($"Migración exitosa de la conexión: {conexion.IdSistema}");
-                conexion.Migrar = "N";
+                // conexion.Migrar = "N";
                 conexion.FechaConexion = DateTime.Now;
                 conexionRepository.Update(conexion);
+                Environment.Exit(0);
               }
               else
               {
@@ -50,6 +52,8 @@ namespace WebApp.WorkerService
               
             }
           }
+          // [TODO]: Esperar tiempo predeterminado de ejecución mínima 
+          // Se recomienda 1 día, de no ser podible no bajar a menos de 1 hora
           await Task.Delay(TimeSpan.FromMinutes(10000), stoppingToken);
         }
         catch (Exception ex)

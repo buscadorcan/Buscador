@@ -59,6 +59,7 @@ namespace WebApp.Extensions
             // WorkerService
             services.AddHostedService<BackgroundWorkerService>();
             services.AddHostedService<BackgroundExcelService>();
+            services.AddHostedService<MigracionJob>();
 
             // Agregar Automapper
             services.AddAutoMapper(typeof(Mapper));

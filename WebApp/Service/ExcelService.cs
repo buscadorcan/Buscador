@@ -119,7 +119,7 @@ namespace WebApp.Service.IService
         return _repositoryDLO.Create(new DataLakeOrganizacion
           {
             IdDataLakeOrganizacion = 0,
-            IdDataLake = dataLake?.IdDataLake,
+            IdDataLake = (int)(dataLake?.IdDataLake),
             IdHomologacionEsquema = int.Parse(dataTable.Rows[row][4].ToString() ?? ""),
             DataEsquemaJson = buildDataLakeJson(dataTable, row),
             Estado = "A"
