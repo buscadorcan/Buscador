@@ -43,7 +43,7 @@ namespace ClientApp.Pages.BuscadorCan
                 if (servicio != null)
                 {
                     var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(new {
-                        ModoBuscar = ModoBuscar,
+                        ExactaBuscar = ModoBuscar,
                         TextoBuscar = buscarRequest?.TextoBuscar ?? "",
                         FiltroPais = selectedValues?.FirstOrDefault( c => c.Id == 2)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
                         FiltroOna = selectedValues?.FirstOrDefault( c => c.Id == 3)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
