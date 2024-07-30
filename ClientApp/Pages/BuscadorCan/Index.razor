@@ -19,21 +19,11 @@
                 OnChanged="(FnPredictWordsDto Word) => OnAutoCompleteChanged(Word)"
             />
             <br />
-            <Dropdown AutoClose="true" Split="true" style="padding: 5px;">
-                <DropdownActionButton @onclick="async () => await BuscarPalabraRequest()" Color="ButtonColor.Secondary">
-                    @ListTypeSearch.First(c => c.Id == ModoBuscar).Name
-                </DropdownActionButton>
-                <DropdownToggleButton Color="ButtonColor.Secondary" />
-                <DropdownMenu>
-                    @foreach(var item in ListTypeSearch)
-                    {
-                        <DropdownItem @onclick="async () => await BuscarPalabraRequest(item.Id)">
-                            @item.Name
-                        </DropdownItem>
-                    }
-                </DropdownMenu>
-            </Dropdown>
-            <div id="search-error-container"></div>
+            <input type="checkbox" @onchange="async (e) => await BuscarPalabraRequest((bool) e.Value ? 1 : 0)" />
+            <span style="color: #fff;">Busqueda Exacta</span>
+            <Button Color="ButtonColor.Secondary" @onclick="async () => await BuscarPalabraRequest()">
+              Buscar
+            </Button>
         </EditForm>
     </div>
 </div>
