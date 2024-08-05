@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class Migrador(IDataLakeRepository dataLakeRepository, IDataLakeOrganizacionRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IMigrador
+  public class Migrador(IDataLakeRepository dataLakeRepository, IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IMigrador
     {
       private IDataLakeRepository _repositoryDL = dataLakeRepository;
-      private IDataLakeOrganizacionRepository _repositoryDLO = dataLakeOrganizacionRepository;
+      private IOrganizacionDataRepository _repositoryDLO = organizacionDataRepository;
       private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
@@ -132,28 +132,18 @@ namespace WebApp.Service.IService
               dataLake = getDatalake(dataLake);
               if (dataLake == null) { return false; }
 
-              DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(row, dataLake, columns);
-              if (dataLakeOrganizacion == null) { return false; }
+              OrganizacionData organizacionData = addOrganizacionData(row, dataLake, columns);
+              if (organizacionData == null) { return false; }
 
-              // Se obtienen los registros de la organización que ya existian en el DataLake
-              dataLakeIds = _repositoryDL.FindByDataSistemaOrigenId(dataLake.DataSistemaOrigenId, dataLake.IdDataLake);
-
-              // Si se encuentar al menos un registro se procede a borrar los registros anteriores
-              if (dataLakeIds.Count > 0)
-              {
-                Console.WriteLine("Se encontraron registros anteriores en el DataLake");
-                // Se borra las versiones anteriores de los registros migrados
-                deleteOldRecord(dataLakeOrganizacion.IdVista, dataLakeOrganizacion.IdOrganizacion, dataLakeIds);
-           
-                if (vistaIds.Count > 0) {
-                  // Se borra los registros que ya no existan en las vistas exepto los que se acaban de insertar
-                  _repositoryDLO.DeleteByExcludingVistaIds(vistaIds, dataLakeOrganizacion.IdOrganizacion, dataLakeIds, dataLakeOrganizacion.IdDataLakeOrganizacion);
-                }
-              } else {
-                Console.WriteLine("No se encontraron registros anteriores en el DataLake");
+              // Se borra las versiones anteriores de los registros migrados
+              deleteOldRecord(organizacionData.IdVista, organizacionData.IdOrganizacion);
+          
+              if (vistaIds.Count > 0) {
+                // Se borra los registros que ya no existan en las vistas exepto los que se acaban de insertar
+                _repositoryDLO.DeleteByExcludingVistaIds(vistaIds, organizacionData.IdOrganizacion, currentConexion.IdConexion, organizacionData.IdOrganizacionData);
               }
 
-              addOrganizacionFullText(row, columns, dataLakeOrganizacion);
+              addOrganizacionFullText(row, columns, organizacionData);
             }
           }
           catch (Exception ex)
@@ -225,29 +215,28 @@ namespace WebApp.Service.IService
         }
       }
 
-      DataLakeOrganizacion addDataLakeOrganizacion(DataRow row, DataLake dataLake, DataColumnCollection columns)
+      OrganizacionData addOrganizacionData(DataRow row, DataLake dataLake, DataColumnCollection columns)
       {
-        DataLakeOrganizacion newDataLakeOrganizacion = new DataLakeOrganizacion
+        OrganizacionData newOrganizacionData = new OrganizacionData
         {
-          IdDataLakeOrganizacion = 0,
-          IdDataLake = dataLake.IdDataLake,
+          IdOrganizacionData = 0,
+          IdConexion = currentConexion?.IdConexion ?? 0,
           IdHomologacionEsquema = heids[executionIndex],
-          DataEsquemaJson = buildDataLakeJson(row, columns),
-          Estado = "A"
+          DataEsquemaJson = buildOrganizacionDataJson(row, columns)
         };
-        if (saveIdVista) { newDataLakeOrganizacion.IdVista = row[columns.Count - 1].ToString(); }
+        if (saveIdVista) { newOrganizacionData.IdVista = row[columns.Count - 1].ToString(); }
         if (saveIdOrganizacion) {
           if(saveIdVista) {
-            newDataLakeOrganizacion.IdOrganizacion = row[columns.Count - 2].ToString(); 
+            newOrganizacionData.IdOrganizacion = row[columns.Count - 2].ToString(); 
           } else {
-            newDataLakeOrganizacion.IdOrganizacion = row[columns.Count - 1].ToString();
+            newOrganizacionData.IdOrganizacion = row[columns.Count - 1].ToString();
           }
         }
 
-        return _repositoryDLO.Create(newDataLakeOrganizacion);
+        return _repositoryDLO.Create(newOrganizacionData);
       }
 
-      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, DataLakeOrganizacion dataLakeOrganizacion)
+      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, OrganizacionData organizacionData)
       {
         Boolean result = true;
         if (executionIndex == 0)
@@ -260,10 +249,10 @@ namespace WebApp.Service.IService
             _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
-              IdDataLakeOrganizacion = dataLakeOrganizacion.IdDataLakeOrganizacion,
+              IdOrganizacionData = organizacionData.IdOrganizacionData,
               IdHomologacion = filter,
-              IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
-              IdVista = dataLakeOrganizacion.IdVista,
+              IdOrganizacion = organizacionData.IdOrganizacion,
+              IdVista = organizacionData.IdVista,
               FullTextOrganizacion = homologacion.MostrarWeb.ToLower().Trim()
             });
           }
@@ -275,10 +264,10 @@ namespace WebApp.Service.IService
             result = _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
-              IdDataLakeOrganizacion = dataLakeOrganizacion.IdDataLakeOrganizacion,
+              IdOrganizacionData = organizacionData.IdOrganizacionData,
               IdHomologacion = hids[col],
-              IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
-              IdVista = dataLakeOrganizacion.IdVista,
+              IdOrganizacion = organizacionData.IdOrganizacion,
+              IdVista = organizacionData.IdVista,
               FullTextOrganizacion = row[col].ToString().ToLower().Trim()
             }) != null ? result : false;
           } catch (Exception ex)
@@ -290,7 +279,7 @@ namespace WebApp.Service.IService
         return result;
       }
 
-      string buildDataLakeJson(DataRow row, DataColumnCollection columns)
+      string buildOrganizacionDataJson(DataRow row, DataColumnCollection columns)
       {
         int subtractFields = 0;
         if (saveIdVista) { subtractFields++; }
@@ -389,9 +378,9 @@ namespace WebApp.Service.IService
         return dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
       }
 
-      bool deleteOldRecord(string idVista, string idOrganizacion, List<int> dataLakeIds)
+      bool deleteOldRecord(string idVista, string idOrganizacion)
       {
-        return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, dataLakeIds);
+        return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, currentConexion?.IdConexion ?? 0, heids[executionIndex]);
       }
   
       List<string> getExistingIdsFromVista(SqlConnection connection, string viewName, string idVista) {

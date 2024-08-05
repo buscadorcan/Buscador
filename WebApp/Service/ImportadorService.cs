@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ImportadorService(IDataLakeRepository dataLakeRepository, IDataLakeOrganizacionRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
+  public class ImportadorService(IDataLakeRepository dataLakeRepository, IOrganizacionDataRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
     {
       private IDataLakeRepository _repositoryDL = dataLakeRepository;
-      private IDataLakeOrganizacionRepository _repositoryDLO = dataLakeOrganizacionRepository;
+      private IOrganizacionDataRepository _repositoryDLO = dataLakeOrganizacionRepository;
       private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
@@ -114,7 +114,6 @@ namespace WebApp.Service.IService
           {
             connection.Open();
             adapter.Fill(dataSet);
-            DataLake? dataLake = null;
             if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
             {
               Console.WriteLine("No tables found");
@@ -124,12 +123,10 @@ namespace WebApp.Service.IService
 
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-              dataLake = getDatalake(dataLake);
-              if (dataLake == null) { return false; }
               
               deleteOldRecords(heids[executionIndex]);
 
-              DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(row, dataLake, columns);
+              OrganizacionData dataLakeOrganizacion = addOrganizacionData(row, columns);
               if (dataLakeOrganizacion == null) { return false; }
 
               addOrganizacionFullText(row, columns, dataLakeOrganizacion);
@@ -149,78 +146,21 @@ namespace WebApp.Service.IService
         }
       }
 
-      DataLake? getDatalake(DataLake? dataLake)
+      OrganizacionData addOrganizacionData(DataRow row, DataColumnCollection columns)
       {
-        Homologacion? homologacionOrg = _repositoryH.FindById(14);
-        if (dataLake == null) {
-          return buildDatalake(homologacionOrg);
-        } else
+        OrganizacionData newOrganizacionData = new OrganizacionData
         {
-          if ("ORGANIZQCION"?.ToString().Equals(dataLake?.DataTipo?.ToString()) == true &&
-              homologacionOrg?.MostrarWeb?.Equals(dataLake?.DataSistemaOrigen?.ToString()) == true &&
-              homologacionOrg?.IdHomologacion.ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()) == true)
-          {
-            if (currentConexion?.FechaConexion > dataLake.DataSistemaFecha)
-            {
-              dataLake.DataSistemaFecha = currentConexion?.FechaConexion ?? DateTime.Now;;
-              dataLake.Estado = "A";
-              dataLake.DataFechaCarga = DateTime.Now;
-              return _repositoryDL.Update(dataLake);
-            }
-            else if (currentConexion?.FechaConexion == dataLake.DataSistemaFecha)
-            {
-              return null;
-            }
-            return dataLake;
-          } else 
-          {
-            return buildDatalake(homologacionOrg);
-          }
-        }
-      }
-
-      DataLake buildDatalake(Homologacion? homologacionOrg)
-      {
-        DataLake tmpDataLake = new DataLake
-        {
-          DataTipo = "ORGANIZACION",
-          DataSistemaOrigen = homologacionOrg?.MostrarWeb,
-          DataSistemaOrigenId = homologacionOrg?.IdHomologacion.ToString()
-        };
-
-        var existingDataLake = _repositoryDL.FindBy(tmpDataLake);
-        if (existingDataLake != null)
-        {
-          existingDataLake.DataSistemaFecha = currentConexion?.FechaConexion ?? DateTime.Now;
-          _repositoryDL.Update(existingDataLake);
-          return existingDataLake;
-        }
-        else
-        {
-          tmpDataLake.Estado = "A";
-          tmpDataLake.DataSistemaFecha = currentConexion?.FechaConexion ?? DateTime.Now;
-          tmpDataLake.DataFechaCarga = DateTime.Now;
-          return _repositoryDL.Create(tmpDataLake);
-        }
-      }
-
-      DataLakeOrganizacion addDataLakeOrganizacion(DataRow row, DataLake dataLake, DataColumnCollection columns)
-      {
-        DataLakeOrganizacion newDataLakeOrganizacion = new DataLakeOrganizacion
-        {
-          IdDataLakeOrganizacion = 0,
-          IdDataLake = dataLake.IdDataLake,
+          IdOrganizacionData = 0,
           IdHomologacionEsquema = heids[executionIndex],
           DataEsquemaJson = buildDataLakeJson(row, columns),
-          Estado = "A"
         };
-        if (saveIdVista) { newDataLakeOrganizacion.IdVista = row[columns.Count - 1].ToString(); }
-        if (saveIdOrganizacion) { newDataLakeOrganizacion.IdOrganizacion = row[columns.Count - 2].ToString(); }
+        if (saveIdVista) { newOrganizacionData.IdVista = row[columns.Count - 1].ToString(); }
+        if (saveIdOrganizacion) { newOrganizacionData.IdOrganizacion = row[columns.Count - 2].ToString(); }
 
-        return _repositoryDLO.Create(newDataLakeOrganizacion);
+        return _repositoryDLO.Create(newOrganizacionData);
       }
 
-      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, DataLakeOrganizacion dataLakeOrganizacion)
+      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, OrganizacionData dataLakeOrganizacion)
       {
         Boolean result = true;
         if (executionIndex == 0)
@@ -233,7 +173,7 @@ namespace WebApp.Service.IService
             _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
-              IdDataLakeOrganizacion = dataLakeOrganizacion.IdDataLakeOrganizacion,
+              IdOrganizacionData = dataLakeOrganizacion.IdOrganizacionData,
               IdHomologacion = filter,
               IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
               IdVista = dataLakeOrganizacion.IdVista,
@@ -248,7 +188,7 @@ namespace WebApp.Service.IService
             result = _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
-              IdDataLakeOrganizacion = dataLakeOrganizacion.IdDataLakeOrganizacion,
+              IdOrganizacionData = dataLakeOrganizacion.IdOrganizacionData,
               IdHomologacion = hids[col],
               IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
               IdVista = dataLakeOrganizacion.IdVista,
@@ -270,18 +210,17 @@ namespace WebApp.Service.IService
         if (saveIdOrganizacion) { subtractFields++; }
 
         int fieldsCount = columns.Count - subtractFields;
-        JArray dataLakeJson = [];
+        JArray organizacionDataJson = [];
         for (int col = 0; col < fieldsCount; col++)
         {
-          dataLakeJson.Add(new JObject
+          organizacionDataJson.Add(new JObject
           {
             { "IdHomologacion", hids[col] },
             { "Data", row[col].ToString() }
           });
         }
 
-        // Console.WriteLine("DataLakeJson: " + dataLakeJson.ToString());
-        return dataLakeJson.ToString();
+        return organizacionDataJson.ToString();
       }
 
       string buildSelectViewQuery(SqlConnection connection, string viewName, string[] selectFields, int[] homologacionIds)
@@ -342,7 +281,7 @@ namespace WebApp.Service.IService
       {
         if (deleted) { return true; }
         deleted = true;
-        return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema);
+        return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema, currentConexion.IdConexion);
       }
   }
 }
