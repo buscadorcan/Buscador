@@ -7,9 +7,8 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class Migrador(IDataLakeRepository dataLakeRepository, IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IMigrador
+  public class Migrador(IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IMigrador
     {
-      private IDataLakeRepository _repositoryDL = dataLakeRepository;
       private IOrganizacionDataRepository _repositoryDLO = organizacionDataRepository;
       private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
@@ -116,7 +115,6 @@ namespace WebApp.Service.IService
           {
             connection.Open();
             adapter.Fill(dataSet);
-            DataLake? dataLake = null;
             List<int> dataLakeIds = [];
             if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
             {
@@ -129,10 +127,7 @@ namespace WebApp.Service.IService
 
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-              dataLake = getDatalake(dataLake);
-              if (dataLake == null) { return false; }
-
-              OrganizacionData organizacionData = addOrganizacionData(row, dataLake, columns);
+              OrganizacionData organizacionData = addOrganizacionData(row, columns);
               if (organizacionData == null) { return false; }
 
               // Se borra las versiones anteriores de los registros migrados
@@ -160,62 +155,7 @@ namespace WebApp.Service.IService
         }
       }
 
-      DataLake? getDatalake(DataLake? dataLake)
-      {
-        Homologacion? homologacionOrg = _repositoryH.FindById(14);
-        if (dataLake == null) {
-          return buildDatalake(homologacionOrg);
-        } else
-        {
-          if ("ORGANIZACION"?.ToString().Equals(dataLake?.DataTipo?.ToString()) == true &&
-              homologacionOrg?.MostrarWeb?.Equals(dataLake?.DataSistemaOrigen?.ToString()) == true &&
-              homologacionOrg?.IdHomologacion.ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()) == true)
-          {
-            if (currentConexion?.FechaConexion > dataLake.DataSistemaFecha)
-            {
-              dataLake.DataSistemaFecha = currentConexion?.FechaConexion ?? DateTime.Now;;
-              dataLake.Estado = "A";
-              dataLake.DataFechaCarga = DateTime.Now;
-              return _repositoryDL.Update(dataLake);
-            }
-            else if (currentConexion?.FechaConexion == dataLake.DataSistemaFecha)
-            {
-              return null;
-            }
-            return dataLake;
-          } else 
-          {
-            return buildDatalake(homologacionOrg);
-          }
-        }
-      }
-
-      DataLake buildDatalake(Homologacion? homologacionOrg)
-      {
-        DataLake tmpDataLake = new DataLake
-        {
-          DataTipo = "ORGANIZACION",
-          DataSistemaOrigen = homologacionOrg?.MostrarWeb,
-          DataSistemaOrigenId = homologacionOrg?.IdHomologacion.ToString()
-        };
-
-        var existingDataLake = _repositoryDL.FindBy(tmpDataLake);
-        if (existingDataLake != null)
-        {
-          existingDataLake.DataSistemaFecha = currentConexion?.FechaConexion ?? DateTime.Now;
-          _repositoryDL.Update(existingDataLake);
-          return existingDataLake;
-        }
-        else
-        {
-          tmpDataLake.Estado = "A";
-          tmpDataLake.DataSistemaFecha = currentConexion?.FechaConexion ?? DateTime.Now;
-          tmpDataLake.DataFechaCarga = DateTime.Now;
-          return _repositoryDL.Create(tmpDataLake);
-        }
-      }
-
-      OrganizacionData addOrganizacionData(DataRow row, DataLake dataLake, DataColumnCollection columns)
+      OrganizacionData addOrganizacionData(DataRow row, DataColumnCollection columns)
       {
         OrganizacionData newOrganizacionData = new OrganizacionData
         {

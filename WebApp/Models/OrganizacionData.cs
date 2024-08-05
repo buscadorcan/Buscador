@@ -13,8 +13,5 @@ namespace WebApp.Models
     public string? IdOrganizacion     { get; set; }
     public string? IdVista            { get; set; }
     public string? DataEsquemaJson    { get; set; }
-    public DateTime? FechaCreacion    { get; set; }
-    public DateTime? DataFecha	      { get; set; }
-
   }
 }

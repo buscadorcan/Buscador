@@ -26,8 +26,8 @@ namespace WebApp.WorkerService
 
               using (var scope = _services.CreateScope())
               {
-                // var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
-                // excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx");
+                var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
+                excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx");
                 // var service = scope.ServiceProvider.GetRequiredService<IImportador>();
                 // service.Importar(Array.Empty<string>());
               }

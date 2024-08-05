@@ -7,9 +7,8 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ImportadorService(IDataLakeRepository dataLakeRepository, IOrganizacionDataRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
+  public class ImportadorService(IOrganizacionDataRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
     {
-      private IDataLakeRepository _repositoryDL = dataLakeRepository;
       private IOrganizacionDataRepository _repositoryDLO = dataLakeOrganizacionRepository;
       private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;

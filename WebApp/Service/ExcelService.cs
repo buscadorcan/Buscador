@@ -8,9 +8,8 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ExcelService(IDataLakeRepository dataLakeRepository, IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, HomologacionEsquemaRepository homologacionEsquemaRepository) : IExcelService
+  public class ExcelService(IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository) : IExcelService
     {
-      private IDataLakeRepository _repositoryDL = dataLakeRepository;
       private IOrganizacionDataRepository _repositoryDLO = organizacionDataRepository;
       private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
@@ -26,6 +25,7 @@ namespace WebApp.Service.IService
       private bool deleted = false;
       private JArray currentSchema = new JArray();
       private List<Homologacion> currentFields = new List<Homologacion>();
+      HomologacionEsquema? homologacionEsquema = null;
 
       public Boolean ImportarExcel(string path) 
       {
@@ -55,7 +55,7 @@ namespace WebApp.Service.IService
               foreach (DataTable dataTable in DataSet.Tables)
               {
                 string sheetName = dataTable.TableName;
-                HomologacionEsquema? homologacionEsquema = _repositoryHE.FindByViewName(sheetName);
+                homologacionEsquema = _repositoryHE.FindByViewName(sheetName);
                 if (homologacionEsquema == null) { continue; }
 
                 currentSchema = JArray.Parse(homologacionEsquema.EsquemaJson);
@@ -93,6 +93,7 @@ namespace WebApp.Service.IService
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                   // Se borra los datos antiguos de todo el esquema que se está migrando y se los vuelve a cargar
+                  Console.WriteLine($"Deleting old records for {homologacionEsquema.IdHomologacionEsquema} and {int.Parse(dataTable.Rows[i][0].ToString())}");
                   deleteOldRecords(homologacionEsquema.IdHomologacionEsquema, int.Parse(dataTable.Rows[i][0].ToString())); 
                   OrganizacionData organizacionData = addOrganizacionData(dataTable, i);
                   addOrganizacionFullText(dataTable, i, organizacionData.IdOrganizacionData);
@@ -112,7 +113,7 @@ namespace WebApp.Service.IService
         OrganizacionData organizacionData = new OrganizacionData
         {
           IdOrganizacionData = 0,
-          IdHomologacionEsquema = int.Parse(dataTable.Rows[row][4].ToString() ?? ""),
+          IdHomologacionEsquema = homologacionEsquema.IdHomologacionEsquema,
           DataEsquemaJson = buildOrganizacionDataJson(dataTable, row),
           IdConexion = int.Parse(dataTable.Rows[row][0].ToString())
         };
@@ -196,17 +197,18 @@ namespace WebApp.Service.IService
 
         return data.ToString();
       }
-
       bool deleteOldRecords(int idHomologacionEsquema, int idConexion)
       {
+        Console.WriteLine($"Deleting old records for {idHomologacionEsquema} and {idConexion}");
         if (deleted)
         {
+          Console.WriteLine("Already deleted");
           return true;
         }
         deleted = true;
+        Console.WriteLine("Predelete");
         return _repositoryDLO.DeleteOldRecords(idHomologacionEsquema, idConexion);
       }
-
       bool deleteOldRecord(string idVista, string idOrganizacion, int idHomologacionEsquema, int idConexion)
       {
         return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);

@@ -35,21 +35,19 @@ namespace WebApp.WorkerService
             List<Conexion> conexiones = conexionRepository.FindAll();
             foreach (var conexion in conexiones)
             {
-              Console.WriteLine($"Migrando conexión: {conexion.IdSistema}");
+              Console.WriteLine($"Migrando conexión: {conexion.CodigoHomologacion}");
               // [TODO]: Validar si tiempo configurado en conexion ya ha pasado
-              if (service.Migrar(conexion))
-              {
-                _logger.LogInformation($"Migración exitosa de la conexión: {conexion.IdSistema}");
-                // conexion.Migrar = "N";
-                conexion.FechaConexion = DateTime.Now;
-                conexionRepository.Update(conexion);
-                Environment.Exit(0);
-              }
-              else
-              {
-                _logger.LogError($"Error en la migración de la conexión: {conexion.IdSistema}");
-              }
-              
+              // if (service.Migrar(conexion))
+              // {
+              //   _logger.LogInformation($"Migración exitosa de la conexión: {conexion.CodigoHomologacion}");
+              //   conexion.Migrar = "N";
+              //   conexion.FechaConexion = DateTime.Now;
+              //   conexionRepository.Update(conexion);
+              // }
+              // else
+              // {
+              //   _logger.LogError($"Error en la migración de la conexión: {conexion.CodigoHomologacion}");
+              // }
             }
           }
           // [TODO]: Esperar tiempo predeterminado de ejecución mínima 

@@ -24,9 +24,9 @@ namespace WebApp.Repositories
             _dbContextFactory = dbContextFactory;
             _logger = logger;
         }
-        public List<PropiedadesTablaDto> GetProperties(int idSystem, string viewName)
+        public List<PropiedadesTablaDto> GetProperties(string codigoHomologacion, string viewName)
         {
-            var conexion = GetConexion(idSystem);
+            var conexion = GetConexion(codigoHomologacion);
             using var context = GetContext(conexion);
             using var connection = context.Database.GetDbConnection();
             connection.Open();
@@ -53,9 +53,9 @@ namespace WebApp.Repositories
 
             return columnNames;
         }
-        public List<string> GetViewNames(int idSystem)
+        public List<string> GetViewNames(string codigoHomologacion)
         {
-            var conexion = GetConexion(idSystem);
+            var conexion = GetConexion(codigoHomologacion);
             using var context = GetContext(conexion);
             using var connection = context.Database.GetDbConnection();
             connection.Open();
@@ -97,12 +97,12 @@ namespace WebApp.Repositories
             };
         }
 
-        private Conexion GetConexion(int idSystem)
+        private Conexion GetConexion(string codigoHomologacion)
         {
-            var conexion = ExecuteDbOperation(context => context.Conexion.AsNoTracking().FirstOrDefault(u => u.IdSistema == idSystem));
+            var conexion = ExecuteDbOperation(context => context.Conexion.AsNoTracking().FirstOrDefault(u => u.CodigoHomologacion == codigoHomologacion));
             if (conexion == null)
             {
-                var message = $"No se encontró conexión para IdSistema {idSystem}";
+                var message = $"No se encontró conexión para IdSistema {codigoHomologacion}";
                 _logger.LogWarning(message);
                 throw new Exception(message);
             }
