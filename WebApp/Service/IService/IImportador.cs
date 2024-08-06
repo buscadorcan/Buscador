@@ -1,7 +1,6 @@
-
 namespace WebApp.Service.IService
 {
-    public interface IImportadorService
+    public interface IImportador
     {
         Boolean Importar(string[] path);
     }
