@@ -35,6 +35,11 @@ namespace WebApp.Repositories
             return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().FirstOrDefault(u => u.IdHomologacionEsquema == id));
         }
         
+        public HomologacionEsquema? FindByViewName(string viewName)
+        {
+            return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().FirstOrDefault(u => u.VistaNombre == viewName && u.Estado == "A"));
+        }
+
         public List<HomologacionEsquema> FindAll()
         {
             return ExecuteDbOperation(context => context.HomologacionEsquema.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.MostrarWebOrden).ToList());

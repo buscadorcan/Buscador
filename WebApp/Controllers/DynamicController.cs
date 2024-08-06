@@ -21,12 +21,12 @@ namespace WebApp.Controllers
             _vhRepo = vhRepo;
         }
 
-        [HttpGet("columns/{idSystem:int}/{viewName}", Name = "getProperties")]
-        public IActionResult GetProperties(int idSystem, string viewName)
+        [HttpGet("columns/{codigoHomologacion:string}/{viewName}", Name = "getProperties")]
+        public IActionResult GetProperties(string codigoHomologacion, string viewName)
         {
             try
             {
-                var result = _vhRepo.GetProperties(idSystem, viewName);
+                var result = _vhRepo.GetProperties(codigoHomologacion, viewName);
                 return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
             }
             catch (Exception e)
@@ -34,12 +34,12 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GetProperties));
             }
         }
-        [HttpGet("{idSystem:int}", Name = "getViewNames")]
-        public IActionResult GetViewNames(int idSystem)
+        [HttpGet("{codigoHomologacion:string}", Name = "getViewNames")]
+        public IActionResult GetViewNames(string codigoHomologacion)
         {
             try
             {
-                var result = _vhRepo.GetViewNames(idSystem);
+                var result = _vhRepo.GetViewNames(codigoHomologacion);
                 return Ok(new RespuestasAPI<List<string>> { Result = result });
             }
             catch (Exception e)

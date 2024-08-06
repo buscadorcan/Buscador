@@ -41,15 +41,15 @@ namespace WebApp.Extensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IExcelService, ExcelService>();
-            services.AddScoped<IImportadorService, ImportadorService>();
+            services.AddScoped<IImportador, ImportadorService>();
+            services.AddScoped<IMigrador, Migrador>();
             services.AddScoped<IEndpointRepository, EndpointRepository>();
             services.AddScoped<IUsuarioEndpointPermisoRepository, UsuarioEndpointPermisoRepository>();
             services.AddScoped<IBuscadorRepository, BuscadorRepository>();
             services.AddScoped<ICatalogosRepository, CatalogosRepository>();
             services.AddScoped<IHomologacionRepository, HomologacionRepository>();
             services.AddScoped<IHomologacionEsquemaRepository, HomologacionEsquemaRepository>();
-            services.AddScoped<IDataLakeRepository, DataLakeRepository>();
-            services.AddScoped<IDataLakeOrganizacionRepository, DataLakeOrganizacionRepository>();
+            services.AddScoped<IOrganizacionDataRepository, OrganizacionDataRepository>();
             services.AddScoped<IOrganizacionFullTextRepository, OrganizacionFullTextRepository>();
             services.AddScoped<IConexionRepository, ConexionRepository>();
             services.AddScoped<IConectionStringBuilderService, ConectionStringBuilderService>();
@@ -58,6 +58,7 @@ namespace WebApp.Extensions
             // WorkerService
             services.AddHostedService<BackgroundWorkerService>();
             services.AddHostedService<BackgroundExcelService>();
+            services.AddHostedService<MigracionJob>();
 
             // Agregar Automapper
             services.AddAutoMapper(typeof(Mapper));

@@ -3,18 +3,29 @@ using ExcelDataReader;
 using WebApp.Models;
 using System.Data;
 using WebApp.Repositories.IRepositories;
+using WebApp.Repositories;
+using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ExcelService(IDataLakeRepository dataLakeRepository, IDataLakeOrganizacionRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository) : IExcelService
+  public class ExcelService(IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository) : IExcelService
     {
-      private IDataLakeRepository _repositoryDL = dataLakeRepository;
-      private IDataLakeOrganizacionRepository _repositoryDLO = dataLakeOrganizacionRepository;
+      private IOrganizacionDataRepository _repositoryDLO = organizacionDataRepository;
       private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
-      private int[] filters = [5, 6];
+      private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
+      private int[] filters = [];
       private int executionIndex = 0;
+      private int idVistaIndex = 2;
+      private int idOrganizacionIndex = 3;
+      private string currentIdVista = "";
+      private string currentIdOrganizacion = "";
+      private bool hasIdVista = false;
+      private bool hasIdOrganizacion = false;
       private bool deleted = false;
+      private JArray currentSchema = new JArray();
+      private List<Homologacion> currentFields = new List<Homologacion>();
+      HomologacionEsquema? homologacionEsquema = null;
 
       public Boolean ImportarExcel(string path) 
       {
@@ -43,15 +54,49 @@ namespace WebApp.Service.IService
             {
               foreach (DataTable dataTable in DataSet.Tables)
               {
+                string sheetName = dataTable.TableName;
+                homologacionEsquema = _repositoryHE.FindByViewName(sheetName);
+                if (homologacionEsquema == null) { continue; }
+
+                currentSchema = JArray.Parse(homologacionEsquema.EsquemaJson);
+                int[] homologacionIds = Array.Empty<int>();
+
+                foreach (JObject item in currentSchema)
+                {
+                  int idHomologacion = item.Value<int>("IdHomologacion");
+                  homologacionIds = homologacionIds.Append(idHomologacion).ToArray();
+                }
+
+                currentFields = _repositoryH.FindByIds(homologacionIds);
+
                 executionIndex = DataSet.Tables.IndexOf(dataTable);
                 Console.WriteLine("Execution Index: " + executionIndex + " Sheet: " + dataTable.TableName);
-                DataLake? dataLake = null;
+                if (string.IsNullOrEmpty(homologacionEsquema.IdVistaNombre))
+                {
+                  hasIdVista = false;
+                } else {
+                  idVistaIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == homologacionEsquema.IdVistaNombre);
+                  if (idVistaIndex == -1) {
+                    hasIdVista = false;
+                  } else {
+                    hasIdVista = true;
+                  }
+                }
+                idOrganizacionIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == "IdOrganizacion");
+                if (idVistaIndex == -1) {
+                  hasIdOrganizacion = false;
+                } else {
+                  hasIdOrganizacion = true;
+                }
+                
+
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                  dataLake = getDatalake(dataTable, i, dataLake);
-                  deleteOldRecords(int.Parse(dataTable.Rows[i][4].ToString() ?? ""));
-                  DataLakeOrganizacion dataLakeOrganizacion = addDataLakeOrganizacion(dataTable, i, dataLake);
-                  addOrganizacionFullText(dataTable, i, dataLakeOrganizacion.IdDataLakeOrganizacion);
+                  // Se borra los datos antiguos de todo el esquema que se está migrando y se los vuelve a cargar
+                  Console.WriteLine($"Deleting old records for {homologacionEsquema.IdHomologacionEsquema} and {int.Parse(dataTable.Rows[i][0].ToString())}");
+                  deleteOldRecords(homologacionEsquema.IdHomologacionEsquema, int.Parse(dataTable.Rows[i][0].ToString())); 
+                  OrganizacionData organizacionData = addOrganizacionData(dataTable, i);
+                  addOrganizacionFullText(dataTable, i, organizacionData.IdOrganizacionData);
                 }
               }
               return true;
@@ -63,124 +108,110 @@ namespace WebApp.Service.IService
         }
       }
 
-      DataLake? getDatalake(DataTable dataTable, int row, DataLake? dataLake)
+      OrganizacionData addOrganizacionData(DataTable dataTable, int row)
       {
-        if (dataLake == null) {
-          return buildDatalake(dataTable, row);
-        } else
+        OrganizacionData organizacionData = new OrganizacionData
         {
-          if (dataTable.Rows[row][0]?.ToString().Equals(dataLake?.DataTipo?.ToString()) == true &&
-              dataTable.Rows[row][1]?.ToString().Equals(dataLake?.DataSistemaOrigen?.ToString()) == true &&
-              dataTable.Rows[row][2]?.ToString().Equals(dataLake?.DataSistemaOrigenId?.ToString()) == true)
-          {
-            if (DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900") > dataLake.DataSistemaFecha)
-            {
-              dataLake.DataSistemaFecha = DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900");
-              dataLake.Estado = "A";
-              dataLake.DataFechaCarga = DateTime.Now;
-              return _repositoryDL.Update(dataLake);
-            }
-            return dataLake;
-          } else 
-          {
-            return buildDatalake(dataTable, row);
-          }
-        }
-      }
-
-      DataLake? buildDatalake(DataTable dataTable, int row)
-      {
-        DataLake tmpDataLake = new DataLake
-        {
-          DataTipo = dataTable.Rows[row][0].ToString(),
-          DataSistemaOrigen = dataTable.Rows[row][1].ToString(),
-          DataSistemaOrigenId = dataTable.Rows[row][2].ToString()
+          IdOrganizacionData = 0,
+          IdHomologacionEsquema = homologacionEsquema.IdHomologacionEsquema,
+          DataEsquemaJson = buildOrganizacionDataJson(dataTable, row),
+          IdConexion = int.Parse(dataTable.Rows[row][0].ToString())
         };
-
-        var existingDataLake = _repositoryDL.FindBy(tmpDataLake);
-        if (existingDataLake != null)
+        if (hasIdVista)
         {
-          existingDataLake.DataSistemaFecha = DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900");
-          existingDataLake = _repositoryDL.Update(existingDataLake);
-          return existingDataLake;
+          currentIdVista = dataTable.Rows[row][idVistaIndex].ToString();
+          organizacionData.IdVista = currentIdVista;
         }
-        else
+        if (hasIdOrganizacion)
         {
-          tmpDataLake.DataSistemaFecha = DateTime.Parse(dataTable.Rows[row][3]?.ToString() ?? "01/01/1900");
-          tmpDataLake.Estado = "A";
-          tmpDataLake.DataFechaCarga = DateTime.Now;
-          tmpDataLake = _repositoryDL.Create(tmpDataLake);
-          return tmpDataLake;
+          currentIdOrganizacion = dataTable.Rows[row][idOrganizacionIndex].ToString();
+          organizacionData.IdOrganizacion = currentIdOrganizacion;
         }
+        return _repositoryDLO.Create(organizacionData);
       }
 
-      DataLakeOrganizacion addDataLakeOrganizacion(DataTable dataTable, int row, DataLake? dataLake)
+      bool addOrganizacionFullText(DataTable dataTable, int row, int organizacionDataId)
       {
-        return _repositoryDLO.Create(new DataLakeOrganizacion
-          {
-            IdDataLakeOrganizacion = 0,
-            IdDataLake = dataLake?.IdDataLake,
-            IdHomologacionEsquema = int.Parse(dataTable.Rows[row][4].ToString() ?? ""),
-            DataEsquemaJson = buildDataLakeJson(dataTable, row),
-            Estado = "A"
-          });
-      }
-      bool addOrganizacionFullText(DataTable dataTable, int row, int dataLakeOrganizacionId)
-      {
-        int columnsCount = dataTable.Columns.Count;
-        if (columnsCount < 7)
+        bool result = true;
+        foreach (Homologacion currentField in currentFields)
         {
-          return false;
-        }
-        Boolean result = true;
-        if (executionIndex == 0)
-        {
-          foreach (int filter in filters)
+          if (string.IsNullOrEmpty(currentField.NombreHomologado))
           {
-            Homologacion? homologacion = _repositoryH.FindByMostrarWeb(dataTable.Rows[row][filter].ToString());
-            if (homologacion == null) { continue; }
-
-            _repositoryOFT.Create(new OrganizacionFullText
-            {
-              IdOrganizacionFullText = 0,
-              IdDataLakeOrganizacion = dataLakeOrganizacionId,
-              IdHomologacion = homologacion.IdHomologacion,
-              FullTextOrganizacion = dataTable.Rows[row][filter].ToString()
-            });
+            continue;
           }
-        }
-        for (int col = 7; col < columnsCount; col++)
-        {
-          result = _repositoryOFT.Create(new OrganizacionFullText
+
+          int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.NombreHomologado);
+          if (currentFieldIndex == -1)
+          {
+            continue;
+          }
+
+          string currentValue = dataTable.Rows[row][currentFieldIndex].ToString();
+          if (string.IsNullOrEmpty(currentValue))
+          {
+            continue;
+          }
+
+          OrganizacionFullText newOrganizacionFullText = new OrganizacionFullText
           {
             IdOrganizacionFullText = 0,
-            IdDataLakeOrganizacion = dataLakeOrganizacionId,
-            IdHomologacion = int.Parse(dataTable.Columns[col].ColumnName),
-            FullTextOrganizacion = dataTable.Rows[row][col].ToString()
-          }) != null ? result : false;
+            IdOrganizacionData = organizacionDataId,
+            IdHomologacion = currentField.IdHomologacion,
+            FullTextOrganizacion = currentValue,
+          };
+
+          if (hasIdVista)
+          {
+            newOrganizacionFullText.IdVista = currentIdVista;
+          }
+          if (hasIdOrganizacion)
+          {
+            newOrganizacionFullText.IdOrganizacion = currentIdOrganizacion;
+          }
+
+          result = _repositoryOFT.Create(newOrganizacionFullText) != null ? result : false;
         }
         return result;
       }
-      string buildDataLakeJson(DataTable dataTable, int row)
+      string buildOrganizacionDataJson(DataTable dataTable, int row)
       {
-        int columnsCount = dataTable.Columns.Count;
-        if (columnsCount < 7)
+        JArray data = new JArray();
+        foreach (Homologacion currentField in currentFields)
         {
-          return "[]";
-        }
-        string json = "[";
-        for (int col = 7; col < columnsCount; col++)
-        {
-          json += "{ \"IdHomologacion\": \"" + dataTable.Columns[col].ColumnName + "\", \"Data\": \"" + dataTable.Columns[col].ColumnName + " " + dataTable.Rows[row][col].ToString() + "\" },";
-        }
-        return json.TrimEnd(',') + "]";
-      }
+          if (string.IsNullOrEmpty(currentField.NombreHomologado))
+          {
+            continue;
+          }
 
-      bool deleteOldRecords(int IdHomologacionEsquema)
+          int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.NombreHomologado);
+          if (currentFieldIndex == -1)
+          {
+            continue;
+          }
+          data.Add(new JObject
+          {
+            ["IdHomologacion"] = currentField.IdHomologacion,
+            ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString()
+          });
+        }
+
+        return data.ToString();
+      }
+      bool deleteOldRecords(int idHomologacionEsquema, int idConexion)
       {
-        if (deleted) { return true; }
+        Console.WriteLine($"Deleting old records for {idHomologacionEsquema} and {idConexion}");
+        if (deleted)
+        {
+          Console.WriteLine("Already deleted");
+          return true;
+        }
         deleted = true;
-        return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema);
+        Console.WriteLine("Predelete");
+        return _repositoryDLO.DeleteOldRecords(idHomologacionEsquema, idConexion);
+      }
+      bool deleteOldRecord(string idVista, string idOrganizacion, int idHomologacionEsquema, int idConexion)
+      {
+        return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);
       }
   }
 }
