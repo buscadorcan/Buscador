@@ -57,6 +57,7 @@ namespace WebApp.Service.IService
             filters = JArray.Parse(conexion.Filtros).ToObject<int[]>();
             connectionString = conectionStringBuilderService.BuildConnectionString(conexion);
             ImportarSistema(views, connectionString);
+            // Environment.Exit(0);
             conexion.FechaConexion = DateTime.Now;
             conexion.Migrar = "N";
             _repositoryC.Update(conexion);
@@ -104,6 +105,7 @@ namespace WebApp.Service.IService
           int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
           string[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
           string selectQuery = buildSelectViewQuery(connection, viewName, newSelectFields, newHomologacionIds);
+          if (selectQuery == "") { return false; }
 
           SqlCommand command = new SqlCommand(selectQuery, connection);
           SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -151,6 +153,7 @@ namespace WebApp.Service.IService
         {
           IdOrganizacionData = 0,
           IdHomologacionEsquema = heids[executionIndex],
+          IdConexion = currentConexion.IdConexion,
           DataEsquemaJson = buildDataLakeJson(row, columns),
         };
         if (saveIdVista) { newOrganizacionData.IdVista = row[columns.Count - 1].ToString(); }
@@ -184,6 +187,10 @@ namespace WebApp.Service.IService
         for (int col = 0; col < columns.Count; col++)
         {
           try {
+            string indexValue = row[col]?.ToString()?.ToLower()?.Trim();
+
+            if (string.IsNullOrEmpty(indexValue)) { continue; }
+
             result = _repositoryOFT.Create(new OrganizacionFullText
             {
               IdOrganizacionFullText = 0,
@@ -224,6 +231,12 @@ namespace WebApp.Service.IService
 
       string buildSelectViewQuery(SqlConnection connection, string viewName, string[] selectFields, int[] homologacionIds)
       {
+        if(!viewExists(connection, viewName))
+        {
+          Console.WriteLine($"Vista {viewName} no existe");
+          return "";
+        }
+
         List<int> newHomologacionIds = new List<int>();
         List<string> newSelectFields = new List<string>();
 
@@ -263,6 +276,17 @@ namespace WebApp.Service.IService
         hids = newHomologacionIds.ToArray();
 
         return $"SELECT {newSelectFieldsStr} FROM {viewName}";
+      }
+
+      bool viewExists(SqlConnection connection, string viewName)
+      {
+        // This shall be validated through the conexion data base, this only works for SQL SERVER, it shall work for all the supported data bases
+        string query = $"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE IN ('BASE TABLE', 'VIEW') AND TABLE_NAME = '{viewName}'";
+        SqlCommand command = new SqlCommand(query, connection);
+        SqlDataAdapter adapter = new SqlDataAdapter(command);
+        DataSet dataSet = new DataSet();
+        adapter.Fill(dataSet);
+        return dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
       }
 
       bool fieldExists(SqlConnection connection, string viewName, string fieldName)
