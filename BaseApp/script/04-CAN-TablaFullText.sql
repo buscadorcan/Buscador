@@ -17,18 +17,24 @@ EXEC DBO.Bitacora '@script','04-CAN-TablaFullText.sql'
 DROP TABLE if exists dbo.OrganizacionFullText;
 CREATE TABLE OrganizacionFullText(
      IdOrganizacionFullText	 INT NOT NULL IDENTITY(1,1)
-    ,IdDataLakeOrganizacion	 INT NOT NULL 
+    ,IdDataLakeOrganizacion	 INT NOT NULL  --------IdOrganizacionData--------IdDataLakeOrganizacion 
     ,IdHomologacion          INT NOT NULL
     ,IdOrganizacion          NVARCHAR(32) 
     ,IdVista                 NVARCHAR(32) NOT NULL
-    ,FullTextOrganizacion    NVARCHAR(MAX) NULL			-- fulltext a considerear
+    ,FullTextOrganizacion    NVARCHAR(MAX)  COLLATE Latin1_General_CI_AI -- Modern_Spanish_CI_AS fulltext sin valorar tildes
     ,CONSTRAINT [PK_IdOrganizacionFullText] PRIMARY KEY CLUSTERED (IdOrganizacionFullText)  
 );
 
-IF EXISTS (SELECT * FROM sys.fulltext_catalogs WHERE name = 'OrganizacionFullText_cat')
+IF	EXISTS (SELECT * FROM sys.fulltext_catalogs WHERE is_default = 1 AND name = 'OrganizacionFullText_cat')
+BEGIN
+	CREATE FULLTEXT CATALOG temp_catalog;
+	ALTER FULLTEXT CATALOG temp_catalog AS DEFAULT;
 	DROP FULLTEXT CATALOG [OrganizacionFullText_cat];
+END
 GO
-CREATE FULLTEXT CATALOG OrganizacionFullText_cat WITH ACCENT_SENSITIVITY = ON AS DEFAULT ;
+
+CREATE FULLTEXT CATALOG OrganizacionFullText_cat WITH ACCENT_SENSITIVITY = OFF AS DEFAULT ;  
+--ALTER FULLTEXT CATALOG OrganizacionFullText_cat REBUILD WITH ACCENT_SENSITIVITY = OFF;
 GO
 
 CREATE FULLTEXT INDEX ON OrganizacionFullText( 
@@ -38,6 +44,7 @@ KEY INDEX [PK_IdOrganizacionFullText]
 ON	OrganizacionFullText_cat
 WITH STOPLIST = SYSTEM;
 
+DROP FULLTEXT CATALOG temp_catalog;
 
 --> actualizar el archivo:  con los sinonimos : C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\FTData\tsesn.xml
 EXEC sys.sp_fulltext_load_thesaurus_file 3082;

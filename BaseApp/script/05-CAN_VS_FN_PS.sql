@@ -243,7 +243,7 @@ GO
 CREATE OR ALTER PROCEDURE psBuscarPalabra ( @paramJSON NVARCHAR(max) = NULL , @PageNumber INT = 1, @RowsPerPage INT = 20, @RowsTotal INT = 0 OUTPUT) AS
 BEGIN 
 --exec psBuscarPalabra  	 
---	N'{	"ExactaBuscar"			: 1
+--	N'{	"ExactaBuscar"		: 1
 --	,"TextoBuscar"			:"salmonella"
 --	,"FiltroPais"			:["ecuador"]
 --	,"FiltroOna"			:[]
@@ -252,7 +252,7 @@ BEGIN
 --	,"FiltroEstado"			:["acreditado"]
 --	,"FiltroRecomocimiento"	:["nacional"]
 --}',1,10;
-	BEGIN TRY	
+BEGIN TRY	
 		SELECT  @RowsTotal				= 0;
 		DECLARE @FiltroPais				NVARCHAR(400)	 
 		DECLARE @FiltroOna				NVARCHAR(400)	 
@@ -260,16 +260,30 @@ BEGIN
 		DECLARE @FiltroNorma			NVARCHAR(400)	 
 		DECLARE @FiltroEstado			NVARCHAR(400)	 
 		DECLARE @FiltroRecomocimiento	NVARCHAR(400)	 
-		DECLARE @Organizacion			TABLE (IdOrganizacion NVARCHAR(16) , IdVista NVARCHAR(16) )
-		DECLARE @FiltroBusqueda			TABLE (IdHomologacion INT , Texto NVARCHAR(100))
+		DECLARE @Organizacion			TABLE (IdOrganizacion VARCHAR(16) , IdVista VARCHAR(16) , TipoData VARCHAR(20))
+		DECLARE @FiltroBusqueda			TABLE (IdHomologacion INT , Texto NVARCHAR(100) COLLATE Latin1_General_CI_AI)
 		DECLARE @IdHomologacionEsquema	INTEGER			= (SELECT TOP 1 IdHomologacionEsquema from HomologacionEsquema (NOLOCK) order by MostrarWebOrden)
 		DECLARE @TextoBuscar			NVARCHAR(200)	= lower(LTRIM(RTRIM(JSON_VALUE(@paramJSON,'$.TextoBuscar'))))
-		DECLARE @ExactaBuscar			bit			= JSON_VALUE(@paramJSON, '$.ExactaBuscar')
+		DECLARE @ExactaBuscar			BIT				= JSON_VALUE(@paramJSON, '$.ExactaBuscar')
 	END TRY
 	BEGIN CATCH
-		  SELECT ERROR_NUMBER() ,ERROR_SEVERITY() ,ERROR_STATE() ,ERROR_PROCEDURE() ,ERROR_LINE() ,ERROR_MESSAGE()		 
-	END CATCH;
+		DECLARE  @ErrorNumber	INT = ERROR_NUMBER()
+				,@ErrorSeverity INT = ERROR_SEVERITY()
+				,@ErrorState	INT = ERROR_STATE()
+				,@ErrorLine		INT = ERROR_LINE()
+				,@ErrorProcedure NVARCHAR(128)  = ERROR_PROCEDURE()
+				,@ErrorMessage	 NVARCHAR(2000) = ERROR_MESSAGE()
 
+		DECLARE @FullErrorMessage NVARCHAR(3000)='ERROR AL BUSCAR EN: ' + ISNULL(@ErrorProcedure, 'psBuscarPalabra') + CHAR(13) + CHAR(10) 
+		SELECT  @FullErrorMessage +='* Error Number: '  + CAST(@ErrorNumber AS NVARCHAR(10))	+ CHAR(13) + CHAR(10) +
+									'* Severity: '		+ CAST(@ErrorSeverity AS NVARCHAR(10))	+ CHAR(13) + CHAR(10) +
+									'* State: '			+ CAST(@ErrorState AS NVARCHAR(10))		+ CHAR(13) + CHAR(10) +
+									'* Line: '			+ CAST(@ErrorLine AS NVARCHAR(10))		+ CHAR(13) + CHAR(10) +
+									'* Message: '		+ @ErrorMessage;
+		PRINT @FullErrorMessage;
+	END CATCH
+	SElECT @TextoBuscar = dbo.fn_DropSpacesTabs(isnull(@TextoBuscar,'')), @ExactaBuscar = isnull(@ExactaBuscar,0)
+	
 	INSERT  INTO @FiltroBusqueda	
 	SELECT	DISTINCT 114, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroPais'))			-->	PAIS		   : IdHomologacion = 114
 	UNION
@@ -283,12 +297,12 @@ BEGIN
 	UNION
 	SELECT	DISTINCT 123, value		FROM OPENJSON(JSON_QUERY(@paramJSON, '$.FiltroRecomocimiento'))	-->	RECOMOCIMIENTO : IdHomologacion = 123	
 
-	--> Busqueda Exacta: "word" , "phase"	
-    IF  @ExactaBuscar = 1  AND (@TextoBuscar IS NOT NULL OR @TextoBuscar <> '')
-		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-		SELECT DISTINCT o.IdOrganizacion  , o.IdVista 
+	--> Busqueda Exacta:	"word_phase", ""
+    IF  @ExactaBuscar = 1
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista, TipoData)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista , '1.BuscaExacta'
 		FROM	OrganizacionFullText o  (NOLOCK)
-		JOIN	(	select  distinct IdOrganizacion  
+		JOIN	(	select  distinct IdOrganizacion  ,FullTextOrganizacion
 					from	OrganizacionFullText  (NOLOCK)
 					where	FullTextOrganizacion = @TextoBuscar
 				)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
@@ -301,18 +315,26 @@ BEGIN
 					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
 				)
 
-	--> Palabra		%	"",  "word" , "phase"   ( sinonimos + Rank)	
-	-->	Frase		%	"",  "word" , "phase"   ( sinonimos + stopWord + Rank)
-    --> IF  @ModoBuscar = 2
+	--> Busqueda NoExacta: 	"word_phase", ""   ( sinonimos + stopWord + Rank)
+	ELSE
+	IF  @TextoBuscar = '' 
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista, TipoData)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista , '0.BuscaVacia'
+		FROM	OrganizacionFullText o  (NOLOCK) 
+		WHERE	(	EXISTS 
+					(	SELECT	1 
+						FROM	@FiltroBusqueda fb 
+						WHERE	fb.IdHomologacion = o.IdHomologacion 
+						AND		fb.Texto		  = o.FullTextOrganizacion
+					)
+					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
+				)
 	ELSE
 	begin
-		--DECLARE @TextoBuscar NVARCHAR(200) = 'leche	  nutri'
-		SELECT	@TextoBuscar = dbo.fn_DropSpacesTabs(isnull(@TextoBuscar,''))
-		--select * from fn_Split(@TextoBuscar,' ')
-		DECLARE @TextoBuscarSinonimo NVARCHAR(200) = 'FORMSOF(THESAURUS, "' + @TextoBuscar +'")'
-		--WHERE CONTAINS(CatName , 'FORMSOF (THESAURUS, Jon)')  INFLECTIONAL
-		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-		SELECT DISTINCT o.IdOrganizacion  , o.IdVista
+		DECLARE @TextoBuscarSinonimo NVARCHAR(200) = 'FORMSOF(THESAURUS, "' + @TextoBuscar +'" ) OR FORMSOF(INFLECTIONAL, "' + @TextoBuscar +'" )'
+		
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista, TipoData)
+		SELECT DISTINCT o.IdOrganizacion  , o.IdVista , '0.BuscaThesaInflec' 
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	(	select  distinct IdOrganizacion  
 					from	OrganizacionFullText  (NOLOCK)
@@ -327,12 +349,12 @@ BEGIN
 					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
 				)
 
-		INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-		SELECT	o.IdOrganizacion  , o.IdVista  --, OFT.RANK  
+		INSERT	INTO @Organizacion (IdOrganizacion, IdVista, TipoData)
+		SELECT	o.IdOrganizacion  , o.IdVista , '0.BuscaRank'  --, OFT.RANK  
 		FROM	OrganizacionFullText o  (NOLOCK)
 		JOIN	FREETEXTTABLE(OrganizacionFullText, FullTextOrganizacion,  @TextoBuscar ) as OFT
 		--JOIN	FREETEXTTABLE(OrganizacionFullText.IdOrganizacion, FullTextOrganizacion,  @TextoBuscar ) as OFT
-			--,LANGUAGE N'English', 2) AS OFT  
+		--,LANGUAGE N'English', 2) AS OFT  
 		ON	o.IdOrganizacionFullText	= OFT.[KEY]  
 		--AND o.IdOrganizacion			= OFT.IdOrganizacion 	 
 		WHERE	(	EXISTS 
@@ -345,54 +367,8 @@ BEGIN
 				)
 		ORDER BY RANK DESC; 
 	end
-	
-	----> Buscar por palabras
- --   IF  @ModoBuscar = 3
-	--begin  
-	--	SELECT	@TextoBuscar = '"*' + REPLACE(dbo.fn_DropSpacesTabs(@TextoBuscar), ' ', '%') +'*"'
-		
-	--	INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-	--	SELECT DISTINCT o.IdOrganizacion  , o.IdVista
-	--	FROM	OrganizacionFullText o  (NOLOCK)
-	--	JOIN	(	select  distinct IdOrganizacion  
-	--				from	OrganizacionFullText  (NOLOCK)
-	--				where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
-	--				or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
-	--			)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
-	--	WHERE	(	EXISTS 
-	--				(	SELECT	1 
-	--					FROM	@FiltroBusqueda fb 
-	--					WHERE	fb.IdHomologacion = o.IdHomologacion 
-	--					AND		fb.Texto		  = o.FullTextOrganizacion
-	--				)
-	--				OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-	--			)
-	--end
 
-	----> Buscar con sinonimos
- --   IF  @ModoBuscar = 4
-	--begin  
-	--	SELECT	@TextoBuscar = 'FORMSOF(THESAURUS, "' + dbo.fn_DropSpacesTabs(@TextoBuscar)+'")'
-	--	--WHERE CONTAINS(CatName , 'FORMSOF (THESAURUS, Jon)')  INFLECTIONAL
-		
-	--	INSERT	INTO @Organizacion (IdOrganizacion, IdVista)
-	--	SELECT DISTINCT o.IdOrganizacion  , o.IdVista
-	--	FROM	OrganizacionFullText o  (NOLOCK)
-	--	JOIN	(	select  distinct IdOrganizacion  
-	--				from	OrganizacionFullText  (NOLOCK)
-	--				where	(@TextoBuscar IS NULL OR @TextoBuscar = '')
-	--				or		CONTAINS(FullTextOrganizacion,  @TextoBuscar )
-	--			)	b  on b.IdOrganizacion	= o.IdOrganizacion 	 
-	--	WHERE	(	EXISTS 
-	--				(	SELECT	1 
-	--					FROM	@FiltroBusqueda fb 
-	--					WHERE	fb.IdHomologacion = o.IdHomologacion 
-	--					AND		fb.Texto		  = o.FullTextOrganizacion
-	--				)
-	--				OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-	--			)
-	--end
-
+	--Select  * from @Organizacion
 	----> Buscar con vectorizacion
  --   IF  @ModoBuscar = 5
 	--begin  
@@ -425,27 +401,39 @@ BEGIN
 	--end
 
 	IF  (@PageNumber = 1)
-		SELECT  @RowsTotal = COUNT(*) --FROM @DataLakeOrgBusqueda
-		FROM	DataLakeOrganizacion O (NOLOCK)
-		JOIN	@Organizacion		 B ON B.IdOrganizacion = O.IdOrganizacion
-		WHERE	O.Estado = 'A'
-		AND		IdHomologacionEsquema = @IdHomologacionEsquema
+		WITH	tbRowsTotal AS  
+		(	SELECT  DISTINCT O.IdOrganizacion, B.IdVista
+			FROM	DataLakeOrganizacion O (NOLOCK)
+			JOIN	@Organizacion		 B ON B.IdOrganizacion = O.IdOrganizacion
+			WHERE	O.Estado  = 'A'
+			--AND		B.IdVista = O.IdVista
+			AND		IdHomologacionEsquema = @IdHomologacionEsquema
+		)
+		SELECT	@RowsTotal = COUNT(*) 
+		FROM	tbRowsTotal
 
-	SELECT  DISTINCT
+	SELECT  DISTINCT				-- @RowsTotal RowsTotal, @RowsPerPage RowsPage,
 			 O.IdOrganizacion 
 			,O.IdVista 
 			,O.IdHomologacionEsquema
 			,O.DataEsquemaJson
-	FROM	DataLakeOrganizacion O WITH (NOLOCK)
-	JOIN	@Organizacion B ON B.IdOrganizacion = O.IdOrganizacion
-	WHERE	O.Estado = 'A'
-	AND		B.IdVista = O.IdVista
+	FROM	DataLakeOrganizacion	O (NOLOCK)
+	JOIN	@Organizacion			B ON B.IdOrganizacion = O.IdOrganizacion
+	WHERE	O.Estado  = 'A'
+	--AND		B.IdVista = O.IdVista
 	AND		IdHomologacionEsquema = @IdHomologacionEsquema
 	ORDER BY O.IdOrganizacion  
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
 END;
-GO
+GO			
+
+
+
+
+
+
+
 
 --ModoBuscar 
 --0 = Buscar exacta 
@@ -505,29 +493,26 @@ GO
 	--ORDER BY RANK DESC;  
 	--GO  
 
+--EXEC dbo.setDiccionario	'dbo.vwFiltro					', NULL ,'vista para los filtros de la pagina principal'
+--EXEC dbo.setDiccionario	'dbo.vwDimension				', NULL ,'vista para las dimensiones o campos homologados'
+--EXEC dbo.setDiccionario	'dbo.vwGrilla					', NULL ,'vita de esquema principal de la busqueda'
+--EXEC dbo.setDiccionario	'dbo.fnFiltroDetalle			', NULL ,'funcion para traer los detalles de cada filtro'	
+--EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaCampo	', NULL ,'funcion para obtener los esquema y sus campos'				
+--EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquema		', NULL ,'funcion para obtener un esquema'			
+--EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaTodo	', NULL ,'funcion para obtener todos los esquema'				
+--EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaDato	', NULL ,'funcion para obtener un esquema y sus datos'				
+--EXEC dbo.setDiccionario	'dbo.psBuscarPalabra			', NULL ,'procedimiento almacenado para la busqueda principal'				
+--go
 
-
-
-EXEC dbo.setDiccionario	'dbo.vwFiltro					', NULL ,'vista para los filtros de la pagina principal'
-EXEC dbo.setDiccionario	'dbo.vwDimension				', NULL ,'vista para las dimensiones o campos homologados'
-EXEC dbo.setDiccionario	'dbo.vwGrilla					', NULL ,'vita de esquema principal de la busqueda'
-EXEC dbo.setDiccionario	'dbo.fnFiltroDetalle			', NULL ,'funcion para traer los detalles de cada filtro'	
-EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaCampo	', NULL ,'funcion para obtener los esquema y sus campos'				
-EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquema		', NULL ,'funcion para obtener un esquema'			
-EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaTodo	', NULL ,'funcion para obtener todos los esquema'				
-EXEC dbo.setDiccionario	'dbo.fnHomologacionEsquemaDato	', NULL ,'funcion para obtener un esquema y sus datos'				
-EXEC dbo.setDiccionario	'dbo.psBuscarPalabra			', NULL ,'procedimiento almacenado para la busqueda principal'				
-go
-
-EXEC DBO.Bitacora ' CREATE OR ALTER 
-					,dbo.vwFiltro					
-					,dbo.vwDimension				
-					,dbo.vwGrilla					
-					,dbo.fnFiltroDetalle			
-					,dbo.fnHomologacionEsquemaCampo	
-					,dbo.fnHomologacionEsquema		
-					,dbo.fnHomologacionEsquemaTodo	
-					,dbo.fnHomologacionEsquemaDato
-					,dbo.psBuscarPalabra	'
-GO
+--EXEC DBO.Bitacora ' CREATE OR ALTER 
+--					,dbo.vwFiltro					
+--					,dbo.vwDimension				
+--					,dbo.vwGrilla					
+--					,dbo.fnFiltroDetalle			
+--					,dbo.fnHomologacionEsquemaCampo	
+--					,dbo.fnHomologacionEsquema		
+--					,dbo.fnHomologacionEsquemaTodo	
+--					,dbo.fnHomologacionEsquemaDato
+--					,dbo.psBuscarPalabra	'
+--GO
 

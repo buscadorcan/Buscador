@@ -28,21 +28,18 @@ DROP TABLE if exists dbo.DataLake;
 DROP TABLE if exists dbo.HomologacionEsquema;
 DROP TABLE if exists dbo.Homologacion;
 DROP TABLE if exists dbo.Conexion;
-DROP TABLE if exists dbo.Conexion;
 GO
 
 EXEC DBO.Bitacora 'DROP TABLE if exists 
-dbo.WebSiteLog;
-dbo.OrganizacionPais;
-dbo.Persona;
-dbo.UsuarioEndPointWebPermiso;
-dbo.Usuario;
-dbo.EndPointWeb;
-dbo.DataLakePersona;
-dbo.DataLakeOrganizacion;
-dbo.DataLake;
-dbo.HomologacionEsquema;
-dbo.Homologacion;
+dbo.WebSiteLog
+dbo.OrganizacionPais
+dbo.Persona
+dbo.UsuarioEndPointWebPermiso
+dbo.Usuario
+dbo.EndPointWeb
+dbo.DataLakeOrganizacion
+dbo.HomologacionEsquema
+dbo.Homologacion
  dbo.Conexion '
 GO
 
@@ -102,6 +99,7 @@ CREATE TABLE dbo.UsuarioEndPointWebPermiso (
 CREATE TABLE dbo.Homologacion (
      IdHomologacion     	INT IDENTITY(1,1) NOT NULL
     ,IdHomologacionGrupo	INT DEFAULT(NULL) 
+	,Mostrar				CHAR(1) NOT NULL DEFAULT 'S' 
     ,MostrarWebOrden		INT DEFAULT(0) 
     ,MostrarWeb				NVARCHAR(90)  NOT NULL
 	,TooltipWeb				NVARCHAR(200) NOT NULL DEFAULT('')
@@ -120,6 +118,7 @@ CREATE TABLE dbo.Homologacion (
     ,CONSTRAINT  [CK_H_InfoExtraJson]       CHECK   (ISJSON(InfoExtraJson) = 1 )
     ,CONSTRAINT  [CK_H_MascaraDato]			CHECK   (MascaraDato IN ('TEXTO', 'FECHA', 'NUMERICO'))
     ,CONSTRAINT  [CK_H_Estado]				CHECK   (Estado IN ('A', 'X'))
+	,CONSTRAINT  [CK_H_Mostrar]				CHECK	(Mostrar IN ('S', 'N'))
 );
 
 CREATE TABLE dbo.HomologacionEsquema(
@@ -131,61 +130,63 @@ CREATE TABLE dbo.HomologacionEsquema(
   ,DataTipo				    NVARCHAR(15)  NOT NULL DEFAULT('NO_DEFINIDO')	
   ,VistaNombre				NVARCHAR(100) NOT NULL DEFAULT('')
   ,IdVistaNombre			NVARCHAR(100) NOT NULL DEFAULT('')
-  ,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
-  ,FechaCreacion			DATETIME	NOT NULL DEFAULT(GETDATE())
-  ,FechaModifica			DATETIME	NOT NULL DEFAULT(GETDATE())  
-  ,IdUserCreacion			INT			NOT NULL DEFAULT(0)
-  ,IdUserModifica			INT			NOT NULL DEFAULT(0)  
+  ,Estado					NVARCHAR(1)	  NOT NULL DEFAULT('A')
+  ,FechaCreacion			DATETIME	  NOT NULL DEFAULT(GETDATE())
+  ,FechaModifica			DATETIME	  NOT NULL DEFAULT(GETDATE())  
+  ,IdUserCreacion			INT			  NOT NULL DEFAULT(0)
+  ,IdUserModifica			INT			  NOT NULL DEFAULT(0)  
 
   ,CONSTRAINT  [PK_HE_IdHomologacionEsquema]	PRIMARY KEY CLUSTERED (IdHomologacionEsquema) 
-  ,CONSTRAINT  [CK_HE_EsquemaJson]			CHECK   (ISJSON(EsquemaJson) = 1 )
+  ,CONSTRAINT  [CK_HE_EsquemaJson]				CHECK   (ISJSON(EsquemaJson) = 1 )
   ,CONSTRAINT  [CK_HE_Estado]				    CHECK   (Estado IN ('A', 'X'))
-  ,CONSTRAINT  [UK_HE_DataTipo]	CHECK (DataTipo IN ('ORGANIZACION', 'PERSONA','NO_DEFINIDO'))
+  ,CONSTRAINT  [UK_HE_DataTipo]					CHECK	(DataTipo IN ('ORGANIZACION', 'PERSONA','NO_DEFINIDO'))
   --,CONSTRAINT  UK_HE_VistaNombre		        UNIQUE (VistaNombre)
 );
 
-CREATE TABLE dbo.DataLake(
-     IdDataLake				INT IDENTITY(1,1) NOT NULL
-	,DataTipo				NVARCHAR(15) NOT NULL DEFAULT('NO_DEFINIDO') 
-	,DataSistemaOrigen		NVARCHAR(15) NOT NULL	
-    ,DataSistemaOrigenId	NVARCHAR(10) NOT NULL 
-    ,DataSistemaFecha		DATETIME	NOT NULL
-	,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
-    ,DataFechaCarga			DATETIME	NOT NULL DEFAULT(GETDATE())
-	
-	,CONSTRAINT  [PK_DL_IdDataLake]	PRIMARY KEY CLUSTERED (IdDataLake) 
-	,CONSTRAINT  [UK_DL_DataTipo]	CHECK (DataTipo IN ('ORGANIZACION', 'PERSONA','NO_DEFINIDO'))
-    ,CONSTRAINT  [CK_DL_Estado]		CHECK   (Estado IN ('A', 'X'))
-);
- 
-CREATE TABLE dbo.DataLakeOrganizacion(
-     IdDataLakeOrganizacion INT IDENTITY(1,1) NOT NULL
-    ,IdHomologacionEsquema	INT NOT NULL  --FOREIGN KEY REFERENCES HomologacionEsquema (IdHomologacionEsquema)
-    ,IdOrganizacion			NVARCHAR(32) DEFAULT('') 
-    ,IdVista				NVARCHAR(32) DEFAULT('')
-    ,IdDataLake				INT NOT NULL  FOREIGN KEY REFERENCES DataLake (IdDataLake)
-    ,DataEsquemaJson        NVARCHAR(max) NOT NULL DEFAULT('{}')
-    ,DataFechaCarga			DATETIME	  NOT NULL DEFAULT(GETDATE())
-    ,FechaCreacion			DATETIME	NOT NULL DEFAULT(GETDATE())
-	,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
-	
-	,CONSTRAINT  [PK_DLO_IdDataLakeOrganizacion]	PRIMARY KEY CLUSTERED (IdDataLakeOrganizacion) 
-    ,CONSTRAINT  [CK_DLO_DataEsquemaJson]			CHECK   (ISJSON(DataEsquemaJson) = 1 )
-    ,CONSTRAINT  [CK_DLO_Estado]					CHECK   (Estado IN ('A', 'X'))
+CREATE TABLE dbo.Conexion (
+     IdConexion			INT IDENTITY(1,1)	NOT NULL
+	,CodigoHomologacion	NVARCHAR(20)		NOT NULL
+    ,BaseDatos          NVARCHAR(100) NOT NULL
+    ,Host               NVARCHAR(100) NOT NULL
+    ,Puerto             INT NOT NULL DEFAULT(0)
+    ,Usuario            NVARCHAR(100) NOT NULL
+    ,Contrasenia        NVARCHAR(100) NOT NULL
+    ,MotorBaseDatos     NVARCHAR(100) NOT NULL
+    ,Filtros            NVARCHAR(MAX) NOT NULL DEFAULT('{}')
+    ,FechaConexion		DATETIME NOT NULL DEFAULT(GETDATE())
+    ,TiempoEspera		INT NOT NULL DEFAULT(0)				-- Tiempo de espera en segundos
+    ,Migrar				NVARCHAR(1) NOT NULL DEFAULT('S')
+    
+	,Estado				NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
+    ,FechaModifica		DATETIME	NOT NULL DEFAULT(GETDATE())  
+    ,IdUserCreacion		INT			NOT NULL DEFAULT(0)
+    ,IdUserModifica		INT			NOT NULL DEFAULT(0)  
+  
+    ,CONSTRAINT  [PK_C_IdConexion]			PRIMARY KEY CLUSTERED (IdConexion) 
+    ,CONSTRAINT  [CK_C_Estado]				CHECK   (Estado IN ('A', 'X'))
+    ,CONSTRAINT  [CK_C_Migrar]				CHECK   (Migrar IN ('S', 'N'))
+    ,CONSTRAINT  [CK_C_MotorBaseDatos]		CHECK   (MotorBaseDatos IN ('MYSQL', 'SQLSERVER', 'SQLLITE'))
+    ,CONSTRAINT  [CK_C_Filtros]				CHECK   (ISJSON(Filtros) = 1 )
+	,CONSTRAINT  [CK_C_CodigoHomologacion]	CHECK   (CodigoHomologacion IN 
+													('KEY_ECU_SAE'
+													,'KEY_COL_ONAC'
+													,'KEY_PER_INACAL'
+													,'KEY_BOL_DTA'	 ))
 );
 
-CREATE TABLE dbo.DataLakePersona(
-     IdDataLakePersona		INT IDENTITY(1,1) NOT NULL
-    ,IdHomologacionEsquema	INT NOT NULL  --FOREIGN KEY REFERENCES HomologacionEsquema (IdHomologacionEsquema)
-    ,IdDataLake				INT NOT NULL  FOREIGN KEY REFERENCES DataLake (IdDataLake)
+CREATE TABLE dbo.OrganizacionData(
+     IdOrganizacionData		INT IDENTITY(1,1) NOT NULL
+    ,IdConexion				INT NOT NULL  FOREIGN KEY REFERENCES Conexion (IdConexion)
+    ,IdHomologacionEsquema	INT NOT NULL  FOREIGN KEY REFERENCES HomologacionEsquema (IdHomologacionEsquema)
+    ,IdOrganizacion			NVARCHAR(32)  DEFAULT('') 
+    ,IdVista				NVARCHAR(32)  DEFAULT('')
     ,DataEsquemaJson        NVARCHAR(max) NOT NULL DEFAULT('{}')
-    ,DataFechaCarga			DATETIME	  NOT NULL DEFAULT(GETDATE())
-    ,FechaCreacion			DATETIME	NOT NULL DEFAULT(GETDATE())
-	,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,DataFecha				DATETIME	  NOT NULL DEFAULT(GETDATE())
+    ,FechaCreacion			DATETIME	  NOT NULL DEFAULT(GETDATE())
 	
-	,CONSTRAINT  [PK_DKP_DataLakePersona]	PRIMARY KEY CLUSTERED (IdDataLakePersona) 
-    ,CONSTRAINT  [CK_DKP_DataEsquemaJson]	CHECK   (ISJSON(DataEsquemaJson) = 1 )
-    ,CONSTRAINT  [CK_DKP_Estado]			CHECK   (Estado IN ('A', 'X'))
+	,CONSTRAINT  [PK_OD_IdOrganizacionData]	PRIMARY KEY CLUSTERED (IdOrganizacionData) 
+    ,CONSTRAINT  [CK_OD_DataEsquemaJson]	CHECK   (ISJSON(DataEsquemaJson) = 1 )
 );
 
 CREATE TABLE dbo.WebSiteLog (
@@ -196,33 +197,6 @@ CREATE TABLE dbo.WebSiteLog (
 	
 	,CONSTRAINT  [PK_WSL_WebSiteLog]		PRIMARY KEY CLUSTERED (IdWebSiteLog) 
 );
- 
-CREATE TABLE dbo.Conexion (
-     IdConexion			INT IDENTITY(1,1) NOT NULL
-    ,IdSistema          INT NOT NULL
-    ,BaseDatos          NVARCHAR(100) NOT NULL
-    ,Host               NVARCHAR(100) NOT NULL
-    ,Puerto             INT NOT NULL DEFAULT(0)
-    ,Usuario            NVARCHAR(100) NOT NULL
-    ,Contrasenia        NVARCHAR(100) NOT NULL
-    ,MotorBaseDatos     NVARCHAR(100) NOT NULL
-    ,Filtros            NVARCHAR(MAX) NOT NULL DEFAULT('{}')
-    ,FechaConexion		DATETIME NOT NULL DEFAULT(GETDATE())
-    ,TiempoEspera		INT NOT NULL DEFAULT(0)				-- Tiempo de espera en segundos
-    ,Migrar				NVARCHAR(1) NOT NULL DEFAULT('S')	-- N= No migrar, S= Si migrar
-    
-	,Estado			NVARCHAR(1) NOT NULL DEFAULT('A')
-    ,FechaCreacion				DATETIME	NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica				DATETIME	NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion				INT			NOT NULL DEFAULT(0)
-    ,IdUserModifica				INT			NOT NULL DEFAULT(0)  
-  
-    ,CONSTRAINT  [PK_C_IdConexion]		    PRIMARY KEY CLUSTERED (IdConexion) 
-    ,CONSTRAINT  [CK_C_Estado]			    CHECK   (Estado IN ('A', 'X'))
-    ,CONSTRAINT  [CK_C_Migrar]			    CHECK   (Migrar IN ('S', 'N'))
-    ,CONSTRAINT  [CK_C_MotorBaseDatos]  CHECK   (MotorBaseDatos IN ('MYSQL', 'SQLSERVER', 'SQLLITE'))
-    ,CONSTRAINT  [CK_C_Filtros]			CHECK   (ISJSON(Filtros) = 1 )
-);
 
 EXEC DBO.Bitacora 'CREATE TABLE
 dbo.Usuario, 
@@ -230,9 +204,7 @@ dbo.EndPointWeb,
 dbo.UsuarioEndPointWebPermiso, 
 dbo.Homologacion, 
 dbo.HomologacionEsquema, 
-dbo.DataLake, 
 dbo.DataLakeOrganizacion, 
-dbo.DataLakePersona, 
 dbo.WebSiteLog
 dbo.Conexion '
 GO
@@ -306,16 +278,6 @@ EXEC dbo.setDiccionario	'dbo.HomologacionEsquema'   ,'IdUserCreacion			','Identi
 EXEC dbo.setDiccionario	'dbo.HomologacionEsquema'   ,'IdUserModifica			','Identificador del usuario que modifica el registro'
 GO
 
-EXEC dbo.setDiccionario	'dbo.DataLake'  , NULL                   ,'Datos de los sistemas que proporcionan la data'
-EXEC dbo.setDiccionario	'dbo.DataLake'  ,'IdDataLake			','PK'
-EXEC dbo.setDiccionario	'dbo.DataLake'  ,'DataTipo				','determian si es: ORGANIZACION, PERSONA, NO_DEFINIDO'
-EXEC dbo.setDiccionario	'dbo.DataLake'  ,'DataSistemaOrigen		','nombre del Sistema Origen'
-EXEC dbo.setDiccionario	'dbo.DataLake'  ,'DataSistemaOrigenId	','Id Sistema Origen'
-EXEC dbo.setDiccionario	'dbo.DataLake'  ,'DataSistemaFecha		','Fecha del regsitro en el Sistema Origen'
-EXEC dbo.setDiccionario	'dbo.DataLake'  ,'Estado				','Estado del registro (A= activo, X= Eliminado lógico)'
-EXEC dbo.setDiccionario	'dbo.DataLake'  ,'DataFechaCarga		','Fecha de carga del registro'
-GO
-
 EXEC dbo.setDiccionario	'dbo.DataLakeOrganizacion'  , NULL                   ,'Gestiona datos migrados de la organizaciones certificadas'
 EXEC dbo.setDiccionario	'dbo.DataLakeOrganizacion'  ,'IdDataLakeOrganizacion','PK'
 EXEC dbo.setDiccionario	'dbo.DataLakeOrganizacion'  ,'IdHomologacionEsquema	','FK'
@@ -324,16 +286,6 @@ EXEC dbo.setDiccionario	'dbo.DataLakeOrganizacion'  ,'DataEsquemaJson       ','D
 EXEC dbo.setDiccionario	'dbo.DataLakeOrganizacion'  ,'DataFechaCarga		','Fecha de carga del registro'
 EXEC dbo.setDiccionario	'dbo.DataLakeOrganizacion'  ,'FechaCreacion			','Fecha de creación del registro en la tabla'
 EXEC dbo.setDiccionario	'dbo.DataLakeOrganizacion'  ,'Estado				','Estado del registro (A= activo, X= Eliminado lógico)'
-GO
-
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   , NULL                  ,'Gestiona datos migrados de la personas certificadas'
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   ,'IdDataLakePersona		','PK'
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   ,'IdHomologacionEsquema	','FK'
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   ,'IdDataLake			','FK'
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   ,'DataEsquemaJson       ','Data migrada en formato JSON'
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   ,'DataFechaCarga		','Fecha de carga del registro'
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   ,'FechaCreacion			','Fecha de creación del registro en la tabla'
-EXEC dbo.setDiccionario	'dbo.DataLakePersona'   ,'Estado				','Estado del registro (A= activo, X= Eliminado lógico)'
 GO
 
 EXEC dbo.setDiccionario	'dbo.WebSiteLog'    , NULL               ,'Almacena el log de registro de las busquedas' 
@@ -349,9 +301,7 @@ EXEC DBO.Bitacora 'Se documento :
                     dbo.UsuarioEndPointWebPermiso, 
                     dbo.Homologacion, 
                     dbo.HomologacionEsquema, 
-                    dbo.DataLake, 
                     dbo.DataLakeOrganizacion, 
-                    dbo.DataLakePersona, 
                     dbo.WebSiteLog'
 GO
 
@@ -360,8 +310,6 @@ EXEC DBO.getDiccionario '   dbo.Usuario,
                             dbo.UsuarioEndPointWebPermiso, 
                             dbo.Homologacion, 
                             dbo.HomologacionEsquema, 
-                            dbo.DataLake, 
                             dbo.DataLakeOrganizacion, 
-                            dbo.DataLakePersona, 
                             dbo.WebSiteLog'
 GO
