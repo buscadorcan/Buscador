@@ -1,7 +1,6 @@
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using ClientApp.Services.IService;
-using ClientApp.Models;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 
@@ -23,7 +22,7 @@ namespace ClientApp.Pages.BuscadorCan
         public Grid<BuscadorResultadoDataDto>? grid;
         private List<HomologacionDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
-        public int ModoBuscar { get; set;}
+        public bool ModoBuscar { get; set;}
         protected override async Task OnInitializedAsync()
         {
             try

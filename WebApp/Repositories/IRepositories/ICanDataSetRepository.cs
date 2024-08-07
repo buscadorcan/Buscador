@@ -9,8 +9,8 @@ namespace WebApp.Repositories.IRepositories {
     CanDataSet? FindById(int Id);
     ICollection<CanDataSet> FindAll();
     int GetLastId();
-    bool DeleteOldRecords(int IdHomologacionEsquema, int IdConexion);
-    bool DeleteOldRecord(string idVista, string idOrganizacion, int IdConexion, int idHomologacionEsquema);
-    bool DeleteByExcludingVistaIds(List<string> idsVista, string idOrganizacion, int idConexion, int idCanDataSet);
+    bool DeleteOldRecords(int idHomologacionEsquema, int idConexion);
+    bool DeleteOldRecord(string idVista, string idEnte, int idConexion, int idHomologacionEsquema);
+    bool DeleteByExcludingVistaIds(List<string> idsVista, string idEnte, int idConexion, int idCanDataSet);
   }
 }

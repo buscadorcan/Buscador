@@ -19,7 +19,7 @@ namespace ClientApp.Pages.BuscadorCan
             try
             {
                 if (servicio != null) {
-                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync(resultData.IdOrganizacion);
+                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync(resultData?.IdEnte ?? "");
                 }
             }
             catch (Exception e)

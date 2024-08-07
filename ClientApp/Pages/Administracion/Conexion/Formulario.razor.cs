@@ -81,9 +81,9 @@ namespace ClientApp.Pages.Administracion.Conexion
 
             saveButton.HideLoading();
         }
-        private void CambiarSeleccionOrganizacion(int _organizacionSelected)
+        private void CambiarSeleccionOrganizacion(string _organizacionSelected)
         {
-            conexion.IdSistema = _organizacionSelected;
+            conexion.CodigoHomologacion = _organizacionSelected;
         }
         private void CambiarSeleccionMotor (string _motorBaseDatos)
         {

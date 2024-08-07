@@ -5,7 +5,6 @@ namespace SharedApp.Models.Dtos
   public class ConexionDto
   {
     public int IdConexion { get; set; }
-    public int IdSistema { get; set; }
     [Required]
     public string? BaseDatos { get; set; }
     [Required]
@@ -17,6 +16,8 @@ namespace SharedApp.Models.Dtos
     public string? Contrasenia { get; set; }
     [Required]
     public string? MotorBaseDatos { get; set; }
+    [Required]
+    public string? CodigoHomologacion { get; set; }
     public string? Filtros { get; set; }
     public int TiempoEspera { get; set; }
     public string? Migrar { get; set; }
