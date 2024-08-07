@@ -4,7 +4,7 @@ namespace WebApp.Models;
 public class CanFullText
 {
     [Key]
-    public int IdEnteFullText   { get; set; }
+    public int IdCanFullText   { get; set; }
     public int IdCanDataSet       { get; set; }
     public int? IdHomologacion          { get; set; }
     public string? IdEnte       { get; set; }

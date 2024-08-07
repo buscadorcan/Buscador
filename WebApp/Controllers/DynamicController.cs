@@ -21,7 +21,7 @@ namespace WebApp.Controllers
             _vhRepo = vhRepo;
         }
 
-        [HttpGet("columns/{codigoHomologacion:string}/{viewName}", Name = "getProperties")]
+        [HttpGet("columns/{codigoHomologacion}/{viewName}", Name = "getProperties")]
         public IActionResult GetProperties(string codigoHomologacion, string viewName)
         {
             try
@@ -34,7 +34,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GetProperties));
             }
         }
-        [HttpGet("{codigoHomologacion:string}", Name = "getViewNames")]
+        [HttpGet("{codigoHomologacion}", Name = "getViewNames")]
         public IActionResult GetViewNames(string codigoHomologacion)
         {
             try

@@ -258,11 +258,11 @@ namespace WebApp.Service.IService
         string newSelectFieldsStr = string.Join(", ", newSelectFields);
        
         if (fieldExists(connection, viewName, idEnteName)) {
-            newSelectFieldsStr += ", IdEnte";
+            newSelectFieldsStr += $", {idEnteName}";
             saveIdEnte = true;
         }
         else {
-            Console.WriteLine($"Field {idEnteName} does not exist in view {viewName)}");
+            Console.WriteLine($"Field {idEnteName} does not exist in view {viewName}");
             saveIdEnte = false;
         }
         if (fieldExists(connection, viewName, vids[executionIndex])) {
