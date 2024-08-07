@@ -18,9 +18,9 @@ namespace ClientApp.Services
 
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<BuscadorDto>>()).Result;
         }
-        public async Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync(string idOrganizacion)
+        public async Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync(string idEnte)
         {
-            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaTodo/{idOrganizacion}");
+            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaTodo/{idEnte}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionEsquemaDto>>>()).Result;
         }
@@ -38,9 +38,9 @@ namespace ClientApp.Services
 
             return default;
         }
-        public async Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, string idOrganizacion)
+        public async Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, string idEnte)
         {
-            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaDato/{idHomologacionEsquema}/{idOrganizacion}");
+            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaDato/{idHomologacionEsquema}/{idEnte}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<DataHomologacionEsquema>>>()).Result;
         }

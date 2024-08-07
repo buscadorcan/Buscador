@@ -12,7 +12,7 @@ namespace ClientApp.Pages.BuscadorCan
         [Parameter]
         public int IdHomologacionEsquema { get; set; }
         [Parameter]
-        public string? IdOrganizacion { get; set; }
+        public string? IdEnte { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
@@ -25,7 +25,7 @@ namespace ClientApp.Pages.BuscadorCan
                 if (servicio != null)
                 {
                     homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(IdHomologacionEsquema);
-                    Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
+                    Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema?.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
                 }
             }
             catch (Exception e)
@@ -37,7 +37,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdHomologacionEsquema, IdOrganizacion);
+                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdHomologacionEsquema, IdEnte ?? "");
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));

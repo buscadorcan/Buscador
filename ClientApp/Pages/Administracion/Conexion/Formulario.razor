@@ -23,9 +23,9 @@
                 <div class="col">
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">
-                            @if (conexion.IdSistema > 0)
+                            @if (!string.IsNullOrEmpty(conexion.CodigoHomologacion))
                             {
-                                @listaOrganizaciones.First(c => c.IdHomologacion == conexion.IdSistema).MostrarWeb
+                                @listaOrganizaciones.First(c => c.IdHomologacion.Equals(conexion.CodigoHomologacion)).MostrarWeb
                             }
                             else
                             {
@@ -37,7 +37,7 @@
                             {
                                 @foreach(var opcion in listaOrganizaciones) {
                                     <DropdownItem
-                                        @onclick="() => CambiarSeleccionOrganizacion(opcion.IdHomologacion)"
+                                        @onclick="() => CambiarSeleccionOrganizacion(opcion.CodigoHomologacion)"
                                     >
                                         @opcion.MostrarWeb
                                     </DropdownItem>
@@ -45,7 +45,7 @@
                             }
                         </DropdownMenu>
                     </Dropdown>
-                    <ValidationMessage For="(() => conexion.IdSistema)" />
+                    <ValidationMessage For="(() => conexion.CodigoHomologacion)" />
                 </div>
             </div>
 

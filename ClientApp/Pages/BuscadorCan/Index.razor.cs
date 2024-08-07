@@ -17,7 +17,7 @@ namespace ClientApp.Pages.BuscadorCan
         private List<List<FnFiltroDetalleDto>?> listadeOpciones = new List<List<FnFiltroDetalleDto>?>();
         private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
         private BuscarRequest buscarRequest = new BuscarRequest();
-        private int ModoBuscar = 1;
+        private bool modoBuscar = false;
         private List<Item> ListTypeSearch = new TypeSearch().ListTypeSearch;
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
         protected override async Task OnInitializedAsync()
@@ -61,9 +61,8 @@ namespace ClientApp.Pages.BuscadorCan
                 }
             }
         }
-        private async Task BuscarPalabraRequest(int modoBuscar)
+        private async Task BuscarPalabraRequest()
         {
-            ModoBuscar = modoBuscar;
             if (childComponentRef != null && childComponentRef.grid != null)
             {
                 childComponentRef.ModoBuscar = modoBuscar;
@@ -71,10 +70,6 @@ namespace ClientApp.Pages.BuscadorCan
             }
 
             await Task.CompletedTask;
-        }
-        private async Task BuscarPalabraRequest()
-        {
-            await BuscarPalabraRequest(ModoBuscar);
         }
         private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
         {

@@ -48,10 +48,10 @@ namespace WebApp.Repositories
                 };
             });
         }
-        public List<EsquemaDto> FnHomologacionEsquemaTodo(string idOrganizacion)
+        public List<EsquemaDto> FnHomologacionEsquemaTodo(string idEnte)
         {
             return ExecuteDbOperation(context => {
-                return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo({idOrganizacion})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
+                return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo({idEnte})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
             });
         }
         public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
@@ -60,10 +60,10 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
-        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idOrganizacion)
+        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idEnte)
         {
             return ExecuteDbOperation(context => {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idOrganizacion})").AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idEnte})").AsNoTracking().ToList();
 
                 return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
                 {

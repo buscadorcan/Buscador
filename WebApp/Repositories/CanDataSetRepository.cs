@@ -90,12 +90,12 @@ namespace WebApp.Repositories
       });
     }
 
-    public bool DeleteOldRecord(string idVista, string idOrganizacion, int IdConexion, int idHomologacionEsquema)
+    public bool DeleteOldRecord(string idVista, string idEnte, int IdConexion, int idHomologacionEsquema)
     {
       return ExecuteDbOperation(context => {
         var records = context.CanDataSet.Where(
               c => c.IdVista == idVista &&
-                   c.IdEnte == idOrganizacion &&
+                   c.IdEnte == idEnte &&
                    c.IdConexion == IdConexion &&
                    c.IdHomologacionEsquema == idHomologacionEsquema
               ).ToList();
@@ -112,11 +112,11 @@ namespace WebApp.Repositories
       });
     }
 
-    public bool DeleteByExcludingVistaIds(List<string> idsVista, string idOrganizacion, int idConexion, int idCanDataSet)
+    public bool DeleteByExcludingVistaIds(List<string> idsVista, string idEnte, int idConexion, int idCanDataSet)
     {
       return ExecuteDbOperation(context => {
         var records = context.CanDataSet.AsNoTracking()
-          .Where(c => c.IdEnte == idOrganizacion &&
+          .Where(c => c.IdEnte == idEnte &&
                       !idsVista.Contains(c.IdVista) &&
                       c.IdCanDataSet != idCanDataSet &&
                       c.IdConexion == idConexion)

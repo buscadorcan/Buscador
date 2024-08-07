@@ -11,19 +11,32 @@
         <h3 class="search-header">BUSCADOR SERVICIOS DE EVALUACIÓN DE LA CONFORMIDAD ACREDITADOS EN LA CAN</h3>
 
         <EditForm Model="buscarRequest" OnValidSubmit="BuscarPalabraRequest" id="search-form" class="search-form clearfix" autocomplete="off">
-            <AutoComplete @bind-Value="buscarRequest.TextoBuscar"
-                TItem="FnPredictWordsDto"
-                DataProvider="FnPredictWordsDtoDataProvider"
-                PropertyName="Word"
-                Placeholder="Ingrese Texto a buscar..."
-                OnChanged="(FnPredictWordsDto Word) => OnAutoCompleteChanged(Word)"
-            />
-            <br />
-            <input type="checkbox" @onchange="async (e) => await BuscarPalabraRequest((bool) e.Value ? 1 : 0)" />
-            <span style="color: #fff;">Busqueda Exacta</span>
-            <Button Color="ButtonColor.Secondary" @onclick="async () => await BuscarPalabraRequest()">
-              Buscar
-            </Button>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <table style="width: 90%;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 90%;">
+                                <AutoComplete @bind-Value="buscarRequest.TextoBuscar"
+                                    TItem="FnPredictWordsDto"
+                                    DataProvider="FnPredictWordsDtoDataProvider"
+                                    PropertyName="Word"
+                                    Placeholder="Ingrese Texto a buscar..."
+                                    OnChanged="(FnPredictWordsDto Word) => OnAutoCompleteChanged(Word)"
+                                />
+                            </td>
+                            <td style="width: 10%;">
+                                <Button Color="ButtonColor.Secondary" @onclick="async () => await BuscarPalabraRequest()">Buscar</Button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <Switch Class="mt-3" @bind-Value="modoBuscar" Label="Busqueda Exacta" style="color: #fff; text-align: left;" />
+                            </td>
+                            <td />
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </EditForm>
     </div>
 </div>
