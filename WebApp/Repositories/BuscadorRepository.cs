@@ -67,7 +67,7 @@ namespace WebApp.Repositories
 
                 return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
                 {
-                    IdDataLakeOrganizacion = c.IdDataLakeOrganizacion,
+                    IdCanDataSet = c.IdCanDataSet,
                     IdHomologacionEsquema = c.IdHomologacionEsquema,
                     DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
                 })
