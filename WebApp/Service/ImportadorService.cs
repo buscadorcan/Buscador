@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ImportadorService(IOrganizacionDataRepository dataLakeOrganizacionRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
+  public class ImportadorService(ICanDataSetRepository dataLakeOrganizacionRepository, ICanFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
     {
-      private IOrganizacionDataRepository _repositoryDLO = dataLakeOrganizacionRepository;
-      private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
+      private ICanDataSetRepository _repositoryDLO = dataLakeOrganizacionRepository;
+      private ICanFullTextRepository _repositoryOFT = canFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private IConexionRepository _repositoryC = conexionRepository;
@@ -26,7 +26,8 @@ namespace WebApp.Service.IService
       private int[] filters = [];
       private bool deleted = false;
       private bool saveIdVista = false;
-      private bool saveIdOrganizacion = false;
+      private bool saveIdEnte = false;
+      private string idEnteName = "IdOrganizacion";
       
       public Boolean Importar(string[] vistas) 
       {
@@ -127,10 +128,10 @@ namespace WebApp.Service.IService
               
               deleteOldRecords(heids[executionIndex]);
 
-              OrganizacionData dataLakeOrganizacion = addOrganizacionData(row, columns);
+              CanDataSet dataLakeOrganizacion = addCanDataSet(row, columns);
               if (dataLakeOrganizacion == null) { return false; }
 
-              addOrganizacionFullText(row, columns, dataLakeOrganizacion);
+              addCanFullText(row, columns, dataLakeOrganizacion);
             }
           }
           catch (Exception ex)
@@ -147,22 +148,22 @@ namespace WebApp.Service.IService
         }
       }
 
-      OrganizacionData addOrganizacionData(DataRow row, DataColumnCollection columns)
+      CanDataSet addCanDataSet(DataRow row, DataColumnCollection columns)
       {
-        OrganizacionData newOrganizacionData = new OrganizacionData
+        CanDataSet newCanDataSet = new CanDataSet
         {
-          IdOrganizacionData = 0,
+          IdCanDataSet = 0,
           IdHomologacionEsquema = heids[executionIndex],
           IdConexion = currentConexion.IdConexion,
           DataEsquemaJson = buildDataLakeJson(row, columns),
         };
-        if (saveIdVista) { newOrganizacionData.IdVista = row[columns.Count - 1].ToString(); }
-        if (saveIdOrganizacion) { newOrganizacionData.IdOrganizacion = row[columns.Count - 2].ToString(); }
+        if (saveIdVista) { newCanDataSet.IdVista = row[columns.Count - 1].ToString(); }
+        if (saveIdEnte) { newCanDataSet.IdEnte = row[columns.Count - 2].ToString(); }
 
-        return _repositoryDLO.Create(newOrganizacionData);
+        return _repositoryDLO.Create(newCanDataSet);
       }
 
-      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, OrganizacionData dataLakeOrganizacion)
+      bool addCanFullText(DataRow row, DataColumnCollection columns, CanDataSet dataLakeOrganizacion)
       {
         Boolean result = true;
         if (executionIndex == 0)
@@ -172,14 +173,14 @@ namespace WebApp.Service.IService
             Homologacion? homologacion = _repositoryH.FindById(filter);
             if (homologacion == null) { continue; }
 
-            _repositoryOFT.Create(new OrganizacionFullText
+            _repositoryOFT.Create(new CanFullText
             {
-              IdOrganizacionFullText = 0,
-              IdOrganizacionData = dataLakeOrganizacion.IdOrganizacionData,
+              IdCanFullText = 0,
+              IdCanDataSet = dataLakeOrganizacion.IdCanDataSet,
               IdHomologacion = filter,
-              IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
+              IdEnte = dataLakeOrganizacion.IdEnte,
               IdVista = dataLakeOrganizacion.IdVista,
-              FullTextOrganizacion = homologacion.MostrarWeb.ToLower().Trim()
+              FullTextData = homologacion.MostrarWeb.ToLower().Trim()
             });
           }
         }
@@ -191,14 +192,14 @@ namespace WebApp.Service.IService
 
             if (string.IsNullOrEmpty(indexValue)) { continue; }
 
-            result = _repositoryOFT.Create(new OrganizacionFullText
+            result = _repositoryOFT.Create(new CanFullText
             {
-              IdOrganizacionFullText = 0,
-              IdOrganizacionData = dataLakeOrganizacion.IdOrganizacionData,
+              IdCanFullText = 0,
+              IdCanDataSet = dataLakeOrganizacion.IdCanDataSet,
               IdHomologacion = hids[col],
-              IdOrganizacion = dataLakeOrganizacion.IdOrganizacion,
+              IdEnte = dataLakeOrganizacion.IdEnte,
               IdVista = dataLakeOrganizacion.IdVista,
-              FullTextOrganizacion = row[col].ToString().ToLower().Trim()
+              FullTextData = row[col].ToString().ToLower().Trim()
             }) != null ? result : false;
           } catch (Exception ex)
           {
@@ -213,20 +214,20 @@ namespace WebApp.Service.IService
       {
         int subtractFields = 0;
         if (saveIdVista) { subtractFields++; }
-        if (saveIdOrganizacion) { subtractFields++; }
+        if (saveIdEnte) { subtractFields++; }
 
         int fieldsCount = columns.Count - subtractFields;
-        JArray organizacionDataJson = [];
+        JArray canDataSetJson = [];
         for (int col = 0; col < fieldsCount; col++)
         {
-          organizacionDataJson.Add(new JObject
+          canDataSetJson.Add(new JObject
           {
             { "IdHomologacion", hids[col] },
             { "Data", row[col].ToString() }
           });
         }
 
-        return organizacionDataJson.ToString();
+        return canDataSetJson.ToString();
       }
 
       string buildSelectViewQuery(SqlConnection connection, string viewName, string[] selectFields, int[] homologacionIds)
@@ -256,13 +257,13 @@ namespace WebApp.Service.IService
         }
         string newSelectFieldsStr = string.Join(", ", newSelectFields);
        
-        if (fieldExists(connection, viewName, "IdOrganizacion")) {
-            newSelectFieldsStr += ", IdOrganizacion";
-            saveIdOrganizacion = true;
+        if (fieldExists(connection, viewName, idEnteName)) {
+            newSelectFieldsStr += ", IdEnte";
+            saveIdEnte = true;
         }
         else {
-            Console.WriteLine("Field IdOrganizacion does not exist in view " + viewName);
-            saveIdOrganizacion = false;
+            Console.WriteLine($"Field {idEnteName} does not exist in view {viewName)}");
+            saveIdEnte = false;
         }
         if (fieldExists(connection, viewName, vids[executionIndex])) {
           newSelectFieldsStr += ", " + vids[executionIndex];

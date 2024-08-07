@@ -16,9 +16,9 @@ namespace WebApp.Service
         public DbSet<VwDimension> VwDimension { get; set; }
         // modulo de busquedas
         public DbSet<Homologacion> Homologacion { get; set; }
-        public DbSet<OrganizacionData> OrganizacionData { get; set; }
+        public DbSet<CanDataSet> CanDataSet { get; set; }
         public DbSet<HomologacionEsquema> HomologacionEsquema { get; set; }
-        public DbSet<OrganizacionFullText> OrganizacionFullText { get; set; }
+        public DbSet<CanFullText> CanFullText { get; set; }
         public DbSet<Conexion> Conexion { get; set; }
     }
 }

@@ -8,10 +8,10 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ExcelService(IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository) : IExcelService
+  public class ExcelService(ICanDataSetRepository canDataSetRepository, ICanFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository) : IExcelService
     {
-      private IOrganizacionDataRepository _repositoryDLO = organizacionDataRepository;
-      private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
+      private ICanDataSetRepository _repositoryDLO = canDataSetRepository;
+      private ICanFullTextRepository _repositoryOFT = canFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private int[] filters = [];
@@ -19,13 +19,14 @@ namespace WebApp.Service.IService
       private int idVistaIndex = 2;
       private int idOrganizacionIndex = 3;
       private string currentIdVista = "";
-      private string currentIdOrganizacion = "";
+      private string currentIdEnte = "";
       private bool hasIdVista = false;
-      private bool hasIdOrganizacion = false;
+      private bool hasIdEnte = false;
       private bool deleted = false;
       private JArray currentSchema = new JArray();
       private List<Homologacion> currentFields = new List<Homologacion>();
       HomologacionEsquema? homologacionEsquema = null;
+      private string idEnteName = " IdOrganizacion";
 
       public Boolean ImportarExcel(string path) 
       {
@@ -82,11 +83,11 @@ namespace WebApp.Service.IService
                     hasIdVista = true;
                   }
                 }
-                idOrganizacionIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == "IdOrganizacion");
+                idOrganizacionIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == idEnteName);
                 if (idVistaIndex == -1) {
-                  hasIdOrganizacion = false;
+                  hasIdEnte = false;
                 } else {
-                  hasIdOrganizacion = true;
+                  hasIdEnte = true;
                 }
                 
 
@@ -95,8 +96,8 @@ namespace WebApp.Service.IService
                   // Se borra los datos antiguos de todo el esquema que se está migrando y se los vuelve a cargar
                   Console.WriteLine($"Deleting old records for {homologacionEsquema.IdHomologacionEsquema} and {int.Parse(dataTable.Rows[i][0].ToString())}");
                   deleteOldRecords(homologacionEsquema.IdHomologacionEsquema, int.Parse(dataTable.Rows[i][0].ToString())); 
-                  OrganizacionData organizacionData = addOrganizacionData(dataTable, i);
-                  addOrganizacionFullText(dataTable, i, organizacionData.IdOrganizacionData);
+                  CanDataSet canDataSet = addCanDataSet(dataTable, i);
+                  addCanFullText(dataTable, i, canDataSet.IdCanDataSet);
                 }
               }
               return true;
@@ -108,29 +109,29 @@ namespace WebApp.Service.IService
         }
       }
 
-      OrganizacionData addOrganizacionData(DataTable dataTable, int row)
+      CanDataSet addCanDataSet(DataTable dataTable, int row)
       {
-        OrganizacionData organizacionData = new OrganizacionData
+        CanDataSet canDataSet = new CanDataSet
         {
-          IdOrganizacionData = 0,
+          IdCanDataSet = 0,
           IdHomologacionEsquema = homologacionEsquema.IdHomologacionEsquema,
-          DataEsquemaJson = buildOrganizacionDataJson(dataTable, row),
+          DataEsquemaJson = buildCanDataSetJson(dataTable, row),
           IdConexion = int.Parse(dataTable.Rows[row][0].ToString())
         };
         if (hasIdVista)
         {
           currentIdVista = dataTable.Rows[row][idVistaIndex].ToString();
-          organizacionData.IdVista = currentIdVista;
+          canDataSet.IdVista = currentIdVista;
         }
-        if (hasIdOrganizacion)
+        if (hasIdEnte)
         {
-          currentIdOrganizacion = dataTable.Rows[row][idOrganizacionIndex].ToString();
-          organizacionData.IdOrganizacion = currentIdOrganizacion;
+          currentIdEnte = dataTable.Rows[row][idOrganizacionIndex].ToString();
+          canDataSet.IdEnte = currentIdEnte;
         }
-        return _repositoryDLO.Create(organizacionData);
+        return _repositoryDLO.Create(canDataSet);
       }
 
-      bool addOrganizacionFullText(DataTable dataTable, int row, int organizacionDataId)
+      bool addCanFullText(DataTable dataTable, int row, int canDataSetId)
       {
         bool result = true;
         foreach (Homologacion currentField in currentFields)
@@ -152,28 +153,28 @@ namespace WebApp.Service.IService
             continue;
           }
 
-          OrganizacionFullText newOrganizacionFullText = new OrganizacionFullText
+          CanFullText newCanFullText = new CanFullText
           {
-            IdOrganizacionFullText = 0,
-            IdOrganizacionData = organizacionDataId,
+            IdCanFullText = 0,
+            IdCanDataSet = canDataSetId,
             IdHomologacion = currentField.IdHomologacion,
-            FullTextOrganizacion = currentValue,
+            FullTextData = currentValue,
           };
 
           if (hasIdVista)
           {
-            newOrganizacionFullText.IdVista = currentIdVista;
+            newCanFullText.IdVista = currentIdVista;
           }
-          if (hasIdOrganizacion)
+          if (hasIdEnte)
           {
-            newOrganizacionFullText.IdOrganizacion = currentIdOrganizacion;
+            newCanFullText.IdEnte = currentIdEnte;
           }
 
-          result = _repositoryOFT.Create(newOrganizacionFullText) != null ? result : false;
+          result = _repositoryOFT.Create(newCanFullText) != null ? result : false;
         }
         return result;
       }
-      string buildOrganizacionDataJson(DataTable dataTable, int row)
+      string buildCanDataSetJson(DataTable dataTable, int row)
       {
         JArray data = new JArray();
         foreach (Homologacion currentField in currentFields)

@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class Migrador(IOrganizacionDataRepository organizacionDataRepository, IOrganizacionFullTextRepository organizacionFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IMigrador
+  public class Migrador(ICanDataSetRepository canDataSetRepository, ICanFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IMigrador
     {
-      private IOrganizacionDataRepository _repositoryDLO = organizacionDataRepository;
-      private IOrganizacionFullTextRepository _repositoryOFT = organizacionFullTextRepository;
+      private ICanDataSetRepository _repositoryDLO = canDataSetRepository;
+      private ICanFullTextRepository _repositoryOFT = canFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private IConexionRepository _repositoryC = conexionRepository;
@@ -25,7 +25,7 @@ namespace WebApp.Service.IService
       private int[] filters = [];
       private bool deleted = false;
       private bool saveIdVista = false;
-      private bool saveIdOrganizacion = false;
+      private bool saveIdEnte = false;
       
       public Boolean Migrar(Conexion conexion) 
       {
@@ -127,18 +127,18 @@ namespace WebApp.Service.IService
 
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-              OrganizacionData organizacionData = addOrganizacionData(row, columns);
-              if (organizacionData == null) { return false; }
+              CanDataSet canDataSet = addCanDataSet(row, columns);
+              if (canDataSet == null) { return false; }
 
               // Se borra las versiones anteriores de los registros migrados
-              deleteOldRecord(organizacionData.IdVista, organizacionData.IdOrganizacion);
+              deleteOldRecord(canDataSet.IdVista, canDataSet.IdEnte);
           
               if (vistaIds.Count > 0) {
                 // Se borra los registros que ya no existan en las vistas exepto los que se acaban de insertar
-                _repositoryDLO.DeleteByExcludingVistaIds(vistaIds, organizacionData.IdOrganizacion, currentConexion.IdConexion, organizacionData.IdOrganizacionData);
+                _repositoryDLO.DeleteByExcludingVistaIds(vistaIds, canDataSet.IdEnte, currentConexion.IdConexion, canDataSet.IdCanDataSet);
               }
 
-              addOrganizacionFullText(row, columns, organizacionData);
+              addCanFullText(row, columns, canDataSet);
             }
           }
           catch (Exception ex)
@@ -155,28 +155,28 @@ namespace WebApp.Service.IService
         }
       }
 
-      OrganizacionData addOrganizacionData(DataRow row, DataColumnCollection columns)
+      CanDataSet addCanDataSet(DataRow row, DataColumnCollection columns)
       {
-        OrganizacionData newOrganizacionData = new OrganizacionData
+        CanDataSet newCanDataSet = new CanDataSet
         {
-          IdOrganizacionData = 0,
+          IdCanDataSet = 0,
           IdConexion = currentConexion?.IdConexion ?? 0,
           IdHomologacionEsquema = heids[executionIndex],
-          DataEsquemaJson = buildOrganizacionDataJson(row, columns)
+          DataEsquemaJson = buildCanDataSetJson(row, columns)
         };
-        if (saveIdVista) { newOrganizacionData.IdVista = row[columns.Count - 1].ToString(); }
-        if (saveIdOrganizacion) {
+        if (saveIdVista) { newCanDataSet.IdVista = row[columns.Count - 1].ToString(); }
+        if (saveIdEnte) {
           if(saveIdVista) {
-            newOrganizacionData.IdOrganizacion = row[columns.Count - 2].ToString(); 
+            newCanDataSet.IdEnte = row[columns.Count - 2].ToString(); 
           } else {
-            newOrganizacionData.IdOrganizacion = row[columns.Count - 1].ToString();
+            newCanDataSet.IdEnte = row[columns.Count - 1].ToString();
           }
         }
 
-        return _repositoryDLO.Create(newOrganizacionData);
+        return _repositoryDLO.Create(newCanDataSet);
       }
 
-      bool addOrganizacionFullText(DataRow row, DataColumnCollection columns, OrganizacionData organizacionData)
+      bool addCanFullText(DataRow row, DataColumnCollection columns, CanDataSet canDataSet)
       {
         Boolean result = true;
         if (executionIndex == 0)
@@ -186,14 +186,14 @@ namespace WebApp.Service.IService
             Homologacion? homologacion = _repositoryH.FindById(filter);
             if (homologacion == null) { continue; }
 
-            _repositoryOFT.Create(new OrganizacionFullText
+            _repositoryOFT.Create(new CanFullText
             {
-              IdOrganizacionFullText = 0,
-              IdOrganizacionData = organizacionData.IdOrganizacionData,
+              IdCanFullText = 0,
+              IdCanDataSet = canDataSet.IdCanDataSet,
               IdHomologacion = filter,
-              IdOrganizacion = organizacionData.IdOrganizacion,
-              IdVista = organizacionData.IdVista,
-              FullTextOrganizacion = homologacion.MostrarWeb.ToLower().Trim()
+              IdEnte = canDataSet.IdEnte,
+              IdVista = canDataSet.IdVista,
+              FullTextData = homologacion.MostrarWeb.ToLower().Trim()
             });
           }
         }
@@ -201,14 +201,14 @@ namespace WebApp.Service.IService
         for (int col = 0; col < columns.Count; col++)
         {
           try {
-            result = _repositoryOFT.Create(new OrganizacionFullText
+            result = _repositoryOFT.Create(new CanFullText
             {
-              IdOrganizacionFullText = 0,
-              IdOrganizacionData = organizacionData.IdOrganizacionData,
+              IdCanFullText = 0,
+              IdCanDataSet = canDataSet.IdCanDataSet,
               IdHomologacion = hids[col],
-              IdOrganizacion = organizacionData.IdOrganizacion,
-              IdVista = organizacionData.IdVista,
-              FullTextOrganizacion = row[col].ToString().ToLower().Trim()
+              IdEnte = canDataSet.IdEnte,
+              IdVista = canDataSet.IdVista,
+              FullTextData = row[col].ToString().ToLower().Trim()
             }) != null ? result : false;
           } catch (Exception ex)
           {
@@ -219,11 +219,11 @@ namespace WebApp.Service.IService
         return result;
       }
 
-      string buildOrganizacionDataJson(DataRow row, DataColumnCollection columns)
+      string buildCanDataSetJson(DataRow row, DataColumnCollection columns)
       {
         int subtractFields = 0;
         if (saveIdVista) { subtractFields++; }
-        if (saveIdOrganizacion) { subtractFields++; }
+        if (saveIdEnte) { subtractFields++; }
 
         int fieldsCount = columns.Count - subtractFields;
         JArray dataLakeJson = [];
@@ -268,12 +268,12 @@ namespace WebApp.Service.IService
         string newSelectFieldsStr = string.Join(", ", newSelectFields);
        
         // Agregamos el Id de la organización en caso de existir
-        if (fieldExists(connection, viewName, "IdOrganizacion")) {
-          newSelectFieldsStr += ", IdOrganizacion";
-          saveIdOrganizacion = true;
+        if (fieldExists(connection, viewName, "IdEnte")) {
+          newSelectFieldsStr += ", IdEnte";
+          saveIdEnte = true;
         } else {
-          Console.WriteLine("Field IdOrganizacion does not exist in view " + viewName);
-          saveIdOrganizacion = false;
+          Console.WriteLine("Field IdEnte does not exist in view " + viewName);
+          saveIdEnte = false;
         }
         // Agregamos el Id de la vista en caso de existir
         if (fieldExists(connection, viewName, vids[executionIndex])) {

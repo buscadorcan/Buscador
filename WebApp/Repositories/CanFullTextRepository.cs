@@ -5,29 +5,29 @@ using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-  public class OrganizacionFullTextRepository : BaseRepository, IOrganizacionFullTextRepository
+  public class CanFullTextRepository : BaseRepository, ICanFullTextRepository
   {
-      public OrganizacionFullTextRepository(
+      public CanFullTextRepository(
           ILogger<UsuarioRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
       ) : base(sqlServerDbContextFactory, logger)
       {
       }
 
-    public OrganizacionFullText Create(OrganizacionFullText data)
+    public CanFullText Create(CanFullText data)
     {
-        data.IdOrganizacionFullText = 0;
+        data.IdCanFullText = 0;
 
         return ExecuteDbOperation(context => {
-            context.OrganizacionFullText.Add(data);
+            context.CanFullText.Add(data);
             context.SaveChanges();
             return data;
         });
     }
 
-    public OrganizacionFullText? FindById(int id)
+    public CanFullText? FindById(int id)
     {
-      return ExecuteDbOperation(context => context.OrganizacionFullText.AsNoTracking().FirstOrDefault(u => u.IdOrganizacionFullText == id));
+      return ExecuteDbOperation(context => context.CanFullText.AsNoTracking().FirstOrDefault(u => u.IdCanFullText == id));
     }
   }
 }

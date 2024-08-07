@@ -49,8 +49,8 @@ namespace WebApp.Extensions
             services.AddScoped<ICatalogosRepository, CatalogosRepository>();
             services.AddScoped<IHomologacionRepository, HomologacionRepository>();
             services.AddScoped<IHomologacionEsquemaRepository, HomologacionEsquemaRepository>();
-            services.AddScoped<IOrganizacionDataRepository, OrganizacionDataRepository>();
-            services.AddScoped<IOrganizacionFullTextRepository, OrganizacionFullTextRepository>();
+            services.AddScoped<ICanDataSetRepository, CanDataSetRepository>();
+            services.AddScoped<ICanFullTextRepository, CanFullTextRepository>();
             services.AddScoped<IConexionRepository, ConexionRepository>();
             services.AddScoped<IConectionStringBuilderService, ConectionStringBuilderService>();
             services.AddScoped<IDynamicRepository, DynamicRepository>();
