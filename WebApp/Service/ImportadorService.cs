@@ -262,7 +262,7 @@ namespace WebApp.Service.IService
             saveIdEnte = true;
         }
         else {
-            Console.WriteLine($"Field {idEnteName} does not exist in view {viewName)}");
+            Console.WriteLine($"Field {idEnteName} does not exist in view {viewName}");
             saveIdEnte = false;
         }
         if (fieldExists(connection, viewName, vids[executionIndex])) {
