@@ -36,7 +36,7 @@ namespace ClientApp.Pages.Administracion.Validacion
             organizacionSelected = _organizacionSelected;
             esquemaSelected = null;
 
-            NombresVistas = await iDynamicService.GetViewNames(organizacionSelected.IdHomologacion);
+            NombresVistas = await iDynamicService.GetViewNames(organizacionSelected.CodigoHomologacion);
 
             listasHevd = new List<EsquemaVista>();
             if (grid != null)
@@ -50,7 +50,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
             listasHevd = new List<EsquemaVista>();
 
-            var vistas = await iDynamicService.GetProperties(organizacionSelected.IdHomologacion, esquemaSelected.VistaNombre.Trim());
+            var vistas = await iDynamicService.GetProperties(organizacionSelected.CodigoHomologacion, esquemaSelected.VistaNombre.Trim());
 
             foreach(var c in Columnas)
             {

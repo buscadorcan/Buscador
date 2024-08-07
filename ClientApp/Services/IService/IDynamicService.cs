@@ -3,7 +3,7 @@ using SharedApp.Models.Dtos;
 namespace ClientApp.Services.IService {
     public interface IDynamicService
     {
-        Task<List<PropiedadesTablaDto>> GetProperties(int idSystem, string viewName);
-        Task<List<string>> GetViewNames(int idSystem);
+        Task<List<PropiedadesTablaDto>> GetProperties(string codigoHomologacion, string viewName);
+        Task<List<string>> GetViewNames(string codigoHomologacion);
     }
 }   

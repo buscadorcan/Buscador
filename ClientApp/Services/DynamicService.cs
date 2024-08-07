@@ -13,11 +13,11 @@ namespace ClientApp.Services {
         {
             _httpClient = httpClient;
         }
-        public async Task<List<PropiedadesTablaDto>> GetProperties(int idSystem, string viewName)
+        public async Task<List<PropiedadesTablaDto>> GetProperties(string codigoHomologacion, string viewName)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{url}/columns/{idSystem}/{viewName}");
+                var response = await _httpClient.GetAsync($"{url}/columns/{codigoHomologacion}/{viewName}");
                 response.EnsureSuccessStatusCode();
                 return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<PropiedadesTablaDto>>>()).Result;
             }
@@ -26,11 +26,11 @@ namespace ClientApp.Services {
                 return new List<PropiedadesTablaDto>();
             }
         }
-        public async Task<List<string>> GetViewNames(int idSystem)
+        public async Task<List<string>> GetViewNames(string codigoHomologacion)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{url}/{idSystem}");
+                var response = await _httpClient.GetAsync($"{url}/{codigoHomologacion}");
                 response.EnsureSuccessStatusCode();
                 return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<string>>>()).Result;
             }

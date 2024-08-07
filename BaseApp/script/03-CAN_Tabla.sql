@@ -28,6 +28,8 @@ DROP TABLE if exists dbo.DataLake;
 DROP TABLE if exists dbo.HomologacionEsquema;
 DROP TABLE if exists dbo.Homologacion;
 DROP TABLE if exists dbo.Conexion;
+DROP TABLE if exists [dbo].[OrganizacionData];
+DROP TABLE if exists [dbo].[OrganizacionFullText] ;
 GO
 
 EXEC DBO.Bitacora 'DROP TABLE if exists 
