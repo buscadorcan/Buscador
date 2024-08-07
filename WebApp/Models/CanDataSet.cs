@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApp.Models
 {
-  [Table("OrganizacionData")]
-  public class OrganizacionData
+  [Table("CanDataSet")]
+  public class CanDataSet
   {
     [Key]
-    public int IdOrganizacionData		  { get; set; }
+    public int IdCanDataSet		  { get; set; }
     public int IdConexion				      { get; set; }
     public int IdHomologacionEsquema  { get; set; }
-    public string? IdOrganizacion     { get; set; }
+    public string? IdEnte     { get; set; }
     public string? IdVista            { get; set; }
     public string? DataEsquemaJson    { get; set; }
   }
