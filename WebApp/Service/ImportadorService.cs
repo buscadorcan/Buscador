@@ -258,7 +258,7 @@ namespace WebApp.Service.IService
         string newSelectFieldsStr = string.Join(", ", newSelectFields);
        
         if (fieldExists(connection, viewName, idEnteName)) {
-            newSelectFieldsStr += ", IdEnte";
+            newSelectFieldsStr += $", {idEnteName}";
             saveIdEnte = true;
         }
         else {
