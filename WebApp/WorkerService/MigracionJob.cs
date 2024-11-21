@@ -36,23 +36,15 @@ namespace WebApp.WorkerService
             foreach (var conexion in conexiones)
             {
               Console.WriteLine($"Migrando conexión: {conexion.CodigoHomologacion}");
-              // [TODO]: Validar si tiempo configurado en conexion ya ha pasado
-              // if (service.Migrar(conexion))
-              // {
-              //   _logger.LogInformation($"Migración exitosa de la conexión: {conexion.CodigoHomologacion}");
-              //   conexion.Migrar = "N";
-              //   conexion.FechaConexion = DateTime.Now;
-              //   conexionRepository.Update(conexion);
-              // }
-              // else
-              // {
-              //   _logger.LogError($"Error en la migración de la conexión: {conexion.CodigoHomologacion}");
-              // }
             }
           }
-          // [TODO]: Esperar tiempo predeterminado de ejecución mínima 
-          // Se recomienda 1 día, de no ser podible no bajar a menos de 1 hora
-          await Task.Delay(TimeSpan.FromMinutes(10000), stoppingToken);
+            // Calculate the time until midnight
+            DateTime now = DateTime.Now;
+            DateTime midnight = now.Date.AddDays(1);
+            TimeSpan timeUntilMidnight = midnight - now;
+
+            // Delay the execution until midnight
+            await Task.Delay(timeUntilMidnight, stoppingToken);
         }
         catch (Exception ex)
         {
