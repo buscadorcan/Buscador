@@ -8,5 +8,6 @@ namespace ClientApp.Services.IService {
         Task<ConexionDto> GetConexionAsync(int idConexion);
         public Task<RespuestaRegistro> RegistrarOActualizar(ConexionDto registro);
         Task<RespuestaRegistro> EliminarConexion(int idConexion);
+        Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content);
     }
 }
