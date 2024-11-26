@@ -1,4 +1,4 @@
-#EVN:
+#EVN: NOV2K24
 1. SDK .NET : https://dotnet.microsoft.com/en-us/download
 2. VSCode   : https:2//code.visualstudio.com/download
   - EXT:  
