@@ -1,0 +1,45 @@
+@page "/migracion-excel"
+@layout AdminLayout
+@using Microsoft.AspNetCore.Authorization
+@using SharedApp.Data
+@using SharedApp.Models.Dtos
+@attribute [Authorize]
+
+<PageTitle>Formulario Migración Excel</PageTitle>
+
+<EditForm EditContext="@editContext" class="pt-4">
+    <DataAnnotationsValidator />
+
+    <div class="card border">
+        <div class="card-body px-lg-5 pt-4">
+            <h3 class="text-success text-center py-2">
+                <strong>Archivo migración</strong>
+            </h3>
+
+            <hr style="background-color:aliceblue" />
+
+            <div class="form-row py-2">
+                <label class="col-form-label">Base Datos</label>
+                <div class="col">
+                    <InputFile
+                     @bind-Value="uploadedFile"
+                     class="form-control"
+                     placeholder="Archivo migración excel"
+                     OnChange="OnInputFileChange"
+                      />
+                    <ValidationMessage For="(() => uploadedFile)" />
+                </div>
+            </div>
+            <div class="py-2">
+                <hr style="background-color:aliceblue" />
+                <Button
+                 @ref="saveButton"
+                 Type="ButtonType.Submit"
+                 Color="ButtonColor.Success"
+                 @onclick="async () => await RegistrarMigracionExcel()">
+                    Guardar
+                </Button>
+            </div>
+        </div>
+    </div>
+</EditForm>
