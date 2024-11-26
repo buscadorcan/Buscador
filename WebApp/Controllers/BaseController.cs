@@ -33,6 +33,7 @@ namespace WebApp.Controllers
                 Result = new {}
             });
         }
+
         protected IActionResult NotFoundResponse(string message)
         {
             return NotFound(new RespuestasAPI<object>

@@ -16,8 +16,8 @@ namespace WebApp.Service.IService
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private int[] filters = [];
       private int executionIndex = 0;
-      private int idVistaIndex = 2;
-      private int idOrganizacionIndex = 3;
+      private int idVistaIndex = -1;
+      private int idOrganizacionIndex = -1;
       private string currentIdVista = "";
       private string currentIdEnte = "";
       private bool hasIdVista = false;
@@ -84,7 +84,7 @@ namespace WebApp.Service.IService
                   }
                 }
                 idOrganizacionIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == idEnteName);
-                if (idVistaIndex == -1) {
+                if (idOrganizacionIndex == -1) {
                   hasIdEnte = false;
                 } else {
                   hasIdEnte = true;
@@ -174,6 +174,7 @@ namespace WebApp.Service.IService
         }
         return result;
       }
+
       string buildCanDataSetJson(DataTable dataTable, int row)
       {
         JArray data = new JArray();
@@ -198,6 +199,7 @@ namespace WebApp.Service.IService
 
         return data.ToString();
       }
+
       bool deleteOldRecords(int idHomologacionEsquema, int idConexion)
       {
         Console.WriteLine($"Deleting old records for {idHomologacionEsquema} and {idConexion}");
@@ -210,6 +212,7 @@ namespace WebApp.Service.IService
         Console.WriteLine("Predelete");
         return _repositoryDLO.DeleteOldRecords(idHomologacionEsquema, idConexion);
       }
+ 
       bool deleteOldRecord(string idVista, string idOrganizacion, int idHomologacionEsquema, int idConexion)
       {
         return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);
