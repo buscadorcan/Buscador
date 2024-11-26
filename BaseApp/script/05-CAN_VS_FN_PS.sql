@@ -132,7 +132,7 @@ RETURN
 			,he.MostrarWeb	
 			,he.TooltipWeb	
 	FROM	HomologacionEsquema		he (NOLOCK)
-	JOIN	candataset	dl (NOLOCK)	ON he.IdHomologacionEsquema = dl.IdHomologacionEsquema
+	JOIN	candataset				dl (NOLOCK)	ON he.IdHomologacionEsquema = dl.IdHomologacionEsquema
 	WHERE	he.MostrarWebOrden > 1	
 	AND		he.Estado = 'A'
 	AND		dl.IdEnte = @IdEnte
@@ -143,12 +143,12 @@ GO
 CREATE OR ALTER FUNCTION fnHomologacionEsquemaDato (  @IdHomologacionEsquema INT, @IdEnte VARCHAR(16) )  
 RETURNS TABLE AS
 RETURN
-	SELECT	 Idcandataset
+	SELECT	 IdCandataset
 			,IdHomologacionEsquema
 			,DataEsquemaJson
 	FROM	candataset	(NOLOCK)	
 	WHERE	IdHomologacionEsquema	= @IdHomologacionEsquema
-	AND		IdEnte			= @IdEnte
+	AND		IdEnte					= @IdEnte
 	 
 GO
 ------------------------ fnPredictWords
@@ -186,14 +186,14 @@ GO
 
 CREATE OR ALTER PROCEDURE psBuscarPalabra ( @paramJSON NVARCHAR(max) = NULL , @PageNumber INT = 1, @RowsPerPage INT = 20, @RowsTotal INT = 0 OUTPUT) AS
 BEGIN 
---N'{	"ExactaBuscar"			:false
+--N'{	"ExactaBuscar"		:false
 --	,"TextoBuscar"			:"leche"
---	,"FiltroPais"			:[]
+--	,"FiltroPais"			:["ecuador", "peru"]
 --	,"FiltroOna"			:[]
 --	,"FiltroEsquema"		:[]
 --	,"FiltroNorma"			:[]
---	,"FiltroEstado"			:[]
---	,"FiltroRecomocimiento"	:[]
+--	,"FiltroEstado"			:["Acreditado"]
+--	,"FiltroRecomocimiento"	:["nacional"]
 --}',1,10;
 	BEGIN TRY	
 		SELECT  @RowsTotal				= 0;
@@ -203,6 +203,7 @@ BEGIN
 		DECLARE @FiltroNorma			NVARCHAR(400)	 
 		DECLARE @FiltroEstado			NVARCHAR(400)	 
 		DECLARE @FiltroRecomocimiento	NVARCHAR(400)	 
+		DECLARE @EnteBuscadoFiltrado	TABLE (IdEnte VARCHAR(16) , IdHomologacion INT, CumpleFiltro INT default (0))
 		DECLARE @EnteBuscado 			TABLE (IdEnte VARCHAR(16) , IdVista VARCHAR(16) , TipoData VARCHAR(40), IdHomologacion INT, Texto NVARCHAR(4000))
 		DECLARE @FiltroBusqueda			TABLE (IdHomologacion INT , Texto NVARCHAR(100) COLLATE Latin1_General_CI_AI)
 		DECLARE @IdHomologacionEsquema	INTEGER			= (SELECT TOP 1 IdHomologacionEsquema from HomologacionEsquema (NOLOCK) order by MostrarWebOrden)
@@ -247,15 +248,6 @@ BEGIN
 		FROM	CanFullText o  (NOLOCK)
 		WHERE	o.IdEnte is not null
 		AND		o.FullTextData = @TextoBuscar
-		AND		(	EXISTS 
-					(	SELECT	1 
-						FROM	@FiltroBusqueda fb 
-						WHERE	fb.IdHomologacion = o.IdHomologacion 
-						AND		fb.Texto		  = o.FullTextData
-					)
-					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-				)
-
 	--> Busqueda NoExacta: 	"word_phase", ""   ( sinonimos + stopWord + Rank)
 	ELSE
 	IF  @TextoBuscar = '' 
@@ -272,64 +264,64 @@ BEGIN
 				)
 	ELSE
 	begin
-		--> THESAURUS
-		--DECLARE @TextoBuscarSinonimo NVARCHAR(200) = ' FORMSOF(THESAURUS, "' + @TextoBuscar +'" )' 
-		--INSERT	INTO @EnteBuscado (IdEnte, IdVista, TipoData, IdHomologacion , Texto)
-		--SELECT  DISTINCT o.IdEnte  , o.IdVista , '0.BuscaThesa'			,o.[IdHomologacion] ,o.[FullTextData]
-		--FROM	CanFullText o  (NOLOCK)
-		--WHERE	CONTAINS(FullTextData,  @TextoBuscarSinonimo )
-		--AND		(	EXISTS 
-		--			(	SELECT	1 
-		--				FROM	@FiltroBusqueda fb 
-		--				WHERE	fb.IdHomologacion = o.IdHomologacion 
-		--				AND		fb.Texto		  = o.FullTextData
-		--			)
-		--			OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-		--		)
-		--> INFLECTIONAL
+		--> INFLECTIONAL + THESAURUS
 		DECLARE @TextoBuscarInfle NVARCHAR(200) = ' FORMSOF(INFLECTIONAL, "' + @TextoBuscar +'" )'
 		INSERT	INTO @EnteBuscado (IdEnte, IdVista, TipoData	,IdHomologacion , Texto)
 		SELECT  DISTINCT o.IdEnte  , o.IdVista , '0.BuscaInflec'		,o.[IdHomologacion] ,o.[FullTextData]
 		FROM	CanFullText o  (NOLOCK)
 		WHERE	CONTAINS(FullTextData,  @TextoBuscarInfle )
-		AND		(	EXISTS 
-					(	SELECT	1 
-						FROM	@FiltroBusqueda fb 
-						WHERE	fb.IdHomologacion = o.IdHomologacion 
-						AND		fb.Texto		  = o.FullTextData
-					)
-					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-				)
 
 		--> RANK 
 		INSERT	INTO @EnteBuscado (IdEnte, IdVista, TipoData ,IdHomologacion , Texto)
 		SELECT	DISTINCT o.IdEnte  , o.IdVista , '0.BuscaRank'			,o.[IdHomologacion] ,o.[FullTextData]  --, OFT.RANK  
 		FROM	CanFullText o  (NOLOCK)
 		JOIN	FREETEXTTABLE(CanFullText, FullTextData,  @TextoBuscar ) as OFT		--,LANGUAGE N'English', 2) AS OFT  
-		ON		o.IdCanFullText		= OFT.[KEY]									--AND o.IdEnte			= OFT.IdEnte 	 
-		WHERE	(	EXISTS 
-					(	SELECT	1 
-						FROM	@FiltroBusqueda fb 
-						WHERE	fb.IdHomologacion = o.IdHomologacion 
-						AND		fb.Texto		  = o.FullTextData
-					)
-					OR NOT EXISTS (SELECT 1 FROM @FiltroBusqueda)
-				)
+		ON		o.IdCanFullText		= OFT.[KEY]										--AND o.IdEnte			= OFT.IdEnte 	 
 		--ORDER BY RANK DESC; 
 	end;
+	 
+	 
 
-	--SELECT * FROM @EnteBuscado;
-	-- Eliminar Duplicados  
+	IF	EXISTS (select 1 from @FiltroBusqueda)
+		WITH tbfiltro AS 
+		(	select  distinct IdEnte,	 f.IdHomologacion ,  
+					CASE WHEN	EXISTS 
+					(	SELECT	1 
+						FROM	CanFullText (NOLOCK) c 
+						WHERE	c.IdEnte		= e.IdEnte
+						AND		c.IdHomologacion= f.IdHomologacion
+						AND		c.FullTextData IN (SELECT lower(trim(ff.Texto)) FROM @FiltroBusqueda ff WHERE ff.IdHomologacion = c.IdHomologacion)
+					) 
+					THEN 1 
+					ELSE 0 	END AS CumpleFiltro
+			from	@EnteBuscado e
+			cross	join ( select distinct IdHomologacion from @FiltroBusqueda ) f
+		)	insert  into @EnteBuscadoFiltrado
+			select  *
+			from	tbfiltro
+	ELSE
+		INSERT  INTO @EnteBuscadoFiltrado
+		SELECT	DISTINCT IdEnte, 0 IdHomologacion, 1 CumpleFiltro
+		FROM	@EnteBuscado
+	;
 	WITH tbEnteBuscado AS 
-	(	 SELECT ROW_NUMBER() OVER (PARTITION BY IdEnte, IdVista ORDER BY IdEnte) AS IdRow
-		 FROM @EnteBuscado
-	)	 DELETE FROM tbEnteBuscado
+	(	 SELECT ROW_NUMBER() OVER (PARTITION BY IdEnte,CumpleFiltro ORDER BY IdEnte,CumpleFiltro) AS IdRow, *
+		 FROM	@EnteBuscadoFiltrado
+	)    DELETE FROM tbEnteBuscado
 		 WHERE IdRow > 1
-	--SELECT * FROM @EnteBuscado
+
+	--select * from @EnteBuscadoFiltrado
+
+	DELETE FROM @EnteBuscadoFiltrado
+	WHERE IdEnte IN (
+		SELECT DISTINCT IdEnte
+		FROM @EnteBuscadoFiltrado
+		WHERE cumpleFiltro = 0
+	); 
 
 	IF  (@PageNumber = 1)
 		SELECT	@RowsTotal	 = COUNT(*) 
-		FROM	@EnteBuscado e
+		FROM	@EnteBuscadoFiltrado e
 		JOIN	CanDataSet	 c  ON  c.IdEnte = e.IdEnte
 		WHERE	IdHomologacionEsquema = @IdHomologacionEsquema
 
@@ -338,7 +330,7 @@ BEGIN
 			,c.IdVista 
 			,c.IdHomologacionEsquema
 			,c.DataEsquemaJson
-	FROM	@EnteBuscado e
+	FROM	@EnteBuscadoFiltrado e
 	JOIN	CanDataSet	 c  ON  c.IdEnte = e.IdEnte
 	WHERE	IdHomologacionEsquema = @IdHomologacionEsquema
 	ORDER BY c.IdEnte  
@@ -354,10 +346,10 @@ GO
 
 exec psBuscarPalabra		 
 N'{	 "ExactaBuscar"			:false
-	,"TextoBuscar"			:"leche arsenico chocolate"
-	,"FiltroPais"			:[]
+	,"TextoBuscar"			:""
+	,"FiltroPais"			:["españa", "peru","ecuador","Argentina"]
 	,"FiltroOna"			:[]
-	,"FiltroEsquema"		:[]
+	,"FiltroEsquema"		:["inspeccion"]
 	,"FiltroNorma"			:[]
 	,"FiltroEstado"			:[]
 	,"FiltroRecomocimiento"	:[]
