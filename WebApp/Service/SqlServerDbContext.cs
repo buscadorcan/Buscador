@@ -20,5 +20,6 @@ namespace WebApp.Service
         public DbSet<HomologacionEsquema> HomologacionEsquema { get; set; }
         public DbSet<CanFullText> CanFullText { get; set; }
         public DbSet<Conexion> Conexion { get; set; }
+        public DbSet<MigracionExcel> MigracionExcel { get; set; }
     }
 }

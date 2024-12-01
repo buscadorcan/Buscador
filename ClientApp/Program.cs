@@ -25,6 +25,7 @@ builder.Services.AddScoped<IHomologacionEsquemaService, HomologacionEsquemaServi
 builder.Services.AddSingleton<ClientApp.Services.ToastService>();
 builder.Services.AddScoped<IDynamicService, DynamicService>();
 builder.Services.AddScoped<IConexionService, ConexionService>();
+builder.Services.AddScoped<IMigracionExcelService, MigracionExcelService>();
 
 builder.Services.AddBlazoredLocalStorage();
 
