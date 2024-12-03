@@ -23,6 +23,9 @@ namespace WebApp.Mappers
 
             CreateMap<Conexion, ConexionDto>();
             CreateMap<ConexionDto, Conexion>();
+
+            CreateMap<MigracionExcel, MigracionExcelDto>();
+            CreateMap<MigracionExcelDto, MigracionExcel>();
         }
     }
 }

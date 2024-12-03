@@ -5,15 +5,23 @@ using System.Data;
 using WebApp.Repositories.IRepositories;
 using WebApp.Repositories;
 using Newtonsoft.Json.Linq;
+using MySqlX.XDevAPI.Common;
 
 namespace WebApp.Service.IService
 {
-  public class ExcelService(ICanDataSetRepository canDataSetRepository, ICanFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository) : IExcelService
+  public class ExcelService(
+    ICanDataSetRepository canDataSetRepository,
+    ICanFullTextRepository canFullTextRepository,
+    IHomologacionRepository homologacionRepository,
+    IHomologacionEsquemaRepository homologacionEsquemaRepository,
+    IMigracionExcelRepository migracionExcelRepository
+    ) : IExcelService
     {
       private ICanDataSetRepository _repositoryDLO = canDataSetRepository;
       private ICanFullTextRepository _repositoryOFT = canFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
+      private IMigracionExcelRepository _repositoryME = migracionExcelRepository;
       private int[] filters = [];
       private int executionIndex = 0;
       private int idVistaIndex = -1;
@@ -28,9 +36,28 @@ namespace WebApp.Service.IService
       HomologacionEsquema? homologacionEsquema = null;
       private string idEnteName = " IdOrganizacion";
 
-      public Boolean ImportarExcel(string path) 
+      public Boolean ImportarExcel(string path, MigracionExcel migracion) 
       {
-        return Leer(path);;
+        try {
+          migracion.MigracionEstado = "PROCESSING";
+          _repositoryME.Update(migracion);
+          var result = Leer(path);
+          if(result) {
+            migracion.MigracionEstado = "SUCCESS";
+          } else {
+            migracion.MigracionEstado = "ERROR";
+            migracion.MensageError = "Algo sslió mal en la migración";
+          }
+          _repositoryME.Update(migracion);
+
+          return result;
+        } catch (Exception e) {
+          Console.WriteLine(e);
+          migracion.MigracionEstado = "ERROR";
+          migracion.MensageError = e.Message;
+          _repositoryME.Update(migracion);
+          return false;
+        }
       }
 
       public Boolean Leer(string fileSrc)
