@@ -6,6 +6,7 @@ using WebApp.Repositories.IRepositories;
 using WebApp.Repositories;
 using Newtonsoft.Json.Linq;
 using MySqlX.XDevAPI.Common;
+using ExcelDataReader.Log;
 
 namespace WebApp.Service.IService
 {
@@ -14,7 +15,8 @@ namespace WebApp.Service.IService
     ICanFullTextRepository canFullTextRepository,
     IHomologacionRepository homologacionRepository,
     IHomologacionEsquemaRepository homologacionEsquemaRepository,
-    IMigracionExcelRepository migracionExcelRepository
+    IMigracionExcelRepository migracionExcelRepository,
+    ILogMigracionRepository logMigracionRepository
     ) : IExcelService
     {
       private ICanDataSetRepository _repositoryDLO = canDataSetRepository;
@@ -22,6 +24,7 @@ namespace WebApp.Service.IService
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private IMigracionExcelRepository _repositoryME = migracionExcelRepository;
+      private ILogMigracionRepository _repositoryLM = logMigracionRepository;
       private int[] filters = [];
       private int executionIndex = 0;
       private int idVistaIndex = -1;
@@ -34,13 +37,23 @@ namespace WebApp.Service.IService
       private JArray currentSchema = new JArray();
       private List<Homologacion> currentFields = new List<Homologacion>();
       HomologacionEsquema? homologacionEsquema = null;
+      private LogMigracion? currentLogMigracion = null;
+      private LogMigracionDetalle? currentLogMigracionDetalle = null;
       private string idEnteName = " IdOrganizacion";
 
       public Boolean ImportarExcel(string path, MigracionExcel migracion) 
       {
         try {
-          migracion.MigracionEstado = "PROCESSING";
-          _repositoryME.Update(migracion);
+          if (migracion == null) {
+            migracion = new MigracionExcel();
+            migracion.MigracionEstado = "PROCESSING";
+            migracion.ExcelFileName = path.Split("/").Last();
+            migracion = _repositoryME.Create(migracion);
+          } else {
+            migracion.MigracionEstado = "PROCESSING";
+            // var result = true;
+            _repositoryME.Update(migracion);
+          }
           var result = Leer(path);
           if(result) {
             migracion.MigracionEstado = "SUCCESS";
@@ -79,12 +92,21 @@ namespace WebApp.Service.IService
             var DataSet = reader.AsDataSet(configuration);
 
             if (DataSet.Tables.Count > 0)
-            {
+            {               
               foreach (DataTable dataTable in DataSet.Tables)
               {
+                LogMigracion logMigracion = new LogMigracion();
                 string sheetName = dataTable.TableName;
                 homologacionEsquema = _repositoryHE.FindByViewName(sheetName);
                 if (homologacionEsquema == null) { continue; }
+
+                logMigracion.OrigenVista = sheetName;
+                logMigracion.OrigenFilas = dataTable.Rows.Count;
+                logMigracion.OrigenSistema = "EXCEL";
+                logMigracion.EsquemaFilas = dataTable.Rows.Count;
+                logMigracion.EsquemaId = homologacionEsquema.IdHomologacionEsquema;
+                logMigracion.EsquemaVista = homologacionEsquema.VistaNombre;
+                currentLogMigracion = _repositoryLM.Create(logMigracion);
 
                 currentSchema = JArray.Parse(homologacionEsquema.EsquemaJson);
                 int[] homologacionIds = Array.Empty<int>();
@@ -125,6 +147,9 @@ namespace WebApp.Service.IService
                   deleteOldRecords(homologacionEsquema.IdHomologacionEsquema, int.Parse(dataTable.Rows[i][0].ToString())); 
                   CanDataSet canDataSet = addCanDataSet(dataTable, i);
                   addCanFullText(dataTable, i, canDataSet.IdCanDataSet);
+                  currentLogMigracion.Final = DateTime.Now;
+                  currentLogMigracion.Estado = "OK";
+                  _repositoryLM.Update(currentLogMigracion);
                 }
               }
               return true;
@@ -207,6 +232,7 @@ namespace WebApp.Service.IService
         JArray data = new JArray();
         foreach (Homologacion currentField in currentFields)
         {
+          addLogDetail(currentField);
           if (string.IsNullOrEmpty(currentField.NombreHomologado))
           {
             continue;
@@ -243,6 +269,19 @@ namespace WebApp.Service.IService
       bool deleteOldRecord(string idVista, string idOrganizacion, int idHomologacionEsquema, int idConexion)
       {
         return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);
+      }
+  
+      bool addLogDetail(Homologacion homologacion) {
+        if (currentLogMigracion == null) {
+          return false;
+        }
+        LogMigracionDetalle logMigracionDetalle = new LogMigracionDetalle(currentLogMigracion);
+        logMigracionDetalle.IdHomologacion = homologacion.IdHomologacion;
+        logMigracionDetalle.NombreHomologacion = homologacion.MostrarWeb;
+        logMigracionDetalle.OrigenVistaColumna = homologacion.NombreHomologado;
+        logMigracionDetalle.EsquemaIdHomologacion = homologacionEsquema.IdHomologacionEsquema.ToString();
+        currentLogMigracionDetalle = _repositoryLM.CreateDetalle(logMigracionDetalle);
+        return currentLogMigracionDetalle != null;
       }
   }
 }

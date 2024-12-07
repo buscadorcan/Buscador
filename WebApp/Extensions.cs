@@ -55,6 +55,7 @@ namespace WebApp.Extensions
             services.AddScoped<IConectionStringBuilderService, ConectionStringBuilderService>();
             services.AddScoped<IDynamicRepository, DynamicRepository>();
             services.AddScoped<IMigracionExcelRepository, MigracionExcelRepository>();
+            services.AddScoped<ILogMigracionRepository, LogMigracionRepository>();
 
             // WorkerService
             services.AddHostedService<BackgroundWorkerService>();
