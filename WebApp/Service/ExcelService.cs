@@ -16,7 +16,8 @@ namespace WebApp.Service.IService
     IHomologacionRepository homologacionRepository,
     IHomologacionEsquemaRepository homologacionEsquemaRepository,
     IMigracionExcelRepository migracionExcelRepository,
-    ILogMigracionRepository logMigracionRepository
+    ILogMigracionRepository logMigracionRepository,
+    IConexionRepository conexionRepository
     ) : IExcelService
     {
       private ICanDataSetRepository _repositoryDLO = canDataSetRepository;
@@ -25,6 +26,7 @@ namespace WebApp.Service.IService
       private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
       private IMigracionExcelRepository _repositoryME = migracionExcelRepository;
       private ILogMigracionRepository _repositoryLM = logMigracionRepository;
+      private IConexionRepository _repositoryC = conexionRepository;
       private int[] filters = [];
       private int executionIndex = 0;
       private int idVistaIndex = -1;
@@ -39,6 +41,7 @@ namespace WebApp.Service.IService
       HomologacionEsquema? homologacionEsquema = null;
       private LogMigracion? currentLogMigracion = null;
       private LogMigracionDetalle? currentLogMigracionDetalle = null;
+      private Conexion? currentConexion = null;
       private string idEnteName = " IdOrganizacion";
 
       public Boolean ImportarExcel(string path, MigracionExcel migracion) 
@@ -69,6 +72,12 @@ namespace WebApp.Service.IService
           migracion.MigracionEstado = "ERROR";
           migracion.MensageError = e.Message;
           _repositoryME.Update(migracion);
+          if (currentLogMigracion != null) {
+            currentLogMigracion.Final = DateTime.Now;
+            currentLogMigracion.Estado = "ERROR";
+            currentLogMigracion.Observacion = e.Message;
+            _repositoryLM.Update(currentLogMigracion);
+          }
           return false;
         }
       }
@@ -92,7 +101,18 @@ namespace WebApp.Service.IService
             var DataSet = reader.AsDataSet(configuration);
 
             if (DataSet.Tables.Count > 0)
-            {               
+            {       
+              int idConexion;
+              var migrationValue = DataSet.Tables[1].Rows[0][0].ToString();
+              Console.WriteLine("Migration Value: " + migrationValue);
+              try {
+                idConexion = int.Parse(migrationValue);
+              } catch (Exception e) {
+                currentConexion = _repositoryC.FindBySiglas(migrationValue);
+              }
+              if (currentConexion == null) {
+                throw new Exception("Error: Conexion no encontrada en la base de datos");
+              }
               foreach (DataTable dataTable in DataSet.Tables)
               {
                 LogMigracion logMigracion = new LogMigracion();
@@ -102,7 +122,7 @@ namespace WebApp.Service.IService
 
                 logMigracion.OrigenVista = sheetName;
                 logMigracion.OrigenFilas = dataTable.Rows.Count;
-                logMigracion.OrigenSistema = "EXCEL";
+                logMigracion.OrigenSistema = currentConexion.Siglas;
                 logMigracion.EsquemaFilas = dataTable.Rows.Count;
                 logMigracion.EsquemaId = homologacionEsquema.IdHomologacionEsquema;
                 logMigracion.EsquemaVista = homologacionEsquema.VistaNombre;
@@ -143,8 +163,9 @@ namespace WebApp.Service.IService
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                   // Se borra los datos antiguos de todo el esquema que se está migrando y se los vuelve a cargar
-                  Console.WriteLine($"Deleting old records for {homologacionEsquema.IdHomologacionEsquema} and {int.Parse(dataTable.Rows[i][0].ToString())}");
-                  deleteOldRecords(homologacionEsquema.IdHomologacionEsquema, int.Parse(dataTable.Rows[i][0].ToString())); 
+                  Console.WriteLine($"Deleting old records for {homologacionEsquema.IdHomologacionEsquema}");
+                  
+                  deleteOldRecords(homologacionEsquema.IdHomologacionEsquema, currentConexion.IdConexion); 
                   CanDataSet canDataSet = addCanDataSet(dataTable, i);
                   addCanFullText(dataTable, i, canDataSet.IdCanDataSet);
                   currentLogMigracion.Final = DateTime.Now;
@@ -167,8 +188,7 @@ namespace WebApp.Service.IService
         {
           IdCanDataSet = 0,
           IdHomologacionEsquema = homologacionEsquema.IdHomologacionEsquema,
-          DataEsquemaJson = buildCanDataSetJson(dataTable, row),
-          IdConexion = int.Parse(dataTable.Rows[row][0].ToString())
+          DataEsquemaJson = buildCanDataSetJson(dataTable, row)
         };
         if (hasIdVista)
         {

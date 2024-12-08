@@ -26,6 +26,9 @@ namespace WebApp.Mappers
 
             CreateMap<MigracionExcel, MigracionExcelDto>();
             CreateMap<MigracionExcelDto, MigracionExcel>();
+
+            CreateMap<LogMigracion, LogMigracionDto>();
+            CreateMap<LogMigracionDto, LogMigracion>();
         }
     }
 }

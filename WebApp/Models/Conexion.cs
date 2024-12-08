@@ -6,6 +6,7 @@ public class Conexion : BaseEntity
     [Key]
     public int IdConexion { get; set; }
     public string? CodigoHomologacion { get; set; }
+    public string? Siglas { get; set; }
     public string? BaseDatos { get; set; }
     public string? Host { get; set; }
     public int Puerto { get; set; }
