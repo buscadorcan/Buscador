@@ -8,7 +8,7 @@ namespace WebApp.Models
   {
     [Key]
     public int IdCanDataSet		  { get; set; }
-    public int IdConexion				      { get; set; }
+    public int? IdConexion				      { get; set; }
     public int IdHomologacionEsquema  { get; set; }
     public string? IdEnte     { get; set; }
     public string? IdVista            { get; set; }

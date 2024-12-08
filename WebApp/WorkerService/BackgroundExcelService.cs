@@ -1,3 +1,4 @@
+using WebApp.Models;
 using WebApp.Service.IService;
 
 namespace WebApp.WorkerService
@@ -27,7 +28,7 @@ namespace WebApp.WorkerService
               using (var scope = _services.CreateScope())
               {
                 // var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
-                // excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx");
+                // excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx", null);
                 // var service = scope.ServiceProvider.GetRequiredService<IImportador>();
                 // service.Importar(Array.Empty<string>());
               }

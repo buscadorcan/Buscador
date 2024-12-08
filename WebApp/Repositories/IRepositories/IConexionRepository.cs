@@ -7,6 +7,7 @@ namespace WebApp.Repositories.IRepositories {
     bool Update(Conexion data);
     bool Create(Conexion data);
     Conexion? FindById(int Id);
+    Conexion? FindBySiglas(string siglas);
     List<Conexion> FindAll();
   }
 }

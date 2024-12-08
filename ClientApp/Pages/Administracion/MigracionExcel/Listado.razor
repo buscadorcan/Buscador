@@ -1,0 +1,24 @@
+@page "/migracion-excel"
+@layout AdminLayout
+@using SharedApp.Models.Dtos
+
+<PageTitle>Migraciones desde excel</PageTitle>
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
+    <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nueva-migarcion-excel">Importar Excel</Button>
+</div>
+
+<Grid @ref="grid" TItem="MigracionExcelDto" class="table table-hover table-bordered table-striped" DataProvider="MigracionExcelDtoDataProvider" Responsive="true">
+    <GridColumn TItem="MigracionExcelDto" HeaderText="Migración" PropertyName="IdMigracionExcel">
+        @context.IdMigracionExcel
+    </GridColumn>
+    <GridColumn TItem="MigracionExcelDto" HeaderText="Estado" PropertyName="MigracionEstado">
+        @context.MigracionEstado
+    </GridColumn>
+    <GridColumn TItem="MigracionExcelDto" HeaderText="Nombre archivo" PropertyName="ExcelFileName">
+        @context.ExcelFileName
+    </GridColumn>
+    <GridColumn TItem="MigracionExcelDto" HeaderText="Error" PropertyName="MensageError">
+        @context.MensageError
+    </GridColumn>
+</Grid>
