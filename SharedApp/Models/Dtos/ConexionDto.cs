@@ -18,6 +18,7 @@ namespace SharedApp.Models.Dtos
     public string? MotorBaseDatos { get; set; }
     [Required]
     public string? CodigoHomologacion { get; set; }
+    public string? Siglas { get; set; }
     public string? Filtros { get; set; }
     public int TiempoEspera { get; set; }
     public string? Migrar { get; set; }
