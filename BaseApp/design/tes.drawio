@@ -1,0 +1,62 @@
+<mxfile host="65bd71144e">
+  <diagram name="Arquitectura Interoperabilidad APIs">
+    <mxGraphModel dx="900" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="800" pageHeight="600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- API A Section -->
+        <mxCell id="2" value="API A (Esquema)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Schema Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="280" y="100" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Schema Validator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="460" y="100" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5" edge="1" source="2" target="3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6" edge="1" source="3" target="4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- API B Section -->
+        <mxCell id="7" value="API B (Operaciones)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="100" y="250" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Operation Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="280" y="250" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="Payload Builder" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="460" y="250" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="10" edge="1" source="7" target="8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" edge="1" source="8" target="9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Security Section -->
+        <mxCell id="12" value="API Key Authentication" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="100" y="400" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="AES-GCM Encryption" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="300" y="400" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="14" edge="1" source="12" target="7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" edge="1" source="13" target="8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Storage Section -->
+        <mxCell id="16" value="S3 Logs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="460" y="400" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="17" edge="1" source="9" target="16" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
