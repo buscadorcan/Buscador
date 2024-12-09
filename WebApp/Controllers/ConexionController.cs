@@ -18,8 +18,7 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ConexionController(
         IConexionRepository iRepo,
-        IMapper mapper,
-        IExcelService importer
+        IMapper mapper
     ) : BaseController
     {
         private readonly IConexionRepository _iRepo = iRepo;
@@ -123,40 +122,6 @@ namespace WebApp.Controllers
             {
                 return HandleException(e, nameof(Deactive));
             }
-        }
-    
-        // [Authorize]
-        [HttpPost("upload")]
-        public IActionResult ImportarExcel(IFormFile file)
-        {
-          try
-          {
-            if (file == null || file.Length == 0)
-            {
-              return BadRequestResponse("Archivo no encontrado");
-            }
-
-            string fileExtension = Path.GetExtension(file.FileName);
-            if (fileExtension != ".xls" && fileExtension != ".xlsx")
-              return BadRequestResponse("Archivo no válido");
-
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", file.FileName);
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-              file.CopyTo(stream);
-            }
-
-            var result = importer.ImportarExcel(path);
-
-            return Ok(new RespuestasAPI<bool>{
-              IsSuccess = result
-            });
-          }
-          catch (Exception e)
-          {
-            return HandleException(e, nameof(ImportarExcel));
-          }
         }
     }
 }

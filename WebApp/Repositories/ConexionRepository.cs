@@ -33,6 +33,10 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.Conexion.AsNoTracking().FirstOrDefault(u => u.IdConexion == id));
         }
+        public Conexion? FindBySiglas(string siglas)
+        {
+            return ExecuteDbOperation(context => context.Conexion.AsNoTracking().FirstOrDefault(u => u.Siglas == siglas));
+        }
         public List<Conexion> FindAll()
         {
             return ExecuteDbOperation(context => context.Conexion.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.FechaCreacion).ToList());

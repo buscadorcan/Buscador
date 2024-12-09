@@ -148,6 +148,7 @@ CREATE TABLE dbo.HomologacionEsquema(
 CREATE TABLE dbo.Conexion (
      IdConexion			INT IDENTITY(1,1)	NOT NULL
 	,CodigoHomologacion	NVARCHAR(20)		NOT NULL
+  ,Siglas             NVARCHAR(20)    NOT NULL
     ,BaseDatos          NVARCHAR(100) NOT NULL
     ,Host               NVARCHAR(100) NOT NULL
     ,Puerto             INT NOT NULL DEFAULT(0)
