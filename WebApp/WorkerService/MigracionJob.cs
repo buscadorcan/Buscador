@@ -31,11 +31,11 @@ namespace WebApp.WorkerService
           using (var scope = _services.CreateScope())
           { 
             var service = scope.ServiceProvider.GetRequiredService<IMigrador>();
-            var conexionRepository = scope.ServiceProvider.GetRequiredService<IConexionRepository>();
-            List<Conexion> conexiones = conexionRepository.FindAll();
+            var conexionRepository = scope.ServiceProvider.GetRequiredService<IONAConexionRepository>();
+            List<ONAConexion> conexiones = conexionRepository.FindAll();
             foreach (var conexion in conexiones)
             {
-              Console.WriteLine($"Migrando conexión: {conexion.CodigoHomologacion}");
+              Console.WriteLine($"Migrando conexión: {conexion.IdONA}");
             }
           }
             // Calculate the time until midnight

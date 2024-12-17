@@ -6,34 +6,94 @@ using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-    public class CatalogosRepository : BaseRepository, ICatalogosRepository
+  /// <summary>
+  /// Repositorio para acceder a los datos relacionados con catálogos, grillas, filtros, dimensiones, grupos, roles y puntos de acceso.
+  /// Implementa la interfaz <see cref="ICatalogosRepository"/>.
+  /// </summary>
+  public class CatalogosRepository : BaseRepository, ICatalogosRepository
+  {
+    /// <summary>
+    /// Constructor para inicializar el repositorio de catálogos.
+    /// </summary>
+    /// <param name="logger">Instancia de <see cref="ILogger{CatalogosRepository}"/> para el registro de logs.</param>
+    /// <param name="sqlServerDbContextFactory">Fábrica para el contexto de base de datos SQL Server.</param>
+    public CatalogosRepository(
+      ILogger<CatalogosRepository> logger,
+      ISqlServerDbContextFactory sqlServerDbContextFactory
+    ) : base(sqlServerDbContextFactory, logger)
     {
-        public CatalogosRepository(
-            ILogger<CatalogosRepository> logger,
-            ISqlServerDbContextFactory sqlServerDbContextFactory
-        ) : base(sqlServerDbContextFactory, logger)
-        {
-        }
-        public List<VwGrilla> ObtenerEtiquetaGrilla()
-        {
-            return ExecuteDbOperation(context => context.VwGrilla.OrderBy(c => c.MostrarWebOrden).ToList());
-        }
-
-        public List<VwFiltro> ObtenerEtiquetaFiltros()
-        {
-            return ExecuteDbOperation(context => context.VwFiltro.OrderBy(c => c.MostrarWebOrden).ToList());
-        }
-        public List<VwDimension> ObtenerDimension()
-        {
-            return ExecuteDbOperation(context => context.VwDimension.OrderBy(c => c.MostrarWebOrden).ToList());
-        }
-        public List<Homologacion> ObtenerGrupos()
-        {
-            return ExecuteDbOperation(context => context.Homologacion.Where(c => c.IdHomologacionGrupo == null).OrderBy(c => c.MostrarWebOrden).ToList());
-        }
-        public List<FnFiltroDetalleDto> ObtenerFiltroDetalles(int IdHomologacion)
-        {
-            return ExecuteDbOperation(context => context.Database.SqlQuery<FnFiltroDetalleDto>($"SELECT * FROM fnFiltroDetalle({IdHomologacion})").OrderBy( c => c.MostrarWeb).ToList());
-        }
     }
+
+    /// <inheritdoc />
+    public List<VwGrilla> ObtenerVwGrilla()
+    {
+      return ExecuteDbOperation(context => 
+        context.VwGrilla
+          .AsNoTracking()
+          .OrderBy(c => c.MostrarWebOrden)
+          .ToList());
+    }
+
+    /// <inheritdoc />
+    public List<VwFiltro> ObtenerVwFiltro()
+    {
+      return ExecuteDbOperation(context => 
+        context.VwFiltro
+          .AsNoTracking()
+          .OrderBy(c => c.MostrarWebOrden)
+          .ToList());
+    }
+
+    /// <inheritdoc />
+    public List<VwDimension> ObtenerVwDimension()
+    {
+      return ExecuteDbOperation(context => 
+        context.VwDimension
+          .AsNoTracking()
+          .OrderBy(c => c.MostrarWebOrden)
+          .ToList());
+    }
+
+    /// <inheritdoc />
+    public List<Homologacion> ObtenerGrupos()
+    {
+      return ExecuteDbOperation(context => 
+        context.Homologacion
+          .AsNoTracking()
+          .Where(c => c.IdHomologacionGrupo == null)
+          .OrderBy(c => c.MostrarWebOrden)
+          .ToList());
+    }
+
+    /// <inheritdoc />
+    public List<FnFiltroDetalleDto> ObtenerFiltroDetalles(int id)
+    {
+      return ExecuteDbOperation(context => 
+        context.Database
+          .SqlQuery<FnFiltroDetalleDto>($"SELECT * FROM fnFiltroDetalle({id})")
+          .AsNoTracking()
+          .OrderBy(c => c.MostrarWeb)
+          .ToList());
+    }
+
+    /// <inheritdoc />
+    public List<VwRol> ObtenerVwRol() 
+    {
+      return ExecuteDbOperation(context => 
+        context.VwRol
+          .AsNoTracking()
+          .OrderBy(c => c.Rol)
+          .ToList());
+    }
+
+    /// <inheritdoc />
+    public List<VwEndPoint> ObtenerVwEndPoint() 
+    {
+      return ExecuteDbOperation(context => 
+        context.VwEndPoint
+          .AsNoTracking()
+          .OrderBy(c => c.EndPointNombre)
+          .ToList());
+    }
+  }
 }

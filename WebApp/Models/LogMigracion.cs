@@ -1,32 +1,46 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApp.Models;
-public class LogMigracion
+namespace WebApp.Models
 {
+  public class LogMigracion
+  {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdLogMigracion { get; set; }
-    public int IdConexion { get; set; } = 0;
-    public string CodigoHomologacion { get; set; } = "";
-    public string Host { get; set; } = "";
+    [Required]
+    public int IdONA { get; set; }
+    [Required]
+    public string? Host { get; set; } = "";
+    [Required]
     public int Puerto { get; set; } = 0;
-    public string Usuario { get; set; } = "";
+    [Required]
+    public string? Usuario { get; set; } = "";
+    [Required]
+    public string? BaseDatos { get; set; }
+    [Required]
+    public string? OrigenDatos { get; set; } = "EXCEL";
+    [Required]
+    public string? Migrar { get; set; } = "S";
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public int Migracion { get; set; }
-    public string Estado { get; set; } = "START";
-    public string OrigenFormato { get; set; } = "EXCEL";
-    public string OrigenSistema { get; set; } = "";
-    public string OrigenVista { get; set; } = "";
-    public int OrigenFilas { get; set; } = 0;
+    [Required]
+    public string? Estado { get; set; } = "START";
+    [Required]
     public int EsquemaId { get; set; } = 0;
-    public string EsquemaVista { get; set; } = "";
+    [Required]
+    public string? EsquemaVista { get; set; } = "";
+    [Required]
     public int EsquemaFilas { get; set; } = 0;
+    [Required]
+    public string VistaOrigen { get; set; } = "";
+    [Required]
+    public string VistaFilas { get; set; } = "";
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public string? Tiempo { get; set; }
     public DateTime? Inicio { get; set; } = DateTime.Now;
     public DateTime? Final { get; set; } = DateTime.Now;
     public DateTime? Fecha { get; set; } = DateTime.Now;
-    [DefaultValue("")]
     public string Observacion { get; set; } = "";
+  }
 }

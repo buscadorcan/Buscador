@@ -93,7 +93,7 @@ namespace WebApp.Repositories
                         Nombre = usuario.Nombre,
                         Apellido = usuario.Apellido,
                         Telefono = usuario.Telefono,
-                        Rol = usuario.Rol,
+                        IdHomologacionRol = usuario.IdHomologacionRol,
                     }
                 };
             });

@@ -1,9 +1,9 @@
 using WebApp.Models;
 
-namespace WebApp.Repositories.IRepositories {
+namespace WebApp.Repositories.IRepositories
+{
   public interface ILogMigracionRepository
   {
-
     bool Update(LogMigracion data);
     LogMigracion Create(LogMigracion data);
     LogMigracion? FindById(int Id);

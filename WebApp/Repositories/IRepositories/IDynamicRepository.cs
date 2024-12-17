@@ -2,9 +2,9 @@ using SharedApp.Models.Dtos;
 
 namespace WebApp.Repositories.IRepositories
 {
-    public interface IDynamicRepository
-    {
-        List<PropiedadesTablaDto> GetProperties(string codigoHomologacion, string viewName);
-        List<string> GetViewNames(string codigoHomologacion);
-    }
+  public interface IDynamicRepository
+  {
+    List<PropiedadesTablaDto> GetProperties(int idONA, string viewName);
+    List<string> GetViewNames(int idONA);
+  }
 }
