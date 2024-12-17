@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
+using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
 
@@ -16,7 +17,7 @@ namespace WebApp.Repositories
     ) : base(sqlServerDbContextFactory, logger)
     {
     }
-    public BuscadorDto PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
+    public ResultPaBuscarPalabraDto BuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
     {
       return ExecuteDbOperation(context => {
         var rowsTotal = new SqlParameter {
@@ -25,20 +26,20 @@ namespace WebApp.Repositories
           Direction = ParameterDirection.Output
         };
 
-        var lstTem = context.Database.SqlQueryRaw<BuscadorResultadoData>(
-          "exec psBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
+        var lstTem = context.Database.SqlQueryRaw<PaBuscarPalabra>(
+          "exec paBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
           new SqlParameter("@paramJSON", paramJSON),
           new SqlParameter("@PageNumber", PageNumber),
           new SqlParameter("@RowsPerPage", RowsPerPage),
           rowsTotal
         ).AsNoTracking().ToList();
 
-        return new BuscadorDto{
-          Data = lstTem.Select(c => new BuscadorResultadoDataDto() {
+        return new ResultPaBuscarPalabraDto{
+          Data = lstTem.Select(c => new ResultDataPaBuscarPalabraDto() {
             IdEnte = c.IdEnte,
             IdVista = c.IdVista,
-            IdHomologacionEsquema = c.IdHomologacionEsquema,
-            DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
+            IdHomologacion = c.IdHomologacion,
+            DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquemaDto>>(c.DataEsquemaJson ?? "[]")
           }).ToList(),
           TotalCount = (int) rowsTotal.Value
         };
@@ -64,7 +65,7 @@ namespace WebApp.Repositories
         return lstTem.Select(c => new FnHomologacionEsquemaDataDto() {
           IdCanDataSet = c.IdCanDataSet,
           IdHomologacionEsquema = c.IdHomologacionEsquema,
-          DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
+          DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquemaDto>>(c.DataEsquemaJson ?? "[]")
         }).ToList();
       });
     }

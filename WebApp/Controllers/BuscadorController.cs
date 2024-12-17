@@ -15,17 +15,17 @@ namespace WebApp.Controllers
   {
     private readonly IBuscadorRepository _vhRepo = vhRepo;
     [HttpGet("search/phrase")]
-    public IActionResult PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
+    public IActionResult BuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
     {
       try
       {
-        return Ok(new RespuestasAPI<BuscadorDto>{
-          Result = _vhRepo.PsBuscarPalabra(paramJSON, PageNumber, RowsPerPage)
+        return Ok(new RespuestasAPI<ResultPaBuscarPalabraDto>{
+          Result = _vhRepo.BuscarPalabra(paramJSON, PageNumber, RowsPerPage)
         });
       }
       catch (Exception e)
       {
-        return HandleException(e, nameof(PsBuscarPalabra));
+        return HandleException(e, nameof(BuscarPalabra));
       }
     }    
     [HttpGet("homologacionEsquemaTodo/{idEnte}")]
