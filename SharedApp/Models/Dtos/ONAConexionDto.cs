@@ -2,11 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharedApp.Models.Dtos
 {
-  public class ConexionDto
+  public class ONAConexionDto
   {
-    public int IdConexion { get; set; }
-    [Required]
-    public string? BaseDatos { get; set; }
+    public int IdONA { get; set; }
     [Required]
     public string? Host { get; set; }
     [Required]
@@ -15,12 +13,12 @@ namespace SharedApp.Models.Dtos
     public string? Usuario { get; set; }
     public string? Contrasenia { get; set; }
     [Required]
-    public string? MotorBaseDatos { get; set; }
+    public string? BaseDatos { get; set; }
     [Required]
-    public string? CodigoHomologacion { get; set; }
-    public string? Siglas { get; set; }
-    public string? Filtros { get; set; }
-    public int TiempoEspera { get; set; }
+    public string? OrigenDatos { get; set; }
+    [Required]
     public string? Migrar { get; set; }
+    [Required]
+    public string? Estado { get; set; }
   }
 }

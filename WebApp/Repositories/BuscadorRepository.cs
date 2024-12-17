@@ -8,77 +8,71 @@ using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-    public class BuscadorRepository : BaseRepository, IBuscadorRepository
+  public class BuscadorRepository : BaseRepository, IBuscadorRepository
+  {
+    public BuscadorRepository(
+      ILogger<UsuarioRepository> logger,
+      ISqlServerDbContextFactory sqlServerDbContextFactory
+    ) : base(sqlServerDbContextFactory, logger)
     {
-        public BuscadorRepository(
-            ILogger<UsuarioRepository> logger,
-            ISqlServerDbContextFactory sqlServerDbContextFactory
-        ) : base(sqlServerDbContextFactory, logger)
-        {
-            
-        }
-        public BuscadorDto PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
-        {
-            return ExecuteDbOperation(context => {
-                var rowsTotal = new SqlParameter
-                {
-                    ParameterName = "@RowsTotal",
-                    SqlDbType = SqlDbType.Int,
-                    Direction = ParameterDirection.Output
-                };
-
-                var lstTem = context.Database.SqlQueryRaw<BuscadorResultadoData>(
-                    "exec psBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
-                    new SqlParameter("@paramJSON", paramJSON),
-                    new SqlParameter("@PageNumber", PageNumber),
-                    new SqlParameter("@RowsPerPage", RowsPerPage),
-                    rowsTotal
-                ).AsNoTracking().ToList();
-
-                return new BuscadorDto{
-                    Data = lstTem.Select(c => new BuscadorResultadoDataDto()
-                    {
-                        IdEnte = c.IdEnte,
-                        IdVista = c.IdVista,
-                        IdHomologacionEsquema = c.IdHomologacionEsquema,
-                        DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
-                    })
-                    .ToList(),
-                    TotalCount = (int) rowsTotal.Value
-                };
-            });
-        }
-        public List<EsquemaDto> FnHomologacionEsquemaTodo(string idEnte)
-        {
-            return ExecuteDbOperation(context => {
-                return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo({idEnte})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
-            });
-        }
-        public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
-        {
-            return ExecuteDbOperation(context => {
-                return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
-            });
-        }
-        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idEnte)
-        {
-            return ExecuteDbOperation(context => {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idEnte})").AsNoTracking().ToList();
-
-                return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
-                {
-                    IdCanDataSet = c.IdCanDataSet,
-                    IdHomologacionEsquema = c.IdHomologacionEsquema,
-                    DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
-                })
-                .ToList();
-            });
-        }
-        public List<FnPredictWordsDto> FnPredictWords(string word)
-        {
-            return ExecuteDbOperation(context => {
-                return context.Database.SqlQuery<FnPredictWordsDto>($"select * from fn_PredictWords({word})").AsNoTracking().OrderBy(c => c.Word).ToList();
-            });
-        }
     }
+    public BuscadorDto PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
+    {
+      return ExecuteDbOperation(context => {
+        var rowsTotal = new SqlParameter {
+          ParameterName = "@RowsTotal",
+          SqlDbType = SqlDbType.Int,
+          Direction = ParameterDirection.Output
+        };
+
+        var lstTem = context.Database.SqlQueryRaw<BuscadorResultadoData>(
+          "exec psBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
+          new SqlParameter("@paramJSON", paramJSON),
+          new SqlParameter("@PageNumber", PageNumber),
+          new SqlParameter("@RowsPerPage", RowsPerPage),
+          rowsTotal
+        ).AsNoTracking().ToList();
+
+        return new BuscadorDto{
+          Data = lstTem.Select(c => new BuscadorResultadoDataDto() {
+            IdEnte = c.IdEnte,
+            IdVista = c.IdVista,
+            IdHomologacionEsquema = c.IdHomologacionEsquema,
+            DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
+          }).ToList(),
+          TotalCount = (int) rowsTotal.Value
+        };
+      });
+    }
+    public List<EsquemaDto> FnHomologacionEsquemaTodo(string idEnte)
+    {
+      return ExecuteDbOperation(context => {
+        return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo({idEnte})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
+      });
+    }
+    public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
+    {
+      return ExecuteDbOperation(context => {
+        return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
+      });
+    }
+    public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idEnte)
+    {
+      return ExecuteDbOperation(context => {
+        var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnHomologacionEsquemaDato({idHomologacionEsquema}, {idEnte})").AsNoTracking().ToList();
+
+        return lstTem.Select(c => new FnHomologacionEsquemaDataDto() {
+          IdCanDataSet = c.IdCanDataSet,
+          IdHomologacionEsquema = c.IdHomologacionEsquema,
+          DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
+        }).ToList();
+      });
+    }
+    public List<FnPredictWordsDto> FnPredictWords(string word)
+    {
+      return ExecuteDbOperation(context => {
+        return context.Database.SqlQuery<FnPredictWordsDto>($"select * from fn_PredictWords({word})").AsNoTracking().OrderBy(c => c.Word).ToList();
+      });
+    }
+  }
 }

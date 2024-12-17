@@ -1,20 +1,10 @@
 namespace WebApp.Models
 {
-    public abstract class BaseEntity
-    {
-        public BaseEntity()
-        {
-            Estado = "A";
-            FechaModifica = DateTime.Now;
-            FechaCreacion = DateTime.Now;
-            IdUserCreacion = 1;
-            IdUserModifica = 1;
-        }
-
-        public string Estado { get; set; }
-        public DateTime? FechaCreacion { get; set; }
-        public DateTime? FechaModifica { get; set; }
-        public int IdUserCreacion { get; set; }
-        public int IdUserModifica { get; set; }
-    }
+  public abstract class BaseEntity
+  {
+    public DateTime? FechaCreacion { get; set; } = DateTime.Now;
+    public DateTime? FechaModifica { get; set; } = DateTime.Now;
+    public int IdUserCreacion { get; set; } = 1;
+    public int IdUserModifica { get; set; } = 1;
+  }
 }
