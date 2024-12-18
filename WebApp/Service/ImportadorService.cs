@@ -7,16 +7,16 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class ImportadorService(ICanDataSetRepository dataLakeOrganizacionRepository, ICanFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IHomologacionEsquemaRepository homologacionEsquemaRepository, IConexionRepository conexionRepository) : IImportador
+  public class ImportadorService(IEsquemaDataRepository dataLakeOrganizacionRepository, IEsquemaFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository homologacionEsquemaRepository, IONAConexionRepository conexionRepository) : IImportador
     {
-      private ICanDataSetRepository _repositoryDLO = dataLakeOrganizacionRepository;
-      private ICanFullTextRepository _repositoryOFT = canFullTextRepository;
+      private IEsquemaDataRepository _repositoryDLO = dataLakeOrganizacionRepository;
+      private IEsquemaFullTextRepository _repositoryOFT = canFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
-      private IHomologacionEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
-      private IConexionRepository _repositoryC = conexionRepository;
+      private IEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
+      private IONAConexionRepository _repositoryC = conexionRepository;
       private string connectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
       // private readonly string defaultConnectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
-      private Conexion? currentConexion = null;
+      private ONAConexion? currentConexion = null;
       private int executionIndex = 0;
       private string[] views =  [];
       private string[] schemas =  [];
@@ -34,32 +34,32 @@ namespace WebApp.Service.IService
         try
         {
           // Agregar obtensión de vistas de base de datos
-          List<Conexion> conexiones = _repositoryC.FindAll();
+          List<ONAConexion> conexiones = _repositoryC.FindAll();
           ConectionStringBuilderService conectionStringBuilderService = new ConectionStringBuilderService();
-          List<HomologacionEsquema> homologacionEsquemas = _repositoryHE.FindAllWithViews();
-          HashSet<string> DBViews = homologacionEsquemas.Select(he => he.VistaNombre).Where(v => v != null).Select(v => v!).ToHashSet();
+          List<Esquema> homologacionEsquemas = _repositoryHE.FindAllWithViews();
+          // HashSet<string> DBViews = homologacionEsquemas.Select(he => he.VistaNombre).Where(v => v != null).Select(v => v!).ToHashSet();
           HashSet<string> DBSchemas = homologacionEsquemas.Select(he => he.EsquemaJson).Where(v => v != null).Select(v => v!).ToHashSet();
-          HashSet<int> HEIds = homologacionEsquemas.Select(he => he.IdHomologacionEsquema).Select(v => v!).ToHashSet();
-          HashSet<string> ViewIds = homologacionEsquemas.Select(he => he.IdVistaNombre).Select(v => v!).ToHashSet();
-          if (DBViews.Count > 0) { views = DBViews.ToArray(); }
+          // HashSet<int> HEIds = homologacionEsquemas.Select(he => he.IdHomologacionEsquema).Select(v => v!).ToHashSet();
+          // HashSet<string> ViewIds = homologacionEsquemas.Select(he => he.IdVistaNombre).Select(v => v!).ToHashSet();
+          // if (DBViews.Count > 0) { views = DBViews.ToArray(); }
           if (DBSchemas.Count > 0) { schemas = DBSchemas.ToArray(); }
-          if (HEIds.Count > 0) { heids = HEIds.ToArray(); }
-          if (ViewIds.Count > 0) { vids = ViewIds.ToArray(); }
+          // if (HEIds.Count > 0) { heids = HEIds.ToArray(); }
+          // if (ViewIds.Count > 0) { vids = ViewIds.ToArray(); }
           // Console.WriteLine("Vistas: " + string.Join(", ", DBViews));
           // Console.WriteLine("Esquemas: " + string.Join(", ", DBSchemas));
           // Console.WriteLine("Ids: " + string.Join(", ", HEIds));
           // Console.WriteLine("Vista Ids: " + string.Join(", ", ViewIds));
           
-          foreach (Conexion conexion in conexiones)
+          foreach (ONAConexion conexion in conexiones)
           {
             
             if (!conexion.Migrar.Equals("S")) { continue; }
             currentConexion = conexion;
-            filters = JArray.Parse(conexion.Filtros).ToObject<int[]>();
+            // filters = JArray.Parse(conexion.Filtros).ToObject<int[]>();
             connectionString = conectionStringBuilderService.BuildConnectionString(conexion);
             ImportarSistema(views, connectionString);
             // Environment.Exit(0);
-            conexion.FechaConexion = DateTime.Now;
+            // conexion.FechaConexion = DateTime.Now;
             conexion.Migrar = "N";
             _repositoryC.Update(conexion);
           }
@@ -128,10 +128,10 @@ namespace WebApp.Service.IService
               
               deleteOldRecords(heids[executionIndex]);
 
-              CanDataSet dataLakeOrganizacion = addCanDataSet(row, columns);
-              if (dataLakeOrganizacion == null) { return false; }
+              // CanDataSet dataLakeOrganizacion = addCanDataSet(row, columns);
+              // if (dataLakeOrganizacion == null) { return false; }
 
-              addCanFullText(row, columns, dataLakeOrganizacion);
+              // addCanFullText(row, columns, dataLakeOrganizacion);
             }
           }
           catch (Exception ex)
@@ -148,22 +148,22 @@ namespace WebApp.Service.IService
         }
       }
 
-      CanDataSet addCanDataSet(DataRow row, DataColumnCollection columns)
-      {
-        CanDataSet newCanDataSet = new CanDataSet
-        {
-          IdCanDataSet = 0,
-          IdHomologacionEsquema = heids[executionIndex],
-          IdConexion = currentConexion.IdConexion,
-          DataEsquemaJson = buildDataLakeJson(row, columns),
-        };
-        if (saveIdVista) { newCanDataSet.IdVista = row[columns.Count - 1].ToString(); }
-        if (saveIdEnte) { newCanDataSet.IdEnte = row[columns.Count - 2].ToString(); }
+      // CanDataSet addCanDataSet(DataRow row, DataColumnCollection columns)
+      // {
+      //   CanDataSet newCanDataSet = new CanDataSet
+      //   {
+      //     IdCanDataSet = 0,
+      //     IdHomologacionEsquema = heids[executionIndex],
+      //     IdConexion = currentConexion.IdConexion,
+      //     DataEsquemaJson = buildDataLakeJson(row, columns),
+      //   };
+      //   if (saveIdVista) { newCanDataSet.IdVista = row[columns.Count - 1].ToString(); }
+      //   if (saveIdEnte) { newCanDataSet.IdEnte = row[columns.Count - 2].ToString(); }
 
-        return _repositoryDLO.Create(newCanDataSet);
-      }
+      //   return _repositoryDLO.Create(newCanDataSet);
+      // }
 
-      bool addCanFullText(DataRow row, DataColumnCollection columns, CanDataSet dataLakeOrganizacion)
+      bool addCanFullText(DataRow row, DataColumnCollection columns, EsquemaData dataLakeOrganizacion)
       {
         Boolean result = true;
         if (executionIndex == 0)
@@ -173,15 +173,15 @@ namespace WebApp.Service.IService
             Homologacion? homologacion = _repositoryH.FindById(filter);
             if (homologacion == null) { continue; }
 
-            _repositoryOFT.Create(new CanFullText
-            {
-              IdCanFullText = 0,
-              IdCanDataSet = dataLakeOrganizacion.IdCanDataSet,
-              IdHomologacion = filter,
-              IdEnte = dataLakeOrganizacion.IdEnte,
-              IdVista = dataLakeOrganizacion.IdVista,
-              FullTextData = homologacion.MostrarWeb.ToLower().Trim()
-            });
+            // _repositoryOFT.Create(new CanFullText
+            // {
+            //   IdCanFullText = 0,
+            //   IdCanDataSet = dataLakeOrganizacion.IdCanDataSet,
+            //   IdHomologacion = filter,
+            //   IdEnte = dataLakeOrganizacion.IdEnte,
+            //   IdVista = dataLakeOrganizacion.IdVista,
+            //   FullTextData = homologacion.MostrarWeb.ToLower().Trim()
+            // });
           }
         }
 
@@ -192,15 +192,15 @@ namespace WebApp.Service.IService
 
             if (string.IsNullOrEmpty(indexValue)) { continue; }
 
-            result = _repositoryOFT.Create(new CanFullText
-            {
-              IdCanFullText = 0,
-              IdCanDataSet = dataLakeOrganizacion.IdCanDataSet,
-              IdHomologacion = hids[col],
-              IdEnte = dataLakeOrganizacion.IdEnte,
-              IdVista = dataLakeOrganizacion.IdVista,
-              FullTextData = row[col].ToString().ToLower().Trim()
-            }) != null ? result : false;
+            // result = _repositoryOFT.Create(new CanFullText
+            // {
+            //   IdCanFullText = 0,
+            //   IdCanDataSet = dataLakeOrganizacion.IdCanDataSet,
+            //   IdHomologacion = hids[col],
+            //   IdEnte = dataLakeOrganizacion.IdEnte,
+            //   IdVista = dataLakeOrganizacion.IdVista,
+            //   FullTextData = row[col].ToString().ToLower().Trim()
+            // }) != null ? result : false;
           } catch (Exception ex)
           {
             Console.WriteLine(ex.Message);
@@ -305,7 +305,8 @@ namespace WebApp.Service.IService
       {
         if (deleted) { return true; }
         deleted = true;
-        return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema, currentConexion.IdConexion);
+        // return _repositoryDLO.DeleteOldRecords(IdHomologacionEsquema, currentConexion.IdONA);
+        return false;
       }
   }
 }

@@ -4,31 +4,36 @@ using SharedApp.Models.Dtos;
 
 namespace WebApp.Mappers
 {
-    public class Mapper : Profile
+  public class Mapper : Profile
+  {
+    public Mapper()
     {
-        public Mapper()
-        {
-            CreateMap<Usuario, UsuarioDto>();
-            CreateMap<UsuarioDto, Usuario>();
+      CreateMap<VwGrilla, VwGrillaDto>();
+      CreateMap<VwFiltro, VwFiltroDto>();
+      CreateMap<VwDimension, VwDimensionDto>();
+      CreateMap<Homologacion, GruposDto>();
+      CreateMap<VwRol, VwRolDto>();
+      CreateMap<VwEndPoint, VwEndPointDto>();
 
-            CreateMap<Models.Endpoint, EndpointDto>();
+      CreateMap<Usuario, UsuarioDto>();
+      CreateMap<UsuarioDto, Usuario>();
 
-            CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
+      // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
 
-            CreateMap<HomologacionEsquema, HomologacionEsquemaDto>();
-            CreateMap<HomologacionEsquemaDto, HomologacionEsquema>();
+      CreateMap<Esquema, EsquemaDto>();
+      CreateMap<EsquemaDto, Esquema>();
 
-            CreateMap<Homologacion, HomologacionDto>();
-            CreateMap<HomologacionDto, Homologacion>();
+      CreateMap<Homologacion, HomologacionDto>();
+      CreateMap<HomologacionDto, Homologacion>();
 
-            CreateMap<Conexion, ConexionDto>();
-            CreateMap<ConexionDto, Conexion>();
+      CreateMap<ONAConexion, ONAConexionDto>();
+      CreateMap<ONAConexionDto, ONAConexion>();
 
-            CreateMap<MigracionExcel, MigracionExcelDto>();
-            CreateMap<MigracionExcelDto, MigracionExcel>();
+      CreateMap<MigracionExcel, MigracionExcelDto>();
+      CreateMap<MigracionExcelDto, MigracionExcel>();
 
-            CreateMap<LogMigracion, LogMigracionDto>();
-            CreateMap<LogMigracionDto, LogMigracion>();
-        }
+      CreateMap<LogMigracion, LogMigracionDto>();
+      CreateMap<LogMigracionDto, LogMigracion>();
     }
+  }
 }
