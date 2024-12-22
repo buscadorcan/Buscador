@@ -6,40 +6,40 @@ using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-  public class ONAConexionRepository : BaseRepository, IONAConexionRepository
+  public class ONARepository : BaseRepository, IONARepository
   {
     private readonly IJwtService _jwtService;
-    public ONAConexionRepository(
+    public ONARepository(
       IJwtService jwtService,
-      ILogger<ONAConexionRepository> logger,
+      ILogger<ONARepository> logger,
       ISqlServerDbContextFactory sqlServerDbContextFactory
     ) : base(sqlServerDbContextFactory, logger)
     {
       _jwtService = jwtService;
     }
-    public bool Create(ONAConexion data)
+    public bool Create(ONA data)
     {
       data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
       data.IdUserModifica = data.IdUserCreacion;
 
       return ExecuteDbOperation(context => {
-        context.ONAConexion.Add(data);
+        context.ONA.Add(data);
         return context.SaveChanges() >= 0;
       });
     }
-    public ONAConexion? FindById(int id)
+    public ONA? FindById(int id)
     {
-      return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == id));
+      return ExecuteDbOperation(context => context.ONA.AsNoTracking().FirstOrDefault(u => u.IdONA == id));
     }
-    public ONAConexion? FindByIdONA(int IdONA)
+    public ONA? FindBySiglas(string siglas)
     {
-      return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == IdONA));
+      return ExecuteDbOperation(context => context.ONA.AsNoTracking().FirstOrDefault(u => u.Siglas.Equals(siglas)));
     }
-    public List<ONAConexion> FindAll()
+    public List<ONA> FindAll()
     {
-      return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.FechaCreacion).ToList());
+      return ExecuteDbOperation(context => context.ONA.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.FechaCreacion).ToList());
     }
-    public bool Update(ONAConexion newRecord)
+    public bool Update(ONA newRecord)
     {
       return ExecuteDbOperation(context => {
         var _exits = MergeEntityProperties(context, newRecord, u => u.IdONA == newRecord.IdONA);
@@ -47,7 +47,7 @@ namespace WebApp.Repositories
         _exits.FechaModifica = DateTime.Now;
         _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
-        context.ONAConexion.Update(_exits);
+        context.ONA.Update(_exits);
         return context.SaveChanges() >= 0;
       });
     }

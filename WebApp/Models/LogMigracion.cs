@@ -17,7 +17,7 @@ namespace WebApp.Models
     [Required]
     public string? Usuario { get; set; } = "";
     [Required]
-    public string? BaseDatos { get; set; }
+    public string? BaseDatos { get; set; } = "";
     [Required]
     public string? OrigenDatos { get; set; } = "EXCEL";
     [Required]
@@ -35,7 +35,7 @@ namespace WebApp.Models
     [Required]
     public string VistaOrigen { get; set; } = "";
     [Required]
-    public string VistaFilas { get; set; } = "";
+    public int VistaFilas { get; set; } = 0;
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public string? Tiempo { get; set; }
     public DateTime? Inicio { get; set; } = DateTime.Now;
