@@ -64,6 +64,7 @@ namespace WebApp.Extensions
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
       // Registra repositorios para acceso a datos.
+      services.AddScoped<IONARepository, ONARepository>();
       services.AddScoped<IUsuarioRepository, UsuarioRepository>();
       services.AddScoped<IExcelService, ExcelService>();
       services.AddScoped<IImportador, ImportadorService>();
@@ -73,6 +74,8 @@ namespace WebApp.Extensions
       services.AddScoped<ICatalogosRepository, CatalogosRepository>();
       services.AddScoped<IHomologacionRepository, HomologacionRepository>();
       services.AddScoped<IEsquemaRepository, EsquemaRepository>();
+      services.AddScoped<IEsquemaVistaRepository, EsquemaVistaRepository>();
+      services.AddScoped<IEsquemaVistaColumnaRepository, EsquemaVistaColumnaRepository>();
       services.AddScoped<IEsquemaDataRepository, EsquemaDataRepository>();
       services.AddScoped<IEsquemaFullTextRepository, EsquemaFullTextRepository>();
       services.AddScoped<IONAConexionRepository, ONAConexionRepository>();

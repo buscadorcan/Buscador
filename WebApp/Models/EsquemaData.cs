@@ -10,12 +10,11 @@ namespace WebApp.Models
     public int IdEsquemaData { get; set; }
     [Required]
     public int IdEsquemaVista { get; set; }
+    public string? VistaFK { get; set; } = "";
     [Required]
-    public string VistaFK { get; set; } = "";
+    public string? VistaPK { get; set; } = "";
     [Required]
-    public string VistaPK { get; set; } = "";
-    [Required]
-    public string DataEsquemaJson { get; set; } = "";
+    public string DataEsquemaJson { get; set; } = "{}";
     [Required]
     public DateTime DataFecha { get; set; } = DateTime.Now;
   }

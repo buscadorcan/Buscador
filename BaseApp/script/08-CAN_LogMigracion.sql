@@ -4,6 +4,8 @@ CREATE SEQUENCE [dbo].[LogMigracionSequence]
   START WITH 1
   INCREMENT BY 1 ;
 
+-- ALTER TABLE "dbo"."LogMigracion" ALTER COLUMN Migracion int NOT NULL;
+-- ALTER TABLE [dbo].[LogMigracion] ADD CONSTRAINT DF_LogMigracion_Migracion DEFAULT NEXT VALUE FOR [dbo].[LogMigracionSequence] FOR Migracion;
 DROP TABLE if exists [dbo].[LogMigracion] ;
 CREATE TABLE [dbo].[LogMigracion]  (
      IdLogMigracion		INT IDENTITY(1,1)						-- Identificador único para el registro del log

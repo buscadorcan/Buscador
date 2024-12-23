@@ -8,40 +8,42 @@ using Newtonsoft.Json.Linq;
 namespace WebApp.Service.IService
 {
   public class ExcelService(
+    IONARepository onaRepository,
+    IEsquemaRepository esquemaRepository,
+    IEsquemaVistaRepository esquemaVistaRepository,
+    IEsquemaVistaColumnaRepository esquemaVistaColumnaRepository,
     IEsquemaDataRepository esquemaDataRepository,
     IEsquemaFullTextRepository esquemaFullTextRepository,
     IHomologacionRepository homologacionRepository,
-    IEsquemaRepository esquemaRepository,
     IMigracionExcelRepository migracionExcelRepository,
     ILogMigracionRepository logMigracionRepository,
     IONAConexionRepository conexionRepository
     ) : IExcelService
     {
-      private IEsquemaDataRepository _repositoryDLO = esquemaDataRepository;
-      private IEsquemaFullTextRepository _repositoryOFT = esquemaFullTextRepository;
+      private IONARepository _repositoryO = onaRepository;
+      private IEsquemaRepository _repositoryE = esquemaRepository;
+      private IEsquemaVistaRepository _repositoryEV = esquemaVistaRepository;
+      private IEsquemaVistaColumnaRepository _repositoryEVC = esquemaVistaColumnaRepository;
+      private IEsquemaDataRepository _repositoryED = esquemaDataRepository;
+      private IEsquemaFullTextRepository _repositoryEFT = esquemaFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
-      private IEsquemaRepository _repositoryHE = esquemaRepository;
       private IMigracionExcelRepository _repositoryME = migracionExcelRepository;
       private ILogMigracionRepository _repositoryLM = logMigracionRepository;
-      private IONAConexionRepository _repositoryC = conexionRepository;
-      private int[] filters = [];
+      private IONAConexionRepository _repositoryOC = conexionRepository;
+      private int migration_cnt =  0;
       private int executionIndex = 0;
-      private int idVistaIndex = -1;
-      private int idOrganizacionIndex = -1;
-      private string currentIdVista = "";
-      private string currentIdEnte = "";
-      private bool hasIdVista = false;
-      private bool hasIdEnte = false;
       private bool deleted = false;
       private JArray currentSchema = new JArray();
-      private List<Homologacion> currentFields = new List<Homologacion>();
-      Esquema? homologacionEsquema = null;
+      private List<EsquemaVistaColumna> currentFields = new List<EsquemaVistaColumna>();
       private LogMigracion? currentLogMigracion = null;
       private LogMigracionDetalle? currentLogMigracionDetalle = null;
+      private ONA? currentONA = null;
       private ONAConexion? currentConexion = null;
+      Esquema? currentEsquema = null;
       private string idEnteName = " IdOrganizacion";
+      private string[] errors = Array.Empty<string>();
 
-      public Boolean ImportarExcel(string path, MigracionExcel migracion) 
+      public Boolean ImportarExcel(string path, MigracionExcel? migracion) 
       {
         try {
           if (migracion == null) {
@@ -66,13 +68,15 @@ namespace WebApp.Service.IService
           return result;
         } catch (Exception e) {
           Console.WriteLine(e);
+          errors = errors.Append(e.Message).ToArray();
           migracion.MigracionEstado = "ERROR";
-          migracion.MensageError = e.Message;
+          migracion.MensageError = string.Join(", ", errors);
           _repositoryME.Update(migracion);
           if (currentLogMigracion != null) {
             currentLogMigracion.Final = DateTime.Now;
             currentLogMigracion.Estado = "ERROR";
-            currentLogMigracion.Observacion = e.Message;
+            currentLogMigracion.Observacion = string.Join(", ", errors);
+            currentLogMigracion.EsquemaFilas = migration_cnt;
             _repositoryLM.Update(currentLogMigracion);
           }
           return false;
@@ -98,75 +102,62 @@ namespace WebApp.Service.IService
             var DataSet = reader.AsDataSet(configuration);
 
             if (DataSet.Tables.Count > 0)
-            {       
-              int idConexion;
+            {  
+              DateTime StartTime = DateTime.Now;     
               var migrationValue = DataSet.Tables[1].Rows[0][0].ToString();
-              Console.WriteLine("Migration Value: " + migrationValue);
-              try {
-                idConexion = int.Parse(migrationValue);
-              } catch (Exception e) {
-                currentConexion = _repositoryC.FindBySiglas(migrationValue);
+              currentONA = _repositoryO.FindBySiglas(migrationValue);
+              if (currentONA == null) {
+                throw new Exception($"Error: ONA {migrationValue} no encontrada en la base de datos");
               }
+              Console.WriteLine("Current ONA: " + currentONA.RazonSocial);
+              currentConexion = _repositoryOC.FindByIdONA(currentONA.IdONA); 
               if (currentConexion == null) {
-                throw new Exception("Error: Conexion no encontrada en la base de datos");
+                throw new Exception($"Error: Conexion no encontrada en la base de datos para ONA {currentONA.RazonSocial}");
               }
               foreach (DataTable dataTable in DataSet.Tables)
               {
                 LogMigracion logMigracion = new LogMigracion();
                 string sheetName = dataTable.TableName;
-                homologacionEsquema = _repositoryHE.FindByViewName(sheetName);
-                if (homologacionEsquema == null) { continue; }
-
-                // logMigracion.OrigenVista = sheetName;
-                // logMigracion.OrigenFilas = dataTable.Rows.Count;
-                // logMigracion.OrigenSistema = currentConexion.Siglas;
-                logMigracion.EsquemaFilas = dataTable.Rows.Count;
-                // logMigracion.EsquemaId = homologacionEsquema.IdHomologacionEsquema;
-                // logMigracion.EsquemaVista = homologacionEsquema.VistaNombre;
-                currentLogMigracion = _repositoryLM.Create(logMigracion);
-
-                currentSchema = JArray.Parse(homologacionEsquema.EsquemaJson);
-                int[] homologacionIds = Array.Empty<int>();
-
-                foreach (JObject item in currentSchema)
-                {
-                  int idHomologacion = item.Value<int>("IdHomologacion");
-                  homologacionIds = homologacionIds.Append(idHomologacion).ToArray();
+                currentEsquema = _repositoryE.FindByViewName(sheetName);
+                if (currentEsquema == null) { 
+                  errors = errors.Append($"Error: Esquema {sheetName} no encontrado en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
+                  continue;
                 }
 
-                currentFields = _repositoryH.FindByIds(homologacionIds);
+                EsquemaVista? esquemaVista = _repositoryEV.FindByIdEsquema(currentEsquema.IdEsquema);
+                if (esquemaVista == null) {
+                  errors = errors.Append($"Error: Esquema Vista {sheetName} no encontrado en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
+                  continue;
+                }
+
+                logMigracion.IdONA = currentConexion.IdONA;
+                logMigracion.VistaOrigen = esquemaVista.VistaOrigen;
+                logMigracion.VistaFilas = dataTable.Rows.Count;
+                logMigracion.EsquemaFilas = 0;
+                logMigracion.EsquemaId = currentEsquema.IdEsquema;
+                logMigracion.EsquemaVista = currentEsquema.EsquemaVista;
+                logMigracion.Inicio = StartTime;
+                currentLogMigracion = _repositoryLM.Create(logMigracion);
+
+                currentFields = _repositoryEVC.FindByIdEsquemaVista(currentEsquema.IdEsquema);
+                if (currentFields.Count == 0) {
+                  errors = errors.Append($"Error: No se ha encontrado campos a migrar para vista {esquemaVista.VistaOrigen} configurados para ONA {currentONA.RazonSocial}").ToArray();
+                  continue;
+                }
 
                 executionIndex = DataSet.Tables.IndexOf(dataTable);
                 Console.WriteLine("Execution Index: " + executionIndex + " Sheet: " + dataTable.TableName);
-                // if (string.IsNullOrEmpty(homologacionEsquema.IdVistaNombre))
-                // {
-                //   hasIdVista = false;
-                // } else {
-                //   idVistaIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == homologacionEsquema.IdVistaNombre);
-                //   if (idVistaIndex == -1) {
-                //     hasIdVista = false;
-                //   } else {
-                //     hasIdVista = true;
-                //   }
-                // }
-                idOrganizacionIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == idEnteName);
-                if (idOrganizacionIndex == -1) {
-                  hasIdEnte = false;
-                } else {
-                  hasIdEnte = true;
-                }
-                
-
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                   // Se borra los datos antiguos de todo el esquema que se está migrando y se los vuelve a cargar
-                  // Console.WriteLine($"Deleting old records for {homologacionEsquema.IdHomologacionEsquema}");
+                  // Console.WriteLine($"Deleting old records for {esquema.IdHomologacionEsquema}");
                   
-                  // deleteOldRecords(homologacionEsquema.IdHomologacionEsquema, currentConexion.IdConexion); 
-                  // CanDataSet canDataSet = addCanDataSet(dataTable, i);
-                  // addCanFullText(dataTable, i, canDataSet.IdCanDataSet);
+                  deleteOldRecords(esquemaVista.IdEsquemaVista); 
+                  EsquemaData esquemaData = addEsquemaData(dataTable, i, esquemaVista.IdEsquemaVista);
+                  addEsquemaFullText(dataTable, i, esquemaData.IdEsquemaData);
                   currentLogMigracion.Final = DateTime.Now;
                   currentLogMigracion.Estado = "OK";
+                  currentLogMigracion.EsquemaFilas = migration_cnt;
                   _repositoryLM.Update(currentLogMigracion);
                 }
               }
@@ -179,90 +170,75 @@ namespace WebApp.Service.IService
         }
       }
 
-      // CanDataSet addCanDataSet(DataTable dataTable, int row)
-      // {
-      //   CanDataSet canDataSet = new CanDataSet
-      //   {
-      //     IdCanDataSet = 0,
-      //     IdHomologacionEsquema = homologacionEsquema.IdHomologacionEsquema,
-      //     DataEsquemaJson = buildCanDataSetJson(dataTable, row)
-      //   };
-      //   if (hasIdVista)
-      //   {
-      //     currentIdVista = dataTable.Rows[row][idVistaIndex].ToString();
-      //     canDataSet.IdVista = currentIdVista;
-      //   }
-      //   if (hasIdEnte)
-      //   {
-      //     currentIdEnte = dataTable.Rows[row][idOrganizacionIndex].ToString();
-      //     canDataSet.IdEnte = currentIdEnte;
-      //   }
-      //   return _repositoryDLO.Create(canDataSet);
-      // }
+      EsquemaData addEsquemaData(DataTable dataTable, int row, int esquemaVistaId)
+      {
+        EsquemaData canDataSet = new EsquemaData
+        {
+          IdEsquemaVista = esquemaVistaId,
+          DataEsquemaJson = buildEsquemaDataSetJson(dataTable, row)
+        };
+        migration_cnt++;
+        return _repositoryED.Create(canDataSet);
+      }
 
-      bool addCanFullText(DataTable dataTable, int row, int canDataSetId)
+      bool addEsquemaFullText(DataTable dataTable, int row, int esquemaDataId)
       {
         bool result = true;
-        foreach (Homologacion currentField in currentFields)
+        foreach (EsquemaVistaColumna currentField in currentFields)
         {
-          if (string.IsNullOrEmpty(currentField.NombreHomologado))
+          if (currentField.ColumnaEsquemaIdH < 1)
           {
+            errors = errors.Append($"Error: Columna {currentField.ColumnaEsquema} no encontrada en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
             continue;
           }
 
-          int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.NombreHomologado);
+          int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.ColumnaVista);
           if (currentFieldIndex == -1)
           {
+            errors = errors.Append($"Error: Columna {currentField.ColumnaVista} no encontrada en el archivo de migración para ONA {currentONA.RazonSocial}").ToArray();
             continue;
           }
 
-          string currentValue = dataTable.Rows[row][currentFieldIndex].ToString();
+          string? currentValue = dataTable.Rows[row][currentFieldIndex].ToString();
           if (string.IsNullOrEmpty(currentValue))
           {
+            errors = errors.Append($"Error: Columna {currentField.ColumnaVista} no puede ser nula o vacía para ONA {currentONA.RazonSocial}").ToArray();
             continue;
           }
 
-          // CanFullText newCanFullText = new CanFullText
-          // {
-          //   IdCanFullText = 0,
-          //   IdCanDataSet = canDataSetId,
-          //   IdHomologacion = currentField.IdHomologacion,
-          //   FullTextData = currentValue,
-          // };
+          EsquemaFullText newCanFullText = new EsquemaFullText
+          {
+            IdEsquemaData = esquemaDataId,
+            IdHomologacion = currentField.ColumnaEsquemaIdH,
+            FullTextData = currentValue,
+          };
 
-          // if (hasIdVista)
-          // {
-          //   newCanFullText.IdVista = currentIdVista;
-          // }
-          // if (hasIdEnte)
-          // {
-          //   newCanFullText.IdEnte = currentIdEnte;
-          // }
-
-          // result = _repositoryOFT.Create(newCanFullText) != null ? result : false;
+          result = _repositoryEFT.Create(newCanFullText) != null ? result : false;
         }
         return result;
       }
 
-      string buildCanDataSetJson(DataTable dataTable, int row)
+      string buildEsquemaDataSetJson(DataTable dataTable, int row)
       {
         JArray data = new JArray();
-        foreach (Homologacion currentField in currentFields)
+        foreach (EsquemaVistaColumna currentField in currentFields)
         {
           addLogDetail(currentField);
-          if (string.IsNullOrEmpty(currentField.NombreHomologado))
+          if (currentField.ColumnaEsquemaIdH < 1)
           {
+            errors = errors.Append($"Error: Columna {currentField.ColumnaEsquema} no encontrada en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
             continue;
           }
 
-          int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.NombreHomologado);
+          int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.ColumnaVista);
           if (currentFieldIndex == -1)
           {
+            errors = errors.Append($"Error: Columna {currentField.ColumnaVista} no encontrada en el archivo de migración para ONA {currentONA.RazonSocial}").ToArray();
             continue;
           }
           data.Add(new JObject
           {
-            ["IdHomologacion"] = currentField.IdHomologacion,
+            ["IdHomologacion"] = currentField.ColumnaEsquemaIdH,
             ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString()
           });
         }
@@ -270,9 +246,9 @@ namespace WebApp.Service.IService
         return data.ToString();
       }
 
-      bool deleteOldRecords(int idHomologacionEsquema, int idConexion)
+      bool deleteOldRecords(int idEsquemaVista)
       {
-        Console.WriteLine($"Deleting old records for {idHomologacionEsquema} and {idConexion}");
+        Console.WriteLine($"Deleting old records for {idEsquemaVista}");
         if (deleted)
         {
           Console.WriteLine("Already deleted");
@@ -280,24 +256,24 @@ namespace WebApp.Service.IService
         }
         deleted = true;
         Console.WriteLine("Predelete");
-        // return _repositoryDLO.DeleteOldRecords(idHomologacionEsquema, idConexion);
-        return false;
+        return _repositoryED.DeleteOldRecords(idEsquemaVista);
       }
  
       bool deleteOldRecord(string idVista, string idOrganizacion, int idHomologacionEsquema, int idConexion)
       {
-        return _repositoryDLO.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);
+        return _repositoryED.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);
       }
   
-      bool addLogDetail(Homologacion homologacion) {
+      bool addLogDetail(EsquemaVistaColumna field) {
         if (currentLogMigracion == null) {
           return false;
         }
         LogMigracionDetalle logMigracionDetalle = new LogMigracionDetalle(currentLogMigracion);
-        // logMigracionDetalle.IdHomologacion = homologacion.IdHomologacion;
-        // logMigracionDetalle.NombreHomologacion = homologacion.MostrarWeb;
-        // logMigracionDetalle.OrigenVistaColumna = homologacion.NombreHomologado;
-        // logMigracionDetalle.EsquemaIdHomologacion = homologacionEsquema.IdHomologacionEsquema.ToString();
+        logMigracionDetalle.IdEsquemaVista = field.IdEsquemaVista;
+        logMigracionDetalle.ColumnaEsquemaIdH = field.ColumnaEsquemaIdH;
+        logMigracionDetalle.ColumnaEsquema = field.ColumnaEsquema;
+        logMigracionDetalle.ColumnaVista = field.ColumnaVista;
+        logMigracionDetalle.ColumnaVistaPK = field.ColumnaVistaPK;
         currentLogMigracionDetalle = _repositoryLM.CreateDetalle(logMigracionDetalle);
         return currentLogMigracionDetalle != null;
       }

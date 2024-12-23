@@ -16,17 +16,11 @@ namespace WebApp.Models
     public string? Pais { get; set; }
     [Required]
     public string? Ciudad { get; set; }
-    [Required]
     public string? Correo { get; set; }
-    [Required]
     public string? Direccion { get; set; }
-    [Required]
     public string? PaginaWeb { get; set; }
-    [Required]
     public string? Telefono { get; set; }
-    [Required]
     public string? UrlIcono { get; set; }
-    [Required]
     public string? UrlLogo { get; set; }
     [Required]
     public string? InfoExtraJson { get; set; }
