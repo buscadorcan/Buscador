@@ -12,93 +12,137 @@
 USE [CAN_DB]
 GO
 
+SELECT   ROW_NUMBER() OVER(ORDER BY IdHomologacion ASC) IdHomologacionNew
+		,IdHomologacion	
+		,IdHomologacionGrupo	
+		,MostrarWebOrden	
+		,MostrarWeb	
+		,TooltipWeb	
+		,CodigoHomologacion	
+		,NombreHomologado
+--into	Homologacion1
+FROM Homologacion
+where Estado = 'A'
 
-SET IDENTITY_INSERT dbo.Homologacion ON;
-select * from Homologacion
-
-USE [CAN_DB]
-GO
 SET IDENTITY_INSERT dbo.Homologacion ON;
 INSERT INTO [dbo].[Homologacion] 
-(		    [IdHomologacion]
-		   ,[IdHomologacionGrupo]
-           ,[MostrarWebOrden]
-           ,[MostrarWeb]
-           ,[TooltipWeb]
-           ,[MascaraDato]
-           ,[SiNoHayDato]
-           ,[InfoExtraJson]
-           ,[CodigoHomologacion]
-           ,[NombreHomologado]
-           ,[Estado]
-           ,[FechaCreacion]
-           ,[FechaModifica]
-           ,[IdUserCreacion]
-           ,[IdUserModifica]
+(		 IdHomologacion	
+		,IdHomologacionGrupo	
+		,MostrarWebOrden	
+		,MostrarWeb	
+		,TooltipWeb	
+		,CodigoHomologacion	
+		,NombreHomologado
 )
-select	 
-            [IdHomologacion]
-		   ,[IdHomologacionGrupo]
-           ,[MostrarWebOrden]
-           ,[MostrarWeb]
-           ,isnull([TooltipWeb],'')
-           ,[MascaraDato]
-           ,isnull([SiNoHayDato],'')
-           ,[InfoExtraJson]
-           ,isnull([CodigoHomologacion],'')
-           ,isnull([NombreHomologado],'')
-           ,[Estado]
-           ,[FechaCreacion]
-           ,[FechaModifica]
-           ,[IdUserCreacion]
-           ,[IdUserModifica]
-From Homologacion0
+select	 IdHomologacionNew
+		,IdHomologacionGrupo	
+		,MostrarWebOrden	
+		,MostrarWeb	
+		,TooltipWeb	
+		,CodigoHomologacion	
+		,NombreHomologado
+From Homologacion1
 SET IDENTITY_INSERT dbo.Homologacion OFF;
-
-
-USE [CAN_DB]
-GO
-SET IDENTITY_INSERT dbo.HomologacionEsquema ON;
-INSERT INTO [dbo].[HomologacionEsquema]
-           ([IdHomologacionEsquema]
-		   ,[MostrarWebOrden]
-           ,[MostrarWeb]
-           ,[TooltipWeb]
-           ,[EsquemaJson]
-           ,[VistaNombre]
-           ,[Estado]
-           ,[FechaCreacion]
-           ,[FechaModifica]
-           ,[IdUserCreacion]
-           ,[IdUserModifica]
-           ,[IdVistaNombre]
-           ,[DataTipo])
- 
-select [IdHomologacionEsquema]
-		   ,[MostrarWebOrden]
-           ,[MostrarWeb]
-           ,[TooltipWeb]
-           ,[EsquemaJson]
-           ,[VistaNombre]
-           ,[Estado]
-           ,[FechaCreacion]
-           ,[FechaModifica]
-           ,[IdUserCreacion]
-           ,[IdUserModifica]
-           ,[VistaNombre] IdVistaNombre
-           ,'ORGANIZACION' DataTipo
-from dbo.HomologacionEsquema0 
-SET IDENTITY_INSERT dbo.HomologacionEsquema ON;
 GO
 
 
-select * from HomologacionEsquema
+ select *
+ into Esquema2
+ from Esquema
 
-truncate table  HomologacionEsquema
+
+DECLARE @TextoBuscar	 NVARCHAR(5);
+DECLARE @TextoReemplazar NVARCHAR(5);
+-- Cursor para iterar sobre cada registro de Homologacion
+DECLARE homologacion_cursor CURSOR FOR
+SELECT IdHomologacion, IdHomologacionNew	FROM Homologacion1 where IdHomologacion > 10;
+-- Abrir el cursor
+OPEN homologacion_cursor;
+FETCH NEXT FROM homologacion_cursor INTO @TextoBuscar, @TextoReemplazar;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    UPDATE Esquema2
+    SET EsquemaJson = REPLACE(EsquemaJson, ':'+@TextoBuscar+'}', ':'+@TextoReemplazar+'}');
+	print @TextoBuscar + '  --  '+ @TextoReemplazar
+    -- Leer el siguiente registro del cursor
+    FETCH NEXT FROM homologacion_cursor INTO @TextoBuscar, @TextoReemplazar;
+END;
+CLOSE homologacion_cursor;
+DEALLOCATE homologacion_cursor;
+
+SET IDENTITY_INSERT dbo.Esquema ON;
+INSERT INTO [dbo].[Esquema] 
+(		 IdEsquema	
+		,MostrarWebOrden	
+		,MostrarWeb	
+		,TooltipWeb	
+		,EsquemaJson
+)
+select	 ROW_NUMBER() OVER(ORDER BY IdEsquema ASC)
+		,MostrarWebOrden	
+		,MostrarWeb	
+		,TooltipWeb	
+		,EsquemaJson
+From Esquema2
+SET IDENTITY_INSERT dbo.Esquema OFF;
+GO
+
+
+ insert EsquemaVista ( IdONA,IdEsquema,VistaOrigen	)
+ select o.IdONA,IdEsquema, e.esquemaVista
+ from Esquema   e
+ cross join ona o 
+ where e.esquemaVista <>''
+ go
+
+
+	truncate table EsquemaVistaColumna
+	insert   EsquemaVistaColumna (
+	 IdEsquemaVista          
+    ,ColumnaEsquemaIdH       
+    ,ColumnaEsquema	         
+    ,ColumnaVista	         
+	)						 
+	SELECT   DISTINCT
+			-- e.IdEsquema 				EsquemaId					
+			--,e.EsquemaVista				EsquemaVista				
+			 ev.IdEsquemaVista							IdEsquemaVista
+			,JSON_VALUE(j.value, '$.IdHomologacion') 	ColumnaEsquemaIdH		
+			--,isnull(h.IdHomologacion,0)					ColumnaEsquemaIdH
+			,isnull(h.NombreHomologado,'') 				ColumnaEsquema
+			,isnull(v.COLUMN_NAME,'')					ColumnaVista		
+    FROM	[dbo].[Esquema]				e
+	INNER JOIN  [dbo].[EsquemaVista]	ev		on e.IdEsquema = ev.IdEsquema   
+    CROSS APPLY OPENJSON(e.EsquemaJson)			j
+    LEFT JOIN	[dbo].[Homologacion]			h	ON h.IdHomologacion = JSON_VALUE(j.value, '$.IdHomologacion') 
+    LEFT JOIN	SAE.INFORMATION_SCHEMA.COLUMNS	v	ON v.COLUMN_NAME = h.NombreHomologado
+         AND	v.TABLE_NAME = e.EsquemaVista
+         --AND  v.TABLE_SCHEMA = 'dbo' 
+    WHERE	ISJSON( e.EsquemaJson)= 1
+	AND  e.EsquemaVista	<> '' 
+	AND  ev.IdONA = 1
+
+UPDATE EsquemaVistaColumna 
+SET ColumnaVistaPK = 1 
+WHERE ColumnaVista IN (	
+ 'IdOnaDatos'					-- VistaOrigen = 'VS_Organizacion'				--1	esq_oec
+,'IdLaboratorioCalibracion'		-- VistaOrigen = 'VS_LaboratorioCalibracion'	--2	Esquema de Laboratorios de Calibración
+,'IdProducto'					-- VistaOrigen = 'VS_Producto'					--3	Esquema de Certificación de Producto
+,'IdSistemaGestion'				-- VistaOrigen = 'VS_SistemaGestion'			--4	Esquema de Certificación de Sistemas de Gestión.
+,'IdOrganismoInspeccion'		-- VistaOrigen = 'VS_OrganismoInspeccion'		--5	Esquema de Organismos de Inspección
+,'IdEnsayo'						-- VistaOrigen = 'VS_Ensayo'					--6	Esquema de Laboratorios de Ensayo
+,'IdClinico'					-- VistaOrigen = 'VS_Clinico'					--7	Esquema de Laboratorios Clínicos
+,'IdCertificacionPersona'       -- VistaOrigen = 'VS_CertificacionPersona'		--8	Esquema de Certificación de Personas
+,'IdVerificacionValidacion'     -- VistaOrigen = 'VS_VerificacionValidacion'	--9	Esquema de Organismos de Verificación/Validación
+,'IdEnsayoAptitud'		        -- VistaOrigen = 'VS_EnsayoAptitud'				--11Esquema de Ensayos de Aptitud
+)
+--,( 1, 10 ,	 							--10	Organismo Nacional de Acreditación
+											--12	Esquema de Muestreo
+											--13	Esquema de Productores de materiales de referencia
+
+
 
  
-EXEC DBO.Bitacora '@script','06-CAN_LoadData_SQLSERVER.sql'
-
 EXEC sp_configure 'show advanced options', 1;
 RECONFIGURE;
 EXEC sp_configure 'Ad Hoc Distributed Queries', 1;

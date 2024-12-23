@@ -45,60 +45,8 @@ dbo.Homologacion
  dbo.Conexion '
 GO
 
-CREATE TABLE dbo.Usuario (
-     IdUsuario				INT IDENTITY(1,1) 
-    ,Email					NVARCHAR(100) NOT NULL
-    ,Nombre					NVARCHAR(500) NOT NULL
-    ,Apellido				NVARCHAR(500) NOT NULL DEFAULT('')
-	,Telefono				NVARCHAR(20)  NOT NULL DEFAULT('')
-    ,Clave					NVARCHAR(MAX) NOT NULL
-    ,Rol					NVARCHAR(20)  NOT NULL DEFAULT('USER')
-	,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
-    ,FechaCreacion			DATETIME	NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica			DATETIME	NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion			INT			NOT NULL DEFAULT(0)
-    ,IdUserModifica			INT			NOT NULL DEFAULT(0)
-
-    ,CONSTRAINT PK_U_IdUsuario	PRIMARY KEY CLUSTERED (IdUsuario)  
-    ,CONSTRAINT UK_U_Email		UNIQUE (Email)
-    ,CONSTRAINT CK_U_Rol		CHECK  (Rol IN ('ADMIN', 'USER'))
-    ,CONSTRAINT CK_U_Estado		CHECK  (Estado IN ('A', 'X'))
-);
-
-CREATE TABLE dbo.EndPointWeb (
-     IdEndPointWeb			INT IDENTITY(1,1)  
-    ,UrlWeb					NVARCHAR(MAX)
-    ,Nombre					NVARCHAR(100) NOT NULL
-	,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
-    ,FechaCreacion			DATETIME	NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica			DATETIME	NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion			INT			NOT NULL DEFAULT(0)
-    ,IdUserModifica			INT			NOT NULL DEFAULT(0)
-    
-	,CONSTRAINT PK_EPW_IdEndpoint	PRIMARY KEY CLUSTERED (IdEndPointWeb)  
-    ,CONSTRAINT UK_EPW_Nombre		UNIQUE (Nombre)
-    ,CONSTRAINT CK_EPW_Estado		CHECK  (Estado IN ('A', 'X'))
-);
-
-CREATE TABLE dbo.UsuarioEndPointWebPermiso (
-     IdUsuarioEndPointWebPermiso    INT IDENTITY(1,1) 
-    ,IdUsuario                      INT NOT NULL DEFAULT(0)
-    ,IdEndPointWeb                  INT NOT NULL DEFAULT(0)
-    ,Accion                         NVARCHAR(10) NOT NULL
-	,Estado						    NVARCHAR(1) NOT NULL DEFAULT('A')
-    ,FechaCreacion				    DATETIME	NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica			        DATETIME	NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion				    INT			NOT NULL DEFAULT(0)
-    ,IdUserModifica			        INT			NOT NULL DEFAULT(0)
-
-	,CONSTRAINT PK_UEPWP_IdUsuarioEndpointPermiso	PRIMARY KEY CLUSTERED (IdUsuarioEndPointWebPermiso)  
-    ,CONSTRAINT FK_UEPWP_IdUsuario		FOREIGN KEY (IdUsuario)		REFERENCES Usuario(IdUsuario)
-    ,CONSTRAINT FK_UEPWP_IdEndPointWeb	FOREIGN KEY (IdEndPointWeb)	REFERENCES EndPointWeb(IdEndPointWeb)
-    ,CONSTRAINT UK_UEPWP_Accion			CHECK (Accion IN ('GET', 'POST', 'PUT', 'DELETE'))
-    ,CONSTRAINT CK_UEPWP_Estado			CHECK (Estado IN ('A', 'X'))
-);
-
-CREATE TABLE dbo.Homologacion (
+DROP TABLE if exists [dbo].[Homologacion] ;
+CREATE TABLE [dbo].[Homologacion] (
      IdHomologacion     	INT IDENTITY(1,1) NOT NULL
     ,IdHomologacionGrupo	INT DEFAULT(NULL) 
 	,Mostrar				CHAR(1) NOT NULL DEFAULT 'S' 
@@ -116,48 +64,74 @@ CREATE TABLE dbo.Homologacion (
     ,IdUserCreacion			INT			 NOT NULL DEFAULT(0)
     ,IdUserModifica			INT			 NOT NULL DEFAULT(0)  
 	
-	,CONSTRAINT  [PK_H_IdHomologacion] primary KEY CLUSTERED (IdHomologacion) 
-    ,CONSTRAINT  [CK_H_InfoExtraJson]       CHECK   (ISJSON(InfoExtraJson) = 1 )
-    ,CONSTRAINT  [CK_H_MascaraDato]			CHECK   (MascaraDato IN ('TEXTO', 'FECHA', 'NUMERICO'))
-    ,CONSTRAINT  [CK_H_Estado]				CHECK   (Estado IN ('A', 'X'))
-	,CONSTRAINT  [CK_H_Mostrar]				CHECK	(Mostrar IN ('S', 'N'))
+	,CONSTRAINT  [PK_H_IdHomologacion]  PRIMARY KEY CLUSTERED (IdHomologacion) 
+    ,CONSTRAINT  [CK_H_InfoExtraJson]   CHECK   (ISJSON(InfoExtraJson) = 1 )
+    ,CONSTRAINT  [CK_H_MascaraDato]	    CHECK   (MascaraDato IN ('TEXTO', 'FECHA', 'NUMERICO','ICO','FORMULA'))
+	,CONSTRAINT  [CK_H_Mostrar]		    CHECK	(Mostrar IN ('S', 'N'))
+    ,CONSTRAINT  [CK_H_Estado]		    CHECK   (Estado IN ('A', 'X'))
 );
 
-CREATE TABLE dbo.HomologacionEsquema(
-   IdHomologacionEsquema    INT IDENTITY(1,1) NOT NULL
+
+DROP TABLE if exists UsuarioEndPointWebPermiso
+DROP TABLE if exists EndPointWeb
+DROP TABLE if exists Usuario
+
+DROP TABLE if exists [dbo].[UsuarioEndPoint]
+DROP TABLE if exists [dbo].[Usuario]
+DROP TABLE if exists [dbo].[EsquemaData] 
+DROP TABLE if exists [dbo].[EsquemaVistaColumna] 
+DROP TABLE if exists [dbo].[EsquemaVista] 
+DROP TABLE if exists [dbo].[ONAConexion] 
+DROP TABLE if exists [dbo].[ONA] 
+DROP TABLE if exists [dbo].[Esquema] ;
+CREATE TABLE [dbo].[Esquema](
+   IdEsquema                INT IDENTITY(1,1) NOT NULL
   ,MostrarWebOrden			INT DEFAULT(1) NOT NULL
   ,MostrarWeb				NVARCHAR(200) NOT NULL DEFAULT('GRILLA')
   ,TooltipWeb				NVARCHAR(200) NOT NULL DEFAULT('')
+  ,EsquemaVista		        NVARCHAR(100) NOT NULL DEFAULT ('')
   ,EsquemaJson				NVARCHAR(max) NOT NULL DEFAULT('{}')
-  ,DataTipo				    NVARCHAR(15)  NOT NULL DEFAULT('NO_DEFINIDO')	
-  ,VistaNombre				NVARCHAR(100) NOT NULL DEFAULT('')
-  ,IdVistaNombre			NVARCHAR(100) NOT NULL DEFAULT('')
   ,Estado					NVARCHAR(1)	  NOT NULL DEFAULT('A')
   ,FechaCreacion			DATETIME	  NOT NULL DEFAULT(GETDATE())
   ,FechaModifica			DATETIME	  NOT NULL DEFAULT(GETDATE())  
   ,IdUserCreacion			INT			  NOT NULL DEFAULT(0)
   ,IdUserModifica			INT			  NOT NULL DEFAULT(0)  
 
-  ,CONSTRAINT  [PK_HE_IdHomologacionEsquema]	PRIMARY KEY CLUSTERED (IdHomologacionEsquema) 
-  ,CONSTRAINT  [CK_HE_EsquemaJson]				CHECK   (ISJSON(EsquemaJson) = 1 )
-  ,CONSTRAINT  [CK_HE_Estado]				    CHECK   (Estado IN ('A', 'X'))
-  ,CONSTRAINT  [UK_HE_DataTipo]					CHECK	(DataTipo IN ('ORGANIZACION', 'PERSONA','NO_DEFINIDO'))
-  --,CONSTRAINT  UK_HE_VistaNombre		        UNIQUE (VistaNombre)
+  ,CONSTRAINT  [PK_E_IdEsquema]	    PRIMARY KEY CLUSTERED (IdEsquema) 
+  ,CONSTRAINT  [CK_E_EsquemaJson]	CHECK   (ISJSON(EsquemaJson) = 1 )
+  ,CONSTRAINT  [CK_E_Estado]		CHECK   (Estado IN ('A', 'X'))
 );
-
-CREATE TABLE dbo.Conexion (
-     IdConexion			INT IDENTITY(1,1)	NOT NULL
-	,CodigoHomologacion	NVARCHAR(20)		NOT NULL
-  ,Siglas             NVARCHAR(20)    NOT NULL
-    ,BaseDatos          NVARCHAR(100) NOT NULL
-    ,Host               NVARCHAR(100) NOT NULL
-    ,Puerto             INT NOT NULL DEFAULT(0)
-    ,Usuario            NVARCHAR(100) NOT NULL
-    ,Contrasenia        NVARCHAR(100) NOT NULL
-    ,MotorBaseDatos     NVARCHAR(100) NOT NULL
-    ,Filtros            NVARCHAR(MAX) NOT NULL DEFAULT('{}')
-    ,FechaConexion		DATETIME NOT NULL DEFAULT(GETDATE())
-    ,TiempoEspera		INT NOT NULL DEFAULT(0)				-- Tiempo de espera en segundos
+CREATE TABLE [dbo].[ONA] (
+     IdONA			    INT IDENTITY(1,1)
+    ,RazonSocial		NVARCHAR(300)NOT NULL
+    ,Siglas			    NVARCHAR(50) NOT NULL
+    ,Pais			    NVARCHAR(50) NOT NULL
+    ,Ciudad			    NVARCHAR(50) NOT NULL
+    ,Correo			    NVARCHAR(300) NULL
+    ,Direccion		    NVARCHAR(300) NULL
+    ,PaginaWeb		    NVARCHAR(300) NULL
+    ,Telefono		    NVARCHAR(20)  NULL
+    ,UrlIcono		    NVARCHAR(300) NULL
+    ,UrlLogo			NVARCHAR(300) NULL
+    ,InfoExtraJson		NVARCHAR(max) NOT NULL DEFAULT('{}')
+    ,Estado				NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
+    ,FechaModifica		DATETIME	NOT NULL DEFAULT(GETDATE())  
+    ,IdUserCreacion		INT			NOT NULL DEFAULT(0)
+    ,IdUserModifica		INT			NOT NULL DEFAULT(0)  
+  
+    ,CONSTRAINT  [PK_O_IdONA]           PRIMARY KEY CLUSTERED (IdONA) 
+    ,CONSTRAINT  [CK_O_Estado]          CHECK   (Estado IN ('A', 'X'))
+    ,CONSTRAINT  [CK_O_InfoExtraJson]   CHECK   (ISJSON(InfoExtraJson) = 1 )
+);
+CREATE TABLE [dbo].[ONAConexion] (
+     IdONA			    INT NOT NULL
+    ,Host               NVARCHAR(100) NOT NULL  NULL DEFAULT('')
+    ,Puerto             INT NOT NULL DEFAULT(0)  
+    ,Usuario            NVARCHAR(100) NOT NULL  NULL DEFAULT('')
+    ,Contrasenia        NVARCHAR(100) NOT NULL  NULL DEFAULT('')
+    ,BaseDatos          NVARCHAR(100) NOT NULL  NULL DEFAULT('')
+    ,OrigenDatos         NVARCHAR(100)NOT NULL  NULL DEFAULT('')
     ,Migrar				NVARCHAR(1) NOT NULL DEFAULT('S')
     
 	,Estado				NVARCHAR(1) NOT NULL DEFAULT('A')
@@ -166,62 +140,18 @@ CREATE TABLE dbo.Conexion (
     ,IdUserCreacion		INT			NOT NULL DEFAULT(0)
     ,IdUserModifica		INT			NOT NULL DEFAULT(0)  
   
-    ,CONSTRAINT  [PK_C_IdConexion]			PRIMARY KEY CLUSTERED (IdConexion) 
-    ,CONSTRAINT  [CK_C_Estado]				CHECK   (Estado IN ('A', 'X'))
-    ,CONSTRAINT  [CK_C_Migrar]				CHECK   (Migrar IN ('S', 'N'))
-    ,CONSTRAINT  [CK_C_MotorBaseDatos]		CHECK   (MotorBaseDatos IN ('MYSQL', 'SQLSERVER', 'SQLLITE'))
-    ,CONSTRAINT  [CK_C_Filtros]				CHECK   (ISJSON(Filtros) = 1 )
-	,CONSTRAINT  [CK_C_CodigoHomologacion]	CHECK   (CodigoHomologacion IN 
-													('KEY_ECU_SAE'
-													,'KEY_COL_ONAC'
-													,'KEY_PER_INACAL'
-													,'KEY_BOL_DTA'	 ))
+    ,CONSTRAINT  [PK_OC_IdONA]			PRIMARY KEY CLUSTERED (IdONA) 
+    ,CONSTRAINT  [FK_OC_IdONA]          FOREIGN KEY([IdONA]) REFERENCES [dbo].[ONA] ([IdONA])
+    ,CONSTRAINT  [CK_OC_Migrar]			CHECK   (Migrar IN ('S', 'N'))
+    ,CONSTRAINT  [CK_OC_Estado]			CHECK   (Estado IN ('A', 'X'))
+    ,CONSTRAINT  [CK_OC_OrigenDatos]	CHECK   (OrigenDatos IN ('MYSQL', 'SQLSERVER', 'SQLLITE','EXCEL'))
 );
-
-CREATE TABLE dbo.WebSiteLog (
-     IdWebSiteLog		INT IDENTITY(1,1) NOT NULL
-    ,TextoBusquedo      NVARCHAR(900) NOT NULL
-    ,FiltroUsado        NVARCHAR(max) NOT NULL DEFAULT('{}')
-	,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
-	
-	,CONSTRAINT  [PK_WSL_WebSiteLog]		PRIMARY KEY CLUSTERED (IdWebSiteLog) 
-);
-
-DROP TABLE if exists [dbo].[ONA] ;
-CREATE TABLE [dbo].[ONA] (
-     IdONA			    INT IDENTITY(1,1)
-    ,IdHomologacion	    INT NOT NULL
-    ,Siglas			    NVARCHAR(30)  NOT NULL
-    ,RazonSocial		NVARCHAR(300) NOT NULL
-    ,Pais			    NVARCHAR(100) NOT NULL
-    ,Ciudad			    NVARCHAR(100) NOT NULL
-    ,Direccion		    NVARCHAR(300) NOT NULL
-    ,PaginaWeb		    NVARCHAR(300) NOT NULL
-    ,Correo			    NVARCHAR(300) NOT NULL
-    ,Telefono		    NVARCHAR(20)  NOT NULL
-    ,UrlIcono		    NVARCHAR(300) NOT NULL
-    ,UrlLogo			NVARCHAR(300) NOT NULL
-
-    ,Estado				NVARCHAR(1) NOT NULL DEFAULT('A')
-    ,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
-    ,FechaModifica		DATETIME	NOT NULL DEFAULT(GETDATE())  
-    ,IdUserCreacion		INT			NOT NULL DEFAULT(0)
-    ,IdUserModifica		INT			NOT NULL DEFAULT(0)  
-  
-    ,CONSTRAINT  [PK_O_IdONA]		    PRIMARY KEY CLUSTERED (IdONA) 
-    ,CONSTRAINT   FK_O_IdHomologacion	FOREIGN KEY (IdHomologacion) REFERENCES Homologacion(IdHomologacion)
-    ,CONSTRAINT  [CK_O_Estado]		    CHECK   (Estado IN ('A', 'X'))
-  
-);
-
-
-DROP TABLE if exists [dbo].[EsquemaVista] ;
 CREATE TABLE [dbo].[EsquemaVista] (
-     IdEsquemaVista			    INT IDENTITY(1,1)
-    ,IdConexion                 INT NOT NULL
-    ,IdHomologacionEsquema	    INT NOT NULL
-    ,VistaNombreEsquema		    NVARCHAR(100) NOT NULL
-    ,VistaNombreOrigen  		NVARCHAR(100) NOT NULL
+     IdEsquemaVista     INT IDENTITY(1,1)
+    ,IdONA              INT NOT NULL
+    ,IdEsquema	        INT NOT NULL
+    ,VistaOrigen		NVARCHAR(100)  NOT NULL
+    --,VistaColumnaPK     NVARCHAR(100)  NOT NULL
 
     ,Estado				NVARCHAR(1) NOT NULL DEFAULT('A')
     ,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
@@ -229,30 +159,120 @@ CREATE TABLE [dbo].[EsquemaVista] (
     ,IdUserCreacion		INT			NOT NULL DEFAULT(0)
     ,IdUserModifica		INT			NOT NULL DEFAULT(0)  
   
-    ,CONSTRAINT  [PK_EV_IdEsquemaVista]		    PRIMARY KEY CLUSTERED (IdEsquemaVista) 
-    ,CONSTRAINT   FK_EV_IdHomologacionEsquema	FOREIGN KEY (IdHomologacionEsquema) REFERENCES HomologacionEsquema(IdHomologacionEsquema)
-    ,CONSTRAINT   FK_EV_IdConexion              FOREIGN KEY (IdConexion)				REFERENCES Conexion (IdConexion)
-    ,CONSTRAINT  [CK_EV_Estado]					CHECK   (Estado IN ('A', 'X'))
-  
+    ,CONSTRAINT  [PK_EV_IdEsquemaVista]PRIMARY KEY CLUSTERED (IdEsquemaVista) 
+    ,CONSTRAINT  [FK_EV_IdEsquema]     FOREIGN KEY (IdEsquema) REFERENCES Esquema(IdEsquema)
+    ,CONSTRAINT  [FK_EV_IdONA]         FOREIGN KEY (IdONA)     REFERENCES ONA(IdONA)
+    ,CONSTRAINT  [CK_EV_Estado]        CHECK   (Estado IN ('A', 'X'))
 );
+CREATE TABLE [dbo].[EsquemaVistaColumna] (
+     IdEsquemaVistaColumna  INT IDENTITY(1,1)
+    ,IdEsquemaVista         INT NOT NULL
+    ,ColumnaEsquemaIdH      INT NOT NULL
+    ,ColumnaEsquema	        NVARCHAR(100) NOT NULL
+    ,ColumnaVista	        NVARCHAR(100) NOT NULL
+    ,ColumnaVistaPK	        BIT DEFAULT(0) NOT NULL
 
+    ,Estado				NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
+    ,FechaModifica		DATETIME	NOT NULL DEFAULT(GETDATE())  
+    ,IdUserCreacion		INT			NOT NULL DEFAULT(0)
+    ,IdUserModifica		INT			NOT NULL DEFAULT(0)  
+  
+    ,CONSTRAINT  [PK_EVC_IdEsquemaVistaColumna] PRIMARY KEY CLUSTERED (IdEsquemaVistaColumna) 
+    ,CONSTRAINT  [FK_EVC_IdEsquemaVista]        FOREIGN KEY (IdEsquemaVista)  REFERENCES EsquemaVista(IdEsquemaVista)
+    ,CONSTRAINT  [CK_EVC_Estado]		        CHECK   (Estado IN ('A', 'X'))
+);
+CREATE TABLE [dbo].[EsquemaData](
+	 IdEsquemaData      INT IDENTITY(1,1) NOT NULL
+	,IdEsquemaVista     INT NOT NULL
+	,VistaFK            NVARCHAR (10) NULL             --idEnte
+	,VistaPK            NVARCHAR (10)  NOT NULL
+	,DataEsquemaJson    NVARCHAR (max) NOT NULL
+	,DataFecha          DATETIME NOT NULL DEFAULT(GETDATE())
+    ,CONSTRAINT         [PK_ED_IdEsquemaData] PRIMARY KEY CLUSTERED (IdEsquemaData ASC)
+    ,CONSTRAINT         [FK_ED_IdEsquemaVista] FOREIGN KEY (IdEsquemaVista) REFERENCES EsquemaVista(IdEsquemaVista)
+);
+CREATE TABLE [dbo].[Usuario] (
+     IdUsuario				INT IDENTITY(1,1) 
+    ,IdHomologacionRol     	INT NOT NULL
+    ,IdONA                 	INT
+    ,Nombre					NVARCHAR(100) NOT NULL
+    ,Apellido				NVARCHAR(100) NOT NULL DEFAULT('')
+	,Telefono				NVARCHAR(20)  NOT NULL DEFAULT('')
+    ,Email					NVARCHAR(100) NOT NULL
+    ,Clave					NVARCHAR(333) NOT NULL
+	,Estado					NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,FechaCreacion			DATETIME	NOT NULL DEFAULT(GETDATE())
+    ,FechaModifica			DATETIME	NOT NULL DEFAULT(GETDATE())  
+    ,IdUserCreacion			INT			NOT NULL DEFAULT(0)
+    ,IdUserModifica			INT			NOT NULL DEFAULT(0)
+
+    ,CONSTRAINT PK_U_IdUsuario	        PRIMARY KEY CLUSTERED (IdUsuario)  
+    ,CONSTRAINT FK_U_IdHomologacionRol  FOREIGN KEY(IdHomologacionRol) REFERENCES Homologacion (IdHomologacion)
+    ,CONSTRAINT FK_U_IdONA              FOREIGN KEY(IdONA)             REFERENCES ONA (IdONA)
+    ,CONSTRAINT CK_U_Estado		        CHECK  (Estado IN ('A', 'X'))
+    ,CONSTRAINT UK_U_Email		        UNIQUE (Email)
+);
+CREATE TABLE [dbo].[UsuarioEndPoint] (
+     IdUsuarioEndPoint      INT IDENTITY(1,1) 
+    ,IdHomologacionEndPoint INT NOT NULL DEFAULT(0)
+    ,IdUsuario              INT NOT NULL DEFAULT(0)
+    ,Accion                 NVARCHAR(10) NOT NULL
+	,Estado			        NVARCHAR(1) NOT NULL DEFAULT('A')
+    ,FechaCreacion	        DATETIME	NOT NULL DEFAULT(GETDATE())
+    ,FechaModifica		    DATETIME	NOT NULL DEFAULT(GETDATE())  
+    ,IdUserCreacion	        INT			NOT NULL DEFAULT(0)
+    ,IdUserModifica		    INT			NOT NULL DEFAULT(0)
+
+	,CONSTRAINT PK_UEP_IdUsuarioEndpoint        PRIMARY KEY CLUSTERED (IdUsuarioEndPoint)  
+    ,CONSTRAINT FK_UEP_IdUsuario		        FOREIGN KEY (IdUsuario)		        REFERENCES Usuario(IdUsuario)
+    ,CONSTRAINT FK_UEP_IdHomologacionEndPoint   FOREIGN KEY (IdHomologacionEndPoint)REFERENCES Homologacion(IdHomologacion)
+    ,CONSTRAINT UK_UEP_Accion			        CHECK (Accion IN ('GET', 'POST', 'PUT', 'DELETE'))
+    ,CONSTRAINT CK_UEP_Estado			        CHECK (Estado IN ('A', 'X'))
+);
+GO
+
+DROP TABLE if exists [dbo].[Catalogo] ;
+CREATE TABLE [dbo].[Catalogo](
+	 IdCatalogo     INT IDENTITY(1,1) NOT NULL
+    ,IdH     	    INT DEFAULT(NULL) 
+    ,IdHPadre	    INT DEFAULT(NULL) 
+    ,Nombre		    NVARCHAR(200)NOT NULL DEFAULT('')
+    ,Estado         NVARCHAR(1)  NOT NULL DEFAULT('A')
+	,FechaCreacion  DATETIME	 NOT NULL DEFAULT(GETDATE())
+
+    ,CONSTRAINT  [PK_C_IdCatalogo]  PRIMARY KEY CLUSTERED (IdCatalogo)
+    ,CONSTRAINT  [CK_C_Estado]		CHECK   (Estado IN ('A', 'X'))
+)  
+
+DROP TABLE if exists [dbo].[EsquemaFullText] ;
+CREATE TABLE [dbo].[EsquemaFullText](
+	 IdEsquemaFullText  INT IDENTITY(1,1) NOT NULL
+	,IdEsquemaData      INT NOT NULL
+	,IdHomologacion     INT NOT NULL
+	,FullTextData       NVARCHAR(max) NULL
+    ,CONSTRAINT         [PK_EFT_IdEsquemaFullText] PRIMARY KEY CLUSTERED (IdEsquemaFullText ASC)
+)  
+
+DROP TABLE if exists [dbo].[LogMigracionDetalle]
 DROP TABLE if exists [dbo].[LogMigracion] ;
 CREATE TABLE [dbo].[LogMigracion]  (
-     IdLogMigracion		INT IDENTITY(1,1)						-- Identificador único para el registro del log
-    ,IdConexion			INT         	NOT NULL            -- campo de la tabla conexcion.IdConexion
-	,CodigoHomologacion	NVARCHAR(20)	NOT NULL                -- campo de la tabla conexcion.CodigoHomologacion
-    ,Host               NVARCHAR(100)   NOT NULL                -- campo de la tabla conexcion.Host
-    ,Puerto             INT             NOT NULL DEFAULT(0)     -- campo de la tabla conexcion.Puerto
-    ,Usuario            NVARCHAR(100)   NOT NULL                -- campo de la tabla conexcion.Usuario
+     IdLogMigracion		INT IDENTITY(1,1)						    -- Identificador único para el registro del log
+    ,IdONA			    INT NOT NULL                                -- campo de la tabla OnaConexcion                        
+    ,Host               NVARCHAR(100) NOT NULL  DEFAULT('')    -- campo de la tabla OnaConexcion                
+    ,Puerto             INT NOT NULL DEFAULT(0)                     -- campo de la tabla OnaConexcion
+    ,Usuario            NVARCHAR(100) NOT NULL  DEFAULT('')    -- campo de la tabla OnaConexcion                
+    ,BaseDatos          NVARCHAR(100) NOT NULL  DEFAULT('')    -- campo de la tabla OnaConexcion                
+    ,OrigenDatos        NVARCHAR(100)NOT NULL   DEFAULT('')     -- campo de la tabla OnaConexcion            
+    ,Migrar				NVARCHAR(1) NOT NULL DEFAULT('S')           -- campo de la tabla OnaConexcion                        
+	
     ,Migracion			INT				NOT NULL DEFAULT 0 		-- determina la secuencia de migración realizada
     ,Estado				NVARCHAR(10)    NOT NULL DEFAULT ('')	-- Estado de la migración (Ejemplo: 'OK', 'ERROR','START')
-    ,OrigenFormato		NVARCHAR(10)    NOT NULL DEFAULT ('')	-- Nombre del formato-origen de los datos
-    ,OrigenSistema		NVARCHAR(100)   NOT NULL DEFAULT ('')	-- Nombre del sistema que provee los datos o Base de datos
-    ,OrigenVista		NVARCHAR(100)   NOT NULL DEFAULT ('')	-- Nombre de la vista de origen
-    ,OrigenFilas		INT             NOT NULL DEFAULT 0		-- Número de registros a migrar
-    ,EsquemaId			INT				NOT NULL DEFAULT 0		-- Id de  [dbo].[HomologacionEsquema]
+    ,EsquemaId		    INT				NOT NULL DEFAULT 0		-- Id de  EsquemaVista
     ,EsquemaVista		NVARCHAR(100)   NOT NULL DEFAULT ('')	-- Nombre de vista de HomologacionEsquema (VistaNombre) 
     ,EsquemaFilas		INT				NOT NULL DEFAULT 0		-- Número de registros migrados
+    ,VistaOrigen		NVARCHAR(100)   NOT NULL DEFAULT ('')	-- Nombre de la vista de origen
+    ,VistaFilas		    INT             NOT NULL DEFAULT 0		-- Número de registros a migrar
     ,Tiempo				AS 
 						CASE 
 							WHEN Final IS NOT NULL THEN 
@@ -269,22 +289,17 @@ CREATE TABLE [dbo].[LogMigracion]  (
   
     ,CONSTRAINT  [PK_LM_IdLogMigracion]		PRIMARY KEY CLUSTERED (IdLogMigracion) 
     ,CONSTRAINT  [CK_LM_Estado]	            CHECK   (Estado			IN ('OK', 'ERROR','START','BATCH',''))
-    ,CONSTRAINT  [CK_LM_OrigenFormato]		CHECK   (OrigenFormato	IN ('MYSQL', 'SQLSERVER', 'SQLLITE','EXCEL',''))
 );
-
-DROP TABLE if exists [dbo].[LogMigracionDetalle] ;
 CREATE TABLE [dbo].[LogMigracionDetalle](
-	 IdLogMigracionDetalle		INT IDENTITY(1,1)	NOT NULL 
-	,IdLogMigracion		        INT             	NOT NULL 
-	,NroMigracion				INT					NOT NULL 
-	,EsquemaId					INT					NOT NULL 
-	,EsquemaVista				[nvarchar](100)		NOT NULL 
-	,EsquemaIdHomologacion		[nvarchar](10)	    NULL 
-	,[IdHomologacion]			[int]				NULL 
-	,[NombreHomologacion]		[nvarchar](90)		NULL 
-	,OrigenVistaColumna			[sysname]			NULL
-	,Fecha				        DATETIME		    NOT NULL DEFAULT GETDATE()	-- fecha de creación del registro
-	,Estado				        NVARCHAR(1)         NOT NULL DEFAULT('A')		 
+	 IdLogMigracionDetalle	INT IDENTITY(1,1)	NOT NULL 
+	,IdLogMigracion		    INT    
+	,NroMigracion			INT	 
+    ,IdEsquemaVista         INT  
+    ,ColumnaEsquemaIdH      INT  
+    ,ColumnaEsquema	        NVARCHAR(100)  
+    ,ColumnaVista	        NVARCHAR(100)  
+    ,ColumnaVistaPK	        BIT DEFAULT(0)  
+	,Fecha 	    DATETIME	NOT NULL DEFAULT GETDATE()	-- fecha de creación del registro
   
     ,CONSTRAINT  [PK_LMD_IdLogMigracionDetalle]		PRIMARY KEY CLUSTERED (IdLogMigracionDetalle) 
 ) ON [PRIMARY]
@@ -296,6 +311,16 @@ CREATE TABLE LogMigracionVista (
 	OrigenVista NVARCHAR(100),  
 	JsonData    NVARCHAR(MAX)
 );
+
+CREATE TABLE dbo.WebSiteLog (
+     IdWebSiteLog		INT IDENTITY(1,1) NOT NULL
+    ,TextoBusquedo      NVARCHAR(900) NOT NULL
+    ,FiltroUsado        NVARCHAR(max) NOT NULL DEFAULT('{}')
+	,FechaCreacion		DATETIME	NOT NULL DEFAULT(GETDATE())
+	
+	,CONSTRAINT  [PK_WSL_WebSiteLog]		PRIMARY KEY CLUSTERED (IdWebSiteLog) 
+);
+ 
 
 EXEC DBO.Bitacora 'CREATE TABLE
 dbo.Usuario, 

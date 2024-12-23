@@ -14,34 +14,34 @@ USE CAN_DB;
 GO
 EXEC DBO.Bitacora '@script','04-CAN-TablaFullText.sql'
 
-DROP TABLE if exists dbo.CanFullText;
-CREATE TABLE CanFullText(
-     IdCanFullText		INT NOT NULL IDENTITY(1,1)
-    ,IdCanDataSet		INT NOT NULL  -------- IdOrganizacionData 
+DROP TABLE if exists dbo.EsquemaFullText;
+CREATE TABLE EsquemaFullText(
+     IdEsquemaFullText		INT NOT NULL IDENTITY(1,1)
+    ,IdEsquemaData		INT NOT NULL  --------IdCanDataSet, IdOrganizacionData 
     ,IdHomologacion		INT NOT NULL
-    ,IdEnte				NVARCHAR(16) 
-    ,IdVista			NVARCHAR(16) NOT NULL
+    -- ,IdEnte				NVARCHAR(16) 
+    -- ,IdVista			NVARCHAR(16) NOT NULL
     ,FullTextData		NVARCHAR(MAX)  COLLATE Latin1_General_CI_AI -- Modern_Spanish_CI_AS fulltext sin valorar tildes
-    ,CONSTRAINT [PK_CFT_IdCanFullText] PRIMARY KEY CLUSTERED (IdCanFullText)  
+    ,CONSTRAINT [PK_CFT_IdEsquemaFullText] PRIMARY KEY CLUSTERED (IdEsquemaFullText)  
 );
 
-IF	EXISTS (SELECT * FROM sys.fulltext_catalogs WHERE is_default = 1 AND name = 'CanFullText_cat')
+IF	EXISTS (SELECT * FROM sys.fulltext_catalogs WHERE is_default = 1 AND name = 'EsquemaFullText_cat')
 BEGIN
 	CREATE FULLTEXT CATALOG temp_catalog;
 	ALTER FULLTEXT CATALOG temp_catalog AS DEFAULT;
-	DROP FULLTEXT CATALOG [CanFullText_cat];
+	DROP FULLTEXT CATALOG [EsquemaFullText_cat];
 END
 GO
 
-CREATE FULLTEXT CATALOG CanFullText_cat WITH ACCENT_SENSITIVITY = OFF AS DEFAULT ;  
---ALTER FULLTEXT CATALOG CanFullText_cat REBUILD WITH ACCENT_SENSITIVITY = OFF;
+CREATE FULLTEXT CATALOG EsquemaFullText_cat WITH ACCENT_SENSITIVITY = OFF AS DEFAULT ;  
+--ALTER FULLTEXT CATALOG EsquemaFullText_cat REBUILD WITH ACCENT_SENSITIVITY = OFF;
 GO
 
-CREATE FULLTEXT INDEX ON CanFullText( 
+CREATE FULLTEXT INDEX ON EsquemaFullText( 
 	FullTextData LANGUAGE 3082			-->  3082	Spanish
 )     
-KEY INDEX [PK_CFT_IdCanFullText]
-ON	CanFullText_cat
+KEY INDEX [PK_CFT_IdEsquemaFullText]
+ON	EsquemaFullText_cat
 WITH STOPLIST = SYSTEM;
 
 DROP FULLTEXT CATALOG temp_catalog;
@@ -52,4 +52,4 @@ EXEC sys.sp_fulltext_load_thesaurus_file 3082;
 EXEC sp_fulltext_service 'update_languages'  
 
  
-EXEC DBO.Bitacora 'CREATE FULLTEXT CATALOG y INDEX ON CanFullText'
+EXEC DBO.Bitacora 'CREATE FULLTEXT CATALOG y INDEX ON EsquemaFullText'
