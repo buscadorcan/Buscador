@@ -1,5 +1,5 @@
 using BlazorBootstrap;
-using ClientApp.Models;
+// using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -10,7 +10,7 @@ namespace ClientApp.Pages.BuscadorCan
     {
         Tabs tabs = default!;
         [Parameter]
-        public BuscadorResultadoDataDto? resultData { get; set; }
+        public ResultDataPaBuscarPalabraDto? resultData { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private List<HomologacionEsquemaDto>? listaEsquemas = new List<HomologacionEsquemaDto>();
@@ -19,7 +19,7 @@ namespace ClientApp.Pages.BuscadorCan
             try
             {
                 if (servicio != null) {
-                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync(resultData?.IdEnte ?? "");
+                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync($"{resultData?.IdEsquema ?? 0}");
                 }
             }
             catch (Exception e)

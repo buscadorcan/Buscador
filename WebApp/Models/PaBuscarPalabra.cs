@@ -4,9 +4,9 @@ namespace WebApp.Models
 {
   public class PaBuscarPalabra {
     [Key]
-    public string? IdEnte { get; set; }
-    public string? IdVista { get; set; }
-    public int IdHomologacion { get; set; }
+    public int? IdEsquema { get; set; }
+    public int? VistaPK { get; set; }
+    public int? IdEsquemaData { get; set; }
     public string? DataEsquemaJson { get; set; }
   }
 }

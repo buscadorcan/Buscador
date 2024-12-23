@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="span12 page-content">
+    <div class="row-fluid">
+      @if (listVwFiltroDto != null)
+      {
+        @foreach (var filter in listVwFiltroDto ?? [])
+        {
+          <div class="span2">
+            <Dropdown AutoClose="true" style="max-width: 100%; min-width: 100%">
+              <DropdownToggleButton Color="ButtonColor.Secondary">
+                @filter.MostrarWeb
+              </DropdownToggleButton>
+              <DropdownMenu>
+                @foreach (var opcion in filter.Detalles ?? [])
+                {
+                  var listaTmp = selectedFilters.FirstOrDefault(c => c.Id == filter.IdHomologacion);
+                  <DropdownItem @onclick="() => CambiarSeleccion(opcion.MostrarWeb, filter.IdHomologacion)">
+                    @if (listaTmp != null && listaTmp.Seleccion.Contains(opcion.MostrarWeb))
+                    {
+                      <Icon Name="IconName.Check" />
+                    }
+                    @opcion.MostrarWeb
+                  </DropdownItem>
+                }
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

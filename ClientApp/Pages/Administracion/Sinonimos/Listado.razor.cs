@@ -30,6 +30,7 @@ namespace ClientApp.Pages.Administracion.Sinonimos
             //     listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync(3);
             //     listaHomologacionEsquemas = await iHomologacionEsquemaService.GetHomologacionEsquemasAsync();
             // }
+            await Task.CompletedTask;
         }
         // private async Task CambiarSeleccionOrganizacion(HomologacionDto _organizacionSelected)
         // {

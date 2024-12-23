@@ -7,15 +7,21 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApp.Service.IService
 {
-  public class Migrador(IEsquemaDataRepository esquemaDataRepository, IEsquemaFullTextRepository esquemaFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository esquemaRepository, IONAConexionRepository conexionRepository) : IMigrador
+  public class Migrador(
+    // IEsquemaDataRepository esquemaDataRepository,
+    // IEsquemaFullTextRepository esquemaFullTextRepository,
+    IHomologacionRepository homologacionRepository,
+    IEsquemaRepository esquemaRepository
+    // IONAConexionRepository conexionRepository
+  ) : IMigrador
     {
-      private IEsquemaDataRepository _repositoryDLO = esquemaDataRepository;
-      private IEsquemaFullTextRepository _repositoryOFT = esquemaFullTextRepository;
+      // private IEsquemaDataRepository _repositoryDLO = esquemaDataRepository;
+      // private IEsquemaFullTextRepository _repositoryOFT = esquemaFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IEsquemaRepository _repositoryHE = esquemaRepository;
-      private IONAConexionRepository _repositoryC = conexionRepository;
+      // private IONAConexionRepository _repositoryC = conexionRepository;
       private string connectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
-      private ONAConexion? currentConexion = null;
+      // private ONAConexion? currentConexion = null;
       private int executionIndex = 0;
       private string[] views =  [];
       private string[] schemas =  [];
@@ -23,7 +29,7 @@ namespace WebApp.Service.IService
       private int[] heids = [];
       private string[] vids = [];
       private int[] filters = [];
-      private bool deleted = false;
+      // private bool deleted = false;
       private bool saveIdVista = false;
       private bool saveIdEnte = false;
       
@@ -48,7 +54,7 @@ namespace WebApp.Service.IService
           // Console.WriteLine("Vista Ids: " + string.Join(", ", ViewIds));
           
           if (!conexion.Migrar.Equals("S")) { return true; }
-          currentConexion = conexion;
+          // currentConexion = conexion;
           // filters = JArray.Parse(conexion.Filtros).ToObject<int[]>();
           ConectionStringBuilderService conectionStringBuilderService = new ConectionStringBuilderService();
           connectionString = conectionStringBuilderService.BuildConnectionString(conexion);
@@ -78,7 +84,7 @@ namespace WebApp.Service.IService
 
         foreach (string view in views)
         {
-          deleted = false;
+          // deleted = false;
           executionIndex = Array.IndexOf(views, view);
           result = result && Procesar(view);
         }
@@ -102,7 +108,7 @@ namespace WebApp.Service.IService
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
           int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
-          string[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
+          string?[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
           string selectQuery = buildSelectViewQuery(connection, viewName, newSelectFields, newHomologacionIds);
           Console.WriteLine("Select Query: " + selectQuery);
           if (selectQuery == "") { return false; }
@@ -240,7 +246,7 @@ namespace WebApp.Service.IService
         return dataLakeJson.ToString();
       }
 
-      string buildSelectViewQuery(SqlConnection connection, string viewName, string[] selectFields, int[] homologacionIds)
+      string buildSelectViewQuery(SqlConnection connection, string viewName, string?[] selectFields, int[] homologacionIds)
       {
         if(!viewExists(connection, viewName))
         {
@@ -251,7 +257,7 @@ namespace WebApp.Service.IService
         List<int> newHomologacionIds = new List<int>();
         List<string> newSelectFields = new List<string>();
 
-        foreach (string field in selectFields)
+        foreach (string? field in selectFields)
         {
           if (fieldExists(connection, viewName, field))
           {

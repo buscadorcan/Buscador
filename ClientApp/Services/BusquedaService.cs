@@ -11,12 +11,12 @@ namespace ClientApp.Services
     {
         private readonly HttpClient _httpClient = httpClient;
 
-        public async Task<BuscadorDto> PsBuscarPalabraAsync(string paramJSON, int PageNumber, int RowsPerPage)
+        public async Task<ResultPaBuscarPalabraDto> PsBuscarPalabraAsync(string paramJSON, int PageNumber, int RowsPerPage)
         {
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/buscarPalabra?paramJSON={paramJSON}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
             response.EnsureSuccessStatusCode();
 
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<BuscadorDto>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ResultPaBuscarPalabraDto>>()).Result;
         }
         public async Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync(string idEnte)
         {
@@ -44,12 +44,12 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<DataHomologacionEsquema>>>()).Result;
         }
-        public async Task<List<FnPredictWordsDto>> FnPredictWords(string word)
-        {
-            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/predictWords?word={word}");
-            response.EnsureSuccessStatusCode();
+        // public async Task<List<FnPredictWordsDto>> FnPredictWords(string word)
+        // {
+        //     var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/predictWords?word={word}");
+        //     response.EnsureSuccessStatusCode();
 
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<FnPredictWordsDto>>>()).Result;
-        }
+        //     return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<FnPredictWordsDto>>>()).Result;
+        // }
     }
 }

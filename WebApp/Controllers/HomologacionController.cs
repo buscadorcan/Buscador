@@ -10,11 +10,6 @@ namespace WebApp.Controllers
 {
   [Route("api/homologacion")]
   [ApiController]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(StatusCodes.Status403Forbidden)]
-  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class HomologacionController(
     IHomologacionRepository iRepo,
     IMapper mapper

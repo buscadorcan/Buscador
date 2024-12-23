@@ -10,11 +10,6 @@ namespace WebApp.Controllers
 {
   [Route("api/logmigracion")]
   [ApiController]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(StatusCodes.Status403Forbidden)]
-  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class LogMigracionController(
     ILogMigracionRepository iRepo,
     IMapper mapper

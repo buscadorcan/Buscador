@@ -12,7 +12,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         private Grid<HomologacionDto>? grid;
         private List<HomologacionDto>? listaHomologacions = new List<HomologacionDto>();
         [Inject]
-        private ICatalogosService? iCatalogosService { get; set; }
+        private IApiService? iCatalogosService { get; set; }
         [Inject]
         private IHomologacionService? iHomologacionService { get; set; }
         private List<HomologacionDto>? listaVwHomologacion;
@@ -23,7 +23,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         {
             if (iCatalogosService != null)
             {
-                listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupo");
+                listaVwHomologacion = await iCatalogosService.GetAsync<List<HomologacionDto>>("grupo");
 
                 DataLoaded += async () => {
                     if (!(listaHomologacions is null) && JSRuntime != null) {
@@ -61,7 +61,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         {
             for (int i = 0; i < sortedIds.Length; i += 1)
             {
-                HomologacionDto homo = listaHomologacions.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i]));
+                HomologacionDto? homo = listaHomologacions.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i]));
                 if (homo != null && homo.MostrarWebOrden != i + 1)
                 {
                     homo.MostrarWebOrden = i + 1;

@@ -14,7 +14,7 @@ namespace WebApp.Service.IService
     IEsquemaVistaColumnaRepository esquemaVistaColumnaRepository,
     IEsquemaDataRepository esquemaDataRepository,
     IEsquemaFullTextRepository esquemaFullTextRepository,
-    IHomologacionRepository homologacionRepository,
+    // IHomologacionRepository homologacionRepository,
     IMigracionExcelRepository migracionExcelRepository,
     ILogMigracionRepository logMigracionRepository,
     IONAConexionRepository conexionRepository
@@ -26,24 +26,24 @@ namespace WebApp.Service.IService
       private IEsquemaVistaColumnaRepository _repositoryEVC = esquemaVistaColumnaRepository;
       private IEsquemaDataRepository _repositoryED = esquemaDataRepository;
       private IEsquemaFullTextRepository _repositoryEFT = esquemaFullTextRepository;
-      private IHomologacionRepository _repositoryH = homologacionRepository;
+      // private IHomologacionRepository _repositoryH = homologacionRepository;
       private IMigracionExcelRepository _repositoryME = migracionExcelRepository;
       private ILogMigracionRepository _repositoryLM = logMigracionRepository;
       private IONAConexionRepository _repositoryOC = conexionRepository;
       private int migration_cnt =  0;
       private int executionIndex = 0;
       private bool deleted = false;
-      private JArray currentSchema = new JArray();
+      // private JArray currentSchema = new JArray();
       private List<EsquemaVistaColumna> currentFields = new List<EsquemaVistaColumna>();
       private LogMigracion? currentLogMigracion = null;
       private LogMigracionDetalle? currentLogMigracionDetalle = null;
       private ONA? currentONA = null;
       private ONAConexion? currentConexion = null;
       Esquema? currentEsquema = null;
-      private string idEnteName = " IdOrganizacion";
+      // private string idEnteName = " IdOrganizacion";
       private string[] errors = Array.Empty<string>();
 
-      public Boolean ImportarExcel(string path, MigracionExcel? migracion) 
+      public bool ImportarExcel(string path, MigracionExcel? migracion) 
       {
         try {
           if (migracion == null) {
@@ -83,7 +83,7 @@ namespace WebApp.Service.IService
         }
       }
 
-      public Boolean Leer(string fileSrc)
+      public bool Leer(string fileSrc)
       {
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 

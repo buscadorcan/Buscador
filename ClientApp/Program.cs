@@ -19,10 +19,9 @@ builder.Services.AddScoped(sp => new HttpClient {
 builder.Services.AddScoped<IBusquedaService, BusquedaService>();
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IServiceAutenticacion, ServiceAutenticacion>();
-builder.Services.AddScoped<ICatalogosService, CatalogosService>();
+builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<IHomologacionService, HomologacionService>();
 builder.Services.AddScoped<IHomologacionEsquemaService, HomologacionEsquemaService>();
-builder.Services.AddSingleton<ClientApp.Services.ToastService>();
 builder.Services.AddScoped<IDynamicService, DynamicService>();
 builder.Services.AddScoped<IConexionService, ConexionService>();
 builder.Services.AddScoped<IMigracionExcelService, MigracionExcelService>();

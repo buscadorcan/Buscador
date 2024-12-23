@@ -8,8 +8,8 @@ namespace WebApp.Models
     [Key]
     public int IdUsuario { get; set; }
     [Required]
-    public int IdHomologacionRol { get; set; }
-    public int IdONA { get; set; }
+    public int? IdHomologacionRol { get; set; }
+    public int? IdONA { get; set; } = 0;
     [Required]
     public string? Nombre { get; set; }
     [Required]

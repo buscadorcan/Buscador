@@ -1,9 +1,6 @@
 @inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
-@inject ClientApp.Services.ToastService ToastService
-
-<Toasts class="p-3" Messages="ToastService.Messages" AutoHide="true" Delay="3000" Placement="ToastsPlacement.TopRight" CreateToastMessageCallback="CreateToastMessage"/>
 
 <div class="bb-page">
     <AdminSidebar />

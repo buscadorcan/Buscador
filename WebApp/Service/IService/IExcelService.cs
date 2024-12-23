@@ -13,6 +13,6 @@ namespace WebApp.Service.IService
     /// <param name="path">La ruta del archivo Excel a importar.</param>
     /// <param name="migracion">El objeto que representa el proceso de migración al que se asociarán los datos importados.</param>
     /// <returns>Un valor booleano que indica si la importación fue exitosa o no.</returns>
-    Boolean ImportarExcel(string path, MigracionExcel migracion);
+    bool ImportarExcel(string path, MigracionExcel? migracion);
   }
 }

@@ -6,9 +6,9 @@ namespace ClientApp.Pages
     public partial class RedireccionarAlAcceso
     {
         [Inject]
-        private NavigationManager navigationManager { get; set; }
+        private NavigationManager? navigationManager { get; set; }
         [CascadingParameter]
-        private Task<AuthenticationState> estadoProveedorAutenticacion { get; set; }
+        private Task<AuthenticationState>? estadoProveedorAutenticacion { get; set; }
         bool noAutorizado { get; set; } = false;
 
         protected override async Task OnInitializedAsync()

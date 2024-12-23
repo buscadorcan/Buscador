@@ -1,0 +1,29 @@
+@using SharedApp.Models.Dtos;
+
+<EditForm Model="solicitudBusqueda" OnValidSubmit="OnSearch" id="search-form" class="search-form clearfix" autocomplete="off">
+  <div style="display: flex; align-items: center; justify-content: center;">
+    <table style="width: 90%;">
+      <tbody>
+        <tr>
+          <td style="width: 90%;">
+            <AutoComplete @bind-Value="solicitudBusqueda.TextoBusqueda"
+              TItem="FnPredictWordsDto"
+              DataProvider="FnPredictWordsDtoDataProvider"
+              PropertyName="Word"
+              Placeholder="Ingrese Texto a buscar..."
+              OnChanged="(FnPredictWordsDto Word) => OnAutoCompleteChanged(Word)"
+            />
+          </td>
+          <td style="width: 10%;">
+            <Button Color="ButtonColor.Secondary" @onclick="OnSearch">Buscar</Button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <Switch Class="mt-3" @bind-Value="solicitudBusqueda.UseExactMatch" Label="Busqueda Exacta" style="color: #fff; text-align: left;" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</EditForm>

@@ -12,9 +12,6 @@ namespace WebApp.Controllers
   /// </summary>
   [Route("api")]
   [ApiController]
-  [ProducesResponseType(StatusCodes.Status403Forbidden)]
-  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-  [ProducesResponseType(StatusCodes.Status200OK)]
   public class CatalogosController(
     ICatalogosRepository vhRepo,
     IMapper mapper
@@ -66,7 +63,7 @@ namespace WebApp.Controllers
     /// </summary>
     /// <param name="id">ID del filtro.</param>
     /// <returns>Una lista con los detalles del filtro.</returns>
-    [HttpGet("filters/data/{id:int}", Name = "ObtenerFiltroDetalles")]
+    [HttpGet("filters/data/{id:int}")]
     public IActionResult ObtenerFiltroDetalles(int id)
     {
       try

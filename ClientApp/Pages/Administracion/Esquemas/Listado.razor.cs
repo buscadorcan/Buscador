@@ -18,14 +18,14 @@ namespace ClientApp.Pages.Administracion.Esquemas
         [Inject]
         protected IJSRuntime? JSRuntime { get; set; }
         [Inject]
-        public ICatalogosService? vwHomologacionRepository { get; set; }
+        public IApiService? vwHomologacionRepository { get; set; }
         private List<HomologacionDto>? listaVwHomologacion;
 
         protected override async Task OnInitializedAsync()
         {
             if (vwHomologacionRepository != null)
             {
-                listaVwHomologacion = await vwHomologacionRepository.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+                listaVwHomologacion = await vwHomologacionRepository.GetAsync<List<HomologacionDto>>("dimension");
             }
 
             DataLoaded += async () => {

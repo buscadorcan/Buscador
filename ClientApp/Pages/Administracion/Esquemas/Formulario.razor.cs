@@ -1,4 +1,5 @@
 using BlazorBootstrap;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -27,17 +28,14 @@ namespace ClientApp.Pages.Administracion.Esquemas
         public IHomologacionService? HomologacionService { get; set; }
         
         [Inject]
-        public ICatalogosService? CatalogosService { get; set; }
+        public IApiService? CatalogosService { get; set; }
         
         [Inject]
         public NavigationManager? NavigationManager { get; set; }
         
         [Inject]
         protected IJSRuntime? JSRuntime { get; set; }
-        
-        [Inject]
-        public Services.ToastService? ToastService { get; set; }
-        
+        [Inject] protected ToastService ToastService { get; set; } = default!;
         private string? homologacionName;
         private HomologacionEsquemaDto? homologacionEsquema = new();
         private List<HomologacionDto>? listaVwHomologacion;
@@ -49,7 +47,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 editContext = new EditContext(homologacionEsquema);
 
             if (CatalogosService != null)
-                listaVwHomologacion = await CatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+                listaVwHomologacion = await CatalogosService.GetAsync<List<HomologacionDto>>("dimension");
 
             if (Id > 0 && HomologacionEsquemaService != null && HomologacionEsquemaService != null)
             {
@@ -103,13 +101,15 @@ namespace ClientApp.Pages.Administracion.Esquemas
                                     await HomologacionService.RegistrarOActualizar(new HomologacionDto { IdHomologacion = n.IdHomologacion, MostrarWebOrden = n.MostrarWebOrden });
                             }
 
-                            ToastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                            // ToastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                            ToastService.Notify(new(ToastType.Success, "Registrado exitosamente"));
                             NavigationManager?.NavigateTo("/esquemas");
                         }
                     }
                     else
                     {
-                        ToastService?.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
+                        ToastService.Notify(new(ToastType.Danger, "Debe llenar todos los campos"));
+                        // ToastService?.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
                     }
                 }
             }
@@ -140,7 +140,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {
             if (listaVwHomologacion == null && CatalogosService != null)
-                listaVwHomologacion = await CatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+                listaVwHomologacion = await CatalogosService.GetAsync<List<HomologacionDto>>("dimension");
 
             return await Task.FromResult(request.ApplyTo((listaVwHomologacion ?? new List<HomologacionDto>()).OrderBy(vmH => vmH.MostrarWebOrden)));
         }

@@ -22,7 +22,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         private HomologacionEsquemaDto? esquemaSelected;
         private HomologacionDto? organizacionSelected;
         private List<EsquemaVista> listasHevd = new List<EsquemaVista>();
-        private List<string> NombresVistas { get; set; }
+        private List<string>? NombresVistas { get; set; }
         protected override async Task OnInitializedAsync()
         {
             if (iHomologacionService != null && iHomologacionEsquemaService != null)

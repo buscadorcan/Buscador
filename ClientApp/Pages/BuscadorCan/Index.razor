@@ -10,78 +10,21 @@
     <div class="search-area container">
         <h3 class="search-header">BUSCADOR SERVICIOS DE EVALUACIÓN DE LA CONFORMIDAD ACREDITADOS EN LA CAN</h3>
 
-        <EditForm Model="buscarRequest" OnValidSubmit="BuscarPalabraRequest" id="search-form" class="search-form clearfix" autocomplete="off">
-            <div style="display: flex; align-items: center; justify-content: center;">
-                <table style="width: 90%;">
-                    <tbody>
-                        <tr>
-                            <td style="width: 90%;">
-                                <AutoComplete @bind-Value="buscarRequest.TextoBuscar"
-                                    TItem="FnPredictWordsDto"
-                                    DataProvider="FnPredictWordsDtoDataProvider"
-                                    PropertyName="Word"
-                                    Placeholder="Ingrese Texto a buscar..."
-                                    OnChanged="(FnPredictWordsDto Word) => OnAutoCompleteChanged(Word)"
-                                />
-                            </td>
-                            <td style="width: 10%;">
-                                <Button Color="ButtonColor.Secondary" @onclick="async () => await BuscarPalabraRequest()">Buscar</Button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <Switch Class="mt-3" @bind-Value="modoBuscar" Label="Busqueda Exacta" style="color: #fff; text-align: left;" />
-                            </td>
-                            <td />
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </EditForm>
+        <TextSearch
+          solicitudBusqueda="@solicitudBusqueda"
+          HandleSearch="HandleSearchRequestAsync"
+        />
     </div>
 </div>
 
 <div class="page-container">
     <div class="container">
-        <div class="row">
-
-            <div class="span12 page-content">
-                <div class="row-fluid">
-
-                    @if (listadeOpciones != null) {
-                        @for (int i = 0; i < listadeOpciones.Count; i += 1) {
-                            var currentIndex = i;
-                            <div class="span2">
-                                <Dropdown AutoClose="true" style="max-width: 100%; min-width: 100%">
-                                    <DropdownToggleButton Color="ButtonColor.Secondary">
-                                        @listaEtiquetasFiltros?[currentIndex].MostrarWeb
-                                    </DropdownToggleButton>
-                                    <DropdownMenu>
-                                        @if (listadeOpciones?[currentIndex] != null) {
-                                            var listaTmp = selectedValues.FirstOrDefault(c => c.Id == listaEtiquetasFiltros?[currentIndex].IdHomologacion);
-                                            foreach (var opcion in listadeOpciones[currentIndex] ?? []) {
-                                                <DropdownItem @onclick="() => CambiarSeleccion(opcion.MostrarWeb, listaEtiquetasFiltros?[currentIndex].IdHomologacion)">
-                                                    @if (listaTmp != null && listaTmp.Seleccion.Contains(opcion.MostrarWeb))
-                                                    {
-                                                        <Icon Name="IconName.Check" />
-                                                    }
-                                                    @opcion.MostrarWeb
-                                                </DropdownItem>
-                                            }
-                                        }
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-        <IndexGrilla
+        <FilterSelect
+          selectedFilters="@solicitudBusqueda.Filtros"
+        />
+        <ResultGrid
             @ref="childComponentRef"
-            buscarRequest="@buscarRequest"
-            selectedValues="@selectedValues"
-            listaEtiquetasFiltros="@listaEtiquetasFiltros"
+            solicitudBusqueda="@solicitudBusqueda"
         />
     </div>
 </div>

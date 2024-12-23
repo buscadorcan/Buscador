@@ -23,6 +23,7 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         {
             uploadedFile = e.File;
             Console.WriteLine("OnInputFileChange method called");
+            await Task.CompletedTask;
         }
       
         private async Task RegistrarMigracionExcel()

@@ -1,4 +1,5 @@
 using BlazorBootstrap;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -15,8 +16,8 @@ namespace ClientApp.Pages.Administracion.Usuarios
         public NavigationManager? navigationManager { get; set; }
         [Parameter]
         public int? Id { get; set; }
-        [Inject]
-        public Services.ToastService? toastService { get; set; }
+        // [Inject]
+        // public NotificationService? toastService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,12 +38,12 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 var result = await iUsuariosService.RegistrarOActualizar(usuario);
                 if (result.registroCorrecto)
                 {
-                    toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                    // toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
                     navigationManager?.NavigateTo("/usuarios");
                 }
                 else
                 {
-                    toastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
+                    // toastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
                 }
             }
 

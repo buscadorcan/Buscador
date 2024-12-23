@@ -11,7 +11,7 @@ namespace ClientApp.Pages.Administracion.Grupo
         private Grid<HomologacionDto>? grid;
         private List<HomologacionDto>? listaHomologacions = new List<HomologacionDto>();
         [Inject]
-        private ICatalogosService? iCatalogosService { get; set; }
+        private IApiService? iCatalogosService { get; set; }
         [Inject]
         private IHomologacionService? iHomologacionService { get; set; }
         public event Action? DataLoaded;
@@ -25,11 +25,12 @@ namespace ClientApp.Pages.Administracion.Grupo
                     await JSRuntime.InvokeVoidAsync("initSortable", DotNetObjectReference.Create(this));
                 }
             };
+            await Task.CompletedTask;
         }
         private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {
             if (iCatalogosService != null)
-                listaHomologacions = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupo");
+                listaHomologacions = await iCatalogosService.GetAsync<List<HomologacionDto>>("grupo");
 
             DataLoaded?.Invoke();
 

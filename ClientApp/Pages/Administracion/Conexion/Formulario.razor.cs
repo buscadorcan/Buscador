@@ -15,9 +15,9 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IConexionService? service { get; set; }
         [Inject]
         public NavigationManager? navigationManager { get; set; }
-        private ConexionDto conexion = new ConexionDto();
+        private ONAConexionDto conexion = new ONAConexionDto();
         [Inject]
-        public ICatalogosService? iCatalogosService { get; set; }
+        public IApiService? iCatalogosService { get; set; }
         [Inject]
         public IHomologacionService? iHomologacionService { get; set; }
         private List<HomologacionDto>? listaOrganizaciones = default;
@@ -31,30 +31,30 @@ namespace ClientApp.Pages.Administracion.Conexion
                 listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync(3);
             }
             if (listaVwHomologacion == null && iCatalogosService != null)
-                listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+                listaVwHomologacion = await iCatalogosService.GetAsync<List<HomologacionDto>>("dimension");
 
             if (Id > 0 && service != null)
             {
                 conexion = await service.GetConexionAsync(Id.Value);
-                try
-                {
-                    var ids = JsonConvert.DeserializeObject<List<int>>(conexion.Filtros ?? "[]");
-                    foreach (var item in ids ?? [])
-                    {
-                        var h = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == item);
-                        if (h != null)
-                        {
-                            lista = lista?.Append(h).ToList();
-                        }
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+                // try
+                // {
+                //     var ids = JsonConvert.DeserializeObject<List<int>>(conexion.Filtros ?? "[]");
+                //     foreach (var item in ids ?? [])
+                //     {
+                //         var h = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == item);
+                //         if (h != null)
+                //         {
+                //             lista = lista?.Append(h).ToList();
+                //         }
+                //     }
+                // }
+                // catch (System.Exception ex)
+                // {
+                //     Console.WriteLine(ex);
+                // }
             } else
             {
-                conexion.Filtros = "[]";
+                // conexion.Filtros = "[]";
                 conexion.Migrar = "N";
             }
         }
@@ -65,7 +65,7 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (service != null)
             {
                 var idHomologaciones = lista?.Select(s => s.IdHomologacion).ToList();
-                conexion.Filtros = JsonConvert.SerializeObject(idHomologaciones);
+                // conexion.Filtros = JsonConvert.SerializeObject(idHomologaciones);
 
                 var result = await service.RegistrarOActualizar(conexion);
                 if (result.registroCorrecto)
@@ -83,16 +83,16 @@ namespace ClientApp.Pages.Administracion.Conexion
         }
         private void CambiarSeleccionOrganizacion(string _organizacionSelected)
         {
-            conexion.CodigoHomologacion = _organizacionSelected;
+            // conexion.CodigoHomologacion = _organizacionSelected;
         }
         private void CambiarSeleccionMotor (string _motorBaseDatos)
         {
-            conexion.MotorBaseDatos = _motorBaseDatos;
+            // conexion.MotorBaseDatos = _motorBaseDatos;
         }
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {
             if (listaVwHomologacion == null && iCatalogosService != null)
-                listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+                listaVwHomologacion = await iCatalogosService.GetAsync<List<HomologacionDto>>("dimension");
 
             return await Task.FromResult(request.ApplyTo((listaVwHomologacion ?? new List<HomologacionDto>()).OrderBy(vmH => vmH.MostrarWebOrden)));
         }

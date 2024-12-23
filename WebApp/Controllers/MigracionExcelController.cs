@@ -11,11 +11,6 @@ namespace WebApp.Controllers
 {
   [Route("api/migracionexcel")]
   [ApiController]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(StatusCodes.Status403Forbidden)]
-  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class MigacionExcelController(
     IMigracionExcelRepository iRepo,
     IMapper mapper,
@@ -24,6 +19,7 @@ namespace WebApp.Controllers
   {
     private readonly IMigracionExcelRepository _iRepo = iRepo;
     private readonly IMapper _mapper = mapper;
+    private readonly IExcelService _importer = importer;
     [Authorize]
     [HttpGet]
     public IActionResult FindAll()
@@ -63,11 +59,11 @@ namespace WebApp.Controllers
           file.CopyTo(stream);
         }
           
-        MigracionExcel migracion = iRepo.Create(new MigracionExcel{
+        MigracionExcel migracion = _iRepo.Create(new MigracionExcel{
           MigracionEstado = "PENDING",
           ExcelFileName = file.FileName
         });
-        var result = importer.ImportarExcel(path, migracion);
+        var result = _importer.ImportarExcel(path, migracion);
 
         return Ok(new RespuestasAPI<bool>{
           IsSuccess = result

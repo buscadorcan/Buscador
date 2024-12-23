@@ -6,5 +6,6 @@ namespace SharedApp.Models.Dtos
     public string? MostrarWeb { get; set; }
     public string? TooltipWeb { get; set; }
     public int MostrarWebOrden { get; set; }
+    public List<FnFiltroDetalleDto>? Detalles { get; set; }
   }
 }

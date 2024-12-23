@@ -104,7 +104,7 @@ namespace WebApp.Service.IService
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
           int[] newHomologacionIds = homologaciones.Select(h => h.IdHomologacion).ToArray();
-          string[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
+          string?[] newSelectFields = homologaciones.Select(h => h.NombreHomologado).ToArray();
           string selectQuery = buildSelectViewQuery(connection, viewName, newSelectFields, newHomologacionIds);
           if (selectQuery == "") { return false; }
 
@@ -188,7 +188,7 @@ namespace WebApp.Service.IService
         for (int col = 0; col < columns.Count; col++)
         {
           try {
-            string indexValue = row[col]?.ToString()?.ToLower()?.Trim();
+            string? indexValue = row[col]?.ToString()?.ToLower()?.Trim();
 
             if (string.IsNullOrEmpty(indexValue)) { continue; }
 
@@ -230,7 +230,7 @@ namespace WebApp.Service.IService
         return canDataSetJson.ToString();
       }
 
-      string buildSelectViewQuery(SqlConnection connection, string viewName, string[] selectFields, int[] homologacionIds)
+      string buildSelectViewQuery(SqlConnection connection, string viewName, string?[] selectFields, int[] homologacionIds)
       {
         if(!viewExists(connection, viewName))
         {
@@ -241,7 +241,7 @@ namespace WebApp.Service.IService
         List<int> newHomologacionIds = new List<int>();
         List<string> newSelectFields = new List<string>();
 
-        foreach (string field in selectFields)
+        foreach (string? field in selectFields)
         {
           if (fieldExists(connection, viewName, field))
           {
