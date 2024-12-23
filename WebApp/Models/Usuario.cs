@@ -9,7 +9,6 @@ namespace WebApp.Models
     public int IdUsuario { get; set; }
     [Required]
     public int IdHomologacionRol { get; set; }
-    [Required]
     public int IdONA { get; set; }
     [Required]
     public string? Nombre { get; set; }

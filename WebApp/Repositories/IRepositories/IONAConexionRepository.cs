@@ -7,7 +7,7 @@ namespace WebApp.Repositories.IRepositories
     bool Update(ONAConexion data);
     bool Create(ONAConexion data);
     ONAConexion? FindById(int Id);
-    ONAConexion? FindBySiglas(string siglas);
+    ONAConexion? FindByIdONA(int IdONA);
     List<ONAConexion> FindAll();
   }
 }

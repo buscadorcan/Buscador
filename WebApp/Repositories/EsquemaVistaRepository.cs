@@ -6,50 +6,51 @@ using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
-  public class ONAConexionRepository : BaseRepository, IONAConexionRepository
+  public class EsquemaVistaRepository : BaseRepository, IEsquemaVistaRepository
   {
     private readonly IJwtService _jwtService;
-    public ONAConexionRepository(
+    public EsquemaVistaRepository(
       IJwtService jwtService,
-      ILogger<ONAConexionRepository> logger,
+      ILogger<UsuarioRepository> logger,
       ISqlServerDbContextFactory sqlServerDbContextFactory
     ) : base(sqlServerDbContextFactory, logger)
     {
       _jwtService = jwtService;
-    }
-    public bool Create(ONAConexion data)
+    }    
+    public bool Create(EsquemaVista data)
     {
       data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
       data.IdUserModifica = data.IdUserCreacion;
 
       return ExecuteDbOperation(context => {
-        context.ONAConexion.Add(data);
+        context.EsquemaVista.Add(data);
         return context.SaveChanges() >= 0;
       });
     }
-    public ONAConexion? FindById(int id)
+    public EsquemaVista? FindById(int id)
     {
-      return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == id));
+      return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquemaVista == id));
     }
-    public ONAConexion? FindByIdONA(int IdONA)
+    public EsquemaVista? FindByIdEsquema(int idEsquema)
     {
-      return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == IdONA));
+        return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquema == idEsquema));
     }
-    public List<ONAConexion> FindAll()
+    public List<EsquemaVista> FindAll()
     {
-      return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.FechaCreacion).ToList());
+      return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
     }
-    public bool Update(ONAConexion newRecord)
+    public bool Update(EsquemaVista newRecord)
     {
       return ExecuteDbOperation(context => {
-        var _exits = MergeEntityProperties(context, newRecord, u => u.IdONA == newRecord.IdONA);
+        var _exits = MergeEntityProperties(context, newRecord, u => u.IdEsquemaVista == newRecord.IdEsquemaVista);
 
         _exits.FechaModifica = DateTime.Now;
         _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
-        context.ONAConexion.Update(_exits);
+        context.EsquemaVista.Update(_exits);
         return context.SaveChanges() >= 0;
       });
     }
+
   }
 }
