@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{A01765A5-3AC6-4E8E-A87A-0DFB3CAD6572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{A01765A5-3AC6-4E8E-A87A-0DFB3CAD6572}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{0CEDE22B-C16B-4ACD-95A8-0669B3615520}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{0CEDE22B-C16B-4ACD-95A8-0669B3615520}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApp", "ClientApp\ClientApp.csproj", "{84217101-74C4-4504-9BA7-D553822A1D64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApp", "ClientApp\ClientApp.csproj", "{84217101-74C4-4504-9BA7-D553822A1D64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedApp", "SharedApp\SharedApp.csproj", "{D2C87F32-2E95-4E36-BAFE-F01F564D307F}"
 EndProject
@@ -17,9 +17,6 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A01765A5-3AC6-4E8E-A87A-0DFB3CAD6572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -42,5 +39,11 @@ Global
 		{7ADEAC1B-7683-43F2-87AE-419E9F0164AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ADEAC1B-7683-43F2-87AE-419E9F0164AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ADEAC1B-7683-43F2-87AE-419E9F0164AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18839E30-EFBF-4403-AE1C-4AC58E958370}
 	EndGlobalSection
 EndGlobal

@@ -8,7 +8,7 @@
 
 <PageTitle>Formulario Usuarios</PageTitle>
 
-<EditForm Model="conexion" OnValidSubmit="RegistrarConexion" class="pt-4">
+<EditForm Model="conexion"  OnValidSubmit="RegistrarConexion" class="pt-4">
     <DataAnnotationsValidator />
 
     <div class="card border">
@@ -22,7 +22,7 @@
                 <label class="col-form-label">Sistema</label>
                 <div class="col">
                     <Dropdown AutoClose="true">
-                        <DropdownToggleButton Color="ButtonColor.Secondary">
+ @*                        <DropdownToggleButton Color="ButtonColor.Secondary">
                             @if (!string.IsNullOrEmpty(conexion.CodigoHomologacion))
                             {
                                 @listaOrganizaciones.First(c => c.IdHomologacion.Equals(conexion.CodigoHomologacion)).MostrarWeb
@@ -31,7 +31,7 @@
                             {
                                 <span>Seleccionar ORG</span>
                             }
-                        </DropdownToggleButton>
+                        </DropdownToggleButton> *@
                         <DropdownMenu>
                             @if (listaOrganizaciones != null)
                             {
@@ -45,7 +45,7 @@
                             }
                         </DropdownMenu>
                     </Dropdown>
-                    <ValidationMessage For="(() => conexion.CodigoHomologacion)" />
+                    <ValidationMessage For="(() => conexion.IdONA)" />
                 </div>
             </div>
 
@@ -54,9 +54,9 @@
                 <div class="col">
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">
-                            @if (!string.IsNullOrEmpty(conexion.MotorBaseDatos))
+                            @if (!string.IsNullOrEmpty(conexion.BaseDatos))
                             {
-                                @conexion.MotorBaseDatos
+                                @conexion.BaseDatos
                             }
                             else
                             {
@@ -74,7 +74,7 @@
                             }
                         </DropdownMenu>
                     </Dropdown>
-                    <ValidationMessage For="(() => conexion.MotorBaseDatos)" />
+                    <ValidationMessage For="(() => conexion.BaseDatos)" />
                 </div>
             </div>
 
@@ -118,13 +118,13 @@
                 </div>
             </div>
 
-            <div class="form-row py-2">
+@*             <div class="form-row py-2">
                 <label class="col-form-label">TiempoEspera Segundos</label>
                 <div class="col">
                     <InputNumber @bind-Value="conexion.TiempoEspera" class="form-control" placeholder="TiempoEspera..." />
                     <ValidationMessage For="(() => conexion.TiempoEspera)" />
                 </div>
-            </div>
+            </div> *@
 
             <div class="form-row py-2">
                 <label class="col-form-label">Filtros</label>

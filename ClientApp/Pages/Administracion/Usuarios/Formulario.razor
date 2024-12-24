@@ -55,14 +55,14 @@
                 <div class="col">
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">
-                        @usuario.Rol
+                        @usuario.IdHomologacionRol
                         </DropdownToggleButton>
                         <DropdownMenu>
                             <DropdownItem @onclick="@(() => OnAutoCompleteChanged("USER"))">USER</DropdownItem>
                             <DropdownItem @onclick="@(() => OnAutoCompleteChanged("ADMIN"))">ADMIN</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
-                    <ValidationMessage For="(() => usuario.Rol)" />
+                    <ValidationMessage For="(() => usuario.IdHomologacionRol)" />
                 </div>
             </div>
 

@@ -40,7 +40,7 @@ namespace ClientApp.Services
 
                     await _localStorage.SetItemAsync(Inicializar.Token_Local, result?.Token);
                     await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
-                    await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.Rol);
+                    await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);
                     ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioLogueado(result?.Token ?? "");
                     _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result?.Token);
                 }

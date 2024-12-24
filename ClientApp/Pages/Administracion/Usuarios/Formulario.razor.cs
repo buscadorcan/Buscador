@@ -24,7 +24,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 usuario = await iUsuariosService.GetUsuarioAsync(Id.Value);
                 usuario.Clave = null;
             } else {
-                usuario.Rol = "USER";
+                usuario.IdHomologacionRol = 18;
                 usuario.Estado = "A";
             }
         }
@@ -49,7 +49,18 @@ namespace ClientApp.Pages.Administracion.Usuarios
             saveButton.HideLoading();
         }
         private void OnAutoCompleteChanged(string rol) {
-            usuario.Rol = rol;
+
+            int idrol;
+            if (rol == "ADMIN")
+            {
+                idrol = 18;
+                usuario.IdHomologacionRol = idrol;
+            }
+            else if (rol == "USER")
+            {
+                idrol = 17;
+                usuario.IdHomologacionRol = idrol;
+            }
         }
     }
 }

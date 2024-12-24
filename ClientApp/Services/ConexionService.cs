@@ -32,28 +32,28 @@ namespace ClientApp.Services {
             }
         }
 
-        public async Task<ConexionDto> GetConexionAsync(int idConexion)
+        public async Task<ONAConexionDto> GetConexionAsync(int idConexion)
         {
             var response = await _httpClient.GetAsync($"{url}/{idConexion}");
             response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ConexionDto>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ONAConexionDto>>()).Result;
         }
 
-        public async Task<List<ConexionDto>> GetConexionsAsync()
+        public async Task<List<ONAConexionDto>> GetConexionsAsync()
         {
             var response = await _httpClient.GetAsync($"{url}");
             response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<ConexionDto>>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<ONAConexionDto>>>()).Result;
         }
 
-        public async Task<RespuestaRegistro> RegistrarOActualizar(ConexionDto registro)
+        public async Task<RespuestaRegistro> RegistrarOActualizar(ONAConexionDto registro)
         {
             var content = JsonConvert.SerializeObject(registro);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             HttpResponseMessage response;
-            if (registro.IdConexion > 0)
+            if (registro.IdONA > 0)
             {
-                response = await _httpClient.PutAsync($"{url}/{registro.IdConexion}", bodyContent);
+                response = await _httpClient.PutAsync($"{url}/{registro.IdONA}", bodyContent);
             }
             else
             {
