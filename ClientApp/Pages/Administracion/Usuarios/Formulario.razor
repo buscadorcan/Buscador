@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Authorization;
 @using ClientApp.Services.IService
 @using SharedApp.Models.Dtos;
-@attribute [Authorize]
+@* @attribute [Authorize] *@
 
 <PageTitle>Formulario Usuarios</PageTitle>
 
@@ -60,6 +60,24 @@
                         <DropdownMenu>
                             <DropdownItem @onclick="@(() => OnAutoCompleteChanged("USER"))">USER</DropdownItem>
                             <DropdownItem @onclick="@(() => OnAutoCompleteChanged("ADMIN"))">ADMIN</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <ValidationMessage For="(() => usuario.IdHomologacionRol)" />
+                </div>
+            </div>
+
+            <div class="form-row py-2">
+                <label class="col-form-label">Pais ONA</label>
+                <div class="col">
+                    <Dropdown AutoClose="true">
+                        <DropdownToggleButton Color="ButtonColor.Secondary">
+                            @usuario.IdONA
+                        </DropdownToggleButton>
+                        <DropdownMenu>
+                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Ecuador"))">Ecuador</DropdownItem>
+                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Colombia"))">Colombia</DropdownItem>
+                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Peru"))">Perú</DropdownItem>
+                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Bolivia"))">Bolivia</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <ValidationMessage For="(() => usuario.IdHomologacionRol)" />

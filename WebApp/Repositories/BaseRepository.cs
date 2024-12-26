@@ -1,3 +1,4 @@
+using System.Data.SqlTypes;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Service;
@@ -14,22 +15,27 @@ namespace WebApp.Repositories
       _logger = logger;
       _sqlServerDbContextFactory = sqlServerDbContextFactory;
     }
-    protected TResult ExecuteDbOperation<TResult>(Func<SqlServerDbContext, TResult> operation)
-    {
-      try
-      {
-        using (var context = _sqlServerDbContextFactory.CreateDbContext())
+        protected TResult ExecuteDbOperation<TResult>(Func<SqlServerDbContext, TResult> operation)
         {
-          return operation(context);
+            try
+            {
+                using (var context = _sqlServerDbContextFactory.CreateDbContext())
+                {
+                    return operation(context);
+                }
+            }
+            catch (SqlNullValueException ex)
+            {
+                _logger.LogError(ex, "SQL Null value exception occurred");
+                throw new Exception("A null value was encountered in the database operation", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error executing database operation");
+                throw new Exception("Database operation failed", ex);
+            }
         }
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError(ex, "Error executing database operation");
-        throw new Exception("Database operation failed", ex);
-      }
-    }
-    protected async Task<TResult> ExecuteDbOperationAsync<TResult>(Func<SqlServerDbContext, Task<TResult>> operation)
+        protected async Task<TResult> ExecuteDbOperationAsync<TResult>(Func<SqlServerDbContext, Task<TResult>> operation)
     {
       try
       {

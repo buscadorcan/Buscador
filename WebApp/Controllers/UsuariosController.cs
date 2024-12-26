@@ -62,7 +62,7 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(RecoverAsync));
       }
     }
-    [Authorize]
+    //[Authorize]
     [HttpPost("registro")]
     public IActionResult Create([FromBody] UsuarioDto dto)
     {
@@ -83,7 +83,7 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(Create));
       }
     }
-    [Authorize]
+    //[Authorize]
     [HttpGet]
     public IActionResult FindAll()
     {
@@ -98,7 +98,7 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(FindAll));
       }
     }
-    [Authorize]
+    //[Authorize]
     [HttpGet("{idUsuario:int}", Name = "FindById")]
     public IActionResult FindById(int idUsuario)
     {

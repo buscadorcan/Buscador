@@ -62,5 +62,31 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 usuario.IdHomologacionRol = idrol;
             }
         }
+
+        private void OnAutoCompletePaisOnaChanged(string rol)
+        {
+
+            int idONA;
+            if (rol == "Ecuador")
+            {
+                idONA = 1;
+                usuario.IdONA = idONA;
+            }
+            else if (rol == "Colombia")
+            {
+                idONA = 2;
+                usuario.IdONA = idONA;
+            }
+            else if (rol == "Peru")
+            {
+                idONA = 3;
+                usuario.IdONA = idONA;
+            }
+            else if (rol == "Bolivia")
+            {
+                idONA = 4;
+                usuario.IdONA = idONA;
+            }
+        }
     }
 }
