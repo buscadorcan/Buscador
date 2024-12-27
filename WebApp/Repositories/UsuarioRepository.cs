@@ -30,10 +30,33 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.Usuario.AsNoTracking().FirstOrDefault(c => c.IdUsuario == idUsuario));
         }
-        public ICollection<Usuario> FindAll()
+        public ICollection<UsuarioDto> FindAll()
         {
-            return ExecuteDbOperation(context => 
-                context.Usuario.AsNoTracking().OrderBy(c => c.IdUsuario).ToList());
+            //return ExecuteDbOperation(context => 
+            //    context.Usuario.AsNoTracking().OrderBy(c => c.IdUsuario).ToList());
+            return ExecuteDbOperation(context =>
+            {
+                // Realizamos el join entre Usuario y Homologacion
+                var query = from usuario in context.Usuario.AsNoTracking()
+                            join homologacion in context.VwRol.AsNoTracking()
+                            on usuario.IdHomologacionRol equals homologacion.IdHomologacionRol
+                            join ona in context.ONA.AsNoTracking()
+                            on usuario.IdONA equals ona.IdONA
+                            orderby usuario.IdUsuario
+                            select new UsuarioDto
+                            {
+                                Nombre = usuario.Nombre,
+                                Apellido = usuario.Apellido,
+                                Telefono = usuario.Telefono,
+                                Email = usuario.Email,
+                                Rol = homologacion.Rol,
+                                Estado = usuario.Estado,
+                                RazonSocial =  ona.RazonSocial
+                            };
+
+                // Devolvemos la lista resultante
+                return query.ToList();
+            });
         }
         public bool IsUniqueUser(string email)
         {

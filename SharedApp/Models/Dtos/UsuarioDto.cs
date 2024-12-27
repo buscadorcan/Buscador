@@ -20,5 +20,7 @@ namespace SharedApp.Models.Dtos
     public string? Clave { get; set; }
     [Required]
     public string? Estado { get; set; }
-  }
+    public string Rol { get; set; }
+    public string RazonSocial { get; set; }
+    }
 }
