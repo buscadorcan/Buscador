@@ -121,7 +121,7 @@ namespace WebApp.Controllers
       }
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpPut("{idUsuario:int}", Name = "Update")]
     public IActionResult Update(int idUsuario, [FromBody] UsuarioDto dto)
     {

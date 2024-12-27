@@ -31,6 +31,47 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 if (usuario != null)
                 {
                     usuario.Clave = null;
+
+                    listaRoles = await iUsuariosService.GetRolesAsync();
+                    listaOna = await iUsuariosService.GetOnaAsync();
+
+                    var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == usuario.IdHomologacionRol);
+
+                    if (rolRelacionado != null)
+                    {
+                        usuario.Rol = rolRelacionado.Rol; 
+                    
+                    } else
+                    {
+                        var usuarioMaster = listaRoles
+                   .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
+                   .OrderBy(rol => rol.IdHomologacionRol)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                   .FirstOrDefault();
+
+                        if (usuarioMaster != null)
+                        {
+                            usuario.Rol = usuarioMaster.Rol;
+                        }
+                    }
+
+                    var razonSocial = listaOna.FirstOrDefault(ona => ona.IdONA == usuario.IdONA);
+
+                    if (razonSocial != null)
+                    {
+
+                        usuario.RazonSocial = razonSocial.RazonSocial;
+                    }
+                    else
+                    {
+                        var KEY_ECU_SAE = listaOna
+                   .Where(ona => ona.IdONA == ona.IdONA)  // Filtrar solo los roles "UsuarioMaster"
+                   .OrderBy(ona => ona.IdONA)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                   .FirstOrDefault();
+                        if (KEY_ECU_SAE != null)
+                        {
+                            usuario.RazonSocial = KEY_ECU_SAE.RazonSocial;
+                        }
+                    }
                 }
             }
             else
@@ -40,7 +81,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                 if (listaRoles != null && listaRoles.Any())
                 {
-                    var usuarioMaster = listaRoles.FirstOrDefault(rol => rol.Rol == "UsuarioMaster");
+                    var usuarioMaster = listaRoles
+                    .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
+                    .OrderBy(rol => rol.IdHomologacionRol)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                    .FirstOrDefault();
+
                     if (usuarioMaster != null)
                     {
                         usuario.Rol = usuarioMaster.Rol;
@@ -53,7 +98,10 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                 if (listaOna != null && listaOna.Any())
                 {
-                    var KEY_ECU_SAE = listaOna.FirstOrDefault(ona => ona.RazonSocial == "KEY_ECU_SAE");
+                    var KEY_ECU_SAE = listaOna
+                    .Where(ona => ona.IdONA == ona.IdONA)  // Filtrar solo los roles "UsuarioMaster"
+                    .OrderBy(ona => ona.IdONA)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                    .FirstOrDefault();
                     if (KEY_ECU_SAE != null)
                     {
                         usuario.RazonSocial = KEY_ECU_SAE.RazonSocial;
@@ -99,26 +147,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             usuario.Rol = rol;
             usuario.IdHomologacionRol = idRol;  
-            //int idrol;
-            //if (rol == "UsuarioMaster")
-            //{
-            //    idrol = 15;
-            //    usuario.Rol = rol;
-            //    usuario.IdHomologacionRol = idrol;
-            //}
-            //else if (rol == "UsuarioOna")
-            //{
-            //    idrol = 16;
-            //    usuario.Rol = rol;
-            //    usuario.IdHomologacionRol = idrol;
-            //}
-            //else if (rol == "UsuarioRead")
-            //{
-            //    idrol = 17;
-            //    usuario.Rol = rol;
-            //    usuario.IdHomologacionRol = idrol;
-            //}
-
+           
         }
 
         private void OnAutoCompleteRazonSocOnaChanged(string razonSocial, int idOna)
@@ -127,27 +156,6 @@ namespace ClientApp.Pages.Administracion.Usuarios
             usuario.RazonSocial = razonSocial;
             usuario.IdONA = idOna;
 
-            //int idONA;
-            //if (rol == "Ecuador")
-            //{
-            //    idONA = 1;
-            //    usuario.IdONA = idONA;
-            //}
-            //else if (rol == "Colombia")
-            //{
-            //    idONA = 2;
-            //    usuario.IdONA = idONA;
-            //}
-            //else if (rol == "Peru")
-            //{
-            //    idONA = 3;
-            //    usuario.IdONA = idONA;
-            //}
-            //else if (rol == "Bolivia")
-            //{
-            //    idONA = 4;
-            //    usuario.IdONA = idONA;
-            //}
         }
     }
 }
