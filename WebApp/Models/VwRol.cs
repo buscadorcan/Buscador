@@ -9,5 +9,6 @@ namespace WebApp.Models
     [Key]
     public int IdHomologacionRol { get; set; }
     public string? Rol { get; set; }
-  }
+    public string? CodigoHomologacion { get; set; }
+    }
 }

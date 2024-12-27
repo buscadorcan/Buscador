@@ -55,11 +55,12 @@
                 <div class="col">
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">
-                        @usuario.IdHomologacionRol
+                        @usuario.Rol
                         </DropdownToggleButton>
                         <DropdownMenu>
-                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("USER"))">USER</DropdownItem>
-                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("ADMIN"))">ADMIN</DropdownItem>
+                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("UsuarioMaster"))">UsuarioMaster</DropdownItem>
+                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("UsuarioOna"))">UsuarioOna</DropdownItem>
+                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("UsuarioRead"))">UsuarioRead</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <ValidationMessage For="(() => usuario.IdHomologacionRol)" />
@@ -67,7 +68,7 @@
             </div>
 
             <div class="form-row py-2">
-                <label class="col-form-label">Pais ONA</label>
+                <label class="col-form-label">Razon Social</label>
                 <div class="col">
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">

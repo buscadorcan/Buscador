@@ -39,7 +39,8 @@ namespace WebApp.Repositories
                 // Realizamos el join entre Usuario y Homologacion
                 var query = from usuario in context.Usuario.AsNoTracking()
                             join homologacion in context.VwRol.AsNoTracking()
-                            on usuario.IdHomologacionRol equals homologacion.IdHomologacionRol
+                            on usuario.IdHomologacionRol equals homologacion.IdHomologacionRol into homologacionJoin
+                            from homologacion in homologacionJoin.DefaultIfEmpty()
                             join ona in context.ONA.AsNoTracking()
                             on usuario.IdONA equals ona.IdONA
                             orderby usuario.IdUsuario

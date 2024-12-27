@@ -26,6 +26,8 @@ namespace ClientApp.Services {
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<UsuarioDto>>>()).Result;
         }
 
+
+
         public async Task<UsuarioDto> GetUsuarioAsync(int IdUsuario)
         {
             var response = await _httpClient.GetAsync($"{url2}/{IdUsuario}");
@@ -34,6 +36,17 @@ namespace ClientApp.Services {
         }
         public async Task<RespuestaRegistro> RegistrarOActualizar(UsuarioDto registro)
         {
+            if (registro.Rol == null)
+            {
+                registro.Rol = "";
+            }
+
+            if (registro.RazonSocial == null)
+            {
+                registro.RazonSocial = "";
+            }
+
+
             var content = JsonConvert.SerializeObject(registro);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             HttpResponseMessage response = null;

@@ -9,6 +9,8 @@ namespace ClientApp.Pages.Administracion.Usuarios
     {
         private Button saveButton = default!;
         private UsuarioDto usuario = new UsuarioDto();
+        private List<string> roles = new List<string>();
+
         [Inject]
         public IUsuariosService? iUsuariosService { get; set; }
         [Inject]
@@ -18,15 +20,21 @@ namespace ClientApp.Pages.Administracion.Usuarios
         [Inject]
         public Services.ToastService? toastService { get; set; }
 
+        private List<UsuarioDto>? listaUsuarios;
+
         protected override async Task OnInitializedAsync()
         {
             if (Id > 0 && iUsuariosService != null) {
                 usuario = await iUsuariosService.GetUsuarioAsync(Id.Value);
                 usuario.Clave = null;
             } else {
-                usuario.IdHomologacionRol = 18;
+                usuario.Rol = "UsuarioMaster";
                 usuario.Estado = "A";
             }
+
+       
+
+
         }
         private async Task RegistrarUsuario()
         {
@@ -48,19 +56,28 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             saveButton.HideLoading();
         }
-        private void OnAutoCompleteChanged(string rol) {
+        private async Task OnAutoCompleteChanged(string rol) {
 
             int idrol;
-            if (rol == "ADMIN")
+            if (rol == "UsuarioMaster")
             {
-                idrol = 18;
+                idrol = 15;
+                usuario.Rol = rol;
                 usuario.IdHomologacionRol = idrol;
             }
-            else if (rol == "USER")
+            else if (rol == "UsuarioOna")
+            {
+                idrol = 16;
+                usuario.Rol = rol;
+                usuario.IdHomologacionRol = idrol;
+            }
+            else if (rol == "UsuarioRead")
             {
                 idrol = 17;
+                usuario.Rol = rol;
                 usuario.IdHomologacionRol = idrol;
             }
+
         }
 
         private void OnAutoCompletePaisOnaChanged(string rol)
