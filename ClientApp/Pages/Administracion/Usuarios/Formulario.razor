@@ -53,34 +53,54 @@
             <div class="form-row py-2">
                 <label class="col-form-label">Rol</label>
                 <div class="col">
-                    <Dropdown AutoClose="true">
-                        <DropdownToggleButton Color="ButtonColor.Secondary">
-                        @usuario.Rol
-                        </DropdownToggleButton>
-                        <DropdownMenu>
-                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("UsuarioMaster"))">UsuarioMaster</DropdownItem>
-                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("UsuarioOna"))">UsuarioOna</DropdownItem>
-                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("UsuarioRead"))">UsuarioRead</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
+                    @if (listaRoles != null && listaRoles.Any() && usuario != null)
+                    {
+                        <Dropdown AutoClose="true">
+                            <DropdownToggleButton Color="ButtonColor.Secondary">
+                                @usuario.Rol  <!-- Mostrar el valor de 'usuario.Rol' -->
+                            </DropdownToggleButton>
+
+                            <DropdownMenu>
+                                @foreach (var rol in listaRoles)
+                                {
+                                    <DropdownItem @onclick="@(() => OnAutoCompleteChanged(rol.Rol,rol.IdHomologacionRol))">@rol.Rol</DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
+                    }
+                    else
+                    {
+                        <p>Cargando roles...</p>  <!-- Mensaje de espera si los roles no están cargados -->
+                    }
+
                     <ValidationMessage For="(() => usuario.IdHomologacionRol)" />
                 </div>
             </div>
 
+
             <div class="form-row py-2">
-                <label class="col-form-label">Razon Social</label>
+                <label class="col-form-label">Razón Social</label>
                 <div class="col">
-                    <Dropdown AutoClose="true">
-                        <DropdownToggleButton Color="ButtonColor.Secondary">
-                            @usuario.IdONA
-                        </DropdownToggleButton>
-                        <DropdownMenu>
-                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Ecuador"))">Ecuador</DropdownItem>
-                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Colombia"))">Colombia</DropdownItem>
-                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Peru"))">Perú</DropdownItem>
-                            <DropdownItem @onclick="@(() => OnAutoCompletePaisOnaChanged("Bolivia"))">Bolivia</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
+                    @if (listaOna != null && listaOna.Any() && usuario != null)
+                    {
+                        <Dropdown AutoClose="true">
+                            <DropdownToggleButton Color="ButtonColor.Secondary">
+                                @usuario.RazonSocial  <!-- Mostrar el valor de 'usuario.Rol' -->
+                            </DropdownToggleButton>
+
+                            <DropdownMenu>
+                                @foreach (var ona in listaOna)
+                                {
+                                    <DropdownItem @onclick="@(() => OnAutoCompleteRazonSocOnaChanged(ona.RazonSocial, ona.IdONA))">@ona.RazonSocial</DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
+                    }
+                    else
+                    {
+                        <p>Cargando Razon Social...</p>  <!-- Mensaje de espera si los roles no están cargados -->
+                    }
+
                     <ValidationMessage For="(() => usuario.IdHomologacionRol)" />
                 </div>
             </div>

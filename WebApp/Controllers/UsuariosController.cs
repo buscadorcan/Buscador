@@ -120,6 +120,7 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(FindById));
       }
     }
+
     [Authorize]
     [HttpPut("{idUsuario:int}", Name = "Update")]
     public IActionResult Update(int idUsuario, [FromBody] UsuarioDto dto)

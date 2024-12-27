@@ -46,6 +46,8 @@ namespace WebApp.Repositories.IRepositories
     /// <returns>Una lista de objetos <see cref="VwRol"/>.</returns>
     List<VwRol> ObtenerVwRol();
 
+    List<ONA> ObtenerOna();
+
     /// <summary>
     /// Obtiene los puntos de acceso.
     /// </summary>

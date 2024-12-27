@@ -124,7 +124,7 @@ namespace WebApp.Controllers
     /// Obtiene el esquema de roles. Requiere autorización.
     /// </summary>
     /// <returns>Una lista con el esquema de roles.</returns>
-    [Authorize]
+    //[Authorize]
     [HttpGet("roles")]
     public IActionResult ObtenerVwRol()
     {
@@ -140,11 +140,27 @@ namespace WebApp.Controllers
       }
     }
 
-    /// <summary>
-    /// Obtiene los puntos de acceso.
-    /// </summary>
-    /// <returns>Una lista con los puntos de acceso.</returns>
-    [HttpGet("points")]
+        [HttpGet("ona")]
+        public IActionResult ObtenerOna()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<OnaDto>>
+                {
+                    Result = _vhRepo.ObtenerOna().Select(item => _mapper.Map<OnaDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerOna));
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los puntos de acceso.
+        /// </summary>
+        /// <returns>Una lista con los puntos de acceso.</returns>
+        [HttpGet("points")]
     public IActionResult ObtenerVwEndPoint()
     {
       try

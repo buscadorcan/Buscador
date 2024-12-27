@@ -24,11 +24,11 @@
     <GridColumn TItem="UsuarioDto" HeaderText="Rol" PropertyName="Rol">
         @context.Rol
     </GridColumn>
-    <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
-        @context.Estado
-    </GridColumn>
     <GridColumn TItem="UsuarioDto" HeaderText="Razón Social" PropertyName="RazonSocial">
         @context.RazonSocial
+    </GridColumn>
+    <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
+        @context.Estado
     </GridColumn>
     <GridColumn TItem="UsuarioDto" HeaderText="Editar">
         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-usuario/{context.IdUsuario}")" Size="Size.Small">

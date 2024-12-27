@@ -13,6 +13,8 @@ namespace ClientApp.Services {
         private readonly HttpClient _httpClient;
         private string url = $"{Inicializar.UrlBaseApi}api/usuarios";
         private string url2 = $"{Inicializar.UrlBaseApiBa}api/usuarios";
+        private string url3 = $"{Inicializar.UrlBaseApiBa}api/roles";
+        private string url4 = $"{Inicializar.UrlBaseApiBa}api/ona";
 
         public UsuariosService(HttpClient httpClient)
         {
@@ -26,14 +28,27 @@ namespace ClientApp.Services {
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<UsuarioDto>>>()).Result;
         }
 
-
-
         public async Task<UsuarioDto> GetUsuarioAsync(int IdUsuario)
         {
             var response = await _httpClient.GetAsync($"{url2}/{IdUsuario}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<UsuarioDto>>()).Result;
         }
+        public async Task<List<VwRolDto>> GetRolesAsync()
+        {
+            var response = await _httpClient.GetAsync($"{url3}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwRolDto>>>()).Result;
+        }
+
+        public async Task<List<OnaDto>> GetOnaAsync()
+        {
+            var response = await _httpClient.GetAsync($"{url4}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<OnaDto>>>()).Result;
+        }
+
+       
         public async Task<RespuestaRegistro> RegistrarOActualizar(UsuarioDto registro)
         {
             if (registro.Rol == null)
