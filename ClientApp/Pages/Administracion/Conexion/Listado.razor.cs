@@ -7,11 +7,11 @@ namespace ClientApp.Pages.Administracion.Conexion
 {
     public partial class Listado
     {
-        private Grid<ConexionDto>? grid;
+        private Grid<ONAConexionDto>? grid;
         [Inject]
         private IConexionService? iConexionService { get; set; }
-        private List<ConexionDto>? listasHevd = null;
-        private async Task<GridDataProviderResult<ConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ConexionDto> request)
+        private List<ONAConexionDto>? listasHevd = null;
+        private async Task<GridDataProviderResult<ONAConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ONAConexionDto> request)
         {
             if (listasHevd == null && iConexionService != null)
             {
@@ -24,8 +24,9 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (iConexionService != null && listasHevd != null && grid != null)
             {
                 var respuesta = await iConexionService.EliminarConexion(IdConexion);
-                if (respuesta.registroCorrecto) {
-                    listasHevd = listasHevd.Where(c => c.IdConexion != IdConexion).ToList();
+                if (respuesta.registroCorrecto)
+                {
+                    listasHevd = listasHevd.Where(c => c.IdONA != IdConexion).ToList();
                     await grid.RefreshDataAsync();
                 }
             }

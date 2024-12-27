@@ -3,14 +3,14 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
 
-namespace ClientApp.Pages.Administracion.Usuarios
+namespace ClientApp.Pages.Administracion.ONA
 {
     public partial class Formulario
     {
         private Button saveButton = default!;
-        private UsuarioDto usuario = new UsuarioDto();
+        private ONADto onas = new ONADto();
         [Inject]
-        public IUsuariosService? iUsuariosService { get; set; }
+        public IONAService? iONAsService { get; set; }
         [Inject]
         public NavigationManager? navigationManager { get; set; }
         [Parameter]
@@ -20,25 +20,22 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
         protected override async Task OnInitializedAsync()
         {
-            if (Id > 0 && iUsuariosService != null) {
-                usuario = await iUsuariosService.GetUsuarioAsync(Id.Value);
-                usuario.Clave = null;
-            } else {
-                //usuario.Rol = "USER";
-                usuario.Estado = "A";
-            }
+            if (Id > 0 && iONAsService != null) {
+                onas = await iONAsService.GetONAsAsync(Id.Value);
+
+            } 
         }
-        private async Task RegistrarUsuario()
+        private async Task RegistrarONA()
         {
             saveButton.ShowLoading("Guardando...");
 
-            if (iUsuariosService != null)
+            if (iONAsService != null)
             {
-                var result = await iUsuariosService.RegistrarOActualizar(usuario);
+                var result = await iONAsService.RegistrarONAsActualizar(onas);
                 if (result.registroCorrecto)
                 {
                     toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                    navigationManager?.NavigateTo("/usuarios");
+                    navigationManager?.NavigateTo("/onas");
                 }
                 else
                 {
@@ -48,8 +45,6 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             saveButton.HideLoading();
         }
-        private void OnAutoCompleteChanged(string rol) {
-           var usuario = rol;
-        }
+
     }
 }

@@ -69,32 +69,50 @@ namespace WebApp.Repositories
         }
         public UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
+
             return ExecuteDbOperation(context =>
             {
+                // Generar el hash de la contraseña
                 var passwordEncriptado = _hashService.GenerateHash(usuarioAutenticacionDto.Clave);
+
+                // Verificar que el email no sea nulo
+                if (usuarioAutenticacionDto.Email == null)
+                {
+                    return new UsuarioAutenticacionRespuestaDto();
+                }
+
+                //Buscar el usuario en la base de datos
                 var usuario = context.Usuario.AsNoTracking().FirstOrDefault(u =>
                     u.Email != null &&
-                    usuarioAutenticacionDto.Email != null &&
                     u.Email.ToLower() == usuarioAutenticacionDto.Email.ToLower() &&
                     u.Clave == passwordEncriptado);
 
+
+                // Si no se encuentra el usuario, retornar un objeto vacío
                 if (usuario == null)
                 {
                     return new UsuarioAutenticacionRespuestaDto();
                 }
 
+                // Crear el token JWT
+                var token = _jwtService.GenerateJwtToken(usuario.IdUsuario);
+
+                // Crear el objeto UsuarioDto
+                var usuarioDto = new UsuarioDto
+                {
+                    IdUsuario = usuario.IdUsuario,
+                    Email = usuario.Email,
+                    Nombre = usuario.Nombre,
+                    Apellido = usuario.Apellido,
+                    Telefono = usuario.Telefono,
+                    IdHomologacionRol = usuario.IdHomologacionRol,
+                };
+
+                // Retornar la respuesta con el token y el usuario
                 return new UsuarioAutenticacionRespuestaDto
                 {
-                    Token = _jwtService.GenerateJwtToken(usuario.IdUsuario),
-                    Usuario = new UsuarioDto
-                    {
-                        IdUsuario = usuario.IdUsuario,
-                        Email = usuario.Email,
-                        Nombre = usuario.Nombre,
-                        Apellido = usuario.Apellido,
-                        Telefono = usuario.Telefono,
-                        IdHomologacionRol = usuario.IdHomologacionRol,
-                    }
+                    Token = token,
+                    Usuario = usuarioDto
                 };
             });
         }

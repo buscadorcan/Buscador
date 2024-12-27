@@ -8,7 +8,7 @@
 
 <PageTitle>Formulario Usuarios</PageTitle>
 
-<EditForm Model="conexion" OnValidSubmit="RegistrarConexion" class="pt-4">
+@* <EditForm Model="conexion" OnValidSubmit="RegistrarConexion" class="pt-4">
     <DataAnnotationsValidator />
 
     <div class="card border">
@@ -23,9 +23,9 @@
                 <div class="col">
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">
-                            @if (!string.IsNullOrEmpty(conexion.CodigoHomologacion))
+                            @if (!string.IsNullOrEmpty(conexion.OrigenDatos))
                             {
-                                @listaOrganizaciones.First(c => c.IdHomologacion.Equals(conexion.CodigoHomologacion)).MostrarWeb
+                                @listaOrganizaciones.First(c => c.IdHomologacion.Equals(conexion.OrigenDatos)).MostrarWeb
                             }
                             else
                             {
@@ -159,4 +159,4 @@
             </div>
         </div>
     </div>
-</EditForm>
+</EditForm> *@

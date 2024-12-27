@@ -15,7 +15,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IConexionService? service { get; set; }
         [Inject]
         public NavigationManager? navigationManager { get; set; }
-        private ConexionDto conexion = new ConexionDto();
+        private ONAConexionDto conexion = new ONAConexionDto();
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
         [Inject]
@@ -35,10 +35,10 @@ namespace ClientApp.Pages.Administracion.Conexion
 
             if (Id > 0 && service != null)
             {
-                conexion = await service.GetConexionAsync(Id.Value);
+                var conexion = "";//await service.GetConexionAsync(Id.Value);
                 try
                 {
-                    var ids = JsonConvert.DeserializeObject<List<int>>(conexion.Filtros ?? "[]");
+                    var ids = JsonConvert.DeserializeObject<List<int>>(conexion ?? "[]");
                     foreach (var item in ids ?? [])
                     {
                         var h = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == item);
@@ -54,8 +54,8 @@ namespace ClientApp.Pages.Administracion.Conexion
                 }
             } else
             {
-                conexion.Filtros = "[]";
-                conexion.Migrar = "N";
+                var conexion = "[]";
+                conexion = "N";
             }
         }
         private async Task RegistrarConexion()
@@ -65,13 +65,13 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (service != null)
             {
                 var idHomologaciones = lista?.Select(s => s.IdHomologacion).ToList();
-                conexion.Filtros = JsonConvert.SerializeObject(idHomologaciones);
+                var conexion = JsonConvert.SerializeObject(idHomologaciones);
 
-                var result = await service.RegistrarOActualizar(conexion);
-                if (result.registroCorrecto)
+                var result = true; //await service.RegistrarOActualizar(conexion);
+                if (result)
                 {
                     // toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                    navigationManager?.NavigateTo("/conexion");
+                    //navigationManager?.NavigateTo("/conexion");
                 }
                 else
                 {
@@ -83,11 +83,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         }
         private void CambiarSeleccionOrganizacion(string _organizacionSelected)
         {
-            conexion.CodigoHomologacion = _organizacionSelected;
+            var conexion = _organizacionSelected;
         }
         private void CambiarSeleccionMotor (string _motorBaseDatos)
         {
-            conexion.MotorBaseDatos = _motorBaseDatos;
+            var conexion = _motorBaseDatos;
         }
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {

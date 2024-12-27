@@ -1,0 +1,131 @@
+@page "/nuevo-ona"
+@page "/editar-ona/{Id:int}"
+@layout AdminLayout
+@using Microsoft.AspNetCore.Authorization
+@using ClientApp.Services.IService
+@using SharedApp.Models.Dtos
+
+
+<style>
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
+</style>
+
+<h3>Formulario ONA</h3>
+
+<EditForm Model="onas" OnValidSubmit="RegistrarONA" class="pt-4">
+    <DataAnnotationsValidator />
+
+    <div class="card border">
+        <!-- Título -->
+        <div class="card-header">
+            <h3 class="text-white font-weight-bold text-center m-0">INFORMACION PRINCIPAL ONA</h3>
+        </div>
+
+        <!-- Cuerpo -->
+        <div class="card-body px-lg-5 pt-4">
+            <div class="row">
+                <!-- Columna 1 -->
+                <div class="col-md-6">
+                    <div class="form-group py-2">
+                        <label class="col-form-label">Razón Social</label>
+                        <InputText @bind-Value="onas.RazonSocial" class="form-control" placeholder="Razón Social" />
+                        <ValidationMessage For="(() => onas.RazonSocial)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">País</label>
+                        <InputText @bind-Value="onas.Pais" class="form-control" placeholder="País" />
+                        <ValidationMessage For="(() => onas.Pais)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">Correo</label>
+                        <InputText @bind-Value="onas.Correo" class="form-control" placeholder="Correo" />
+                        <ValidationMessage For="(() => onas.Correo)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">Página Web</label>
+                        <InputText @bind-Value="onas.PaginaWeb" class="form-control" placeholder="Página Web" />
+                        <ValidationMessage For="(() => onas.PaginaWeb)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">URL Ícono</label>
+                        <InputText @bind-Value="onas.UrlIcono" class="form-control" placeholder="URL Ícono" />
+                        <ValidationMessage For="(() => onas.UrlIcono)" />
+                    </div>
+                </div>
+
+                <!-- Columna 2 -->
+                <div class="col-md-6">
+                    <div class="form-group py-2">
+                        <label class="col-form-label">Siglas</label>
+                        <InputText @bind-Value="onas.Siglas" class="form-control" placeholder="Siglas" />
+                        <ValidationMessage For="(() => onas.Siglas)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">Ciudad</label>
+                        <InputText @bind-Value="onas.Ciudad" class="form-control" placeholder="Ciudad" />
+                        <ValidationMessage For="(() => onas.Ciudad)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">Dirección</label>
+                        <InputText @bind-Value="onas.Direccion" class="form-control" placeholder="Dirección" />
+                        <ValidationMessage For="(() => onas.Direccion)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">Teléfono</label>
+                        <InputText @bind-Value="onas.Telefono" class="form-control" placeholder="Teléfono" />
+                        <ValidationMessage For="(() => onas.Telefono)" />
+                    </div>
+
+                    <div class="form-group py-2">
+                        <label class="col-form-label">URL Logo</label>
+                        <InputText @bind-Value="onas.UrlLogo" class="form-control" placeholder="URL Logo" />
+                        <ValidationMessage For="(() => onas.UrlLogo)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie -->
+        <div class="card-footer text-center">
+            <Button @ref="saveButton" Type="ButtonType.Submit" Color="ButtonColor.Success" class="btn btn-success mx-2">
+                Guardar
+            </Button>
+           
+        </div>
+    </div>
+</EditForm>
+
+

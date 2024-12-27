@@ -6,41 +6,6 @@
 
 <PageTitle>Buscador Andino</PageTitle>
 
-<div class="search-area-wrapper">
-    <div class="search-area container">
-        <h3 class="search-header">BUSCADOR SERVICIOS DE EVALUACIÓN DE LA CONFORMIDAD ACREDITADOS EN LA CAN</h3>
-
-        <EditForm Model="buscarRequest" OnValidSubmit="BuscarPalabraRequest" id="search-form" class="search-form clearfix" autocomplete="off">
-            <div style="display: flex; align-items: center; justify-content: center;">
-                <table style="width: 90%;">
-                    <tbody>
-                        <tr>
-                            <td style="width: 90%;">
-                                <AutoComplete @bind-Value="buscarRequest.TextoBuscar"
-                                    TItem="FnPredictWordsDto"
-                                    DataProvider="FnPredictWordsDtoDataProvider"
-                                    PropertyName="Word"
-                                    Placeholder="Ingrese Texto a buscar..."
-                                    OnChanged="(FnPredictWordsDto Word) => OnAutoCompleteChanged(Word)"
-                                />
-                            </td>
-                            <td style="width: 10%;">
-                                <Button Color="ButtonColor.Secondary" @onclick="async () => await BuscarPalabraRequest()">Buscar</Button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <Switch Class="mt-3" @bind-Value="modoBuscar" Label="Busqueda Exacta" style="color: #fff; text-align: left;" />
-                            </td>
-                            <td />
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </EditForm>
-    </div>
-</div>
-
 <div class="page-container">
     <div class="container">
         <div class="row">
@@ -76,6 +41,7 @@
                     }
                 </div>
             </div>
+
         </div>
         <IndexGrilla
             @ref="childComponentRef"
@@ -83,5 +49,124 @@
             selectedValues="@selectedValues"
             listaEtiquetasFiltros="@listaEtiquetasFiltros"
         />
+    </div>
+</div>
+<div class="pagina">
+    <!-- Contenedor Principal -->
+    <div class="main-container">
+        <!-- Título -->
+        <p class="title">Aprende a usar el buscador en pocos pasos</p>
+
+        <!-- Contenido -->
+        <div class="content-container">
+            <!-- Tabla de Datos -->
+            <div class="data-table">
+                <!-- Paso 01 -->
+                <div class="step-container">
+                    <div class="pais">
+                        <div class="step-number">
+                            <div class="text-wrapper">01</div>
+                        </div>
+                    </div>
+                    <div class="info-total">
+                        <div class="left">
+                            <div class="razon-social">
+                                <p class="step-description">Digite la palabra o frase</p>
+                            </div>
+                            <div class="frame">
+                                <p class="resultados">
+                                    EJ. “Leche”, en el cuadro de texto, el sistema sugerirá las palabras más buscadas relacionadas a
+                                    Leche, como “milk”, “lechoso”, “lacteo”.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Búsquedas Populares -->
+                <div class="expanded-user-menu">
+                    <div class="popular-search">
+                        <img class="img" src="img/trending-up.png" />
+                        <div class="popular-search-title">Populares en la búsqueda</div>
+                    </div>
+                    <div class="popular-search-tags">
+                        <div class="chips"><div class="new">Minerales</div></div>
+                        <div class="chips"><div class="new">ISO 17210</div></div>
+                        <div class="chips"><div class="new">Chocolate</div></div>
+                        <div class="chips"><div class="new">Calzado</div></div>
+                        <div class="chips"><div class="new">Productos Químicos</div></div>
+                        <div class="chips"><div class="new">Alimentos</div></div>
+                        <div class="chips"><div class="new">Vestimenta</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paso 02 -->
+            <div class="data-table-2">
+                <div class="step-container-2">
+                    <div class="step-number-wrapper">
+                        <div class="step-number">
+                            <div class="text-wrapper">02</div>
+                        </div>
+                    </div>
+                    <div class="left-wrapper">
+                        <div class="left-2">
+                            <div class="razon-social">
+                                <div class="step-description">Filtrables</div>
+                            </div>
+                            <div class="frame">
+                                <p class="resultados">
+                                    Si además de la búsqueda anterior, requiere filtrar por País, Organismo o Esquema, despliegue y
+                                    seleccione la opción.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtro País -->
+                <div class="paises-filtro">
+                    <div class="div">
+                        <div class="button-select">
+                            <div class="texas-location">Todos los Países</div>
+                        </div>
+                        <div class="button-select-2">
+                            <div class="texas-location-2">Colombia</div>
+                            <img class="chevron-right" src="img/chevron-right-4.svg" />
+                        </div>
+                        <div class="button-select-2">
+                            <div class="texas-location-2">Ecuador</div>
+                            <img class="chevron-right" src="img/chevron-right-3.svg" />
+                        </div>
+                        <div class="button-select-2">
+                            <div class="texas-location-2">Perú</div>
+                            <img class="chevron-right" src="img/chevron-right-2.svg" />
+                        </div>
+                        <div class="button-select-2">
+                            <div class="texas-location-2">Bolivia</div>
+                            <img class="chevron-right" src="img/chevron-right.svg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Encabezado Superior -->
+    <div class="top">
+        <div class="top-2">
+            <img class="vector" src="img/vector-1.png" />
+            <div class="text">
+                <div class="red-de-organismos-de-wrapper">
+                    <p class="red-de-organismos-de">
+                        <span class="span">Red de Organismos de la Conformidad: </span>
+                        <span class="text-wrapper-2">Conecta YA</span>
+                    </p>
+                </div>
+            </div>
+            <div class="logo">
+                <img class="frame-2" src="img/frame.svg" />
+            </div>
+        </div>
     </div>
 </div>
