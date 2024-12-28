@@ -21,6 +21,8 @@ namespace WebApp.Repositories
     {
       data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
       data.IdUserModifica = data.IdUserCreacion;
+      data.InfoExtraJson = "{}";
+      data.Estado = "A";
 
       return ExecuteDbOperation(context => {
         context.ONA.Add(data);
@@ -38,6 +40,10 @@ namespace WebApp.Repositories
     public List<ONA> FindAll()
     {
       return ExecuteDbOperation(context => context.ONA.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.FechaCreacion).ToList());
+    }
+    public List<VwPais> FindAllPaises()
+    {
+        return ExecuteDbOperation(context => context.VwPais.AsNoTracking().ToList());
     }
     public bool Update(ONA newRecord)
     {

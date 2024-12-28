@@ -36,6 +36,24 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FindAll));
             }
         }
+
+        [Authorize]
+        [HttpGet("paises")]
+        public IActionResult FindAllPais()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<VwPaisDto>>
+                {
+                    Result = _iRepo.FindAllPaises().Select(item => _mapper.Map<VwPaisDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindAllPais));
+            }
+        }
+
         [Authorize]
         [HttpGet("{id:int}")]
         public IActionResult FindById(int Id)
@@ -96,6 +114,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Create));
             }
         }
+
         [Authorize]
         [HttpDelete("{id:int}")]
         public IActionResult Deactive(int id)

@@ -24,9 +24,8 @@ namespace SharedApp.Models.Dtos
         public string? Telefono { get; set; }
         public string? UrlIcono { get; set; }
         public string? UrlLogo { get; set; }
-        [Required]
         public string? InfoExtraJson { get; set; }
-        [Required]
         public string? Estado { get; set; }
+        public int? IdHomologacionPais { get; set; }
     }
 }

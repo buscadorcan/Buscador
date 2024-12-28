@@ -26,5 +26,7 @@ namespace WebApp.Models
     public string? InfoExtraJson { get; set; }
     [Required]
     public string? Estado { get; set; }
-  }
+    public int? IdHomologacionPais { get; set; }
+    
+    }
 }

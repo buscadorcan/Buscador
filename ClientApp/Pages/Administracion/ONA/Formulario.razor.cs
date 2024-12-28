@@ -9,8 +9,11 @@ namespace ClientApp.Pages.Administracion.ONA
     {
         private Button saveButton = default!;
         private ONADto onas = new ONADto();
+        private List<VwPaisDto> paises = new(); // Lista para almacenar países
+        private int? paisSeleccionado; // ID del país seleccionado
         [Inject]
         public IONAService? iONAsService { get; set; }
+
         [Inject]
         public NavigationManager? navigationManager { get; set; }
         [Parameter]
@@ -20,8 +23,11 @@ namespace ClientApp.Pages.Administracion.ONA
 
         protected override async Task OnInitializedAsync()
         {
+            paises = await iONAsService.GetPaisesAsync();
+
             if (Id > 0 && iONAsService != null) {
                 onas = await iONAsService.GetONAsAsync(Id.Value);
+                onas.Pais = paises.FirstOrDefault(p => p.IdHomologacionPais == onas.IdHomologacionPais)?.Pais;
 
             } 
         }
@@ -44,6 +50,15 @@ namespace ClientApp.Pages.Administracion.ONA
             }
 
             saveButton.HideLoading();
+        }
+
+        private void ActualizarPais(ChangeEventArgs e)
+        {
+            // Obtener el ID seleccionado
+            onas.IdHomologacionPais = int.TryParse(e.Value?.ToString(), out var valor) ? valor : null;
+
+            // Buscar el nombre del país correspondiente y asignarlo a onas.Pais
+            onas.Pais = paises.FirstOrDefault(p => p.IdHomologacionPais == onas.IdHomologacionPais)?.Pais;
         }
 
     }

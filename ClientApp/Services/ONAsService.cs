@@ -33,6 +33,13 @@ namespace ClientApp.Services
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ONADto>>()).Result;
         }
 
+        public async Task<List<VwPaisDto>> GetPaisesAsync()
+        {
+            var response = await _httpClient.GetAsync($"{url}/paises");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwPaisDto>>>()).Result;
+        }
+
         public async Task<RespuestaRegistro> RegistrarONAsActualizar(ONADto ONAParaRegistro)
         {
             var content = JsonConvert.SerializeObject(ONAParaRegistro);
@@ -44,7 +51,7 @@ namespace ClientApp.Services
             }
             else
             {
-                response = await _httpClient.PostAsync($"{url}/registro", bodyContent);
+                response = await _httpClient.PostAsync($"{url}", bodyContent);
             }
 
             var contentTemp = await response.Content.ReadAsStringAsync();
