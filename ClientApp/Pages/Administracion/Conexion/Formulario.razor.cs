@@ -16,7 +16,6 @@ namespace ClientApp.Pages.Administracion.Conexion
         [Inject]
         public NavigationManager? navigationManager { get; set; }
         private ONAConexionDto conexion = new ONAConexionDto();
-        private HomologacionDto usuario = new HomologacionDto();
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
         [Inject]
@@ -36,27 +35,28 @@ namespace ClientApp.Pages.Administracion.Conexion
 
             if (Id > 0 && service != null)
             {
-                conexion = await service.GetConexionAsync(Id.Value);
-                //try
-                //{
-                //    var ids = JsonConvert.DeserializeObject<List<int>>(conexion.Filtros ?? "[]");
-                //    foreach (var item in ids ?? [])
-                //    {
-                //        var h = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == item);
-                //        if (h != null)
-                //        {
-                //            lista = lista?.Append(h).ToList();
-                //        }
-                //    }
-                //}
-                //catch (System.Exception ex)
-                //{
-                //    Console.WriteLine(ex);
-                //}
-            } else
+                var conexion = "";//await service.GetConexionAsync(Id.Value);
+                try
+                {
+                    var ids = JsonConvert.DeserializeObject<List<int>>(conexion ?? "[]");
+                    foreach (var item in ids ?? [])
+                    {
+                        var h = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == item);
+                        if (h != null)
+                        {
+                            lista = lista?.Append(h).ToList();
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            else
             {
-                //conexion.Filtros = "[]";
-                conexion.Migrar = "N";
+                var conexion = "[]";
+                conexion = "N";
             }
         }
         private async Task RegistrarConexion()
@@ -66,13 +66,13 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (service != null)
             {
                 var idHomologaciones = lista?.Select(s => s.IdHomologacion).ToList();
-               // conexion.Filtros = JsonConvert.SerializeObject(idHomologaciones);
+                var conexion = JsonConvert.SerializeObject(idHomologaciones);
 
-                var result = await service.RegistrarOActualizar(conexion);
-                if (result.registroCorrecto)
+                var result = true; //await service.RegistrarOActualizar(conexion);
+                if (result)
                 {
                     // toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                    navigationManager?.NavigateTo("/conexion");
+                    //navigationManager?.NavigateTo("/conexion");
                 }
                 else
                 {
@@ -84,12 +84,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         }
         private void CambiarSeleccionOrganizacion(string _organizacionSelected)
         {
-            // conexion.CodigoHomologacion = _organizacionSelected;
-            
+            var conexion = _organizacionSelected;
         }
-        private void CambiarSeleccionMotor (string _motorBaseDatos)
+        private void CambiarSeleccionMotor(string _motorBaseDatos)
         {
-            conexion.BaseDatos = _motorBaseDatos;
+            var conexion = _motorBaseDatos;
         }
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {

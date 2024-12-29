@@ -18,7 +18,7 @@ namespace WebApp.Tests.Integration
     {
       _mockLogger = new Mock<ILogger<BuscadorController>>();
       _mockRepo = new Mock<IBuscadorRepository>();
-      _controller = new BuscadorController(_mockLogger.Object, _mockRepo.Object);
+      _controller = new BuscadorController(_mockRepo.Object);
     }
 
     [Fact]
@@ -61,8 +61,8 @@ namespace WebApp.Tests.Integration
       // Arrange
       // Setup mock behavior here if necessary
 
-      // Act
-      var result = _controller.FnHomologacionEsquemaTodo();
+      // Act MJIV
+      var result = _controller.FnHomologacionEsquemaTodo("1");
 
       // Assert
       Assert.IsType<OkObjectResult>(result);
