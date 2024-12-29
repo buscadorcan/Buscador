@@ -27,26 +27,36 @@ namespace ClientApp.Services
         }
         public async Task<RespuestasAPI<UsuarioAutenticacionRespuestaDto>> Acceder(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
-            var content = JsonConvert.SerializeObject(usuarioAutenticacionDto);
-            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await _cliente.PostAsync($"{Inicializar.UrlBaseApi}api/usuarios/login", bodyContent);
-            var contentTemp = await response.Content.ReadAsStringAsync();
-            var respuesta = JsonConvert.DeserializeObject<RespuestasAPI<UsuarioAutenticacionRespuestaDto>>(contentTemp);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                if (respuesta != null) {
-                    var result = respuesta.Result;
+                var content = JsonConvert.SerializeObject(usuarioAutenticacionDto);
+                var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+                var url = Inicializar.UrlBaseApi + "api/usuarios/login";
+                var response = await _cliente.PostAsync(url, bodyContent);
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var respuesta = JsonConvert.DeserializeObject<RespuestasAPI<UsuarioAutenticacionRespuestaDto>>(contentTemp);
 
-                    await _localStorage.SetItemAsync(Inicializar.Token_Local, result?.Token);
-                    await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
-                    await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);
-                    ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioLogueado(result?.Token ?? "");
-                    _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result?.Token);
+                if (response.IsSuccessStatusCode)
+                {
+                    if (respuesta != null)
+                    {
+                        var result = respuesta.Result;
+                        await _localStorage.SetItemAsync(Inicializar.Token_Local, result?.Token);
+                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
+                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);
+                        ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioLogueado(result?.Token ?? "");
+                        _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result?.Token);
+                    }
                 }
-            }
 
-            return respuesta ?? new RespuestasAPI<UsuarioAutenticacionRespuestaDto>();
+                return respuesta ?? new RespuestasAPI<UsuarioAutenticacionRespuestaDto>();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
         }
         public async Task<RespuestasAPI<T>?> Recuperar<T>(UsuarioRecuperacionDto usuarioRecuperacionDto) {
             var content = JsonConvert.SerializeObject(usuarioRecuperacionDto);

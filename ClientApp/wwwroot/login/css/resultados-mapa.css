@@ -1,0 +1,1745 @@
+/* screen - resultados-mapa */
+
+.resultados-mapa {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  height: 1258px;
+  width: 1440px;
+}
+
+.resultados-mapa .top {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0px 0px 4px;
+  position: relative;
+  width: 1440px;
+}
+
+.resultados-mapa .flex-row {
+  align-items: center;
+  display: flex;
+  left: 29px;
+  min-width: 1912px;
+  position: relative;
+  top: -51px;
+}
+
+.resultados-mapa .frame {
+  cursor: pointer;
+  height: 53px;
+  margin-bottom: 1.0px;
+  position: relative;
+  width: 278px;
+}
+
+.resultados-mapa .red-de-organismos-de {
+  height: 46px;
+  letter-spacing: 0;
+  line-height: 28.8px;
+  margin-left: 80px;
+  margin-top: 4.0px;
+  position: relative;
+  width: 514px;
+}
+
+.resultados-mapa .vector-1 {
+  height: 262px;
+  margin-left: 18px;
+  object-fit: cover;
+  width: 1022px;
+}
+
+.resultados-mapa .container {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .search-container {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 12px;
+  width: 820px;
+}
+
+.resultados-mapa .search-bar {
+  align-items: center;
+  align-self: stretch;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.resultados-mapa .search-bar-1 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 820px;
+}
+
+.resultados-mapa .frame-776 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  margin-bottom: -6.00px;
+  margin-top: -6.00px;
+  position: relative;
+}
+
+.resultados-mapa .component-7 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.resultados-mapa .button-4 {
+  align-items: center;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 24px;
+  position: relative;
+}
+
+.resultados-mapa .search {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.resultados-mapa .button-5 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .checkbox {
+  height: 18px;
+  position: relative;
+  width: 18px;
+}
+
+.resultados-mapa .total {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+  width: fit-content;
+}
+
+.resultados-mapa .frame-1000004 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .ona {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .place {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .ona-1 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .ecuador-1 {
+  color: var(--mako);
+}
+
+.resultados-mapa .ona-2 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .ecuador-2 {
+  color: var(--mako);
+}
+
+.resultados-mapa .ona-3 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.71px;
+  height: 20px;
+  justify-content: center;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .image-193 {
+  height: 19.89px;
+  object-fit: cover;
+  position: relative;
+  width: 19.89px;
+}
+
+.resultados-mapa .ibmetro {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .ecuador-3 {
+  color: var(--mako);
+}
+
+.resultados-mapa .container-1 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.resultados-mapa .tabs {
+  align-items: center;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  height: 28px;
+  justify-content: center;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.resultados-mapa .format_list_bulleted {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .tabs-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  height: 28px;
+  justify-content: center;
+  padding: 4px 6px;
+  position: relative;
+}
+
+.resultados-mapa .label {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .icon {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.resultados-mapa .label-1 {
+  color: var(--comet);
+  flex: 1;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .placeholder {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .label-2 {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .label-3 {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .frame-1000004240 {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 24px;
+  position: relative;
+  width: 1440px;
+}
+
+.resultados-mapa .map {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border: 1px solid;
+  border-color: var(--neutrallight30);
+  border-radius: 12px;
+  box-shadow: 4px 4px 4px #02536305;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 729px;
+  padding: 16px;
+  position: relative;
+  width: 451px;
+}
+
+.resultados-mapa .with-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+.resultados-mapa .with-scroll {
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  flex: 1;
+  flex-grow: 1;
+  overflow: scroll;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-1000002534 {
+  align-items: flex-end;
+  display: flex;
+  height: 548px;
+  left: -185px;
+  min-width: 991px;
+  position: relative;
+  top: -50px;
+}
+
+.resultados-mapa .overlap-group {
+  align-items: flex-start;
+  background-image: url(../img/image-183-1.png);
+  background-position: 50% 50%;
+  background-size: cover;
+  display: flex;
+  height: 759px;
+  margin-bottom: -206px;
+  margin-left: -310px;
+  min-width: 1336px;
+  padding: 294px 614px;
+}
+
+.resultados-mapa .objects {
+  height: 42px;
+  width: 30px;
+}
+
+.resultados-mapa .frame-1000003007 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  left: 26px;
+  padding: 10px 24px 10px 12px;
+  position: absolute;
+  top: 25px;
+}
+
+.resultados-mapa .frame-1000003011 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.resultados-mapa .locations {
+  color: var(--primaryblack);
+  font-weight: 500;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .text-15 {
+  color: var(--neutraldark20);
+  font-weight: 400;
+  line-height: 14px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .button {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 40px;
+  justify-content: center;
+  left: 387px;
+  padding: 8px;
+  position: absolute;
+  top: 25px;
+  width: 40px;
+}
+
+.resultados-mapa .reducir {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .reducir-1 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .frame-1000004214 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 921px;
+}
+
+.resultados-mapa .frame-1000004213 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-10000042 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 22px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .pais {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 4px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .paises {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 4px;
+  height: 16px;
+  position: relative;
+}
+
+.resultados-mapa .ecuador {
+  color: var(--eerie-black);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -0.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .frame-10000041 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  height: 14px;
+  position: relative;
+}
+
+.resultados-mapa .frame-1000004128-1 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-bottom: -3.00px;
+  margin-top: -3.00px;
+  position: relative;
+}
+
+.resultados-mapa .reconocimiento-nacional {
+  margin-top: -1.00px;
+}
+
+.resultados-mapa .frame-1000004208 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 404px;
+}
+
+.resultados-mapa .frame-1000004207-1 {
+  height: 230px;
+}
+
+.resultados-mapa .info-total {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 16px;
+  position: relative;
+  width: 403px;
+}
+
+.resultados-mapa .right-1 {
+  align-self: stretch;
+  gap: 8px;
+}
+
+.resultados-mapa .frame-1000004206 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-1000004205 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .norma-1 {
+  padding: 4px 0px;
+}
+
+.resultados-mapa .frame-100000 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.resultados-mapa .button-select {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .ona-4 {
+  align-items: center;
+  background-color: var(--porcelain);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.83px;
+  height: 30px;
+  justify-content: center;
+  position: relative;
+  width: 30px;
+}
+
+.resultados-mapa .group-853 {
+  height: 17.5px;
+  position: relative;
+  width: 16.67px;
+}
+
+.resultados-mapa .frame-1 {
+  background-image: url(../img/image-193-3@2x.png);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 1.67px;
+  height: 18px;
+  width: 17px;
+}
+
+.resultados-mapa .ibmetro-1 {
+  color: var(--neutraldark60);
+  font-weight: 500;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .frame-100000383 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 1px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-1000004204 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 11px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .span0 {
+  color: var(--eerie-black);
+  font-weight: 600;
+}
+
+.resultados-mapa .span1 {
+  letter-spacing: 0;
+}
+
+.resultados-mapa .rectangle-222 {
+  align-self: stretch;
+  background-color: var(--porcelain);
+  border-radius: 9px;
+  height: 1px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .identificacin-nica-dta-tram-0122 {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .estado {
+  align-items: center;
+  background-color: var(--eucalyptus);
+  border-radius: 16px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 4px 12px;
+  position: relative;
+}
+
+.resultados-mapa .acreditado {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .left {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 194px;
+}
+
+.resultados-mapa .razon-social {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .instituto-boliviano {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: normal;
+  margin-right: -13.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 207px;
+}
+
+.resultados-mapa .detalle-de-busqueda {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 157px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-1000004184 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .name {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .frame-10000041-1 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  position: relative;
+}
+
+.resultados-mapa .frame-100000418 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .esq-de-certificacin {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .frame-1000004130 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.resultados-mapa .button-pagination {
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 20px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  transform: rotate(-180.00deg);
+  width: 20px;
+}
+
+.resultados-mapa .button-pagination-variant4 {
+  height: 24px;
+  margin-bottom: -10.00px;
+  margin-left: -10.00px;
+  margin-right: -10.00px;
+  margin-top: -10.00px;
+  position: relative;
+  transform: rotate(180.00deg);
+  width: 24px;
+}
+
+.resultados-mapa .organismo-de-laboratorio-de-ensayos {
+  letter-spacing: 0;
+  line-height: 14px;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .frame-1000003811 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 194px;
+}
+
+.resultados-mapa .leche-fluida-1-le {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .frame-1000004239 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .component-55 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1px;
+  position: relative;
+}
+
+.resultados-mapa .button-1 {
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+}
+
+.resultados-mapa .bifile-pdf {
+  height: 25px;
+  position: relative;
+  width: 25px;
+}
+
+.resultados-mapa .frame-1000003830 {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  position: relative;
+  width: 190px;
+}
+
+.resultados-mapa .button-2 {
+  align-items: center;
+  border: 2px solid;
+  border-color: var(--blue);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.resultados-mapa .button-3 {
+  color: var(--blue);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -2.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .data-table {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border: 1px solid;
+  border-color: var(--gallery);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  padding: 24px 20px;
+  position: relative;
+  width: 448px;
+}
+
+.resultados-mapa .paises-1 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  height: 16px;
+  position: relative;
+}
+
+.resultados-mapa .frame-1000004181 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  height: 14px;
+  position: relative;
+}
+
+.resultados-mapa .reconocimiento-internacvional {
+  margin-bottom: -2.00px;
+  margin-top: -4.00px;
+}
+
+.resultados-mapa .info-total-1 {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+  height: 226px;
+  position: relative;
+  width: 403px;
+}
+
+.resultados-mapa .right-2 {
+  gap: 12px;
+  height: 203px;
+}
+
+.resultados-mapa .norma-2 {
+  padding: 0px 0px 8px;
+}
+
+.resultados-mapa .ona-5 {
+  align-items: center;
+  background-color: var(--porcelain);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.83px;
+  height: 30px;
+  justify-content: center;
+  position: relative;
+  width: 30px;
+}
+
+.resultados-mapa .ona-6 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.resultados-mapa .onac-1 {
+  color: var(--neutraldark60);
+  font-weight: 500;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .identificacin-nica-15-lab-050 {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .biotrends-laboratorios-sas {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: normal;
+  margin-right: -13.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 207px;
+}
+
+.resultados-mapa .detalle-de-busqueda-1 {
+  flex: 1;
+  flex-grow: 1;
+  gap: 12px;
+}
+
+.resultados-mapa .frame-1000004184-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .pais-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 4px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .ecuador-4 {
+  color: var(--fiord);
+  margin-top: -0.50px;
+}
+
+.resultados-mapa .reconocimiento-internacional {
+  margin-top: -1.00px;
+}
+
+.resultados-mapa .frame-1000004207 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 226px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .right {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 193px;
+}
+
+.resultados-mapa .norma {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 179px;
+}
+
+.resultados-mapa .ona-7 {
+  height: 30px;
+  position: relative;
+  width: 30px;
+}
+
+.resultados-mapa .inacal-1 {
+  color: var(--neutraldark60);
+  font-weight: 500;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .razn-social-cermica-lima-sa {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .identificacin-nica-le-171 {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .laboratorio-de-ensay {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: normal;
+  margin-right: -13.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 207px;
+}
+
+.resultados-mapa .detalle-de-busqueda-2 {
+  flex: 1;
+  flex-grow: 1;
+  gap: 12px;
+}
+
+.resultados-mapa .frame-1000004128 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -7.00px;
+  position: relative;
+}
+
+.resultados-mapa .address {
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 201px;
+}
+
+.resultados-mapa .frame-1000003811-1 {
+  height: 1px;
+}
+
+.resultados-mapa .leche-fluida-1-le-1 {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -43.00px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .ona-8 {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  position: relative;
+  width: 95px;
+}
+
+.resultados-mapa .ona-9 {
+  height: 30px;
+  position: relative;
+  width: 50px;
+}
+
+.resultados-mapa .sae-1 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.resultados-mapa .razn-social-qsi-certification {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .identificacin-nica-sae-10005 {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .estado-1 {
+  align-items: center;
+  background-color: #234c9726;
+  border-radius: 16px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 4px 12px;
+  position: relative;
+}
+
+.resultados-mapa .acredipro-ecuador {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: normal;
+  margin-right: -13.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 207px;
+}
+
+.resultados-mapa .detalle-de-busqueda-3 {
+  flex: 1;
+  flex-grow: 1;
+  gap: 12px;
+}
+
+.resultados-mapa .data-table-2 {
+  align-self: stretch;
+  margin-right: -467.00px;
+}
+
+.resultados-mapa .frame-1000004207-2 {
+  height: 225px;
+}
+
+.resultados-mapa .right-3 {
+  gap: 8px;
+  height: 215px;
+}
+
+.resultados-mapa .ona-10 {
+  height: 30px;
+  margin-bottom: -1019.00px;
+  margin-left: -12354.00px;
+  position: relative;
+  width: 30px;
+}
+
+.resultados-mapa .sae-2 {
+  color: var(--neutraldark60);
+  font-weight: 500;
+  margin-top: -1.00px;
+}
+
+.resultados-mapa .razn-social-lenor-ecuador-cia-ltda {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .identificacin-nica-sae-cp-15-00 {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .left-1 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 215px;
+  position: relative;
+  width: 194px;
+}
+
+.resultados-mapa .razon-social-4 {
+  padding: 0px 0px 8px;
+}
+
+.resultados-mapa .organismo-e-certific {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: normal;
+  margin-right: -13.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 207px;
+}
+
+.resultados-mapa .detalle-de-busqueda-4 {
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.resultados-mapa .reconocimiento {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .nacional {
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .frame-1000004130-1 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 4px;
+  position: relative;
+}
+
+.resultados-mapa .button-pagination-2 {
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 24px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 24px;
+}
+
+.resultados-mapa .button-pagination-variant4-1 {
+  margin-bottom: -878.00px;
+  margin-left: -12571.00px;
+}
+
+.resultados-mapa .frame-1000003811-2 {
+  flex: 0 0 auto;
+  margin-bottom: -11.00px;
+}
+
+.resultados-mapa .button-6 {
+  height: 36px;
+  margin-bottom: -778.00px;
+  margin-left: -12354.00px;
+  position: relative;
+  width: 36px;
+}
+
+.resultados-mapa .paginacin {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 12px;
+  height: 30px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-1000004238 {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  justify-content: space-between;
+  margin-bottom: -9.00px;
+  margin-top: -9.00px;
+  position: relative;
+}
+
+.resultados-mapa .frame-1000004061 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1px;
+  height: 48px;
+  position: relative;
+}
+
+.resultados-mapa .button-pagination-3 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.resultados-mapa .button-pagination-4 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.resultados-mapa .button-pagination-5 {
+  align-items: center;
+  background-color: var(--blue);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.resultados-mapa .number {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.resultados-mapa .button-pagination-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.resultados-mapa .button-pagination-6 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--wild-sand);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.resultados-mapa .chevron_right {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.resultados-mapa .button-pagination-7 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-radius: 0px 8px 8px 0px;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.resultados-mapa .x1-4-de-100-resultados {
+  color: var(--eerie-black);
+  font-weight: 500;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .address-3 {
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .data-table-3 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border: 1px solid;
+  border-color: var(--gallery);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  padding: 24px 20px;
+  position: relative;
+  width: 448px;
+}
+
+.resultados-mapa .detalle-de-busqueda-5 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .ecuador-5 {
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .esq-de-certificacin-5 {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .frame-1000003811-3 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 194px;
+}
+
+.resultados-mapa .frame-1000004181-4 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-1000004206-5 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .frame-1000004207-3 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .name-4 {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.resultados-mapa .norma-3 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 179px;
+}
+
+.resultados-mapa .place-3 {
+  color: var(--fiord);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -0.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .razn-social {
+  color: transparent;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 174px;
+}
+
+.resultados-mapa .razon-social-5 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.resultados-mapa .reconocimiento-1 {
+  letter-spacing: 0;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .reconocimiento-internacional-3 {
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.resultados-mapa .right-4 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 193px;
+}
+
+.resultados-mapa .sae-3 {
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.resultados-mapa .search-1 {
+  display: flex;
+  position: relative;
+}

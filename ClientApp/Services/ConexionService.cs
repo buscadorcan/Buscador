@@ -72,7 +72,7 @@ namespace ClientApp.Services {
                 return resultado;
             }
         }
-    
+
         public async Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content)
         {
             return await _httpClient.PostAsync($"{url}/upload", content);

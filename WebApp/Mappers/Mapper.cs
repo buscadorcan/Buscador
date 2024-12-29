@@ -13,8 +13,10 @@ namespace WebApp.Mappers
       CreateMap<VwDimension, VwDimensionDto>();
       CreateMap<Homologacion, GruposDto>();
       CreateMap<VwRol, VwRolDto>();
-            CreateMap<ONA, OnaDto>();
-            CreateMap<VwEndPoint, VwEndPointDto>();
+      CreateMap<ONA, OnaDto>();
+      CreateMap<VwEndPoint, VwEndPointDto>();
+      CreateMap<VwPais, VwPaisDto>();
+
 
       CreateMap<Usuario, UsuarioDto>();
       CreateMap<UsuarioDto, Usuario>();
@@ -29,6 +31,9 @@ namespace WebApp.Mappers
 
       CreateMap<ONAConexion, ONAConexionDto>();
       CreateMap<ONAConexionDto, ONAConexion>();
+
+      CreateMap<ONA, ONADto>();
+      CreateMap<ONADto, ONA>();
 
       CreateMap<MigracionExcel, MigracionExcelDto>();
       CreateMap<MigracionExcelDto, MigracionExcel>();

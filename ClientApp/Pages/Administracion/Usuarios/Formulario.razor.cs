@@ -28,6 +28,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
             if (Id > 0 && iUsuariosService != null)
             {
                 usuario = await iUsuariosService.GetUsuarioAsync(Id.Value);
+
                 if (usuario != null)
                 {
                     usuario.Clave = null;
@@ -117,7 +118,6 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 {
                     usuario = new UsuarioDto(); 
                 }
-
                 usuario.Estado = "A";
             }
         }
@@ -155,7 +155,6 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             usuario.RazonSocial = razonSocial;
             usuario.IdONA = idOna;
-
         }
     }
 }

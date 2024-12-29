@@ -71,5 +71,10 @@ namespace WebApp.Service
 
     /// <summary>Vista que almacena información sobre los endpoints de la aplicación.</summary>
     public DbSet<VwEndPoint> VwEndPoint { get; set; }
+
+    /// <summary>Vista que almacena los roles disponibles en el sistema.</summary>
+    public DbSet<VwPais> VwPais { get; set; }
+
   }
+
 }

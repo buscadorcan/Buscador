@@ -320,7 +320,17 @@ CREATE TABLE dbo.WebSiteLog (
 	
 	,CONSTRAINT  [PK_WSL_WebSiteLog]		PRIMARY KEY CLUSTERED (IdWebSiteLog) 
 );
- 
+
+DROP VIEW if exists [dbo].[vwPais];
+GO
+CREATE VIEW [dbo].[vwPais] AS 
+	SELECT	h1.IdHomologacion	IdHomologacionPais
+			, h1.MostrarWeb		Pais
+	FROM	Homologacion h1
+	JOIN	Homologacion h2 ON h1.IdHomologacionGrupo = h2.IdHomologacion
+	WHERE	h2.CodigoHomologacion = 'KEY_PAIS'
+GO
+
 
 EXEC DBO.Bitacora 'CREATE TABLE
 dbo.Usuario, 

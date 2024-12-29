@@ -1,0 +1,763 @@
+/* screen - pagina-5 */
+
+.pagina-5 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  height: 1058px;
+  width: 1440px;
+}
+
+.pagina-5 .top {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0px 0px 4px;
+  position: relative;
+  width: 1440px;
+}
+
+.pagina-5 .flex-row {
+  align-items: center;
+  display: flex;
+  left: 29px;
+  min-width: 1912px;
+  position: relative;
+  top: -51px;
+}
+
+.pagina-5 .frame-1 {
+  cursor: pointer;
+  height: 53px;
+  margin-bottom: 1.0px;
+  position: relative;
+  width: 278px;
+}
+
+.pagina-5 .red-de-organismos-de {
+  height: 46px;
+  letter-spacing: 0;
+  line-height: 28.8px;
+  margin-left: 80px;
+  margin-top: 4.0px;
+  position: relative;
+  width: 514px;
+}
+
+.pagina-5 .vector-1 {
+  height: 262px;
+  margin-left: 18px;
+  object-fit: cover;
+  width: 1022px;
+}
+
+.pagina-5 .container {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.pagina-5 .search-container {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 12px;
+  width: 820px;
+}
+
+.pagina-5 .search-bar {
+  align-items: center;
+  align-self: stretch;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.pagina-5 .search-bar-1 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 820px;
+}
+
+.pagina-5 .frame-776 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  margin-bottom: -6.00px;
+  margin-top: -6.00px;
+  position: relative;
+}
+
+.pagina-5 .component-7 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.pagina-5 .button-1 {
+  align-items: center;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 24px;
+  position: relative;
+}
+
+.pagina-5 .search {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.pagina-5 .button-2 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .checkbox {
+  height: 18px;
+  position: relative;
+  width: 18px;
+}
+
+.pagina-5 .total {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+  width: fit-content;
+}
+
+.pagina-5 .ona {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.pagina-5 .place {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .ecuador {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .ona-3 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.71px;
+  justify-content: center;
+}
+
+.pagina-5 .ibmetro {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .container-1 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.pagina-5 .tabs {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  height: 28px;
+  justify-content: center;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.pagina-5 .format_list_bulleted {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.pagina-5 .tabs-1 {
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  height: 28px;
+  justify-content: center;
+  padding: 4px 6px;
+  position: relative;
+}
+
+.pagina-5 .label {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pagina-5 .icon {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.pagina-5 .label-1 {
+  color: var(--comet);
+  flex: 1;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.pagina-5 .placeholder {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pagina-5 .label-2 {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pagina-5 .label-3 {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pagina-5 .table-heading {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--gallery);
+  border-top-style: solid;
+  border-top-width: 1px;
+  display: flex;
+  height: 48px;
+  padding: 8px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.pagina-5 .table-heading-1 {
+  width: 63px;
+}
+
+.pagina-5 .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.pagina-5 .label-heading {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pagina-5 .table-heading-2 {
+  width: 130px;
+}
+
+.pagina-5 .table-heading-3 {
+  width: 180px;
+}
+
+.pagina-5 .table-heading-4 {
+  width: 135px;
+}
+
+.pagina-5 .header-label-1 {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 8px;
+  height: 32px;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.pagina-5 .table-heading-5 {
+  width: 86px;
+}
+
+.pagina-5 .table-heading-6 {
+  width: 209px;
+}
+
+.pagina-5 .table-heading-7 {
+  width: 151px;
+}
+
+.pagina-5 .table-heading-8 {
+  width: 152px;
+}
+
+.pagina-5 .label-heading-1 {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: 16px;
+  margin-top: -2.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .data-table {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--gallery);
+  display: flex;
+  flex-direction: column;
+  height: 99px;
+  justify-content: center;
+  padding: 8px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.pagina-5 .group-853 {
+  height: 21px;
+  position: relative;
+  width: 20px;
+}
+
+.pagina-5 .frame {
+  align-items: flex-end;
+  border-radius: 2px;
+  display: flex;
+  height: 21px;
+  overflow: hidden;
+  width: 20px;
+}
+
+.pagina-5 .image-193 {
+  height: 29px;
+  margin-bottom: -6.06px;
+  margin-left: -1px;
+  object-fit: cover;
+  width: 22px;
+}
+
+.pagina-5 .nacional {
+  color: var(--eerie-black);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .instituto-boliviano {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 400;
+  height: 57px;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.pagina-5 .frame-10000042 {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 6px;
+  position: relative;
+}
+
+.pagina-5 .button-pagination {
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 20px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  transform: rotate(-180.00deg);
+  width: 20px;
+}
+
+.pagina-5 .button-pagination-variant4 {
+  height: 24px;
+  margin-bottom: -10.00px;
+  margin-left: -10.00px;
+  margin-right: -10.00px;
+  margin-top: -10.00px;
+  position: relative;
+  transform: rotate(180.00deg);
+  width: 24px;
+}
+
+.pagina-5 .organismo-de-laboratorio-de-ensayos {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.pagina-5 .frame-1000003811 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.pagina-5 .leche-fluida-1-le {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: 15px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.pagina-5 .address {
+  align-self: stretch;
+  height: 57px;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.pagina-5 .acreditado {
+  color: var(--fiord);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .line-mdfile-search {
+  height: 36px;
+  position: relative;
+  width: 36px;
+}
+
+.pagina-5 .button {
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+  width: 33px;
+}
+
+.pagina-5 .bifile-pdf {
+  height: 29px;
+  margin-left: -2.00px;
+  margin-right: -2.00px;
+  position: relative;
+  width: 29px;
+}
+
+.pagina-5 .organismo-e-certific {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 400;
+  height: 57px;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.pagina-5 .text-19 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pagina-5 .data-table-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--gallery);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.pagina-5 .paginacin {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  padding: 24px 0px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.pagina-5 .frame-1000004238 {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  position: relative;
+}
+
+.pagina-5 .frame-1000004061 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1px;
+  height: 48px;
+  margin-bottom: -8.00px;
+  margin-top: -8.00px;
+  position: relative;
+}
+
+.pagina-5 .button-pagination-2 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.pagina-5 .button-pagination-3 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.pagina-5 .button-pagination-4 {
+  align-items: center;
+  background-color: var(--blue);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.pagina-5 .number {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.pagina-5 .button-pagination-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.pagina-5 .button-pagination-5 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--wild-sand);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.pagina-5 .chevron_right {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.pagina-5 .button-pagination-6 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-radius: 0px 8px 8px 0px;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.pagina-5 .address-3 {
+  align-self: stretch;
+  height: 57px;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.pagina-5 .ecuador-3 {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.pagina-5 .ona-4 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.pagina-5 .search-1 {
+  display: flex;
+  position: relative;
+}

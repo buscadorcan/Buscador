@@ -1,30 +1,99 @@
 @inherits LayoutComponentBase
-@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 @inject ClientApp.Services.ToastService ToastService
 
-<Toasts class="p-3" Messages="ToastService.Messages" AutoHide="true" Delay="3000" Placement="ToastsPlacement.TopRight" CreateToastMessageCallback="CreateToastMessage"/>
+<style>
+    .bb-page {
+        display: flex;
+        height: 100vh;
+        background-color: #f8f9fa;
+        transition: margin-left 0.3s ease;
+    }
+
+    .admin-sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+        color: #fff;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+    }
+
+    .admin-sidebar.hidden {
+        transform: translateX(-100%);
+    }
+
+    .bb-main-content {
+        flex-grow: 1;
+        background-color: #ffffff;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bb-top-row {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0 20px;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .content {
+        flex-grow: 1;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 10px;
+    }
+</style>
+
+<Toasts 
+    class="p-3" 
+    Messages="ToastService.Messages" 
+    AutoHide="true" 
+    Delay="3000" 
+    Placement="ToastsPlacement.TopRight" 
+    CreateToastMessageCallback="CreateToastMessage" 
+/>
 
 <div class="bb-page">
-    <AdminSidebar />
+    <!-- Sidebar -->
+    <div class="admin-sidebar @SidebarClass">
+        <AdminSidebar />
+    </div>
 
-    <main>
-        <div class="bb-top-row px-4 d-flex justify-content-end">
-            <a href="/salir" target="_blank">Salir</a>
+    <!-- Main Content -->
+    <main class="bb-main-content">
+        <!-- Top Row -->
+        <div class="bb-top-row">
+            <button class="btn btn-primary btn-sm" @onclick="ToggleSidebar">
+                @SidebarToggleText
+            </button>
+            <a href="/salir" class="btn btn-outline-primary btn-sm" target="_blank">Salir</a>
         </div>
 
-        <article class="content px-4">
+        <!-- Article Content -->
+        <article class="content">
             @Body
         </article>
     </main>
 </div>
 
-@code{
-    private bool _iconMenuActive { get; set; }
-    private string? IconMenuCssClass => _iconMenuActive ? "width: 80px;" : null;
+@code {
+    private bool IsSidebarVisible { get; set; } = true;
 
-    protected void ToggleIconMenu(bool iconMenuActive)
+    private string SidebarClass => IsSidebarVisible ? "" : "hidden";
+    private string SidebarToggleText => IsSidebarVisible ? "Ocultar Menú" : "Mostrar Menú";
+
+    private void ToggleSidebar()
     {
-        _iconMenuActive = iconMenuActive;
+        IsSidebarVisible = !IsSidebarVisible;
     }
 }
