@@ -52,7 +52,8 @@ namespace ClientApp.Pages.Administracion.Conexion
                 {
                     Console.WriteLine(ex);
                 }
-            } else
+            }
+            else
             {
                 var conexion = "[]";
                 conexion = "N";
@@ -85,7 +86,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             var conexion = _organizacionSelected;
         }
-        private void CambiarSeleccionMotor (string _motorBaseDatos)
+        private void CambiarSeleccionMotor(string _motorBaseDatos)
         {
             var conexion = _motorBaseDatos;
         }

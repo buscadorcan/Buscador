@@ -28,12 +28,65 @@ namespace WebApp.Repositories
         }
         public Usuario? FindById(int idUsuario)
         {
-            return ExecuteDbOperation(context => context.Usuario.AsNoTracking().FirstOrDefault(c => c.IdUsuario == idUsuario));
+            // return ExecuteDbOperation(context => context.Usuario.AsNoTracking().FirstOrDefault(c => c.IdUsuario == idUsuario));
+            return ExecuteDbOperation(context =>
+            {
+                // Realizamos el join entre Usuario, Homologacion y ONA
+                var query = from usuario in context.Usuario.AsNoTracking()
+                            join homologacion in context.VwRol.AsNoTracking()
+                            on usuario.IdHomologacionRol equals homologacion.IdHomologacionRol into homologacionJoin
+                            from homologacion in homologacionJoin.DefaultIfEmpty()
+                            join ona in context.ONA.AsNoTracking()
+                            on usuario.IdONA equals ona.IdONA
+                            where usuario.IdUsuario == idUsuario // Filtramos por idUsuario
+                            orderby usuario.IdUsuario
+                            select new Usuario
+                            {
+                                IdUsuario = usuario.IdUsuario,
+                                IdONA = usuario.IdONA,
+                                Nombre = usuario.Nombre,
+                                Apellido = usuario.Apellido,
+                                Telefono = usuario.Telefono,
+                                Email = usuario.Email,
+                                IdHomologacionRol = usuario.IdHomologacionRol,
+                                Estado = usuario.Estado
+                                //,RazonSocial = ona.RazonSocial
+                            };
+
+                // Devolvemos el primer resultado o null si no se encuentra
+                return query.FirstOrDefault();
+            });
         }
-        public ICollection<Usuario> FindAll()
+        public ICollection<UsuarioDto> FindAll()
         {
-            return ExecuteDbOperation(context => 
-                context.Usuario.AsNoTracking().OrderBy(c => c.IdUsuario).ToList());
+            //return ExecuteDbOperation(context => 
+            //    context.Usuario.AsNoTracking().OrderBy(c => c.IdUsuario).ToList());
+            return ExecuteDbOperation(context =>
+            {
+                // Realizamos el join entre Usuario y Homologacion
+                var query = from usuario in context.Usuario.AsNoTracking()
+                            join homologacion in context.VwRol.AsNoTracking()
+                            on usuario.IdHomologacionRol equals homologacion.IdHomologacionRol into homologacionJoin
+                            from homologacion in homologacionJoin.DefaultIfEmpty()
+                            join ona in context.ONA.AsNoTracking()
+                            on usuario.IdONA equals ona.IdONA
+                            orderby usuario.IdUsuario
+                            select new UsuarioDto
+                            {
+                                IdUsuario = usuario.IdUsuario,
+                                IdONA = usuario.IdONA,
+                                Nombre = usuario.Nombre,
+                                Apellido = usuario.Apellido,
+                                Telefono = usuario.Telefono,
+                                Email = usuario.Email,
+                                Rol = homologacion.Rol,
+                                Estado = usuario.Estado,
+                                RazonSocial =  ona.RazonSocial
+                            };
+
+                // Devolvemos la lista resultante
+                return query.ToList();
+            });
         }
         public bool IsUniqueUser(string email)
         {

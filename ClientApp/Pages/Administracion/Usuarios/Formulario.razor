@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Authorization;
 @using ClientApp.Services.IService
 @using SharedApp.Models.Dtos;
-@attribute [Authorize]
+@* @attribute [Authorize] *@
 
 <PageTitle>Formulario Usuarios</PageTitle>
 
@@ -53,16 +53,56 @@
             <div class="form-row py-2">
                 <label class="col-form-label">Rol</label>
                 <div class="col">
-                    <Dropdown AutoClose="true">
-                        <DropdownToggleButton Color="ButtonColor.Secondary">
-                        @usuario
-                        </DropdownToggleButton>
-                        <DropdownMenu>
-                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("USER"))">USER</DropdownItem>
-                            <DropdownItem @onclick="@(() => OnAutoCompleteChanged("ADMIN"))">ADMIN</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                    <ValidationMessage For="(() => usuario)" />
+
+                    @if (listaRoles != null && listaRoles.Any() && usuario != null)
+                    {
+                        <Dropdown AutoClose="true">
+                            <DropdownToggleButton Color="ButtonColor.Secondary">
+                                @usuario.Rol  <!-- Mostrar el valor de 'usuario.Rol' -->
+                            </DropdownToggleButton>
+
+                            <DropdownMenu>
+                                @foreach (var rol in listaRoles)
+                                {
+                                    <DropdownItem @onclick="@(() => OnAutoCompleteChanged(rol.Rol,rol.IdHomologacionRol))">@rol.Rol</DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
+                    }
+                    else
+                    {
+                        <p>Cargando roles...</p>  <!-- Mensaje de espera si los roles no están cargados -->
+                    }
+
+                    <ValidationMessage For="(() => usuario.Rol)" />
+                </div>
+            </div>
+
+
+            <div class="form-row py-2">
+                <label class="col-form-label">Razón Social</label>
+                <div class="col">
+                    @if (listaOna != null && listaOna.Any() && usuario != null)
+                    {
+                        <Dropdown AutoClose="true">
+                            <DropdownToggleButton Color="ButtonColor.Secondary">
+                                @usuario.RazonSocial  <!-- Mostrar el valor de 'usuario.Rol' -->
+                            </DropdownToggleButton>
+
+                            <DropdownMenu>
+                                @foreach (var ona in listaOna)
+                                {
+                                    <DropdownItem @onclick="@(() => OnAutoCompleteRazonSocOnaChanged(ona.RazonSocial, ona.IdONA))">@ona.RazonSocial</DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
+                    }
+                    else
+                    {
+                        <p>Cargando Razon Social...</p>  <!-- Mensaje de espera si los roles no están cargados -->
+                    }
+
+                    <ValidationMessage For="(() => usuario.RazonSocial)" />
                 </div>
             </div>
 

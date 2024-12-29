@@ -2,7 +2,7 @@
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization;
 @using SharedApp.Models.Dtos;
-@attribute [Authorize]
+@* @attribute [Authorize] *@
 
 <PageTitle>Usuarios</PageTitle>
 
@@ -23,6 +23,9 @@
     </GridColumn>
     <GridColumn TItem="UsuarioDto" HeaderText="IdHomologacionRol" PropertyName="IdHomologacionRol">
         @context.IdHomologacionRol
+    </GridColumn>
+    <GridColumn TItem="UsuarioDto" HeaderText="Razón Social" PropertyName="RazonSocial">
+        @context.RazonSocial
     </GridColumn>
     <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
         @context.Estado

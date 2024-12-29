@@ -9,7 +9,7 @@ namespace WebApp.Repositories.IRepositories
     bool Create(Usuario usuario);
     bool Update(Usuario usuario);
     bool IsUniqueUser(string usuario);
-    ICollection<Usuario> FindAll();
+    ICollection<UsuarioDto> FindAll();
     UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto);
     Task<bool> RecoverAsync(UsuarioRecuperacionDto usuarioRecuperacionDto);
   }

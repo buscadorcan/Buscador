@@ -41,7 +41,6 @@ namespace ClientApp.Services
                     if (respuesta != null)
                     {
                         var result = respuesta.Result;
-
                         await _localStorage.SetItemAsync(Inicializar.Token_Local, result?.Token);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);
