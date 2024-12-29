@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -7,16 +8,17 @@ using System.Threading.Tasks;
 
 namespace SharedApp.Models.Dtos
 {
-    public class ONADto
+    public class OnaDto
     {
+       
         public int IdONA { get; set; }
-        [Required]
+
         public string? RazonSocial { get; set; }
-        [Required]
+
         public string? Siglas { get; set; }
-        [Required]
+
         public string? Pais { get; set; }
-        [Required]
+
         public string? Ciudad { get; set; }
         public string? Correo { get; set; }
         public string? Direccion { get; set; }
@@ -26,6 +28,8 @@ namespace SharedApp.Models.Dtos
         public string? UrlLogo { get; set; }
         public string? InfoExtraJson { get; set; }
         public string? Estado { get; set; }
+
         public int? IdHomologacionPais { get; set; }
+
     }
 }

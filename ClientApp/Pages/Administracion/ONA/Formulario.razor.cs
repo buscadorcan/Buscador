@@ -8,7 +8,7 @@ namespace ClientApp.Pages.Administracion.ONA
     public partial class Formulario
     {
         private Button saveButton = default!;
-        private ONADto onas = new ONADto();
+        private OnaDto onas = new OnaDto();
         private List<VwPaisDto> paises = new(); // Lista para almacenar países
         private int? paisSeleccionado; // ID del país seleccionado
         [Inject]

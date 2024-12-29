@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApp", "ClientApp\ClientApp.csproj", "{84217101-74C4-4504-9BA7-D553822A1D64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedApp", "SharedApp\SharedApp.csproj", "{D2C87F32-2E95-4E36-BAFE-F01F564D307F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedApp", "SharedApp\SharedApp.csproj", "{D2C87F32-2E95-4E36-BAFE-F01F564D307F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.Tests", "WebApp.Tests\WebApp.Tests.csproj", "{7ADEAC1B-7683-43F2-87AE-419E9F0164AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Tests", "WebApp.Tests\WebApp.Tests.csproj", "{7ADEAC1B-7683-43F2-87AE-419E9F0164AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

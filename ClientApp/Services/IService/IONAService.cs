@@ -5,10 +5,10 @@ namespace ClientApp.Services.IService
 {
     public interface IONAService
     {
-        Task<List<ONADto>> GetONAsAsync();
+        Task<List<OnaDto>> GetONAsAsync();
         Task<List<VwPaisDto>> GetPaisesAsync();
-        Task<ONADto> GetONAsAsync(int IdONA);
-        Task<RespuestaRegistro> RegistrarONAsActualizar(ONADto ONAParaRegistro);
+        Task<OnaDto> GetONAsAsync(int IdONA);
+        Task<RespuestaRegistro> RegistrarONAsActualizar(OnaDto ONAParaRegistro);
         Task<bool> DeleteONAAsync(int IdONA);
     }
 }

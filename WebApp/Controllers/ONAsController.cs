@@ -26,9 +26,9 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI<List<ONADto>>
+                return Ok(new RespuestasAPI<List<OnaDto>>
                 {
-                    Result = _iRepo.FindAll().Select(item => _mapper.Map<ONADto>(item)).ToList()
+                    Result = _iRepo.FindAll().Select(item => _mapper.Map<OnaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -67,9 +67,9 @@ namespace WebApp.Controllers
                     return NotFoundResponse("Reguistro no encontrado");
                 }
 
-                return Ok(new RespuestasAPI<ONADto>
+                return Ok(new RespuestasAPI<OnaDto>
                 {
-                    Result = _mapper.Map<ONADto>(record)
+                    Result = _mapper.Map<OnaDto>(record)
                 });
             }
             catch (Exception e)
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
         }
         [Authorize]
         [HttpPut("{id:int}")]
-        public IActionResult Update(int id, [FromBody] ONADto dto)
+        public IActionResult Update(int id, [FromBody] OnaDto dto)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace WebApp.Controllers
         }
         [Authorize]
         [HttpPost]
-        public IActionResult Create([FromBody] ONADto dto)
+        public IActionResult Create([FromBody] OnaDto dto)
         {
             try
             {

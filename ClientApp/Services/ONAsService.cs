@@ -19,18 +19,18 @@ namespace ClientApp.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<List<ONADto>> GetONAsAsync()
+        public async Task<List<OnaDto>> GetONAsAsync()
         {
             var response = await _httpClient.GetAsync($"{url}");
             response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<ONADto>>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<OnaDto>>>()).Result;
         }
 
-        public async Task<ONADto> GetONAsAsync(int IdONA)
+        public async Task<OnaDto> GetONAsAsync(int IdONA)
         {
             var response = await _httpClient.GetAsync($"{url}/{IdONA}");
             response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ONADto>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<OnaDto>>()).Result;
         }
 
         public async Task<List<VwPaisDto>> GetPaisesAsync()
@@ -40,7 +40,7 @@ namespace ClientApp.Services
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwPaisDto>>>()).Result;
         }
 
-        public async Task<RespuestaRegistro> RegistrarONAsActualizar(ONADto ONAParaRegistro)
+        public async Task<RespuestaRegistro> RegistrarONAsActualizar(OnaDto ONAParaRegistro)
         {
             var content = JsonConvert.SerializeObject(ONAParaRegistro);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");

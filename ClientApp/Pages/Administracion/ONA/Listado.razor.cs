@@ -9,9 +9,9 @@ namespace ClientApp.Pages.Administracion.ONA
     {
         private bool showModal = false; // Controla la visibilidad del modal
         private int? selectedIdONA;    // Almacena el ID del ONA seleccionado
-        private List<ONADto>? listaONAs; // Lista de registros ONAs
+        private List<OnaDto>? listaONAs; // Lista de registros ONAs
         private Button saveButton = default!;
-        private Grid<ONADto>? grid;
+        private Grid<OnaDto>? grid;
         [Inject]
         public IONAService? iONAservice { get; set; }
 
@@ -31,7 +31,7 @@ namespace ClientApp.Pages.Administracion.ONA
         }
 
         // Proveedor de datos para el grid
-        private async Task<GridDataProviderResult<ONADto>> ONAsDataProvider(GridDataProviderRequest<ONADto> request)
+        private async Task<GridDataProviderResult<OnaDto>> ONAsDataProvider(GridDataProviderRequest<OnaDto> request)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace ClientApp.Pages.Administracion.ONA
                     await LoadONAs(); // Carga los datos si aún no están cargados
                 }
 
-                return await Task.FromResult(request.ApplyTo(listaONAs ?? new List<ONADto>()));
+                return await Task.FromResult(request.ApplyTo(listaONAs ?? new List<OnaDto>()));
             }
             catch (Exception)
             {
