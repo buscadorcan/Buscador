@@ -140,7 +140,7 @@ namespace WebApp.Controllers
       }
     }
 
-        [HttpGet("ona")]
+        [HttpGet("onas")]
         public IActionResult ObtenerOna()
         {
             try
