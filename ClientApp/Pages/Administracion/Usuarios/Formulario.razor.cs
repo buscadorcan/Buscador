@@ -28,7 +28,6 @@ namespace ClientApp.Pages.Administracion.Usuarios
             if (Id > 0 && iUsuariosService != null)
             {
                 usuario = await iUsuariosService.GetUsuarioAsync(Id.Value);
-
                 if (usuario != null)
                 {
                     usuario.Clave = null;
@@ -40,9 +39,10 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                     if (rolRelacionado != null)
                     {
-                        usuario.Rol = rolRelacionado.Rol; 
-                    
-                    } else
+                        usuario.Rol = rolRelacionado.Rol;
+
+                    }
+                    else
                     {
                         var usuarioMaster = listaRoles
                    .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
@@ -94,7 +94,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 }
                 else
                 {
-                    listaRoles = new List<VwRolDto>(); 
+                    listaRoles = new List<VwRolDto>();
                 }
 
                 if (listaOna != null && listaOna.Any())
@@ -116,8 +116,9 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                 if (usuario == null)
                 {
-                    usuario = new UsuarioDto(); 
+                    usuario = new UsuarioDto();
                 }
+
                 usuario.Estado = "A";
             }
         }
@@ -143,11 +144,12 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             saveButton.HideLoading();
         }
-        private async Task OnAutoCompleteChanged(string rol, int idRol) {
+        private async Task OnAutoCompleteChanged(string rol, int idRol)
+        {
 
             usuario.Rol = rol;
-            usuario.IdHomologacionRol = idRol;  
-           
+            usuario.IdHomologacionRol = idRol;
+
         }
 
         private void OnAutoCompleteRazonSocOnaChanged(string razonSocial, int idOna)
@@ -155,6 +157,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             usuario.RazonSocial = razonSocial;
             usuario.IdONA = idOna;
+
         }
     }
 }

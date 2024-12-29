@@ -55,32 +55,32 @@
     <!-- Card Body -->
     <div class="card-body">
         <div class="table-responsive">
-            <Grid TItem="ONADto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" @ref="grid" Responsive="true">
-                <GridColumn TItem="ONADto" HeaderText="Razon Social" PropertyName="RazonSocial">
+            <Grid TItem="OnaDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" @ref="grid" Responsive="true">
+                <GridColumn TItem="OnaDto" HeaderText="Razon Social" PropertyName="RazonSocial">
                     @context.RazonSocial
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="Siglas" PropertyName="Siglas">
+                <GridColumn TItem="OnaDto" HeaderText="Siglas" PropertyName="Siglas">
                     @context.Siglas
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="País" PropertyName="Pais">
+                <GridColumn TItem="OnaDto" HeaderText="País" PropertyName="Pais">
                     @context.Pais
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="Ciudad" PropertyName="Ciudad">
+                <GridColumn TItem="OnaDto" HeaderText="Ciudad" PropertyName="Ciudad">
                     @context.Ciudad
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="Correo" PropertyName="Correo">
+                <GridColumn TItem="OnaDto" HeaderText="Correo" PropertyName="Correo">
                     @context.Correo
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="Dirección" PropertyName="Direccion">
+                <GridColumn TItem="OnaDto" HeaderText="Dirección" PropertyName="Direccion">
                     @context.Direccion
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="Página Web" PropertyName="PaginaWeb">
+                <GridColumn TItem="OnaDto" HeaderText="Página Web" PropertyName="PaginaWeb">
                     @context.PaginaWeb
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="Teléfono" PropertyName="Telefono">
+                <GridColumn TItem="OnaDto" HeaderText="Teléfono" PropertyName="Telefono">
                     @context.Telefono
                 </GridColumn>
-                <GridColumn TItem="ONADto" HeaderText="Opciones">
+                <GridColumn TItem="OnaDto" HeaderText="Opciones">
                     <!-- Botón Editar -->
                     <Tooltip Title="Editar registro">
                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
