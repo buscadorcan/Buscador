@@ -24,7 +24,8 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (iConexionService != null && listasHevd != null && grid != null)
             {
                 var respuesta = await iConexionService.EliminarConexion(IdConexion);
-                if (respuesta.registroCorrecto) {
+                if (respuesta.registroCorrecto)
+                {
                     listasHevd = listasHevd.Where(c => c.IdONA != IdConexion).ToList();
                     await grid.RefreshDataAsync();
                 }
