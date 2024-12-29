@@ -10,30 +10,30 @@
     <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-conexion">Agregar Registro</Button>
 </div>
 
-<Grid @ref="grid" TItem="ONAConexionDto" class="table table-hover table-bordered table-striped" DataProvider="ConexionDtoDataProvider" Responsive="true">
-    <GridColumn TItem="ONAConexionDto" HeaderText="Motor Base Datos" PropertyName="MotorBaseDatos">
+@* <Grid @ref="grid" TItem="ConexionDto" class="table table-hover table-bordered table-striped" DataProvider="ConexionDtoDataProvider" Responsive="true">
+    <GridColumn TItem="ConexionDto" HeaderText="Motor Base Datos" PropertyName="MotorBaseDatos">
+        @context.MotorBaseDatos
+    </GridColumn>
+    <GridColumn TItem="ConexionDto" HeaderText="Base Datos" PropertyName="BaseDatos">
         @context.BaseDatos
     </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Base Datos" PropertyName="BaseDatos">
-        @context.BaseDatos
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Usuario" PropertyName="Usuario">
+    <GridColumn TItem="ConexionDto" HeaderText="Usuario" PropertyName="Usuario">
         @context.Usuario
     </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Host" PropertyName="Host">
+    <GridColumn TItem="ConexionDto" HeaderText="Host" PropertyName="Host">
         @context.Host
     </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Puerto" PropertyName="Puerto">
+    <GridColumn TItem="ConexionDto" HeaderText="Puerto" PropertyName="Puerto">
         @context.Puerto
     </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Editar">
-        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="Size.Small">
+    <GridColumn TItem="ConexionDto" HeaderText="Editar">
+        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdConexion}")" Size="Size.Small">
             <Icon Name="IconName.PencilSquare" />
         </Button>
     </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar">
-        <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdONA)" Size="Size.Small">
+    <GridColumn TItem="ConexionDto" HeaderText="Eliminar">
+        <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdConexion)" Size="Size.Small">
             <Icon Name="IconName.Trash3" />
         </Button>
     </GridColumn>
-</Grid>
+</Grid> *@
