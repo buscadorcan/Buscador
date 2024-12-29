@@ -10,5 +10,6 @@ namespace WebApp.Repositories.IRepositories
     ONA? FindBySiglas(string siglas);
     List<ONA> FindAll();
     List<VwPais> FindAllPaises();
+
   }
 }

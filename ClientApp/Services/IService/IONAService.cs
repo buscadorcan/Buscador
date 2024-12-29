@@ -9,5 +9,6 @@ namespace ClientApp.Services.IService
         Task<List<VwPaisDto>> GetPaisesAsync();
         Task<ONADto> GetONAsAsync(int IdONA);
         Task<RespuestaRegistro> RegistrarONAsActualizar(ONADto ONAParaRegistro);
+        Task<bool> DeleteONAAsync(int IdONA);
     }
 }

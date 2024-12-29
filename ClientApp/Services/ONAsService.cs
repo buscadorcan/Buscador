@@ -66,5 +66,16 @@ namespace ClientApp.Services
                 return resultado;
             }
         }
+
+        public async Task<bool> DeleteONAAsync(int IdONA)
+        {
+            var response = await _httpClient.DeleteAsync($"{url}/{IdONA}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+            var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
+            return apiResponse?.IsSuccess ?? false;
+        }
     }
 }

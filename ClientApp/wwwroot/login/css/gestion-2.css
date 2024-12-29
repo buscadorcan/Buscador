@@ -1,0 +1,877 @@
+/* screen - gestion-2 */
+
+.gestion-2 {
+  align-items: center;
+  background-color: var(--black-4);
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0px 0px 32px;
+  position: relative;
+  width: 1366px;
+}
+
+.gestion-2 .frame-1000003018::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+.gestion-2 .frame-1000003018 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  overflow-x: scroll;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-2 .modal-top {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-2 .frame-1000003020 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 32px;
+  justify-content: center;
+  padding: 0px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-2 .group-872 {
+  height: 186px;
+  margin-left: -32.00px;
+  margin-right: -32.00px;
+  position: relative;
+  width: 1366px;
+}
+
+.gestion-2 .modal-top-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  left: 0;
+  padding: 24px 32px;
+  position: absolute;
+  top: 0;
+  width: 1366px;
+}
+
+.gestion-2 .button-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight20);
+  border-radius: 18.86px;
+  gap: 13.47px;
+  height: 38px;
+  left: 1296px;
+  padding: 6.73px;
+  position: absolute;
+  top: 18px;
+  width: 38px;
+}
+
+.gestion-2 .close {
+  cursor: pointer;
+  height: 20.57px;
+  position: relative;
+  width: 20.57px;
+}
+
+.gestion-2 .frame-1000003020-1 {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 32px;
+  left: 0;
+  padding: 16px 32px 24px;
+  position: absolute;
+  top: 68px;
+  width: 1366px;
+}
+
+.gestion-2 .instituto-boliviano {
+  color: var(--eerie-black);
+  flex: 1;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .calendar_month {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-2 .address {
+  color: var(--eerie-black);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  text-align: right;
+  width: fit-content;
+}
+
+.gestion-2 .name {
+  color: var(--eerie-black-3);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.gestion-2 .address-1 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.gestion-2 .estado {
+  align-items: center;
+  background-color: var(--eucalyptus);
+  border: 1px solid;
+  border-color: var(--eucalyptus-2);
+  border-radius: 5px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  margin-left: -7.00px;
+  padding: 12px;
+  position: relative;
+}
+
+.gestion-2 .acreditado {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.gestion-2 .tabs {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.gestion-2 .account {
+  color: var(--comet);
+  font-weight: 500;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-2 .account-1 {
+  color: var(--primaryblack);
+  font-weight: 500;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-2 .table-heading-2 {
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 8px 0px;
+  width: 1318px;
+}
+
+.gestion-2 .table-heading-3 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  justify-content: space-around;
+  padding: 8px;
+}
+
+.gestion-2 .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.gestion-2 .label-heading {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-2 .frame-1000003808-1 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  justify-content: center;
+  margin-left: -2.71px;
+  position: relative;
+}
+
+.gestion-2 .table-heading {
+  align-items: center;
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  padding: 8px;
+  position: relative;
+}
+
+.gestion-2 .table-heading-4 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 48px;
+  padding: 8px;
+}
+
+.gestion-2 .header-label-2 {
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  justify-content: space-between;
+  margin-bottom: -5.00px;
+  margin-top: -5.00px;
+}
+
+.gestion-2 .label-heading-1 {
+  margin-top: -1.00px;
+}
+
+.gestion-2 .table-heading-1 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.gestion-2 .header-label-3 {
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 8px;
+  height: 32px;
+}
+
+.gestion-2 .label-heading-2 {
+  margin-bottom: -4.00px;
+  margin-top: -6.00px;
+}
+
+.gestion-2 .table-heading-5 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 8px;
+}
+
+.gestion-2 .header-label-1 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 32px;
+}
+
+.gestion-2 .table-heading-6 {
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.gestion-2 .content {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  height: 448px;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-2 .frame-100000 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-2 .frame-1000003877 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-2 .frame-1000004243 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  position: relative;
+  width: 1318px;
+}
+
+.gestion-2 .ads-rules-list {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  height: 44px;
+  justify-content: center;
+  padding: 0px 8px;
+  position: relative;
+  width: 162px;
+}
+
+.gestion-2 .button {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 1.5px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 36px;
+  padding: 8px;
+  position: relative;
+  width: 36px;
+}
+
+.gestion-2 .carbonfilter {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-2 .dots {
+  align-items: center;
+  display: flex;
+  gap: 2.5px;
+  height: 20px;
+  justify-content: center;
+  margin-right: -28.00px;
+  opacity: 0;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-2 .ads-rules-list-1 {
+  align-items: center;
+  border-right-style: solid;
+  border-right-width: 1px;
+  height: 44px;
+  justify-content: center;
+  padding: 0px 8px;
+  width: 163px;
+}
+
+.gestion-2 .ads-rules-list-3 {
+  align-items: center;
+  border-right-style: solid;
+  border-right-width: 1px;
+  height: 44px;
+  justify-content: center;
+  padding: 0px 8px;
+  width: 182px;
+}
+
+.gestion-2 .ads-rules-list-4 {
+  align-items: center;
+  border-right-style: solid;
+  border-right-width: 1px;
+  height: 44px;
+  justify-content: center;
+  margin-right: -1.00px;
+  padding: 0px 8px;
+  width: 163px;
+}
+
+.gestion-2 .ads-rules-list-2 {
+  align-items: flex-start;
+  flex: 0 0 auto;
+  width: 1318px;
+}
+
+.gestion-2 .frame-2 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 162px;
+}
+
+.gestion-2 .place {
+  align-self: stretch;
+  color: var(--mako);
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .landing-page {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 162px;
+}
+
+.gestion-2 .masa {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .landing-page-1 {
+  width: 163px;
+}
+
+.gestion-2 .instrumento-de-pesar {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .x1-mg-a-100-mg {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 16px;
+  margin-right: -6.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-2 .x-mg-a-0 {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-2 .landing-page-2 {
+  width: 182px;
+}
+
+.gestion-2 .mtodo-de-comparaci {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .procedimiento-intern {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .set-de-patrones-de-m {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .x100-mg-a-20-g {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 16px;
+  margin-right: -6.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-2 .x20-g-a-50-g {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 16px;
+  margin-right: -6.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-2 .x50-g-a-100-g {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 16px;
+  margin-right: -6.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-2 .frame-1000004238 {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 16px 0px 0px;
+  position: relative;
+  width: 1292px;
+}
+
+.gestion-2 .frame-1000004061 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1px;
+  height: 48px;
+  position: relative;
+}
+
+.gestion-2 .button-pagination-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-2 .button-pagination-2 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-2 .button-pagination-variant4 {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.gestion-2 .button-pagination-3 {
+  align-items: center;
+  background-color: var(--blue);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-2 .number {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.gestion-2 .button-pagination {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  gap: 8px;
+  height: 32px;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-2 .button-pagination-4 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--wild-sand);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-2 .chevron_right {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.gestion-2 .button-pagination-5 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-radius: 0px 8px 8px 0px;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-2 .x1-4-de-46-resultados {
+  color: var(--eerie-black);
+  font-weight: 500;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-2 .ads-rules-list-5 {
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  position: relative;
+}
+
+.gestion-2 .arrow_downward_alt-8 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-2 .button-2 {
+  display: flex;
+  justify-content: center;
+}
+
+.gestion-2 .carbonfilter-8 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-2 .component-54-8 {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.gestion-2 .header-label-4 {
+  align-items: center;
+  border-radius: 8px;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.gestion-2 .instrumento-de-pesar-4 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .label-heading-3 {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: 20px;
+  position: relative;
+  width: fit-content;
+}
+
+.gestion-2 .landing-page-3 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+}
+
+.gestion-2 .masa-4 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .mtodo-de-comparaci-4 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .procedimiento-intern-4 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .set-de-patrones-de-m-4 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-2 .table-heading-7 {
+  align-items: center;
+  position: relative;
+}

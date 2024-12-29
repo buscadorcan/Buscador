@@ -1,0 +1,809 @@
+/* screen - modalv1 */
+
+.modalv1 {
+  align-items: center;
+  background-color: #00000066;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0px 0px 32px;
+  position: relative;
+  width: 1366px;
+}
+
+.modalv1 .modalv1-1::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+.modalv1 .modalv1-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding: 0px 0px 32px;
+  width: 1366px;
+}
+
+.modalv1 .frame-1000003018 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.modalv1 .modal-top-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.modalv1 .group-872 {
+  height: 186px;
+  position: relative;
+  width: 1366px;
+}
+
+.modalv1 .modal-top {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  left: 0;
+  padding: 24px 32px;
+  position: absolute;
+  top: 0;
+  width: 1366px;
+}
+
+.modalv1 .button-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight20);
+  border-radius: 18.86px;
+  display: flex;
+  gap: 13.47px;
+  height: 38px;
+  justify-content: center;
+  left: 1296px;
+  padding: 6.73px;
+  position: absolute;
+  top: 18px;
+  width: 38px;
+}
+
+.modalv1 .close {
+  cursor: pointer;
+  height: 20.57px;
+  position: relative;
+  width: 20.57px;
+}
+
+.modalv1 .button-2 {
+  align-items: center;
+  background-color: var(--neutrallight20);
+  border-radius: 18.86px;
+  display: flex;
+  gap: 13.47px;
+  height: 38px;
+  justify-content: center;
+  left: 1296px;
+  padding: 6.73px;
+  position: absolute;
+  top: 18px;
+  width: 38px;
+}
+
+.modalv1 .frame-1000003021-1 {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 32px;
+  left: 0;
+  padding: 16px 32px 24px;
+  position: absolute;
+  top: 68px;
+  width: 1366px;
+}
+
+.modalv1 .instituto-boliviano {
+  color: var(--eerie-black);
+  flex: 1;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.modalv1 .address {
+  color: var(--eerie-black);
+  font-weight: 400;
+  line-height: normal;
+  text-align: right;
+}
+
+.modalv1 .name {
+  color: var(--eerie-black-3);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.modalv1 .address-1 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+}
+
+.modalv1 .frame-1000004268 {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 52px;
+  justify-content: center;
+  padding: 0px 0px 0px 10px;
+  position: relative;
+  width: 100px;
+}
+
+.modalv1 .estado {
+  align-items: center;
+  background-color: var(--eucalyptus);
+  border: 1px solid;
+  border-color: var(--eucalyptus-2);
+  border-radius: 5px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  margin-left: -7.00px;
+  padding: 12px;
+  position: relative;
+}
+
+.modalv1 .acreditado {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.modalv1 .frame {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  position: relative;
+  width: 100%;
+}
+
+.modalv1 .tabs {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.modalv1 .tab {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding: 8px 0px 0px;
+  position: relative;
+}
+
+.modalv1 .account-1 {
+  color: var(--eerie-black);
+}
+
+.modalv1 .account {
+  color: var(--comet);
+}
+
+.modalv1 .table-heading {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  display: flex;
+  height: 64px;
+  padding: 8px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.modalv1 .table-heading-1 {
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.modalv1 .header-label-1 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 1px 0px;
+}
+
+.modalv1 .label-heading {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.modalv1 .table-heading-2 {
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  width: 215px;
+}
+
+.modalv1 .header-label-2 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  margin-right: -2.00px;
+  padding: 1px 0px;
+}
+
+.modalv1 .table-heading-3 {
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  justify-content: space-around;
+  width: 116px;
+}
+
+.modalv1 .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.modalv1 .table-heading-4 {
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  width: 203px;
+}
+
+.modalv1 .table-heading-5 {
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  width: 193px;
+}
+
+.modalv1 .table-heading-6 {
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  width: 200px;
+}
+
+.modalv1 .header-label-3 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 1px 8px;
+}
+
+.modalv1 .table-heading-7 {
+  display: flex;
+  width: 225px;
+}
+
+.modalv1 .header-label-4 {
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  padding: 1px 8px;
+}
+
+.modalv1 .label-heading-1 {
+  color: var(--mako);
+  font-family: var(--font-family-inter);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-bottom: -4.00px;
+  margin-right: -9.00px;
+  margin-top: -6.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.modalv1 .content {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 32px;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.modalv1 .frame-1000003876-1 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: -10.00px;
+  margin-right: -10.00px;
+  position: relative;
+  width: 1338px;
+}
+
+.modalv1 .frame-1000003877 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.modalv1 .frame-1000004243 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.modalv1 .ads-rules-list-1 {
+  width: 176px;
+}
+
+.modalv1 .button {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 1.5px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 36px;
+  padding: 8px;
+  position: relative;
+  width: 36px;
+}
+
+.modalv1 .dots {
+  align-items: center;
+  display: flex;
+  gap: 2.5px;
+  height: 20px;
+  justify-content: center;
+  margin-right: -28.00px;
+  opacity: 0;
+  position: relative;
+  width: 20px;
+}
+
+.modalv1 .ads-rules-list-2 {
+  width: 215px;
+}
+
+.modalv1 .ads-rules-list-3 {
+  width: 117px;
+}
+
+.modalv1 .ads-rules-list-4 {
+  width: 202px;
+}
+
+.modalv1 .ads-rules-list-5 {
+  width: 193px;
+}
+
+.modalv1 .ads-rules-list-6 {
+  width: 200px;
+}
+
+.modalv1 .ads-rules-list-7 {
+  flex: 1;
+  flex-grow: 1;
+}
+
+.modalv1 .ads-rules-list {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  height: 122px;
+  position: relative;
+  width: 100%;
+}
+
+.modalv1 .frame-2 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 176px;
+}
+
+.modalv1 .in-situ {
+  align-self: stretch;
+  color: var(--mako);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.modalv1 .landing-page {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 215px;
+}
+
+.modalv1 .qumica-analtica-en-alimentos {
+  color: var(--mirage);
+  flex: 1;
+  font-family: var(--font-family-inter);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.modalv1 .landing-page-1 {
+  width: 117px;
+}
+
+.modalv1 .dete {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.modalv1 .landing-page-2 {
+  width: 202px;
+}
+
+.modalv1 .leche {
+  letter-spacing: 0;
+  line-height: 16px;
+  margin-right: -5.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 183px;
+}
+
+.modalv1 .span1 {
+  color: var(--mirage);
+  font-weight: 400;
+}
+
+.modalv1 .landing-page-3 {
+  width: 193px;
+}
+
+.modalv1 .gravimetra {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.modalv1 .landing-page-4 {
+  width: 200px;
+}
+
+.modalv1 .x8-g100-g-a-14-g100-g-8-a-14 {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-right: -2.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 178px;
+}
+
+.modalv1 .landing-page-5 {
+  width: 223px;
+}
+
+.modalv1 .po-f4-03-aoac-ed-14-mtodo-16032 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  height: 62px;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.modalv1 .horizontal-para-la-deteccin {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.modalv1 .ausencia-o-presencia {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-right: -2.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 178px;
+}
+
+.modalv1 .lca-ma-p-02-iso-11290 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  height: 62px;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.modalv1 .frame-1000004238 {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 16px 0px 0px;
+  position: relative;
+  width: 1292px;
+}
+
+.modalv1 .frame-1000004061 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1px;
+  height: 48px;
+  position: relative;
+}
+
+.modalv1 .button-pagination {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.modalv1 .button-pagination-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.modalv1 .button-pagination-variant4 {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.modalv1 .button-pagination-2 {
+  align-items: center;
+  background-color: var(--blue);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.modalv1 .number {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.modalv1 .button-pagination-3 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--wild-sand);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.modalv1 .chevron_right {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.modalv1 .button-pagination-4 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-radius: 0px 8px 8px 0px;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.modalv1 .address-2 {
+  color: var(--eerie-black);
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.modalv1 .address-3 {
+  position: relative;
+  width: fit-content;
+}
+
+.modalv1 .ads-rules-list-8 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.modalv1 .arrow_downward_alt-6 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.modalv1 .header-label-5 {
+  align-items: center;
+  border-radius: 8px;
+  gap: 8px;
+  height: 32px;
+  position: relative;
+}
+
+.modalv1 .landing-page-6 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+}
+
+.modalv1 .table-heading-8 {
+  align-items: center;
+  padding: 8px;
+  position: relative;
+}

@@ -1,0 +1,815 @@
+/* screen - inicio-buscador-paso-a-paso */
+
+.inicio-buscador-paso-a-paso {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  height: 755px;
+  width: 1440px;
+}
+
+.inicio-buscador-paso-a-paso .top {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0px 0px 4px;
+  position: relative;
+  width: 1440px;
+}
+
+.inicio-buscador-paso-a-paso .flex-row {
+  align-items: center;
+  display: flex;
+  left: 29px;
+  min-width: 1912px;
+  position: relative;
+  top: -51px;
+}
+
+.inicio-buscador-paso-a-paso .frame {
+  cursor: pointer;
+  height: 53px;
+  margin-bottom: 1.0px;
+  position: relative;
+  width: 278px;
+}
+
+.inicio-buscador-paso-a-paso .red-de-organismos-de {
+  color: transparent;
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-xxxxl);
+  font-weight: 400;
+  height: 47px;
+  letter-spacing: 0;
+  line-height: 30px;
+  margin-left: 80px;
+  margin-top: 3.0px;
+  position: relative;
+  width: 514px;
+}
+
+.inicio-buscador-paso-a-paso .span0 {
+  color: var(--neutrallight00);
+}
+
+.inicio-buscador-paso-a-paso .span1 {
+  color: var(--amber);
+}
+
+.inicio-buscador-paso-a-paso .vector-1 {
+  height: 262px;
+  margin-left: 18px;
+  object-fit: cover;
+  width: 1022px;
+}
+
+.inicio-buscador-paso-a-paso .container {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .search-bar {
+  align-items: flex-start;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 12px;
+  width: 820px;
+}
+
+.inicio-buscador-paso-a-paso .search-bar-1 {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .search-bar-2 {
+  justify-content: space-between;
+  width: 820px;
+}
+
+.inicio-buscador-paso-a-paso .frame-776 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  margin-bottom: -6.00px;
+  margin-top: -6.00px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .component-7 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.inicio-buscador-paso-a-paso .button {
+  align-items: center;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 24px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .search {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.inicio-buscador-paso-a-paso .button-1 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .checkbox {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .checkbox-1 {
+  height: 18px;
+  position: relative;
+  width: 18px;
+}
+
+.inicio-buscador-paso-a-paso .total {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 100px;
+}
+
+.inicio-buscador-paso-a-paso .total-1 {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .resultados {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  margin-bottom: -16.50px;
+  margin-right: -15.28px;
+  margin-top: -16.50px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .resultados-item {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 85px;
+  justify-content: space-between;
+  padding: 8px;
+  position: relative;
+  width: 88.72px;
+}
+
+.inicio-buscador-paso-a-paso .ona {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.inicio-buscador-paso-a-paso .place {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .ecuador {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .ibmetro {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 85px;
+  justify-content: space-between;
+  min-width: 82px;
+  padding: 8px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .ona-3 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.71px;
+  justify-content: center;
+}
+
+.inicio-buscador-paso-a-paso .image-193 {
+  height: 19.89px;
+  object-fit: cover;
+  position: relative;
+  width: 19.89px;
+}
+
+.inicio-buscador-paso-a-paso .ibmetro-1 {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .fiter {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .tabs {
+  align-items: center;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  height: 28px;
+  justify-content: center;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .format_list_bulleted {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.inicio-buscador-paso-a-paso .tabs-1 {
+  align-items: center;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  height: 28px;
+  justify-content: center;
+  padding: 4px 6px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .filter {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .container-1 {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  position: relative;
+  width: 1382px;
+}
+
+.inicio-buscador-paso-a-paso .label {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .icon {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.inicio-buscador-paso-a-paso .label-1 {
+  color: var(--comet);
+  flex: 1;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .placeholder {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .label-2 {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .label-3 {
+  color: var(--comet);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .main-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 40px 24px;
+  position: relative;
+  width: 1440px;
+}
+
+.inicio-buscador-paso-a-paso .title {
+  align-self: stretch;
+  color: var(--eerie-black-3);
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-xxxxl);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 28.8px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.inicio-buscador-paso-a-paso .content-container {
+  align-items: flex-end;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .data-table {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 1px solid;
+  border-color: var(--snuff);
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 24px;
+  height: 248px;
+  overflow: hidden;
+  padding: 24px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .step-container {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 199px;
+}
+
+.inicio-buscador-paso-a-paso .pais {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 14px;
+  margin-right: -34.00px;
+  padding: 4px 0px;
+  position: relative;
+  width: 233px;
+}
+
+.inicio-buscador-paso-a-paso .step-number-container {
+  align-items: center;
+  border: 1px solid;
+  border-color: var(--amber);
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .step-number {
+  color: var(--catalina-blue);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .info-total {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  gap: 16px;
+  height: 115px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .left {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+  margin-bottom: -12.00px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .razon-social {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 19px;
+  padding: 0px 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .step-description {
+  align-self: stretch;
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: -7.00px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .detalle-de-busqueda {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .frame-1000004128 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .resultados-0 {
+  flex: 1;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .expanded-user-menu {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  box-shadow: 0px 0px 12px #1414141f;
+  display: flex;
+  flex-direction: column;
+  height: 187px;
+  margin-right: -24.00px;
+  padding: 12px;
+  position: relative;
+  width: 261px;
+}
+
+.inicio-buscador-paso-a-paso .popular-search-container {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  padding: 0px 0px 12px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .trending_up {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.inicio-buscador-paso-a-paso .popular-search-title {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .popular-search-tags {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px 8px;
+  padding: 0px 0px 0px 28px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .chips {
+  align-items: center;
+  background-color: var(--snuff);
+  border-radius: 16px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 24px;
+  justify-content: center;
+  padding: 12px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .new {
+  color: var(--mako);
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: -6.50px;
+  margin-top: -10.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .data-table-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border: 1px solid;
+  border-color: var(--snuff);
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 24px;
+  overflow: hidden;
+  padding: 24px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .step-container-1 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 185px;
+}
+
+.inicio-buscador-paso-a-paso .pais-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 14px;
+  margin-right: -48.00px;
+  padding: 4px 0px;
+  position: relative;
+  width: 233px;
+}
+
+.inicio-buscador-paso-a-paso .info-total-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  gap: 16px;
+  height: 127px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .left-1 {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .detalle-de-busqueda-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .paises-filtro {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px #1414141f;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: -6.33px;
+  overflow: hidden;
+  padding: 12px;
+  position: relative;
+  width: 200px;
+}
+
+.inicio-buscador-paso-a-paso .country-filter-container {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .button-select-1 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  display: flex;
+  gap: 4px;
+  height: 32px;
+  padding: 8px 12px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .texas-location {
+  color: var(--neutraldark60);
+  font-family: var(--font-family-poppins-semibold);
+  font-size: var(--font-size-l);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .button-select {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  display: flex;
+  height: 32px;
+  justify-content: space-between;
+  padding: 8px 12px;
+  position: relative;
+  width: 100%;
+}
+
+.inicio-buscador-paso-a-paso .chevron_right-1 {
+  cursor: pointer;
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.inicio-buscador-paso-a-paso .chevron_right {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.inicio-buscador-paso-a-paso .step-container-2 {
+  cursor: pointer;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.inicio-buscador-paso-a-paso .ecuador-3 {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .new-7 {
+  color: var(--mako);
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: -6.50px;
+  margin-top: -10.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.inicio-buscador-paso-a-paso .ona-4 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.inicio-buscador-paso-a-paso .search-1 {
+  display: flex;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .search-bar-3 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .step-container-3 {
+  align-self: stretch;
+  position: relative;
+}
+
+.inicio-buscador-paso-a-paso .texas-location-5 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}

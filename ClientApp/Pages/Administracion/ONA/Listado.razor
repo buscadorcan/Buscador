@@ -45,6 +45,7 @@
     }
 </style>
 
+
 <div class="card">
     <!-- Card Header -->
     <div class="card-header">
@@ -54,7 +55,7 @@
     <!-- Card Body -->
     <div class="card-body">
         <div class="table-responsive">
-            <Grid TItem="ONADto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" Responsive="true">
+            <Grid TItem="ONADto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" @ref="grid" Responsive="true">
                 <GridColumn TItem="ONADto" HeaderText="Razon Social" PropertyName="RazonSocial">
                     @context.RazonSocial
                 </GridColumn>
@@ -80,9 +81,21 @@
                     @context.Telefono
                 </GridColumn>
                 <GridColumn TItem="ONADto" HeaderText="Opciones">
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-ona/{context.IdONA}")" Size="Size.Small">
-                        <Icon Name="IconName.PencilSquare" />
-                    </Button>
+                    <!-- Botón Editar -->
+                    <Tooltip Title="Editar registro">
+                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
+                                To="@($"/editar-ona/{context.IdONA}")" Size="Size.Small">
+                            <Icon Name="IconName.PencilSquare" />
+                        </Button>
+                    </Tooltip>
+               
+                    <!-- Botón Eliminar -->
+                    <Tooltip Title="Eliminar registro">
+                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true"
+                                Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdONA))>
+                            <Icon Name="IconName.Trash" />
+                        </Button>
+                    </Tooltip>                  
                 </GridColumn>
             </Grid>
         </div>
@@ -92,4 +105,28 @@
     <div class="card-footer">
         <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-ona">Nuevo</Button>
     </div>
+
+   
 </div>
+
+ @if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
