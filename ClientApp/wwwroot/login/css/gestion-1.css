@@ -1,0 +1,694 @@
+/* screen - gestion-1 */
+
+.gestion-1 {
+  align-items: center;
+  background-color: var(--black-4);
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0px 0px 32px;
+  position: relative;
+  width: 1366px;
+}
+
+.gestion-1 .frame-1000003018 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-1 .modal-top {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-1 .group-872 {
+  height: 186px;
+  position: relative;
+  width: 1366px;
+}
+
+.gestion-1 .modal-top-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  left: 0;
+  padding: 24px 32px;
+  position: absolute;
+  top: 0;
+  width: 1366px;
+}
+
+.gestion-1 .button-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight20);
+  border-radius: 18.86px;
+  gap: 13.47px;
+  height: 38px;
+  left: 1296px;
+  padding: 6.73px;
+  position: absolute;
+  top: 18px;
+  width: 38px;
+}
+
+.gestion-1 .close {
+  cursor: pointer;
+  height: 20.57px;
+  position: relative;
+  width: 20.57px;
+}
+
+.gestion-1 .frame-1000003020 {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 32px;
+  left: 0;
+  padding: 16px 32px 24px;
+  position: absolute;
+  top: 68px;
+  width: 1366px;
+}
+
+.gestion-1 .instituto-boliviano {
+  color: var(--eerie-black);
+  flex: 1;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-1 .calendar_month {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-1 .address {
+  color: var(--eerie-black);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  text-align: right;
+  width: fit-content;
+}
+
+.gestion-1 .name {
+  color: var(--eerie-black-3);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.gestion-1 .address-1 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.gestion-1 .estado {
+  align-items: center;
+  background-color: #234c9721;
+  border: 1px solid;
+  border-color: #234c97;
+  border-radius: 5px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 12px;
+  position: relative;
+}
+
+.gestion-1 .acreditado {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.gestion-1 .tabs {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.gestion-1 .account {
+  color: var(--comet);
+  font-weight: 500;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-1 .account-1 {
+  color: var(--primaryblack);
+  font-weight: 500;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-1 .tab {
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding: 8px 0px 0px;
+  position: relative;
+}
+
+.gestion-1 .table-heading-1 {
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  height: 64px;
+  padding: 8px 0px;
+  width: 1318px;
+}
+
+.gestion-1 .table-heading {
+  align-items: center;
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  padding: 8px;
+  position: relative;
+}
+
+.gestion-1 .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.gestion-1 .label-heading {
+  color: var(--mako);
+  font-weight: 600;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-1 .table-heading-2 {
+  flex: 1;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.gestion-1 .header-label-1 {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 32px;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.gestion-1 .content {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  height: 426px;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-1 .frame-100000 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-1 .frame-1000003877 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.gestion-1 .frame-1000004243 {
+  align-items: flex-start;
+  display: flex;
+  height: 48px;
+  position: relative;
+  width: 1318px;
+}
+
+.gestion-1 .frame-1000004243-1 {
+  height: 52px;
+  margin-bottom: -4.00px;
+  margin-right: -20.00px;
+  width: 1338px;
+}
+
+.gestion-1 .frame-1000004243-2 {
+  align-self: stretch;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.gestion-1 .ads-rules-list {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 4px 8px;
+  position: relative;
+  width: 264px;
+}
+
+.gestion-1 .button {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 1.5px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 36px;
+  padding: 8px;
+  position: relative;
+  width: 36px;
+}
+
+.gestion-1 .carbonfilter {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-1 .dots {
+  align-items: center;
+  display: flex;
+  gap: 2.5px;
+  height: 20px;
+  justify-content: center;
+  margin-right: -28.00px;
+  opacity: 0;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-1 .ads-rules-list-1 {
+  align-items: center;
+  border-right-style: solid;
+  border-right-width: 1px;
+  cursor: pointer;
+  justify-content: center;
+  padding: 4px 8px;
+  width: 263px;
+}
+
+.gestion-1 .ads-rules-list-3 {
+  align-items: center;
+  border-right-style: solid;
+  border-right-width: 1px;
+  justify-content: center;
+  padding: 4px 8px;
+  width: 264px;
+}
+
+.gestion-1 .ads-rules-list-2 {
+  align-items: flex-start;
+  height: 122px;
+  overflow: hidden;
+  width: 1318px;
+}
+
+.gestion-1 .frame-2 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+}
+
+.gestion-1 .sistema-de-gestin-de-la-calidad {
+  align-self: stretch;
+  color: var(--mako);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-1 .landing-page {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+}
+
+.gestion-1 .nbiso-90012015-sis {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.gestion-1 .number {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 183px;
+}
+
+.gestion-1 .otros-servicios {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-1 .text {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 178px;
+}
+
+.gestion-1 .administracin-pblica {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-1 .frame-1000004238 {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 16px 0px 0px;
+  position: relative;
+  width: 1292px;
+}
+
+.gestion-1 .frame-1000004061 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1px;
+  height: 48px;
+  position: relative;
+}
+
+.gestion-1 .button-pagination-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-1 .button-pagination-2 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-1 .button-pagination-variant4 {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.gestion-1 .button-pagination-3 {
+  align-items: center;
+  background-color: var(--blue);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-1 .number-1 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.gestion-1 .button-pagination {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  gap: 8px;
+  height: 32px;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-1 .button-pagination-4 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--wild-sand);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-1 .chevron_right {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.gestion-1 .button-pagination-5 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--wild-sand);
+  border-radius: 0px 8px 8px 0px;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.gestion-1 .x1-4-de-16-resultados {
+  color: var(--eerie-black);
+  font-weight: 500;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.gestion-1 .ads-rules-list-4 {
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  position: relative;
+}
+
+.gestion-1 .arrow_downward_alt-5 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-1 .button-2 {
+  display: flex;
+  justify-content: center;
+}
+
+.gestion-1 .carbonfilter-5 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.gestion-1 .component-54-5 {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.gestion-1 .frame-1000004243-3 {
+  align-items: flex-start;
+  display: flex;
+  position: relative;
+}
+
+.gestion-1 .suministro-de {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-1 .suministro-de-gas-3 {
+  color: var(--mirage);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 144px;
+}
+
+.gestion-1 .table-heading-3 {
+  align-items: center;
+  display: flex;
+  position: relative;
+}

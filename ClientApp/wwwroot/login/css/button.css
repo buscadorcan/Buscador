@@ -1,0 +1,3469 @@
+/* screen - button */
+
+.button {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  height: 4000px;
+  width: 3028px;
+}
+
+.button .root-tittle {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 96px 96px 24px;
+  position: relative;
+  width: 1920px;
+}
+
+.button .frame-769 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  justify-content: center;
+  position: relative;
+}
+
+.button .frame-323 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+}
+
+.button .frame-770 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 16px;
+  position: relative;
+}
+
+.button .navbar-link-container {
+  align-items: flex-start;
+  display: flex;
+  height: 42px;
+  margin-left: 134px;
+  margin-top: 31px;
+  min-width: 905px;
+}
+
+.button .navbar-link-primary {
+  align-self: flex-end;
+  letter-spacing: 0;
+  line-height: normal;
+  min-height: 36px;
+  min-width: 100px;
+}
+
+.button .navbar-link-default {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-left: 87px;
+  min-height: 24px;
+  min-width: 61px;
+}
+
+.button .navbar-link-hover {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-left: 188px;
+  min-height: 24px;
+  min-width: 49px;
+}
+
+.button .navbar-link-pressing {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-left: 114px;
+  min-height: 24px;
+  min-width: 72px;
+}
+
+.button .navbar-link-disabled {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-left: 161px;
+  min-height: 24px;
+}
+
+.button .flex-row {
+  align-items: flex-start;
+  display: flex;
+  gap: 53px;
+  margin-left: 92px;
+  margin-top: 10px;
+  min-width: 2223px;
+}
+
+.button .flex-col {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+  min-height: 2908px;
+  width: 146px;
+}
+
+.button .frame-48 {
+  align-items: flex-end;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 52px;
+  margin-right: 4px;
+  position: relative;
+}
+
+.button .x-small {
+  color: var(--licorice);
+  font-weight: 500;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .frame-48-item {
+  color: var(--licorice);
+  font-weight: 500;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .frame-container {
+  height: 357px;
+  margin-right: 4px;
+  margin-top: 8px;
+  position: relative;
+  width: 135px;
+}
+
+.button .frame-46 {
+  align-items: flex-end;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 52px;
+  left: 67px;
+  position: absolute;
+  top: 108px;
+}
+
+.button .frame-49 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 37px;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.button .secondary {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .frame-47 {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.button .frame-42 {
+  align-items: flex-end;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 82px;
+  margin-top: 102px;
+  position: relative;
+}
+
+.button .tertiary {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .frame-41 {
+  align-items: flex-end;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 52px;
+  position: relative;
+}
+
+.button .frame-50 {
+  align-items: flex-end;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 82px;
+  margin-right: 1px;
+  margin-top: 102px;
+  position: relative;
+}
+
+.button .quaternary {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .frame-51 {
+  align-items: flex-end;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 82px;
+  margin-right: 3px;
+  margin-top: 139px;
+  position: relative;
+}
+
+.button .destructive {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .frame-52 {
+  align-items: flex-end;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 82px;
+  margin-right: 4px;
+  margin-top: 59px;
+  position: relative;
+}
+
+.button .icon-button {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonicondefault36px-white {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 1.5px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  margin-right: 15px;
+  margin-top: 91px;
+  padding: 8px;
+  position: relative;
+  width: 36px;
+}
+
+.button .dots {
+  gap: 2.5px;
+  height: 20px;
+  width: 20px;
+}
+
+.button .buttonicon-destructivedefaultsmall-white {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: #f9dfdb;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  margin-right: 4px;
+  margin-top: 630px;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.button .icons {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-left: -2.00px;
+  margin-right: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.button .overlap-group1 {
+  border-radius: 5px;
+  height: 3423px;
+  position: relative;
+  width: 2024px;
+}
+
+.button .line-49 {
+  height: 1px;
+  left: 30px;
+  object-fit: cover;
+  position: absolute;
+  top: 763px;
+  width: 478px;
+}
+
+.button .button-29 {
+  border: 1px dashed;
+  border-color: #9747ff;
+  border-radius: 5px;
+  height: 3423px;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 2024px;
+}
+
+.button .buttonprimary-stated {
+  background-color: var(--amber);
+  border-radius: 8px;
+  height: 50px;
+  left: 20px;
+  padding: 10px 32px;
+  top: 228px;
+}
+
+.button .icons-6 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-1 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .icons-7 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttondestructive-st {
+  background-color: #d12f2f;
+  border-radius: 8px;
+  height: 44px;
+  padding: 10px 32px;
+  top: 1651px;
+}
+
+.button .icons-8 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-2 {
+  color: var(--neutrallight00);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttondestructive-st-1 {
+  background-color: #d12f2f;
+  border-radius: 6px;
+  height: 32px;
+  left: 34px;
+  padding: 10px 16px;
+  top: 1593px;
+}
+
+.button .icons-1 {
+  height: 20px;
+  margin-bottom: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-3 {
+  color: var(--neutrallight00);
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttondestructive-se {
+  background-color: var(--neutrallight00);
+  border-radius: 6px;
+  height: 32px;
+  padding: 4px 12px;
+  top: 1755px;
+}
+
+.button .icons-9 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-4 {
+  color: var(--feedbackredred-00);
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttondestructive-se-1 {
+  background-color: var(--feedbackredredlight10);
+  height: 32px;
+  left: 177px;
+  top: 1755px;
+}
+
+.button .icons-10 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondestructive-se-2 {
+  background-color: var(--neutrallight00);
+  height: 44px;
+  left: 34px;
+  top: 1802px;
+}
+
+.button .icons-11 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-5 {
+  color: var(--feedbackredred-00);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttondestructive-se-3 {
+  background-color: var(--neutrallight00);
+  height: 44px;
+  left: 34px;
+  top: 1935px;
+}
+
+.button .icons-12 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondestructive-se-4 {
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--sea-pink);
+  height: 44px;
+  left: 177px;
+  top: 1802px;
+}
+
+.button .icons-13 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondestructive-se-5 {
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--sea-pink);
+  height: 44px;
+  left: 177px;
+  top: 1935px;
+}
+
+.button .icons-14 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondestructive-st-2 {
+  background-color: var(--tall-poppy);
+  border-radius: 8px;
+  height: 44px;
+  left: 271px;
+  padding: 10px 32px;
+  top: 1651px;
+}
+
+.button .icons-15 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttondestructive-st-3 {
+  background-color: var(--tall-poppy);
+  border-radius: 8px;
+  height: 44px;
+  left: 477px;
+  padding: 10px 32px;
+  top: 1651px;
+}
+
+.button .icons-16 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttondestructive-st-4 {
+  background-color: var(--tall-poppy);
+  border-radius: 6px;
+  height: 32px;
+  left: 271px;
+  padding: 10px 16px;
+  top: 1593px;
+}
+
+.button .buttondestructive-st-5 {
+  background-color: var(--tall-poppy);
+  border-radius: 6px;
+  height: 32px;
+  left: 477px;
+  padding: 10px 16px;
+  top: 1593px;
+}
+
+.button .buttondestructive-se-6 {
+  background-color: var(--feedbackredredlight10);
+  height: 32px;
+  left: 334px;
+  top: 1755px;
+}
+
+.button .icons-17 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondestructive-se-7 {
+  background-color: var(--feedbackredredlight10);
+  height: 44px;
+  left: 334px;
+  top: 1802px;
+}
+
+.button .icons-18 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondestructive-se-8 {
+  background-color: var(--feedbackredredlight10);
+  height: 44px;
+  left: 334px;
+  top: 1935px;
+}
+
+.button .icons-19 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonprimary-stated-1 {
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  left: 20px;
+  overflow: hidden;
+  padding: 10px 24px;
+  top: 140px;
+}
+
+.button .icons-20 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-21 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonprimary-stated-2 {
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 36px;
+  left: 20px;
+  overflow: hidden;
+  padding: 10px 24px;
+  top: 302px;
+}
+
+.button .icons-2 {
+  height: 24px;
+  margin-bottom: -4.00px;
+  margin-top: -4.00px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-6 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonprimary-split {
+  background-color: var(--amber);
+  border-radius: 8px 0px 0px 8px;
+  height: 44px;
+  left: 1001px;
+  overflow: hidden;
+  padding: 10px 24px;
+  top: 36px;
+}
+
+.button .frame-772 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  justify-content: center;
+  position: relative;
+}
+
+.button .button-30 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonprimary-stated-3 {
+  background-color: var(--amber);
+  border-radius: 6px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 4px;
+  height: 32px;
+  left: 20px;
+  padding: 4px 12px;
+  top: 64px;
+}
+
+.button .icons-22 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-7 {
+  color: var(--black-pearl);
+  font-weight: 500;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .icons-23 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonprimary-stated-4 {
+  background-color: var(--amber);
+  border-radius: 6px;
+  box-shadow: 3px 3px 9px #02536314;
+  gap: 3px;
+  height: 24px;
+  left: 20px;
+  padding: 2px 9px;
+  top: 24px;
+}
+
+.button .icons-3 {
+  height: 15px;
+  position: relative;
+  width: 15px;
+}
+
+.button .button-31 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonprimary-stateh {
+  background-color: var(--sunglow);
+  border-radius: 8px;
+  height: 50px;
+  left: 227px;
+  padding: 10px 32px;
+  top: 228px;
+}
+
+.button .icons-24 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-25 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonprimary-statep {
+  background-color: var(--sunglow);
+  border-radius: 8px;
+  height: 50px;
+  left: 439px;
+  padding: 10px 32px;
+  top: 228px;
+}
+
+.button .icons-26 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-27 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonprimary-stated-5 {
+  background-color: #175dff1f;
+  border-radius: 8px;
+  gap: 8px;
+  height: 50px;
+  left: 675px;
+  padding: 10px 32px;
+  top: 228px;
+}
+
+.button .icons-28 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-8 {
+  color: var(--neutral-dark20);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttonprimary-stated-6 {
+  background-color: #175dff1f;
+  border-radius: 8px;
+  gap: 8px;
+  height: 44px;
+  left: 675px;
+  padding: 8px 24px;
+  top: 140px;
+}
+
+.button .icons-29 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonprimary-stateh-1 {
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  padding: 10px 24px;
+  top: 140px;
+}
+
+.button .icons-30 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-31 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonprimary-stateh-2 {
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 36px;
+  padding: 10px 24px;
+  top: 302px;
+}
+
+.button .buttonprimary-statep-1 {
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  padding: 10px 24px;
+  top: 140px;
+}
+
+.button .icons-32 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-32 {
+  color: var(--black-pearl);
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .icons-33 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonprimary-statep-2 {
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 36px;
+  padding: 10px 24px;
+  top: 302px;
+}
+
+.button .buttonprimary-stateh-3 {
+  border-radius: 6px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 4px;
+  height: 32px;
+  padding: 4px 12px;
+  top: 72px;
+}
+
+.button .icons-34 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-35 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonprimary-stateh-4 {
+  border-radius: 6px;
+  box-shadow: 3px 3px 9px #02536314;
+  gap: 3px;
+  height: 24px;
+  padding: 2px 9px;
+  top: 24px;
+}
+
+.button .button-33 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonprimary-statep-3 {
+  border-radius: 6px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 4px;
+  height: 32px;
+  padding: 4px 12px;
+  top: 72px;
+}
+
+.button .icons-36 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-37 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonprimary-statep-4 {
+  border-radius: 6px;
+  box-shadow: 3px 3px 9px #02536314;
+  gap: 3px;
+  height: 24px;
+  padding: 2px 9px;
+  top: 24px;
+}
+
+.button .button-34 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttondelete3-stated {
+  background-color: var(--neutrallight00);
+  border-color: var(--sea-pink);
+  justify-content: center;
+  left: 564px;
+}
+
+.button .icons-38 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-39 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-sta {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 1.5px solid;
+  border-color: var(--geyser);
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px #02536305;
+  gap: 3px;
+  height: 24px;
+  justify-content: center;
+  left: 34px;
+  padding: 3px 9px;
+  top: 1132px;
+}
+
+.button .button-9 {
+  color: var(--eerie-black-2);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttondelete3-stated-1 {
+  border: 1.5px solid;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px #02536305;
+  gap: 3px;
+  height: 24px;
+  padding: 3px 9px;
+  top: 2141px;
+}
+
+.button .buttontertiary-state {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  left: 53px;
+  padding: 10px 16px;
+  position: absolute;
+  top: 836px;
+}
+
+.button .button-10 {
+  color: var(--blue);
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonquaternary-sta-1 {
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--mercury);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  left: 34px;
+  padding: 10px 16px;
+  top: 1402px;
+}
+
+.button .icons-40 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-11 {
+  color: var(--eerie-black-2);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttondelete3-stated-2 {
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 50px;
+  padding: 10px 16px;
+  top: 2377px;
+}
+
+.button .icons-41 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-12 {
+  color: var(--feedbackredred-00);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttontertiary-state-1 {
+  height: 50px;
+  left: 34px;
+  padding: 10px 32px;
+  top: 964px;
+}
+
+.button .icons-42 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-13 {
+  color: var(--blue);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .icons-43 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-sta-2 {
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--mercury);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  justify-content: center;
+  left: 34px;
+  padding: 10px 16px;
+  top: 1298px;
+}
+
+.button .icons-44 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-45 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonquaternary-sta-3 {
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--mercury);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  left: 34px;
+  padding: 10px 16px;
+  top: 1238px;
+}
+
+.button .button-35 {
+  color: var(--eerie-black-2);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -3.50px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttondelete3-stated-3 {
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  padding: 10px 16px;
+  top: 2273px;
+}
+
+.button .icons-46 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-47 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonicon-stated-container {
+  height: 29px;
+  left: 36px;
+  position: absolute;
+  top: 2210px;
+  width: 29px;
+}
+
+.button .buttonicon-statedefa {
+  background-color: var(--neutrallight00);
+  border: 1.5px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  gap: 8px;
+  height: 28px;
+  left: 0;
+  padding: 8px;
+  top: 0;
+  width: 28px;
+}
+
+.button .dots-1 {
+  gap: 2.5px;
+  height: 20px;
+  margin-bottom: -4.00px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.00px;
+  width: 20px;
+}
+
+.button .buttonicon-statedefa-1 {
+  border: 1.5px solid;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 28px;
+  justify-content: center;
+  left: 1px;
+  top: 1px;
+  width: 28px;
+}
+
+.button .buttonicon-tertiary {
+  border: 0px none;
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  gap: 8px;
+  height: 28px;
+  left: 36px;
+  padding: 8px;
+  top: 2414px;
+  width: 28px;
+}
+
+.button .ellipse-9-1 {
+  background-color: var(--primary30);
+  border-radius: 1.25px;
+  height: 2.5px;
+  position: relative;
+  width: 2.5px;
+}
+
+.button .buttonicon-tertiary-1 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 28px;
+  left: 277px;
+  top: 2414px;
+  width: 28px;
+}
+
+.button .buttonicon-statedefa-2 {
+  border: 2px solid;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 32px;
+  justify-content: center;
+  left: 34px;
+  top: 2271px;
+  width: 32px;
+}
+
+.button .dots-2 {
+  gap: 2.5px;
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-left: -2.00px;
+  margin-right: -2.00px;
+  margin-top: -2.00px;
+  width: 20px;
+}
+
+.button .buttonicon-statedefa-3 {
+  border: 1.5px solid;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 36px;
+  left: 34px;
+  top: 2132px;
+  width: 36px;
+}
+
+.button .dots-5 {
+  gap: 2.5px;
+  height: 20px;
+  margin-right: -28.00px;
+  opacity: 0;
+  width: 20px;
+}
+
+.button .buttonicon-tertiary-2 {
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 32px;
+  left: 34px;
+  top: 2475px;
+  width: 32px;
+}
+
+.button .buttonicon-tertiary-3 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 32px;
+  left: 275px;
+  top: 2475px;
+  width: 32px;
+}
+
+.button .buttonicon-statedefa-4 {
+  border: 2px solid;
+  box-shadow: 4px 4px 12px #02536314;
+  height: 44px;
+  justify-content: center;
+  left: 34px;
+  top: 2323px;
+  width: 44px;
+}
+
+.button .dots-3 {
+  gap: 3px;
+  height: 24px;
+  width: 24px;
+}
+
+.button .ellipse-9-2 {
+  background-color: var(--neutraldark40);
+  border-radius: 1.5px;
+  height: 3px;
+  position: relative;
+  width: 3px;
+}
+
+.button .buttonicon-tertiary-4 {
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  height: 44px;
+  left: 34px;
+  top: 2527px;
+  width: 44px;
+}
+
+.button .ellipse-9-3 {
+  background-color: var(--primary30);
+  border-radius: 1.5px;
+  height: 3px;
+  position: relative;
+  width: 3px;
+}
+
+.button .buttonicon-tertiary-5 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  height: 44px;
+  left: 275px;
+  top: 2527px;
+  width: 44px;
+}
+
+.button .buttonicon-statehove {
+  background-color: var(--white-lilac);
+  border: 1.5px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  gap: 8px;
+  height: 28px;
+  left: 123px;
+  padding: 8px;
+  top: 2210px;
+  width: 28px;
+}
+
+.button .buttonicon-tertiary-6 {
+  background-color: var(--whisper);
+  border-radius: 8px;
+  height: 28px;
+  left: 123px;
+  top: 2414px;
+  width: 28px;
+}
+
+.button .buttonicon-tertiary-7 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  height: 28px;
+  left: 364px;
+  top: 2414px;
+  width: 28px;
+}
+
+.button .buttonicon-statepres {
+  background-color: var(--alice-blue);
+  border: 1.5px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  gap: 8px;
+  height: 28px;
+  left: 210px;
+  padding: 8px;
+  top: 2210px;
+  width: 28px;
+}
+
+.button .buttonicon-tertiary-8 {
+  background-color: var(--whisper-2);
+  border-radius: 8px;
+  height: 28px;
+  left: 210px;
+  top: 2414px;
+  width: 28px;
+}
+
+.button .buttonicon-tertiary-9 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  height: 28px;
+  left: 451px;
+  top: 2414px;
+  width: 28px;
+}
+
+.button .buttonicon-statehove-1 {
+  border: 2px solid;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 32px;
+  justify-content: center;
+  top: 2271px;
+  width: 32px;
+}
+
+.button .buttonicon-statehove-2 {
+  border: 1.5px solid;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 36px;
+  justify-content: flex-end;
+  top: 2132px;
+  width: 36px;
+}
+
+.button .dots-4 {
+  gap: 2.5px;
+  height: 20px;
+  margin-left: -28.00px;
+  opacity: 0;
+  width: 20px;
+}
+
+.button .buttonicon-statefocu {
+  background-color: var(--white-lilac);
+  border: 1.5px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  gap: 8px;
+  height: 36px;
+  left: 277px;
+  padding: 8px;
+  top: 2132px;
+  width: 36px;
+}
+
+.button .buttonicon-tertiary-10 {
+  background-color: var(--whisper);
+  border-radius: 8px;
+  height: 32px;
+  left: 121px;
+  top: 2475px;
+  width: 32px;
+}
+
+.button .buttonicon-tertiary-11 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  height: 32px;
+  left: 362px;
+  top: 2475px;
+  width: 32px;
+}
+
+.button .buttonicon-statehove-3 {
+  border: 2px solid;
+  box-shadow: 4px 4px 12px #02536314;
+  height: 44px;
+  justify-content: center;
+  top: 2323px;
+  width: 44px;
+}
+
+.button .buttonicon-tertiary-12 {
+  background-color: var(--whisper);
+  border-radius: 8px;
+  height: 44px;
+  left: 121px;
+  top: 2527px;
+  width: 44px;
+}
+
+.button .buttonicon-tertiary-13 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  height: 44px;
+  left: 362px;
+  top: 2527px;
+  width: 44px;
+}
+
+.button .buttonicon-statepres-1 {
+  border: 2px solid;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 32px;
+  justify-content: center;
+  top: 2271px;
+  width: 32px;
+}
+
+.button .buttonicon-statepres-2 {
+  border: 1.5px solid;
+  box-shadow: 4px 4px 4px #02536305;
+  height: 36px;
+  justify-content: flex-end;
+  top: 2132px;
+  width: 36px;
+}
+
+.button .buttonicon-tertiary-14 {
+  background-color: var(--whisper-2);
+  border-radius: 8px;
+  height: 32px;
+  left: 208px;
+  top: 2475px;
+  width: 32px;
+}
+
+.button .buttonicon-tertiary-15 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  height: 32px;
+  left: 449px;
+  top: 2475px;
+  width: 32px;
+}
+
+.button .buttonicon-statepres-3 {
+  border: 2px solid;
+  box-shadow: 4px 4px 12px #02536314;
+  height: 44px;
+  justify-content: center;
+  top: 2323px;
+  width: 44px;
+}
+
+.button .buttonicon-tertiary-16 {
+  background-color: var(--whisper-2);
+  border-radius: 8px;
+  height: 44px;
+  left: 208px;
+  top: 2527px;
+  width: 44px;
+}
+
+.button .buttonicon-tertiary-17 {
+  background-color: var(--neutrallight00);
+  border-radius: 24px;
+  height: 44px;
+  left: 449px;
+  top: 2527px;
+  width: 44px;
+}
+
+.button .buttontertiary-state-2 {
+  height: 44px;
+  left: 34px;
+  padding: 10px 32px;
+  top: 893px;
+}
+
+.button .icons-48 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-49 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-sta-4 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--ghost);
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px #00000014;
+  gap: 4px;
+  height: 32px;
+  justify-content: center;
+  left: 224px;
+  padding: 4px 12px;
+  top: 1181px;
+}
+
+.button .icons-50 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-14 {
+  color: var(--neutraldark60);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .icons-51 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondelete3-stateh {
+  background-color: var(--rose-white);
+  border-color: var(--feedbackredred-00);
+  justify-content: center;
+  left: 754px;
+}
+
+.button .icons-52 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-53 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-sta-5 {
+  background-color: var(--athens-gray-2);
+  border: 1.5px solid;
+  border-color: var(--ghost);
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px #02536305;
+  gap: 3px;
+  height: 24px;
+  justify-content: center;
+  left: 224px;
+  padding: 7.5px 9px;
+  top: 1132px;
+}
+
+.button .icons-4 {
+  height: 15px;
+  margin-bottom: -3.00px;
+  margin-top: -3.00px;
+  position: relative;
+  width: 15px;
+}
+
+.button .button-15 {
+  color: var(--neutraldark60);
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: -1.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttondelete3-stateh-1 {
+  border: 1.5px solid;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px #02536305;
+  gap: 3px;
+  height: 24px;
+  padding: 7.5px 9px;
+  top: 2141px;
+}
+
+.button .button-16 {
+  color: var(--feedbackredred-00);
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: -1.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonquaternary-sta-6 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px #00000014;
+  gap: 4px;
+  height: 32px;
+  left: 416px;
+  padding: 4px 12px;
+  top: 1181px;
+}
+
+.button .icons-54 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-55 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttondelete3-statep {
+  background-color: var(--athens-gray-2);
+  border-color: var(--heather);
+  left: 946px;
+}
+
+.button .icons-56 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-57 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-sta-7 {
+  background-color: var(--athens-gray-2);
+  border: 1.5px solid;
+  border-color: var(--heather);
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px #02536305;
+  gap: 3px;
+  height: 24px;
+  left: 416px;
+  padding: 7.5px 9px;
+  top: 1132px;
+}
+
+.button .buttondelete3-statep-1 {
+  border: 1.5px solid;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px #02536305;
+  gap: 3px;
+  height: 24px;
+  padding: 7.5px 9px;
+  top: 2141px;
+}
+
+.button .buttontertiary-state-3 {
+  background-color: var(--zircon);
+  height: 32px;
+  left: 233px;
+  padding: 10px 16px;
+  top: 836px;
+}
+
+.button .buttontertiary-state-4 {
+  background-color: var(--zircon);
+  height: 32px;
+  left: 434px;
+  padding: 10px 16px;
+  top: 836px;
+}
+
+.button .buttontertiary-state-5 {
+  background-color: var(--zircon);
+  height: 32px;
+  left: 617px;
+  padding: 10px 16px;
+  top: 836px;
+}
+
+.button .button-36 {
+  color: var(--gull-gray);
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonquaternary-sta-8 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--ghost);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  left: 224px;
+  padding: 10px 16px;
+  top: 1402px;
+}
+
+.button .icons-58 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-17 {
+  color: var(--neutraldark60);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttondelete3-stateh-2 {
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 50px;
+  padding: 10px 16px;
+  top: 2377px;
+}
+
+.button .icons-59 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonquaternary-sta-9 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 50px;
+  left: 416px;
+  padding: 10px 16px;
+  top: 1402px;
+}
+
+.button .icons-60 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttondelete3-statep-2 {
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 50px;
+  padding: 10px 16px;
+  top: 2377px;
+}
+
+.button .icons-61 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttontertiary-state-6 {
+  background-color: var(--zircon);
+  height: 50px;
+  left: 233px;
+  padding: 10px 32px;
+  top: 964px;
+}
+
+.button .icons-62 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-63 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontertiary-state-7 {
+  background-color: var(--zircon);
+  height: 50px;
+  left: 434px;
+  padding: 10px 32px;
+  top: 964px;
+}
+
+.button .icons-64 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-65 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontertiary-state-8 {
+  background-color: var(--zircon);
+  height: 50px;
+  left: 617px;
+  padding: 10px 32px;
+  top: 964px;
+}
+
+.button .icons-66 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-18 {
+  color: var(--gull-gray);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .icons-67 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-sta-10 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--ghost);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  justify-content: center;
+  left: 224px;
+  padding: 10px 16px;
+  top: 1298px;
+}
+
+.button .icons-68 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-69 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonquaternary-sta-11 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--ghost);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  left: 224px;
+  padding: 10px 16px;
+  top: 1238px;
+}
+
+.button .button-19 {
+  color: var(--neutraldark60);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -3.50px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttondelete3-stateh-3 {
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  padding: 10px 16px;
+  top: 2273px;
+}
+
+.button .icons-70 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-71 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonquaternary-sta-12 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  left: 416px;
+  padding: 10px 16px;
+  top: 1298px;
+}
+
+.button .icons-72 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-73 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonquaternary-sta-13 {
+  background-color: var(--athens-gray-2);
+  border: 2px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 36px;
+  left: 416px;
+  padding: 10px 16px;
+  top: 1238px;
+}
+
+.button .buttondelete3-statep-3 {
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 8px;
+  height: 44px;
+  padding: 10px 16px;
+  top: 2273px;
+}
+
+.button .icons-74 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-75 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttontertiary-state-9 {
+  background-color: var(--zircon);
+  height: 44px;
+  left: 233px;
+  padding: 10px 32px;
+  top: 904px;
+}
+
+.button .icons-76 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-77 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontertiary-state-10 {
+  background-color: var(--zircon);
+  height: 44px;
+  left: 434px;
+  padding: 10px 32px;
+  top: 904px;
+}
+
+.button .icons-78 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-79 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontertiary-state-11 {
+  background-color: var(--zircon);
+  height: 44px;
+  left: 617px;
+  padding: 10px 32px;
+  top: 904px;
+}
+
+.button .icons-80 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-81 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonsecondary-stat {
+  align-items: center;
+  border: 2px solid;
+  border-color: var(--blue);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  gap: 4px;
+  height: 32px;
+  justify-content: center;
+  left: 44px;
+  padding: 10px 16px;
+  position: absolute;
+  top: 427px;
+}
+
+.button .button-20 {
+  color: var(--blue);
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonsecondary-stat-1 {
+  background-color: var(--neutrallight00);
+  border-color: var(--geyser);
+  gap: 4px;
+  height: 32px;
+  left: 655px;
+  padding: 10px 16px;
+  top: 427px;
+}
+
+.button .button-21 {
+  color: var(--heather);
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonquaternary-sta-14 {
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  gap: 4px;
+  height: 32px;
+  justify-content: center;
+  left: 895px;
+  padding: 10px 12px;
+  top: 1230px;
+}
+
+.button .buttonsecondary-stat-2 {
+  border-color: var(--blue);
+  gap: 8px;
+  height: 50px;
+  left: 44px;
+  padding: 10px 32px;
+  top: 563px;
+}
+
+.button .icons-82 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-83 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonsecondary-stat-3 {
+  border-color: var(--blue);
+  gap: 8px;
+  height: 44px;
+  left: 44px;
+  padding: 10px 24px;
+  top: 495px;
+}
+
+.button .icons-84 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-85 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonsecondary-stat-4 {
+  border-color: var(--blue);
+  gap: 8px;
+  height: 36px;
+  left: 44px;
+  padding: 10px 20px;
+  top: 629px;
+}
+
+.button .button-22 {
+  color: var(--blue);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -2.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttonsecondary-stat-5 {
+  background-color: var(--black-squeeze);
+  border-color: var(--blue);
+  gap: 4px;
+  height: 32px;
+  left: 243px;
+  padding: 10px 16px;
+  top: 427px;
+}
+
+.button .buttonsecondary-stat-6 {
+  background-color: var(--black-squeeze);
+  border-color: var(--blue);
+  gap: 4px;
+  height: 32px;
+  left: 423px;
+  padding: 10px 16px;
+  top: 427px;
+}
+
+.button .buttonsecondary-stat-7 {
+  background-color: #f4f9fa;
+  border-color: var(--blue);
+  gap: 8px;
+  height: 50px;
+  left: 243px;
+  padding: 10px 32px;
+  top: 563px;
+}
+
+.button .icons-86 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-87 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonsecondary-stat-8 {
+  background-color: var(--black-squeeze);
+  border-color: var(--blue);
+  gap: 8px;
+  height: 44px;
+  left: 243px;
+  padding: 10px 24px;
+  top: 495px;
+}
+
+.button .icons-88 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-89 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonsecondary-stat-9 {
+  background-color: var(--black-squeeze);
+  border-color: var(--blue);
+  gap: 8px;
+  height: 36px;
+  left: 243px;
+  padding: 10px 20px;
+  top: 629px;
+}
+
+.button .buttonsecondary-stat-10 {
+  background-color: var(--black-squeeze);
+  border-color: var(--blue);
+  gap: 8px;
+  height: 44px;
+  left: 462px;
+  padding: 10px 24px;
+  top: 495px;
+}
+
+.button .icons-90 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .icons-91 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonsecondary-stat-11 {
+  background-color: var(--black-squeeze);
+  border-color: var(--blue);
+  gap: 8px;
+  height: 36px;
+  left: 462px;
+  padding: 10px 20px;
+  top: 629px;
+}
+
+.button .buttonsecondary-stat-12 {
+  background-color: var(--neutrallight00);
+  border-color: var(--mercury);
+  gap: 8px;
+  height: 44px;
+  left: 661px;
+  padding: 10px 24px;
+  top: 495px;
+}
+
+.button .icons-92 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-37 {
+  color: var(--mercury);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .icons-93 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonsecondary-stat-13 {
+  background-color: var(--neutrallight00);
+  border-color: var(--mercury);
+  gap: 8px;
+  height: 36px;
+  left: 661px;
+  padding: 10px 24px;
+  top: 629px;
+}
+
+.button .button-38 {
+  color: var(--mercury);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -3.50px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttonicon-cuaternar {
+  background-color: var(--neutrallight00);
+  border-radius: 16px;
+  gap: 11.43px;
+  height: 32px;
+  left: 343px;
+  padding: 5.71px;
+  top: 2690px;
+  width: 32px;
+}
+
+.button .close-1 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonicon-cuaternar-1 {
+  background-color: var(--neutrallight20);
+  border-radius: 12px;
+  gap: 8.57px;
+  height: 24px;
+  left: 44px;
+  padding: 4.29px;
+  top: 2646px;
+  width: 24px;
+}
+
+.button .close {
+  height: 20px;
+  margin-bottom: -2.29px;
+  margin-left: -2.29px;
+  margin-right: -2.29px;
+  margin-top: -2.29px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonicon-cuaternar-2 {
+  background-color: var(--neutrallight20);
+  border-radius: 22px;
+  gap: 15.71px;
+  height: 44px;
+  left: 34px;
+  padding: 7.86px;
+  top: 2738px;
+  width: 44px;
+}
+
+.button .close-2 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonicon-cuaternar-3 {
+  background-color: #f1f3f41a;
+  border-radius: 22px;
+  gap: 15.71px;
+  height: 44px;
+  left: 333px;
+  padding: 7.86px;
+  top: 2738px;
+  width: 44px;
+}
+
+.button .close-3 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonicon-cuaternar-4 {
+  background-color: var(--athens-gray-2);
+  border-radius: 16px;
+  gap: 11.43px;
+  height: 32px;
+  left: 463px;
+  padding: 5.71px;
+  top: 2690px;
+  width: 32px;
+}
+
+.button .close-4 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonicon-cuaternar-5 {
+  background-color: var(--neutrallight30);
+  border-radius: 16px;
+  gap: 11.43px;
+  height: 32px;
+  left: 278px;
+  padding: 5.71px;
+  top: 2688px;
+  width: 32px;
+}
+
+.button .close-5 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonicon-cuaternar-6 {
+  background-color: var(--neutrallight30);
+  border-radius: 12px;
+  gap: 8.57px;
+  height: 24px;
+  left: 164px;
+  padding: 4.29px;
+  top: 2636px;
+  width: 24px;
+}
+
+.button .buttonicon-cuaternar-7 {
+  background-color: var(--neutrallight30);
+  border-radius: 22px;
+  gap: 15.71px;
+  height: 44px;
+  left: 138px;
+  padding: 7.86px;
+  top: 2738px;
+  width: 44px;
+}
+
+.button .close-6 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonicon-cuaternar-8 {
+  background-color: var(--athens-gray-2);
+  border-radius: 22px;
+  gap: 15.71px;
+  height: 44px;
+  left: 437px;
+  padding: 7.86px;
+  top: 2738px;
+  width: 44px;
+}
+
+.button .close-7 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonsplit-button-sizelarge {
+  align-items: flex-start;
+  display: inline-flex;
+  height: 50px;
+  left: 1025px;
+  position: absolute;
+  top: 116px;
+}
+
+.button .button-23 {
+  align-items: center;
+  background-color: var(--amber);
+  border-radius: 8px 0px 0px 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 24px;
+  position: relative;
+}
+
+.button .button-39 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .button-24 {
+  align-items: center;
+  background-color: var(--amber);
+  border-color: #124cd1;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-radius: 0px 8px 8px 0px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 12px;
+  position: relative;
+}
+
+.button .buttonsplit-button-sizelarge-1 {
+  align-items: flex-start;
+  display: inline-flex;
+  height: 50px;
+  left: 717px;
+  position: absolute;
+  top: 1097px;
+}
+
+.button .button-40 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .expand_more-1 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .buttonprimary-old-st {
+  align-items: center;
+  background-color: #175dff;
+  border-radius: 5px;
+  display: inline-flex;
+  gap: 10px;
+  height: 44px;
+  justify-content: center;
+  left: 1281px;
+  padding: 8px 24px;
+  position: absolute;
+  top: 118px;
+}
+
+.button .bar_chart_4_bars {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .view-report {
+  color: var(--neutrallight00);
+  font-family: var(--font-family-raleway);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.button .buttonquaternary-spl {
+  align-items: flex-start;
+  left: 642px;
+  top: 1266px;
+}
+
+.button .button-41 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--mercury);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  height: 32px;
+  padding: 4px 12px;
+  position: relative;
+}
+
+.button .icons-94 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-42 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--mercury);
+  border-radius: 0px 8px 8px 0px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 4px;
+  height: 32px;
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+  width: 32px;
+}
+
+.button .expand_more-2 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-spl-1 {
+  align-items: flex-start;
+  display: inline-flex;
+  left: 642px;
+  position: absolute;
+  top: 1310px;
+}
+
+.button .button-43 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--mercury);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  height: 44px;
+  padding: 4px 12px;
+  position: relative;
+}
+
+.button .icons-95 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.button .button-44 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--mercury);
+  border-radius: 0px 8px 8px 0px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 4px;
+  height: 44px;
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+  width: 44px;
+}
+
+.button .expand_more-3 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 4px;
+  height: 32px;
+  justify-content: center;
+  left: 19px;
+  padding: 4px 0px;
+  position: absolute;
+  top: 2969px;
+}
+
+.button .icons-96 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-45 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -0.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .icons-97 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st-1 {
+  border-radius: 8px;
+  gap: 4px;
+  height: 24px;
+  left: 19px;
+  padding: 4px 0px;
+  top: 2901px;
+}
+
+.button .icons-5 {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-46 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-top: -4.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttontext-button-st-2 {
+  border-radius: 6px;
+  gap: 3px;
+  height: 24px;
+  left: 16px;
+  padding: 3px 0px;
+  top: 3255px;
+}
+
+.button .button-47 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.button .buttontext-button-st-3 {
+  border-radius: 8px;
+  gap: 8px;
+  height: 50px;
+  left: 0;
+  padding: 4px 0px;
+  top: 3141px;
+}
+
+.button .icons-98 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-48 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .icons-99 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st-4 {
+  border-radius: 8px;
+  gap: 8px;
+  height: 44px;
+  left: 0;
+  padding: 4px 0px;
+  top: 3026px;
+}
+
+.button .icons-100 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-49 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .icons-101 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st-5 {
+  border-radius: 8px;
+  gap: 4px;
+  height: 32px;
+  left: 199px;
+  padding: 4px 0px;
+  top: 2969px;
+}
+
+.button .icons-102 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-25 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -0.50px;
+  position: relative;
+  text-decoration: underline;
+  width: fit-content;
+}
+
+.button .icons-103 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st-6 {
+  border-radius: 8px;
+  gap: 4px;
+  height: 24px;
+  left: 199px;
+  padding: 4px 0px;
+  top: 2901px;
+}
+
+.button .button-26 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-top: -4.50px;
+  position: relative;
+  text-decoration: underline;
+  width: fit-content;
+}
+
+.button .buttontext-button-st-7 {
+  border-radius: 6px;
+  gap: 3px;
+  height: 24px;
+  left: 204px;
+  padding: 3px 0px;
+  top: 3255px;
+}
+
+.button .button-27 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.50px;
+  position: relative;
+  text-decoration: underline;
+  width: fit-content;
+}
+
+.button .buttontext-button-st-8 {
+  border-radius: 8px;
+  gap: 4px;
+  height: 32px;
+  left: 364px;
+  padding: 4px 0px;
+  top: 2969px;
+}
+
+.button .icons-104 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-105 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st-9 {
+  border-radius: 8px;
+  gap: 4px;
+  height: 24px;
+  left: 364px;
+  padding: 4px 0px;
+  top: 2901px;
+}
+
+.button .buttontext-button-st-10 {
+  border-radius: 6px;
+  gap: 3px;
+  height: 24px;
+  left: 328px;
+  padding: 3px 0px;
+  top: 3255px;
+}
+
+.button .buttontext-button-st-11 {
+  border-radius: 8px;
+  gap: 8px;
+  height: 50px;
+  left: 199px;
+  padding: 4px 0px;
+  top: 3141px;
+}
+
+.button .icons-106 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .button-28 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  text-decoration: underline;
+  width: fit-content;
+}
+
+.button .icons-107 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st-12 {
+  border-radius: 8px;
+  gap: 8px;
+  height: 50px;
+  left: 338px;
+  padding: 4px 0px;
+  top: 3141px;
+}
+
+.button .icons-108 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-109 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttontext-button-st-13 {
+  border-radius: 8px;
+  gap: 8px;
+  height: 44px;
+  left: 199px;
+  padding: 4px 0px;
+  top: 3037px;
+}
+
+.button .icons-110 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-111 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonquaternary-sta-15 {
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: var(--mercury);
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px #00000014;
+  gap: 4px;
+  height: 32px;
+  justify-content: center;
+  left: 35px;
+  padding: 4px 12px;
+  top: 1180px;
+}
+
+.button .icons-112 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .icons-113 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .buttonicon-destructi {
+  background-color: var(--feedbackredredlight10);
+  border: 2px solid;
+  border-color: var(--feedbackredred-00);
+  border-radius: 8px;
+  gap: 8px;
+  height: 32px;
+  left: 194px;
+  padding: 8px;
+  top: 2827px;
+  width: 32px;
+}
+
+.button .buttonicon-destructivedefaultsmall-white-1 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: #f9dfdb;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  left: 34px;
+  padding: 8px;
+  position: absolute;
+  top: 2827px;
+  width: 32px;
+}
+
+.button .buttonicon-destructivehoversmall-white {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border: 2px solid;
+  border-color: #efa89e;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  left: 120px;
+  padding: 8px;
+  position: absolute;
+  top: 2827px;
+  width: 32px;
+}
+
+.button .component-55 {
+  align-items: center;
+  border: 1px dashed;
+  border-color: #9747ff;
+  border-radius: 5px;
+  display: flex;
+  gap: 45px;
+  height: 86px;
+  left: 911px;
+  overflow: hidden;
+  padding: 0 20px;
+  position: absolute;
+  top: 414px;
+  width: 183px;
+}
+
+.button .property-1button {
+  align-items: flex-start;
+  display: inline-flex;
+  gap: 1px;
+  margin-top: 1.0px;
+  position: relative;
+}
+
+.button .button-50 {
+  align-items: center;
+  border: 2px solid;
+  border-color: var(--blue);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: center;
+  padding: 10px 12px;
+  position: relative;
+}
+
+.button .bifile-pdf {
+  height: 25px;
+  position: relative;
+  width: 25px;
+}
+
+.button .property-1hover-boton-pdf {
+  align-items: center;
+  background-color: var(--blue);
+  border: 2px solid;
+  border-color: var(--blue);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 1.0px;
+  padding: 10px 12px;
+  position: relative;
+}
+
+.button .buttondelete3 {
+  align-items: center;
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: inline-flex;
+  gap: 4px;
+  height: 32px;
+  padding: 4px 12px;
+  position: absolute;
+  top: 2205px;
+}
+
+.button .buttondelete3-stated-4 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-color: var(--sea-pink);
+  display: inline-flex;
+  justify-content: center;
+  left: 564px;
+  position: absolute;
+}
+
+.button .buttondelete3-stateh-4 {
+  align-items: center;
+  background-color: var(--rose-white);
+  border-color: var(--feedbackredred-00);
+  display: inline-flex;
+  justify-content: center;
+  left: 754px;
+  position: absolute;
+}
+
+.button .buttondelete3-statep-4 {
+  align-items: center;
+  background-color: var(--athens-gray-2);
+  border-color: var(--heather);
+  display: inline-flex;
+  left: 946px;
+  position: absolute;
+}
+
+.button .buttondestructive {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+  justify-content: center;
+  left: 34px;
+  position: absolute;
+}
+
+.button .buttondestructive-se-9 {
+  align-items: center;
+  border-radius: 6px;
+  display: inline-flex;
+  gap: 4px;
+  justify-content: center;
+  padding: 4px 12px;
+  position: absolute;
+}
+
+.button .buttondestructive-st-6 {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .buttonicon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .buttonicon-cuaternar-9 {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .buttonicon-statedefa-5 {
+  align-items: center;
+  background-color: var(--neutrallight00);
+  border-color: var(--geyser);
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  position: absolute;
+}
+
+.button .buttonicon-statehove-4 {
+  align-items: center;
+  background-color: var(--white-lilac);
+  border-color: var(--heather);
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  left: 121px;
+  padding: 8px;
+  position: absolute;
+}
+
+.button .buttonicon-statepres-4 {
+  align-items: center;
+  background-color: var(--alice-blue);
+  border-color: var(--heather);
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  left: 208px;
+  padding: 8px;
+  position: absolute;
+}
+
+.button .buttonicon-tertiary-18 {
+  align-items: center;
+  border: 0px none;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px;
+  position: absolute;
+}
+
+.button .buttonprimary {
+  align-items: center;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .buttonprimary-stated-7 {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .buttonprimary-stateh-5 {
+  align-items: center;
+  background-color: var(--sunglow);
+  display: inline-flex;
+  justify-content: center;
+  left: 227px;
+  position: absolute;
+}
+
+.button .buttonprimary-statep-5 {
+  align-items: center;
+  background-color: var(--sunglow);
+  display: inline-flex;
+  justify-content: center;
+  left: 439px;
+  position: absolute;
+}
+
+.button .buttonquaternary {
+  display: inline-flex;
+  position: absolute;
+}
+
+.button .buttonquaternary-sta-16 {
+  align-items: center;
+  display: inline-flex;
+  position: absolute;
+}
+
+.button .buttonsecondary-stat-14 {
+  align-items: center;
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .buttontertiary-state-12 {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .buttontext-button-st-14 {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  position: absolute;
+}
+
+.button .carbonfilter-3 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.button .dots-6 {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.button .large-4 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .medium-5 {
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.button .small-5 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}

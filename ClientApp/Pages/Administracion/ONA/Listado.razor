@@ -1,0 +1,132 @@
+@page "/onas"
+@layout AdminLayout
+@using Microsoft.AspNetCore.Authorization;
+@using SharedApp.Models.Dtos;
+@attribute [Authorize]
+
+<style>
+    .striped-table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .striped-table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+
+<div class="card">
+    <!-- Card Header -->
+    <div class="card-header">
+        <h2>Administración de ONA</h2>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body">
+        <div class="table-responsive">
+            <Grid TItem="ONADto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" @ref="grid" Responsive="true">
+                <GridColumn TItem="ONADto" HeaderText="Razon Social" PropertyName="RazonSocial">
+                    @context.RazonSocial
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="Siglas" PropertyName="Siglas">
+                    @context.Siglas
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="País" PropertyName="Pais">
+                    @context.Pais
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="Ciudad" PropertyName="Ciudad">
+                    @context.Ciudad
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="Correo" PropertyName="Correo">
+                    @context.Correo
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="Dirección" PropertyName="Direccion">
+                    @context.Direccion
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="Página Web" PropertyName="PaginaWeb">
+                    @context.PaginaWeb
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="Teléfono" PropertyName="Telefono">
+                    @context.Telefono
+                </GridColumn>
+                <GridColumn TItem="ONADto" HeaderText="Opciones">
+                    <!-- Botón Editar -->
+                    <Tooltip Title="Editar registro">
+                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
+                                To="@($"/editar-ona/{context.IdONA}")" Size="Size.Small">
+                            <Icon Name="IconName.PencilSquare" />
+                        </Button>
+                    </Tooltip>
+               
+                    <!-- Botón Eliminar -->
+                    <Tooltip Title="Eliminar registro">
+                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true"
+                                Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdONA))>
+                            <Icon Name="IconName.Trash" />
+                        </Button>
+                    </Tooltip>                  
+                </GridColumn>
+            </Grid>
+        </div>
+    </div>
+
+    <!-- Card Footer -->
+    <div class="card-footer">
+        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-ona">Nuevo</Button>
+    </div>
+
+   
+</div>
+
+ @if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,305 @@
+/* screen - desplegable */
+
+.desplegable {
+  align-items: flex-start;
+  background-color: #00000040;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  position: relative;
+  width: 749px;
+}
+
+.desplegable .desplegable-1 {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px 8px #00000014;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  width: 749px;
+}
+
+.desplegable .frame-1000004262 {
+  align-items: flex-start;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--gallery);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0px 0px 12px;
+  position: relative;
+  width: 100%;
+}
+
+.desplegable .paises {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.desplegable .place {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: 25.2px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.desplegable .button-select {
+  background-color: var(--neutrallight00);
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.desplegable .frame-1000004270 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  position: relative;
+}
+
+.desplegable .contactslacteossanantoniocom-1 {
+  color: var(--black-3);
+}
+
+.desplegable .ona {
+  align-items: flex-start;
+  border-radius: 12px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.desplegable .frame-1000004180 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.desplegable .frame-1000003830 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.desplegable .button-select-1 {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 0px 8px 0px 4px;
+  position: relative;
+}
+
+.desplegable .ona-1 {
+  align-items: center;
+  background-color: var(--porcelain);
+  border-radius: 20px;
+  display: flex;
+  gap: 0.83px;
+  height: 30px;
+  justify-content: center;
+  width: 30px;
+}
+
+.desplegable .group-853 {
+  height: 17.5px;
+  position: relative;
+  width: 16.67px;
+}
+
+.desplegable .frame {
+  background-image: url(../img/image-193-3@2x.png);
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 1.67px;
+  height: 18px;
+  width: 17px;
+}
+
+.desplegable .ibmetro {
+  color: var(--neutraldark60);
+  font-weight: 500;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.desplegable .button {
+  background-color: var(--neutrallight20);
+  border-radius: 18.86px;
+  display: flex;
+  gap: 13.47px;
+  height: 38px;
+  left: 663px;
+  padding: 6.73px;
+  position: absolute;
+  top: 0;
+  width: 38px;
+}
+
+.desplegable .close {
+  cursor: pointer;
+  height: 20.57px;
+  position: relative;
+  width: 20.57px;
+}
+
+.desplegable .frame-1000004226 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 166px;
+  justify-content: space-around;
+  position: relative;
+  width: 100%;
+}
+
+.desplegable .frame-1000004232 {
+  align-items: flex-start;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--gallery);
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 0px 12px;
+  position: relative;
+  width: 700px;
+}
+
+.desplegable .frame-1000004225 {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 42px;
+  position: relative;
+}
+
+.desplegable .contacto {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 12px;
+  position: relative;
+}
+
+.desplegable .informacin-de-contacto {
+  color: var(--primaryblack);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.desplegable .frame-1000003872 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.desplegable .group-847 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.desplegable .contactslacteossanantoniocom {
+  color: var(--primaryblack);
+}
+
+.desplegable .frame-1000004270-1 {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  position: relative;
+  width: 216px;
+}
+
+.desplegable .group-848 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.desplegable .group-849 {
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.desplegable .component-55 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1px;
+  position: relative;
+}
+
+.desplegable .button-1 {
+  border: 2px solid;
+  border-color: var(--blue);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  padding: 10px 12px;
+  position: relative;
+}
+
+.desplegable .bifile-pdf {
+  height: 25px;
+  position: relative;
+  width: 25px;
+}
+
+.desplegable .button-2 {
+  align-items: center;
+  justify-content: center;
+}
+
+.desplegable .contactslacteossanantoniocom-2 {
+  align-self: stretch;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.desplegable .ona-2 {
+  flex-direction: column;
+  position: relative;
+}
