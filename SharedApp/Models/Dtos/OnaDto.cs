@@ -28,5 +28,8 @@ namespace SharedApp.Models.Dtos
         public string? UrlLogo { get; set; }
         public string? InfoExtraJson { get; set; }
         public string? Estado { get; set; }
+
+        public int? IdHomologacionPais { get; set; }
+
     }
 }
