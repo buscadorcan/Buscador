@@ -12,8 +12,7 @@ namespace WebApp.Models
     public string? RazonSocial { get; set; }
     [Required]
     public string? Siglas { get; set; }
-    [Required]
-    public string? Pais { get; set; }
+
     [Required]
     public string? Ciudad { get; set; }
     public string? Correo { get; set; }
