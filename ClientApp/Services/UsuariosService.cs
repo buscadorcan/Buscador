@@ -12,9 +12,9 @@ namespace ClientApp.Services {
     {
         private readonly HttpClient _httpClient;
         private string url = $"{Inicializar.UrlBaseApi}api/usuarios";
-        private string url2 = $"{Inicializar.UrlBaseApiBa}api/usuarios";
-        private string url3 = $"{Inicializar.UrlBaseApiBa}api/roles";
-        private string url4 = $"{Inicializar.UrlBaseApiBa}api/onas";
+       // private string url2 = $"{Inicializar.UrlBaseApi}api/usuarios";
+        private string url3 = $"{Inicializar.UrlBaseApi}api/roles";
+        private string url4 = $"{Inicializar.UrlBaseApi}api/onas";
 
         public UsuariosService(HttpClient httpClient)
         {
@@ -23,14 +23,14 @@ namespace ClientApp.Services {
 
         public async Task<List<UsuarioDto>> GetUsuariosAsync()
         {
-            var response = await _httpClient.GetAsync($"{url2}");
+            var response = await _httpClient.GetAsync($"{url}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<UsuarioDto>>>()).Result;
         }
 
         public async Task<UsuarioDto> GetUsuarioAsync(int IdUsuario)
         {
-            var response = await _httpClient.GetAsync($"{url2}/{IdUsuario}");
+            var response = await _httpClient.GetAsync($"{url}/{IdUsuario}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<UsuarioDto>>()).Result;
         }
@@ -71,12 +71,12 @@ namespace ClientApp.Services {
                 // Si el IdUsuario es mayor a 0, realizamos un PUT (actualización)
                 if (registro.IdUsuario > 0)
                 {
-                    response = await _httpClient.PutAsync($"{url2}/{registro.IdUsuario}", bodyContent);
+                    response = await _httpClient.PutAsync($"{url}/{registro.IdUsuario}", bodyContent);
                 }
                 else
                 {
                     // Si el IdUsuario es 0 o menor, realizamos un POST (registro)
-                    response = await _httpClient.PostAsync($"{url2}/registro", bodyContent);
+                    response = await _httpClient.PostAsync($"{url}/registro", bodyContent);
                 }
 
                 // Lee el contenido de la respuesta
