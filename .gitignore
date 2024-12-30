@@ -3,6 +3,8 @@
 ##
 ## Get latest from `dotnet new gitignore`
 # .pat_mic
+WebApp\appsettings.json
+ClientApp/Helpers/Inicializar.cs
 
 # dotenv files
 .env

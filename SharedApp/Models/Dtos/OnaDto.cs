@@ -10,11 +10,9 @@ namespace SharedApp.Models.Dtos
 {
     public class OnaDto
     {
-       
         public int IdONA { get; set; }
         public int? IdHomologacionPais { get; set; }
         public string? RazonSocial { get; set; }
-
         public string? Siglas { get; set; }
         public string? Ciudad { get; set; }
         public string? Correo { get; set; }
