@@ -14,9 +14,7 @@ namespace SharedApp.Models.Dtos
         public int IdONA { get; set; }
 
         public string? RazonSocial { get; set; }
-
         public string? Siglas { get; set; }
-
         public string? Ciudad { get; set; }
         public string? Correo { get; set; }
         public string? Direccion { get; set; }
