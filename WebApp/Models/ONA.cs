@@ -8,12 +8,11 @@ namespace WebApp.Models
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdONA { get; set; }
+    public int? IdHomologacionPais { get; set; }
     [Required]
     public string? RazonSocial { get; set; }
     [Required]
     public string? Siglas { get; set; }
-    [Required]
-    public string? Pais { get; set; }
     [Required]
     public string? Ciudad { get; set; }
     public string? Correo { get; set; }
@@ -26,7 +25,11 @@ namespace WebApp.Models
     public string? InfoExtraJson { get; set; }
     [Required]
     public string? Estado { get; set; }
-    public int? IdHomologacionPais { get; set; }
-    
+    [Required]
+    public int? IdUserCreacion { get; set; }
+
+    [Required]
+    public int? IdUserModifica { get; set; }
+
     }
 }

@@ -41,7 +41,7 @@ namespace WebApp.Repositories
         }
         public List<ONA> FindAll()
         {
-            return ExecuteDbOperation(context => context.ONA.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.FechaCreacion).ToList());
+            return ExecuteDbOperation(context => context.ONA.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
         }
         public List<VwPais> FindAllPaises()
         {

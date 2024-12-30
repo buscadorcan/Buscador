@@ -94,15 +94,6 @@ namespace WebApp.Repositories
                 .OrderBy(c => c.IdONA)
                 .ToList());
         }
-
-        /// <inheritdoc />
-        public List<VwEndPoint> ObtenerVwEndPoint() 
-    {
-      return ExecuteDbOperation(context => 
-        context.VwEndPoint
-          .AsNoTracking()
-          .OrderBy(c => c.EndPointNombre)
-          .ToList());
-    }
+  
   }
 }
