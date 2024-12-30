@@ -27,7 +27,7 @@ namespace ClientApp.Pages.Administracion.ONA
 
             if (Id > 0 && iONAsService != null) {
                 onas = await iONAsService.GetONAsAsync(Id.Value);
-                onas.Pais = paises.FirstOrDefault(p => p.IdHomologacionPais == onas.IdHomologacionPais)?.Pais;
+                onas.IdHomologacionPais = paises.FirstOrDefault(p => p.IdHomologacionPais == onas.IdHomologacionPais)?.IdHomologacionPais;
 
             } 
         }
@@ -57,8 +57,6 @@ namespace ClientApp.Pages.Administracion.ONA
             // Obtener el ID seleccionado
             onas.IdHomologacionPais = int.TryParse(e.Value?.ToString(), out var valor) ? valor : null;
 
-            // Buscar el nombre del país correspondiente y asignarlo a onas.Pais
-            onas.Pais = paises.FirstOrDefault(p => p.IdHomologacionPais == onas.IdHomologacionPais)?.Pais;
         }
 
     }

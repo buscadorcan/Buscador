@@ -17,8 +17,6 @@ namespace SharedApp.Models.Dtos
 
         public string? Siglas { get; set; }
 
-        public string? Pais { get; set; }
-
         public string? Ciudad { get; set; }
         public string? Correo { get; set; }
         public string? Direccion { get; set; }
