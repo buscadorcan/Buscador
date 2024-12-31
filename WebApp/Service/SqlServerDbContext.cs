@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SharedApp.Models.Dtos;
 using WebApp.Models;
 
 namespace WebApp.Service
@@ -72,6 +73,9 @@ namespace WebApp.Service
     /// <summary>Vista que almacena los roles disponibles en el sistema.</summary>
     public DbSet<VwPais> VwPais { get; set; }
 
-  }
+    /// <summary>Vista que almacena los roles disponibles en el sistema.</summary>
+    public DbSet<VwMenu> VwMenu { get; set; }
+
+    }
 
 }

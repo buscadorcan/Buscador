@@ -16,12 +16,12 @@ namespace ClientApp.Pages.Administracion.Validacion
         private IBusquedaService? servicio { get; set; }
         [Inject]
         public IDynamicService? iDynamicService { get; set; }
-        private Grid<EsquemaVista>? grid = default;
+        private Grid<EsquemaVistaDto>? grid = default;
         private List<HomologacionDto>? listaOrganizaciones = new List<HomologacionDto>();
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
         private HomologacionEsquemaDto? esquemaSelected;
         private HomologacionDto? organizacionSelected;
-        private List<EsquemaVista> listasHevd = new List<EsquemaVista>();
+        private List<EsquemaVistaDto> listasHevd = new List<EsquemaVistaDto>();
         private List<string> NombresVistas { get; set; }
         protected override async Task OnInitializedAsync()
         {
@@ -38,7 +38,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
             NombresVistas = await iDynamicService.GetViewNames(organizacionSelected.CodigoHomologacion);
 
-            listasHevd = new List<EsquemaVista>();
+            listasHevd = new List<EsquemaVistaDto>();
             if (grid != null)
                 await grid.RefreshDataAsync();
         }
@@ -48,14 +48,15 @@ namespace ClientApp.Pages.Administracion.Validacion
             var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdHomologacionEsquema);
             var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
 
-            listasHevd = new List<EsquemaVista>();
+            listasHevd = new List<EsquemaVistaDto>();
 
             var vistas = await iDynamicService.GetProperties(organizacionSelected.CodigoHomologacion, esquemaSelected.VistaNombre.Trim());
 
-            foreach(var c in Columnas)
+            foreach (var c in Columnas)
             {
                 var count = vistas.Count(n => n.NombreColumna != null && n.NombreColumna.Equals(c.NombreHomologado));
-                listasHevd.Add(new EsquemaVista {
+                listasHevd.Add(new EsquemaVistaDto
+                {
                     NombreEsquema = c.NombreHomologado,
                     NombreVista = count > 0 ? c.NombreHomologado : "",
                     IsValid = count > 0
@@ -65,7 +66,7 @@ namespace ClientApp.Pages.Administracion.Validacion
             if (grid != null)
                 await grid.RefreshDataAsync();
         }
-        private async Task<GridDataProviderResult<EsquemaVista>> EsquemaVistaDataProvider(GridDataProviderRequest<EsquemaVista> request)
+        private async Task<GridDataProviderResult<EsquemaVistaDto>> EsquemaVistaDataProvider(GridDataProviderRequest<EsquemaVistaDto> request)
         {
             return await Task.FromResult(request.ApplyTo(listasHevd));
         }

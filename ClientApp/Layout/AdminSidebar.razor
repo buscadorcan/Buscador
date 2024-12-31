@@ -1,44 +1,65 @@
 @using BlazorBootstrap;
+@using ClientApp.Services.IService
 
-<Sidebar2
-    @ref="sidebar"
-    Title="Buscador OEC"
-    BadgeText="v2.1.0"
-    DataProvider="Sidebar2DataProvider"
-/>
+<Sidebar2 @ref="sidebar"
+          Title="Buscador OEC"
+          BadgeText="v2.1.0"
+          DataProvider="Sidebar2DataProvider" />
 
 @code {
     Sidebar2 sidebar;
     IEnumerable<NavItem>? navItems;
+    [Inject]
+    private ICatalogosService? _Icatalogo { get; set; }
+
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
     {
         if (navItems is null)
-            navItems = GetNavItems();
+            navItems = await GetNavItemsAsync();
 
         await Task.Delay(2000);
         return await Task.FromResult(request.ApplyTo(navItems));
     }
-    private IEnumerable<NavItem> GetNavItems()
+
+    private async Task<IEnumerable<NavItem>> GetNavItemsAsync()
     {
-        navItems = new List<NavItem>
-        {
-            new NavItem { Id = "1", IconName = IconName.HouseDoorFill, Text = "Homologación"},
-            new NavItem { Id = "2", Href = "/grupos", IconName = IconName.Activity, Text = "Grupos", ParentId="1" },
-        new NavItem { Id = "3", Href = "/campos-homologacion", IconName = IconName.Airplane, Text = "Campos", ParentId="1" },
-            new NavItem { Id = "4", Href = "/esquemas", IconName = IconName.AirplaneEngines, Text = "Esquema", ParentId="1" },
-            new NavItem { Id = "5", Href = "/validacion", IconName = IconName.AirplaneEnginesFill, Text = "Validación", ParentId="1" },
-            new NavItem { Id = "6", Href = "/conexion", IconName = IconName.AirplaneFill, Text = "Conecciones", ParentId="1" },
-            new NavItem { Id = "7", Href = "/migracion-excel", IconName = IconName.Database, Text = "Migración excel", ParentId="1" },
-            new NavItem { Id = "7", Href = "/log-migracion", IconName = IconName.App, Text = "Logs de migraciones", ParentId="1" },
-            @* new NavItem { Id = "7", Href = "/sinonimos", IconName = IconName.LayoutSidebarInset, Text = "Sinónimos", ParentId="1" }, *@
+        var menuItems = await _Icatalogo.GetMenusAsync();
 
-            new NavItem { Id = "8", IconName = IconName.HouseDoorFill, Text = "Perfiles"},
-            new NavItem { Id = "9", Href = "/usuarios", IconName = IconName.Person, Text = "Usuarios", ParentId="8" },
-            new NavItem { Id = "10", Href = "/onas", IconName = IconName.Dropbox, Text = "ONA", ParentId="8" },
-            @* new NavItem { Id = "7", Href = "/rutas", IconName = IconName.LayoutSidebarInset, Text = "Rutas", ParentId="5" }, *@
-            @* new NavItem { Id = "8", Href = "/permisos", IconName = IconName.LayoutSidebarInset, Text = "Permisos", ParentId="5" }, *@
-        };
+        return menuItems.Select(menu =>
+         {
+             string href = menu.CodigoHomologacion switch
+             {
+                 "KEY_MENU_ONA" => "/onas",
+                 "KEY_MENU_CON" => "/conexion",
+                 "KEY_MENU_USU" => "/usuarios",
+                 "KEY_MENU_GRU" => "/grupos",
+                 "KEY_MENU_CAM" => "/campos-homologacion",
+                 "KEY_MENU_ESQ" => "/esquemas",
+                 "KEY_MENU_VAL" => "/validacion",
+                 "KEY_MENU_SEP" => string.Empty,
+                 _ => $"/{menu.CodigoHomologacion}"
+             };
 
-        return navItems;
+             BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
+             {
+                 "KEY_MENU_ONA" => BlazorBootstrap.IconName.PersonFill,
+                 "KEY_MENU_CON" => BlazorBootstrap.IconName.Link,
+                 "KEY_MENU_USU" => BlazorBootstrap.IconName.PeopleFill,
+                 "KEY_MENU_GRU" => BlazorBootstrap.IconName.Diagram2Fill,
+                 "KEY_MENU_CAM" => BlazorBootstrap.IconName.Columns,
+                 "KEY_MENU_ESQ" => BlazorBootstrap.IconName.Diagram3Fill,
+                 "KEY_MENU_VAL" => BlazorBootstrap.IconName.CheckCircleFill,
+                 "KEY_MENU_SEP" => BlazorBootstrap.IconName.Dash,
+                 _ => BlazorBootstrap.IconName.QuestionCircleFill
+             };
+
+             return new NavItem
+                 {
+                     Id = menu.IdHomologacionItemMenu.ToString(),
+                     Text = menu.ItemMenu,
+                     Href = href,
+                     IconName = iconName
+                 };
+         });
     }
 }

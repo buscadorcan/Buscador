@@ -1,6 +1,6 @@
 namespace SharedApp.Models.Dtos
 {
-  public class EsquemaVista
+  public class EsquemaVistaDto
   {
     public string? NombreEsquema { get; set; }
     public string? NombreVista { get; set; }
