@@ -46,7 +46,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
                     listaOna = await iUsuariosService.GetOnaAsync();
 
                     var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == usuario.IdHomologacionRol);
-                    var rol = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+                    var rol = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
                     isRol16 = rol == 16;
 
                     if (rolRelacionado != null)
@@ -74,7 +74,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                     if (isRol16)
                     {
-                        var onaPais = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                        var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
                         listaOna = listaOna.Where(onas => onas.IdONA == onaPais).ToList();
 
                         if (razonSocial != null)
@@ -102,7 +102,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 listaRoles = await iUsuariosService.GetRolesAsync();
                 listaOna = await iUsuariosService.GetOnaAsync();
 
-                var rol = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+                var rol = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
                 isRol16 = rol == 16;
 
                 if (listaRoles != null && listaRoles.Any())
@@ -145,7 +145,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 {
                     if (isRol16)
                     {
-                        var onaPais = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                        var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
                         listaOna = listaOna.Where(onas => onas.IdONA == onaPais).ToList();
 
                         var KEY_ECU_SAE = listaOna

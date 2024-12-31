@@ -21,12 +21,14 @@ namespace ClientApp.Pages.Administracion.Usuarios
         IUsuariosService? iUsuariosService { get; set; }
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+        [Inject]
+        private NavigationManager iNavigationManager { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             // Obtener el rol del usuario desde LocalStorage  
-            rol = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
-            onaPais = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+            rol = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+            onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
             listaUsuarios = await iUsuariosService.GetUsuariosAsync();
 
             // Puedes establecer isRol17 si es necesario aquí, dependiendo de la lógica de tu aplicación  
@@ -53,7 +55,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
             else
             {
                 // Navegar al editar usuario
-                NavigationManager.NavigateTo($"/editar-usuario/{usuario.IdUsuario}");
+                iNavigationManager.NavigateTo($"/editar-usuario/{usuario.IdUsuario}");
             }
         }
 
