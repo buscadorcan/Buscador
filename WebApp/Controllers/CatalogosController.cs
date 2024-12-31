@@ -156,23 +156,6 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene los puntos de acceso.
-        /// </summary>
-        /// <returns>Una lista con los puntos de acceso.</returns>
-        [HttpGet("points")]
-    public IActionResult ObtenerVwEndPoint()
-    {
-      try
-      {
-        return Ok(new RespuestasAPI<List<VwEndPointDto>>{
-          Result = _vhRepo.ObtenerVwEndPoint().Select(item => _mapper.Map<VwEndPointDto>(item)).ToList()
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(ObtenerVwEndPoint));
-      }
-    }
+      
   }
 }

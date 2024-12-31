@@ -48,10 +48,5 @@ namespace WebApp.Repositories.IRepositories
 
     List<ONA> ObtenerOna();
 
-    /// <summary>
-    /// Obtiene los puntos de acceso.
-    /// </summary>
-    /// <returns>Una lista de objetos <see cref="VwEndPoint"/>.</returns>
-    List<VwEndPoint> ObtenerVwEndPoint();
   }
 }
