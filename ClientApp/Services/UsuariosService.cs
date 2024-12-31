@@ -23,6 +23,8 @@ namespace ClientApp.Services {
 
         public async Task<List<UsuarioDto>> GetUsuariosAsync()
         {
+
+
             var response = await _httpClient.GetAsync($"{url}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<UsuarioDto>>>()).Result;
