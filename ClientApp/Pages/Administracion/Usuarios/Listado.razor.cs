@@ -45,14 +45,27 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 StateHasChanged(); // Forzar la actualización de la interfaz
             }
 
-            if (usuario.IdONA != onaPais)
+            if (usuario.IdONA != onaPais && rol == 16)
             {
                 modalMessage = "No tiene permisos para editar este usuario porque no pertenece a este País.";
                 showModal = true;
                 StateHasChanged(); // Forzar la actualización de la interfaz
             }
 
-            else
+            if (usuario.IdONA == onaPais && rol == 15)
+            {
+                modalMessage = "No tiene permisos para editar este usuario porque no pertenece a este País.";
+                showModal = true;
+                StateHasChanged(); // Forzar la actualización de la interfaz
+            }
+
+            if (rol == 16  && usuario.IdONA == onaPais)
+            {
+                // Navegar al editar usuario
+                iNavigationManager.NavigateTo($"/editar-usuario/{usuario.IdUsuario}");
+            }
+
+            if (rol == 15)
             {
                 // Navegar al editar usuario
                 iNavigationManager.NavigateTo($"/editar-usuario/{usuario.IdUsuario}");

@@ -24,5 +24,9 @@ namespace WebApp.Models
     public string? Estado { get; set; }
     [ForeignKey("IdHomologacionRol")]
     public Homologacion? Homologacion { get; set; }
-  }
+
+    [Required]
+    public string? codigoPaisTel { get; set; }
+
+    }
 }

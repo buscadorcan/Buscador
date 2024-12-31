@@ -52,7 +52,10 @@ namespace ClientApp.Pages.Administracion.Usuarios
                     if (rolRelacionado != null)
                     {
                         usuario.Rol = rolRelacionado.Rol;
-                        listaRoles = listaRoles.Where(rol => rol.CodigoHomologacion == "KEY_USER_ONA" || rol.CodigoHomologacion == "KEY_USER_READ").ToList();
+                        if (isRol16)
+                        {
+                            listaRoles = listaRoles.Where(rol => rol.CodigoHomologacion == "KEY_USER_ONA" || rol.CodigoHomologacion == "KEY_USER_READ").ToList();
+                        }     
                     }
                     else
                     {
