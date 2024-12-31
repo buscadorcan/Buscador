@@ -1,7 +1,11 @@
 @inherits LayoutComponentBase
+@using Blazored.LocalStorage
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 @inject ClientApp.Services.ToastService ToastService
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 
 <style>
     .bb-page {
@@ -21,9 +25,9 @@
         transition: transform 0.3s ease;
     }
 
-    .admin-sidebar.hidden {
-        transform: translateX(-100%);
-    }
+        .admin-sidebar.hidden {
+            transform: translateX(-100%);
+        }
 
     .bb-main-content {
         flex-grow: 1;
@@ -52,16 +56,77 @@
         padding: 20px;
         margin: 10px;
     }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        font-size: 16px; /* Aumenta el tamaño de la fuente general */
+        justify-content: flex-end; /* Mueve la información del usuario completamente a la derecha */
+        flex-grow: 1; /* Asegura que ocupe todo el espacio disponible */
+        cursor: pointer; /* Indica que se puede hacer clic */
+    }
+
+        .user-info i {
+            margin-right: 10px;
+            font-size: 30px; /* Aumenta el tamaño del icono */
+        }
+
+        .user-info div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Alinea el texto hacia la derecha */
+        }
+
+        .user-info span {
+            display: block; /* Fuerza a cada span a estar en su propia línea */
+            margin-left: 5px;
+        }
+
+        .user-info .email {
+            font-size: 14px; /* Ajusta el tamaño de la fuente del correo */
+            margin-top: 5px; /* Separa el correo del nombre */
+        }
+
+    .btn-sm {
+        margin-left: 10px; /* Asegura que el botón de salir no quede pegado a la información del usuario */
+    }
+
+    /* Submenú */
+    .submenu {
+        position: absolute;
+        background-color: #ffffff;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        display: none; /* Oculta el submenú por defecto */
+        right: 20px; /* Alinea el submenú a la derecha del contenedor */
+        top: 60px; /* Coloca el submenú debajo de la barra superior */
+        border-radius: 5px;
+        z-index: 10;
+    }
+
+        .submenu.show {
+            display: block; /* Muestra el submenú cuando se agrega la clase "show" */
+        }
+
+        .submenu a {
+            display: block;
+            padding: 5px 10px;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+            .submenu a:hover {
+                background-color: #f1f1f1;
+            }
 </style>
 
-<Toasts 
-    class="p-3" 
-    Messages="ToastService.Messages" 
-    AutoHide="true" 
-    Delay="3000" 
-    Placement="ToastsPlacement.TopRight" 
-    CreateToastMessageCallback="CreateToastMessage" 
-/>
+<Toasts class="p-3"
+        Messages="ToastService.Messages"
+        AutoHide="true"
+        Delay="3000"
+        Placement="ToastsPlacement.TopRight"
+        CreateToastMessageCallback="CreateToastMessage" />
 
 <div class="bb-page">
     <!-- Sidebar -->
@@ -73,10 +138,24 @@
     <main class="bb-main-content">
         <!-- Top Row -->
         <div class="bb-top-row">
+            <!-- Botón de Mostrar/Ocultar Sidebar -->
             <button class="btn btn-primary btn-sm" @onclick="ToggleSidebar">
                 @SidebarToggleText
             </button>
-            <a href="/salir" class="btn btn-outline-primary btn-sm" target="_blank">Salir</a>
+
+            <!-- User Info Section -->
+            <div class="user-info" @onclick="ToggleSubMenu">
+                <i class="fas fa-user-circle"></i>
+                <div>
+                    <span>@nombre @apellidos</span>
+                    <span class="email">@correo</span> <!-- Correo con salto de línea -->
+                </div>
+            </div>
+
+            <!-- Submenu de Salir -->
+            <div class="submenu @SubMenuClass">
+                <a href="/acceder">Salir</a>
+            </div>
         </div>
 
         <!-- Article Content -->
@@ -88,12 +167,32 @@
 
 @code {
     private bool IsSidebarVisible { get; set; } = true;
+    private bool IsSubMenuVisible { get; set; } = false;
 
     private string SidebarClass => IsSidebarVisible ? "" : "hidden";
     private string SidebarToggleText => IsSidebarVisible ? "Ocultar Menú" : "Mostrar Menú";
 
+    private string SubMenuClass => IsSubMenuVisible ? "show" : "";
+
+    // Obtención de datos desde LocalStorage
+    private string correo;
+    private string nombre;
+    private string apellidos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        correo = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        nombre = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local);
+        apellidos = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+    }
+
     private void ToggleSidebar()
     {
         IsSidebarVisible = !IsSidebarVisible;
+    }
+
+    private void ToggleSubMenu()
+    {
+        IsSubMenuVisible = !IsSubMenuVisible;
     }
 }

@@ -1,4 +1,6 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -11,23 +13,31 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private UsuarioDto usuario = new UsuarioDto();
         private List<VwRolDto>? listaRoles;
         private List<OnaDto>? listaOna;
+        private bool isRol16; // Variable para controlar la visibilidad del botón
 
         [Inject]
         public IUsuariosService? iUsuariosService { get; set; }
+
         [Inject]
         public NavigationManager? navigationManager { get; set; }
+
         [Parameter]
         public int? Id { get; set; }
+
         [Inject]
         public Services.ToastService? toastService { get; set; }
 
         private List<UsuarioDto>? listaUsuarios;
+
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             if (Id > 0 && iUsuariosService != null)
             {
                 usuario = await iUsuariosService.GetUsuarioAsync(Id.Value);
+
                 if (usuario != null)
                 {
                     usuario.Clave = null;
@@ -36,18 +46,20 @@ namespace ClientApp.Pages.Administracion.Usuarios
                     listaOna = await iUsuariosService.GetOnaAsync();
 
                     var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == usuario.IdHomologacionRol);
+                    var rol = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+                    isRol16 = rol == 16;
 
                     if (rolRelacionado != null)
                     {
                         usuario.Rol = rolRelacionado.Rol;
-
+                        listaRoles = listaRoles.Where(rol => rol.CodigoHomologacion == "KEY_USER_ONA" || rol.CodigoHomologacion == "KEY_USER_READ").ToList();
                     }
                     else
                     {
                         var usuarioMaster = listaRoles
-                   .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
-                   .OrderBy(rol => rol.IdHomologacionRol)     // Ordenar de forma ascendente por el campo IdHomologacionRol
-                   .FirstOrDefault();
+                            .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
+                            .OrderBy(rol => rol.IdHomologacionRol)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                            .FirstOrDefault();
 
                         if (usuarioMaster != null)
                         {
@@ -55,22 +67,32 @@ namespace ClientApp.Pages.Administracion.Usuarios
                         }
                     }
 
+
+
+                    // RAZON SOCIAL
                     var razonSocial = listaOna.FirstOrDefault(ona => ona.IdONA == usuario.IdONA);
 
-                    if (razonSocial != null)
+                    if (isRol16)
                     {
+                        var onaPais = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                        listaOna = listaOna.Where(onas => onas.IdONA == onaPais).ToList();
 
-                        usuario.RazonSocial = razonSocial.RazonSocial;
+                        if (razonSocial != null)
+                        {
+                            usuario.RazonSocial = razonSocial.RazonSocial;
+                        }
                     }
                     else
                     {
+                        
                         var KEY_ECU_SAE = listaOna
-                   .Where(ona => ona.IdONA == ona.IdONA)  // Filtrar solo los roles "UsuarioMaster"
-                   .OrderBy(ona => ona.IdONA)     // Ordenar de forma ascendente por el campo IdHomologacionRol
-                   .FirstOrDefault();
+                            .Where(ona => ona.IdONA == ona.IdONA)  // Filtrar solo los roles "UsuarioMaster"
+                            .OrderBy(ona => ona.IdONA)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                            .FirstOrDefault();
+
                         if (KEY_ECU_SAE != null)
                         {
-                            usuario.RazonSocial = KEY_ECU_SAE.RazonSocial;
+                            usuario.RazonSocial = razonSocial.RazonSocial;
                         }
                     }
                 }
@@ -80,16 +102,38 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 listaRoles = await iUsuariosService.GetRolesAsync();
                 listaOna = await iUsuariosService.GetOnaAsync();
 
+                var rol = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+                isRol16 = rol == 16;
+
                 if (listaRoles != null && listaRoles.Any())
                 {
-                    var usuarioMaster = listaRoles
-                    .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
-                    .OrderBy(rol => rol.IdHomologacionRol)     // Ordenar de forma ascendente por el campo IdHomologacionRol
-                    .FirstOrDefault();
-
-                    if (usuarioMaster != null)
+                    // Filtrar los roles cuando isRol16 es verdadero
+                    if (isRol16)
                     {
-                        usuario.Rol = usuarioMaster.Rol;
+                        listaRoles = listaRoles.Where(rol => rol.CodigoHomologacion == "KEY_USER_ONA" || rol.CodigoHomologacion == "KEY_USER_READ").ToList();
+
+                        var usuarioMaster = listaRoles
+                            .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
+                            .OrderBy(rol => rol.IdHomologacionRol)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                            .FirstOrDefault();
+
+                        if (usuarioMaster != null)
+                        {
+                            usuario.Rol = usuarioMaster.Rol;
+                        }
+                    }
+                    else
+                    {
+                        listaRoles = await iUsuariosService.GetRolesAsync();
+                        var usuarioMaster = listaRoles
+                            .Where(rol => rol.IdHomologacionRol == rol.IdHomologacionRol)  // Filtrar solo los roles "UsuarioMaster"
+                            .OrderBy(rol => rol.IdHomologacionRol)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                            .FirstOrDefault();
+
+                        if (usuarioMaster != null)
+                        {
+                            usuario.Rol = usuarioMaster.Rol;
+                        }
                     }
                 }
                 else
@@ -99,20 +143,35 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                 if (listaOna != null && listaOna.Any())
                 {
-                    var KEY_ECU_SAE = listaOna
-                    .Where(ona => ona.IdONA == ona.IdONA)  // Filtrar solo los roles "UsuarioMaster"
-                    .OrderBy(ona => ona.IdONA)     // Ordenar de forma ascendente por el campo IdHomologacionRol
-                    .FirstOrDefault();
-                    if (KEY_ECU_SAE != null)
+                    if (isRol16)
                     {
-                        usuario.RazonSocial = KEY_ECU_SAE.RazonSocial;
+                        var onaPais = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                        listaOna = listaOna.Where(onas => onas.IdONA == onaPais).ToList();
+
+                        var KEY_ECU_SAE = listaOna
+                            .Where(ona => ona.IdONA == ona.IdONA)  // Filtrar solo los roles "UsuarioMaster"
+                            .OrderBy(ona => ona.IdONA)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                            .FirstOrDefault();
+
+                        if (KEY_ECU_SAE != null)
+                        {
+                            usuario.RazonSocial = KEY_ECU_SAE.RazonSocial;
+                        }
+                    }
+                    else
+                    {
+                        listaOna = await iUsuariosService.GetOnaAsync();
+                        var KEY_ECU_SAE = listaOna
+                           .Where(ona => ona.IdONA == ona.IdONA)  // Filtrar solo los roles "UsuarioMaster"
+                           .OrderBy(ona => ona.IdONA)     // Ordenar de forma ascendente por el campo IdHomologacionRol
+                           .FirstOrDefault();
+
+                        if (KEY_ECU_SAE != null)
+                        {
+                            usuario.RazonSocial = KEY_ECU_SAE.RazonSocial;
+                        }
                     }
                 }
-                else
-                {
-                    listaOna = new List<OnaDto>();
-                }
-
 
                 if (usuario == null)
                 {
@@ -123,7 +182,6 @@ namespace ClientApp.Pages.Administracion.Usuarios
             }
         }
 
-
         private async Task RegistrarUsuario()
         {
             saveButton.ShowLoading("Guardando...");
@@ -131,6 +189,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
             if (iUsuariosService != null)
             {
                 var result = await iUsuariosService.RegistrarOActualizar(usuario);
+
                 if (result.registroCorrecto)
                 {
                     toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
@@ -144,20 +203,17 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             saveButton.HideLoading();
         }
+
         private async Task OnAutoCompleteChanged(string rol, int idRol)
         {
-
             usuario.Rol = rol;
             usuario.IdHomologacionRol = idRol;
-
         }
 
         private void OnAutoCompleteRazonSocOnaChanged(string razonSocial, int idOna)
         {
-
             usuario.RazonSocial = razonSocial;
             usuario.IdONA = idOna;
-
         }
     }
 }

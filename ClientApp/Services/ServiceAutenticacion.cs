@@ -43,7 +43,10 @@ namespace ClientApp.Services
                         var result = respuesta.Result;
                         await _localStorage.SetItemAsync(Inicializar.Token_Local, result?.Token);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
+                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Nombre_Local, result?.Usuario?.Nombre);
+                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Apellido_Local, result?.Usuario?.Apellido);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);
+                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_IdOna_Local, result?.Usuario?.IdONA);
                         ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioLogueado(result?.Token ?? "");
                         _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result?.Token);
                     }

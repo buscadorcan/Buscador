@@ -159,6 +159,7 @@ namespace WebApp.Repositories
                     Apellido = usuario.Apellido,
                     Telefono = usuario.Telefono,
                     IdHomologacionRol = usuario.IdHomologacionRol,
+                    IdONA = usuario.IdONA,
                 };
 
                 // Retornar la respuesta con el token y el usuario
