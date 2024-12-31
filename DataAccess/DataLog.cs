@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DataAccess
 {
-  [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage]
     public class DataLog
     {
         public void CreateDataBaseLog()
