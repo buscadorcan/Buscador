@@ -1,7 +1,9 @@
+using System;
 using System.Net.Http.Json;
 using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using SharedApp.Models;
+using SharedApp.Models.Dtos;
 
 namespace ClientApp.Services
 {
@@ -34,6 +36,14 @@ namespace ClientApp.Services
             }
 
             return default;
+        }
+
+        public async Task<List<VwMenuDto>> GetMenusAsync()
+        {
+            var url = _urlBaseApi + "menu";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwMenuDto>>>()).Result;
         }
     }
 }
