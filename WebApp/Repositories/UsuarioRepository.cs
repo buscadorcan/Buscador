@@ -82,7 +82,8 @@ namespace WebApp.Repositories
                                 Email = usuario.Email,
                                 Rol = homologacion.Rol,
                                 Estado = usuario.Estado,
-                                RazonSocial =  ona.RazonSocial
+                                RazonSocial =  ona.RazonSocial,
+                                IdHomologacionRol = usuario.IdHomologacionRol
                             };
 
                 // Devolvemos la lista resultante
