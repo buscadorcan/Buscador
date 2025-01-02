@@ -49,10 +49,6 @@
                 <label class="col-form-label">Teléfono</label>
             </div>
             <div class="form-row py-2 d-flex align-items-center">
-                <div class="col-4">
-                    <InputText @bind-Value="usuario.codigoPaisTel" class="form-control form-control-sm" placeholder="Código de País" />
-                    <ValidationMessage For="(() => usuario.codigoPaisTel)" />
-                </div>
                 <div class="col-8">
                     <InputText @bind-Value="usuario.Telefono" class="form-control form-control-sm" placeholder="Teléfono..." />
                     <ValidationMessage For="(() => usuario.Telefono)" />

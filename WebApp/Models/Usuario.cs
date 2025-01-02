@@ -25,8 +25,5 @@ namespace WebApp.Models
     [ForeignKey("IdHomologacionRol")]
     public Homologacion? Homologacion { get; set; }
 
-    [Required]
-    public string? codigoPaisTel { get; set; }
-
     }
 }

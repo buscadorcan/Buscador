@@ -18,10 +18,6 @@ namespace SharedApp.Models.Dtos
     [RegularExpression(@"^\d{1,10}$", ErrorMessage = "El teléfono debe contener solo números y puede tener hasta 10 dígitos.")]
     public string? Telefono { get; set; }
 
-    [Required(ErrorMessage = "El Código del País para el Télefono del Usuario es obligatorio.")]
-    [RegularExpression(@"^\d{1,3}$", ErrorMessage = "El Código Pais Telefonico debe contener solo números y puede tener hasta 3 dígitos.")]
-    public string codigoPaisTel { get; set; }
-
     [Required(ErrorMessage = "El Email del Usuario es obligatoria.")]
     [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
     public string? Email { get; set; }
