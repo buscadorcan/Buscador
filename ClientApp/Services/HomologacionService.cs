@@ -72,5 +72,11 @@ namespace ClientApp.Services {
                 return resultado;
             }
         }
+        public async Task<List<HomologacionDto>> FindByMostrarWeb(string value)
+        {
+            var response = await _httpClient.GetAsync($"{url}/findByParent/{value}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionDto>>>()).Result;
+        }
     }
 }

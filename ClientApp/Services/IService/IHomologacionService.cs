@@ -6,7 +6,7 @@ namespace ClientApp.Services.IService {
     {
         Task<List<HomologacionDto>> GetHomologacionsAsync(int valor);
         Task<HomologacionDto> GetHomologacionAsync(int idHomologacion);
-        public Task<RespuestaRegistro> RegistrarOActualizar(HomologacionDto registro);
+        Task<RespuestaRegistro> RegistrarOActualizar(HomologacionDto registro);
         Task<RespuestaRegistro> EliminarHomologacion(int idHomologacion);
     }
 }

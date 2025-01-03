@@ -2,8 +2,12 @@
 {
     public class VwMenuDto
     {
-        public int IdHomologacionItemMenu { get; set; }
-        public string ItemMenu { get; set; }
+        public int IdHomologacionMenu { get; set; }
+        public int MostrarWebOrden { get; set; }
+        public string MostrarWeb { get; set; }
+        public string TooltipWeb { get; set; }
+        public string Icono { get; set; }
+        public string href { get; set; }
         public string CodigoHomologacion { get; set; }
     }
 }
