@@ -47,6 +47,7 @@ namespace WebApp.Repositories
                                 Nombre = usuario.Nombre,
                                 Apellido = usuario.Apellido,
                                 Telefono = usuario.Telefono,
+                                codigoPaisTel = usuario.codigoPaisTel,
                                 Email = usuario.Email,
                                 IdHomologacionRol = usuario.IdHomologacionRol,
                                 Estado = usuario.Estado
@@ -77,11 +78,12 @@ namespace WebApp.Repositories
                                 IdONA = usuario.IdONA,
                                 Nombre = usuario.Nombre,
                                 Apellido = usuario.Apellido,
-                                Telefono = usuario.Telefono,
+                                Telefono = usuario.codigoPaisTel+usuario.Telefono,
                                 Email = usuario.Email,
                                 Rol = homologacion.Rol,
                                 Estado = usuario.Estado,
-                                RazonSocial =  ona.RazonSocial
+                                RazonSocial =  ona.RazonSocial,
+                                IdHomologacionRol = usuario.IdHomologacionRol
                             };
 
                 // Devolvemos la lista resultante

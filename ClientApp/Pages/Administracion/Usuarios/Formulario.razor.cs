@@ -47,12 +47,16 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                     var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == usuario.IdHomologacionRol);
                     var rol = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
-                    isRol16 = rol == 16;
+                    var rolCombox = listaRoles.FirstOrDefault(role => role.IdHomologacionRol == rol);
+                    isRol16 = rolCombox.CodigoHomologacion == "KEY_USER_ONA";
 
                     if (rolRelacionado != null)
                     {
                         usuario.Rol = rolRelacionado.Rol;
-                        listaRoles = listaRoles.Where(rol => rol.CodigoHomologacion == "KEY_USER_ONA" || rol.CodigoHomologacion == "KEY_USER_READ").ToList();
+                        if (isRol16)
+                        {
+                            listaRoles = listaRoles.Where(rol => rol.CodigoHomologacion == "KEY_USER_ONA" || rol.CodigoHomologacion == "KEY_USER_READ").ToList();
+                        }     
                     }
                     else
                     {
@@ -103,7 +107,8 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 listaOna = await iUsuariosService.GetOnaAsync();
 
                 var rol = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
-                isRol16 = rol == 16;
+                var rolCombox = listaRoles.FirstOrDefault(role => role.IdHomologacionRol == rol);
+                isRol16 = rolCombox.CodigoHomologacion == "KEY_USER_ONA";
 
                 if (listaRoles != null && listaRoles.Any())
                 {
@@ -185,9 +190,26 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private async Task RegistrarUsuario()
         {
             saveButton.ShowLoading("Guardando...");
+            //listaUsuarios = await iUsuariosService.GetUsuariosAsync();
+            listaRoles = await iUsuariosService.GetRolesAsync();
+            listaOna = await iUsuariosService.GetOnaAsync();
+
+            var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.Rol == usuario.Rol);
+            var onaRelacionado = listaOna.FirstOrDefault(rol => rol.RazonSocial == usuario.RazonSocial);
+
+            if (usuario.IdHomologacionRol == 0)
+            {
+                usuario.IdHomologacionRol = rolRelacionado.IdHomologacionRol;
+            }
+
+            if (usuario.IdONA == 0)
+            {
+                usuario.IdONA = onaRelacionado.IdONA;
+            }
 
             if (iUsuariosService != null)
             {
+                
                 var result = await iUsuariosService.RegistrarOActualizar(usuario);
 
                 if (result.registroCorrecto)

@@ -148,7 +148,7 @@
                 <i class="fas fa-user-circle"></i>
                 <div>
                     <span>@nombre @apellidos</span>
-                    <span class="email">@correo</span> <!-- Correo con salto de línea -->
+                    <span class="email">@nombreRol</span> <!-- Correo con salto de línea -->
                 </div>
             </div>
 
@@ -175,13 +175,28 @@
     private string SubMenuClass => IsSubMenuVisible ? "show" : "";
 
     // Obtención de datos desde LocalStorage
-    private string correo;
+    private int rol;
+    private string nombreRol;
     private string nombre;
     private string apellidos;
 
     protected override async Task OnInitializedAsync()
     {
-        correo = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        rol = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+
+        if(rol == 15)
+        {
+            nombreRol = "Usuario Master";
+        }
+        else if (rol == 16)
+        {
+            nombreRol = "UsuarioOna";
+        }
+        else
+        {
+            nombreRol = "UsuarioRead";
+        }
+
         nombre = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local);
         apellidos = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
     }
