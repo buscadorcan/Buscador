@@ -28,7 +28,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             if (iHomologacionService != null)
             {
-                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync(3);
+                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync();
             }
             if (listaVwHomologacion == null && iCatalogosService != null)
                 listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");

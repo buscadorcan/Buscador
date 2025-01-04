@@ -27,7 +27,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         {
             if (iHomologacionService != null && iHomologacionEsquemaService != null)
             {
-                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync(3);
+                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync();
                 listaHomologacionEsquemas = await iHomologacionEsquemaService.GetHomologacionEsquemasAsync();
             }
         }

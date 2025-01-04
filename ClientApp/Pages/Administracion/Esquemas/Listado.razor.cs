@@ -26,7 +26,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         {
             if (HomologacionService != null)
             {
-                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync(1);
+                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync();
             }
 
             DataLoaded += async () => {
