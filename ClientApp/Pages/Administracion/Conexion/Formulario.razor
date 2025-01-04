@@ -6,9 +6,9 @@
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
 
-<PageTitle>Formulario Usuarios</PageTitle>
+<PageTitle>Formulario Conexion</PageTitle>
 
-@* <EditForm Model="conexion" OnValidSubmit="RegistrarConexion" class="pt-4">
+<EditForm Model="conexion" OnValidSubmit="RegistrarConexion" class="pt-4">
     <DataAnnotationsValidator />
 
     <div class="card border">
@@ -18,9 +18,9 @@
             </h3>
 
             <hr style="background-color:aliceblue" />
-            <div class="form-row py-2">
-                <label class="col-form-label">Sistema</label>
-                <div class="col">
+            <div class="row">
+                <div class="col-6">
+                    <label>Sistema</label>
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">
                             @if (!string.IsNullOrEmpty(conexion.OrigenDatos))
@@ -35,49 +35,44 @@
                         <DropdownMenu>
                             @if (listaOrganizaciones != null)
                             {
-                                @foreach(var opcion in listaOrganizaciones) {
-                                    <DropdownItem
-                                        @onclick="() => CambiarSeleccionOrganizacion(opcion.CodigoHomologacion)"
-                                    >
+                                @foreach (var opcion in listaOrganizaciones)
+                                {
+                                    <DropdownItem @onclick="() => CambiarSeleccionOrganizacion(opcion.CodigoHomologacion)">
                                         @opcion.MostrarWeb
                                     </DropdownItem>
                                 }
                             }
                         </DropdownMenu>
                     </Dropdown>
-                    <ValidationMessage For="(() => conexion.CodigoHomologacion)" />
                 </div>
-            </div>
-
-            <div class="form-row py-2">
-                <label class="col-form-label">Motor de Base Datos</label>
-                <div class="col">
-                    <Dropdown AutoClose="true">
-                        <DropdownToggleButton Color="ButtonColor.Secondary">
-                            @if (!string.IsNullOrEmpty(conexion.MotorBaseDatos))
-                            {
-                                @conexion.MotorBaseDatos
-                            }
-                            else
-                            {
-                                <span>Seleccionar Motor de Base Datos</span>
-                            }
-                        </DropdownToggleButton>
-                        <DropdownMenu>
-                            @foreach (var databaseType in Enum.GetValues(typeof(DatabaseType)))
-                            {
-                                <DropdownItem
-                                    @onclick="() => CambiarSeleccionMotor(databaseType.ToString())"
-                                >
-                                    @databaseType
-                                </DropdownItem>
-                            }
-                        </DropdownMenu>
-                    </Dropdown>
-                    <ValidationMessage For="(() => conexion.MotorBaseDatos)" />
+                
+                <div class="col-6">
+                    <label>Motor de Base Datos</label>
+                        <Dropdown AutoClose="true">
+                            <DropdownToggleButton Color="ButtonColor.Secondary">
+                                @if (!string.IsNullOrEmpty(conexion.BaseDatos))
+                                {
+                                    @conexion.BaseDatos
+                                }
+                                else
+                                {
+                                    <span>Seleccionar Motor de Base Datos</span>
+                                }
+                            </DropdownToggleButton>
+                            <DropdownMenu>
+                                @foreach (var databaseType in Enum.GetValues(typeof(DatabaseType)))
+                                {
+                                    <DropdownItem @onclick="() => CambiarSeleccionMotor(databaseType.ToString())">
+                                        @databaseType
+                                    </DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
+                        <ValidationMessage For="(() => conexion.BaseDatos)" />
                 </div>
-            </div>
+               
 
+            </div>
             <div class="form-row py-2">
                 <label class="col-form-label">Base Datos</label>
                 <div class="col">
@@ -118,13 +113,13 @@
                 </div>
             </div>
 
-            <div class="form-row py-2">
+@*             <div class="form-row py-2">
                 <label class="col-form-label">TiempoEspera Segundos</label>
                 <div class="col">
                     <InputNumber @bind-Value="conexion.TiempoEspera" class="form-control" placeholder="TiempoEspera..." />
                     <ValidationMessage For="(() => conexion.TiempoEspera)" />
                 </div>
-            </div>
+            </div> *@
 
             <div class="form-row py-2">
                 <label class="col-form-label">Filtros</label>
@@ -159,4 +154,4 @@
             </div>
         </div>
     </div>
-</EditForm> *@
+</EditForm>
