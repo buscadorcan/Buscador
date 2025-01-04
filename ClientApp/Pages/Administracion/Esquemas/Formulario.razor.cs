@@ -161,6 +161,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 .Where(h => string.IsNullOrEmpty(filtro) ||
                             (h.MostrarWeb?.ToLowerInvariant().Contains(filtro) ?? false))
                 .OrderBy(h => h.MostrarWebOrden)
+                .Take(10) //como utilizar Top 10 en consulta SQL
                 .ToList();
 
             return new AutoCompleteDataProviderResult<HomologacionDto>

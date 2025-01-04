@@ -34,7 +34,21 @@ namespace WebApp.Repositories
         }
         public ICollection<Homologacion> FindByParent(int parentId)
         {
-            return ExecuteDbOperation(context => context.Homologacion.Where(c => c.IdHomologacionGrupo == parentId && c.Estado.Equals("A")).OrderBy(c => c.MostrarWebOrden).ToList());
+            return ExecuteDbOperation(context =>
+            {
+                // Encuentra el IdHomologacion basado en el código en este caso KEY_DIM_ESQUEMA
+                var parentId = context.Homologacion
+                    .Where(h => h.CodigoHomologacion == "KEY_DIM_ESQUEMA")
+                    .Select(h => h.IdHomologacion)
+                    .FirstOrDefault();
+
+                // Filtra por IdHomologacionGrupo y Estado
+                return context.Homologacion
+                    .Where(h => h.IdHomologacionGrupo == parentId && h.Estado == "A")
+                    .OrderBy(h => h.MostrarWebOrden)
+                    .AsNoTracking() // Similar a NOLOCK
+                    .ToList();
+            });
         }
         public List<Homologacion> FindByIds(int[] ids)
         {
