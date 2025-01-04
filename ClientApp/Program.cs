@@ -28,6 +28,7 @@ builder.Services.AddScoped<IConexionService, ConexionService>();
 builder.Services.AddScoped<IMigracionExcelService, MigracionExcelService>();
 builder.Services.AddScoped<ILogMigracionService, LogMigracionService>();
 builder.Services.AddScoped<IONAService, ONAsService>();
+builder.Services.AddScoped<IEsquemaService, EsquemaService>();
 
 builder.Services.AddBlazoredLocalStorage();
 

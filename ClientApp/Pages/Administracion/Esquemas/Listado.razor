@@ -6,42 +6,52 @@
 
 <PageTitle>Homologación Esquemas</PageTitle>
 
-<h3>Administación de Homologación Esquemas</h3>
-
-<Modal @ref="modal" Size="ModalSize.ExtraLarge"/>
-
-<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
-    <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-esquema">Agregar Registro</Button>
+<div class="card">
+    <div class="card-header">
+        <h3>Administación de Homologación Esquemas</h3>
+        <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
+            <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-esquema">Agregar Registro</Button>
+        </div>
+    </div>
+    <div class="card-body">
+        <Grid @ref="grid" TItem="EsquemaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemasDataProvider" Responsive="true" Id="sortableGrid">
+            <GridColumn TItem="EsquemaDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+                @context.MostrarWeb
+                <input type="hidden" value="@context.IdEsquema" />
+            </GridColumn>
+            <GridColumn TItem="EsquemaDto" HeaderText="Nombre Vista" PropertyName="Nombre Vista" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+                @context.EsquemaVista
+            </GridColumn>
+            <GridColumn TItem="EsquemaDto" HeaderText="Columnas" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+                <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context.IdEsquema)">
+                    <Icon Name="IconName.Front" />
+                </Button>
+            </GridColumn>
+            <GridColumn TItem="EsquemaDto" HeaderText="Editar" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+                <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-esquema/{context.IdEsquema}")" Size="Size.Small">
+                    <Icon Name="IconName.PencilSquare" />
+                </Button>
+            </GridColumn>
+            <GridColumn TItem="EsquemaDto" HeaderText="Eliminar" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+                <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdEsquema)" Size="Size.Small">
+                    <Icon Name="IconName.Trash3" />
+                </Button>
+            </GridColumn>
+        </Grid>
+    </div>
+    <div class="card-footer">
+        <div class="py-2">
+            <Alert Color="AlertColor.Primary" Dismissable="false">
+                <Icon Name="IconName.InfoCircleFill" class="me-2"></Icon>
+                <span>Esquema a mostrar por defecto en el buscador</span>
+            </Alert>
+        </div>
+    </div>
 </div>
 
-<Grid @ref="grid" TItem="HomologacionEsquemaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemasDataProvider" Responsive="true" Id="sortableGrid">
-    <GridColumn TItem="HomologacionEsquemaDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-        @context.MostrarWeb
-        <input type="hidden" value="@context.IdHomologacionEsquema" />
-    </GridColumn>
-    <GridColumn TItem="HomologacionEsquemaDto" HeaderText="Nombre Vista" PropertyName="Nombre Vista" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-        @context.VistaNombre
-    </GridColumn>
-    <GridColumn TItem="HomologacionEsquemaDto" HeaderText="Columnas" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-        <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context.IdHomologacionEsquema)">
-            <Icon Name="IconName.Front" />
-        </Button>
-    </GridColumn>
-    <GridColumn TItem="HomologacionEsquemaDto" HeaderText="Editar" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-esquema/{context.IdHomologacionEsquema}")" Size="Size.Small">
-            <Icon Name="IconName.PencilSquare" />
-        </Button>
-    </GridColumn>
-    <GridColumn TItem="HomologacionEsquemaDto" HeaderText="Eliminar" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-        <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdHomologacionEsquema)" Size="Size.Small">
-            <Icon Name="IconName.Trash3" />
-        </Button>
-    </GridColumn>
-</Grid>
 
-<div class="py-2">
-    <Alert Color="AlertColor.Primary" Dismissable="false">
-        <Icon Name="IconName.InfoCircleFill" class="me-2"></Icon>
-        <span>Esquema a mostrar por defecto en el buscador</span>
-    </Alert>
-</div>
+
+
+
+

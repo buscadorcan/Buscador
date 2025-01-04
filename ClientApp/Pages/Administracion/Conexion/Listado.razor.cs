@@ -19,14 +19,14 @@ namespace ClientApp.Pages.Administracion.Conexion
             }
             return await Task.FromResult(request.ApplyTo(listasHevd ?? []));
         }
-        private async Task OnDeleteClick(int IdConexion)
+        private async Task OnDeleteClick(int IdONA)
         {
             if (iConexionService != null && listasHevd != null && grid != null)
             {
-                var respuesta = await iConexionService.EliminarConexion(IdConexion);
+                var respuesta = await iConexionService.EliminarConexion(IdONA);
                 if (respuesta.registroCorrecto)
                 {
-                    listasHevd = listasHevd.Where(c => c.IdONA != IdConexion).ToList();
+                    listasHevd = listasHevd.Where(c => c.IdONA != IdONA).ToList();
                     await grid.RefreshDataAsync();
                 }
             }

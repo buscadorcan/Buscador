@@ -18,7 +18,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         public int? Id { get; set; }
         
         [Inject]
-        public IHomologacionEsquemaService? HomologacionEsquemaService { get; set; }
+        public IEsquemaService? EsquemaService { get; set; }
         
         [Inject]
         public IBusquedaService? BusquedaService { get; set; }
@@ -39,30 +39,30 @@ namespace ClientApp.Pages.Administracion.Esquemas
         public Services.ToastService? ToastService { get; set; }
         
         private string? homologacionName;
-        private HomologacionEsquemaDto? homologacionEsquema = new();
+        private EsquemaDto? Esquema = new();
         private List<HomologacionDto>? listaVwHomologacion;
         private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
 
         protected override async Task OnInitializedAsync()
         {
-            if (homologacionEsquema != null)
-                editContext = new EditContext(homologacionEsquema);
+            if (Esquema != null)
+                editContext = new EditContext(Esquema);
 
-            if (CatalogosService != null)
-                listaVwHomologacion = await CatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+            if (HomologacionService != null)
+                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync();
 
-            if (Id > 0 && HomologacionEsquemaService != null && HomologacionEsquemaService != null)
+            if (Id > 0 && EsquemaService != null && EsquemaService != null)
             {
-                homologacionEsquema = await HomologacionEsquemaService.GetHomologacionEsquemaAsync(Id.Value);
-                if (homologacionEsquema != null)
+                Esquema = await EsquemaService.GetEsquemaAsync(Id.Value);
+                if (Esquema != null)
                 {
-                    UpdateEditContext(homologacionEsquema);
-                    lista = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson ?? "[]");
+                    UpdateEditContext(Esquema);
+                    lista = JsonConvert.DeserializeObject<List<HomologacionDto>>(Esquema.EsquemaJson ?? "[]");
                 }
             }
-            else if (homologacionEsquema != null)
+            else if (Esquema != null)
             {
-                homologacionEsquema.EsquemaJson = "[]";
+                Esquema.EsquemaJson = "[]";
             }
 
             DataLoaded += async () =>
@@ -77,22 +77,22 @@ namespace ClientApp.Pages.Administracion.Esquemas
             DataLoaded?.Invoke();
         }
 
-        private void UpdateEditContext(HomologacionEsquemaDto newModel)
+        private void UpdateEditContext(EsquemaDto newModel)
         {
             editContext = new EditContext(newModel);
         }
 
-        private async Task GuardarHomologacionEsquema()
+        private async Task GuardarEsquema()
         {
             saveButton.ShowLoading("Guardando...");
 
-            if (homologacionEsquema != null && editContext != null && editContext.Validate())
+            if (Esquema != null && editContext != null && editContext.Validate())
             {
-                homologacionEsquema.EsquemaJson = JsonConvert.SerializeObject(lista?.Select(s => new { s.IdHomologacion }));
+                Esquema.EsquemaJson = JsonConvert.SerializeObject(lista?.Select(s => new { s.IdHomologacion }));
 
-                if (HomologacionEsquemaService != null)
+                if (EsquemaService != null)
                 {
-                    var result = await HomologacionEsquemaService.RegistrarOActualizar(homologacionEsquema);
+                    var result = await EsquemaService.RegistrarEsquemaActualizar(Esquema);
                     if (result.registroCorrecto)
                     {
                         if (lista != null)
@@ -115,7 +115,6 @@ namespace ClientApp.Pages.Administracion.Esquemas
             }
             saveButton.HideLoading();
         }
-
         private void EliminarElemento(int elemento)
         {
             lista = lista?.Where(c => c.IdHomologacion != elemento).ToList();
@@ -139,15 +138,44 @@ namespace ClientApp.Pages.Administracion.Esquemas
         }
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {
-            if (listaVwHomologacion == null && CatalogosService != null)
-                listaVwHomologacion = await CatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+            // Si la lista aún no está cargada, obtén los datos.
+            if (listaVwHomologacion == null && HomologacionService != null)
+            {
+                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync();
+            }
 
-            return await Task.FromResult(request.ApplyTo((listaVwHomologacion ?? new List<HomologacionDto>()).OrderBy(vmH => vmH.MostrarWebOrden)));
+            // Devuelve una lista vacía si no hay datos.
+            if (listaVwHomologacion == null || !listaVwHomologacion.Any())
+            {
+                return new AutoCompleteDataProviderResult<HomologacionDto>
+                {
+                    Data = new List<HomologacionDto>(),
+                    TotalCount = 0
+                };
+            }
+
+            // Aplica el filtro ingresado en el AutoComplete.
+            var filtro = request.Filter.Value.ToLowerInvariant();
+            var resultados = listaVwHomologacion
+                .Where(h => string.IsNullOrEmpty(filtro) ||
+                            (h.MostrarWeb?.ToLowerInvariant().Contains(filtro) ?? false))
+                .OrderBy(h => h.MostrarWebOrden)
+                .Take(10) //como utilizar Top 10 en consulta SQL
+                .ToList();
+
+            return new AutoCompleteDataProviderResult<HomologacionDto>
+            {
+                Data = resultados,
+                TotalCount = resultados.Count
+            };
         }
         private void OnAutoCompleteChanged(HomologacionDto vwHomologacionSelected)
         {
-            vwHomologacionSelected.MostrarWebOrden = lista?.Count() ?? 0;
-            lista = lista?.Append(vwHomologacionSelected).ToList();
+            if (vwHomologacionSelected != null)
+            {
+                vwHomologacionSelected.MostrarWebOrden = lista?.Count() ?? 0;
+                lista = lista?.Append(vwHomologacionSelected).ToList();
+            }
         }
     }
 }

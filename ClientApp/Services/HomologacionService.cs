@@ -39,9 +39,9 @@ namespace ClientApp.Services {
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<HomologacionDto>>()).Result;
         }
 
-        public async Task<List<HomologacionDto>> GetHomologacionsAsync(int value)
+        public async Task<List<HomologacionDto>> GetHomologacionsAsync()
         {
-            var response = await _httpClient.GetAsync($"{url}/findByParent/{value}");
+            var response = await _httpClient.GetAsync($"{url}/findByParent");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionDto>>>()).Result;
         }
@@ -71,6 +71,12 @@ namespace ClientApp.Services {
             {
                 return resultado;
             }
+        }
+        public async Task<List<HomologacionDto>> FindByMostrarWeb(string value)
+        {
+            var response = await _httpClient.GetAsync($"{url}/findByParent/{value}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionDto>>>()).Result;
         }
     }
 }

@@ -9,60 +9,57 @@
 <PageTitle>Formulario de Esquema</PageTitle>
 
 <EditForm EditContext="@editContext" class="pt-4">
-    <DataAnnotationsValidator />
 
     <div class="card border p-4">
-        <div class="card-body">
-            <h3 class="text-success text-center">
-                <strong>Esquema Homologado</strong>
-            </h3>
+        <h3 class="text-success text-center">
+            <strong>Esquema Homologado</strong>
+        </h3>
 
-            <hr style="background-color:aliceblue" />
+        <hr style="background-color:aliceblue" />
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Nombre de Vista</label>
-                <div class="col">
-                    <InputText @bind-Value="homologacionEsquema.VistaNombre" class="form-control" placeholder="Nombre de vista..." />
-                    <ValidationMessage For="(()=>homologacionEsquema.VistaNombre)" />
-                </div>
+        @*             <div class="form-row py-2">
+        <label class="col-form-label">Nombre de Vista</label>
+        <div class="col">
+        <InputText @bind-Value="Esquema.MostrarWebOrden.ToString()" class="form-control" placeholder="Nombre de vist..." />
+        </div>
+        </div> *@
+
+        <div class="form-row py-2">
+            <label class="col-form-label">Mostrar web</label>
+            <div class="col">
+                <InputText @bind-Value="Esquema.MostrarWeb" class="form-control" placeholder="Mostrar web..." />
+            </div>
+        </div>
+
+        <div class="form-row py-2">
+            <label class="col-form-label">Tooltip Web</label>
+            <div class="col">
+                <InputText @bind-Value="Esquema.TooltipWeb" class="form-control" placeholder="Tooltip Web..." />
+            </div>
+        </div>
+        <div class="form-row py-2">
+            <label class="col-form-label">Esquema Vista</label>
+            <div class="col">
+                <InputText @bind-Value="Esquema.EsquemaVista" class="form-control" placeholder="Esquema vista..." />
             </div>
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Id de Vista</label>
-                <div class="col">
-                    <InputText @bind-Value="homologacionEsquema.IdVistaNombre" class="form-control" placeholder="Id de vista..." />
-                    <ValidationMessage For="(()=>homologacionEsquema.IdVistaNombre)" />
-                </div>
-            </div>
+        </div>
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Texto a Mostrar en la Web</label>
-                <div class="col">
-                    <InputText @bind-Value="homologacionEsquema.MostrarWeb" class="form-control" placeholder="Mostrar web..." />
-                    <ValidationMessage For="(()=>homologacionEsquema.MostrarWeb)" />
-                </div>
-            </div>
-
-            <div class="form-row py-2">
-                <label class="col-form-label">Tooltip Web</label>
-                <div class="col">
-                    <InputText @bind-Value="homologacionEsquema.TooltipWeb" class="form-control" placeholder="Tooltip Web..." />
-                    <ValidationMessage For="(()=>homologacionEsquema.TooltipWeb)" />
-                </div>
-
-            </div>
-
-            <div class="form-row py-2">
-                <label class="col-form-label">Buscar y agregar campo homologado</label>
-                <div class="col">
-                    <AutoComplete @bind-Value="homologacionName"
-                        TItem="HomologacionDto"
-                        DataProvider="VwHomologacionDataProvider"
-                        PropertyName="CustomMostrarWeb"
-                        Placeholder="Buscar..."
-                        OnChanged="(HomologacionDto vwHomologacion) => OnAutoCompleteChanged(vwHomologacion)"
-                    />
-                </div>
+        @*             <div class="form-row py-2">
+        <label class="col-form-label">Esquema Json</label>
+        <div class="col">
+        <InputText @bind-Value="Esquema.EsquemaJson" class="form-control" placeholder="Esquema Json..." />
+        </div>
+        </div> *@
+        <div class="form-row py-2">
+            <label class="col-form-label">Buscar y agregar campo homologado</label>
+            <div class="col">
+                <AutoComplete @bind-Value="homologacionName"
+                              TItem="HomologacionDto"
+                              DataProvider="VwHomologacionDataProvider"
+                              PropertyName="MostrarWeb"
+                              Placeholder="Buscar..."
+                              OnChanged="OnAutoCompleteChanged" />
             </div>
         </div>
     </div>
@@ -94,12 +91,10 @@
 </div>
 <div class="py-2">
     <hr style="background-color:aliceblue" />
-    <Button
-        @ref="saveButton"
-        Color="ButtonColor.Success"
-        Type="ButtonType.Submit"
-        @onclick="async () => await GuardarHomologacionEsquema()"
-    >
+    <Button @ref="saveButton"
+            Color="ButtonColor.Success"
+            Type="ButtonType.Submit"
+            @onclick="async () => await GuardarEsquema()">
         Guardar
     </Button>
 </div>

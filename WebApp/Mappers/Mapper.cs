@@ -17,7 +17,7 @@ namespace WebApp.Mappers
       CreateMap<VwMenu, VwMenuDto>();
 
 
-      CreateMap<Usuario, UsuarioDto>();
+      CreateMap<Usuario, UsuarioDto>(); 
       CreateMap<UsuarioDto, Usuario>();
 
       // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();

@@ -37,7 +37,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         {
             if (homologacionSelected != null)
             {
-                listaHomologacions = await iHomologacionService.GetHomologacionsAsync(homologacionSelected.IdHomologacion);
+                listaHomologacions = await iHomologacionService.GetHomologacionsAsync();
             }
 
             DataLoaded?.Invoke();
