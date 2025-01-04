@@ -7,128 +7,132 @@
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
 
-<PageTitle>Usuarios</PageTitle>
-
-<h3>Administración de Usuarios</h3>
-
-<Grid TItem="UsuarioDto" class="table table-hover table-bordered table-striped" DataProvider="UsuariosDataProvider" Responsive="true">
-    <GridColumn TItem="UsuarioDto" HeaderText="Nombre" PropertyName="Nombre">
-        @context.Nombre
-    </GridColumn>
-    <GridColumn TItem="UsuarioDto" HeaderText="Apellido" PropertyName="Apellido">
-        @context.Apellido
-    </GridColumn>
-    <GridColumn TItem="UsuarioDto" HeaderText="Teléfono" PropertyName="Telefono">
-        @context.Telefono
-    </GridColumn>
-    <GridColumn TItem="UsuarioDto" HeaderText="Email" PropertyName="Email">
-        @context.Email
-    </GridColumn>
-    <GridColumn TItem="UsuarioDto" HeaderText="Rol" PropertyName="IdHomologacionRol">
-        @context.Rol
-    </GridColumn>
-    <GridColumn TItem="UsuarioDto" HeaderText="Razón Social" PropertyName="idOna">
-        @context.RazonSocial
-    </GridColumn>
-    <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
-        @context.Estado
-    </GridColumn>
-
-    <GridColumn TItem="UsuarioDto" HeaderText="Editar">
-        @if (!isRol17)
-        {
-            <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="Size.Small"
-                    @onclick="() => EditarUsuario(context)">
-                <Icon Name="IconName.PencilSquare" />
-            </Button>
-        }
-    </GridColumn>
-</Grid>
-
-<p>
-    @if (!isRol17)
-    {
-        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-usuario">Nuevo</Button>
+<style>
+    .striped-table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
     }
-</p>
 
-@if (showModal)
+    .striped-table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+<PageTitle>Usuarios</PageTitle>
+<div class="card">
+    <!-- Card Header -->
+    <div class="card-header">
+        <h2>Administración de Usuarios</h2>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body">
+        <div class="table-responsive">
+            <Grid TItem="UsuarioDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="UsuariosDataProvider" @ref="grid" Responsive="true">
+                <GridColumn TItem="UsuarioDto" HeaderText="Nombre" PropertyName="Nombre">
+                    @context.Nombre
+                </GridColumn>
+                <GridColumn TItem="UsuarioDto" HeaderText="Apellido" PropertyName="Apellido">
+                    @context.Apellido
+                </GridColumn>
+                <GridColumn TItem="UsuarioDto" HeaderText="Teléfono" PropertyName="Telefono">
+                    @context.Telefono
+                </GridColumn>
+                <GridColumn TItem="UsuarioDto" HeaderText="Email" PropertyName="Email">
+                    @context.Email
+                </GridColumn>
+                <GridColumn TItem="UsuarioDto" HeaderText="Rol" PropertyName="IdHomologacionRol">
+                    @context.Rol
+                </GridColumn>
+                <GridColumn TItem="UsuarioDto" HeaderText="Razón Social" PropertyName="idOna">
+                    @context.RazonSocial
+                </GridColumn>
+                <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
+                    @context.Estado
+                </GridColumn>
+
+                <GridColumn TItem="UsuarioDto" HeaderText="Operaciones">
+                    @if (!isRolRead)
+                    {
+                        <!-- Botón Editar -->
+                        <Tooltip Title="Eliminar registro">
+                            <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="Size.Small"
+                                    @onclick=@(() => EditarUsuario(context))>
+                                <Icon Name="IconName.PencilSquare" />
+                            </Button>
+                        </Tooltip>
+                        <!-- Botón Eliminar -->
+                        <Tooltip Title="Eliminar registro">
+                            <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true"
+                                    Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdUsuario))>
+                                <Icon Name="IconName.Trash" />
+                            </Button>
+                        </Tooltip>
+                    }
+                </GridColumn>
+            </Grid>
+        </div>
+    </div>
+
+    @if (!isRolRead)
+    {
+        <!-- Card Footer -->
+        <div class="card-footer">
+            <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-usuario">Nuevo</Button>
+        </div>
+    }
+
+</div>
+
+ @if (showModal)
 {
-    <div class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>Advertencia</h5>
-                <button class="close" @onclick="CerrarModal">×</button>
-            </div>
-            <div class="modal-body">
-                <p>@modalMessage</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" @onclick="CerrarModal">Cerrar</button>
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
             </div>
         </div>
     </div>
 }
 
-<style>
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-
-    .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        width: 400px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-    }
-
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .modal-body {
-        margin-top: 10px;
-    }
-
-    .modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 20px;
-    }
-
-    .close {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-    }
-
-    .btn {
-        padding: 8px 16px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
-</style>

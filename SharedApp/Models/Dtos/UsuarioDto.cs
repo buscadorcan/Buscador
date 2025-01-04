@@ -15,12 +15,8 @@ namespace SharedApp.Models.Dtos
     public string? Apellido { get; set; }
 
     [Required(ErrorMessage = "El Télefono del Usuario es obligatorio.")]
-    [RegularExpression(@"^\d{1,10}$", ErrorMessage = "El teléfono debe contener solo números y puede tener hasta 10 dígitos.")]
+    [RegularExpression(@"^\+?\d{1,3}\s?\d{7,10}$", ErrorMessage = "El teléfono debe contener el código del país seguido del número (Ej: +1 1234567890).")]
     public string? Telefono { get; set; }
-
-    [Required(ErrorMessage = "El Código del País para el Télefono del Usuario es obligatorio.")]
-    [RegularExpression(@"^\d{1,3}$", ErrorMessage = "El Código Pais Telefonico debe contener solo números y puede tener hasta 3 dígitos.")]
-    public string codigoPaisTel { get; set; }
 
     [Required(ErrorMessage = "El Email del Usuario es obligatoria.")]
     [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
@@ -29,8 +25,6 @@ namespace SharedApp.Models.Dtos
     [Required(ErrorMessage = "La clave es obligatoria.")]
     [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,11}$", ErrorMessage = "La clave debe tener entre 6 y 11 caracteres, con al menos una mayúscula, una minúscula y un número.")]
     public string? Clave { get; set; }
-
-    [Required]
     public string? Estado { get; set; }
     public string Rol { get; set; }
     public string RazonSocial { get; set; }

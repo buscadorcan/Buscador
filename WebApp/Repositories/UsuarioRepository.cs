@@ -47,7 +47,6 @@ namespace WebApp.Repositories
                                 Nombre = usuario.Nombre,
                                 Apellido = usuario.Apellido,
                                 Telefono = usuario.Telefono,
-                                codigoPaisTel = usuario.codigoPaisTel,
                                 Email = usuario.Email,
                                 IdHomologacionRol = usuario.IdHomologacionRol,
                                 Estado = usuario.Estado
@@ -60,17 +59,15 @@ namespace WebApp.Repositories
         }
         public ICollection<UsuarioDto> FindAll()
         {
-            //return ExecuteDbOperation(context => 
-            //    context.Usuario.AsNoTracking().OrderBy(c => c.IdUsuario).ToList());
             return ExecuteDbOperation(context =>
             {
-                // Realizamos el join entre Usuario y Homologacion
                 var query = from usuario in context.Usuario.AsNoTracking()
                             join homologacion in context.VwRol.AsNoTracking()
                             on usuario.IdHomologacionRol equals homologacion.IdHomologacionRol into homologacionJoin
                             from homologacion in homologacionJoin.DefaultIfEmpty()
                             join ona in context.ONA.AsNoTracking()
                             on usuario.IdONA equals ona.IdONA
+                            where usuario.Estado == "A"  // Filtrar por estado "A"
                             orderby usuario.IdUsuario
                             select new UsuarioDto
                             {
@@ -78,18 +75,18 @@ namespace WebApp.Repositories
                                 IdONA = usuario.IdONA,
                                 Nombre = usuario.Nombre,
                                 Apellido = usuario.Apellido,
-                                Telefono = usuario.codigoPaisTel+usuario.Telefono,
+                                Telefono = usuario.Telefono,
                                 Email = usuario.Email,
                                 Rol = homologacion.Rol,
                                 Estado = usuario.Estado,
-                                RazonSocial =  ona.RazonSocial,
+                                RazonSocial = ona.RazonSocial,
                                 IdHomologacionRol = usuario.IdHomologacionRol
                             };
 
-                // Devolvemos la lista resultante
                 return query.ToList();
             });
         }
+
         public bool IsUniqueUser(string email)
         {
             return ExecuteDbOperation(context => 
@@ -100,7 +97,7 @@ namespace WebApp.Repositories
             usuario.Clave = _hashService.GenerateHash(usuario.Clave);
             usuario.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             usuario.IdUserModifica = usuario.IdUserCreacion;
-
+            usuario.Estado = "A";
             return ExecuteDbOperation(context =>
             {
                 context.Usuario.Add(usuario);
@@ -109,19 +106,32 @@ namespace WebApp.Repositories
         }
         public bool Update(Usuario usuario)
         {
-            return ExecuteDbOperation(context => {
-                var userExits = MergeEntityProperties(context, usuario, u => u.IdUsuario == usuario.IdUsuario);
-                userExits.FechaModifica = DateTime.Now;
-                userExits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            return ExecuteDbOperation(context =>
+            {
+                var _exits = MergeEntityProperties(context, usuario, u => u.IdUsuario == usuario.IdUsuario);
 
-                if (!string.IsNullOrWhiteSpace(usuario.Clave)) {
-                    userExits.Clave = _hashService.GenerateHash(usuario.Clave);
-                }
+                _exits.FechaModifica = DateTime.Now;
+                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
-                context.Usuario.Update(userExits);
+                context.Usuario.Update(_exits);
                 return context.SaveChanges() >= 0;
             });
         }
+        //public bool Update(Usuario usuario)
+        //{
+        //    return ExecuteDbOperation(context => {
+        //        var userExits = MergeEntityProperties(context, usuario, u => u.IdUsuario == usuario.IdUsuario);
+        //        userExits.FechaModifica = DateTime.Now;
+        //        userExits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+
+        //        if (!string.IsNullOrWhiteSpace(usuario.Clave)) {
+        //            userExits.Clave = _hashService.GenerateHash(usuario.Clave);
+        //        }
+
+        //        context.Usuario.Update(userExits);
+        //        return context.SaveChanges() >= 0;
+        //    });
+        //}
         public UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
 

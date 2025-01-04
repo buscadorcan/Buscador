@@ -29,7 +29,16 @@ namespace ClientApp.Services {
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<UsuarioDto>>>()).Result;
         }
-
+        public async Task<bool> DeleteUsuarioAsync(int IdUsuario)
+        {
+            var response = await _httpClient.DeleteAsync($"{url}/{IdUsuario}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+            var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
+            return apiResponse?.IsSuccess ?? false;
+        }
         public async Task<UsuarioDto> GetUsuarioAsync(int IdUsuario)
         {
             var response = await _httpClient.GetAsync($"{url}/{IdUsuario}");
