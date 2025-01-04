@@ -9,5 +9,6 @@ namespace ClientApp.Services.IService {
         Task<List<OnaDto>> GetOnaAsync();
         Task<UsuarioDto> GetUsuarioAsync(int IdUsuario);
         Task<RespuestaRegistro> RegistrarOActualizar(UsuarioDto usuarioParaRegistro);
+        Task<bool> DeleteUsuarioAsync(int IdUsuario);
     }
 }

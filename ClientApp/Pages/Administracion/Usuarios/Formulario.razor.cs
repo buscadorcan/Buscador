@@ -17,21 +17,15 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
         [Inject]
         public IUsuariosService? iUsuariosService { get; set; }
-
         [Inject]
         public NavigationManager? navigationManager { get; set; }
-
         [Parameter]
         public int? Id { get; set; }
-
         [Inject]
         public Services.ToastService? toastService { get; set; }
-
         private List<UsuarioDto>? listaUsuarios;
-
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
-
         protected override async Task OnInitializedAsync()
         {
             if (Id > 0 && iUsuariosService != null)
@@ -186,7 +180,6 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 usuario.Estado = "A";
             }
         }
-
         private async Task RegistrarUsuario()
         {
             saveButton.ShowLoading("Guardando...");
@@ -225,13 +218,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             saveButton.HideLoading();
         }
-
         private async Task OnAutoCompleteChanged(string rol, int idRol)
         {
             usuario.Rol = rol;
             usuario.IdHomologacionRol = idRol;
         }
-
         private void OnAutoCompleteRazonSocOnaChanged(string razonSocial, int idOna)
         {
             usuario.RazonSocial = razonSocial;
