@@ -27,19 +27,6 @@
 
         return menuItems.Select(menu =>
          {
-             string href = menu.CodigoHomologacion switch
-             {
-                 "KEY_MENU_ONA" => "/onas",
-                 "KEY_MENU_CON" => "/conexion",
-                 "KEY_MENU_USU" => "/usuarios",
-                 "KEY_MENU_GRU" => "/grupos",
-                 "KEY_MENU_CAM" => "/campos-homologacion",
-                 "KEY_MENU_ESQ" => "/esquemas",
-                 "KEY_MENU_VAL" => "/validacion",
-                 "KEY_MENU_SEP" => string.Empty,
-                 _ => $"/{menu.CodigoHomologacion}"
-             };
-
              BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
              {
                  "KEY_MENU_ONA" => BlazorBootstrap.IconName.PersonFill,
@@ -55,9 +42,9 @@
 
              return new NavItem
                  {
-                     Id = menu.IdHomologacionItemMenu.ToString(),
-                     Text = menu.ItemMenu,
-                     Href = href,
+                     Id = menu.IdHomologacionMenu.ToString(),
+                     Text = menu.MostrarWeb,
+                     Href = menu.href,
                      IconName = iconName
                  };
          });
