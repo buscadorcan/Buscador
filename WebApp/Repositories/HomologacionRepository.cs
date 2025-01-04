@@ -32,7 +32,7 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.Homologacion.AsNoTracking().FirstOrDefault(u => u.IdHomologacion == id));
         }
-        public ICollection<Homologacion> FindByParent(int parentId)
+        public ICollection<Homologacion> FindByParent()
         {
             return ExecuteDbOperation(context =>
             {

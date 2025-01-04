@@ -4,7 +4,7 @@ using SharedApp.Models.Dtos;
 namespace ClientApp.Services.IService {
     public interface IHomologacionService
     {
-        Task<List<HomologacionDto>> GetHomologacionsAsync(int valor);
+        Task<List<HomologacionDto>> GetHomologacionsAsync();
         Task<HomologacionDto> GetHomologacionAsync(int idHomologacion);
         Task<RespuestaRegistro> RegistrarOActualizar(HomologacionDto registro);
         Task<RespuestaRegistro> EliminarHomologacion(int idHomologacion);

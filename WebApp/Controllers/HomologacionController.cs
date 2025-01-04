@@ -24,13 +24,13 @@ namespace WebApp.Controllers
         private readonly IMapper _mapper = mapper;
         [Authorize]
         [HttpGet("findByParent/{valor}")]
-        public IActionResult FindByParent(int valor)
+        public IActionResult FindByParent()
         {
             try
             {
                 return Ok(new RespuestasAPI<List<HomologacionDto>>
                 {
-                    Result = _iRepo.FindByParent(valor).Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
+                    Result = _iRepo.FindByParent().Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -38,6 +38,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FindByParent));
             }
         }
+
         [Authorize]
         [HttpGet("{id:int}")]
         public IActionResult FindById(int id)

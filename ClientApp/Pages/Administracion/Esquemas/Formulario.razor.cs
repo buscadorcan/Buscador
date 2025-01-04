@@ -49,7 +49,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 editContext = new EditContext(Esquema);
 
             if (HomologacionService != null)
-                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync(1);
+                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync();
 
             if (Id > 0 && EsquemaService != null && EsquemaService != null)
             {
@@ -115,7 +115,6 @@ namespace ClientApp.Pages.Administracion.Esquemas
             }
             saveButton.HideLoading();
         }
-
         private void EliminarElemento(int elemento)
         {
             lista = lista?.Where(c => c.IdHomologacion != elemento).ToList();
@@ -142,7 +141,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
             // Si la lista aún no está cargada, obtén los datos.
             if (listaVwHomologacion == null && HomologacionService != null)
             {
-                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync(1);
+                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync();
             }
 
             // Devuelve una lista vacía si no hay datos.
