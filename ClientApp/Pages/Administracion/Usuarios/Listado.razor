@@ -80,25 +80,22 @@
                 <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
                     @context.Estado
                 </GridColumn>
+                <GridColumn TItem="UsuarioDto" HeaderText="Opciones">
+                    <!-- Botón Editar -->
+                    <Tooltip Title="Editar registro">
+                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" Disabled="isRolRead"
+                                @onclick=@(() => EditarUsuario(context))>
+                            <Icon Name="IconName.PencilSquare" />
+                        </Button>
+                    </Tooltip>
 
-                <GridColumn TItem="UsuarioDto" HeaderText="Operaciones">
-                    @if (!isRolRead)
-                    {
-                        <!-- Botón Editar -->
-                        <Tooltip Title="Eliminar registro">
-                            <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="Size.Small"
-                                    @onclick=@(() => EditarUsuario(context))>
-                                <Icon Name="IconName.PencilSquare" />
-                            </Button>
-                        </Tooltip>
-                        <!-- Botón Eliminar -->
-                        <Tooltip Title="Eliminar registro">
-                            <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true"
-                                    Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdUsuario))>
-                                <Icon Name="IconName.Trash" />
-                            </Button>
-                        </Tooltip>
-                    }
+                    <!-- Botón Eliminar -->
+                    <Tooltip Title="Eliminar registro">
+                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
+                                Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdUsuario))>
+                            <Icon Name="IconName.Trash" />
+                        </Button>
+                    </Tooltip>
                 </GridColumn>
             </Grid>
         </div>
