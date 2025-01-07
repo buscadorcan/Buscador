@@ -20,58 +20,30 @@
             <hr style="background-color:aliceblue" />
             <div class="row">
                 <div class="col-6">
-                    <label>Sistema</label>
-                    <Dropdown AutoClose="true">
-                        <DropdownToggleButton Color="ButtonColor.Secondary">
-                            @if (!string.IsNullOrEmpty(conexion.OrigenDatos))
+                    <label class="col-form-label">Organización</label>
+                    <select class="form-control" @bind="conexion.IdONA">
+                        <option value="">Seleccione una organización</option>
+                        @if (listaOrganizaciones != null)
+                        {
+                            @foreach (var organizacion in listaOrganizaciones)
                             {
-                                @listaOrganizaciones.First(c => c.IdHomologacion.Equals(conexion.OrigenDatos)).MostrarWeb
+                                <option value="@organizacion.IdONA">@organizacion.RazonSocial</option>
                             }
-                            else
-                            {
-                                <span>Seleccionar ORG</span>
-                            }
-                        </DropdownToggleButton>
-                        <DropdownMenu>
-                            @if (listaOrganizaciones != null)
-                            {
-                                @foreach (var opcion in listaOrganizaciones)
-                                {
-                                    <DropdownItem @onclick="() => CambiarSeleccionOrganizacion(opcion.CodigoHomologacion)">
-                                        @opcion.MostrarWeb
-                                    </DropdownItem>
-                                }
-                            }
-                        </DropdownMenu>
-                    </Dropdown>
+                        }
+                    </select>
+                    <ValidationMessage For="(() => conexion.IdONA)" />
                 </div>
-                
                 <div class="col-6">
-                    <label>Motor de Base Datos</label>
-                        <Dropdown AutoClose="true">
-                            <DropdownToggleButton Color="ButtonColor.Secondary">
-                                @if (!string.IsNullOrEmpty(conexion.BaseDatos))
-                                {
-                                    @conexion.BaseDatos
-                                }
-                                else
-                                {
-                                    <span>Seleccionar Motor de Base Datos</span>
-                                }
-                            </DropdownToggleButton>
-                            <DropdownMenu>
-                                @foreach (var databaseType in Enum.GetValues(typeof(DatabaseType)))
-                                {
-                                    <DropdownItem @onclick="() => CambiarSeleccionMotor(databaseType.ToString())">
-                                        @databaseType
-                                    </DropdownItem>
-                                }
-                            </DropdownMenu>
-                        </Dropdown>
-                        <ValidationMessage For="(() => conexion.BaseDatos)" />
+                    <label class="col-form-label">Origen de Datos</label>
+                    <select class="form-control" @onchange="CambiarSeleccionMotor" value="@conexion.OrigenDatos">
+                        <option value="">Seleccionar Motor de Base Datos</option>
+                        @foreach (var databaseType in Enum.GetValues(typeof(DatabaseType)))
+                        {
+                            <option value="@databaseType">@databaseType</option>
+                        }
+                    </select>
+                    <ValidationMessage For="(() => conexion.OrigenDatos)" />
                 </div>
-               
-
             </div>
             <div class="form-row py-2">
                 <label class="col-form-label">Base Datos</label>
@@ -113,24 +85,23 @@
                 </div>
             </div>
 
-@*             <div class="form-row py-2">
-                <label class="col-form-label">TiempoEspera Segundos</label>
+            <div class="form-row py-2">
+                <label class="col-form-label">Migracion</label>
                 <div class="col">
-                    <InputNumber @bind-Value="conexion.TiempoEspera" class="form-control" placeholder="TiempoEspera..." />
-                    <ValidationMessage For="(() => conexion.TiempoEspera)" />
+                    <InputText @bind-Value="conexion.Migrar" class="form-control" placeholder="Migracion(S/N)" />
+                    <ValidationMessage For="(() => conexion.Migrar)" />
                 </div>
-            </div> *@
+            </div>
 
             <div class="form-row py-2">
                 <label class="col-form-label">Filtros</label>
                 <div class="col">
                     <AutoComplete @bind-Value="homologacionName"
-                        TItem="HomologacionDto"
-                        DataProvider="VwHomologacionDataProvider"
-                        PropertyName="CustomMostrarWeb"
-                        Placeholder="Buscar..."
-                        OnChanged="(HomologacionDto vwHomologacion) => OnAutoCompleteChanged(vwHomologacion)"
-                    />
+                                  TItem="HomologacionDto"
+                                  DataProvider="VwHomologacionDataProvider"
+                                  PropertyName="MostrarWeb"
+                                  Placeholder="Buscar..."
+                                  OnChanged="(HomologacionDto vwHomologacion) => OnAutoCompleteChanged(vwHomologacion)" />
                 </div>
             </div>
 
@@ -140,7 +111,7 @@
                     {
                         <Icon Name="IconName.CheckAll" Size="IconSize.x2" />
                         <label class="col-form-label">
-                            @item.CustomMostrarWeb
+                            @item.MostrarWeb
                         </label>
                     }
                 </div>
