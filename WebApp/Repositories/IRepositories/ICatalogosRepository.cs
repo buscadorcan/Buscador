@@ -38,7 +38,7 @@ namespace WebApp.Repositories.IRepositories
     /// </summary>
     /// <param name="IdHomologacion">El identificador del filtro de homologación.</param>
     /// <returns>Una lista de objetos <see cref="FnFiltroDetalleDto"/> con los detalles del filtro.</returns>
-    List<FnFiltroDetalleDto> ObtenerFiltroDetalles(int IdHomologacion);
+    List<FnFiltroDetalleDto> ObtenerFiltroDetalles(string codigo);
 
     /// <summary>
     /// Obtiene el esquema de roles.

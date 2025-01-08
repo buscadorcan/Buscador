@@ -10,7 +10,7 @@ namespace WebApp.Controllers
     /// <summary>
     /// Controlador para la gestión de catálogos, filtros, dimensiones y roles.
     /// </summary>
-    [Route("api")]
+    [Route("api/catalogos")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -68,14 +68,14 @@ namespace WebApp.Controllers
         /// </summary>
         /// <param name="id">ID del filtro.</param>
         /// <returns>Una lista con los detalles del filtro.</returns>
-        [HttpGet("filters/data/{id:int}", Name = "ObtenerFiltroDetalles")]
-        public IActionResult ObtenerFiltroDetalles(int id)
+        [HttpGet("filters/data/{codigo}")]
+        public IActionResult ObtenerFiltroDetalles(string codigo)
         {
             try
             {
                 return Ok(new RespuestasAPI<List<FnFiltroDetalleDto>>
                 {
-                    Result = _vhRepo.ObtenerFiltroDetalles(id)
+                    Result = _vhRepo.ObtenerFiltroDetalles(codigo)
                 });
             }
             catch (Exception e)
@@ -109,7 +109,7 @@ namespace WebApp.Controllers
         /// </summary>
         /// <returns>Una lista con el esquema de los grupos.</returns>
         [Authorize]
-        [HttpGet("groups/schema")]
+        [HttpGet("grupos")]
         public IActionResult ObtenerGrupos()
         {
             try
@@ -174,7 +174,7 @@ namespace WebApp.Controllers
         /// </summary>
         /// <returns>Una lista con el esquema de menus.</returns>
         [Authorize]
-        [HttpGet("catalogos/menu")]
+        [HttpGet("menu")]
         public IActionResult ObtenerVwMenu()
         {
             try

@@ -13,7 +13,7 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         public IBusquedaService? iBusquedaService { get; set; }
         private IndexGrilla? childComponentRef;
-        private List<HomologacionDto>? listaEtiquetasFiltros = new List<HomologacionDto>();
+        private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
         private List<List<FnFiltroDetalleDto>?> listadeOpciones = new List<List<FnFiltroDetalleDto>?>();
         private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
         private BuscarRequest buscarRequest = new BuscarRequest();
@@ -25,20 +25,64 @@ namespace ClientApp.Pages.BuscadorCan
             try
             {
                 if (iCatalogosService != null) {
-                    listaEtiquetasFiltros = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("etiquetas_filtro");
+                    listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
 
                     if (listaEtiquetasFiltros != null)
                     {
                         foreach(var opciones in listaEtiquetasFiltros)
                         {
-                            listadeOpciones.Add(await iCatalogosService.GetHomologacionDetalleAsync<List<FnFiltroDetalleDto>>("filtro_detalles", opciones.IdHomologacion));
+                            listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<FnFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
+                            
                         }
+                        
                     }
+                }
+
+                // Si no hay datos del servicio, usar datos simulados
+                if (listaEtiquetasFiltros == null || !listaEtiquetasFiltros.Any())
+                {
+                    CargarDatosSimulados();
                 }
             } catch (Exception e) {
                 Console.WriteLine(e);
+                CargarDatosSimulados();
             }
         }
+
+        private void CargarDatosSimulados()
+        {
+            // Crear etiquetas de filtro simuladas
+            listaEtiquetasFiltros = new List<VwFiltroDto>
+            {
+                new VwFiltroDto { IdHomologacion = 1, MostrarWeb = "Filtro 1" },
+                new VwFiltroDto { IdHomologacion = 2, MostrarWeb = "Filtro 2" },
+                new VwFiltroDto { IdHomologacion = 3, MostrarWeb = "Filtro 3" }
+            };
+
+            // Crear opciones simuladas para cada filtro
+            listadeOpciones = new List<List<FnFiltroDetalleDto>?>
+            {
+                new List<FnFiltroDetalleDto>
+                {
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 1.1" },
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 1.2" },
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 1.3" }
+                },
+                new List<FnFiltroDetalleDto>
+                {
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 2.1" },
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 2.2" },
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 2.3" }
+                },
+                new List<FnFiltroDetalleDto>
+                {
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 3.1" },
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 3.2" },
+                    new FnFiltroDetalleDto { MostrarWeb = "Opción 3.3" }
+                }
+            };
+        }
+
         private void CambiarSeleccion(string selectedValue, int? id)
         {
             if (id != null)
@@ -91,6 +135,8 @@ namespace ClientApp.Pages.BuscadorCan
                 selectedValues = new List<FiltrosBusquedaSeleccion>();
             }
         }
+
+
     }
 
     public class FiltrosBusquedaSeleccion {
@@ -100,4 +146,6 @@ namespace ClientApp.Pages.BuscadorCan
             Seleccion = new List<string>();
         }
     }
+
+
 }

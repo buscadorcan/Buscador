@@ -6,14 +6,47 @@
 @using ClientApp.Models;
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
+@inject NavigationManager NavigationManager
+<style>
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
+</style>
 
 <PageTitle>Formulario de Esquema</PageTitle>
 
 <EditForm Model="homologacion" OnValidSubmit="GuardarHomologacion" class="pt-4">
     <DataAnnotationsValidator />
-
-    <div class="card border p-4">
-        <div class="card-body">
+    <div class="card border">
+        <!-- Título -->
+        <div class="card-header">
+            <h3 class="text-white font-weight-bold text-center m-0">Actualizar / Registrar [@homologacionGrupo?.MostrarWeb]</h3>
+        </div>
+        <div class="card-body px-lg-5 pt-4">
             <h3 class="text-success text-center">
                 <strong>Actualizar / Registrar [@homologacionGrupo?.MostrarWeb]</strong>
             </h3>
@@ -74,14 +107,23 @@
                     <ValidationMessage For="(()=>homologacion.AnchoColumna)" />
                 </div>
             </div>
-
         </div>
     </div>
+    
 </EditForm>
 
-<div class="py-2">
-    <hr style="background-color:aliceblue" />
+<div class="py-2 d-flex justify-content-end gap-2">
+    <Button Color="ButtonColor.Secondary" @onclick="Regresar">
+        Regresar
+    </Button>
     <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarHomologacion()">
         Guardar
     </Button>
 </div>
+
+@code {
+    private void Regresar()
+    {
+        NavigationManager.NavigateTo("/campos-homologacion");
+    }
+}
