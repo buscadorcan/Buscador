@@ -21,7 +21,8 @@ namespace WebApp.Repositories
         {
             data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
-
+            data.Estado = "A";
+            data.Mostrar = "S";
             return ExecuteDbOperation(context =>
             {
                 context.Homologacion.Add(data);

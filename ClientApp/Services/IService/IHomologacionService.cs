@@ -8,5 +8,6 @@ namespace ClientApp.Services.IService {
         Task<HomologacionDto> GetHomologacionAsync(int idHomologacion);
         Task<RespuestaRegistro> RegistrarOActualizar(HomologacionDto registro);
         Task<RespuestaRegistro> EliminarHomologacion(int idHomologacion);
+        Task<bool> DeleteHomologacionAsync(int idHomologacion);
     }
 }

@@ -13,8 +13,8 @@ namespace ClientApp.Services {
         private readonly HttpClient _httpClient;
         private string url = $"{Inicializar.UrlBaseApi}api/usuarios";
        // private string url2 = $"{Inicializar.UrlBaseApi}api/usuarios";
-        private string url3 = $"{Inicializar.UrlBaseApi}api/roles";
-        private string url4 = $"{Inicializar.UrlBaseApi}api/onas";
+        private string url3 = $"{Inicializar.UrlBaseApi}api/catalogos/roles";
+        private string url4 = $"{Inicializar.UrlBaseApi}api/catalogos/onas";
 
         public UsuariosService(HttpClient httpClient)
         {

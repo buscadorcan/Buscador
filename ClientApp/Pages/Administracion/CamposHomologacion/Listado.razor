@@ -2,9 +2,54 @@
 @layout AdminLayout
 @using SharedApp.Models.Dtos
 
-<PageTitle>Campos Homologación</PageTitle>
+<style>
+    .striped-table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
 
-<h3>Administación de campos de Homologación</h3>
+    .striped-table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+<PageTitle>Campos Homologación</PageTitle>
+<div class="card">
+    <!-- Card Header -->
+    <div class="card-header">
+        <h2>Administación de campos de Homologación</h2>
+    </div>
+</div>
 
 <div class="row py-2">
     <div class="col-md-6">
@@ -33,42 +78,69 @@
     </div>
 </div>
 
-<div class="form-row py-2">
-    <Grid
-        Id="sortableGrid"
-        @ref="grid"
-        TItem="HomologacionDto"
-        class="table table-hover table-bordered table-striped"
-        DataProvider="HomologacionDataProvider"
-        Responsive="true"
-        AllowFiltering="true"
-    >
-        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
-            @context.NombreHomologado
-            <input type="hidden" value="@context.IdHomologacion" />
-        </GridColumn>
-        <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
-            @context.MostrarWeb
-            <input type="hidden" value="@context.IdHomologacion" />
-        </GridColumn>
-        <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
-            @context.TooltipWeb
-        </GridColumn>
-        <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
-            @context.MascaraDato
-        </GridColumn>
-        <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
-            @context.SiNoHayDato
-        </GridColumn>
-        <GridColumn TItem="HomologacionDto" HeaderText="Editar" Filterable="false">
-            <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-campos-homologacion/{homologacionSelected.IdHomologacion}/{context.IdHomologacion}")" Size="Size.Small">
-                <Icon Name="IconName.PencilSquare" />
-            </Button>
-        </GridColumn>
-        <GridColumn TItem="HomologacionDto" HeaderText="Eliminar" Filterable="false">
-            <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdHomologacion)" Size="Size.Small">
-                <Icon Name="IconName.Trash3" />
-            </Button>
-        </GridColumn>
-    </Grid>
+<div class="card-body">
+        <div class="table-responsive">
+        <Grid Id="sortableGrid"
+              @ref="grid"
+              TItem="HomologacionDto"
+              class="table table-hover table-bordered table-striped striped-table"
+              DataProvider="HomologacionDataProvider"
+              Responsive="true"
+              AllowFiltering="true">
+            <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
+                @context.NombreHomologado
+                <input type="hidden" value="@context.IdHomologacion" />
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
+                @context.MostrarWeb
+                <input type="hidden" value="@context.IdHomologacion" />
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
+                @context.TooltipWeb
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
+                @context.MascaraDato
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
+                @context.SiNoHayDato
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" HeaderText="Opciones">
+                    <!-- Botón Editar -->
+                    <Tooltip Title="Editar registro">
+                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-campos-homologacion/{homologacionSelected.IdHomologacion}/{context.IdHomologacion}")" Size="Size.Small">
+                            <Icon Name="IconName.PencilSquare" />
+                        </Button>
+                    </Tooltip>
+
+                    <!-- Botón Eliminar -->
+                    <Tooltip Title="Eliminar registro">
+                    <Button Color="ButtonColor.Danger" Outline="true" Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdHomologacion))>
+                        <Icon Name="IconName.Trash3" />
+                    </Button>
+                    </Tooltip>
+             </GridColumn>
+        </Grid>
+        </div>
 </div>
+
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

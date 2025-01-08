@@ -50,6 +50,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
 
             saveButton.HideLoading();
         }
+
         private void OnAutoCompleteChanged(string mascaraDato) {
             homologacion.MascaraDato = mascaraDato;
         }
