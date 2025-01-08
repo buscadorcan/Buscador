@@ -47,7 +47,7 @@ namespace WebApp.Controllers
         /// Obtiene el esquema de los filtros.
         /// </summary>
         /// <returns>Una lista con el esquema de los filtros.</returns>
-        [HttpGet("catalogos/filters/schema")]
+        [HttpGet("filters/schema")]
         public IActionResult ObtenerVwFiltro()
         {
             try
@@ -68,7 +68,7 @@ namespace WebApp.Controllers
         /// </summary>
         /// <param name="id">ID del filtro.</param>
         /// <returns>Una lista con los detalles del filtro.</returns>
-        [HttpGet("catalogos/filters/data/{codigo}")]
+        [HttpGet("filters/data/{codigo}")]
         public IActionResult ObtenerFiltroDetalles(string codigo)
         {
             try
