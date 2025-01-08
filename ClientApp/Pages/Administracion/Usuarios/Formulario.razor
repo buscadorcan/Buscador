@@ -149,13 +149,30 @@
                     <ValidationMessage For="(() => usuario.Clave)" />
                 </div>
             </div>
-
-            <div class="py-2">
-                <hr style="background-color:aliceblue" />
+            @* <div class="py-2 d-flex justify-content-end gap-2">
+                <Button Color="ButtonColor.Secondary" @onclick="Regresar">
+                    Regresar
+                </Button>
                 <Button @ref="saveButton" Type="ButtonType.Submit" Color="ButtonColor.Success">
                     Guardar
                 </Button>
-            </div>
+            </div> *@
         </div>
     </div>
 </EditForm>
+
+<div class="py-2 d-flex justify-content-end gap-2">
+    <Button Color="ButtonColor.Secondary" @onclick="Regresar">
+        Regresar
+    </Button>
+    <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await RegistrarUsuario()">
+        Guardar
+    </Button>
+</div>
+
+@code {
+    private void Regresar()
+    {
+        NavigationManager.NavigateTo("/usuarios");
+    }
+}

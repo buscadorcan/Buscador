@@ -29,7 +29,7 @@ namespace ClientApp.Pages.Administracion.Grupo
         private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {
             if (iCatalogosService != null)
-                listaHomologacions = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupo");
+                listaHomologacions = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupos");
 
             DataLoaded?.Invoke();
 

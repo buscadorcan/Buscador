@@ -10,7 +10,7 @@ namespace WebApp.Controllers
     /// <summary>
     /// Controlador para la gestión de catálogos, filtros, dimensiones y roles.
     /// </summary>
-    [Route("api")]
+    [Route("api/catalogos")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -109,7 +109,7 @@ namespace WebApp.Controllers
         /// </summary>
         /// <returns>Una lista con el esquema de los grupos.</returns>
         [Authorize]
-        [HttpGet("groups/schema")]
+        [HttpGet("grupos")]
         public IActionResult ObtenerGrupos()
         {
             try
@@ -174,7 +174,7 @@ namespace WebApp.Controllers
         /// </summary>
         /// <returns>Una lista con el esquema de menus.</returns>
         [Authorize]
-        [HttpGet("catalogos/menu")]
+        [HttpGet("menu")]
         public IActionResult ObtenerVwMenu()
         {
             try

@@ -26,7 +26,7 @@ namespace WebApp.Repositories
         };
 
         var lstTem = context.Database.SqlQueryRaw<BuscadorResultadoData>(
-          "exec psBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
+          "exec paBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
           new SqlParameter("@paramJSON", paramJSON),
           new SqlParameter("@PageNumber", PageNumber),
           new SqlParameter("@RowsPerPage", RowsPerPage),

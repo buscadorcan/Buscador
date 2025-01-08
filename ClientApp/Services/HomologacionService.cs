@@ -31,7 +31,16 @@ namespace ClientApp.Services {
                 return JsonConvert.DeserializeObject<RespuestasAPI<RespuestaRegistro>>(contentTemp).Result;
             }
         }
-
+        public async Task<bool> DeleteHomologacionAsync(int IdHomologacion)
+        {
+            var response = await _httpClient.DeleteAsync($"{url}/{IdHomologacion}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+            var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
+            return apiResponse?.IsSuccess ?? false;
+        }
         public async Task<HomologacionDto> GetHomologacionAsync(int idHomologacion)
         {
             var response = await _httpClient.GetAsync($"{url}/{idHomologacion}");
