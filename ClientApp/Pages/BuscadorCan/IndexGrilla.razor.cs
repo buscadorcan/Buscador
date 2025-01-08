@@ -13,7 +13,7 @@ namespace ClientApp.Pages.BuscadorCan
         [Parameter]
         public List<FiltrosBusquedaSeleccion>? selectedValues { get; set; }
         [Parameter]
-        public List<HomologacionDto>? listaEtiquetasFiltros { get; set; }
+        public List<VwFiltroDto>? listaEtiquetasFiltros { get; set; }
         [Inject]
         public IBusquedaService? servicio { get; set; }
         [Inject]

@@ -4,6 +4,7 @@ using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ClientApp.Services
 {
@@ -20,12 +21,13 @@ namespace ClientApp.Services
         {
             return await GetApiResponseAsync<T>($"{endpoint}");
         }
-        public async Task<T?> GetHomologacionDetalleAsync<T>(string endpoint, int IdHomologacion)
+        public async Task<T?> GetFiltroDetalleAsync<T>(string endpoint, string CodigoHomologacion)
         {
-            return await GetApiResponseAsync<T>($"{endpoint}/{IdHomologacion}");
+            return await GetApiResponseAsync<T>($"{endpoint}/{CodigoHomologacion}");
         }
         private async Task<T?> GetApiResponseAsync<T>(string apiEndpoint)
         {
+            
             var response = await _httpClient.GetAsync($"{_urlBaseApi}{apiEndpoint}");
             response.EnsureSuccessStatusCode();
             var respuesta = await response.Content.ReadFromJsonAsync<RespuestasAPI<T>>();
@@ -44,6 +46,14 @@ namespace ClientApp.Services
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwMenuDto>>>()).Result;
+        }
+
+        public async Task<List<VwFiltroDto>> GetFiltrosAsync()
+        {
+            var url = _urlBaseApi + "filters/schema";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwFiltroDto>>>()).Result;
         }
     }
 }

@@ -4,17 +4,245 @@
 @using SharedApp.Data;
 @using Newtonsoft.Json;
 
-<PageTitle>Buscador Andino</PageTitle>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/styleguide.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+    <div class="pagina">
+        <div class="main-container">
+            <p class="title">Aprende a usar el buscador en pocos pasos</p>
+            <div class="content-container">
+                <div class="data-table">
+                    <div class="step-container">
+                        <div class="pais">
+                            <div class="step-number"><div class="text-wrapper">01</div></div>
+                        </div>
+                        <div class="info-total">
+                            <div class="left">
+                                <div class="razon-social"><p class="step-description">Digite la palabra o Frase</p></div>
+                                <div class="div">
+                                    <div class="frame">
+                                        <p class="resultados">
+                                            EJ. “Leche”, en el cuadro de texto, el sistema sugerirá las palabras más buscadas relacionadas a
+                                            Leche, como “milk”, “lechoso”, “lacteo”.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="expanded-user-menu">
+                        <div class="popular-search">
+                            <img class="img" src="login/img/trending-up@2x.png" />
+                            <div class="popular-search-title">Populares en la busqueda</div>
+                        </div>
+                        <div class="popular-search-tags">
+                            <div class="chips"><div class="new">Minerales</div></div>
+                            <div class="chips"><div class="new">ISO 17210</div></div>
+                            <div class="chips"><div class="new">Chocolate</div></div>
+                            <div class="chips"><div class="new">Calzado</div></div>
+                            <div class="chips"><div class="new">Productos Químicos</div></div>
+                            <div class="chips"><div class="new">Alimentos</div></div>
+                            <div class="chips"><div class="new">Vestimenta</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table-2">
+                    <div class="step-container-2">
+                        <div class="step-number-wrapper">
+                            <div class="step-number"><div class="text-wrapper">02</div></div>
+                        </div>
+                        <div class="left-wrapper">
+                            <div class="left-2">
+                                <div class="razon-social"><div class="step-description">Filtrables</div></div>
+                                <div class="div">
+                                    <div class="frame">
+                                        <p class="resultados">
+                                            Si además de la búsqueda anterior, requiere filtrar por País, Organismo o Esquema, despliegue y
+                                            seleccione la opción.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="paises-filtro">
+                        <div class="div">
+                            <div class="button-select"><div class="texas-location">Todos los Paises</div></div>
+                            <div class="button-select-2">
+                                <div class="texas-location-2">Colombia</div>
+                                <img class="chevron-right" src="login/img/chevron-right-4.svg" />
+                            </div>
+                            <div class="button-select-2">
+                                <div class="texas-location-2">Ecuador</div>
+                                <img class="chevron-right" src="login/img/chevron-right-3.svg" />
+                            </div>
+                            <div class="button-select-2">
+                                <div class="texas-location-2">Perú</div>
+                                <img class="chevron-right" src="login/img/chevron-right-2.svg" />
+                            </div>
+                            <div class="button-select-2">
+                                <div class="texas-location-2">Bolívia</div>
+                                <img class="chevron-right" src="login/img/chevron-right.svg" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img class="step-container-3" src="login/img/step-container.svg" />
+            </div>
+        </div>
+        <div class="top">
+            <div class="top-2">
+                <img class="vector" src="images/logo2bg.png" />
+                <div class="text">
+                    <div class="red-de-organismos-de-wrapper">
+                        <p class="red-de-organismos-de">
+                            <span class="span">Red de Organismos de la Conformidad: </span>
+                            <span class="text-wrapper-2">Conecta YA</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="logo"><img class="frame-2" src="images/logo1bg.png" /></div>
+            </div>
+            <div class="container">
+                <div class="control">
+                    <div class="top-filters">
+                        <div class="search-container">
+                            <div class="search-bar-2">
+                                <div class="search-input">
+                                    <div class="input-group">
+                                        <input type="text" @*@bind="searchTerm"*@ class="form-control" placeholder="Buscar..." />
+                                        <button class="btn btn-primary" @*@onclick="Search"*@>Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-2">
+                                <input class="form-check-input" type="checkbox" id="exactSearch" @*@bind="isExactSearch"*@ />
+                                <label class="form-check-label" for="exactSearch">
+                                    Búsqueda exacta
+                                </label>
+                            </div>
+                        </div>
+                        <div class="dashboard">
+                            <div class="frame-4">
+                                <div class="text-wrapper-3">Total</div>
+                                <div class="element">720</div>
+                            </div>
+                            <div class="frame-5">
+                                <div class="SAE">
+                                    <div class="frame-6">
+                                        <div class="div-3">
+                                            <img class="img-2" src="login/img/ona-10.svg" />
+                                            <div class="text-wrapper-4">SAE</div>
+                                        </div>
+                                        <div class="text-wrapper-5">Ecuador</div>
+                                    </div>
+                                    <div class="element-2">200</div>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="SAE">
+                                    <div class="frame-6">
+                                        <div class="div-3">
+                                            <img class="img-2" src="login/img/ona-33.svg" />
+                                            <div class="text-wrapper-4">ONAC</div>
+                                        </div>
+                                        <div class="text-wrapper-5">Colombia</div>
+                                    </div>
+                                    <div class="element-2">270</div>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="SAE">
+                                    <div class="frame-6">
+                                        <div class="ona-inacal-icontext">
+                                            <img class="img-2" src="login/img/ona-15.svg" />
+                                            <div class="text-wrapper-4">INACAL</div>
+                                        </div>
+                                        <div class="text-wrapper-5">Perú</div>
+                                    </div>
+                                    <div class="element-2">150</div>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="SAE">
+                                    <div class="frame-6">
+                                        <div class="ona-ibmetro-icontext">
+                                            <div class="ona"><img class="image" src="login/img/image-193-4.png" /></div>
+                                            <div class="text-wrapper-4">IBMETRO</div>
+                                        </div>
+                                        <div class="text-wrapper-5">Bolivia</div>
+                                    </div>
+                                    <div class="element-2">100</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-2">
+                        <div class="advanced-filters">Filtros Avanzados</div>
+                        <div class="divider-2"></div>
+                        <div class="view-mode">
+                            <div class="tabs"><img class="img-2" src="login/img/format-list-bulleted-1.svg" /></div>
+                            <div class="tabs-2"><img class="img-2" src="login/img/bx-map.svg" /></div>
+                        </div>
+                    </div>
+                    <div class="container-wrapper">
+                        <div class="container-3">
+                            <div class="container">
+                                <div class="row g-1 valign-text-middle">
+                                    <!-- Generar Selects Dinámicamente -->
+                                    @if (listadeOpciones != null)
+                                    {
+                                        @for (int i = 0; i < listadeOpciones.Count; i++)
+                                        {
+                                            var currentIndex = i;
+                                            <div class="col-auto">
+                                                <label for="select-@currentIndex" class="form-label text-small">
+                                                    @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
+                                                </label>
+                                                <select id="select-@currentIndex"
+                                                        class="form-select form-select-sm text-small"
+                                                        style="width: auto;"
+                                                        @onchange="(e) => CambiarSeleccion(e.Value.ToString(), listaEtiquetasFiltros?[currentIndex]?.IdHomologacion)">
+                                                    <option value="">Seleccione una opción</option>
+                                                    @if (listadeOpciones?[currentIndex] != null)
+                                                    {
+                                                        @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
+                                                        {
+                                                            <option value="@opcion.MostrarWeb">
+                                                                @opcion.MostrarWeb
+                                                            </option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <IndexGrilla @ref="childComponentRef"
+                                             buscarRequest="@buscarRequest"
+                                             selectedValues="@selectedValues"
+                                             listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
-<div class="page-container">
+@* <div class="page-container">
     <div class="container">
         <div class="row">
 
             <div class="span12 page-content">
                 <div class="row-fluid">
 
-                    @if (listadeOpciones != null) {
-                        @for (int i = 0; i < listadeOpciones.Count; i += 1) {
+                    @if (listadeOpciones != null)
+                    {
+                        @for (int i = 0; i < listadeOpciones.Count; i += 1)
+                        {
                             var currentIndex = i;
                             <div class="span2">
                                 <Dropdown AutoClose="true" style="max-width: 100%; min-width: 100%">
@@ -22,9 +250,11 @@
                                         @listaEtiquetasFiltros?[currentIndex].MostrarWeb
                                     </DropdownToggleButton>
                                     <DropdownMenu>
-                                        @if (listadeOpciones?[currentIndex] != null) {
+                                        @if (listadeOpciones?[currentIndex] != null)
+                                        {
                                             var listaTmp = selectedValues.FirstOrDefault(c => c.Id == listaEtiquetasFiltros?[currentIndex].IdHomologacion);
-                                            foreach (var opcion in listadeOpciones[currentIndex] ?? []) {
+                                            foreach (var opcion in listadeOpciones[currentIndex] ?? [])
+                                            {
                                                 <DropdownItem @onclick="() => CambiarSeleccion(opcion.MostrarWeb, listaEtiquetasFiltros?[currentIndex].IdHomologacion)">
                                                     @if (listaTmp != null && listaTmp.Seleccion.Contains(opcion.MostrarWeb))
                                                     {
@@ -43,130 +273,9 @@
             </div>
 
         </div>
-        <IndexGrilla
-            @ref="childComponentRef"
-            buscarRequest="@buscarRequest"
-            selectedValues="@selectedValues"
-            listaEtiquetasFiltros="@listaEtiquetasFiltros"
-        />
+        <IndexGrilla @ref="childComponentRef"
+                     buscarRequest="@buscarRequest"
+                     selectedValues="@selectedValues"
+                     listaEtiquetasFiltros="@listaEtiquetasFiltros" />
     </div>
-</div>
-<div class="pagina">
-    <!-- Contenedor Principal -->
-    <div class="main-container">
-        <!-- Título -->
-        <p class="title">Aprende a usar el buscador en pocos pasos</p>
-
-        <!-- Contenido -->
-        <div class="content-container">
-            <!-- Tabla de Datos -->
-            <div class="data-table">
-                <!-- Paso 01 -->
-                <div class="step-container">
-                    <div class="pais">
-                        <div class="step-number">
-                            <div class="text-wrapper">01</div>
-                        </div>
-                    </div>
-                    <div class="info-total">
-                        <div class="left">
-                            <div class="razon-social">
-                                <p class="step-description">Digite la palabra o frase</p>
-                            </div>
-                            <div class="frame">
-                                <p class="resultados">
-                                    EJ. “Leche”, en el cuadro de texto, el sistema sugerirá las palabras más buscadas relacionadas a
-                                    Leche, como “milk”, “lechoso”, “lacteo”.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Búsquedas Populares -->
-                <div class="expanded-user-menu">
-                    <div class="popular-search">
-                        <img class="img" src="img/trending-up.png" />
-                        <div class="popular-search-title">Populares en la búsqueda</div>
-                    </div>
-                    <div class="popular-search-tags">
-                        <div class="chips"><div class="new">Minerales</div></div>
-                        <div class="chips"><div class="new">ISO 17210</div></div>
-                        <div class="chips"><div class="new">Chocolate</div></div>
-                        <div class="chips"><div class="new">Calzado</div></div>
-                        <div class="chips"><div class="new">Productos Químicos</div></div>
-                        <div class="chips"><div class="new">Alimentos</div></div>
-                        <div class="chips"><div class="new">Vestimenta</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Paso 02 -->
-            <div class="data-table-2">
-                <div class="step-container-2">
-                    <div class="step-number-wrapper">
-                        <div class="step-number">
-                            <div class="text-wrapper">02</div>
-                        </div>
-                    </div>
-                    <div class="left-wrapper">
-                        <div class="left-2">
-                            <div class="razon-social">
-                                <div class="step-description">Filtrables</div>
-                            </div>
-                            <div class="frame">
-                                <p class="resultados">
-                                    Si además de la búsqueda anterior, requiere filtrar por País, Organismo o Esquema, despliegue y
-                                    seleccione la opción.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Filtro País -->
-                <div class="paises-filtro">
-                    <div class="div">
-                        <div class="button-select">
-                            <div class="texas-location">Todos los Países</div>
-                        </div>
-                        <div class="button-select-2">
-                            <div class="texas-location-2">Colombia</div>
-                            <img class="chevron-right" src="img/chevron-right-4.svg" />
-                        </div>
-                        <div class="button-select-2">
-                            <div class="texas-location-2">Ecuador</div>
-                            <img class="chevron-right" src="img/chevron-right-3.svg" />
-                        </div>
-                        <div class="button-select-2">
-                            <div class="texas-location-2">Perú</div>
-                            <img class="chevron-right" src="img/chevron-right-2.svg" />
-                        </div>
-                        <div class="button-select-2">
-                            <div class="texas-location-2">Bolivia</div>
-                            <img class="chevron-right" src="img/chevron-right.svg" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Encabezado Superior -->
-    <div class="top">
-        <div class="top-2">
-            <img class="vector" src="img/vector-1.png" />
-            <div class="text">
-                <div class="red-de-organismos-de-wrapper">
-                    <p class="red-de-organismos-de">
-                        <span class="span">Red de Organismos de la Conformidad: </span>
-                        <span class="text-wrapper-2">Conecta YA</span>
-                    </p>
-                </div>
-            </div>
-            <div class="logo">
-                <img class="frame-2" src="img/frame.svg" />
-            </div>
-        </div>
-    </div>
-</div>
+</div> *@

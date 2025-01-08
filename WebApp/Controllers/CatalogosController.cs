@@ -47,7 +47,7 @@ namespace WebApp.Controllers
         /// Obtiene el esquema de los filtros.
         /// </summary>
         /// <returns>Una lista con el esquema de los filtros.</returns>
-        [HttpGet("filters/schema")]
+        [HttpGet("catalogos/filters/schema")]
         public IActionResult ObtenerVwFiltro()
         {
             try
@@ -68,14 +68,14 @@ namespace WebApp.Controllers
         /// </summary>
         /// <param name="id">ID del filtro.</param>
         /// <returns>Una lista con los detalles del filtro.</returns>
-        [HttpGet("filters/data/{id:int}", Name = "ObtenerFiltroDetalles")]
-        public IActionResult ObtenerFiltroDetalles(int id)
+        [HttpGet("catalogos/filters/data/{codigo}")]
+        public IActionResult ObtenerFiltroDetalles(string codigo)
         {
             try
             {
                 return Ok(new RespuestasAPI<List<FnFiltroDetalleDto>>
                 {
-                    Result = _vhRepo.ObtenerFiltroDetalles(id)
+                    Result = _vhRepo.ObtenerFiltroDetalles(codigo)
                 });
             }
             catch (Exception e)

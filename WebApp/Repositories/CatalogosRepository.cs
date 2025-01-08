@@ -66,11 +66,11 @@ namespace WebApp.Repositories
         }
 
         /// <inheritdoc />
-        public List<FnFiltroDetalleDto> ObtenerFiltroDetalles(int id)
+        public List<FnFiltroDetalleDto> ObtenerFiltroDetalles(string codigo)
         {
             return ExecuteDbOperation(context =>
               context.Database
-                .SqlQuery<FnFiltroDetalleDto>($"SELECT * FROM fnFiltroDetalle({id})")
+                .SqlQuery<FnFiltroDetalleDto>($"SELECT * FROM fnFiltroDetalle({codigo})")
                 .AsNoTracking()
                 .OrderBy(c => c.MostrarWeb)
                 .ToList());
