@@ -1,4 +1,5 @@
 using BlazorBootstrap;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -14,50 +15,39 @@ namespace ClientApp.Pages.Administracion.Conexion
         [Inject]
         private IConexionService? service { get; set; }
         [Inject]
+        private IONAService? iOnaService { get; set; }
+        [Inject]
         public NavigationManager? navigationManager { get; set; }
         private ONAConexionDto conexion = new ONAConexionDto();
         [Inject]
-        public ICatalogosService? iCatalogosService { get; set; }
+        public IHomologacionService? HomologacionService { get; set; }
         [Inject]
         public IHomologacionService? iHomologacionService { get; set; }
-        private List<HomologacionDto>? listaOrganizaciones = default;
+
+        [Inject]
+        public Services.ToastService? ToastService { get; set; }
+
+        private List<OnaDto>? listaOrganizaciones = default;
         private string? homologacionName;
         private List<HomologacionDto>? listaVwHomologacion;
         private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
+
         protected override async Task OnInitializedAsync()
         {
-            if (iHomologacionService != null)
+            if (iOnaService != null)
             {
-                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync();
+                listaOrganizaciones = await iOnaService.GetONAsAsync();
             }
-            if (listaVwHomologacion == null && iCatalogosService != null)
+
+            if (listaVwHomologacion == null)
                 listaVwHomologacion = await iHomologacionService.GetHomologacionsAsync();
 
             if (Id > 0 && service != null)
             {
-                //var conexion = await service.GetConexionsAsync();
-                //try
-                //{
-                //    var ids = JsonConvert.DeserializeObject<List<int>>(conexion ?? "[]");
-                //    foreach (var item in ids ?? [])
-                //    {
-                //        var h = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == item);
-                //        if (h != null)
-                //        {
-                //            lista = lista?.Append(h).ToList();
-                //        }
-                //    }
-                //}
-                //catch (System.Exception ex)
-                //{
-                //    Console.WriteLine(ex);
-                //}
+                conexion = await service.GetConexionAsync(Id.GetValueOrDefault());
             }
-            else
-            {
-                var conexion = "[]";
-                conexion = "N";
-            }
+            
+           
         }
         private async Task RegistrarConexion()
         {
@@ -65,18 +55,25 @@ namespace ClientApp.Pages.Administracion.Conexion
 
             if (service != null)
             {
-                var idHomologaciones = lista?.Select(s => s.IdHomologacion).ToList();
-                var conexion = JsonConvert.SerializeObject(idHomologaciones);
-
-                var result = true; //await service.RegistrarOActualizar(conexion);
-                if (result)
+                try
                 {
-                    // toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                    //navigationManager?.NavigateTo("/conexion");
+                    var result = await service.RegistrarOActualizar(conexion);
+                    if (result.registroCorrecto)
+                    {
+                        //Mensaje de éxito
+                        ToastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                        navigationManager?.NavigateTo("/conexion");
+                    }
+                    else
+                    {
+                        // Mensaje de error
+                        ToastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // toastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
+                    // Manejo de errores
+                    Console.WriteLine($"Error al registrar conexión: {ex.Message}");
                 }
             }
 
@@ -86,20 +83,44 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             var conexion = _organizacionSelected;
         }
-        private void CambiarSeleccionMotor(string _motorBaseDatos)
+        private void CambiarSeleccionMotor(ChangeEventArgs e)
         {
-            var conexion = _motorBaseDatos;
+            conexion.BaseDatos = e.Value?.ToString();
+            conexion.OrigenDatos = e.Value?.ToString();
         }
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {
-            if (listaVwHomologacion == null && iCatalogosService != null)
-                listaVwHomologacion = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("dimension");
+            if (listaVwHomologacion == null)
+                listaVwHomologacion = await HomologacionService.GetHomologacionsAsync();
+            // Devuelve una lista vacía si no hay datos.
+            if (listaVwHomologacion == null || !listaVwHomologacion.Any())
+            {
+                return new AutoCompleteDataProviderResult<HomologacionDto>
+                {
+                    Data = new List<HomologacionDto>(),
+                    TotalCount = 0
+                };
+            }
 
-            return await Task.FromResult(request.ApplyTo((listaVwHomologacion ?? new List<HomologacionDto>()).OrderBy(vmH => vmH.MostrarWebOrden)));
+            // Aplica el filtro ingresado en el AutoComplete.
+            var filtro = request.Filter.Value.ToLowerInvariant();
+            var resultados = listaVwHomologacion
+                .Where(h => string.IsNullOrEmpty(filtro) ||
+                            (h.MostrarWeb?.ToLowerInvariant().Contains(filtro) ?? false))
+                .OrderBy(h => h.MostrarWebOrden)
+                .Take(10) //como utilizar Top 10 en consulta SQL
+                .ToList();
+
+            return new AutoCompleteDataProviderResult<HomologacionDto>
+            {
+                Data = resultados,
+                TotalCount = resultados.Count
+            };
         }
         private void OnAutoCompleteChanged(HomologacionDto vwHomologacionSelected)
         {
             lista = lista?.Append(vwHomologacionSelected).ToList();
         }
+
     }
 }

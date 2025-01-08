@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using ClientApp.Helpers;
@@ -48,16 +49,25 @@ namespace ClientApp.Services {
 
         public async Task<RespuestaRegistro> RegistrarOActualizar(ONAConexionDto registro)
         {
+            var verificarConexion = await _httpClient.GetAsync($"{url}/{registro.IdONA}");
             var content = JsonConvert.SerializeObject(registro);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             HttpResponseMessage response;
-            if (registro.IdONA > 0)
+
+            if (verificarConexion.IsSuccessStatusCode) // Código 200 OK o similar
             {
+                // Actualizar registro existente
                 response = await _httpClient.PutAsync($"{url}/{registro.IdONA}", bodyContent);
+            }
+            else if (verificarConexion.StatusCode == HttpStatusCode.NotFound) // Código 404
+            {
+                // Crear nuevo registro
+                response = await _httpClient.PostAsync(url, bodyContent);
             }
             else
             {
-                response = await _httpClient.PostAsync(url, bodyContent);
+                // Manejar otros errores (500, etc.)
+                throw new Exception($"Error al verificar conexión: {verificarConexion.StatusCode}");
             }
 
             var contentTemp = await response.Content.ReadAsStringAsync();
