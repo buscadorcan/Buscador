@@ -60,7 +60,7 @@ namespace WebApp.Repositories
             return ExecuteDbOperation(context =>
               context.Homologacion
                 .AsNoTracking()
-                .Where(c => c.IdHomologacionGrupo == null)
+                .Where(c => c.IdHomologacionGrupo == null && c.Estado == "A")
                 .OrderBy(c => c.MostrarWebOrden)
                 .ToList());
         }
