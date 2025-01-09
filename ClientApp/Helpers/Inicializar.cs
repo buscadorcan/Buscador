@@ -13,5 +13,7 @@ namespace ClientApp.Helpers
         public const string Datos_Usuario_IdOna_Local = "Ona Usuario";
         public const string Datos_Usuario_Codigo_Rol_Local = "Código Rol Usuario";
         public const string Datos_Usuario_Nombre_Rol_Local = "Nombre Rol Usuario";
+        public const string Datos_Menu_Titulo_Local = "Titulo de menú";
+
     }
 }

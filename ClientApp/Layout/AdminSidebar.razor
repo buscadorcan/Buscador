@@ -1,8 +1,10 @@
 @using BlazorBootstrap;
+@using Blazored.LocalStorage
 @using ClientApp.Services.IService
 
+
 <Sidebar2 @ref="sidebar"
-          Title="Buscador OEC"
+          Title=@TituloMenu
           BadgeText="v2.1.0"
           DataProvider="Sidebar2DataProvider" />
 
@@ -11,6 +13,10 @@
     IEnumerable<NavItem>? navItems;
     [Inject]
     private ICatalogosService? _Icatalogo { get; set; }
+
+    [Inject]
+    ILocalStorageService iLocalStorageService { get; set; }
+    private string TituloMenu;
 
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
     {
@@ -24,7 +30,8 @@
     private async Task<IEnumerable<NavItem>> GetNavItemsAsync()
     {
         var menuItems = await _Icatalogo.GetMenusAsync();
-
+        TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
+        StateHasChanged();
         return menuItems.Select(menu =>
          {
              BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch

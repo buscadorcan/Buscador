@@ -186,12 +186,26 @@ namespace WebApp.Repositories
                     CodigoHomologacion = rol.CodigoHomologacion
                 } : null;
 
+                // Obtener homologación grupo desde la base de datos
+                var homologacionGrupo = context.VwHomologacionGrupo
+                    .AsNoTracking()
+                    .Where(c => c.CodigoHomologacion == "KEY_MENU").FirstOrDefault();
+                    
+                // Mapear los elementos obtenidos a la lista de DTOs
+                var homologacionGrupoDto = homologacionGrupo != null ? new VwHomologacionGrupoDto
+                {
+                    MostrarWeb = homologacionGrupo.MostrarWeb,
+                    TooltipWeb = homologacionGrupo.TooltipWeb,
+                    CodigoHomologacion = homologacionGrupo.CodigoHomologacion
+                } : null;
+
                 // Retornar la respuesta con el token y el usuario
                 return new UsuarioAutenticacionRespuestaDto
                 {
                     Token = token,
                     Usuario = usuarioDto,
-                    Rol = rolDto
+                    Rol = rolDto,
+                    HomologacionGrupo = homologacionGrupoDto
                 };
             });
         }
