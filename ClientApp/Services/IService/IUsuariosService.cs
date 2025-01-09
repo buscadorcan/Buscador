@@ -10,5 +10,7 @@ namespace ClientApp.Services.IService {
         Task<UsuarioDto> GetUsuarioAsync(int IdUsuario);
         Task<RespuestaRegistro> RegistrarOActualizar(UsuarioDto usuarioParaRegistro);
         Task<bool> DeleteUsuarioAsync(int IdUsuario);
+        Task<bool> ValidarEmailUnico(string email);
+
     }
 }

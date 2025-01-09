@@ -15,5 +15,6 @@ namespace SharedApp.Models.Dtos
         public int AnchoColumna { get; set; }
         public string? CustomMostrarWeb { get; set; }
         public string? NombreFiltro { get; set; }
+        public string? Indexar { get; set; }
     }
 }

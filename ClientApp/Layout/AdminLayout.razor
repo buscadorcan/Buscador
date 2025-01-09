@@ -64,22 +64,27 @@
     private string nombreRol;
     private string nombre;
     private string apellidos;
+    private string codigoRol;
 
     protected override async Task OnInitializedAsync()
     {
-        rol = await LocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+        codigoRol = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
-        if(rol == 15)
+        if (codigoRol == "KEY_USER_CAN")
         {
-            nombreRol = "Usuario Master";
+            nombreRol = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
         }
-        else if (rol == 16)
+        else if (codigoRol == "KEY_USER_ONA")
         {
-            nombreRol = "UsuarioOna";
+            nombreRol = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        }
+        else if (codigoRol == "KEY_USER_READ")
+        {
+            nombreRol = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
         }
         else
         {
-            nombreRol = "UsuarioRead";
+            nombreRol = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
         }
 
         nombre = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local);
