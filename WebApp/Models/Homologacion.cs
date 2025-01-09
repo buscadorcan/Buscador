@@ -27,5 +27,7 @@ namespace WebApp.Models
     public string? NombreHomologado { get; set; }
     [Required]
     public string? Estado { get; set; }
-  }
+    [Required]
+    public string? Indexar { get; set; }
+    }
 }
