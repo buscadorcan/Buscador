@@ -186,45 +186,63 @@
                             <div class="tabs-2"><img class="img-2" src="login/img/bx-map.svg" /></div>
                         </div>
                     </div>
-                    <div class="container-wrapper">
-                        <div class="container-3">
-                            <div class="container">
-                                <div class="row g-1 valign-text-middle">
-                                    <!-- Generar Selects Dinámicamente -->
-                                    @if (listadeOpciones != null)
+                </div>
+            </div>
+            <div class="container-wrapper">
+                <div class="container-3">
+                    <div class="container">
+                        <div class="row g-1 valign-text-middle">
+                            <!-- Generar Selects Dinámicamente -->
+                            @if (listadeOpciones != null)
+                            {
+                                @for (int i = 0; i < listadeOpciones.Count; i++)
+                                {
+                                    var currentIndex = i;
+                                    <div class="col-auto">
+                                        <label for="select-@currentIndex" class="form-label text-small">
+                                            @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
+                                        </label>
+                                        <select id="select-@currentIndex"
+                                                class="form-select form-select-sm text-small"
+                                                style="width: auto;"
+                                                @onchange="(e) => AgregarSeleccion(e.Value.ToString(), listaEtiquetasFiltros?[currentIndex]?.IdHomologacion, currentIndex)">
+                                            <option value="">Seleccione una opción</option>
+                                            @if (listadeOpciones?[currentIndex] != null)
+                                            {
+                                                @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
+                                                {
+                                                    <option value="@opcion.MostrarWeb">
+                                                        @opcion.MostrarWeb
+                                                    </option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <!-- Área para mostrar selecciones -->
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label class="form-label">Opciones seleccionadas:</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var seleccion in Selecciones)
                                     {
-                                        @for (int i = 0; i < listadeOpciones.Count; i++)
-                                        {
-                                            var currentIndex = i;
-                                            <div class="col-auto">
-                                                <label for="select-@currentIndex" class="form-label text-small">
-                                                    @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
-                                                </label>
-                                                <select id="select-@currentIndex"
-                                                        class="form-select form-select-sm text-small"
-                                                        style="width: auto;"
-                                                        @onchange="(e) => CambiarSeleccion(e.Value.ToString(), listaEtiquetasFiltros?[currentIndex]?.IdHomologacion)">
-                                                    <option value="">Seleccione una opción</option>
-                                                    @if (listadeOpciones?[currentIndex] != null)
-                                                    {
-                                                        @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
-                                                        {
-                                                            <option value="@opcion.MostrarWeb">
-                                                                @opcion.MostrarWeb
-                                                            </option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        }
+                                        <span class="badge bg-primary text-white">
+                                            @seleccion.Texto
+                                            <button type="button" class="btn-close btn-close-white btn-sm ms-1"
+                                                    @onclick="() => QuitarSeleccion(seleccion.IdHomologacion, seleccion.ComboIndex)">
+                                            </button>
+                                        </span>
                                     }
                                 </div>
-                                <IndexGrilla @ref="childComponentRef"
-                                             buscarRequest="@buscarRequest"
-                                             selectedValues="@selectedValues"
-                                             listaEtiquetasFiltros="@listaEtiquetasFiltros" />
                             </div>
                         </div>
+                        <IndexGrilla @ref="childComponentRef"
+                                     buscarRequest="@buscarRequest"
+                                     selectedValues="@selectedValues"
+                                     listaEtiquetasFiltros="@listaEtiquetasFiltros" />
                     </div>
                 </div>
             </div>
