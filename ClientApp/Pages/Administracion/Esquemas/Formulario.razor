@@ -89,7 +89,7 @@
         </GridColumn>
     </Grid>
 </div>
-<div class="py-2">
+@* <div class="py-2">
     <hr style="background-color:aliceblue" />
     <Button @ref="saveButton"
             Color="ButtonColor.Success"
@@ -97,4 +97,20 @@
             @onclick="async () => await GuardarEsquema()">
         Guardar
     </Button>
+</div> *@
+
+<div class="py-2 d-flex justify-content-end gap-2">
+    <Button Color="ButtonColor.Secondary" @onclick="Regresar">
+        Regresar
+    </Button>
+    <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarEsquema()">
+        Guardar
+    </Button>
 </div>
+
+@code {
+    private void Regresar()
+    {
+        NavigationManager.NavigateTo("/esquemas");
+    }
+}
