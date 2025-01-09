@@ -20,6 +20,7 @@ namespace ClientApp.Pages.BuscadorCan
         private bool modoBuscar = false;
         private List<Item> ListTypeSearch = new TypeSearch().ListTypeSearch;
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
+        private List<Seleccion> Selecciones = new();
         protected override async Task OnInitializedAsync()
         {
             try
@@ -134,6 +135,32 @@ namespace ClientApp.Pages.BuscadorCan
             } else {
                 selectedValues = new List<FiltrosBusquedaSeleccion>();
             }
+        }
+
+        private void AgregarSeleccion(string valor, int? idHomologacion, int comboIndex)
+        {
+            if (!string.IsNullOrWhiteSpace(valor) && idHomologacion.HasValue)
+            {
+                // Agregar la selección sin verificar duplicados, ya que debería permitir múltiples opciones del mismo select
+                Selecciones.Add(new Seleccion
+                {
+                    IdHomologacion = idHomologacion.Value,
+                    Texto = valor,
+                    ComboIndex = comboIndex
+                });
+            }
+        }
+
+        private void QuitarSeleccion(int idHomologacion, int comboIndex)
+        {
+            Selecciones.RemoveAll(s => s.IdHomologacion == idHomologacion && s.ComboIndex == comboIndex);
+        }
+
+        private class Seleccion
+        {
+            public int IdHomologacion { get; set; }
+            public string Texto { get; set; }
+            public int ComboIndex { get; set; }
         }
 
 
