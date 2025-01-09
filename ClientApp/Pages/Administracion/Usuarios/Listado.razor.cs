@@ -40,13 +40,14 @@ namespace ClientApp.Pages.Administracion.Usuarios
             onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
             listaUsuarios = await iUsuariosService.GetUsuariosAsync();
 
-            listaRoles = await iUsuariosService.GetRolesAsync();
+            //listaRoles = await iUsuariosService.GetRolesAsync();
             listaOna = await iUsuariosService.GetOnaAsync();
 
-            var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == rolCargo);
+            //var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == rolCargo);
+            var rolRelacionado = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             var onaRelacionado = listaOna.FirstOrDefault(ona => ona.IdONA == onaPais);
  
-            isRolRead = rolRelacionado.CodigoHomologacion == "KEY_USER_READ";
+            isRolRead = rolRelacionado == "KEY_USER_READ";
         }
         private async void EditarUsuario(UsuarioDto usuario)
         {
@@ -58,12 +59,13 @@ namespace ClientApp.Pages.Administracion.Usuarios
             listaRoles = await iUsuariosService.GetRolesAsync();
             listaOna = await iUsuariosService.GetOnaAsync();
 
-            var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == rolCargo);
+            //var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == rolCargo);
+            var rolRelacionado = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             var onaRelacionado = listaOna.FirstOrDefault(ona => ona.IdONA == onaPais);
             var Homolog = listaUsuarios.FirstOrDefault(usu => usu.IdUsuario == usuario.IdUsuario);
             var rolUsuario = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == Homolog.IdHomologacionRol);
 
-            if (rolRelacionado.CodigoHomologacion == "KEY_USER_ONA" && rolUsuario.CodigoHomologacion == "KEY_USER_CAN")
+            if (rolRelacionado == "KEY_USER_ONA" && rolUsuario.CodigoHomologacion == "KEY_USER_CAN")
             {
                 // No tiene permisos, mostrar la modal
                 modalMessage = "No tiene permisos para editar este usuario.";
@@ -71,29 +73,27 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 StateHasChanged(); // Forzar la actualización de la interfaz
             }
 
-
-
-            if (usuario.IdONA != onaPais && rolRelacionado.CodigoHomologacion == "KEY_USER_ONA")
+            if (usuario.IdONA != onaPais && rolRelacionado == "KEY_USER_ONA")
             {
                 modalMessage = "No tiene permisos para editar este usuario porque no pertenece a este País.";
                 showModal = true;
                 StateHasChanged(); // Forzar la actualización de la interfaz
             }
 
-            if (usuario.IdONA == onaPais && rolRelacionado.CodigoHomologacion == "KEY_USER_CAN")
+            if (usuario.IdONA == onaPais && rolRelacionado == "KEY_USER_CAN")
             {
                 modalMessage = "No tiene permisos para editar este usuario porque no pertenece a este País.";
                 showModal = true;
                 StateHasChanged(); // Forzar la actualización de la interfaz
             }
 
-            if (rolRelacionado.CodigoHomologacion == "KEY_USER_ONA"   && usuario.IdONA == onaPais && rolUsuario.CodigoHomologacion != "KEY_USER_CAN")
+            if (rolRelacionado == "KEY_USER_ONA"   && usuario.IdONA == onaPais && rolUsuario.CodigoHomologacion != "KEY_USER_CAN")
             {
                 // Navegar al editar usuario
                 iNavigationManager.NavigateTo($"/editar-usuario/{usuario.IdUsuario}");
             }
 
-            if (rolRelacionado.CodigoHomologacion == "KEY_USER_CAN")
+            if (rolRelacionado == "KEY_USER_CAN")
             {
                 // Navegar al editar usuario
                 iNavigationManager.NavigateTo($"/editar-usuario/{usuario.IdUsuario}");

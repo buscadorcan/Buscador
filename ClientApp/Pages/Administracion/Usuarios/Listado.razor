@@ -55,6 +55,18 @@
         <h2>Administración de Usuarios</h2>
     </div>
 
+    <!-- Botón Nuevo -->
+    @if (!isRolRead)
+    {
+        <div class="text-end my-3" style="margin-right: 1%;">
+            <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-usuario">Nuevo Usuario</Button>
+        </div>
+    }
+    @* <!-- Card Header -->
+    <div class="card-header">
+        <h2>Administración de Usuarios</h2>
+    </div> *@
+
     <!-- Card Body -->
     <div class="card-body">
         <div class="table-responsive">
@@ -101,13 +113,13 @@
         </div>
     </div>
 
-    @if (!isRolRead)
+    @* @if (!isRolRead)
     {
         <!-- Card Footer -->
         <div class="card-footer">
             <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-usuario">Nuevo</Button>
         </div>
-    }
+    } *@
 
 </div>
 

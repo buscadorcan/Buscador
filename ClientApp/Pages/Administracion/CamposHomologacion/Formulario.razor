@@ -47,9 +47,9 @@
             <h3 class="text-white font-weight-bold text-center m-0">Actualizar / Registrar [@homologacionGrupo?.MostrarWeb]</h3>
         </div>
         <div class="card-body px-lg-5 pt-4">
-            <h3 class="text-success text-center">
+            @* <h3 class="text-success text-center">
                 <strong>Actualizar / Registrar [@homologacionGrupo?.MostrarWeb]</strong>
-            </h3>
+            </h3> *@
 
             <hr style="background-color:aliceblue" />
 
@@ -75,6 +75,16 @@
                     <InputText @bind-Value="homologacion.TooltipWeb" class="form-control" placeholder="ingresar..." />
                     <ValidationMessage For="(()=>homologacion.TooltipWeb)" />
                 </div>
+            </div>
+
+            <div class="form-row py-2">
+                <label class="col-form-label">Indexar</label>
+                <select class="form-control" @bind="homologacion.Indexar">
+                    <option value="">Seleccione una opción</option>
+                    <option value="S">SI</option>
+                    <option value="N">NO</option>
+                </select>
+                <ValidationMessage For="(() => homologacion.Indexar)" />
             </div>
 
             <div class="form-group row py-2">

@@ -112,7 +112,7 @@ namespace WebApp.Repositories
 
                 _exits.FechaModifica = DateTime.Now;
                 _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
-
+                _exits.Clave = _hashService.GenerateHash(usuario.Clave);
                 context.Usuario.Update(_exits);
                 return context.SaveChanges() >= 0;
             });
@@ -174,11 +174,24 @@ namespace WebApp.Repositories
                     IdONA = usuario.IdONA,
                 };
 
+                // Obtener el rol del usuario desde la vista VwRol usando IdHomologacionRol
+                var rol = context.VwRol.AsNoTracking().FirstOrDefault(r =>
+                    r.IdHomologacionRol == usuario.IdHomologacionRol);
+
+                // Agregar el rol a la respuesta
+                var rolDto = rol != null ? new VwRolDto
+                {
+                    IdHomologacionRol = rol.IdHomologacionRol,
+                    Rol = rol.Rol,
+                    CodigoHomologacion = rol.CodigoHomologacion
+                } : null;
+
                 // Retornar la respuesta con el token y el usuario
                 return new UsuarioAutenticacionRespuestaDto
                 {
                     Token = token,
-                    Usuario = usuarioDto
+                    Usuario = usuarioDto,
+                    Rol = rolDto
                 };
             });
         }

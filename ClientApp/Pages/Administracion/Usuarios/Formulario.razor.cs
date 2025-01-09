@@ -213,6 +213,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 else
                 {
                     toastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
+                    navigationManager?.NavigateTo("/nuevo-usuario");
                 }
             }
 
@@ -228,5 +229,48 @@ namespace ClientApp.Pages.Administracion.Usuarios
             usuario.RazonSocial = razonSocial;
             usuario.IdONA = idOna;
         }
+        private string emailValidationMessage = string.Empty;
+        private CancellationTokenSource debounceToken = new();
+
+        private async Task ValidateEmail(ChangeEventArgs e)
+        {
+            usuario.Email = e.Value.ToString();
+
+            // Cancelar validaciones anteriores (debounce)
+            debounceToken.Cancel();
+            debounceToken = new CancellationTokenSource();
+
+            try
+            {
+                // Esperar unos milisegundos antes de validar (para debounce)
+                if (Id == null || Id == 0)
+                {
+                    await Task.Delay(500, debounceToken.Token);
+
+                    if (iUsuariosService != null && !string.IsNullOrWhiteSpace(usuario.Email))
+                    {
+                        var isUnique = await iUsuariosService.ValidarEmailUnico(usuario.Email);
+                        if (!isUnique)
+                        {
+                            emailValidationMessage = "El email ya está registrado.";
+                        }
+                        else
+                        {
+                            emailValidationMessage = string.Empty;
+                        }
+                    }
+                }
+                else
+                {
+                    emailValidationMessage = string.Empty;
+                }
+                
+            }
+            catch (TaskCanceledException)
+            {
+                // La validación anterior fue cancelada, no hacer nada
+            }
+        }
+
     }
 }

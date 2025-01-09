@@ -5,6 +5,7 @@
 @using SharedApp.Data
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
+@inject NavigationManager NavigationManager
 
 <PageTitle>Formulario Conexion</PageTitle>
 
@@ -14,13 +15,13 @@
     <div class="card border">
         <div class="card-body px-lg-5 pt-4">
             <h3 class="text-success text-center py-2">
-                <strong>Información Principal</strong>
+                <strong>Conexión al origen de datos</strong>
             </h3>
 
             <hr style="background-color:aliceblue" />
             <div class="row">
                 <div class="col-6">
-                    <label class="col-form-label">Organización</label>
+                    <label class="col-form-label">Sistema</label>
                     <select class="form-control" @bind="conexion.IdONA">
                         <option value="">Seleccione una organización</option>
                         @if (listaOrganizaciones != null)
@@ -46,7 +47,7 @@
                 </div>
             </div>
             <div class="form-row py-2">
-                <label class="col-form-label">Base Datos</label>
+                <label class="col-form-label">Nombre Base de Datos</label>
                 <div class="col">
                     <InputText @bind-Value="conexion.BaseDatos" class="form-control" placeholder="BaseDatos..." />
                     <ValidationMessage For="(() => conexion.BaseDatos)" />
@@ -64,45 +65,38 @@
             <div class="form-row py-2">
                 <label class="col-form-label">Puerto</label>
                 <div class="col">
-                    <InputNumber @bind-Value="conexion.Puerto" class="form-control" placeholder="Puerto..." />
+                    <InputNumber @bind-Value="conexion.Puerto"
+                                 class="form-control"
+                                 placeholder="Puerto..."
+                                 oninput="if (this.value.length > 4) this.value = this.value.slice(0, 4);
+                              this.value = this.value.replace(/[^0-9]/g, '');" />
                     <ValidationMessage For="(() => conexion.Puerto)" />
                 </div>
             </div>
 
             <div class="form-row py-2">
-                <label class="col-form-label">Usuario</label>
-                <div class="col">
+                <div class="col-6">
+                    <label class="col-form-label">Usuario</label>
                     <InputText @bind-Value="conexion.Usuario" class="form-control" placeholder="Usuario..." />
                     <ValidationMessage For="(() => conexion.Usuario)" />
                 </div>
-            </div>
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Contraseña</label>
-                <div class="col">
+                <div class="col-6">
+                    <label class="col-form-label">Contraseña</label>
                     <InputText @bind-Value="conexion.Contrasenia" class="form-control" placeholder="Contrasenia..." type="password" id="password" />
                     <ValidationMessage For="(() => conexion.Contrasenia)" />
                 </div>
             </div>
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Migracion</label>
-                <div class="col">
-                    <InputText @bind-Value="conexion.Migrar" class="form-control" placeholder="Migracion(S/N)" />
-                    <ValidationMessage For="(() => conexion.Migrar)" />
-                </div>
-            </div>
-
-            <div class="form-row py-2">
-                <label class="col-form-label">Filtros</label>
-                <div class="col">
-                    <AutoComplete @bind-Value="homologacionName"
-                                  TItem="HomologacionDto"
-                                  DataProvider="VwHomologacionDataProvider"
-                                  PropertyName="MostrarWeb"
-                                  Placeholder="Buscar..."
-                                  OnChanged="(HomologacionDto vwHomologacion) => OnAutoCompleteChanged(vwHomologacion)" />
-                </div>
+           
+            <div class="form-group py-2">
+                <label class="col-form-label">Migración</label>
+                <select class="form-control col-6" @bind="conexion.Migrar">
+                    <option value="">Seleccione una opción</option>
+                    <option value="S">SI</option>
+                    <option value="N">NO</option>
+                </select>
+                <ValidationMessage For="(() => conexion.Migrar)" />
             </div>
 
             <div class="form-row py-2">
@@ -117,12 +111,22 @@
                 </div>
             </div>
 
-            <div class="py-2">
-                <hr style="background-color:aliceblue" />
-                <Button @ref="saveButton" Type="ButtonType.Submit" Color="ButtonColor.Success">
-                    Guardar
-                </Button>
-            </div>
         </div>
     </div>
 </EditForm>
+
+<div class="py-2 d-flex justify-content-end gap-2">
+    <Button Color="ButtonColor.Secondary" @onclick="Regresar">
+        Regresar
+    </Button>
+    <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await RegistrarConexion()">
+        Guardar
+    </Button>
+</div>
+
+@code {
+    private void Regresar()
+    {
+        NavigationManager.NavigateTo("/conexion");
+    }
+}

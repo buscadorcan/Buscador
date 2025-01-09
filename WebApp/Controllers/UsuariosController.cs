@@ -163,5 +163,20 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(Deactivate));
       }
     }
+
+    [HttpGet("validar-email")]
+    public IActionResult ValidarEmail([FromQuery] string email)
+    {
+        try
+        {
+            bool isUnique = _iRepo.IsUniqueUser(email);
+            return Ok(isUnique);
+        }
+        catch (Exception e)
+        {
+            return HandleException(e, nameof(ValidarEmail));
+        }
+        
+    }
   }
 }

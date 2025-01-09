@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using ClientApp.Helpers;
@@ -20,7 +21,6 @@ namespace ClientApp.Services {
         {
             _httpClient = httpClient;
         }
-
         public async Task<List<UsuarioDto>> GetUsuariosAsync()
         {
 
@@ -51,15 +51,12 @@ namespace ClientApp.Services {
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwRolDto>>>()).Result;
         }
-
         public async Task<List<OnaDto>> GetOnaAsync()
         {
             var response = await _httpClient.GetAsync($"{url4}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<OnaDto>>>()).Result;
         }
-
-       
         public async Task<RespuestaRegistro> RegistrarOActualizar(UsuarioDto registro)
         {
             if (registro.Rol == null)
@@ -114,6 +111,21 @@ namespace ClientApp.Services {
                     mensajeError = $"Excepción durante la solicitud: {ex.Message}"
                 };
             }
+        }
+        //public async Task<bool> ValidarEmailUnico(string email)
+        //{
+        //    var response = await _httpClient.DeleteAsync($"{url}/{IdUsuario}");
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        return false;
+        //    }
+        //    var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
+        //    return apiResponse?.IsSuccess ?? false;
+        //}
+        public async Task<bool> ValidarEmailUnico(string email)
+        {
+            var response = await _httpClient.GetAsync($"{url}/validar-email?email={email}");
+            return await response.Content.ReadFromJsonAsync<bool>();
         }
     }
 }

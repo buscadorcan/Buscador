@@ -47,117 +47,126 @@
     <div class="card border">
         <!-- Título -->
         <div class="card-header">
-            <h3 class="text-white font-weight-bold text-center m-0">Información Principal</h3>
+            <h3 class="text-white font-weight-bold text-center m-0">Usuario del Sistema</h3>
         </div>
+
         <div class="card-body px-lg-5 pt-4">
             <hr style="background-color:aliceblue" />
-            <div class="form-row py-2">
-                <label class="col-form-label">Nombre</label>
-                <div class="col">
-                    <InputText @bind-Value="usuario.Nombre" class="form-control" placeholder="Nombre..." />
-                    <ValidationMessage For="(() => usuario.Nombre)" />
+
+            <!-- Primera fila: Rol y Razón Social -->
+            <div class="row py-2">
+                <div class="col-md-6">
+                    <label class="col-form-label">Rol</label>
+                    <div class="col">
+                        @if (listaRoles != null && listaRoles.Any() && usuario != null)
+                        {
+                            <Dropdown AutoClose="true">
+                                <DropdownToggleButton Color="ButtonColor.Secondary">
+                                    @usuario.Rol
+                                </DropdownToggleButton>
+                                <DropdownMenu>
+                                    @foreach (var rol in listaRoles)
+                                    {
+                                        <DropdownItem @onclick="@(() => OnAutoCompleteChanged(rol.Rol,rol.IdHomologacionRol))">@rol.Rol</DropdownItem>
+                                    }
+                                </DropdownMenu>
+                            </Dropdown>
+                        }
+                        else
+                        {
+                            <p>Cargando roles...</p>
+                        }
+                        <ValidationMessage For="(() => usuario.Rol)" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="col-form-label">Razón Social</label>
+                    <div class="col">
+                        @if (listaOna != null && listaOna.Any() && usuario != null)
+                        {
+                            <Dropdown AutoClose="true">
+                                <DropdownToggleButton Color="ButtonColor.Secondary">
+                                    @usuario.RazonSocial
+                                </DropdownToggleButton>
+                                <DropdownMenu>
+                                    @foreach (var ona in listaOna)
+                                    {
+                                        <DropdownItem @onclick="@(() => OnAutoCompleteRazonSocOnaChanged(ona.RazonSocial, ona.IdONA))">@ona.RazonSocial</DropdownItem>
+                                    }
+                                </DropdownMenu>
+                            </Dropdown>
+                        }
+                        else
+                        {
+                            <p>Cargando Razon Social...</p>
+                        }
+                        <ValidationMessage For="(() => usuario.RazonSocial)" />
+                    </div>
                 </div>
             </div>
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Apellido</label>
-                <div class="col">
-                    <InputText @bind-Value="usuario.Apellido" class="form-control" placeholder="Apellido..." />
-                    <ValidationMessage For="(() => usuario.Apellido)" />
+            <!-- Segunda fila: Nombre y Apellido -->
+            <div class="row py-2">
+                <div class="col-md-6">
+                    <label class="col-form-label">Nombre</label>
+                    <div class="col">
+                        <InputText @bind-Value="usuario.Nombre" class="form-control" placeholder="Nombre..." />
+                        <ValidationMessage For="(() => usuario.Nombre)" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="col-form-label">Apellido</label>
+                    <div class="col">
+                        <InputText @bind-Value="usuario.Apellido" class="form-control" placeholder="Apellido..." />
+                        <ValidationMessage For="(() => usuario.Apellido)" />
+                    </div>
                 </div>
             </div>
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Email</label>
-                <div class="col">
-                    <InputText @bind-Value="usuario.Email" class="form-control" placeholder="Email..." />
-                    <ValidationMessage For="(() => usuario.Email)" />
+            <!-- Tercera fila: Email y Teléfono -->
+            <div class="row py-2">
+                @* <div class="col-md-6">
+                    <label class="col-form-label">Email</label>
+                    <div class="col">
+                        <InputText @bind-Value="usuario.Email" class="form-control" placeholder="Email..." />
+                        <ValidationMessage For="(() => usuario.Email)" />
+                    </div>
+                </div> *@
+                <div class="col-md-6">
+                    <label class="col-form-label">Email</label>
+                    <div class="col">
+                        <InputText @bind-Value="usuario.Email" class="form-control"
+                                   placeholder="Email..."
+                                   @oninput="ValidateEmail" />
+                        <ValidationMessage For="(() => usuario.Email)" />
+                        @if (!string.IsNullOrEmpty(emailValidationMessage))
+                        {
+                            <small class="text-danger">@emailValidationMessage</small>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="col-form-label">Teléfono</label>
+                    <div class="col">
+                        <InputText @bind-Value="usuario.Telefono" class="form-control" placeholder="+34 654321987" />
+                        <ValidationMessage For="(() => usuario.Telefono)" />
+                    </div>
                 </div>
             </div>
 
-            <div class="form-row py-2">
-                <label class="col-form-label">Teléfono</label>
-            </div>
-            <div class="form-row py-2 d-flex align-items-center">
-                <div class="col-8">
-                    <InputText @bind-Value="usuario.Telefono" class="form-control form-control-sm" placeholder="+34 654321987" />
-                    <ValidationMessage For="(() => usuario.Telefono)" />
-                </div>
-            </div>
-
-
-            <div class="form-row py-2">
-                <label class="col-form-label">Rol</label>
-                <div class="col">
-
-                    @if (listaRoles != null && listaRoles.Any() && usuario != null)
-                    {
-                        <Dropdown AutoClose="true">
-                            <DropdownToggleButton Color="ButtonColor.Secondary">
-                                @usuario.Rol  <!-- Mostrar el valor de 'usuario.Rol' -->
-                            </DropdownToggleButton>
-
-                            <DropdownMenu>
-                                @foreach (var rol in listaRoles)
-                                {
-                                    <DropdownItem @onclick="@(() => OnAutoCompleteChanged(rol.Rol,rol.IdHomologacionRol))">@rol.Rol</DropdownItem>
-                                }
-                            </DropdownMenu>
-                        </Dropdown>
-                    }
-                    else
-                    {
-                        <p>Cargando roles...</p>  <!-- Mensaje de espera si los roles no están cargados -->
-                    }
-
-                    <ValidationMessage For="(() => usuario.Rol)" />
-                </div>
-            </div>
-
-
-            <div class="form-row py-2">
-                <label class="col-form-label">Razón Social</label>
-                <div class="col">
-                    @if (listaOna != null && listaOna.Any() && usuario != null)
-                    {
-                        <Dropdown AutoClose="true">
-                            <DropdownToggleButton Color="ButtonColor.Secondary">
-                                @usuario.RazonSocial  <!-- Mostrar el valor de 'usuario.Rol' -->
-                            </DropdownToggleButton>
-
-                            <DropdownMenu>
-                                @foreach (var ona in listaOna)
-                                {
-                                    <DropdownItem @onclick="@(() => OnAutoCompleteRazonSocOnaChanged(ona.RazonSocial, ona.IdONA))">@ona.RazonSocial</DropdownItem>
-                                }
-                            </DropdownMenu>
-                        </Dropdown>
-                    }
-                    else
-                    {
-                        <p>Cargando Razon Social...</p>  <!-- Mensaje de espera si los roles no están cargados -->
-                    }
-
-                    <ValidationMessage For="(() => usuario.RazonSocial)" />
-                </div>
-            </div>
-
+            <!-- Clave -->
             <div class="form-row py-2">
                 <label class="col-form-label">Clave</label>
                 <div class="col">
-                    <InputText @bind-Value="usuario.Clave" type="password" id="password" placeholder="Clave..." class="form-control" />
+                    <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave..." class="form-control" />
                     <ValidationMessage For="(() => usuario.Clave)" />
                 </div>
             </div>
-            @* <div class="py-2 d-flex justify-content-end gap-2">
-                <Button Color="ButtonColor.Secondary" @onclick="Regresar">
-                    Regresar
-                </Button>
-                <Button @ref="saveButton" Type="ButtonType.Submit" Color="ButtonColor.Success">
-                    Guardar
-                </Button>
-            </div> *@
         </div>
+
     </div>
 </EditForm>
 
