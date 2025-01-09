@@ -4,6 +4,7 @@ using SharedApp.Models;
 using SharedApp.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -114,9 +115,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI<List<GruposDto>>
+                //return Ok(new RespuestasAPI<List<GruposDto>>
+                //{
+                //    Result = _vhRepo.ObtenerGrupos().Select(item => _mapper.Map<GruposDto>(item)).ToList()
+                //});
+                return Ok(new RespuestasAPI<List<VwHomologacionGrupoDto>>
                 {
-                    Result = _vhRepo.ObtenerGrupos().Select(item => _mapper.Map<GruposDto>(item)).ToList()
+                    Result = _vhRepo.ObtenerVwHomologacionGrupo().Select(item => _mapper.Map<VwHomologacionGrupoDto>(item)).ToList()
                 });
             }
             catch (Exception e)

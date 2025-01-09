@@ -15,7 +15,7 @@ namespace WebApp.Mappers
       CreateMap<VwRol, VwRolDto>();
       CreateMap<VwPais, VwPaisDto>();
       CreateMap<VwMenu, VwMenuDto>();
-
+      CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
 
       CreateMap<Usuario, UsuarioDto>(); 
       CreateMap<UsuarioDto, Usuario>();
@@ -39,6 +39,7 @@ namespace WebApp.Mappers
 
       CreateMap<LogMigracion, LogMigracionDto>();
       CreateMap<LogMigracionDto, LogMigracion>();
+            
     }
   }
 }

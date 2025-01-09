@@ -54,5 +54,10 @@ namespace WebApp.Repositories.IRepositories
 
     List<ONA> ObtenerOna();
 
-  }
+    /// <summary>
+    /// Obtiene el Homologación grupos.
+    /// </summary>
+    /// <returns>Una lista de objetos <see cref="VwRol"/>.</returns>
+    List<VwHomologacionGrupo> ObtenerVwHomologacionGrupo();
+    }
 }

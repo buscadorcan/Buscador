@@ -75,7 +75,10 @@ namespace WebApp.Service
 
     /// <summary>Vista que almacena los roles disponibles en el sistema.</summary>
     public DbSet<VwMenu> VwMenu { get; set; }
-
+    
+    /// <summary>Vista que almacena homologacion grupos disponibles en el sistema.</summary>
+    public DbSet<VwHomologacionGrupo> VwHomologacionGrupo { get; set; }
+        
     }
 
 }

@@ -85,7 +85,15 @@ namespace WebApp.Repositories
                 .OrderBy(c => c.Rol)
                 .ToList());
         }
-
+        /// <inheritdoc />
+        public List<VwHomologacionGrupo> ObtenerVwHomologacionGrupo()
+        {
+            return ExecuteDbOperation(context =>
+              context.VwHomologacionGrupo
+                .AsNoTracking()
+                .OrderBy(c => c.MostrarWeb)
+                .ToList());
+        }
         /// <inheritdoc />
         public List<VwMenu> ObtenerVwMenu()
         {
