@@ -115,10 +115,6 @@ namespace WebApp.Controllers
         {
             try
             {
-                //return Ok(new RespuestasAPI<List<GruposDto>>
-                //{
-                //    Result = _vhRepo.ObtenerGrupos().Select(item => _mapper.Map<GruposDto>(item)).ToList()
-                //});
                 return Ok(new RespuestasAPI<List<VwHomologacionGrupoDto>>
                 {
                     Result = _vhRepo.ObtenerVwHomologacionGrupo().Select(item => _mapper.Map<VwHomologacionGrupoDto>(item)).ToList()

@@ -121,5 +121,21 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Deactive));
             }
         }
+        [Authorize]
+        [HttpGet("findByCodigoHomologacion/{codigoHomologacion}")]
+        public IActionResult FinfindByCodigoHomologaciondByParent(string codigoHomologacion)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<VwHomologacionDto>>
+                {
+                    Result = _iRepo.ObtenerVwHomologacionPorCodigo(codigoHomologacion).Select(item => _mapper.Map<VwHomologacionDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FinfindByCodigoHomologaciondByParent));
+            }
+        }
     }
 }

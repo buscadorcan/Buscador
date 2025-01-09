@@ -16,7 +16,7 @@ namespace WebApp.Mappers
       CreateMap<VwPais, VwPaisDto>();
       CreateMap<VwMenu, VwMenuDto>();
       CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
-
+      CreateMap<VwHomologacion, VwHomologacionDto>();
       CreateMap<Usuario, UsuarioDto>(); 
       CreateMap<UsuarioDto, Usuario>();
 

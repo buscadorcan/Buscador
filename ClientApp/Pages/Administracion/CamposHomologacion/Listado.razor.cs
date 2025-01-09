@@ -22,6 +22,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
 
         private int? selectedIdHomologacion;    // Almacena el ID de la homologación seleccionado
         private bool showModal; // Controlar la visibilidad de la ventana modal  
+        private bool IsAdd;
         private string modalMessage;
         [Inject]
         public Services.ToastService? toastService { get; set; }
@@ -46,7 +47,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         {
             if (homologacionSelected != null)
             {
-                listaHomologacions = await iHomologacionService.GetHomologacionsAsync();
+                IsAdd = homologacionSelected.CodigoHomologacion == "KEY_DIM_ESQUEMA";
+                //listaHomologacions = await iHomologacionService.GetHomologacionsAsync();
+                listaHomologacions = await iHomologacionService.GetHomologacionsSelectAsync(homologacionSelected.CodigoHomologacion);
             }
 
             DataLoaded?.Invoke();

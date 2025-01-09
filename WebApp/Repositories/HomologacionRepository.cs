@@ -68,5 +68,15 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
+        /// <inheritdoc />
+        public List<VwHomologacion> ObtenerVwHomologacionPorCodigo(string codigoHomologacion)
+        {
+            return ExecuteDbOperation(context =>
+              context.VwHomologacion
+                .AsNoTracking()
+                .Where(c => c.CodigoHomologacionKEY == codigoHomologacion)
+                .OrderBy(c => c.MostrarWeb)
+                .ToList());
+        }
     }
 }

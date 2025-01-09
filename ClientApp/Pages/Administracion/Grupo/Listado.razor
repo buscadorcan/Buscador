@@ -60,11 +60,7 @@
               TItem="HomologacionDto"
               class="table table-hover table-bordered table-striped striped-table"
               DataProvider="HomologacionDataProvider"
-              Responsive="true">
-            @* <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
-                @context.NombreHomologado
-                <input type="hidden" value="@context.IdHomologacion" />
-            </GridColumn> *@
+              Responsive="true" FixedHeader="true">
             <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
                 @context.MostrarWeb
             </GridColumn>

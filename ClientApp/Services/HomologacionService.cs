@@ -87,5 +87,11 @@ namespace ClientApp.Services {
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionDto>>>()).Result;
         }
+        public async Task<List<HomologacionDto>> GetHomologacionsSelectAsync(string codigoHomologacion)
+        {
+            var response = await _httpClient.GetAsync($"{url}/findByCodigoHomologacion/{codigoHomologacion}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionDto>>>()).Result;
+        }
     }
 }

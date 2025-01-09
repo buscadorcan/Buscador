@@ -67,13 +67,18 @@
     </div>
     <div class="col-md-6">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-            @if (homologacionSelected != null) {
-                <p>
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="@($"/nuevo-campos-homologacion/{homologacionSelected?.IdHomologacion}")">
-                        <span>Agregar Registro</span>
-                    </Button>
-                </p>
+            @if (IsAdd)
+            {
+                @if (homologacionSelected != null)
+                {
+                    <p>
+                        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="@($"/nuevo-campos-homologacion/{homologacionSelected?.IdHomologacion}")">
+                            <span>Agregar Registro</span>
+                        </Button>
+                    </p>
+                }
             }
+            
         </div>
     </div>
 </div>

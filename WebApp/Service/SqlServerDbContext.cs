@@ -78,7 +78,8 @@ namespace WebApp.Service
     
     /// <summary>Vista que almacena homologacion grupos disponibles en el sistema.</summary>
     public DbSet<VwHomologacionGrupo> VwHomologacionGrupo { get; set; }
-        
+    public DbSet<VwHomologacion> VwHomologacion { get; set; }
+
     }
 
 }
