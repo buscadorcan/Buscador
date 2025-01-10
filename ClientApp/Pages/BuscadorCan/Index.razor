@@ -178,102 +178,113 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Botón para alternar visibilidad -->
                     <div class="container-2">
-                        <div class="advanced-filters">Filtros Avanzados</div>
+                        <div class="advanced-filters" @onclick="AlternarFiltrosAvanzados">
+                            Filtros Avanzados
+                        </div>
                         <div class="divider-2"></div>
                         <div class="view-mode">
-                            <div class="tabs"><img class="img-2" src="login/img/format-list-bulleted-1.svg" /></div>
-                            <div class="tabs-2"><img class="img-2" src="login/img/bx-map.svg" /></div>
+                            <div class="tabs">
+                                <img class="img-2" src="login/img/format-list-bulleted-5.svg" />
+                            </div>
+                            <div class="tabs-2">
+                                <img class="img-2" src="login/img/button-pagination-variant4-32@2x.png" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            @*Seleccion multiple*@
-            <div class="container-wrapper">
-                <div class="container-3">
-                    <div class="container">
-                        <div class="row g-3 align-items-center">
-                            <!-- Generar Selects Dinámicamente -->
-                            @if (listadeOpciones != null)
-                            {
-                                @for (int i = 0; i < listadeOpciones.Count; i++)
+            @if (mostrarFiltrosAvanzados)
+            {
+                <!-- Seleccion Multiple -->
+                <div class="container-wrapper">
+                    <div class="container-3">
+                        <div class="container">
+                            <div class="row g-3 align-items-center">
+                                <!-- Generar Selects Dinámicamente -->
+                                @if (listadeOpciones != null)
                                 {
-                                    var currentIndex = i;
-                                    <div class="col-auto mb-3">
-                                        <label for="select-@currentIndex" class="form-label text-small">
-                                            @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
-                                        </label>
-                                        <!-- Select List con Checkboxes -->
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle custom-bg"
-                                                    type="button"
-                                                    id="dropdownMenuButton-@currentIndex"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Seleccionar Opciones
-                                            </button>
-                                            <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton-@currentIndex">
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input custom-checkbox"
-                                                               type="checkbox"
-                                                               id="selectAll-@currentIndex"
-                                                               @onchange="(e) => SeleccionarTodos(currentIndex, e.Value)">
-                                                        <label class="form-check-label" for="selectAll-@currentIndex">
-                                                            Seleccionar Todos
-                                                        </label>
-                                                    </div>
-                                                </li>
-
-                                                @if (listadeOpciones?[currentIndex] != null)
-                                                {
-                                                    @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
-                                                    {
-                                                        <li>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input"
-                                                                       type="checkbox"
-                                                                       id="check-@currentIndex-@opcion.MostrarWeb"
-                                                                       @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
-                                                                <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb">
-                                                                    @opcion.MostrarWeb
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                    }
-                                                }
-                                            </ul>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                        </div>
-
-                        <!-- Área para mostrar selecciones -->
-                      @*   <div class="row mt-3">
-                            <div class="col">
-                                <label class="form-label">Opciones seleccionadas:</label>
-                                <div class="d-flex flex-wrap gap-2">
-                                    @foreach (var seleccion in Selecciones)
+                                    @for (int i = 0; i < listadeOpciones.Count; i++)
                                     {
-                                        <span class="badge bg-primary text-white">
-                                            @seleccion.Texto
-                                            <button type="button" class="btn-close btn-close-white btn-sm ms-1"
-                                                    @onclick="() => QuitarSeleccion(seleccion.ComboIndex, seleccion.Texto)">
-                                            </button>
-                                        </span>
+                                        var currentIndex = i;
+                                        <div class="col-auto mb-3">
+                                            <label for="select-@currentIndex" class="form-label text-small"
+                                                title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
+                                                @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
+                                            </label>
+                                            <!-- Select List con Checkboxes -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle custom-bg"
+                                                        type="button"
+                                                        id="dropdownMenuButton-@currentIndex"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Seleccionar Opciones
+                                                </button>
+                                                <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton-@currentIndex">
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input custom-checkbox"
+                                                                   type="checkbox"
+                                                                   id="selectAll-@currentIndex"
+                                                                   @onchange="(e) => SeleccionarTodos(currentIndex, e.Value)">
+                                                            <label class="form-check-label" for="selectAll-@currentIndex">
+                                                                Seleccionar Todos
+                                                            </label>
+                                                        </div>
+                                                    </li>
+
+                                                    @if (listadeOpciones?[currentIndex] != null)
+                                                    {
+                                                        @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
+                                                        {
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input"
+                                                                           type="checkbox"
+                                                                           id="check-@currentIndex-@opcion.MostrarWeb"
+                                                                           @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
+                                                                    <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb">
+                                                                        @opcion.MostrarWeb
+                                                                    </label>
+                                                                </div>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
                                     }
-                                </div>
+                                }
                             </div>
+
+                            <!-- Área para mostrar selecciones -->
+                            @*   <div class="row mt-3">
+                        <div class="col">
+                        <label class="form-label">Opciones seleccionadas:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                        @foreach (var seleccion in Selecciones)
+                        {
+                        <span class="badge bg-primary text-white">
+                        @seleccion.Texto
+                        <button type="button" class="btn-close btn-close-white btn-sm ms-1"
+                        @onclick="() => QuitarSeleccion(seleccion.ComboIndex, seleccion.Texto)">
+                        </button>
+                        </span>
+                        }
+                        </div>
+                        </div>
                         </div> *@
 
-                        <IndexGrilla @ref="childComponentRef"
-                                     buscarRequest="@buscarRequest"
-                                     selectedValues="@selectedValues"
-                                     listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                            <IndexGrilla @ref="childComponentRef"
+                                         buscarRequest="@buscarRequest"
+                                         selectedValues="@selectedValues"
+                                         listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div>         
+            }            
         </div>
     </div>
 </body>
