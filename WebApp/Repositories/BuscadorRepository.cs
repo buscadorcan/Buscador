@@ -35,8 +35,8 @@ namespace WebApp.Repositories
 
         return new BuscadorDto{
           Data = lstTem.Select(c => new BuscadorResultadoDataDto() {
-            IdEnte = c.IdEnte,
-            IdVista = c.IdVista,
+              IdEsquemaData = c.IdEsquemaData,
+              VistaPK = c.VistaPK,
               IdEsquema = c.IdEsquema,
             DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
           }).ToList(),
