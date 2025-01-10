@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Grupo
@@ -17,6 +18,8 @@ namespace ClientApp.Pages.Administracion.Grupo
         public int? Id { get; set; }
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
+
         protected override async Task OnInitializedAsync()
         {
             if (Id > 0 && iHomologacionService != null) {
@@ -24,6 +27,22 @@ namespace ClientApp.Pages.Administracion.Grupo
             } else {
                 homologacion.InfoExtraJson = "{}";
             }
+        }
+        [JSInvokable]
+        public async Task OnDragEnd(string[] sortedIds)
+        {
+            var tempList = new List<HomologacionDto>();
+            for (int i = 0; i < sortedIds.Length; i++)
+            {
+                var homo = lista?.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i]));
+                if (homo != null)
+                {
+                    homo.MostrarWebOrden = i + 1;
+                    tempList.Add(homo);
+                }
+            }
+            lista = tempList;
+            await Task.CompletedTask;
         }
         private async Task GuardarHomologacion()
         {

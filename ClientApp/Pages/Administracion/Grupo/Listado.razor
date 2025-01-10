@@ -2,72 +2,22 @@
 @layout AdminLayout
 @using SharedApp.Models.Dtos
 
-<style>
-    .striped-table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .striped-table tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    .card {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        margin: 20px 0;
-    }
-
-    .card-header {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-footer {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        text-align: right;
-        border-top: 1px solid #ddd;
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-</style>
-
 <PageTitle>Homologación</PageTitle>
 
 <div class="card">
-    <!-- Card Header -->
     <div class="card-header">
-        <h2>Administación de Entidades</h2>
+        <h3>Administación de Entidades</h3>
     </div>
-</div>
-
- <!-- Card Body -->
     <div class="card-body">
-        <div class="table-responsive">
-        <Grid Id="sortableGrid"
-              @ref="grid"
-              TItem="HomologacionDto"
-              class="table table-hover table-bordered table-striped striped-table"
-              DataProvider="HomologacionDataProvider"
-              Responsive="true" FixedHeader="true">
-            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
+        <Grid @ref="grid" TItem="HomologacionDto" class="table table-hover table-bordered table-striped" DataProvider="HomologacionDataProvider" Responsive="true" Id="sortableGrid">
+            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
                 @context.MostrarWeb
+                <input type="hidden" value="@context.IdHomologacion" />
             </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
+            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
                 @context.TooltipWeb
             </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Opciones" Filterable="false" ColumnClass="@(x => x.IdHomologacion == 1 ? "table-secondary text-white" : "")">
+            <GridColumn TItem="HomologacionDto" HeaderText="Opciones" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
                 <Tooltip Title="Editar registro">
                     <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{context.IdHomologacion}")" Size="Size.Small">
                         <Icon Name="IconName.PencilSquare" />
@@ -75,9 +25,8 @@
                 </Tooltip>
             </GridColumn>
         </Grid>
-        </div>
+    </div>
 </div>
-
 
 <div class="form-row py-2">
     <Alert Color="AlertColor.Secondary" Dismissable="false">

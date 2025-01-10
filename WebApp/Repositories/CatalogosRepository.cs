@@ -91,7 +91,7 @@ namespace WebApp.Repositories
             return ExecuteDbOperation(context =>
               context.VwHomologacionGrupo
                 .AsNoTracking()
-                .OrderBy(c => c.MostrarWeb)
+                .OrderBy(c => c.MostrarWebOrden)
                 .ToList());
         }
         /// <inheritdoc />

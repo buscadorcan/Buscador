@@ -1,4 +1,5 @@
 using BlazorBootstrap;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -19,8 +20,10 @@ namespace ClientApp.Pages.Administracion.Grupo
         protected IJSRuntime? JSRuntime { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            DataLoaded += async () => {
-                if (!(listaHomologacions is null) && JSRuntime != null) {
+            DataLoaded += async () =>
+            {
+                if (listaHomologacions != null && JSRuntime != null)
+                {
                     await Task.Delay(2000);
                     await JSRuntime.InvokeVoidAsync("initSortable", DotNetObjectReference.Create(this));
                 }
@@ -29,7 +32,9 @@ namespace ClientApp.Pages.Administracion.Grupo
         private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {
             if (iCatalogosService != null)
+            {
                 listaHomologacions = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupos");
+            }
 
             DataLoaded?.Invoke();
 
@@ -45,20 +50,38 @@ namespace ClientApp.Pages.Administracion.Grupo
                 }
             }
         }
+       
         [JSInvokable]
         public async Task OnDragEnd(string[] sortedIds)
         {
-            for (int i = 0; i < sortedIds.Length; i += 1)
+            if (listaHomologacions != null)
             {
-                HomologacionDto? homo = listaHomologacions?.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i] ?? ""));
-                if (homo != null && homo.MostrarWebOrden != i + 1)
+                // Actualiza el orden en la lista local
+                var ordenados = new List<HomologacionDto>();
+                for (int i = 0; i < sortedIds.Length; i++)
                 {
-                    homo.MostrarWebOrden = i + 1;
-                    if (iHomologacionService != null)
-                        await iHomologacionService.RegistrarOActualizar(homo);
+                    HomologacionDto? homo = listaHomologacions.FirstOrDefault(h => h.IdHomologacion == int.Parse(sortedIds[i]));
+                    if (homo != null)
+                    {
+                        homo.MostrarWebOrden = i + 1; // Actualiza el orden en memoria
+                        ordenados.Add(homo);
+                        if (iHomologacionService != null)
+                        {
+                            await iHomologacionService.RegistrarOActualizar(homo); // Actualiza en el backend
+                        }
+                    }
+                }
+
+                // Reemplaza la lista original con la lista ordenada
+                listaHomologacions = ordenados;
+
+                // Refresca el grid
+                if (grid != null)
+                {
+                    await grid.RefreshDataAsync();
                 }
             }
-            await Task.CompletedTask;
         }
+
     }
 }
