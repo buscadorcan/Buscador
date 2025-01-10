@@ -23,6 +23,7 @@ namespace ClientApp.Pages.BuscadorCan
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
         private List<Seleccion> Selecciones = new();
         private List<int> SelectedIds = new List<int>();
+        private bool mostrarFiltrosAvanzados = false;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -178,6 +179,11 @@ namespace ClientApp.Pages.BuscadorCan
         private string ObtenerSeleccionesComoJson()
         {
             return System.Text.Json.JsonSerializer.Serialize(Selecciones);
+        }
+
+        private void AlternarFiltrosAvanzados()
+        {
+            mostrarFiltrosAvanzados = !mostrarFiltrosAvanzados;
         }
         private class Seleccion
         {
