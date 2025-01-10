@@ -170,3 +170,22 @@ a {
 .submenu a:hover {
     background-color: #f1f1f1;
 }
+
+/* Aumentar visibilidad y tamaño del checkbox */
+.custom-checkbox {
+    width: 18px; /* Aumenta el ancho */
+    height: 18px; /* Aumenta el alto */
+    accent-color: #343a40; /* Color oscuro (puedes usar otro tono según tu preferencia) */
+}
+
+/* Ajustar color de fondo del botón dropdown */
+.custom-bg {
+    background-color: #f8f9fa; /* Color gris claro */
+    border-color: #6c757d; /* Borde gris oscuro */
+    color: #212529; /* Color de texto más visible */
+}
+
+/* Espaciado adicional entre las filas */
+.row.g-3 {
+    margin-bottom: 10px; /* Espaciado entre cada fila */
+}

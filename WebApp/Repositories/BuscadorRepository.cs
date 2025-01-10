@@ -26,7 +26,7 @@ namespace WebApp.Repositories
         };
 
         var lstTem = context.Database.SqlQueryRaw<BuscadorResultadoData>(
-          "exec paBuscarPalabra @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
+          "exec paBuscar2K25 @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
           new SqlParameter("@paramJSON", paramJSON),
           new SqlParameter("@PageNumber", PageNumber),
           new SqlParameter("@RowsPerPage", RowsPerPage),
@@ -37,7 +37,7 @@ namespace WebApp.Repositories
           Data = lstTem.Select(c => new BuscadorResultadoDataDto() {
             IdEnte = c.IdEnte,
             IdVista = c.IdVista,
-            IdHomologacionEsquema = c.IdHomologacionEsquema,
+              IdEsquema = c.IdEsquema,
             DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
           }).ToList(),
           TotalCount = (int) rowsTotal.Value

@@ -4,54 +4,15 @@
 @using SharedApp.Models.Dtos;
 @attribute [Authorize]
 
-<style>
-    .striped-table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .striped-table tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    .card {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        margin: 20px 0;
-    }
-
-    .card-header {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-footer {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        text-align: right;
-        border-top: 1px solid #ddd;
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-</style>
-
 
 <div class="card">
     <!-- Card Header -->
     <div class="card-header">
         <h2>Administración de ONA</h2>
     </div>
-
+    <div class="text-end my-3" style="margin-right: 1%;">
+        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-ona">Agregar Registro</Button>
+    </div>
     <!-- Card Body -->
     <div class="card-body">
         <div class="table-responsive">
@@ -97,12 +58,6 @@
             </Grid>
         </div>
     </div>
-
-    <!-- Card Footer -->
-    <div class="card-footer">
-        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-ona">Nuevo</Button>
-    </div>
-
    
 </div>
 

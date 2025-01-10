@@ -5,7 +5,7 @@ using SharedApp.Models.Dtos;
 
 namespace WebApp.Controllers
 {
-  [Route("api")]
+  [Route("api/buscador")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status403Forbidden)]

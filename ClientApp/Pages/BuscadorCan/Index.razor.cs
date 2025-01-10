@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 using SharedApp.Data;
 using SharedApp.Models.Dtos;
 
@@ -21,6 +22,7 @@ namespace ClientApp.Pages.BuscadorCan
         private List<Item> ListTypeSearch = new TypeSearch().ListTypeSearch;
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
         private List<Seleccion> Selecciones = new();
+        private List<int> SelectedIds = new List<int>();
         protected override async Task OnInitializedAsync()
         {
             try
@@ -84,26 +86,18 @@ namespace ClientApp.Pages.BuscadorCan
             };
         }
 
-        private void CambiarSeleccion(string selectedValue, int? id)
+        private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
         {
-            if (id != null)
+            bool seleccionado = bool.Parse(isChecked.ToString());
+            if (seleccionado)
             {
-                var sValue = selectedValues.FirstOrDefault(c => c.Id == id);
-                if (sValue != null) {
-                    if (sValue?.Seleccion?.Contains(selectedValue) ?? false)
-                    {
-                        sValue.Seleccion?.Remove(selectedValue);
-                    }
-                    else
-                    {
-                        sValue?.Seleccion?.Add(selectedValue);
-                    }
-                } else {
-                    selectedValues.Add(new FiltrosBusquedaSeleccion{
-                        Id = id,
-                        Seleccion = new List<string>(){ selectedValue }
-                    });
-                }
+                // Agregar la opción seleccionada
+                Selecciones.Add(new Seleccion { ComboIndex = comboIndex, Texto = valor });
+            }
+            else
+            {
+                // Quitar la opción seleccionada
+                Selecciones.RemoveAll(s => s.ComboIndex == comboIndex && s.Texto == valor);
             }
         }
         private async Task BuscarPalabraRequest()
@@ -144,26 +138,56 @@ namespace ClientApp.Pages.BuscadorCan
                 // Agregar la selección sin verificar duplicados, ya que debería permitir múltiples opciones del mismo select
                 Selecciones.Add(new Seleccion
                 {
-                    IdHomologacion = idHomologacion.Value,
                     Texto = valor,
                     ComboIndex = comboIndex
                 });
             }
         }
 
-        private void QuitarSeleccion(int idHomologacion, int comboIndex)
+        private void QuitarSeleccion(int comboIndex, string texto)
         {
-            Selecciones.RemoveAll(s => s.IdHomologacion == idHomologacion && s.ComboIndex == comboIndex);
+            Selecciones.RemoveAll(s => s.ComboIndex == comboIndex && s.Texto == texto);
         }
 
+        private void SeleccionarTodos(int comboIndex, object isChecked)
+        {
+            bool seleccionarTodo = bool.Parse(isChecked.ToString());
+
+            // Verificar si listadeOpciones y el índice son válidos
+            if (listadeOpciones != null && comboIndex >= 0 && comboIndex < listadeOpciones.Count)
+            {
+                var opciones = listadeOpciones[comboIndex];
+                if (seleccionarTodo)
+                {
+                    // Seleccionar todas las opciones del combo
+                    foreach (var opcion in opciones)
+                    {
+                        if (!Selecciones.Any(s => s.ComboIndex == comboIndex && s.Texto == opcion.MostrarWeb))
+                        {
+                            Selecciones.Add(new Seleccion { ComboIndex = comboIndex, Texto = opcion.MostrarWeb });
+                        }
+                    }
+                }
+                else
+                {
+                    // Quitar todas las opciones del combo
+                    Selecciones.RemoveAll(s => s.ComboIndex == comboIndex);
+                }
+            }
+        }
+        private string ObtenerSeleccionesComoJson()
+        {
+            return System.Text.Json.JsonSerializer.Serialize(Selecciones);
+        }
         private class Seleccion
         {
-            public int IdHomologacion { get; set; }
-            public string Texto { get; set; }
             public int ComboIndex { get; set; }
+            public string Texto { get; set; }
         }
-
-
+        public class Opcion
+        {
+            public string MostrarWeb { get; set; }
+        }
     }
 
     public class FiltrosBusquedaSeleccion {

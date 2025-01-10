@@ -20,7 +20,7 @@ namespace ClientApp.Pages.BuscadorCan
         public ICatalogosService? iCatalogosService { get; set; }
         private Modal modal = default!;
         public Grid<BuscadorResultadoDataDto>? grid;
-        private List<HomologacionDto>? listaEtiquetasGrilla;
+        private List<VwGrillaDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
         public bool ModoBuscar { get; set;}
         protected override async Task OnInitializedAsync()
@@ -29,7 +29,7 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 if (iCatalogosService != null)
                 {
-                    listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("etiquetas_grilla");
+                    listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
                 }
             } catch (Exception e) {
                 Console.WriteLine(e);

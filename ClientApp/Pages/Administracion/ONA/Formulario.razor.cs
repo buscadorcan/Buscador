@@ -56,6 +56,9 @@ namespace ClientApp.Pages.Administracion.ONA
             onas.IdHomologacionPais = int.TryParse(e.Value?.ToString(), out var valor) ? valor : null;
 
         }
-
+        private void Regresar()
+        {
+            navigationManager?.NavigateTo("/onas");
+        }
     }
 }

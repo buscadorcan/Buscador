@@ -13,7 +13,7 @@ namespace ClientApp.Services
 
         public async Task<BuscadorDto> PsBuscarPalabraAsync(string paramJSON, int PageNumber, int RowsPerPage)
         {
-            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/buscarPalabra?paramJSON={paramJSON}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
+            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/search/phrase?paramJSON={paramJSON}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
             response.EnsureSuccessStatusCode();
 
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<BuscadorDto>>()).Result;

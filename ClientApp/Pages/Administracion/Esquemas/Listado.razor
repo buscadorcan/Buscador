@@ -10,9 +10,9 @@
     <div class="card-header">
         <h3>Administación de Homologación Esquemas</h3>
         <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
-            <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-esquema">Agregar Registro</Button>
-        </div>
+    </div>
+     <div class="text-end my-3" style="margin-right: 1%;">
+        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-esquema">Agregar Registro</Button>
     </div>
     <div class="card-body">
         <Grid @ref="grid" TItem="EsquemaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemasDataProvider" Responsive="true" Id="sortableGrid">
