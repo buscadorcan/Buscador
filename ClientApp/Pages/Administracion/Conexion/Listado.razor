@@ -4,42 +4,47 @@
 
 <PageTitle>Homologación</PageTitle>
 
-<h3>Validación de Campos</h3>
-
-<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
-    <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-conexion">Agregar Registro</Button>
+<div class="card">
+    <div class="card-header">
+        <h2>Validación de Campos</h2>
+    </div>
+    <div class="text-end my-3" style="margin-right: 1%;">
+        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-conexion">Agregar Registro</Button>
+    </div>
+    <div class="card-body">
+        <Grid @ref="grid" TItem="ONAConexionDto" class="table table-hover table-bordered table-striped" DataProvider="ConexionDtoDataProvider" Responsive="true">
+            <GridColumn TItem="ONAConexionDto" HeaderText="Host">
+                @context.Host
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Puerto" PropertyName="Puerto">
+                @context.Puerto
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Usuario" PropertyName="Usuario">
+                @context.Usuario
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Base Datos" PropertyName="BaseDatos">
+                @context.BaseDatos
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Origen Datos" PropertyName="OrigenDatos">
+                @context.OrigenDatos
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Migrar" PropertyName="Migrar">
+                @context.Migrar
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Estado" PropertyName="Estado">
+                @context.Estado
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Editar">
+                <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="Size.Small">
+                    <Icon Name="IconName.PencilSquare" />
+                </Button>
+            </GridColumn>
+            <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar">
+                <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdONA)" Size="Size.Small">
+                    <Icon Name="IconName.Trash3" />
+                </Button>
+            </GridColumn>
+        </Grid>
+    </div>
 </div>
 
-<Grid @ref="grid" TItem="ONAConexionDto" class="table table-hover table-bordered table-striped" DataProvider="ConexionDtoDataProvider" Responsive="true">
-    <GridColumn TItem="ONAConexionDto" HeaderText="Host">
-        @context.Host
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Puerto" PropertyName="Puerto">
-        @context.Puerto
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Usuario" PropertyName="Usuario">
-        @context.Usuario
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Base Datos" PropertyName="BaseDatos">
-        @context.BaseDatos
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Origen Datos" PropertyName="OrigenDatos">
-        @context.OrigenDatos
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Migrar" PropertyName="Migrar">
-        @context.Migrar
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Estado" PropertyName="Estado">
-        @context.Estado
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Editar">
-        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="Size.Small">
-            <Icon Name="IconName.PencilSquare" />
-        </Button>
-    </GridColumn>
-    <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar">
-        <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdONA)" Size="Size.Small">
-            <Icon Name="IconName.Trash3" />
-        </Button>
-    </GridColumn>
-</Grid>

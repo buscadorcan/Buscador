@@ -28,6 +28,7 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(PsBuscarPalabra));
       }
     }    
+
     [HttpGet("homologacionEsquemaTodo/{idEnte}")]
     public IActionResult FnHomologacionEsquemaTodo(string idEnte)
     {
