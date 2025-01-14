@@ -6,7 +6,7 @@ namespace WebApp.Repositories.IRepositories
   {
     BuscadorDto PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage);
     List<EsquemaDto> FnHomologacionEsquemaTodo(string idEnte);
-    FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema);
+    FnEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema);
     List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idEnte);
     List<FnPredictWordsDto> FnPredictWords(string word);
   }
