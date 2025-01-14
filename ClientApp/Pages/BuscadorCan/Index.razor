@@ -115,7 +115,7 @@
                                 <div class="search-input">
                                     <div class="input-group">
                                         <input type="text" @*@bind="searchTerm" *@ class="form-control" placeholder="Buscar..." />
-                                        <button class="btn btn-primary" @*@onclick="Search" *@>Buscar</button>
+                                        <button class="btn btn-primary" @onclick="BuscarPalabraRequest">Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +189,7 @@
                                 <img class="img-2" src="login/img/format-list-bulleted-5.svg" />
                             </div>
                             <div class="tabs-2">
-                                <img class="img-2" src="login/img/button-pagination-variant4-32@2x.png" />
+                                <img class="img-2" src="login/img/location-on.svg" />
                             </div>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                                                 @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
                                             </label>
                                             <!-- Select List con Checkboxes -->
-                                            <div class="dropdown">
+                                            <div>
                                                 <button class="btn btn-secondary dropdown-toggle custom-bg"
                                                         type="button"
                                                         id="dropdownMenuButton-@currentIndex"

@@ -486,3 +486,4 @@ $RECYCLE.BIN/
 /.vscode
 /path
 /ClientApp/Helpers/Inicializar.cs
+/WebApp/appsettings.json

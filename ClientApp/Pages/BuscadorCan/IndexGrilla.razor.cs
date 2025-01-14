@@ -12,6 +12,7 @@ namespace ClientApp.Pages.BuscadorCan
         public BuscarRequest? buscarRequest { get; set; }
         [Parameter]
         public List<FiltrosBusquedaSeleccion>? selectedValues { get; set; }
+
         [Parameter]
         public List<VwFiltroDto>? listaEtiquetasFiltros { get; set; }
         [Inject]
@@ -38,30 +39,41 @@ namespace ClientApp.Pages.BuscadorCan
         private async Task<List<BuscadorResultadoDataDto>> BuscarEsquemas(int PageNumber, int PageSize)
         {
             var listBuscadorResultadoDataDto = new List<BuscadorResultadoDataDto>();
-            try {
+
+            try
+            {
                 if (servicio != null)
                 {
-                    var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(new {
+                    var filtros = new
+                    {
                         ExactaBuscar = ModoBuscar,
                         TextoBuscar = buscarRequest?.TextoBuscar ?? "",
-                        FiltroPais = selectedValues?.FirstOrDefault( c => c.Id == 2)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
-                        FiltroOna = selectedValues?.FirstOrDefault( c => c.Id == 3)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
-                        FiltroNorma = selectedValues?.FirstOrDefault( c => c.Id == 5)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
-                        FiltroEsquema = selectedValues?.FirstOrDefault( c => c.Id == 4)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
-                        FiltroEstado = selectedValues?.FirstOrDefault( c => c.Id == 6)?.Seleccion?.Where(c => c != null ).ToList() ?? [],
-                        FiltroRecomocimiento = selectedValues?.FirstOrDefault( c => c.Id == 7)?.Seleccion?.Where(c => c != null ).ToList() ?? []
-                    }), PageNumber, PageSize);
+                        FiltroPais = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
+                        FiltroOna = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
+                        FiltroNorma = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_NOR")?.Seleccion ?? new List<string>(),
+                        FiltroEsquema = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ESQ")?.Seleccion ?? new List<string>(),
+                        FiltroEstado = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_EST")?.Seleccion ?? new List<string>(),
+                        FiltroRecomocimiento = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
+                    };
 
-                    if (!(result.Data is null)) {
+                    Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
+
+                    var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), PageNumber, PageSize);
+
+                    if (!(result.Data is null))
+                    {
                         listBuscadorResultadoDataDto = result.Data;
                     }
 
-                    if (PageNumber == 1) {
+                    if (PageNumber == 1)
+                    {
                         totalCount = result.TotalCount;
                     }
                 }
-            } catch (Exception e) { 
-                Console.WriteLine(e);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error en BuscarEsquemas: {e.Message}");
             }
 
             return listBuscadorResultadoDataDto;

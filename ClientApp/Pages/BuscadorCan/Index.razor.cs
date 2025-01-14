@@ -90,26 +90,63 @@ namespace ClientApp.Pages.BuscadorCan
         private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
         {
             bool seleccionado = bool.Parse(isChecked.ToString());
+
+            // Obtén el CódigoHomologacion de listaEtiquetasFiltros
+            var codigoHomologacion = listaEtiquetasFiltros?[comboIndex]?.CodigoHomologacion;
+
+            if (string.IsNullOrWhiteSpace(codigoHomologacion))
+            {
+                Console.WriteLine($"No se encontró CódigoHomologacion para comboIndex {comboIndex}");
+                return;
+            }
+
+            // Busca el filtro correspondiente en selectedValues
+            var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
+
+            if (filtro == null)
+            {
+                // Si no existe el filtro, lo creamos
+                filtro = new FiltrosBusquedaSeleccion
+                {
+                    CodigoHomologacion = codigoHomologacion,
+                    Seleccion = new List<string>()
+                };
+                selectedValues.Add(filtro);
+            }
+
             if (seleccionado)
             {
-                // Agregar la opción seleccionada
-                Selecciones.Add(new Seleccion { ComboIndex = comboIndex, Texto = valor });
+                // Agregar valor seleccionado
+                if (!filtro.Seleccion.Contains(valor))
+                {
+                    filtro.Seleccion.Add(valor);
+                }
             }
             else
             {
-                // Quitar la opción seleccionada
-                Selecciones.RemoveAll(s => s.ComboIndex == comboIndex && s.Texto == valor);
+                // Quitar valor deseleccionado
+                filtro.Seleccion.Remove(valor);
+
+                // Si ya no hay selecciones, eliminamos el filtro
+                if (!filtro.Seleccion.Any())
+                {
+                    selectedValues.Remove(filtro);
+                }
             }
+
+            Console.WriteLine($"Seleccionado: {string.Join(", ", filtro.Seleccion)} para {codigoHomologacion}");
         }
         private async Task BuscarPalabraRequest()
         {
-            if (childComponentRef != null && childComponentRef.grid != null)
+            if (childComponentRef != null)
             {
+                // Sincroniza el estado del filtro con el componente hijo (IndexGrilla)
                 childComponentRef.ModoBuscar = modoBuscar;
+                childComponentRef.selectedValues = selectedValues;
+
+                // Reinicia la grilla para aplicar los nuevos filtros
                 await childComponentRef.grid.ResetPageNumber();
             }
-
-            await Task.CompletedTask;
         }
         private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
         {
@@ -194,15 +231,19 @@ namespace ClientApp.Pages.BuscadorCan
         {
             public string MostrarWeb { get; set; }
         }
+
     }
 
-    public class FiltrosBusquedaSeleccion {
-        public int? Id { get; set; }
-        public List<string>? Seleccion { get; set; }
-        public FiltrosBusquedaSeleccion() {
+    public class FiltrosBusquedaSeleccion
+    {
+        public string CodigoHomologacion { get; set; } = string.Empty; // Identificador único
+        public List<string> Seleccion { get; set; } = new List<string>(); // Valores seleccionados
+
+        public FiltrosBusquedaSeleccion()
+        {
             Seleccion = new List<string>();
         }
-    }
 
+    }
 
 }
