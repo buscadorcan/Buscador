@@ -123,8 +123,9 @@ namespace WebApp.Service.IService
                   errors = errors.Append($"Error: Esquema {sheetName} no encontrado en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
                   continue;
                 }
+                //EsquemaVista? esquemaVista = _repositoryEV.FindByIdEsquema(currentEsquema.IdEsquema);
+                EsquemaVista? esquemaVista = _repositoryEV.FindByIdEsquema(currentEsquema.IdEsquema, currentONA.IdONA);
 
-                EsquemaVista? esquemaVista = _repositoryEV.FindByIdEsquema(currentEsquema.IdEsquema);
                 if (esquemaVista == null) {
                   errors = errors.Append($"Error: Esquema Vista {sheetName} no encontrado en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
                   continue;

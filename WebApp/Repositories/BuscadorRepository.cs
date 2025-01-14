@@ -50,10 +50,16 @@ namespace WebApp.Repositories
         return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo({idEnte})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
       });
     }
-    public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
+    //public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
+    //{
+    //  return ExecuteDbOperation(context => {
+    //    return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
+    //  });
+    //}
+    public FnEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
     {
       return ExecuteDbOperation(context => {
-        return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
+        return context.Database.SqlQuery<FnEsquemaDto>($"select * from fnEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
       });
     }
     public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idEnte)
