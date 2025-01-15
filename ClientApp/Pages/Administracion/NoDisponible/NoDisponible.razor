@@ -1,0 +1,65 @@
+﻿@page "/page-nodisponible"
+@layout AdminLayout
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no disponible</title>
+    <style>
+       /*  body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        } */
+        .error-container {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .error-container img {
+            max-width: 100%;
+            height: auto;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        .error-container h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .error-container p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .error-container a {
+            display: inline-block;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .error-container a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        @* <img src="/images/error.svg" alt="Página no disponible"> *@
+        <p>Página no disponible</p>
+        <h1>Lo sentimos, esta página no está disponible</h1>
+        <p>Es posible que usted no cuente con el perfil necesario para ver este formulario.</p>
+        @* <a href="/">Volver al inicio</a> *@
+    </div>
+</body>
+</html>

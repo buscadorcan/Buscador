@@ -10,14 +10,14 @@ namespace WebApp.Service
     {
       if (!Enum.TryParse(conexion.OrigenDatos, true, out DatabaseType databaseType))
       {
-        databaseType = DatabaseType.MSSQL;
+        databaseType = DatabaseType.SQLSERVER;
       }
 
       return databaseType switch {
-        DatabaseType.MSSQL => BuildSqlServerConnectionString(conexion),
+        DatabaseType.SQLSERVER => BuildSqlServerConnectionString(conexion),
         DatabaseType.MYSQL => BuildMysqlConnectionString(conexion),
         DatabaseType.POSTGRES => BuildPostgresConnectionString(conexion),
-        DatabaseType.SQLITE => BuildSqliteConnectionString(conexion),
+        DatabaseType.SQLLITE => BuildSqliteConnectionString(conexion),
         _ => BuildSqlServerConnectionString(conexion)
       };
     }
@@ -28,7 +28,7 @@ namespace WebApp.Service
     string BuildSqlServerConnectionString(ONAConexion conexion)
     {
       string portString = conexion.Puerto != 0 ? $",{conexion.Puerto}" : "";
-      return $"Server={conexion.Host}{portString};Database={conexion.BaseDatos};User Id={conexion.Usuario};Password={conexion.Contrasenia};TrustServerCertificate=True;";
+      return $"Server={conexion.Host};Database={conexion.BaseDatos};User Id={conexion.Usuario};Password={conexion.Contrasenia};TrustServerCertificate=True;";
     }
     string BuildSqliteConnectionString(ONAConexion conexion)
     {

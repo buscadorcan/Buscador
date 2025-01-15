@@ -2,8 +2,8 @@ using WebApp.Models;
 
 namespace WebApp.Service.IService
 {
-  public interface IMigrador
-  {
-    bool Migrar(ONAConexion conexion);
-  }
+    public interface IMigrador
+    {
+        Task<Boolean> MigrarAsync(ONAConexion conexion);
+    }
 }

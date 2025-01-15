@@ -91,7 +91,7 @@ namespace WebApp.Repositories
       var connectionString = _connectionStringBuilderService.BuildConnectionString(conexion);
       return conexion.OrigenDatos switch {
         "MYSQL" => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.MYSQL),
-        _ => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.MSSQL)
+        _ => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.SQLSERVER)
       };
     }
     private ONAConexion GetConexion(int idONA)

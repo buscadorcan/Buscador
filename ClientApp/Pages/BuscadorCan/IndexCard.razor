@@ -1,0 +1,34 @@
+﻿@using ClientApp.Models;
+@using SharedApp.Models.Dtos
+@using Newtonsoft.Json;
+
+<div class="py-2">
+    <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
+
+    @if (listaEtiquetasGrilla != null)
+    {
+        <div class="row">
+            @foreach (var resultado in resultados)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <Tooltip Title="@resultado.IdEsquemaData.ToString()">@resultado.IdEsquemaData</Tooltip>
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                @resultado.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == resultado.IdEsquemaData)?.Data
+                            </p>
+                            <button class="btn btn-secondary btn-sm" @onclick="() => showModal(resultado)">
+                                <i class="fas fa-info-circle"></i> Detalles
+                            </button>
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="fas fa-file-pdf"></i> Exportar PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
