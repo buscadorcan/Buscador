@@ -3,9 +3,9 @@ namespace SharedApp.Data
     public enum DatabaseType
     {
         EXCEL,
-        MSSQL,
+        SQLSERVER,
         MYSQL,
         POSTGRES,
-        SQLITE
+        SQLLITE
     }
 }

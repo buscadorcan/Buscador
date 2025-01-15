@@ -12,7 +12,7 @@ namespace WebApp.Service
 
             switch (databaseType)
             {
-                case DatabaseType.MSSQL:
+                case DatabaseType.SQLSERVER:
                     optionsBuilder.UseSqlServer(connectionString);
                     break;
                 case DatabaseType.MYSQL:

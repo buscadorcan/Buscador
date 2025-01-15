@@ -120,7 +120,7 @@
                                 </div>
                             </div>
                             <div class="div-2">
-                                <input class="form-check-input" type="checkbox" id="exactSearch" @*@bind="isExactSearch" *@ />
+                                <input class="form-check-input" type="checkbox" id="exactSearch" @bind="isExactSearch" />
                                 <label class="form-check-label" for="exactSearch">
                                     Búsqueda exacta
                                 </label>
@@ -189,7 +189,8 @@
                                 <img class="img-2" src="login/img/format-list-bulleted-5.svg" />
                             </div>
                             <div class="tabs-2">
-                                <img class="img-2" src="login/img/location-on.svg" />
+                                <img class="img-2" src="login/img/location-on.svg"   @onclick="AlternarIndexCard"
+                                     style="border: @(mostrarIndexCard ? "2px solid green" : "none"); cursor: pointer;" />
                             </div>
                         </div>
                     </div>
@@ -276,11 +277,21 @@
                         </div>
                         </div>
                         </div> *@
-
-                            <IndexGrilla @ref="childComponentRef"
-                                         buscarRequest="@buscarRequest"
-                                         selectedValues="@selectedValues"
-                                         listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                            @if (!mostrarIndexCard)
+                            {
+                                <IndexGrilla @ref="childComponentRef"
+                                               buscarRequest="@buscarRequest"
+                                               selectedValues="@selectedValues"
+                                               listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                            }
+                            else
+                            {
+                                <IndexCard @ref="cardComponentRef"
+                                           buscarRequest="@buscarRequest"
+                                           selectedValues="@selectedValues"
+                                           listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                            }
+                           
                         </div>
                     </div>
                 </div>         
