@@ -28,7 +28,7 @@ namespace WebApp.Service
     string BuildSqlServerConnectionString(ONAConexion conexion)
     {
       string portString = conexion.Puerto != 0 ? $",{conexion.Puerto}" : "";
-      return $"Server={conexion.Host}{portString};Database={conexion.BaseDatos};User Id={conexion.Usuario};Password={conexion.Contrasenia};TrustServerCertificate=True;";
+      return $"Server={conexion.Host};Database={conexion.BaseDatos};User Id={conexion.Usuario};Password={conexion.Contrasenia};TrustServerCertificate=True;";
     }
     string BuildSqliteConnectionString(ONAConexion conexion)
     {

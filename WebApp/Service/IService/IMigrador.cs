@@ -4,6 +4,6 @@ namespace WebApp.Service.IService
 {
     public interface IMigrador
     {
-        Task<Boolean> Migrar(ONAConexion conexion);
+        Task<Boolean> MigrarAsync(ONAConexion conexion);
     }
 }

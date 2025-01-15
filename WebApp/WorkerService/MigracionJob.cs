@@ -35,11 +35,11 @@ namespace WebApp.WorkerService
                     {
                         var service = scope.ServiceProvider.GetRequiredService<IMigrador>();
                         var conexionRepository = scope.ServiceProvider.GetRequiredService<IONAConexionRepository>();
-                        List<ONAConexion> conexiones = conexionRepository.FindAll();
+                        List<ONAConexion> conexiones = conexionRepository.FindAll().Where(x => x.OrigenDatos != "EXCEL").ToList();
                         foreach (var conexion in conexiones)
                         {
                             Console.WriteLine($"Migrando conexión: {conexion.IdONA}");
-                            await service.Migrar(conexion);                           
+                            //await service.MigrarAsync(conexion);                           
                         }
                     }
                     // Calculate the time until midnight
