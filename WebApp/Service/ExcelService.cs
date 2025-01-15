@@ -123,10 +123,10 @@ namespace WebApp.Service.IService
                   errors = errors.Append($"Error: Esquema {sheetName} no encontrado en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
                   continue;
                 }
-                //EsquemaVista? esquemaVista = _repositoryEV.FindByIdEsquema(currentEsquema.IdEsquema);
-                EsquemaVista? esquemaVista = _repositoryEV.FindByIdEsquema(currentEsquema.IdEsquema, currentONA.IdONA);
-
-                if (esquemaVista == null) {
+                  //EsquemaVista? esquemaVista = repositoryEV.FindByIdEsquema(currentEsquema.IdEsquema);
+                  EsquemaVista? esquemaVista = _repositoryEV._FindByIdEsquema(currentEsquema.IdEsquema, currentONA.IdONA);
+                  
+                  if (esquemaVista == null) {
                   errors = errors.Append($"Error: Esquema Vista {sheetName} no encontrado en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
                   continue;
                 }
@@ -140,10 +140,12 @@ namespace WebApp.Service.IService
                 logMigracion.Inicio = StartTime;
                 currentLogMigracion = _repositoryLM.Create(logMigracion);
 
-                currentFields = _repositoryEVC.FindByIdEsquemaVista(currentEsquema.IdEsquema);
+                //currentFields = _repositoryEVC.FindByIdEsquemaVista(currentEsquema.IdEsquema);
+                currentFields = _repositoryEVC._FindByIdEsquemaVista(esquemaVista.IdEsquemaVista, currentONA.IdONA);
+                
                 if (currentFields.Count == 0) {
-                  errors = errors.Append($"Error: No se ha encontrado campos a migrar para vista {esquemaVista.VistaOrigen} configurados para ONA {currentONA.RazonSocial}").ToArray();
-                  continue;
+                errors = errors.Append($"Error: No se ha encontrado campos a migrar para vista {esquemaVista.VistaOrigen} configurados para ONA {currentONA.RazonSocial}").ToArray();
+                continue;
                 }
 
                 executionIndex = DataSet.Tables.IndexOf(dataTable);

@@ -7,8 +7,8 @@ namespace WebApp.Repositories.IRepositories
     bool Update(EsquemaVista data);
     bool Create(EsquemaVista data);
     EsquemaVista? FindById(int Id);
-    //EsquemaVista? FindByIdEsquema(int IdEsquema);
-    EsquemaVista? FindByIdEsquema(int IdEsquema, int idOna);
+    EsquemaVista? FindByIdEsquema(int IdEsquema);
+    EsquemaVista? _FindByIdEsquema(int IdEsquema, int idOna);
 
     List<EsquemaVista> FindAll();
   }

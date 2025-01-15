@@ -31,11 +31,33 @@ namespace WebApp.Repositories
     {
       return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().FirstOrDefault(u => u.IdEsquemaVistaColumna == id));
     }
-    public List<EsquemaVistaColumna> FindByIdEsquemaVista(int IdEsquemaVista)
-    {
-      return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().Where(u => u.IdEsquemaVista == IdEsquemaVista).ToList());
-    }
-    public List<EsquemaVistaColumna> FindAll()
+        public List<EsquemaVistaColumna> FindByIdEsquemaVista(int IdEsquemaVista)
+        {
+            return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().Where(u => u.IdEsquemaVista == IdEsquemaVista).ToList());
+        }
+        public List<EsquemaVistaColumna> _FindByIdEsquemaVista(int idEsquemaVista, int idONA)
+        {
+            return ExecuteDbOperation(context =>
+                (from vista in context.EsquemaVista
+                 join columna in context.EsquemaVistaColumna
+                 on vista.IdEsquemaVista equals columna.IdEsquemaVista
+                 where vista.IdONA == idONA
+                       && vista.Estado == "A"
+                       && columna.Estado == "A"
+                       && columna.IdEsquemaVista == idEsquemaVista
+                 select new EsquemaVistaColumna
+                 {
+                     IdEsquemaVista = vista.IdEsquemaVista,
+                     ColumnaVista = columna.ColumnaVista,
+                     ColumnaEsquemaIdH = columna.ColumnaEsquemaIdH,
+                     IdEsquemaVistaColumna = columna.IdEsquemaVistaColumna,
+                     ColumnaEsquema = columna.ColumnaEsquema,
+                     ColumnaVistaPK = columna.ColumnaVistaPK,
+
+                 }).ToList());
+        }
+
+        public List<EsquemaVistaColumna> FindAll()
     {
       return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
     }
