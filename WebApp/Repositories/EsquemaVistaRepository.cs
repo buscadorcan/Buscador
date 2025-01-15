@@ -31,11 +31,11 @@ namespace WebApp.Repositories
     {
       return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquemaVista == id));
     }
-        //public EsquemaVista? FindByIdEsquema(int idEsquema)
-        //{
-        //    return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquema == idEsquema));
-        //}
-        public EsquemaVista? FindByIdEsquema(int idEsquema, int idOna)
+        public EsquemaVista? FindByIdEsquema(int idEsquema)
+        {
+            return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquema == idEsquema));
+        }
+        public EsquemaVista? _FindByIdEsquema(int idEsquema, int idOna)
         {
             return ExecuteDbOperation(context =>
                 context.EsquemaVista

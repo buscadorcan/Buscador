@@ -19,39 +19,40 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         private IMigracionExcelService? iMigracionExcelService { get; set; }
         private List<MigracionExcelDto>? listasHevd = null;
         private bool accessMigration;
+        private bool isRolRead;
+        private bool isRolAdmin;
         protected override async Task OnInitializedAsync()
         {
             var usuarioBaseDatos = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_BaseDatos_Local);
             var usuarioOrigenDatos = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_OrigenDatos_Local);
             var usuarioEstadoMigracion = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_EstadoMigracion_Local);
             var usuarioMigrar = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Migrar_Local);
+            var rolRelacionado = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
-            if (usuarioMigrar != "S")
+            isRolRead = rolRelacionado == "KEY_USER_READ";
+            isRolAdmin = rolRelacionado == "KEY_USER_CAN"; 
+            if (!isRolAdmin)
             {
-                navigationManager?.NavigateTo("/page-nodisponible");
-            }
-            else
-            {
-                if (usuarioEstadoMigracion != "A")
+                if (!isRolRead)
                 {
-                    navigationManager?.NavigateTo("/page-nodisponible");
+                    if (usuarioMigrar != "S" ||
+                                     usuarioEstadoMigracion != "A" ||
+                                     (usuarioBaseDatos != "INACAL" && usuarioBaseDatos != "DTA") ||
+                                     usuarioOrigenDatos != "EXCEL")
+                    {
+                        navigationManager?.NavigateTo("/page-nodisponible");
+                        return;
+                    }
                 }
                 else
                 {
-                    if (usuarioBaseDatos != "INACAL" && usuarioBaseDatos != "DTA")
-                    {
-                        navigationManager?.NavigateTo("/page-nodisponible");
-                    }
-                    else
-                    {
-                        if (usuarioOrigenDatos != "EXCEL")
-                        {
-                            navigationManager?.NavigateTo("/page-nodisponible");
-                        }
-                    }
+                    navigationManager?.NavigateTo("/page-nodisponible");
+                    return;
                 }
+                
             }
             
+
         }
         private async Task<GridDataProviderResult<MigracionExcelDto>> MigracionExcelDtoDataProvider(GridDataProviderRequest<MigracionExcelDto> request)
         {

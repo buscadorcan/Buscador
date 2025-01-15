@@ -28,10 +28,10 @@ namespace SharedApp.Models.Dtos
     public string? Estado { get; set; }
     public string Rol { get; set; }
     public string RazonSocial { get; set; }
-    public string BaseDatos { get; set; }
-    public string OrigenDatos { get; set; }
-    public string Migrar { get; set; }
-    public string EstadoMigracion { get; set; }
+        public string BaseDatos { get; set; } = "";
+        public string OrigenDatos { get; set; } = "";
+        public string Migrar { get; set; } = "";
+    public string EstadoMigracion { get; set; } = "";
 
     }
 }
