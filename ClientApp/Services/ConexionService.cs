@@ -56,6 +56,7 @@ namespace ClientApp.Services {
 
             if (verificarConexion.IsSuccessStatusCode) // Código 200 OK o similar
             {
+                var UrlNew = $"{url}/{registro.IdONA}";
                 // Actualizar registro existente
                 response = await _httpClient.PutAsync($"{url}/{registro.IdONA}", bodyContent);
             }

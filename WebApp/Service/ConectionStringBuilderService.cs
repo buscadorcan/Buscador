@@ -10,14 +10,14 @@ namespace WebApp.Service
     {
       if (!Enum.TryParse(conexion.OrigenDatos, true, out DatabaseType databaseType))
       {
-        databaseType = DatabaseType.MSSQL;
+        databaseType = DatabaseType.SQLSERVER;
       }
 
       return databaseType switch {
-        DatabaseType.MSSQL => BuildSqlServerConnectionString(conexion),
+        DatabaseType.SQLSERVER => BuildSqlServerConnectionString(conexion),
         DatabaseType.MYSQL => BuildMysqlConnectionString(conexion),
         DatabaseType.POSTGRES => BuildPostgresConnectionString(conexion),
-        DatabaseType.SQLITE => BuildSqliteConnectionString(conexion),
+        DatabaseType.SQLLITE => BuildSqliteConnectionString(conexion),
         _ => BuildSqlServerConnectionString(conexion)
       };
     }

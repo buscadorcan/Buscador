@@ -14,6 +14,7 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         public IBusquedaService? iBusquedaService { get; set; }
         private IndexGrilla? childComponentRef;
+        private IndexCard? cardComponentRef;
         private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
         private List<List<FnFiltroDetalleDto>?> listadeOpciones = new List<List<FnFiltroDetalleDto>?>();
         private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
@@ -24,6 +25,8 @@ namespace ClientApp.Pages.BuscadorCan
         private List<Seleccion> Selecciones = new();
         private List<int> SelectedIds = new List<int>();
         private bool mostrarFiltrosAvanzados = false;
+        private bool isExactSearch = false;
+        private bool mostrarIndexCard = false; // Para alternar entre tarjeta de índice y grilla
         protected override async Task OnInitializedAsync()
         {
             try
@@ -90,7 +93,6 @@ namespace ClientApp.Pages.BuscadorCan
         private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
         {
             bool seleccionado = bool.Parse(isChecked.ToString());
-
             // Obtén el CódigoHomologacion de listaEtiquetasFiltros
             var codigoHomologacion = listaEtiquetasFiltros?[comboIndex]?.CodigoHomologacion;
 
@@ -141,8 +143,9 @@ namespace ClientApp.Pages.BuscadorCan
             if (childComponentRef != null)
             {
                 // Sincroniza el estado del filtro con el componente hijo (IndexGrilla)
-                childComponentRef.ModoBuscar = modoBuscar;
+                childComponentRef.ModoBuscar = isExactSearch ? true : false;
                 childComponentRef.selectedValues = selectedValues;
+                 
 
                 // Reinicia la grilla para aplicar los nuevos filtros
                 await childComponentRef.grid.ResetPageNumber();
@@ -221,6 +224,11 @@ namespace ClientApp.Pages.BuscadorCan
         private void AlternarFiltrosAvanzados()
         {
             mostrarFiltrosAvanzados = !mostrarFiltrosAvanzados;
+        }
+
+        private void AlternarIndexCard()
+        {
+            mostrarIndexCard = !mostrarIndexCard;
         }
         private class Seleccion
         {
