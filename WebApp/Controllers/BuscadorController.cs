@@ -48,7 +48,7 @@ namespace WebApp.Controllers
     {
       try
       {
-        return Ok(new RespuestasAPI<FnHomologacionEsquemaDto> {
+        return Ok(new RespuestasAPI<FnEsquemaDto> {
           Result = _vhRepo.FnHomologacionEsquema(idHomologacionEsquema)
         });
       }

@@ -11,7 +11,7 @@ namespace ClientApp.Services {
     public class HomologacionEsquemaService : IHomologacionEsquemaService
     {
         private readonly HttpClient _httpClient;
-        private string url = $"{Inicializar.UrlBaseApi}api/homologacion_esquema";
+        private string url = $"{Inicializar.UrlBaseApi}api/esquema";
 
         public HomologacionEsquemaService(HttpClient httpClient)
         {

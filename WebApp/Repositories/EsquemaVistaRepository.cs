@@ -31,11 +31,18 @@ namespace WebApp.Repositories
     {
       return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquemaVista == id));
     }
-    public EsquemaVista? FindByIdEsquema(int idEsquema)
-    {
-        return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquema == idEsquema));
-    }
-    public List<EsquemaVista> FindAll()
+        //public EsquemaVista? FindByIdEsquema(int idEsquema)
+        //{
+        //    return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().FirstOrDefault(u => u.IdEsquema == idEsquema));
+        //}
+        public EsquemaVista? FindByIdEsquema(int idEsquema, int idOna)
+        {
+            return ExecuteDbOperation(context =>
+                context.EsquemaVista
+                    .AsNoTracking()
+                    .FirstOrDefault(u => u.IdEsquema == idEsquema && u.IdONA == idOna && u.Estado == "A"));
+        }
+        public List<EsquemaVista> FindAll()
     {
       return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
     }

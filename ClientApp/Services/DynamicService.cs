@@ -34,7 +34,7 @@ namespace ClientApp.Services {
                 response.EnsureSuccessStatusCode();
                 return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<string>>>()).Result;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return new List<string>();
             }
