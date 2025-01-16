@@ -1,0 +1,125 @@
+﻿@page "/reporte1"
+@layout AdminLayout
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using ClientApp.Services.IService
+@using SharedApp.Models.Dtos
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+<h3>Reporte de Mapas</h3>
+<div class="map-container">
+    <!-- Gráficos de pastel (3 arriba) -->
+    <div class="row">
+        <div class="col-md-4">
+            <canvas id="chart1" class="chart" style="height: 300px; width: 100%;"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="chart2" class="chart" style="height: 300px; width: 100%;"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="chart3" class="chart" style="height: 300px; width: 100%;"></canvas>
+        </div>
+    </div>
+
+    <!-- Mapas de calor (3 abajo) -->
+    <div class="row">
+        <div class="col-md-4">
+            <div id="heatmap1" class="heatmap" style="height: 300px; width: 100%;"></div>
+        </div>
+        <div class="col-md-4">
+            <div id="heatmap2" class="heatmap" style="height: 300px; width: 100%;"></div>
+        </div>
+        <div class="col-md-4">
+            <div id="heatmap3" class="heatmap" style="height: 300px; width: 100%;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.initCharts = (data) => {
+        const createPieChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map(item => item.label || 'Sin etiqueta'),
+                    datasets: [{
+                        data: data.map(item => item.value || 0),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                }
+            });
+        };
+
+        createPieChart('chart1', data);
+        createPieChart('chart2', data);
+        createPieChart('chart3', data);
+    };
+
+    window.initHeatMaps = (data) => {
+        const createHeatMap = (elementId, data) => {
+            if (typeof L === 'undefined') {
+                console.error("Leaflet.js no está cargado correctamente.");
+                return;
+            }
+
+            const map = L.map(elementId).setView([data[0].latitude, data[0].longitude], 6);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const heatData = data.map(item => [item.latitude, item.longitude, item.organizaciones]);
+            L.heatLayer(heatData, { radius: 25, blur: 15, maxZoom: 17 }).addTo(map);
+        };
+
+        createHeatMap('heatmap1', data);
+        createHeatMap('heatmap2', data);
+        createHeatMap('heatmap3', data);
+    };
+
+    window.initMap = (data) => {
+        if (!data || data.length === 0) {
+            console.error("No se proporcionaron datos para inicializar los mapas y gráficos.");
+            return;
+        }
+
+        // Crear datos para gráficos de pastel
+        const chartData = data.map(item => ({
+            label: item.pais || 'Sin país',
+            value: item.organizaciones || 0
+        }));
+
+        window.initCharts(chartData);
+        window.initHeatMaps(data);
+    };
+</script>
+
+<style>
+    .map-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .chart, .heatmap {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+</style>
