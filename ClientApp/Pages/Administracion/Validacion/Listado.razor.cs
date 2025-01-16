@@ -81,18 +81,20 @@ namespace ClientApp.Pages.Administracion.Validacion
             
             listasHevd = new List<EsquemaVistaDto>();
 
-            var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquemaVista);
+            var columnas= await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquemaVista);
 
-            
-            foreach (var c in vistas)
+            if (columnas != null)
             {
-                var count = vistas.Count(n => n.NombreEsquema != null && n.NombreEsquema.Equals(c.NombreEsquema));
-                listasHevd.Add(new EsquemaVistaDto
+                foreach (var c in columnas)
                 {
-                    NombreEsquema = c.NombreEsquema,
-                    NombreVista = count > 0 ? c.NombreVista : "",
-                    IsValid = count > 0
-                });
+                    var count = columnas.Count(n => n.NombreEsquema != null && n.NombreEsquema.Equals(c.NombreEsquema));
+                    listasHevd.Add(new EsquemaVistaDto
+                    {
+                        NombreEsquema = c.NombreEsquema,
+                        NombreVista = count > 0 ? c.NombreVista : "",
+                        IsValid = count > 0
+                    });
+                }
             }
 
             if (grid != null)
