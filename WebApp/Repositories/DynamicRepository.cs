@@ -105,5 +105,19 @@ namespace WebApp.Repositories
       }
       return conexion;
     }
+
+    public List<EsquemaVistaDto> GetListaValidacionEsquema(int idONA, int idEsquemaVista)
+    {
+        return ExecuteDbOperation(context =>
+            (from c in context.EsquemaVistaColumna
+             join v in context.EsquemaVista on c.IdEsquemaVista equals v.IdEsquemaVista
+             where v.IdONA == idONA && v.Estado == "A" && v.IdEsquemaVista == idEsquemaVista
+             select new EsquemaVistaDto
+             {
+                 NombreEsquema = c.ColumnaEsquema,
+                 NombreVista = c.ColumnaVista
+             }).ToList()
+        );
+    }
   }
 }

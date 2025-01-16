@@ -6,5 +6,6 @@ namespace WebApp.Repositories.IRepositories
   {
     List<PropiedadesTablaDto> GetProperties(int idONA, string viewName);
     List<string> GetViewNames(int idONA);
-  }
+    List<EsquemaVistaDto> GetListaValidacionEsquema(int idONA, int idEsquemaVista);
+    }
 }

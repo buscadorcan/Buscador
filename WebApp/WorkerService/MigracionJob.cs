@@ -39,7 +39,12 @@ namespace WebApp.WorkerService
                         foreach (var conexion in conexiones)
                         {
                             Console.WriteLine($"Migrando conexión: {conexion.IdONA}");
-                            //await service.MigrarAsync(conexion);                           
+                            var respuesta = await service.MigrarAsync(conexion);
+                            if (respuesta)
+                            {
+                                conexion.Migrar = "N";
+                                conexionRepository.Update(conexion);
+                            }
                         }
                     }
                     // Calculate the time until midnight

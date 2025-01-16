@@ -7,36 +7,35 @@
 <h3>Validación de Campos</h3>
 
 <div class="row py-2">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div>
-            <label class="col-form-label">Organización</label>
+            <label class="col-form-label">Ona</label>
         </div>
         <Dropdown AutoClose="true">
             <DropdownToggleButton Color="ButtonColor.Secondary">
-                @if (organizacionSelected?.MostrarWeb != null)
+                @if (onaSelected?.Siglas != null)
                 {
-                    @organizacionSelected.MostrarWeb
+                    @onaSelected.Siglas
                 }
                 else
                 {
-                    <span>Seleccionar ORG</span>
+                    <span>Seleccionar Ona</span>
                 }
             </DropdownToggleButton>
             <DropdownMenu>
-                @if (listaOrganizaciones != null)
+                @if (listaONAs != null)
                 {
-                    @foreach(var opcion in listaOrganizaciones) {
-                        <DropdownItem
-                            @onclick="async () => await CambiarSeleccionOrganizacion(opcion)"
-                        >
-                            @opcion.MostrarWeb
+                    @foreach (var opcion in listaONAs)
+                    {
+                        <DropdownItem @onclick="async () => await CambiarSeleccionOna(opcion)">
+                            @opcion.Siglas
                         </DropdownItem>
                     }
                 }
             </DropdownMenu>
         </Dropdown>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div>
             <label class="col-form-label">Esquemas</label>
         </div>
@@ -52,15 +51,14 @@
                 }
             </DropdownToggleButton>
             <DropdownMenu>
-                @if (listaHomologacionEsquemas != null)
+                @if (listaEsquemasOna != null)
                 {
-                    @foreach(var opcion in listaHomologacionEsquemas) {
-                        <DropdownItem
-                            @onclick="() => CambiarSeleccionEsquema(opcion)"
-                        >
+                    @foreach (var opcion in listaEsquemasOna)
+                    {
+                        <DropdownItem @onclick="() => CambiarSeleccionEsquema(opcion)">
                             @if (NombresVistas != null)
                             {
-                                @if (NombresVistas.Count(c => c.Equals(opcion.VistaNombre)) > 0)
+                                @if (NombresVistas.Count(c => c.Equals(opcion.MostrarWeb)) > 0)
                                 {
                                     <Icon Name="IconName.Check" />
                                 }
@@ -71,6 +69,12 @@
                 }
             </DropdownMenu>
         </Dropdown>
+    </div>
+    <div class="col-md-4">
+        <div>
+            <label class="col-form-label">Vista Origen</label>
+        </div>
+        <input type="text" disabled class="form-control" placeholder="" @bind="nombreSugerido" />
     </div>
     <div class="col-md-12 py-2">
         <Grid @ref="grid" TItem="EsquemaVistaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemaVistaDataProvider" Responsive="true">
