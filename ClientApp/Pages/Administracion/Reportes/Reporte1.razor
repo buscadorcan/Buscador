@@ -12,16 +12,16 @@
     <!-- Gráficos de pastel (2 gráficos de pastel y 1 gráfico de líneas) -->
     <div class="row">
         <div class="col-md-4">
-            <h4>Acreditaciones realizadas por Esquema</h4>
+            <h5>Acreditaciones realizadas por Esquema</h5>
             <canvas id="chart1" class="chart" style="height: 300px; width: 100%;"></canvas>
         </div>
         <div class="col-md-4">
-            <h4>Estado de acreditaciones por esquema</h4>
+            <h5>Estado de acreditaciones por esquema</h5>
             <canvas id="chart2" class="chart" style="height: 300px; width: 100%;"></canvas>
         </div>
         <div class="col-md-4">
-            <h4>Crecimiento de OEC acreditadas por fecha</h4>
-            <canvas id="chart3" class="chart" style="height: 300px; width: 100%;"></canvas>
+            <h5>Crecimiento de OEC acreditadas por fecha</h5>
+            <canvas id="chart3" class="chart" style="height: 350px; width: 100%;"></canvas>
         </div>
     </div>
 </div>
@@ -30,15 +30,15 @@
     <!-- Mapas de calor (3 abajo) -->
     <div class="row">
         <div class="col-md-4">
-            <h4>Acreditaciones realizadas por OA</h4>
+            <h5>Acreditaciones realizadas por OA</h5>
             <div id="heatmap1" class="heatmap" style="height: 300px; width: 100%;"></div>
         </div>
         <div class="col-md-4">
-            <h4>OEC Acreditadas por País</h4>
+            <h5>OEC Acreditadas por País</h5>
             <div id="heatmap2" class="heatmap" style="height: 300px; width: 100%;"></div>
         </div>
         <div class="col-md-4">
-            <h4>Estado de OEC / Esquema por ubicación</h4>
+            <h5>Estado de OEC / Esquema por ubicación</h5>
             <div id="heatmap3" class="heatmap" style="height: 300px; width: 100%;"></div>
         </div>
     </div>
@@ -131,7 +131,7 @@
             data.forEach(item => {
                 // Estilo de marcador con un tamaño dinámico
                 const marker = L.circleMarker([0, 0], {
-                    radius: item.organizaciones > 50 ? 10 : item.organizaciones > 20 ? 7 : 5,
+                    radius: item.organizaciones > 50 ? 20 : item.organizaciones > 20 ? 15 : 10, // Aumentar tamaños
                     color: 'red',
                     fillColor: item.organizaciones > 50 ? 'red' : item.organizaciones > 20 ? 'orange' : 'yellow',
                     fillOpacity: 0.7,

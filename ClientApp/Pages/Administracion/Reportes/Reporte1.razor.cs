@@ -33,22 +33,22 @@ namespace ClientApp.Pages.Administracion.Reportes
         // Datos para los mapas de calor
         public List<MapData> Heatmap1Data { get; set; } = new List<MapData>
         {
-            new MapData { Pais = "Ecuador", Organizaciones = 10 },
-            new MapData { Pais = "Peru", Organizaciones = 15 }
+            new MapData { Pais = "Ecuador", Organizaciones = 1 },
+            new MapData { Pais = "Peru", Organizaciones = 100 }
         };
 
         public List<MapData> Heatmap2Data { get; set; } = new List<MapData>
         {
-            new MapData { Pais = "Ecuador", Organizaciones = 10 },
-            new MapData { Pais = "Peru", Organizaciones = 15 },
-            new MapData { Pais = "Bolivia", Organizaciones = 16 }
+            new MapData { Pais = "Ecuador", Organizaciones = 1 },
+            new MapData { Pais = "Peru", Organizaciones = 100 },
+            new MapData { Pais = "Bolivia", Organizaciones = 1000 }
         };
 
         public List<MapData> Heatmap3Data { get; set; } = new List<MapData>
         {
-            new MapData { Pais = "Ecuador", Organizaciones = 5 },
-            new MapData { Pais = "Peru", Organizaciones = 6 },
-            new MapData { Pais = "Bolivia", Organizaciones = 7 }
+            new MapData { Pais = "Ecuador", Organizaciones = 1 },
+            new MapData { Pais = "Peru", Organizaciones = 100 },
+            new MapData { Pais = "Bolivia", Organizaciones = 1000 }
         };
 
         // Método ejecutado después de renderizar el componente
