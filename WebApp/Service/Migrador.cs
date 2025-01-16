@@ -352,9 +352,9 @@ namespace WebApp.Service.IService
                 var connectionFactories = new Dictionary<string, Func<string, IDbConnection>>
                 {
                     { "SQLSERVER", connStr => new SqlConnection(connStr) },
-                    { "MYSQL", connStr => new MySqlConnection(connStr) },
-                    { "POSTGRES", connStr => new NpgsqlConnection(connStr) },
-                    { "SQLLITE", connStr => new SqliteConnection(connStr) }
+                    { "MYSQL", connStr => new MySqlConnection(connStr) }
+                    //{ "POSTGRES", connStr => new NpgsqlConnection(connStr) },
+                    //{ "SQLLITE", connStr => new SqliteConnection(connStr) }
                 };
 
                 if (connectionFactories.TryGetValue(origenDatos.ToUpper(), out var createConnection))
