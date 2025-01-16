@@ -141,7 +141,7 @@ namespace WebApp.Service.IService
                 currentLogMigracion = _repositoryLM.Create(logMigracion);
 
                 //currentFields = _repositoryEVC.FindByIdEsquemaVista(currentEsquema.IdEsquema);
-                currentFields = _repositoryEVC._FindByIdEsquemaVista(esquemaVista.IdEsquemaVista, currentONA.IdONA);
+                currentFields = _repositoryEVC.FindByIdEsquemaVistaOna(esquemaVista.IdEsquemaVista, currentONA.IdONA);
                 
                 if (currentFields.Count == 0) {
                 errors = errors.Append($"Error: No se ha encontrado campos a migrar para vista {esquemaVista.VistaOrigen} configurados para ONA {currentONA.RazonSocial}").ToArray();
