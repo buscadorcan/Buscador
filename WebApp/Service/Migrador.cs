@@ -303,7 +303,7 @@ namespace WebApp.Service.IService
 
 
                     //Eliminados los registros anteriores
-                    _repositoryDLO.DeleteOldRecords(idEsquemaVista);
+                   // _repositoryDLO.DeleteOldRecords(idEsquemaVista);
 
                     // Insertar en la tabla EsquemaData
                     var esquemaData = new EsquemaData

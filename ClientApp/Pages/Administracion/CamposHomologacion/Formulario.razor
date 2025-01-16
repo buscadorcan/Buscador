@@ -79,11 +79,13 @@
 
             <div class="form-row py-2">
                 <label class="col-form-label">Indexar</label>
-                <select class="form-control" @bind="homologacion.Indexar">
+           @*      <select class="form-control" @bind="homologacion.Indexar">
                     <option value="">Seleccione una opción</option>
                     <option value="S">SI</option>
                     <option value="N">NO</option>
-                </select>
+                </select> *@
+                <Switch @bind-Value="isIndexar" Label="Seleccione una opción" />
+                <div class="mt-3"><b>@(isIndexar ? "SI" : "NO")</b></div>
                 <ValidationMessage For="(() => homologacion.Indexar)" />
             </div>
 

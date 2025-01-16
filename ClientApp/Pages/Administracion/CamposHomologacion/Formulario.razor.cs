@@ -54,5 +54,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         private void OnAutoCompleteChanged(string mascaraDato) {
             homologacion.MascaraDato = mascaraDato;
         }
+
+        private bool isIndexar // Propiedad booleana vinculada al Switch
+        {
+            get => homologacion.Indexar == "S"; // Convertir "S" a true
+            set => homologacion.Indexar = value ? "S" : "N"; // Convertir true a "S"
+        }
     }
 }

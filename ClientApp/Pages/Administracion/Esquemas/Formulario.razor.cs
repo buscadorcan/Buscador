@@ -100,7 +100,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
                             foreach (var n in lista)
                             {
                                 if (HomologacionService != null)
-                                    await HomologacionService.RegistrarOActualizar(new HomologacionDto { IdHomologacion = n.IdHomologacion, MostrarWebOrden = n.MostrarWebOrden });
+                                    await HomologacionService.RegistrarOActualizar(new HomologacionDto { IdHomologacion = n.IdHomologacion, MostrarWebOrden = n.MostrarWebOrden  });
                             }
 
                             ToastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");

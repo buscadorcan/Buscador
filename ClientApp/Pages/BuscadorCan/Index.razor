@@ -1,5 +1,6 @@
 @page "/"
 @page "/persona"
+
 @using SharedApp.Models.Dtos;
 @using SharedApp.Data;
 @using Newtonsoft.Json;
@@ -9,6 +10,10 @@
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/styleguide.css" />
     <link rel="stylesheet" href="/css/style.css" />
+<style>
+
+</style>
+
 </head>
 <body>
     <div class="pagina">
@@ -277,19 +282,42 @@
                         </div>
                         </div>
                         </div> *@
+
+
                             @if (!mostrarIndexCard)
                             {
                                 <IndexGrilla @ref="childComponentRef"
-                                               buscarRequest="@buscarRequest"
-                                               selectedValues="@selectedValues"
-                                               listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                                             buscarRequest="@buscarRequest"
+                                             selectedValues="@selectedValues"
+                                             listaEtiquetasFiltros="@listaEtiquetasFiltros" />
                             }
                             else
                             {
-                                <IndexCard @ref="cardComponentRef"
-                                           buscarRequest="@buscarRequest"
-                                           selectedValues="@selectedValues"
-                                           listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <!-- El mapa de Google se cargará aquí -->
+                                       <div id="map" style="width: 100%; height: 400px; background-color: grey;">
+                                           
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-8">
+                                        <!-- Cards -->
+                                        <div class="row">
+                                            @for (int i = 1; i <= 9; i++) // Generar 9 cards
+                                            {
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="card">
+                                                        <div class="card-header">ONG @i</div>
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">Certificacion @i</h5>
+                                                            <p class="card-text">This is card number @i.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
                             }
                            
                         </div>
@@ -298,6 +326,7 @@
             }            
         </div>
     </div>
+
 </body>
 
 @* <div class="page-container">
@@ -347,3 +376,5 @@
                      listaEtiquetasFiltros="@listaEtiquetasFiltros" />
     </div>
 </div> *@
+
+
