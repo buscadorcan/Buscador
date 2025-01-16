@@ -2,7 +2,7 @@
 
 <div class="card">
     <div class="card-body">
-        <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="columnas" Responsive="true" FixedHeader="true" Height="350" Id="sortableGrid">
+        <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="columnas" Responsive="true" FixedHeader="true" Height="450" Id="sortableGrid">
             <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
                 @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado
                 <input type="hidden" value="@context.IdHomologacion" />
@@ -12,6 +12,9 @@
             </GridColumn>
             <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
                 @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" HeaderText="Mostrar" PropertyName="TooltipWeb">
+                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar
             </GridColumn>
             <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
                 @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato

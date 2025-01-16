@@ -2,6 +2,7 @@ using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 using SharedApp.Data;
 using SharedApp.Models.Dtos;
 
@@ -13,6 +14,9 @@ namespace ClientApp.Pages.BuscadorCan
         public ICatalogosService? iCatalogosService { get; set; }
         [Inject]
         public IBusquedaService? iBusquedaService { get; set; }
+        //[Inject] 
+        //protected IJSRuntime? JSRuntime { get; set; }
+        //protected string ApiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk";
         private IndexGrilla? childComponentRef;
         private IndexCard? cardComponentRef;
         private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
@@ -240,6 +244,15 @@ namespace ClientApp.Pages.BuscadorCan
             public string MostrarWeb { get; set; }
         }
 
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+        //        // Llama a la inicialización del mapa desde JavaScript
+        //        await JSRuntime.InvokeVoidAsync("initMap", ApiKey);
+        //    }
+        //}
+
     }
 
     public class FiltrosBusquedaSeleccion
@@ -253,5 +266,7 @@ namespace ClientApp.Pages.BuscadorCan
         }
 
     }
+
+
 
 }
