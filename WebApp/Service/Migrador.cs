@@ -1,29 +1,28 @@
 
-using WebApp.Models;
-using System.Data;
-using WebApp.Repositories.IRepositories;
-using Microsoft.Data.SqlClient;
-using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Configuration;
-using System.Text;
-using System.Collections.Generic;
-using MySql.Data.MySqlClient;
-using Npgsql;
-using Microsoft.Data.Sqlite;
 using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore.Migrations.Internal;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using Npgsql;
+using System.Data;
+using WebApp.Models;
+using WebApp.Repositories.IRepositories;
 
 namespace WebApp.Service.IService
 {
-    public class Migrador(IEsquemaDataRepository esquemaDataRepository, IEsquemaFullTextRepository esquemaFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository esquemaRepository, IONAConexionRepository conexionRepository, IConfiguration configuration, IConectionStringBuilderService connectionStringBuilderService, IEsquemaVistaRepository esquemaVistaRepository) : IMigrador
+    public class Migrador(IEsquemaDataRepository esquemaDataRepository, IEsquemaFullTextRepository esquemaFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository esquemaRepository, IONAConexionRepository conexionRepository, IConfiguration configuration, IConectionStringBuilderService connectionStringBuilderService, IEsquemaVistaRepository esquemaVistaRepository, IEsquemaVistaColumnaRepository esquemaVistaColumnaRepository, ILogMigracionRepository logMigracionRepository) : IMigrador
     {
         private IEsquemaDataRepository _repositoryDLO = esquemaDataRepository;
         private IEsquemaFullTextRepository _repositoryOFT = esquemaFullTextRepository;
         private IEsquemaVistaRepository _repositoryEVRP = esquemaVistaRepository;
+        private IEsquemaVistaColumnaRepository _repositoryEVCRP = esquemaVistaColumnaRepository;
         private IHomologacionRepository _repositoryH = homologacionRepository;
         private IEsquemaRepository _repositoryHE = esquemaRepository;
         private IONAConexionRepository _repositoryC = conexionRepository;
         private IConectionStringBuilderService _connectionStringBuilderService = connectionStringBuilderService;
+        private ILogMigracionRepository _logMigracion = logMigracionRepository;
         private string connectionString = configuration.GetConnectionString("Mssql-CanDb") ?? throw new InvalidOperationException("La cadena de conexión 'Mssql-CanDb' no está configurada.");
         private ONAConexion? currentConexion = null;
         private int executionIndex = 0;
@@ -42,93 +41,112 @@ namespace WebApp.Service.IService
         List<string> lstColumnsRegistradas = new List<string>();
         public async Task<bool> MigrarAsync(ONAConexion conexion)
         {
-
+            List<EsquemaVista> viewRegistradas = new List<EsquemaVista>();
+            List<EsquemaVistaColumna> viewColumns = new List<EsquemaVistaColumna>();
             try
             {
                 bool resultado = true;
+                int idOna = conexion.IdONA;
                 // Generar la cadena de conexión
                 var connectionString = _connectionStringBuilderService.BuildConnectionString(conexion);
                 var isConnectionSuccessful = TestDatabaseConnectionAsync(connectionString, conexion.OrigenDatos);
                 if (isConnectionSuccessful)
                 {
                     Console.WriteLine("La conexión a la base de datos se probó exitosamente.");
+                    var data = new LogMigracion
+                    {
+                        IdONA = idOna,
+                        OrigenDatos = conexion.OrigenDatos,
+                        Observacion = "Conexion inicializada con exito"
+                    };
+                    _logMigracion.Create(data);
                 }
                 else
                 {
+                    var data = new LogMigracion
+                    {
+                        IdONA = idOna,
+                        OrigenDatos = conexion.OrigenDatos,
+                        Observacion = "Hubo un problema al conectar a la base de datos."
+                    };
+                    _logMigracion.Create(data);
                     Console.WriteLine("Hubo un problema al conectar a la base de datos.");
                 }
 
-                List<Esquema> viewRegistradas = new List<Esquema>();
-
-                //recuperar vistas de la tabla esquemas 
-                viewRegistradas = _repositoryHE.FindAllWithViews();
 
 
-                //recuperar vistas externas de acuerdo a la conexion.
-                var vistasExternas = await GetExternalViewsAsync(connectionString, conexion.OrigenDatos);
+                //recuperar vistas de la tabla esquemasVista
+                viewRegistradas = _repositoryEVRP.FindAll().Where(v => v.IdONA == idOna).ToList();
 
-                // Encontrar vistas externas que están en la base de datos
-                var vistasRegistradas = vistasExternas.Select(v => v.ToUpper()).Intersect(viewRegistradas.Select(v => v.EsquemaVista.ToUpper())).ToList();
-
-                // Encontrar vistas externas que no están registradas
-                var vistasNoRegistradas = vistasExternas.Select(v => v.ToUpper()).Except(viewRegistradas.Select(v => v.EsquemaVista.ToUpper())).ToList();
-
-
-                foreach (var vista in vistasRegistradas)
+                bool vistaAp;
+                bool columnAp;
+                bool procesar = true;
+                foreach (var vista in viewRegistradas)
                 {
-                    
-                    // Leer las columnas de cada vista registrada
-                    var columnas = await GetViewColumnsAsync(connectionString, conexion.OrigenDatos, vista);
+                    vistaAp = await ValidarVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen);
+                    if (vistaAp)
+                    {
+                        viewColumns = _repositoryEVCRP.FindByIdEsquemaVista(vista.IdEsquemaVista);
+                        foreach (var column in viewColumns)
+                        {
+                            columnAp = await ValidarColumnaEnVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, column.ColumnaEsquema);
+                            if (!columnAp)
+                            {
+                                procesar = false;
+                                Console.WriteLine("Columna no encontrada verificar Log.");
 
+                                var data = new LogMigracion
+                                {
+                                    IdONA = idOna,
+                                    OrigenDatos = conexion.OrigenDatos,
+                                    Observacion = "Columna no encontrada verificar."
+                                };
+                                _logMigracion.Create(data);
+                            }
+                        }
+                        if (procesar)
+                        {
+                            // Llamar a ProcesarMigracionAsync para procesar los datos
+                            bool resspuesta = await ProcesarVistaConDatosAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, viewColumns, vista.IdEsquemaVista);
 
-                    //Convertir las columnas en formato Json:
-                    string columnasJson = JsonConvert.SerializeObject(columnas, Formatting.Indented);
+                            if (resspuesta)
+                            {
+                                Console.WriteLine($"Vista '{vista.VistaOrigen}' procesada exitosamente.");
+                                var data = new LogMigracion
+                                {
+                                    IdONA = idOna,
+                                    OrigenDatos = conexion.OrigenDatos,
+                                    Observacion = "Vista: " + vista.VistaOrigen + " procesada exitosamente."
+                                };
+                                _logMigracion.Create(data);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Error al procesar la vista '{vista.VistaOrigen}'. Verificar log.");
+                                var data = new LogMigracion
+                                {
+                                    IdONA = idOna,
+                                    OrigenDatos = conexion.OrigenDatos,
+                                    Observacion = "Error al procesar la vista: " + vista.VistaOrigen + " verificar."
+                                };
+                                _logMigracion.Create(data);
+                            }
 
-                    int idEsquema = viewRegistradas.Where(v => v.EsquemaVista == vista).FirstOrDefault().IdEsquema;
-                    int idOna = conexion.IdONA;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Vista no encontrada verificar Log.");
+                        var data = new LogMigracion
+                        {
+                            IdONA = idOna,
+                            OrigenDatos = conexion.OrigenDatos,
+                            Observacion = "Vista no encontrada: " + vista.VistaOrigen + " verificar."
+                        };
+                        _logMigracion.Create(data);
+                    }
 
-                    //Insertamos los datos en esquemaVista
-                    //EsquemaVista esquemaVista = new EsquemaVista
-                    //{
-                    //    IdONA = idOna,
-                    //    IdEsquema = idEsquema,
-                    //    VistaOrigen = vista,
-                    //    Estado = "A"
-                    //};
-
-                    //_repositoryEVRP.Create(esquemaVista);
-
-                    // Recuperar el ID generado
-                    //int newIdEsqVista = esquemaVista.IdEsquema;
-
-                    //Insertamos los datos en esquemaData
-                    //EsquemaData esquemaData = new EsquemaData
-                    //{
-                    //    IdEsquemaVista = newIdEsqVista,
-                    //    VistaFK = "",
-                    //    VistaPK = "1",
-                    //    DataEsquemaJson =
-                    //};
-
-
-                    //Insertamos los datos en esquemaFullText
-                    EsquemaFullText esquemaFullText = new EsquemaFullText();
-
-
-
-
-                    //lstViewRegistradas.Add(vista);
                 }
-                // Almacenar las vistas que no están registradas para luego mostrar mensajes
-                vistasNoRegistradas.AddRange(lstViewNoRegistradas);
-
-                // Mostrar las vistas no registradas (opcional, para notificación)
-                if (vistasNoRegistradas.Any())
-                {
-                    Console.WriteLine("Vistas no registradas:");
-                    vistasNoRegistradas.ForEach(vista => Console.WriteLine(vista));
-                }
-
 
                 return resultado;
             }
@@ -137,6 +155,7 @@ namespace WebApp.Service.IService
 
                 throw ex;
             }
+
         }
         /// <summary>
         /// Importacion de vistas externas de acuerdo a la conexion.
@@ -145,96 +164,186 @@ namespace WebApp.Service.IService
         /// <param name="origenDatos"></param>
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
-        public async Task<List<string>> GetExternalViewsAsync(string connectionString, string origenDatos)
+        public async Task<bool> ValidarVistaAsync(string connectionString, string origenDatos, string vista)
         {
             try
             {
-                // Determinar la consulta según el tipo de base de datos
-                var query = origenDatos.ToUpper() switch
-                {
-                    "SQLSERVER" => "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS",
-                    "MYSQL" => "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = DATABASE()",
-                    "POSTGRES" => "SELECT table_name FROM information_schema.views WHERE table_schema = 'public'",
-                    "SQLLITE" => "SELECT name FROM sqlite_master WHERE type = 'view'",
-                    _ => throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.")
-                };
-
                 // Crear la conexión según el tipo de base de datos
                 var connectionFactories = new Dictionary<string, Func<string, IDbConnection>>
                 {
                     { "SQLSERVER", connStr => new SqlConnection(connStr) },
-                    { "MYSQL", connStr => new MySqlConnection(connStr) },
-                    { "POSTGRES", connStr => new NpgsqlConnection(connStr) },
-                    { "SQLLITE", connStr => new SqliteConnection(connStr) }
+                    { "MYSQL", connStr => new MySql.Data.MySqlClient.MySqlConnection(connStr) },
+                    { "POSTGRES", connStr => new Npgsql.NpgsqlConnection(connStr) },
+                    { "SQLLITE", connStr => new Microsoft.Data.Sqlite.SqliteConnection(connStr) }
                 };
 
-                if (connectionFactories.TryGetValue(origenDatos.ToUpper(), out var createConnection))
-                {
-                    using var connection = createConnection(connectionString);
-                    connection.Open();  // Abrir la conexión
-
-                    // Ejecutar la consulta
-                    var vistas = await connection.QueryAsync<string>(query);
-                    return vistas.ToList();
-                }
-                else
+                if (!connectionFactories.TryGetValue(origenDatos.ToUpper(), out var createConnection))
                 {
                     throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.");
+
                 }
+
+                using var connection = createConnection(connectionString);
+                connection.Open();
+
+                // Realizar el SELECT * para validar la vista
+                var query = $"SELECT TOP 1 * FROM {vista}"; // Agrega LIMIT para evitar cargar todos los datos
+                await connection.QueryAsync(query);
+
+                // Si no hay excepciones, la vista existe
+                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener vistas: {ex.Message}");
-                return new List<string>();
+                Console.WriteLine($"Error al validar la vista '{vista}': {ex.Message}");
+                return false;
             }
         }
 
-        public async Task<List<string>> GetViewColumnsAsync(string connectionString, string origenDatos, string nombreVista)
+        public async Task<bool> ValidarColumnaEnVistaAsync(string connectionString, string origenDatos, string vista, string columna)
         {
             try
             {
-                // Determinar la consulta según el tipo de base de datos
-                var query = origenDatos.ToUpper() switch
-                {
-                    "SQLSERVER" => $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = '{nombreVista}'",
-                    "MYSQL" => $"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{nombreVista}'",
-                    "POSTGRES" => $"SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = '{nombreVista}'",
-                    "SQLLITE" => $"SELECT name FROM pragma_table_info('{nombreVista}')",
-                    _ => throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.")
-                };
-
-                // Crear la conexión según el tipo de base de datos
+                // Crear conexión según el tipo de base de datos
                 var connectionFactories = new Dictionary<string, Func<string, IDbConnection>>
                 {
                     { "SQLSERVER", connStr => new SqlConnection(connStr) },
-                    { "MYSQL", connStr => new MySqlConnection(connStr) },
-                    { "POSTGRES", connStr => new NpgsqlConnection(connStr) },
-                    { "SQLLITE", connStr => new SqliteConnection(connStr) }
+                    { "MYSQL", connStr => new MySql.Data.MySqlClient.MySqlConnection(connStr) },
+                    { "POSTGRES", connStr => new Npgsql.NpgsqlConnection(connStr) },
+                    { "SQLLITE", connStr => new Microsoft.Data.Sqlite.SqliteConnection(connStr) }
                 };
 
-                if (connectionFactories.TryGetValue(origenDatos.ToUpper(), out var createConnection))
-                {
-                    using var connection = createConnection(connectionString);
-                    connection.Open();  // Abrir la conexión
-
-                    // Ejecutar la consulta
-                    var columnas = await connection.QueryAsync<string>(query);
-                    return columnas.ToList();
-                }
-                else
+                if (!connectionFactories.TryGetValue(origenDatos.ToUpper(), out var createConnection))
                 {
                     throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.");
                 }
+
+                using var connection = createConnection(connectionString);
+                connection.Open();
+
+                // Consulta básica para validar la columna
+                var query = origenDatos.ToUpper() switch
+                {
+                    "SQLSERVER" => $"SELECT TOP 1 [{columna}] FROM {vista}",
+                    "MYSQL" => $"SELECT TOP 1 '{columna}' FROM {vista}",
+                    "POSTGRES" => $"SELECT TOP 1 \"{columna}\" FROM {vista}",
+                    "SQLLITE" => $"SELECT TOP 1 \"{columna}\" FROM {vista}",
+                    _ => throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.")
+                };
+
+                // Ejecutar el SELECT
+                await connection.QueryAsync(query);
+
+                // Si no hay excepciones, la columna existe
+                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener columnas: {ex.Message}");
-                return new List<string>();
+                Console.WriteLine($"Error al validar la columna '{columna}' en la vista '{vista}': {ex.Message}");
+                return false;
             }
         }
 
+        public async Task<bool> ProcesarVistaConDatosAsync(string connectionString, string origenDatos, string vista, List<EsquemaVistaColumna> columnas, int idEsquemaVista)
+        {
+            try
+            {
+                // Crear conexión según el tipo de base de datos
+                var connectionFactories = new Dictionary<string, Func<string, IDbConnection>>
+                {
+                    { "SQLSERVER", connStr => new SqlConnection(connStr) },
+                    { "MYSQL", connStr => new MySql.Data.MySqlClient.MySqlConnection(connStr) },
+                    { "POSTGRES", connStr => new Npgsql.NpgsqlConnection(connStr) },
+                    { "SQLLITE", connStr => new Microsoft.Data.Sqlite.SqliteConnection(connStr) }
+                };
+
+                if (!connectionFactories.TryGetValue(origenDatos.ToUpper(), out var createConnection))
+                {
+                    throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.");
+                }
+
+                using var connection = createConnection(connectionString);
+                connection.Open();
+
+                // Construir el SELECT dinámico
+                var columnasQuery = string.Join(", ", columnas.Select(c =>
+                    origenDatos.ToUpper() == "MYSQL" || origenDatos.ToUpper() == "POSTGRES"
+                    ? $"`{c.ColumnaEsquema}`"
+                    : $"[{c.ColumnaEsquema}]"));
+
+                var query = $"SELECT {columnasQuery} FROM {vista}";
+
+                // Ejecutar la consulta
+                var filas = (await connection.QueryAsync(query)).ToList();
+
+                if (!filas.Any())
+                {
+                    Console.WriteLine($"La vista '{vista}' no contiene datos.");
+                    return false;
+                }
+
+                // Procesar cada fila
+                foreach (var fila in filas)
+                {
+                    // Construir el JSON con IdHomologacion y Data
+                    var dataEsquemaJson = columnas
+                        .Select(col =>
+                        {
+                            var diccionarioFila = (IDictionary<string, object>)fila;
+                            return new
+                            {
+                                IdHomologacion = col.ColumnaEsquemaIdH,
+                                Data = diccionarioFila.ContainsKey(col.ColumnaEsquema)
+                                    ? diccionarioFila[col.ColumnaEsquema]?.ToString()
+                                    : null
+                            };
+                        })
+                        .ToList();
+
+                    var json = JsonConvert.SerializeObject(dataEsquemaJson);
 
 
+                    //Eliminados los registros anteriores
+                    _repositoryDLO.DeleteOldRecords(idEsquemaVista);
+
+                    // Insertar en la tabla EsquemaData
+                    var esquemaData = new EsquemaData
+                    {
+                        IdEsquemaVista = idEsquemaVista,
+                        DataEsquemaJson = json,
+                        DataFecha = DateTime.Now
+                    };
+
+                    _repositoryDLO.Create(esquemaData);
+                    var idEsquemaData = esquemaData.IdEsquemaData;
+
+                    // Insertar en la tabla EsquemaFullText
+                    foreach (var col in columnas)
+                    {
+                        // Usar el diccionario previamente construido
+                        var diccionarioFila = (IDictionary<string, object>)fila;
+
+                        var esquemaFullText = new EsquemaFullText
+                        {
+                            IdEsquemaData = idEsquemaData,
+                            IdHomologacion = col.ColumnaEsquemaIdH,
+                            FullTextData = diccionarioFila.ContainsKey(col.ColumnaEsquema)
+                                ? diccionarioFila[col.ColumnaEsquema]?.ToString()
+                                : null // En caso de que no exista la columna en la fila
+                        };
+
+                        _repositoryOFT.Create(esquemaFullText);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al procesar los datos de la vista '{vista}': {ex.Message}");
+                return false;
+            }
+        }
         public bool TestDatabaseConnectionAsync(string connectionString, string origenDatos)
         {
             try
@@ -275,10 +384,6 @@ namespace WebApp.Service.IService
                 return false;
             }
         }
-        //public async Task<bool> ProcesarAsync(string viewName)
-        //{
-
-        //}
 
     }
 }
