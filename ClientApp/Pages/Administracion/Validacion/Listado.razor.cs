@@ -3,6 +3,9 @@ using SharedApp.Models.Dtos;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using ClientApp.Services;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 
 namespace ClientApp.Pages.Administracion.Validacion
 {
@@ -16,49 +19,78 @@ namespace ClientApp.Pages.Administracion.Validacion
         private IBusquedaService? servicio { get; set; }
         [Inject]
         public IDynamicService? iDynamicService { get; set; }
+        [Inject]
+        public IONAService? iONAservice { get; set; }
+        [Inject]
+        public IEsquemaService? iEsquemaService { get; set; }
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
         private Grid<EsquemaVistaDto>? grid = default;
         private List<HomologacionDto>? listaOrganizaciones = new List<HomologacionDto>();
+        private List<OnaDto>? listaONAs;
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
-        private HomologacionEsquemaDto? esquemaSelected;
+        private EsquemaVistaOnaDto? esquemaSelected;
         private HomologacionDto? organizacionSelected;
+        private OnaDto? onaSelected;
         private List<EsquemaVistaDto> listasHevd = new List<EsquemaVistaDto>();
+        public string nombreSugerido = "";
+        private List<EsquemaVistaOnaDto>? listaEsquemasOna = new List<EsquemaVistaOnaDto>();
         private List<string> NombresVistas { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            if (iHomologacionService != null && iHomologacionEsquemaService != null)
+            var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+            var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            bool accessRol = rol == "KEY_USER_CAN";
+            if (accessRol)
             {
-                listaOrganizaciones = await iHomologacionService.GetHomologacionsAsync();
-                listaHomologacionEsquemas = await iHomologacionEsquemaService.GetHomologacionEsquemasAsync();
+                if (listaONAs is null && iONAservice != null)
+                {
+                    await LoadONAs();
+                }
+            }
+            else
+            {
+                await LoadONAs();
+                listaONAs = listaONAs.Where(onas => onas.IdONA == onaPais).ToList();
+            }
+
+
+        }
+        private async Task LoadONAs()
+        {
+            if (iONAservice != null)
+            {
+                listaONAs = await iONAservice.GetONAsAsync();
             }
         }
-        private async Task CambiarSeleccionOrganizacion(HomologacionDto _organizacionSelected)
+        private async Task CambiarSeleccionOna(OnaDto _onaSelected)
         {
-            organizacionSelected = _organizacionSelected;
+            onaSelected = _onaSelected;
             esquemaSelected = null;
 
-            NombresVistas = await iDynamicService.GetViewNames(organizacionSelected.CodigoHomologacion);
+            listaEsquemasOna = await iEsquemaService.GetEsquemaByOnaAsync(onaSelected.IdONA);
 
             listasHevd = new List<EsquemaVistaDto>();
             if (grid != null)
                 await grid.RefreshDataAsync();
         }
-        private async Task CambiarSeleccionEsquema(HomologacionEsquemaDto _esquemaSelected)
+        private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
         {
             esquemaSelected = _esquemaSelected;
-            var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdHomologacionEsquema);
-            var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
-
+            nombreSugerido = esquemaSelected.EsquemaVista;
+            
             listasHevd = new List<EsquemaVistaDto>();
 
-            var vistas = await iDynamicService.GetProperties(organizacionSelected.CodigoHomologacion, esquemaSelected.VistaNombre.Trim());
+            var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquemaVista);
 
-            foreach (var c in Columnas)
+            
+            foreach (var c in vistas)
             {
-                var count = vistas.Count(n => n.NombreColumna != null && n.NombreColumna.Equals(c.NombreHomologado));
+                var count = vistas.Count(n => n.NombreEsquema != null && n.NombreEsquema.Equals(c.NombreEsquema));
                 listasHevd.Add(new EsquemaVistaDto
                 {
-                    NombreEsquema = c.NombreHomologado,
-                    NombreVista = count > 0 ? c.NombreHomologado : "",
+                    NombreEsquema = c.NombreEsquema,
+                    NombreVista = count > 0 ? c.NombreVista : "",
                     IsValid = count > 0
                 });
             }

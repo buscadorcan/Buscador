@@ -4,6 +4,7 @@ namespace SharedApp.Models.Dtos
 {
   public class HomologacionEsquemaDto
   {
+    public int IdEsquema { get; set; }
     public int IdHomologacionEsquema { get; set; }
     public string? IdVistaNombre { get; set; }
     [Required]
@@ -17,5 +18,8 @@ namespace SharedApp.Models.Dtos
     [Required]
     public string? VistaNombre { get; set; }
     public string? DataTipo { get; set; }
-  }
+    [Required]
+    public string? EsquemaVista { get; set; } = "";
+
+    }
 }
