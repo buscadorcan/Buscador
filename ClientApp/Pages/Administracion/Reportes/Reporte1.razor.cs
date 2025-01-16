@@ -10,11 +10,45 @@ namespace ClientApp.Pages.Administracion.Reportes
 {
     public partial class Reporte1
     {
-        // Datos simulados para el mapa
-        public List<VwAcreditacionOADto> Data { get; set; } = new List<VwAcreditacionOADto>
+        // Datos para los gráficos
+        public List<ChartData> Chart1Data { get; set; } = new List<ChartData>
         {
-            new VwAcreditacionOADto { Pais = "Ecuador", ONA = "sae", Organizaciones = 10, Latitude = -0.1807, Longitude = -78.4678 },
-            new VwAcreditacionOADto { Pais = "Peru", ONA = "IBMETRO", Organizaciones = 15, Latitude = -12.0464, Longitude = -77.0428 }
+            new ChartData { Label = "Productos", Value = 10 },
+            new ChartData { Label = "Ensayos", Value = 15 }
+        };
+
+        public List<ChartData> Chart2Data { get; set; } = new List<ChartData>
+        {
+            new ChartData { Label = "Producto Acreditado", Value = 5 },
+            new ChartData { Label = "Ensayo Retirado", Value = 6 },
+            new ChartData { Label = "Ensayo Acreditado", Value = 7 }
+        };
+
+        public List<LineChartData> Chart3Data { get; set; } = new List<LineChartData>
+        {
+            new LineChartData { Fecha = "2024-01-01", Organizaciones = 50 },
+            new LineChartData { Fecha = "2024-01-02", Organizaciones = 20 }
+        };
+
+        // Datos para los mapas de calor
+        public List<MapData> Heatmap1Data { get; set; } = new List<MapData>
+        {
+            new MapData { Pais = "Ecuador", Organizaciones = 10 },
+            new MapData { Pais = "Peru", Organizaciones = 15 }
+        };
+
+        public List<MapData> Heatmap2Data { get; set; } = new List<MapData>
+        {
+            new MapData { Pais = "Ecuador", Organizaciones = 10 },
+            new MapData { Pais = "Peru", Organizaciones = 15 },
+            new MapData { Pais = "Bolivia", Organizaciones = 16 }
+        };
+
+        public List<MapData> Heatmap3Data { get; set; } = new List<MapData>
+        {
+            new MapData { Pais = "Ecuador", Organizaciones = 5 },
+            new MapData { Pais = "Peru", Organizaciones = 6 },
+            new MapData { Pais = "Bolivia", Organizaciones = 7 }
         };
 
         // Método ejecutado después de renderizar el componente
@@ -22,25 +56,23 @@ namespace ClientApp.Pages.Administracion.Reportes
         {
             if (firstRender)
             {
-                if (Data == null || !Data.Any())
-                {
-                    Console.WriteLine("No hay datos disponibles para inicializar el mapa.");
-                    return;
-                }
-
-                // Validar los datos antes de enviarlos a JavaScript
-                foreach (var item in Data)
-                {
-                    if (item.Latitude == 0 || item.Longitude == 0)
-                    {
-                        Console.WriteLine($"Datos inválidos: {item.Pais} - Latitud: {item.Latitude}, Longitud: {item.Longitude}");
-                    }
-                }
-
-                // Enviar los datos al método JavaScript para inicializar el mapa
                 try
                 {
-                    await JS.InvokeVoidAsync("initMap", Data);
+                    await JS.InvokeVoidAsync("initMap", new
+                    {
+                        chartsData = new[]
+                        {
+                            Chart1Data.Select(d => new { label = d.Label, value = d.Value }),
+                            Chart2Data.Select(d => new { label = d.Label, value = d.Value }),
+                            Chart3Data.Select(d => new { label = d.Fecha, value = d.Organizaciones })
+                        },
+                        mapsData = new
+                        {
+                            heatmap1 = Heatmap1Data,
+                            heatmap2 = Heatmap2Data,
+                            heatmap3 = Heatmap3Data
+                        }
+                    });
                 }
                 catch (JSException jsEx)
                 {
@@ -52,15 +84,24 @@ namespace ClientApp.Pages.Administracion.Reportes
                 }
             }
         }
-    }
 
-    // Modelo de datos utilizado para representar puntos en el mapa
-    public class VwAcreditacionOADto
-    {
-        public string Pais { get; set; }
-        public string ONA { get; set; }
-        public int Organizaciones { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        // Modelos para datos
+        public class ChartData
+        {
+            public string Label { get; set; }
+            public int Value { get; set; }
+        }
+
+        public class LineChartData
+        {
+            public string Fecha { get; set; }
+            public int Organizaciones { get; set; }
+        }
+
+        public class MapData
+        {
+            public string Pais { get; set; }
+            public int Organizaciones { get; set; }
+        }
     }
 }
