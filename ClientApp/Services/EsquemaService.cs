@@ -69,5 +69,11 @@ namespace ClientApp.Services
             var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
             return apiResponse?.IsSuccess ?? false;
         }
+        public async Task<List<EsquemaVistaOnaDto>> GetEsquemaByOnaAsync(int idOna)
+        {
+            var response = await _httpClient.GetAsync($"{url}/esquemas/{idOna}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaVistaOnaDto>>>()).Result;
+        }
     }
 }

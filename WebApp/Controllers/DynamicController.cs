@@ -48,5 +48,20 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(GetViewNames));
       }
     }
+
+    [Authorize]
+    [HttpGet("validacion/{idOna}/{idEsquemaVista}", Name = "GetListaValidacionEsquema")]
+    public IActionResult GetListaValidacionEsquema(int idOna, int idEsquemaVista)
+    {
+        try
+        {
+            var result = _vhRepo.GetListaValidacionEsquema(idOna, idEsquemaVista);
+            return Ok(new RespuestasAPI<List<EsquemaVistaDto>> { Result = result });
+        }
+        catch (Exception e)
+        {
+            return HandleException(e, nameof(GetListaValidacionEsquema));
+        }
+    }
   }
 }

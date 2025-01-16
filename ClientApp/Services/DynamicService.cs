@@ -26,11 +26,37 @@ namespace ClientApp.Services {
                 return new List<PropiedadesTablaDto>();
             }
         }
+        public async Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquemaVista)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{url}/validacion/{idOna}/{idEsquemaVista}");
+                response.EnsureSuccessStatusCode();
+                return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaVistaDto>>>()).Result;
+            }
+            catch (System.Exception ex )
+            {
+                return new List<EsquemaVistaDto>();
+            }
+        }
         public async Task<List<string>> GetViewNames(string codigoHomologacion)
         {
             try
             {
                 var response = await _httpClient.GetAsync($"{url}/{codigoHomologacion}");
+                response.EnsureSuccessStatusCode();
+                return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<string>>>()).Result;
+            }
+            catch (System.Exception ex)
+            {
+                return new List<string>();
+            }
+        }
+        public async Task<List<string>> _GetViewNames(int IdONA)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{url}/{IdONA}");
                 response.EnsureSuccessStatusCode();
                 return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<string>>>()).Result;
             }

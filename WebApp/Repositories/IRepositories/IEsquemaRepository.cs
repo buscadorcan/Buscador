@@ -1,3 +1,4 @@
+using SharedApp.Models.Dtos;
 using WebApp.Models;
 
 namespace WebApp.Repositories.IRepositories
@@ -10,5 +11,6 @@ namespace WebApp.Repositories.IRepositories
     Esquema? FindByViewName(string esquemaVista);
     List<Esquema> FindAll();
     List<Esquema> FindAllWithViews();
-  }
+    List<EsquemaVistaOnaDto> GetListaEsquemaByOna(int idONA);
+    }
 }

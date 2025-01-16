@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using Microsoft.EntityFrameworkCore;
+using SharedApp.Models.Dtos;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -60,5 +61,22 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
+        public List<EsquemaVistaOnaDto> GetListaEsquemaByOna(int idONA)
+        {
+            return ExecuteDbOperation(context =>
+                (from v in context.EsquemaVista
+                 join e in context.Esquema on v.IdEsquema equals e.IdEsquema
+                 where v.IdONA == idONA && v.Estado == "A"
+                 select new EsquemaVistaOnaDto
+                 {
+                     IdEsquemaVista = v.IdEsquemaVista,
+                     EsquemaVista = e.EsquemaVista,
+                     VistaOrigen = v.VistaOrigen,
+                     MostrarWeb = e.MostrarWeb,
+                     IdEsquema = e.IdEsquema
+                 }).ToList()
+            );
+        }
+
     }
 }
