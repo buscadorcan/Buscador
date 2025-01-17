@@ -9,14 +9,14 @@ driver  = '{SQL Server}'
 server  = 'localhost,1434'
 db      = 'SAE'
 tcon    = 'yes'
-uname   = 'sa'
-pword   = 'pat_mic_DBKEY'
+uname   = 'pat_mic'
+pword   = 'michael'
 
 def read_csv_load_db(file_name):
     file_path = os.path.join(csv_directory, file_name)
     try:
         print(f"\n🧬 {file_name}")
-        df = pd.read_csv(file_path, sep=';', encoding='latin1')
+        df = pd.read_csv(file_path, sep=',', encoding='latin1')
         df = df.replace({np.nan: None, '': None})
 
         connection_string = (
