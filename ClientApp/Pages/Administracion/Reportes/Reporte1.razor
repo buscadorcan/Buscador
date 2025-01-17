@@ -1,0 +1,194 @@
+﻿@page "/reporte1"
+@layout AdminLayout
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using ClientApp.Services.IService
+@using SharedApp.Models.Dtos
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+<div class="chart-container">
+    <!-- Gráficos de pastel (2 gráficos de pastel y 1 gráfico de líneas) -->
+    <div class="row">
+        <div class="col-md-4">
+            <h5>Acreditaciones realizadas por Esquema</h5>
+            <canvas id="chart1" class="chart" style="height: 300px; width: 100%;"></canvas>
+        </div>
+        <div class="col-md-4">
+            <h5>Estado de acreditaciones por esquema</h5>
+            <canvas id="chart2" class="chart" style="height: 300px; width: 100%;"></canvas>
+        </div>
+        <div class="col-md-4">
+            <h5>Crecimiento de OEC acreditadas por fecha</h5>
+            <canvas id="chart3" class="chart" style="height: 350px; width: 100%;"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="map-container">
+    <!-- Mapas de calor (3 abajo) -->
+    <div class="row">
+        <div class="col-md-4">
+            <h5>Acreditaciones realizadas por OA</h5>
+            <div id="heatmap1" class="heatmap" style="height: 300px; width: 100%;"></div>
+        </div>
+        <div class="col-md-4">
+            <h5>OEC Acreditadas por País</h5>
+            <div id="heatmap2" class="heatmap" style="height: 300px; width: 100%;"></div>
+        </div>
+        <div class="col-md-4">
+            <h5>Estado de OEC / Esquema por ubicación</h5>
+            <div id="heatmap3" class="heatmap" style="height: 300px; width: 100%;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.initCharts = (chartsData) => {
+        const createPieChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map(item => item.label || 'Sin etiqueta'),
+                    datasets: [{
+                        data: data.map(item => item.value || 0),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                }
+            });
+        };
+
+        const createLineChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(item => item.label || 'Sin fecha'),
+                    datasets: [{
+                        label: 'Organizaciones',
+                        data: data.map(item => item.value || 0),
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fecha'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Organizaciones'
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Inicializar gráficos
+        createPieChart('chart1', chartsData[0]);
+        createPieChart('chart2', chartsData[1]);
+        createLineChart('chart3', chartsData[2]);
+    };
+
+    window.initHeatMaps = (mapsData) => {
+        const createHeatMap = (elementId, data) => {
+            if (typeof L === 'undefined') {
+                console.error("Leaflet.js no está cargado correctamente.");
+                return;
+            }
+
+            const map = L.map(elementId).setView([20, 0], 2); // Vista general del mapa
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            data.forEach(item => {
+                // Estilo de marcador con un tamaño dinámico
+                const marker = L.circleMarker([0, 0], {
+                    radius: item.organizaciones > 50 ? 20 : item.organizaciones > 20 ? 15 : 10, // Aumentar tamaños
+                    color: 'red',
+                    fillColor: item.organizaciones > 50 ? 'red' : item.organizaciones > 20 ? 'orange' : 'yellow',
+                    fillOpacity: 0.7,
+                    weight: 1
+                }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Organizaciones:</strong> ${item.organizaciones}`);
+
+                // Intentar posicionar el marcador en el centro de los países conocidos
+                fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
+                    .then(response => response.json())
+                    .then(locations => {
+                        if (locations.length > 0) {
+                            marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
+                        } else {
+                            console.error(`No se encontraron coordenadas para ${item.pais}`);
+                        }
+                    })
+                    .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
+            });
+        };
+
+        // Inicializar mapas de calor
+        createHeatMap('heatmap1', mapsData.heatmap1);
+        createHeatMap('heatmap2', mapsData.heatmap2);
+        createHeatMap('heatmap3', mapsData.heatmap3);
+    };
+
+    window.initMap = (data) => {
+        if (!data || !data.chartsData || !data.mapsData) {
+            console.error("No se proporcionaron datos para inicializar los mapas y gráficos.");
+            return;
+        }
+
+        window.initCharts(data.chartsData);
+        window.initHeatMaps(data.mapsData);
+    };
+</script>
+
+<style>
+    .map-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .chart-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .chart, .heatmap {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+</style>
