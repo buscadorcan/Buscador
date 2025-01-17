@@ -91,5 +91,18 @@ namespace ClientApp.Pages.BuscadorCan
             parameters.Add("resultData", resultData);
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
+
+        private async void showModalpdf(string urlPdf)
+        {
+            if (modal == null || string.IsNullOrEmpty(urlPdf))
+                return;
+            urlPdf = "https://drive.google.com/file/d/1SFZAXLYOI2OJacE9E9ZryXgXuT7JW5Vw/view?usp=sharing";
+            var parameters = new Dictionary<string, object>
+            {
+                { "PdfUrl", urlPdf } // "PdfUrl" debe coincidir con el nombre del [Parameter] en tu modal
+            };
+
+            await modal.ShowAsync<PdfModal>(title: "Información PDF", parameters: parameters);
+        }
     }
 }
