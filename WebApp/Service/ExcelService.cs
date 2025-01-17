@@ -221,35 +221,48 @@ namespace WebApp.Service.IService
         return result;
       }
 
-      string buildEsquemaDataSetJson(DataTable dataTable, int row)
-      {
-        JArray data = new JArray();
-        foreach (EsquemaVistaColumna currentField in currentFields)
+        string buildEsquemaDataSetJson(DataTable dataTable, int row)
         {
-          addLogDetail(currentField);
-          if (currentField.ColumnaEsquemaIdH < 1)
-          {
-            errors = errors.Append($"Error: Columna {currentField.ColumnaEsquema} no encontrada en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
-            continue;
-          }
+            JArray data = new JArray();
+            foreach (EsquemaVistaColumna currentField in currentFields)
+            {
+                addLogDetail(currentField);
+                if (currentField.ColumnaEsquemaIdH < 1)
+                {
+                    errors = errors.Append($"Error: Columna {currentField.ColumnaEsquema} no encontrada en la base de datos para ONA {currentONA.RazonSocial}").ToArray();
+                    continue;
+                }
 
-          int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.ColumnaVista);
-          if (currentFieldIndex == -1)
-          {
-            errors = errors.Append($"Error: Columna {currentField.ColumnaVista} no encontrada en el archivo de migración para ONA {currentONA.RazonSocial}").ToArray();
-            continue;
-          }
-          data.Add(new JObject
-          {
-            ["IdHomologacion"] = currentField.ColumnaEsquemaIdH,
-            ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString()
-          });
+                int currentFieldIndex = Array.FindIndex(dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray(), c => c == currentField.ColumnaVista);
+                if (currentFieldIndex == -1)
+                {
+                    errors = errors.Append($"Error: Columna {currentField.ColumnaVista} no encontrada en el archivo de migración para ONA {currentONA.RazonSocial}").ToArray();
+                    continue;
+                }
+
+                // Verificar si la columna es orgUrlCertificado (sin sensibilidad a mayúsculas/minúsculas)
+                string urlCertificado = null;
+                string columnMatch = dataTable.Columns.Cast<DataColumn>()
+                                          .FirstOrDefault(c => string.Equals(c.ColumnName, "orgUrlCertificado", StringComparison.OrdinalIgnoreCase))
+                                          ?.ColumnName;
+
+                if (!string.IsNullOrEmpty(columnMatch))
+                {
+                    urlCertificado = dataTable.Rows[row][columnMatch].ToString();
+                }
+
+                data.Add(new JObject
+                {
+                    ["IdHomologacion"] = currentField.ColumnaEsquemaIdH,
+                    ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString(),
+                    ["UrlCertificado"] = urlCertificado
+                });
+            }
+
+            return data.ToString();
         }
 
-        return data.ToString();
-      }
-
-      bool deleteOldRecords(int idEsquemaVista)
+        bool deleteOldRecords(int idEsquemaVista)
       {
         Console.WriteLine($"Deleting old records for {idEsquemaVista}");
         if (deleted)
