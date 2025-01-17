@@ -39,7 +39,9 @@ namespace WebApp.Mappers
 
       CreateMap<LogMigracion, LogMigracionDto>();
       CreateMap<LogMigracionDto, LogMigracion>();
-            
-    }
+
+      CreateMap<EsquemaVista, EsquemaVistaValidacionDto>();
+      CreateMap<EsquemaVistaValidacionDto, EsquemaVista>();
+        }
   }
 }

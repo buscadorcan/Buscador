@@ -74,19 +74,38 @@
         <div>
             <label class="col-form-label">Vista Origen</label>
         </div>
-        <input type="text" disabled class="form-control" placeholder="" @bind="nombreSugerido" />
+        <input type="text" class="form-control" placeholder="" @bind="nombreSugerido" />
     </div>
     <div class="col-md-12 py-2">
         <Grid @ref="grid" TItem="EsquemaVistaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemaVistaDataProvider" Responsive="true">
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Nombre Campo Esquema" PropertyName="NombreEsquema">
-                @context.NombreEsquema
+                <EditorTemplate>
+                    <span>@context.NombreEsquema</span>
+                </EditorTemplate>
             </GridColumn>
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Nombre Campo Vista" PropertyName="NombreVista">
-                @context.NombreVista
+                <EditorTemplate>
+                    @if (!context.IsValid)
+                    {
+                        <input class="form-control" @bind="context.NombreVista" />
+                    }
+                    else
+                    {
+                        <span>@context.NombreVista</span>
+                    }
+                </EditorTemplate>
             </GridColumn>
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Existe" PropertyName="IsValid">
                 @context.IsValid
             </GridColumn>
         </Grid>
+    </div>
+    <div class="col-md-12 py-2 text-end">
+        <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
+            Guardar
+        </Button>
+        <Button @ref="validateButton" Color="ButtonColor.Secondary" @onclick="async () => await ValidarDatos()">
+            Validar
+        </Button>
     </div>
 </div>

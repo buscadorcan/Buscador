@@ -12,5 +12,7 @@ namespace WebApp.Repositories.IRepositories
     List<Esquema> FindAll();
     List<Esquema> FindAllWithViews();
     List<EsquemaVistaOnaDto> GetListaEsquemaByOna(int idONA);
+    bool UpdateEsquemaValidacion(EsquemaVista data);
+    bool CreateEsquemaValidacion(EsquemaVista data);
     }
 }

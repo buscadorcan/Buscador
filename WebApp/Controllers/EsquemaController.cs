@@ -137,6 +137,47 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GetListaEsquemaByOna));
             }
         }
+        [Authorize]
+        [HttpPut("validacion/{id:int}")]
+        public IActionResult UpdateEsquemaValidacion(int id, [FromBody] EsquemaVistaValidacionDto dto)
+        {
+            try
+            {
+                dto.IdEsquemaVista = id;
+                var record = _mapper.Map<EsquemaVista>(dto);
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.UpdateEsquemaValidacion(record)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(UpdateEsquemaValidacion));
+            }
+        }
+
+        [Authorize]
+        [Route("validacion")]
+        [HttpPost]
+        public IActionResult CreateEsquemaValidacion([FromBody] EsquemaVistaValidacionDto dto)
+        {
+            try
+            {
+                var record = _mapper.Map<EsquemaVista>(dto);
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.CreateEsquemaValidacion(record)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(CreateEsquemaValidacion));
+            }
+        }
+
+
     }
 }
 
