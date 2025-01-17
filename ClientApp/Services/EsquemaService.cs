@@ -75,5 +75,32 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaVistaOnaDto>>>()).Result;
         }
+        public async Task<RespuestaRegistro> GuardarEsquemaVistaValidacionAsync(EsquemaVistaValidacionDto esquemaRegistro)
+        {
+            var content = JsonConvert.SerializeObject(esquemaRegistro);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response;
+
+            if (esquemaRegistro.IdEsquemaVista > 0)
+            {
+                response = await _httpClient.PutAsync($"{url}/validacion/{esquemaRegistro.IdEsquemaVista}", bodyContent);
+            }
+            else
+            {
+                response = await _httpClient.PostAsync($"{url}/validacion", bodyContent);
+            }
+
+            var contentTemp = await response.Content.ReadAsStringAsync();
+            var resultado = JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new RespuestaRegistro { registroCorrecto = true };
+            }
+            else
+            {
+                return resultado;
+            }
+        }
     }
 }

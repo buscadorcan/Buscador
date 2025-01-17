@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SharedApp.Models.Dtos
 {
     public class HomologacionDto
@@ -6,6 +8,7 @@ namespace SharedApp.Models.Dtos
         public int? IdHomologacionGrupo { get; set; }
         public int MostrarWebOrden { get; set; }
         public string? MostrarWeb { get; set; }
+        public string? Mostrar { get; set; }
         public string? TooltipWeb { get; set; }
         public string? MascaraDato { get; set; }
         public string? SiNoHayDato { get; set; }

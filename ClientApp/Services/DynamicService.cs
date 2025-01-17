@@ -52,18 +52,5 @@ namespace ClientApp.Services {
                 return new List<string>();
             }
         }
-        public async Task<List<string>> _GetViewNames(int IdONA)
-        {
-            try
-            {
-                var response = await _httpClient.GetAsync($"{url}/{IdONA}");
-                response.EnsureSuccessStatusCode();
-                return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<string>>>()).Result;
-            }
-            catch (System.Exception ex)
-            {
-                return new List<string>();
-            }
-        }
     }
 }

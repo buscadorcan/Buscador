@@ -5,7 +5,6 @@ namespace ClientApp.Services.IService {
     {
         Task<List<PropiedadesTablaDto>> GetProperties(string codigoHomologacion, string viewName);
         Task<List<string>> GetViewNames(string codigoHomologacion);
-        Task<List<string>> _GetViewNames(int idOna);
         Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquemaVista);
     }
 }   

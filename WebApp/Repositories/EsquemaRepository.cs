@@ -32,6 +32,20 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
+        public bool CreateEsquemaValidacion(EsquemaVista data)
+        {
+            data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            data.IdUserModifica = data.IdUserCreacion;
+            data.FechaCreacion = DateTime.Now;
+            data.FechaModifica = DateTime.Now;
+            data.Estado = "A";
+
+            return ExecuteDbOperation(context =>
+            {
+                context.EsquemaVista.Add(data);
+                return context.SaveChanges() >= 0;
+            });
+        }
         public Esquema? FindById(int id)
         {
             return ExecuteDbOperation(context => context.Esquema.AsNoTracking().FirstOrDefault(u => u.IdEsquema == id));
@@ -58,6 +72,19 @@ namespace WebApp.Repositories
                 _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
                 context.Esquema.Update(_exits);
+                return context.SaveChanges() >= 0;
+            });
+        }
+        public bool UpdateEsquemaValidacion(EsquemaVista newRecord)
+        {
+            return ExecuteDbOperation(context =>
+            {
+                var _exits = MergeEntityProperties(context, newRecord, u => u.IdEsquemaVista == newRecord.IdEsquemaVista);
+
+                _exits.FechaModifica = DateTime.Now;
+                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+
+                context.EsquemaVista.Update(_exits);
                 return context.SaveChanges() >= 0;
             });
         }

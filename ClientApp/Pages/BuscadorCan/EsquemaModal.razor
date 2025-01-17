@@ -1,19 +1,25 @@
 <Tabs @ref="tabs" EnableFadeEffect="true">
-    @if (listaEsquemas != null && resultData != null) {
-        @foreach(var esquema in listaEsquemas) {
+    @if (listaEsquemas != null && listaEsquemas.Any() && resultData != null)
+    {
+        @foreach (var esquema in listaEsquemas)
+        {
             <Tab>
                 <TitleTemplate>
                     <Tooltip Title="@esquema.TooltipWeb">@esquema.MostrarWeb</Tooltip>
                 </TitleTemplate>
                 <Content>
                     <div class="py-2">
-                        <EsquemaModalGrillaTab
-                            IdHomologacionEsquema="@esquema.IdHomologacionEsquema"
-                            IdEnte="@resultData.IdEsquemaData.ToString()"
-                        />
+                        <EsquemaModalGrillaTab IdEsquema="@esquema.IdEsquema"
+                                               VistaPK="@resultData.VistaPK.ToString()" />
                     </div>
                 </Content>
             </Tab>
         }
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            No se encontraron esquemas o los datos no están cargados correctamente.
+        </div>
     }
 </Tabs>

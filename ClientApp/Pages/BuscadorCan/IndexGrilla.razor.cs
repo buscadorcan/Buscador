@@ -91,5 +91,46 @@ namespace ClientApp.Pages.BuscadorCan
             parameters.Add("resultData", resultData);
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
+
+        private async void showModalpdf(string urlPdf)
+        {
+            if (modal == null || string.IsNullOrEmpty(urlPdf))
+            {
+                urlPdf = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
+            }
+           
+            var parameters = new Dictionary<string, object>
+            {
+                { "PdfUrl", urlPdf } // "PdfUrl" debe coincidir con el nombre del [Parameter] en tu modal
+            };
+
+            await modal.ShowAsync<PdfModal>(title: "Información PDF", parameters: parameters);
+        }
+
+        private string ExtractUrlCertificado(string? jsonData)
+        {
+            var url = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
+            if (string.IsNullOrWhiteSpace(jsonData))
+                return url;
+
+            try
+            {
+                var deserialized = System.Text.Json.JsonSerializer.Deserialize<JsonData>(jsonData);
+                return deserialized?.UrlCertificado ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deserializando JSON: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
+        // Clase para deserializar
+        public class JsonData
+        {
+            public int IdHomologacion { get; set; }
+            public string Data { get; set; }
+            public string UrlCertificado { get; set; }
+        }
     }
 }

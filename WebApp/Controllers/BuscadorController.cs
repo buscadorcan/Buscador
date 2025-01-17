@@ -45,14 +45,14 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
-        [HttpGet("homologacionEsquema/{idHomologacionEsquema}")]
-        public IActionResult FnHomologacionEsquema(int idHomologacionEsquema)
+        [HttpGet("homologacionEsquema/{idEsquema}")]
+        public IActionResult FnHomologacionEsquema(int idEsquema)
         {
             try
             {
                 return Ok(new RespuestasAPI<FnEsquemaDto>
                 {
-                    Result = _vhRepo.FnHomologacionEsquema(idHomologacionEsquema)
+                    Result = _vhRepo.FnHomologacionEsquema(idEsquema)
                 });
             }
             catch (Exception e)
@@ -60,14 +60,14 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
-        [HttpGet("homologacionEsquemaDato/{idHomologacionEsquema}/{idEnte}")]
-        public IActionResult FnHomologacionEsquemaDato(int idHomologacionEsquema, string idEnte)
+        [HttpGet("homologacionEsquemaDato/{idEsquema}/{vistaPK}")]
+        public IActionResult FnHomologacionEsquemaDato(int idEsquema, string vistaPK)
         {
             try
             {
                 return Ok(new RespuestasAPI<List<FnHomologacionEsquemaDataDto>>
                 {
-                    Result = _vhRepo.FnHomologacionEsquemaDato(idHomologacionEsquema, idEnte)
+                    Result = _vhRepo.FnHomologacionEsquemaDato(idEsquema, vistaPK)
                 });
             }
             catch (Exception e)

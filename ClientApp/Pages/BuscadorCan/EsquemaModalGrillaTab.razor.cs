@@ -10,9 +10,9 @@ namespace ClientApp.Pages.BuscadorCan
     public partial class EsquemaModalGrillaTab
     {
         [Parameter]
-        public int IdHomologacionEsquema { get; set; }
+        public int IdEsquema { get; set; }
         [Parameter]
-        public string? IdEnte { get; set; }
+        public string? VistaPK { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
@@ -24,7 +24,8 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 if (servicio != null)
                 {
-                    homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(IdHomologacionEsquema);
+                    homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(IdEsquema);
+
                     Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema?.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
                 }
             }
@@ -37,7 +38,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdHomologacionEsquema, IdEnte ?? "");
+                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaPK ?? "");
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
