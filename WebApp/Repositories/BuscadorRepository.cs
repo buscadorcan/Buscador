@@ -55,7 +55,7 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context =>
             {
-                return context.Database.SqlQuery<EsquemaDto>($"select * from fnHomologacionEsquemaTodo({idEnte})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
+                return context.Database.SqlQuery<EsquemaDto>($"select * from fnEsquemaTodo({idEnte})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
             });
         }
         //public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
@@ -64,23 +64,23 @@ namespace WebApp.Repositories
         //    return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
         //  });
         //}
-        public FnEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
+        public FnEsquemaDto? FnHomologacionEsquema(int idEsquema)
         {
             return ExecuteDbOperation(context =>
             {
-                return context.Database.SqlQuery<FnEsquemaDto>($"select * from fnEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
+                return context.Database.SqlQuery<FnEsquemaDto>($"select * from fnEsquema({idEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
-        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idHomologacionEsquema, string idEnte)
+        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idEsquema, string vistaPK)
         {
             return ExecuteDbOperation(context =>
             {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDato({idHomologacionEsquema}, {idEnte})").AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDato({idEsquema}, {vistaPK})").AsNoTracking().ToList();
 
                 return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
                 {
-                    IdCanDataSet = c.IdCanDataSet,
-                    IdHomologacionEsquema = c.IdHomologacionEsquema,
+                    IdEsquemaData = c.IdEsquemaData,
+                    IdEsquema = c.IdEsquema,
                     DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
                 }).ToList();
             });

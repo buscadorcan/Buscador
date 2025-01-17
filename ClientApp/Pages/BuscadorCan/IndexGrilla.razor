@@ -29,17 +29,22 @@
                         @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data
                     </ChildContent>
                 </GridColumn>
+                <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
+                    <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small">
+                        <!-- Deserializa el JSON y obtiene la URL del certificado -->
+                        <a href="@ExtractUrlCertificado(context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data)" target="_blank">
+                            <Icon Name="IconName.FileTypePdf" />
+                        </a>
+                    </Button>
+                </GridColumn>
             }
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context)">
                     <Icon Name="IconName.Front" />
                 </Button>
             </GridColumn>
-            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
-                <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModalpdf(context.Siglas)">
-                    <Icon Name="IconName.FileTypePdf" />
-                </Button>
-            </GridColumn>
+
+            
         </Grid>
     }
 </div>

@@ -31,6 +31,7 @@ namespace ClientApp.Pages.BuscadorCan
         private bool mostrarFiltrosAvanzados = false;
         private bool isExactSearch = false;
         private bool mostrarIndexCard = false; // Para alternar entre tarjeta de índice y grilla
+        private string searchTerm = string.Empty;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -144,6 +145,7 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task BuscarPalabraRequest()
         {
+            buscarRequest.TextoBuscar = searchTerm;
             if (childComponentRef != null)
             {
                 // Sincroniza el estado del filtro con el componente hijo (IndexGrilla)
