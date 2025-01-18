@@ -124,6 +124,31 @@ namespace WebApp.Controllers
             }
         }
         [Authorize]
+        [HttpDelete("validacion/{id:int}")]
+        public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id)
+        {
+            try
+            {
+                var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(id);
+
+                if (record == null)
+                {
+                    return NotFoundResponse("Reguistro no encontrado");
+                }
+
+                record.Estado = "X";
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(id)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Deactive));
+            }
+        }
+        [Authorize]
         [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
         public IActionResult GetListaEsquemaByOna(int idOna)
         {
@@ -176,7 +201,25 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(CreateEsquemaValidacion));
             }
         }
+        [Authorize]
+        [Route("vista/columna")]
+        [HttpPost]
+        public IActionResult GuardarListaEsquemaVistaColumna([FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna)
+        {
+            try
+            {
+                var record = _mapper.Map<List<EsquemaVistaColumna>>(listaEsquemaVistaColumna);
 
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GuardarListaEsquemaVistaColumna));
+            }
+        }
 
     }
 }

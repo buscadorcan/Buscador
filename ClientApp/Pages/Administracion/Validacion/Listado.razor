@@ -78,34 +78,39 @@
     </div>
     <div class="col-md-12 py-2">
         <Grid @ref="grid" TItem="EsquemaVistaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemaVistaDataProvider" Responsive="true">
+            <!-- Columna de solo lectura -->
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Nombre Campo Esquema" PropertyName="NombreEsquema">
-                <EditorTemplate>
-                    <span>@context.NombreEsquema</span>
-                </EditorTemplate>
+                <DisplayTemplate>
+                    @context.NombreEsquema
+                </DisplayTemplate>
             </GridColumn>
+            
+            <!-- Columna habilitada para edición -->
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Nombre Campo Vista" PropertyName="NombreVista">
                 <EditorTemplate>
-                    @if (!context.IsValid)
-                    {
-                        <input class="form-control" @bind="context.NombreVista" />
-                    }
-                    else
-                    {
-                        <span>@context.NombreVista</span>
-                    }
+                    <input class="form-control" @bind="context.NombreVista" />
                 </EditorTemplate>
             </GridColumn>
+            
+            <!-- Columna de solo lectura -->
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Existe" PropertyName="IsValid">
-                @context.IsValid
+                <DisplayTemplate>
+                    @context.IsValid
+                </DisplayTemplate>
             </GridColumn>
         </Grid>
     </div>
     <div class="col-md-12 py-2 text-end">
-        <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
-            Guardar
-        </Button>
-        <Button @ref="validateButton" Color="ButtonColor.Secondary" @onclick="async () => await ValidarDatos()">
-            Validar
-        </Button>
+        @if (listasHevd?.Count > 0) 
+        {
+            <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
+                Guardar
+            </Button>
+            <Button @ref="validateButton" Color="ButtonColor.Secondary" @onclick="async () => await ValidarDatos()">
+                Validar
+            </Button>
+        }
     </div>
 </div>
+
+

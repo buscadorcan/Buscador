@@ -42,6 +42,9 @@ namespace WebApp.Mappers
 
       CreateMap<EsquemaVista, EsquemaVistaValidacionDto>();
       CreateMap<EsquemaVistaValidacionDto, EsquemaVista>();
-        }
+
+      CreateMap<EsquemaVistaColumna, EsquemaVistaColumnaDto>();
+      CreateMap<EsquemaVistaColumnaDto, EsquemaVistaColumna>();
+    }
   }
 }

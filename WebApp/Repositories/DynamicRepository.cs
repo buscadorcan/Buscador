@@ -111,7 +111,7 @@ namespace WebApp.Repositories
         return ExecuteDbOperation(context =>
             (from c in context.EsquemaVistaColumna
              join v in context.EsquemaVista on c.IdEsquemaVista equals v.IdEsquemaVista
-             where v.IdONA == idONA && v.Estado == "A" && v.IdEsquemaVista == idEsquemaVista
+             where v.IdONA == idONA && c.Estado == "A" && v.Estado == "A" && v.IdEsquemaVista == idEsquemaVista
              select new EsquemaVistaDto
              {
                  NombreEsquema = c.ColumnaEsquema,

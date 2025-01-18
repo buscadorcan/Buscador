@@ -13,5 +13,8 @@ namespace ClientApp.Services.IService
         Task<bool> DeleteEsquemaAsync(int IdEsquema);
         Task<List<EsquemaVistaOnaDto>> GetEsquemaByOnaAsync(int idOna);
         Task<RespuestaRegistro> GuardarEsquemaVistaValidacionAsync(EsquemaVistaValidacionDto esquemaRegistro);
+        Task<bool> EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(EsquemaVistaValidacionDto esquemaRegistro);
+        Task<RespuestaRegistro> GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna);
+
     }
 }

@@ -69,6 +69,16 @@ namespace ClientApp.Services
             var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
             return apiResponse?.IsSuccess ?? false;
         }
+        public async Task<bool> EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(EsquemaVistaValidacionDto esquemaRegistro)
+        {
+            var response = await _httpClient.DeleteAsync($"{url}/validacion/{esquemaRegistro.IdEsquemaVista}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+            var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
+            return apiResponse?.IsSuccess ?? false;
+        }
         public async Task<List<EsquemaVistaOnaDto>> GetEsquemaByOnaAsync(int idOna)
         {
             var response = await _httpClient.GetAsync($"{url}/esquemas/{idOna}");
@@ -89,6 +99,26 @@ namespace ClientApp.Services
             {
                 response = await _httpClient.PostAsync($"{url}/validacion", bodyContent);
             }
+
+            var contentTemp = await response.Content.ReadAsStringAsync();
+            var resultado = JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new RespuestaRegistro { registroCorrecto = true };
+            }
+            else
+            {
+                return resultado;
+            }
+        }
+        public async Task<RespuestaRegistro> GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna)
+        {
+            var content = JsonConvert.SerializeObject(listaEsquemaVistaColumna);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            HttpResponseMessage response;
+
+            response = await _httpClient.PostAsync($"{url}/vista/columna", bodyContent);
 
             var contentTemp = await response.Content.ReadAsStringAsync();
             var resultado = JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
