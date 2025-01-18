@@ -31,7 +31,7 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<EsquemaDto>>()).Result;
         }
-
+        
         public async Task<RespuestaRegistro> RegistrarEsquemaActualizar(EsquemaDto esquemaRegistro)
         {
             var content = JsonConvert.SerializeObject(esquemaRegistro);
@@ -85,6 +85,7 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaVistaOnaDto>>>()).Result;
         }
+        
         public async Task<RespuestaRegistro> GuardarEsquemaVistaValidacionAsync(EsquemaVistaValidacionDto esquemaRegistro)
         {
             var content = JsonConvert.SerializeObject(esquemaRegistro);

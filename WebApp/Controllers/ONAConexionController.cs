@@ -120,5 +120,24 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Deactive));
             }
         }
+
+        [Authorize]
+        [HttpGet("onaconexion/{idOna:int}")]
+        public IActionResult GetOnaConexionByOna(int idOna)
+        {
+            try
+            {
+                var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
+
+                return Ok(new RespuestasAPI<ONAConexionDto>
+                {
+                    Result = _mapper.Map<ONAConexionDto>(result)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetOnaConexionByOna));
+            }
+        }
     }
 }

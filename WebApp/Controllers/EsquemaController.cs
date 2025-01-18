@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SharedApp.Models.Dtos;
 using SharedApp.Models;
+using MySqlX.XDevAPI.Common;
 
 namespace WebApp.Controllers
 {
@@ -148,20 +149,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Deactive));
             }
         }
-        [Authorize]
-        [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
-        public IActionResult GetListaEsquemaByOna(int idOna)
-        {
-            try
-            {
-                var result = _iRepo.GetListaEsquemaByOna(idOna);
-                return Ok(new RespuestasAPI<List<EsquemaVistaOnaDto>> { Result = result });
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(GetListaEsquemaByOna));
-            }
-        }
+        
         [Authorize]
         [HttpPut("validacion/{id:int}")]
         public IActionResult UpdateEsquemaValidacion(int id, [FromBody] EsquemaVistaValidacionDto dto)
@@ -220,6 +208,22 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GuardarListaEsquemaVistaColumna));
             }
         }
+
+        [Authorize]
+        [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
+        public IActionResult GetListaEsquemaByOna(int idOna)
+        {
+            try
+            {
+                var result = _iRepo.GetListaEsquemaByOna(idOna);
+                return Ok(new RespuestasAPI<List<EsquemaVistaOnaDto>> { Result = result });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetListaEsquemaByOna));
+            }
+        }
+
 
     }
 }

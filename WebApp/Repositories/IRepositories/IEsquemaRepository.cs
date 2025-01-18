@@ -17,5 +17,6 @@ namespace WebApp.Repositories.IRepositories
     bool EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id);
     EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int Id);
     bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna);
+
     }
 }
