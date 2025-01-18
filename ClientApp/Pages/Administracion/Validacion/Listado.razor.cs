@@ -81,6 +81,9 @@ namespace ClientApp.Pages.Administracion.Validacion
 
         private async Task CambiarSeleccionOna(OnaDto _onaSelected)
         {
+            saveButton.HideLoading();
+            validateButton.HideLoading();
+
             onaSelected = _onaSelected;
             esquemaSelected = null;
             nombreSugerido = "";
@@ -93,6 +96,9 @@ namespace ClientApp.Pages.Administracion.Validacion
 
         private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
         {
+            saveButton.HideLoading();
+            validateButton.HideLoading()
+
             esquemaSelected = _esquemaSelected;
             nombreSugerido = esquemaSelected.VistaOrigen;
 
@@ -291,6 +297,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                         toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
                         navigationManager?.NavigateTo("/validacion");
                         saveButton.HideLoading();
+                        validateButton.HideLoading();
                     }
                 }
                 else
@@ -298,12 +305,14 @@ namespace ClientApp.Pages.Administracion.Validacion
                     toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
                     navigationManager?.NavigateTo("/validacion");
                     saveButton.HideLoading();
+                    validateButton.HideLoading();
                 }
             }
             else
             {
                 navigationManager?.NavigateTo("/validacion");
                 saveButton.HideLoading();
+                validateButton.HideLoading(); ;
             }
         }
 
