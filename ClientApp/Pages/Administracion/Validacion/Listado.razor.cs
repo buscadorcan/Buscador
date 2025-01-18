@@ -97,7 +97,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
         {
             saveButton.HideLoading();
-            validateButton.HideLoading()
+            validateButton.HideLoading();
 
             esquemaSelected = _esquemaSelected;
             nombreSugerido = esquemaSelected.VistaOrigen;
