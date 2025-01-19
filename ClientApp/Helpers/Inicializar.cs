@@ -18,6 +18,5 @@ namespace ClientApp.Helpers
         public const string Datos_Usuario_EstadoMigracion_Local = "Estado de Migracion";
         public const string Datos_Usuario_Migrar_Local = "Migrar";
         public const string Datos_Menu_Titulo_Local = "Titulo de menú";
-
     }
 }
