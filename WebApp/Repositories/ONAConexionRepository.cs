@@ -1,5 +1,7 @@
 ﻿using System.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using SharedApp.Models.Dtos;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -60,5 +62,13 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == idOna));
         }
+
+        public bool TestConnection(ONAConexion onoConexion)
+        {
+           
+            return true;
+        }
+
+     
     }
 }

@@ -20,6 +20,8 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
         private Modal modal = default!;
+        private PdfModal? pdfModal = default!;
+
         public Grid<BuscadorResultadoDataDto>? grid;
         private List<VwGrillaDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
@@ -92,19 +94,15 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
-        private async void showModalpdf(string urlPdf)
+        private async Task ShowPdfDialog(BuscadorResultadoDataDto context)
         {
-            if (modal == null || string.IsNullOrEmpty(urlPdf))
-            {
-                urlPdf = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
-            }
-           
-            var parameters = new Dictionary<string, object>
-            {
-                { "PdfUrl", urlPdf } // "PdfUrl" debe coincidir con el nombre del [Parameter] en tu modal
-            };
+            // Extrae la URL del JSON usando tu método
+            var pdfUrl = ExtractUrlCertificado(context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == listaEtiquetasGrilla.FirstOrDefault()?.IdHomologacion)?.Data);
 
-            await modal.ShowAsync<PdfModal>(title: "Información PDF", parameters: parameters);
+            if (!string.IsNullOrEmpty(pdfUrl) && pdfModal != null)
+            {
+                await pdfModal.ShowAsync(pdfUrl); // Muestra el modal con la URL
+            }
         }
 
         private string ExtractUrlCertificado(string? jsonData)

@@ -11,5 +11,9 @@ namespace ClientApp.Services.IService {
         Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content);
         Task<ONAConexionDto> GetOnaConexionByOnaAsync(int idOna);
 
+        Task<RespuestaRegistro> testConexion(int idConexion);
+
+        Task<RespuestaRegistro> DeleteConexionsAsync(int idConexion);
+
     }
 }
