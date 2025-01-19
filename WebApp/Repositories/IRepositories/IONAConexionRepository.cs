@@ -9,5 +9,7 @@ namespace WebApp.Repositories.IRepositories
     ONAConexion? FindById(int Id);
     ONAConexion? FindByIdONA(int IdONA);
     List<ONAConexion> FindAll();
-  }
+    ONAConexion? GetOnaConexionByOnaAsync(int idOna);
+
+    }
 }

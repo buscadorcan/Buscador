@@ -14,5 +14,9 @@ namespace WebApp.Repositories.IRepositories
     List<EsquemaVistaOnaDto> GetListaEsquemaByOna(int idONA);
     bool UpdateEsquemaValidacion(EsquemaVista data);
     bool CreateEsquemaValidacion(EsquemaVista data);
+    bool EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id);
+    EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int Id);
+    bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna);
+
     }
 }

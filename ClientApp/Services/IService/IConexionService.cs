@@ -9,5 +9,7 @@ namespace ClientApp.Services.IService {
         public Task<RespuestaRegistro> RegistrarOActualizar(ONAConexionDto registro);
         Task<RespuestaRegistro> EliminarConexion(int idConexion);
         Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content);
+        Task<ONAConexionDto> GetOnaConexionByOnaAsync(int idOna);
+
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SharedApp.Models.Dtos;
 using SharedApp.Models;
+using MySqlX.XDevAPI.Common;
 
 namespace WebApp.Controllers
 {
@@ -124,19 +125,31 @@ namespace WebApp.Controllers
             }
         }
         [Authorize]
-        [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
-        public IActionResult GetListaEsquemaByOna(int idOna)
+        [HttpDelete("validacion/{id:int}")]
+        public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id)
         {
             try
             {
-                var result = _iRepo.GetListaEsquemaByOna(idOna);
-                return Ok(new RespuestasAPI<List<EsquemaVistaOnaDto>> { Result = result });
+                var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(id);
+
+                if (record == null)
+                {
+                    return NotFoundResponse("Reguistro no encontrado");
+                }
+
+                record.Estado = "X";
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(id)
+                });
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(GetListaEsquemaByOna));
+                return HandleException(e, nameof(Deactive));
             }
         }
+        
         [Authorize]
         [HttpPut("validacion/{id:int}")]
         public IActionResult UpdateEsquemaValidacion(int id, [FromBody] EsquemaVistaValidacionDto dto)
@@ -174,6 +187,40 @@ namespace WebApp.Controllers
             catch (Exception e)
             {
                 return HandleException(e, nameof(CreateEsquemaValidacion));
+            }
+        }
+        [Authorize]
+        [Route("vista/columna")]
+        [HttpPost]
+        public IActionResult GuardarListaEsquemaVistaColumna([FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna)
+        {
+            try
+            {
+                var record = _mapper.Map<List<EsquemaVistaColumna>>(listaEsquemaVistaColumna);
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GuardarListaEsquemaVistaColumna));
+            }
+        }
+
+        [Authorize]
+        [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
+        public IActionResult GetListaEsquemaByOna(int idOna)
+        {
+            try
+            {
+                var result = _iRepo.GetListaEsquemaByOna(idOna);
+                return Ok(new RespuestasAPI<List<EsquemaVistaOnaDto>> { Result = result });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetListaEsquemaByOna));
             }
         }
 

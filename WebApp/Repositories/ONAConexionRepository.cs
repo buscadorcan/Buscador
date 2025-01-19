@@ -56,5 +56,9 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
+        public ONAConexion? GetOnaConexionByOnaAsync(int idOna)
+        {
+            return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == idOna));
+        }
     }
 }
