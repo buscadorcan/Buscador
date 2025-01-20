@@ -60,5 +60,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             get => homologacion.Indexar == "S"; // Convertir "S" a true
             set => homologacion.Indexar = value ? "S" : "N"; // Convertir true a "S"
         }
+
+        private bool isMostrar // Propiedad booleana vinculada al Switch
+        {
+            get => homologacion.Mostrar == "S"; // Convertir "S" a true
+            set => homologacion.Mostrar = value ? "S" : "N"; // Convertir true a "S"
+        }
     }
 }

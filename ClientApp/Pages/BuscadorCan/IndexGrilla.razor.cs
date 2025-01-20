@@ -20,12 +20,13 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
         private Modal modal = default!;
-        private PdfModal? pdfModal = default!;
+        private bool isDialogOpen = false; // Control de estado del diálogo
+        private string? PdfUrl; // URL del PDF
 
         public Grid<BuscadorResultadoDataDto>? grid;
         private List<VwGrillaDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
-        public bool ModoBuscar { get; set;}
+        public bool ModoBuscar { get; set; }
         protected override async Task OnInitializedAsync()
         {
             try
@@ -34,7 +35,9 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
@@ -61,6 +64,7 @@ namespace ClientApp.Pages.BuscadorCan
                     Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
 
                     var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), PageNumber, PageSize);
+                    Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
 
                     if (!(result.Data is null))
                     {
@@ -82,7 +86,8 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task<GridDataProviderResult<BuscadorResultadoDataDto>> ResultadoBusquedaDataProvider(GridDataProviderRequest<BuscadorResultadoDataDto> request)
         {
-            return await Task.FromResult(new GridDataProviderResult<BuscadorResultadoDataDto> {
+            return await Task.FromResult(new GridDataProviderResult<BuscadorResultadoDataDto>
+            {
                 Data = await BuscarEsquemas(request.PageNumber, request.PageSize),
                 TotalCount = totalCount
             });
@@ -94,16 +99,54 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
-        private async Task ShowPdfDialog(BuscadorResultadoDataDto context)
+        private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
-            // Extrae la URL del JSON usando tu método
-            var pdfUrl = ExtractUrlCertificado(context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == listaEtiquetasGrilla.FirstOrDefault()?.IdHomologacion)?.Data);
+            // Obtener la URL del certificado
+            var pdfUrl = GetPdfUrlFromEsquema(resultData);
 
-            if (!string.IsNullOrEmpty(pdfUrl) && pdfModal != null)
+            if (string.IsNullOrWhiteSpace(pdfUrl))
             {
-                await pdfModal.ShowAsync(pdfUrl); // Muestra el modal con la URL
+                // Mostrar una alerta o manejar el error si no hay URL
+                Console.WriteLine("No se encontró la URL del certificado.");
+                pdfUrl = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
             }
+
+            // Configurar los parámetros del modal
+            var parameters = new Dictionary<string, object>
+            {
+                { "PdfUrl", pdfUrl } // Enviar la URL al modal
+            };
+
+            // Mostrar el modal con el componente PDFModal
+            await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
         }
+
+        private string? GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
+        {
+            try
+            {
+                if (resultData.DataEsquemaJson == null || !resultData.DataEsquemaJson.Any())
+                    return null;
+
+                // Buscar el primer objeto que contenga la propiedad "UrlCertificado" en el campo Data
+                var certificado = resultData.DataEsquemaJson
+                    .Select(item => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(item.Data))
+                    .FirstOrDefault(data => data != null && data.ContainsKey("UrlCertificado"));
+
+                return certificado != null && certificado.TryGetValue("UrlCertificado", out var url) ? url : null;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+       
+        }
+        private void CloseDialog()
+        {
+            isDialogOpen = false; // Cierra el diálogo
+        }
+
 
         private string ExtractUrlCertificado(string? jsonData)
         {

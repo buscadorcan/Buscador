@@ -1,27 +1,45 @@
 @using ClientApp.Models;
 @using SharedApp.Models.Dtos
 @using Newtonsoft.Json;
+@using BlazorBootstrap
 
 <div class="py-2">
-    <Modal @ref="modal" Size="ModalSize.ExtraLarge"/>
-    <PdfModal @ref="pdfModal" />
+    <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
+
+    <Dialog tabindex="isDialogOpen">
+        <DialogHeader>
+            <DialogTitle>Visualización de PDF</DialogTitle>
+            <Button CloseButton @onclick="CloseDialog">X</Button>
+        </DialogHeader>
+        <DialogBody>
+            @if (!string.IsNullOrEmpty(PdfUrl))
+            {
+                <iframe src="@PdfUrl" style="width: 100%; height: 600px; border: none;"></iframe>
+            }
+            else
+            {
+                <p>No se pudo cargar el PDF.</p>
+            }
+        </DialogBody>
+    </Dialog>
+
+
     @if (listaEtiquetasGrilla != null)
     {
-        <Grid
-            @ref="grid"
-            TItem="BuscadorResultadoDataDto"
-            class="table table-hover table-bordered table-striped"
-            DataProvider="ResultadoBusquedaDataProvider"
-            Responsive="true"
-            AllowSorting="true"
-            AllowPaging="true"
-            PageSize="5"
-            PageSizeSelectorVisible="true"
-            PageSizeSelectorItems="@(new int[] { 5, 10, 20, 30 })"
-            ItemsPerPageText="Items por página"
-        >
-            @foreach(var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden)) {
-                <GridColumn TItem="BuscadorResultadoDataDto" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">  
+        <Grid @ref="grid"
+              TItem="BuscadorResultadoDataDto"
+              class="table table-hover table-bordered table-striped"
+              DataProvider="ResultadoBusquedaDataProvider"
+              Responsive="true"
+              AllowSorting="true"
+              AllowPaging="true"
+              PageSize="5"
+              PageSizeSelectorVisible="true"
+              PageSizeSelectorItems="@(new int[] { 5, 10, 20, 30 })"
+              ItemsPerPageText="Items por página">
+            @foreach (var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
+            {
+                <GridColumn TItem="BuscadorResultadoDataDto" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">
                     <HeaderContent>
                         <Tooltip Title="@etiqueta.TooltipWeb">@etiqueta.MostrarWeb</Tooltip>
                     </HeaderContent>
@@ -29,7 +47,7 @@
                         @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data
                     </ChildContent>
                 </GridColumn>
-         
+
             }
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context)">
