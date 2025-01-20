@@ -14,16 +14,16 @@ namespace WebApp.WorkerService
         private readonly IServiceProvider _services;
 
 
-        public MigracionJob(ILogger<MigracionJob> logger, IConfiguration config, IServiceProvider provider)
-        {
-            _logger = logger;
-            _logger.LogInformation($"\n\n ♨️ Start Background Migrations Job: {DateTime.Now}");
+        //public MigracionJob(ILogger<MigracionJob> logger, IConfiguration config, IServiceProvider provider)
+        //{
+        //    _logger = logger;
+        //    _logger.LogInformation($"\n\n ♨️ Start Background Migrations Job: {DateTime.Now}");
 
-            _config = config;
-            _configLogPath = _config?.GetConnectionString("LogPath") == null ? "" : _config?.GetConnectionString("LogPath");
-            _services = provider;
+        //    _config = config;
+        //    _configLogPath = _config?.GetConnectionString("LogPath") == null ? "" : _config?.GetConnectionString("LogPath");
+        //    _services = provider;
 
-        }
+        //}
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
