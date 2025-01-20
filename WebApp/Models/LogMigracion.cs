@@ -42,6 +42,6 @@ namespace WebApp.Models
     public DateTime? Final { get; set; } = DateTime.Now;
     public DateTime? Fecha { get; set; } = DateTime.Now;
     public string Observacion { get; set; } = "";
-    public string ExcelFileName { get; set; } = "";
+    public string? ExcelFileName { get; set; } = "";
     }
 }

@@ -43,7 +43,7 @@ namespace WebApp.Repositories
         }
         public List<ONAConexion> FindAll()
         {
-            return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.FechaCreacion).ToList());
+            return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
         }
         public bool Update(ONAConexion newRecord)
         {

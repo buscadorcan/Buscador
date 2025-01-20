@@ -90,7 +90,7 @@ namespace WebApp.Service.IService
               {
                   migracion = new LogMigracion();
                   migracion.Estado = "PROCESSING";
-                  migracion.ExcelFileName = path.Split("/").Last();
+                  //migracion.ExcelFileName = path.Split("/").Last();
                   migracion = _repositoryME.Create(migracion);
               }
               else

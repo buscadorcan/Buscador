@@ -35,7 +35,7 @@ namespace WebApp.WorkerService
             //        {
             //            var service = scope.ServiceProvider.GetRequiredService<IMigrador>();
             //            var conexionRepository = scope.ServiceProvider.GetRequiredService<IONAConexionRepository>();
-            //            List<ONAConexion> conexiones = conexionRepository.FindAll().Where(x => x.OrigenDatos != "EXCEL").ToList();
+            //            List<ONAConexion> conexiones = conexionRepository.FindAll().Where(x => x.OrigenDatos != "EXCEL" && x.Migrar == "S").ToList();
             //            foreach (var conexion in conexiones)
             //            {
             //                Console.WriteLine($"Migrando conexión: {conexion.IdONA}");

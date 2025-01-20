@@ -65,12 +65,13 @@ namespace WebApp.Repositories
         //}
      public bool Update(LogMigracion newRecord)
      {
-         return ExecuteDbOperation(context => {
-             var _exits = MergeEntityProperties(context, newRecord, u => u.IdLogMigracion == newRecord.IdLogMigracion);
+            //return ExecuteDbOperation(context => {
+            //    var _exits = MergeEntityProperties(context, newRecord, u => u.IdLogMigracion == newRecord.IdLogMigracion);
 
-             context.LogMigracion.Update(_exits);
-             return context.SaveChanges() >= 0;
-         });
+            //    context.LogMigracion.Update(_exits);
+            //    return context.SaveChanges() >= 0;
+            //});
+            return true;
      }
     }
 }

@@ -65,8 +65,8 @@ namespace WebApp.Controllers
 
                 LogMigracion migracion = iRepo.Create(new LogMigracion
                 {
-                    Estado = "PENDING",
-                    ExcelFileName = file.FileName
+                    Estado = "PENDING"
+                    //ExcelFileName = file.FileName
                 });
 
                 var result = importer.ImportarExcel(path, migracion);
