@@ -9,10 +9,10 @@ namespace WebApp.Models
         [Key]
         public int IdHomologacion { get; set; }
         public int? IdHomologacionGrupo { get; set; }
-        public string? MostrarWeb { get; set; }
-        public string? TooltipWeb { get; set; }
-        public int? MostrarWebOrden { get; set; }
-        public string? CodigoHomologacion { get; set; }
-        public string? Estado { get; set; }
+        public string? MostrarWeb { get; set; } = "";
+        public string? TooltipWeb { get; set; } = "";
+        public int? MostrarWebOrden { get; set; } = 0;
+        public string? CodigoHomologacion { get; set; } = "";
+        public string? Estado { get; set; } = "";
     }
 }
