@@ -88,7 +88,7 @@ namespace WebApp.Extensions
             // Registra servicios de trabajo en segundo plano (Worker Services).
             services.AddHostedService<BackgroundWorkerService>();
             services.AddHostedService<BackgroundExcelService>();
-            services.AddHostedService<MigracionJob>();
+            //services.AddHostedService<MigracionJob>();
 
 
             // Configura AutoMapper para mapear entre modelos.
