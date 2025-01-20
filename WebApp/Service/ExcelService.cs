@@ -43,46 +43,94 @@ namespace WebApp.Service.IService
       private string idEnteName = " IdOrganizacion";
       private string[] errors = Array.Empty<string>();
 
-      public Boolean ImportarExcel(string path, MigracionExcel? migracion) 
+        //public Boolean ImportarExcel(string path, MigracionExcel? migracion) 
+        //{
+        //  try {
+        //    if (migracion == null) {
+        //      migracion = new MigracionExcel();
+        //      migracion.MigracionEstado = "PROCESSING";
+        //      migracion.ExcelFileName = path.Split("/").Last();
+        //      migracion = _repositoryME.Create(migracion);
+        //    } else {
+        //      migracion.MigracionEstado = "PROCESSING";
+        //      // var result = true;
+        //      _repositoryME.Update(migracion);
+        //    }
+        //    var result = Leer(path);
+        //    if(result) {
+        //      migracion.MigracionEstado = "SUCCESS";
+        //    } else {
+        //      migracion.MigracionEstado = "ERROR";
+        //      migracion.MensageError = "Algo sslió mal en la migración";
+        //    }
+        //    _repositoryME.Update(migracion);
+
+        //    return result;
+        //  } catch (Exception e) {
+        //    Console.WriteLine(e);
+        //    errors = errors.Append(e.Message).ToArray();
+        //    migracion.MigracionEstado = "ERROR";
+        //    migracion.MensageError = string.Join(", ", errors);
+        //    _repositoryME.Update(migracion);
+        //    if (currentLogMigracion != null) {
+        //      currentLogMigracion.Final = DateTime.Now;
+        //      currentLogMigracion.Estado = "ERROR";
+        //      currentLogMigracion.Observacion = string.Join(", ", errors);
+        //      currentLogMigracion.EsquemaFilas = migration_cnt;
+        //      _repositoryLM.Update(currentLogMigracion);
+        //    }
+        //    return false;
+        //  }
+        //}
+      public Boolean ImportarExcel(string path, LogMigracion? migracion)
       {
-        try {
-          if (migracion == null) {
-            migracion = new MigracionExcel();
-            migracion.MigracionEstado = "PROCESSING";
-            migracion.ExcelFileName = path.Split("/").Last();
-            migracion = _repositoryME.Create(migracion);
-          } else {
-            migracion.MigracionEstado = "PROCESSING";
-            // var result = true;
-            _repositoryME.Update(migracion);
-          }
-          var result = Leer(path);
-          if(result) {
-            migracion.MigracionEstado = "SUCCESS";
-          } else {
-            migracion.MigracionEstado = "ERROR";
-            migracion.MensageError = "Algo sslió mal en la migración";
-          }
-          _repositoryME.Update(migracion);
+          try
+          {
+              if (migracion == null)
+              {
+                  migracion = new LogMigracion();
+                  migracion.Estado = "PROCESSING";
+                  migracion.ExcelFileName = path.Split("/").Last();
+                  migracion = _repositoryME.Create(migracion);
+              }
+              else
+              {
+                  migracion.Estado = "PROCESSING";
+                  // var result = true;
+                  _repositoryME.Update(migracion);
+              }
+              var result = Leer(path);
+              if (result)
+              {
+                  migracion.Estado = "SUCCESS";
+              }
+              else
+              {
+                  migracion.Estado = "ERROR";
+                  migracion.Observacion = "Algo sslió mal en la migración";
+              }
+              _repositoryME.Update(migracion);
 
-          return result;
-        } catch (Exception e) {
-          Console.WriteLine(e);
-          errors = errors.Append(e.Message).ToArray();
-          migracion.MigracionEstado = "ERROR";
-          migracion.MensageError = string.Join(", ", errors);
-          _repositoryME.Update(migracion);
-          if (currentLogMigracion != null) {
-            currentLogMigracion.Final = DateTime.Now;
-            currentLogMigracion.Estado = "ERROR";
-            currentLogMigracion.Observacion = string.Join(", ", errors);
-            currentLogMigracion.EsquemaFilas = migration_cnt;
-            _repositoryLM.Update(currentLogMigracion);
+              return result;
           }
-          return false;
-        }
+          catch (Exception e)
+          {
+              Console.WriteLine(e);
+              errors = errors.Append(e.Message).ToArray();
+              migracion.Estado = "ERROR";
+              migracion.Observacion = string.Join(", ", errors);
+              _repositoryME.Update(migracion);
+              if (currentLogMigracion != null)
+              {
+                  currentLogMigracion.Final = DateTime.Now;
+                  currentLogMigracion.Estado = "ERROR";
+                  currentLogMigracion.Observacion = string.Join(", ", errors);
+                  currentLogMigracion.EsquemaFilas = migration_cnt;
+                  _repositoryLM.Update(currentLogMigracion);
+              }
+              return false;
+          }
       }
-
       public Boolean Leer(string fileSrc)
       {
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);

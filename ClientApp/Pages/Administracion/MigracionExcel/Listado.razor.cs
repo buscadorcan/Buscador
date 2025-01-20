@@ -14,10 +14,14 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         public NavigationManager? navigationManager { get; set; }
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
-        private Grid<MigracionExcelDto>? grid;
+        private Grid<LogMigracionDto>? grid;
         [Inject]
         private IMigracionExcelService? iMigracionExcelService { get; set; }
-        private List<MigracionExcelDto>? listasHevd = null;
+        [Inject]
+        private ILogMigracionService? iLogMigracionService { get; set; }
+        //private List<MigracionExcelDto>? listasHevd = null;
+        private List<LogMigracionDto>? listasHevd = null;
+
         private bool accessMigration;
         private bool isRolRead;
         private bool isRolAdmin;
@@ -54,13 +58,21 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             
 
         }
-        private async Task<GridDataProviderResult<MigracionExcelDto>> MigracionExcelDtoDataProvider(GridDataProviderRequest<MigracionExcelDto> request)
+        private async Task<GridDataProviderResult<LogMigracionDto>> LogMigracionDtoDataProvider(GridDataProviderRequest<LogMigracionDto> request)
         {
-            if (listasHevd == null && iMigracionExcelService != null)
+            if (listasHevd == null && iLogMigracionService != null)
             {
-                listasHevd = await iMigracionExcelService.GetMigracionExcelsAsync();
+                listasHevd = await iLogMigracionService.GetLogMigracionesAsync();
             }
             return await Task.FromResult(request.ApplyTo(listasHevd ?? []));
         }
+        //private async Task<GridDataProviderResult<MigracionExcelDto>> MigracionExcelDtoDataProvider(GridDataProviderRequest<MigracionExcelDto> request)
+        //{
+        //    if (listasHevd == null && iMigracionExcelService != null)
+        //    {
+        //        listasHevd = await iMigracionExcelService.GetMigracionExcelsAsync();
+        //    }
+        //    return await Task.FromResult(request.ApplyTo(listasHevd ?? []));
+        //}
     }
 }

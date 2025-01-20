@@ -23,7 +23,7 @@ namespace WebApp.Models
     [Required]
     public string? Migrar { get; set; } = "S";
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public int Migracion { get; set; }
+    public int Migracion { get; set; } = 0;
     [Required]
     public string? Estado { get; set; } = "START";
     [Required]
@@ -37,10 +37,11 @@ namespace WebApp.Models
     [Required]
     public int VistaFilas { get; set; } = 0;
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public string? Tiempo { get; set; }
+    public string? Tiempo { get; set; } = "";
     public DateTime? Inicio { get; set; } = DateTime.Now;
     public DateTime? Final { get; set; } = DateTime.Now;
     public DateTime? Fecha { get; set; } = DateTime.Now;
     public string Observacion { get; set; } = "";
-  }
+    public string ExcelFileName { get; set; } = "";
+    }
 }
