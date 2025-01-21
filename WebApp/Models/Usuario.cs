@@ -25,5 +25,7 @@ namespace WebApp.Models
         [ForeignKey("IdHomologacionRol")]
     public Homologacion? Homologacion { get; set; }
 
+        public DateTime? FechaModifica { get; set; } = DateTime.Now;
+        public int? IdUserModifica { get; set; } = 0;
     }
 }

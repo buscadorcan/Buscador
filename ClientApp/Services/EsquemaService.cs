@@ -79,11 +79,11 @@ namespace ClientApp.Services
             var apiResponse = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
             return apiResponse?.IsSuccess ?? false;
         }
-        public async Task<List<EsquemaVistaOnaDto>> GetEsquemaByOnaAsync(int idOna)
+        public async Task<List<EsquemaDto>> GetEsquemaByOnaAsync(int idOna)
         {
             var response = await _httpClient.GetAsync($"{url}/esquemas/{idOna}");
             response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaVistaOnaDto>>>()).Result;
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaDto>>>()).Result;
         }
         
         public async Task<RespuestaRegistro> GuardarEsquemaVistaValidacionAsync(EsquemaVistaValidacionDto esquemaRegistro)

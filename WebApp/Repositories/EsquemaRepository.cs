@@ -117,19 +117,33 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
-        public List<EsquemaVistaOnaDto> GetListaEsquemaByOna(int idONA)
+        //public List<Esquema> GetListaEsquemaByOna(int idONA)
+        //{
+        //    return ExecuteDbOperation(context =>
+        //        (from v in context.EsquemaVista
+        //         join e in context.Esquema on v.IdEsquema equals e.IdEsquema
+        //         where v.IdONA == idONA && v.Estado == "A"
+        //         select new Esquema
+        //         {
+        //             EsquemaVista = e.EsquemaVista,
+        //             MostrarWeb = e.MostrarWeb,
+        //             IdEsquema = e.IdEsquema
+        //         }).ToList()
+        //    );
+        //}
+        public List<Esquema> GetListaEsquemaByOna(int idONA)
         {
             return ExecuteDbOperation(context =>
-                (from v in context.EsquemaVista
-                 join e in context.Esquema on v.IdEsquema equals e.IdEsquema
-                 where v.IdONA == idONA && v.Estado == "A"
-                 select new EsquemaVistaOnaDto
+                (from e in context.Esquema
+                 where e.Estado == "A" // Solo registros activos
+                 select new Esquema
                  {
-                     IdEsquemaVista = v.IdEsquemaVista,
+                     IdEsquema = e.IdEsquema,
                      EsquemaVista = e.EsquemaVista,
-                     VistaOrigen = v.VistaOrigen,
                      MostrarWeb = e.MostrarWeb,
-                     IdEsquema = e.IdEsquema
+                     MostrarWebOrden = e.MostrarWebOrden,
+                     TooltipWeb = e.TooltipWeb,
+                     EsquemaJson = e.EsquemaJson
                  }).ToList()
             );
         }

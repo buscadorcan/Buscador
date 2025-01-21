@@ -42,14 +42,18 @@ namespace ClientApp.Pages.Administracion.Validacion
         private List<HomologacionDto>? listaOrganizaciones = new List<HomologacionDto>();
         private List<OnaDto>? listaONAs;
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
-        private EsquemaVistaOnaDto? esquemaSelected;
+        //private EsquemaVistaOnaDto? esquemaSelected;
+        private EsquemaDto? esquemaSelected;
+
         private HomologacionDto? organizacionSelected;
         private OnaDto? onaSelected;
         private List<EsquemaVistaDto> listasHevd = new List<EsquemaVistaDto>();
         private List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna = new List<EsquemaVistaColumnaDto>();
 
         public string nombreSugerido = "";
-        private List<EsquemaVistaOnaDto>? listaEsquemasOna = new List<EsquemaVistaOnaDto>();
+        //private List<EsquemaVistaOnaDto>? listaEsquemasOna = new List<EsquemaVistaOnaDto>();
+        private List<EsquemaDto>? listaEsquemasOna = new List<EsquemaDto>();
+
         private List<string> NombresVistas { get; set; }
         private ONAConexionDto? currentConexion = null;
         protected override async Task OnInitializedAsync()
@@ -90,18 +94,17 @@ namespace ClientApp.Pages.Administracion.Validacion
             if (grid != null)
                 await grid.RefreshDataAsync();
         }
-
-        private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
+        private async Task CambiarSeleccionEsquema(EsquemaDto _esquemaSelected)
         {
             esquemaSelected = _esquemaSelected;
-            nombreSugerido = esquemaSelected.VistaOrigen;
+            nombreSugerido = esquemaSelected.EsquemaVista;
 
             var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
             var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
 
             listasHevd = new List<EsquemaVistaDto>();
 
-            var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquemaVista);
+            var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquema);
 
             foreach (var c in Columnas)
             {
@@ -121,6 +124,38 @@ namespace ClientApp.Pages.Administracion.Validacion
                 await grid.RefreshDataAsync();
         }
 
+        //private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
+        //{
+        //    esquemaSelected = _esquemaSelected;
+        //    nombreSugerido = esquemaSelected.VistaOrigen;
+
+
+
+        //    var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
+        //    var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
+
+        //    listasHevd = new List<EsquemaVistaDto>();
+
+        //    var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquemaVista);
+
+        //    foreach (var c in Columnas)
+        //    {
+        //        var vistaCorrespondiente = vistas.FirstOrDefault(n => n.NombreEsquema != null && n.NombreEsquema.Equals(c.NombreHomologado));
+        //        // Contar cuántas vistas cumplen la condición
+        //        var count = vistas.Count(n => n.NombreVista != null && n.NombreVista.Equals(c.NombreHomologado));
+
+        //        listasHevd.Add(new EsquemaVistaDto
+        //        {
+        //            NombreEsquema = c.NombreHomologado,
+        //            NombreVista = vistaCorrespondiente?.NombreVista ?? "", // Asignar NombreVista de la vista correspondiente
+        //            IsValid = count > 0 // Asignar IsValid con base en count
+        //        });
+        //    }
+
+        //    if (grid != null)
+        //        await grid.RefreshDataAsync();
+        //}
+
 
         private async Task<GridDataProviderResult<EsquemaVistaDto>> EsquemaVistaDataProvider(GridDataProviderRequest<EsquemaVistaDto> request)
         {
@@ -138,7 +173,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
             var esquemaRegistro = new EsquemaVistaValidacionDto
             {
-                IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
                 IdOna = onaSelected.IdONA,
                 IdEsquema = esquemaSelected.IdEsquema,
                 VistaOrigen = nombreSugerido,
@@ -169,7 +204,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                     
                         listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
                         {
-                            IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                            //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
                             ColumnaEsquemaIdH = c.IdHomologacion,
                             ColumnaEsquema = vistaCorrespondiente?.NombreEsquema,
                             ColumnaVista = vistaCorrespondiente?.NombreVista, // Asigna el NombreVista correspondiente
@@ -220,7 +255,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 {
                     var esquemaRegistro = new EsquemaVistaValidacionDto
                     {
-                        IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                        //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
                         IdOna = onaSelected.IdONA,
                         IdEsquema = esquemaSelected.IdEsquema,
                         VistaOrigen = nombreSugerido,
@@ -256,7 +291,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
                                 listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
                                 {
-                                    IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                                    //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
                                     ColumnaEsquemaIdH = c.IdHomologacion,
                                     ColumnaEsquema = vistaCorrespondiente.NombreEsquema,
                                     ColumnaVista = vistaCorrespondiente.NombreVista,
@@ -323,7 +358,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
                                 listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
                                 {
-                                    IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                                    //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
                                     ColumnaEsquemaIdH = c.IdHomologacion,
                                     ColumnaEsquema = vistaCorrespondiente.NombreEsquema,
                                     ColumnaVista = vistaCorrespondiente.NombreVista,

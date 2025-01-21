@@ -109,19 +109,46 @@ namespace WebApp.Repositories
             return conexion;
         }
 
-        public List<EsquemaVistaDto> GetListaValidacionEsquema(int idONA, int idEsquemaVista)
+        //public List<EsquemaVistaDto> GetListaValidacionEsquema(int idONA, int idEsquemaVista)
+        //{
+        //    return ExecuteDbOperation(context =>
+        //        (from c in context.EsquemaVistaColumna
+        //         join v in context.EsquemaVista on c.IdEsquemaVista equals v.IdEsquemaVista
+        //         where v.IdONA == idONA && c.Estado == "A" && v.Estado == "A" && v.IdEsquemaVista == idEsquemaVista
+        //         select new EsquemaVistaDto
+        //         {
+        //             NombreEsquema = c.ColumnaEsquema,
+        //             NombreVista = c.ColumnaVista
+        //         }).ToList()
+        //    );
+        //}
+        public List<EsquemaVistaDto> GetListaValidacionEsquema(int idONA, int idEsquema)
         {
             return ExecuteDbOperation(context =>
-                (from c in context.EsquemaVistaColumna
-                 join v in context.EsquemaVista on c.IdEsquemaVista equals v.IdEsquemaVista
-                 where v.IdONA == idONA && c.Estado == "A" && v.Estado == "A" && v.IdEsquemaVista == idEsquemaVista
-                 select new EsquemaVistaDto
-                 {
-                     NombreEsquema = c.ColumnaEsquema,
-                     NombreVista = c.ColumnaVista
-                 }).ToList()
-            );
+            {
+                // Obtener el IdEsquemaVista desde la tabla EsquemaVista
+                var idEsquemaVista = context.EsquemaVista
+                    .Where(v => v.IdONA == idONA && v.IdEsquema == idEsquema && v.Estado == "A")
+                    .Select(v => v.IdEsquemaVista)
+                    .FirstOrDefault();
+
+                // Validar si se encontró un IdEsquemaVista
+                if (idEsquemaVista == 0)
+                {
+                    return new List<EsquemaVistaDto>(); // Retornar una lista vacía si no se encuentra
+                }
+
+                // Consultar la tabla EsquemaVistaColumna con el IdEsquemaVista obtenido
+                return (from c in context.EsquemaVistaColumna
+                        where c.IdEsquemaVista == idEsquemaVista && c.Estado == "A"
+                        select new EsquemaVistaDto
+                        {
+                            NombreEsquema = c.ColumnaEsquema,
+                            NombreVista = c.ColumnaVista
+                        }).ToList();
+            });
         }
+
 
         public bool testconexion(int idONA)
         {

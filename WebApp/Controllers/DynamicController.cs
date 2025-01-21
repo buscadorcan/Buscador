@@ -49,19 +49,33 @@ namespace WebApp.Controllers
       }
     }
 
-    [Authorize]
-    [HttpGet("validacion/{idOna}/{idEsquemaVista}", Name = "GetListaValidacionEsquema")]
-    public IActionResult GetListaValidacionEsquema(int idOna, int idEsquemaVista)
-    {
-        try
+        //[Authorize]
+        //[HttpGet("validacion/{idOna}/{idEsquemaVista}", Name = "GetListaValidacionEsquema")]
+        //public IActionResult GetListaValidacionEsquema(int idOna, int idEsquemaVista)
+        //{
+        //    try
+        //    {
+        //        var result = _vhRepo.GetListaValidacionEsquema(idOna, idEsquemaVista);
+        //        return Ok(new RespuestasAPI<List<EsquemaVistaDto>> { Result = result });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return HandleException(e, nameof(GetListaValidacionEsquema));
+        //    }
+        //}
+        [Authorize]
+        [HttpGet("validacion/{idOna}/{idEsquema}", Name = "GetListaValidacionEsquema")]
+        public IActionResult GetListaValidacionEsquema(int idOna, int idEsquema)
         {
-            var result = _vhRepo.GetListaValidacionEsquema(idOna, idEsquemaVista);
-            return Ok(new RespuestasAPI<List<EsquemaVistaDto>> { Result = result });
-        }
-        catch (Exception e)
-        {
-            return HandleException(e, nameof(GetListaValidacionEsquema));
+            try
+            {
+                var result = _vhRepo.GetListaValidacionEsquema(idOna, idEsquema);
+                return Ok(new RespuestasAPI<List<EsquemaVistaDto>> { Result = result });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetListaValidacionEsquema));
+            }
         }
     }
-  }
 }
