@@ -185,8 +185,8 @@
                     </div>
                     <!-- Botón para alternar visibilidad -->
                     <div class="container-2">
-                        <div class="advanced-filters" @onclick="AlternarFiltrosAvanzados">
-                            Filtros Avanzados
+                        <div class="advanced-filters" @onclick="AlternarFiltrosAvanzados" style="cursor: pointer; font-weight: bold;">
+                            @textoFiltrosAvanzados
                         </div>
                         <div class="divider-2"></div>
                         <div class="view-mode">
@@ -214,41 +214,34 @@
                                     @for (int i = 0; i < listadeOpciones.Count; i++)
                                     {
                                         var currentIndex = i;
-                                        <div class="col form-check-label">
-                                            <label for="select-@currentIndex" class="form-label text-small"
+                                        <div class="col form-check-label" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 14px !important;">
+                                            <label for="select-@currentIndex" class="form-label text-small" style="font-weight: bold;"
                                                 title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
                                                 @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
                                             </label>
                                             <!-- Select List con Checkboxes -->
                                             <div>
                                                 <button class="btn btn-secondary dropdown-toggle custom-bg"
+                                                        style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 14px !important;"
                                                         type="button"
                                                         id="dropdownMenuButton-@currentIndex"
                                                         data-bs-toggle="dropdown"
                                                         aria-expanded="false">
                                                     Seleccionar Opciones
                                                 </button>
-                                                <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton-@currentIndex">
-                                                    <li>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input custom-checkbox"
-                                                                   type="checkbox"
-                                                                   id="selectAll-@currentIndex" >
-                                            
-                                                        </div>
-                                                    </li>
-
+                                                <ul class="dropdown-menu p-2" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 14px !important;" aria-labelledby="dropdownMenuButton-@currentIndex">
                                                     @if (listadeOpciones?[currentIndex] != null)
                                                     {
                                                         @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
                                                         {
                                                             <li>
-                                                                <div class="form-check">
+                                                                <div class="form-check" style="display: flex; align-items: center;">
                                                                     <input class="form-check-input"
                                                                            type="checkbox"
                                                                            id="check-@currentIndex-@opcion.MostrarWeb"
+                                                                           style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
                                                                            @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
-                                                                    <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb">
+                                                                    <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb" style="margin: 0;">
                                                                         @opcion.MostrarWeb
                                                                     </label>
                                                                 </div>
@@ -281,46 +274,47 @@
                         </div> *@
 
 
-                            @if (!mostrarIndexCard)
-                            {
-                                <IndexGrilla @ref="childComponentRef"
-                                             buscarRequest="@buscarRequest"
-                                             selectedValues="@selectedValues"
-                                             listaEtiquetasFiltros="@listaEtiquetasFiltros" />
-                            }
-                            else
-                            {
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <!-- El mapa de Google se cargará aquí -->
-                                       <div id="map" style="width: 100%; height: 400px; background-color: grey;">
-                                           
-                                        </div> 
-                                    </div>
-                                    <div class="col-md-8">
-                                        <!-- Cards -->
-                                        <div class="row">
-                                            @for (int i = 1; i <= 9; i++) // Generar 9 cards
-                                            {
-                                                <div class="col-md-4 mb-3">
-                                                    <div class="card">
-                                                        <div class="card-header">ONG @i</div>
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Certificacion @i</h5>
-                                                            <p class="card-text">This is card number @i.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            }
+            
                            
                         </div>
                     </div>
                 </div>         
-            }            
+            }
+
+            @if (!mostrarIndexCard)
+            {
+                <IndexGrilla @ref="childComponentRef"
+                             buscarRequest="@buscarRequest"
+                             selectedValues="@selectedValues"
+                             listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <!-- El mapa de Google se cargará aquí -->
+                        <div id="map" style="width: 100%; height: 400px; background-color: grey;">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <!-- Cards -->
+                        <div class="row">
+                            @for (int i = 1; i <= 9; i++) // Generar 9 cards
+                            {
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-header">ONG @i</div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Certificacion @i</h5>
+                                            <p class="card-text">This is card number @i.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 

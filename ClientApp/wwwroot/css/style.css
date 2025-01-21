@@ -902,6 +902,8 @@
         display: flex;
         gap: 12px;
         position: relative;
+        font-family: "Inter-Medium", Helvetica;
+        font-size: 14px;
     }
 
     .pagina .container-3 {
@@ -1023,3 +1025,4 @@
         line-height: Truepx;
         white-space: nowrap;
     }
+

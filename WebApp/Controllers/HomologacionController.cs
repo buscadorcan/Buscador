@@ -137,5 +137,22 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FinfindByCodigoHomologaciondByParent));
             }
         }
+
+        [Authorize]
+        [HttpGet("FindByAll")]
+        public IActionResult FindByAll()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<HomologacionDto>>
+                {
+                    Result = _iRepo.FindByAll().Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindByParent));
+            }
+        }
     }
 }

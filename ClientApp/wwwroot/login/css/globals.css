@@ -1623,3 +1623,13 @@
   white-space: nowrap;
   width: fit-content;
 }
+
+.dropdown-menu {
+    font-family: "Inter-Medium", Helvetica, sans-serif !important;
+    font-size: 10px !important;
+}
+
+.dropdown-custom li {
+    font-family: "Inter-Medium", Helvetica, sans-serif !important;
+    font-size: 14px !important;
+}

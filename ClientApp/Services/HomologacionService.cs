@@ -93,5 +93,12 @@ namespace ClientApp.Services {
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionDto>>>()).Result;
         }
+
+        public async Task<List<HomologacionDto>> GetFindByAllAsync()
+        {
+            var response = await _httpClient.GetAsync($"{url}/FindByAll");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionDto>>>()).Result;
+        }
     }
 }

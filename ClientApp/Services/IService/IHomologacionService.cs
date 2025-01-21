@@ -10,6 +10,7 @@ namespace ClientApp.Services.IService {
         Task<RespuestaRegistro> EliminarHomologacion(int idHomologacion);
         Task<bool> DeleteHomologacionAsync(int idHomologacion);
         Task<List<HomologacionDto>> GetHomologacionsSelectAsync(string codigoHomologacion);
+        Task<List<HomologacionDto>> GetFindByAllAsync();
 
     }
 }

@@ -78,5 +78,10 @@ namespace WebApp.Repositories
                 .OrderBy(c => c.MostrarWeb)
                 .ToList());
         }
+
+        public List<Homologacion> FindByAll()
+        {
+            return ExecuteDbOperation(context => context.Homologacion.Where(c => c.Estado == "A").ToList());
+        }
     }
 }
