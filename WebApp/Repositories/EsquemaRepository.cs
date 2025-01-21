@@ -49,10 +49,33 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.Esquema.AsNoTracking().FirstOrDefault(u => u.IdEsquema == id));
         }
-        public EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int id)
+        //public EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int idOna, int idEsquema)
+        //{
+        //    return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().FirstOrDefault(u => u.IdEsquemaVista == id));
+        //}
+        public EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int idOna, int idEsquema)
         {
-            return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().FirstOrDefault(u => u.IdEsquemaVista == id));
+            return ExecuteDbOperation(context =>
+            {
+                // Obtener el idEsquemaVista basado en idOna e idEsquema
+                var idEsquemaVista = context.EsquemaVista
+                    .Where(v => v.IdONA == idOna && v.IdEsquema == idEsquema && v.Estado == "A")
+                    .Select(v => v.IdEsquemaVista)
+                    .FirstOrDefault();
+
+                // Si no se encuentra un idEsquemaVista válido, retornar null
+                if (idEsquemaVista == 0)
+                {
+                    return null;
+                }
+
+                // Buscar los datos de EsquemaVistaColumna con el idEsquemaVista obtenido
+                return context.EsquemaVistaColumna
+                    .AsNoTracking()
+                    .FirstOrDefault(u => u.IdEsquemaVista == idEsquemaVista);
+            });
         }
+
         public Esquema? FindByViewName(string esquemaVista)
         {
             return ExecuteDbOperation(context => context.Esquema.AsNoTracking().FirstOrDefault(u => u.EsquemaVista == esquemaVista));
@@ -108,15 +131,48 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context =>
             {
-                var _exits = MergeEntityProperties(context, newRecord, u => u.IdEsquemaVista == newRecord.IdEsquemaVista);
+                // Buscar el registro existente
+                var existingRecord = context.EsquemaVista
+                    .FirstOrDefault(u => u.IdONA == newRecord.IdONA && u.IdEsquema == newRecord.IdEsquema);
 
-                _exits.FechaModifica = DateTime.Now;
-                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                if (existingRecord != null)
+                {
+                    // Actualizar el registro existente
+                    existingRecord = MergeEntityProperties(context, newRecord, u => u.IdONA == newRecord.IdONA &&
+                                                                                     u.IdEsquema == newRecord.IdEsquema);
+                    existingRecord.FechaModifica = DateTime.Now;
+                    existingRecord.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
-                context.EsquemaVista.Update(_exits);
+                    context.EsquemaVista.Update(existingRecord);
+                }
+                else
+                {
+                    // Crear un nuevo registro
+                    newRecord.FechaCreacion = DateTime.Now;
+                    newRecord.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                    newRecord.Estado = "A";
+
+                    context.EsquemaVista.Add(newRecord);
+                }
+
+                // Guardar cambios en ambos casos
                 return context.SaveChanges() >= 0;
             });
         }
+
+        //public bool UpdateEsquemaValidacion(EsquemaVista newRecord)
+        //{
+        //    return ExecuteDbOperation(context =>
+        //    {
+        //        var _exits = MergeEntityProperties(context, newRecord, u => u.IdEsquemaVista == newRecord.IdEsquemaVista);
+
+        //        _exits.FechaModifica = DateTime.Now;
+        //        _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+
+        //        context.EsquemaVista.Update(_exits);
+        //        return context.SaveChanges() >= 0;
+        //    });
+        //}
         //public List<Esquema> GetListaEsquemaByOna(int idONA)
         //{
         //    return ExecuteDbOperation(context =>
@@ -147,7 +203,34 @@ namespace WebApp.Repositories
                  }).ToList()
             );
         }
-        public bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna)
+        //public bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna)
+        //{
+        //    // Validamos que la lista no esté vacía
+        //    if (listaEsquemaVistaColumna == null || !listaEsquemaVistaColumna.Any())
+        //    {
+        //        return false;
+        //    }
+
+        //    // Asignamos valores comunes a cada elemento de la lista
+        //    var userId = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+        //    var fechaActual = DateTime.Now;
+
+        //    foreach (var item in listaEsquemaVistaColumna)
+        //    {
+        //        item.IdUserCreacion = userId;
+        //        item.IdUserModifica = userId;
+        //        item.FechaModifica = fechaActual;
+        //        item.Estado = "A";
+        //    }
+
+        //    return ExecuteDbOperation(context =>
+        //    {
+        //        // Añadimos toda la lista al contexto
+        //        context.EsquemaVistaColumna.AddRange(listaEsquemaVistaColumna);
+        //        return context.SaveChanges() >= 0;
+        //    });
+        //}
+        public bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna, int? idOna, int? idEsquema)
         {
             // Validamos que la lista no esté vacía
             if (listaEsquemaVistaColumna == null || !listaEsquemaVistaColumna.Any())
@@ -155,25 +238,38 @@ namespace WebApp.Repositories
                 return false;
             }
 
-            // Asignamos valores comunes a cada elemento de la lista
-            var userId = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
-            var fechaActual = DateTime.Now;
-
-            foreach (var item in listaEsquemaVistaColumna)
-            {
-                item.IdUserCreacion = userId;
-                item.IdUserModifica = userId;
-                item.FechaModifica = fechaActual;
-                item.Estado = "A";
-            }
-
             return ExecuteDbOperation(context =>
             {
+                // Obtenemos el idEsquemaVista
+                var idEsquemaVista = context.EsquemaVista
+                    .Where(v => v.IdONA == idOna && v.IdEsquema == idEsquema && v.Estado == "A")
+                    .Select(v => v.IdEsquemaVista)
+                    .FirstOrDefault();
+
+                // Si no se encuentra idEsquemaVista, retornamos false
+                if (idEsquemaVista == 0)
+                {
+                    return false;
+                }
+
+                // Asignamos valores comunes a cada elemento de la lista
+                var userId = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                var fechaActual = DateTime.Now;
+
+                foreach (var item in listaEsquemaVistaColumna)
+                {
+                    item.IdUserCreacion = userId;
+                    item.IdUserModifica = userId;
+                    item.FechaModifica = fechaActual;
+                    item.Estado = "A";
+                    item.IdEsquemaVista = idEsquemaVista; // Asignamos el idEsquemaVista
+                }
+
                 // Añadimos toda la lista al contexto
                 context.EsquemaVistaColumna.AddRange(listaEsquemaVistaColumna);
                 return context.SaveChanges() >= 0;
             });
         }
-        
+
     }
 }

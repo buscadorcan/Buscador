@@ -124,39 +124,87 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Deactive));
             }
         }
+        //[Authorize]
+        //[HttpDelete("validacion/{id:int}")]
+        //public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id)
+        //{
+        //    try
+        //    {
+        //        var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(id);
+
+        //        if (record == null)
+        //        {
+        //            return NotFoundResponse("Reguistro no encontrado");
+        //        }
+
+        //        record.Estado = "X";
+
+        //        return Ok(new RespuestasAPI<bool>
+        //        {
+        //            IsSuccess = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(id)
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return HandleException(e, nameof(Deactive));
+        //    }
+        //}
         [Authorize]
-        [HttpDelete("validacion/{id:int}")]
-        public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id)
+        [HttpDelete("validacion")]
+        public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync([FromBody] EsquemaVistaValidacionDto esquemaRegistro)
         {
             try
             {
-                var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(id);
+                // Buscar el registro basado en idOna e idEsquema del objeto recibido
+                var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(esquemaRegistro.IdOna, esquemaRegistro.IdEsquema);
 
                 if (record == null)
                 {
-                    return NotFoundResponse("Reguistro no encontrado");
+                    return NotFoundResponse("Registro no encontrado");
                 }
 
+                // Actualizar el estado del registro a 'X'
                 record.Estado = "X";
+
+                var isDeleted = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(record.IdEsquemaVista);
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(id)
+                    IsSuccess = isDeleted
                 });
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(Deactive));
+                return HandleException(e, nameof(EliminarEsquemaVistaColumnaByIdEquemaVistaAsync));
             }
         }
-        
+
+        //[Authorize]
+        //[HttpPut("validacion/{id:int}")]
+        //public IActionResult UpdateEsquemaValidacion(int id, [FromBody] EsquemaVistaValidacionDto dto)
+        //{
+        //    try
+        //    {
+        //        dto.IdEsquemaVista = id;
+        //        var record = _mapper.Map<EsquemaVista>(dto);
+
+        //        return Ok(new RespuestasAPI<bool>
+        //        {
+        //            IsSuccess = _iRepo.UpdateEsquemaValidacion(record)
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return HandleException(e, nameof(UpdateEsquemaValidacion));
+        //    }
+        //}
         [Authorize]
-        [HttpPut("validacion/{id:int}")]
-        public IActionResult UpdateEsquemaValidacion(int id, [FromBody] EsquemaVistaValidacionDto dto)
+        [Route("validacion/actualizar")]
+        [HttpPut]
+        public IActionResult UpdateEsquemaValidacion([FromBody] EsquemaVistaValidacionDto dto)
         {
             try
             {
-                dto.IdEsquemaVista = id;
                 var record = _mapper.Map<EsquemaVista>(dto);
 
                 return Ok(new RespuestasAPI<bool>
@@ -169,6 +217,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(UpdateEsquemaValidacion));
             }
         }
+
 
         [Authorize]
         [Route("validacion")]
@@ -189,18 +238,41 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(CreateEsquemaValidacion));
             }
         }
+        //[Authorize]
+        //[Route("vista/columna")]
+        //[HttpPost]
+        //public IActionResult GuardarListaEsquemaVistaColumna([FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna)
+        //{
+        //    try
+        //    {
+        //        var record = _mapper.Map<List<EsquemaVistaColumna>>(listaEsquemaVistaColumna);
+
+        //        return Ok(new RespuestasAPI<bool>
+        //        {
+        //            IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record)
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return HandleException(e, nameof(GuardarListaEsquemaVistaColumna));
+        //    }
+        //}
         [Authorize]
         [Route("vista/columna")]
         [HttpPost]
-        public IActionResult GuardarListaEsquemaVistaColumna([FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna)
+        public IActionResult GuardarListaEsquemaVistaColumna(
+        [FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna,
+        [FromQuery] int idOna,
+        [FromQuery] int idEsquema)
         {
             try
             {
                 var record = _mapper.Map<List<EsquemaVistaColumna>>(listaEsquemaVistaColumna);
 
+                // Puedes usar idOna y idEsquema en tu lógica según sea necesario
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record)
+                    IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record, idOna, idEsquema)
                 });
             }
             catch (Exception e)
@@ -208,6 +280,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GuardarListaEsquemaVistaColumna));
             }
         }
+
 
         [Authorize]
         [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]

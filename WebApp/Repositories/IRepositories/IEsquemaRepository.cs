@@ -15,8 +15,9 @@ namespace WebApp.Repositories.IRepositories
     bool UpdateEsquemaValidacion(EsquemaVista data);
     bool CreateEsquemaValidacion(EsquemaVista data);
     bool EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id);
-    EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int Id);
-    bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna);
+    //EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int Id);
+    EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int idOna, int idEsquema);    
+    bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna, int? idOna, int? intidEsquema);
 
     }
 }
