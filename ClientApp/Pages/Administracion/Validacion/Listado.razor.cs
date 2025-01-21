@@ -115,7 +115,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 listasHevd.Add(new EsquemaVistaDto
                 {
                     NombreEsquema = c.NombreHomologado,
-                    NombreVista = vistaCorrespondiente?.NombreVista ?? "", // Asignar NombreVista de la vista correspondiente
+                    NombreVista = vistaCorrespondiente?.NombreVista ?? c.NombreHomologado.Trim(), // Asignar NombreVista de la vista correspondiente
                     IsValid = count > 0 // Asignar IsValid con base en count
                 });
             }
