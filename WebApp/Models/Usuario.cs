@@ -10,19 +10,19 @@ namespace WebApp.Models
  
     public int IdHomologacionRol { get; set; }
     public int IdONA { get; set; }
-
-    public string? Nombre { get; set; }
-   
-    public string? Apellido { get; set; }
-  
-    public string? Telefono { get; set; }
-
-    public string? Email { get; set; }
-   
-    public string? Clave { get; set; }
-
-    public string? Estado { get; set; }
-    [ForeignKey("IdHomologacionRol")]
+    [Required]
+    public string? Nombre { get; set; } = "";
+        [Required]
+    public string? Apellido { get; set; } = "";
+        [Required]
+    public string? Telefono { get; set; } = "";
+        [Required]
+    public string? Email { get; set; } = "";
+        [Required]
+    public string? Clave { get; set; } = "";
+        [Required]
+    public string? Estado { get; set; } = "";
+        [ForeignKey("IdHomologacionRol")]
     public Homologacion? Homologacion { get; set; }
 
     }
