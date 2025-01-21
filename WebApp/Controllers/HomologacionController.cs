@@ -69,7 +69,7 @@ namespace WebApp.Controllers
             try
             {
                 dto.IdHomologacion = id;
-
+                dto.Estado = "A";
                 return Ok(new RespuestasAPI<bool>
                 {
                     IsSuccess = _iRepo.Update(_mapper.Map<Homologacion>(dto))
