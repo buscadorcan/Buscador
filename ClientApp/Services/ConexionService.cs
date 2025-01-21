@@ -39,7 +39,12 @@ namespace ClientApp.Services {
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ONAConexionDto>>()).Result;
         }
-
+        public async Task<ONAConexionDto> GetOnaConexionByOnaAsync(int idOna)
+        {
+            var response = await _httpClient.GetAsync($"{url}/onaconexion/{idOna}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ONAConexionDto>>()).Result;
+        }
         public async Task<List<ONAConexionDto>> GetConexionsAsync()
         {
             var response = await _httpClient.GetAsync($"{url}");
@@ -87,6 +92,48 @@ namespace ClientApp.Services {
         public async Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content)
         {
             return await _httpClient.PostAsync($"{url}/upload", content);
+        }
+
+        public async Task<RespuestaRegistro> testConexion(int idConexion)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync($"{url}/test/{idConexion}");
+            if (response.IsSuccessStatusCode)
+            {
+                return new RespuestaRegistro { registroCorrecto = true };
+            }
+            else
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+            }
+        }
+
+        public async Task<RespuestaRegistro> migrarConexion(int idConexion)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync($"{url}/migrar/{idConexion}");
+            if (response.IsSuccessStatusCode)
+            {
+                return new RespuestaRegistro { registroCorrecto = true };
+            }
+            else
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+            }
+        }
+
+        public async Task<RespuestaRegistro> DeleteConexionsAsync(int idConexion)
+        {
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"{url}/eliminar/{idConexion}");
+            if (response.IsSuccessStatusCode)
+            {
+                return new RespuestaRegistro { registroCorrecto = true };
+            }
+            else
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+            }
         }
     }
 }

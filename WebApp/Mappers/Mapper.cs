@@ -34,8 +34,8 @@ namespace WebApp.Mappers
       CreateMap<ONA, OnaDto>();
       CreateMap<OnaDto, ONA>();
 
-      CreateMap<MigracionExcel, MigracionExcelDto>();
-      CreateMap<MigracionExcelDto, MigracionExcel>();
+      //CreateMap<MigracionExcel, MigracionExcelDto>();
+      //CreateMap<MigracionExcelDto, MigracionExcel>();
 
       CreateMap<LogMigracion, LogMigracionDto>();
       CreateMap<LogMigracionDto, LogMigracion>();

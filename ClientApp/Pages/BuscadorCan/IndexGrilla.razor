@@ -1,27 +1,28 @@
 @using ClientApp.Models;
 @using SharedApp.Models.Dtos
 @using Newtonsoft.Json;
+@using BlazorBootstrap
 
 <div class="py-2">
-    <Modal @ref="modal" Size="ModalSize.ExtraLarge"/>
+    <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
+
 
     @if (listaEtiquetasGrilla != null)
     {
-        <Grid
-            @ref="grid"
-            TItem="BuscadorResultadoDataDto"
-            class="table table-hover table-bordered table-striped"
-            DataProvider="ResultadoBusquedaDataProvider"
-            Responsive="true"
-            AllowSorting="true"
-            AllowPaging="true"
-            PageSize="5"
-            PageSizeSelectorVisible="true"
-            PageSizeSelectorItems="@(new int[] { 5, 10, 20, 30 })"
-            ItemsPerPageText="Items por página"
-        >
-            @foreach(var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden)) {
-                <GridColumn TItem="BuscadorResultadoDataDto" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">  
+        <Grid @ref="grid"
+              TItem="BuscadorResultadoDataDto"
+              class="table table-hover table-bordered table-striped"
+              DataProvider="ResultadoBusquedaDataProvider"
+              Responsive="true"
+              AllowSorting="true"
+              AllowPaging="true"
+              PageSize="5"
+              PageSizeSelectorVisible="true"
+              PageSizeSelectorItems="@(new int[] { 5, 10, 20, 30 })"
+              ItemsPerPageText="Items por página">
+            @foreach (var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
+            {
+                <GridColumn TItem="BuscadorResultadoDataDto" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">
                     <HeaderContent>
                         <Tooltip Title="@etiqueta.TooltipWeb">@etiqueta.MostrarWeb</Tooltip>
                     </HeaderContent>
@@ -29,7 +30,7 @@
                         @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data
                     </ChildContent>
                 </GridColumn>
-         
+
             }
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context)">
@@ -37,16 +38,11 @@
                 </Button>
             </GridColumn>
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
-                <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small">
-                    <!-- Deserializa el JSON y obtiene la URL del certificado -->
-                    <a href="@ExtractUrlCertificado(context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == listaEtiquetasGrilla.FirstOrDefault()?.IdHomologacion)?.Data)" target="_blank">
-                        <Icon Name="IconName.FileTypePdf" />
-                    </a>
+                <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => ShowPdfDialog(context)">
+                    <Icon Name="IconName.FileTypePdf" />
                 </Button>
             </GridColumn>
-            
         </Grid>
     }
 </div>
 
-<Modal @ref="modal" />

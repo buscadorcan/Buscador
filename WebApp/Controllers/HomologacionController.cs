@@ -69,7 +69,7 @@ namespace WebApp.Controllers
             try
             {
                 dto.IdHomologacion = id;
-
+                dto.Estado = "A";
                 return Ok(new RespuestasAPI<bool>
                 {
                     IsSuccess = _iRepo.Update(_mapper.Map<Homologacion>(dto))
@@ -135,6 +135,23 @@ namespace WebApp.Controllers
             catch (Exception e)
             {
                 return HandleException(e, nameof(FinfindByCodigoHomologaciondByParent));
+            }
+        }
+
+        [Authorize]
+        [HttpGet("FindByAll")]
+        public IActionResult FindByAll()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<HomologacionDto>>
+                {
+                    Result = _iRepo.FindByAll().Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindByParent));
             }
         }
     }

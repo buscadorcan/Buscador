@@ -32,6 +32,7 @@ namespace ClientApp.Pages.BuscadorCan
         private bool isExactSearch = false;
         private bool mostrarIndexCard = false; // Para alternar entre tarjeta de índice y grilla
         private string searchTerm = string.Empty;
+        private string textoFiltrosAvanzados = "Filtros Avanzados";
         protected override async Task OnInitializedAsync()
         {
             try
@@ -230,6 +231,11 @@ namespace ClientApp.Pages.BuscadorCan
         private void AlternarFiltrosAvanzados()
         {
             mostrarFiltrosAvanzados = !mostrarFiltrosAvanzados;
+
+            // Cambiar el texto según el estado
+            textoFiltrosAvanzados = mostrarFiltrosAvanzados
+                ? "Ocultar Filtros Avanzados"
+                : "Filtros Avanzados";
         }
 
         private void AlternarIndexCard()

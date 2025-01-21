@@ -7,27 +7,30 @@ namespace WebApp.Models
     {
         [Key]
         public int IdONA { get; set; }
-        [Required]
-        public string? Host { get; set; }
-        [Required]
-        public int Puerto { get; set; }
-        [Required]
-        public string? Usuario { get; set; }
-        [Required]
-        public string? Contrasenia { get; set; }
-        [Required]
-        public string? BaseDatos { get; set; }
-        [Required]
-        public string? OrigenDatos { get; set; }
-        [Required]
-        public string? Migrar { get; set; }
-        [Required]
-        public string? Estado { get; set; }
-        [Required]
-        public int? IdUserCreacion { get; set; }
+        
+        public string? Host { get; set; } = "";
 
-        [Required]
-        public int? IdUserModifica { get; set; }
+        public int? Puerto { get; set; } = 0;
+        
+        public string? Usuario { get; set; } = "";
+
+        public string? Contrasenia { get; set; } = "";
+
+        public string? BaseDatos { get; set; } = "";
+
+        public string? OrigenDatos { get; set; } = "";
+
+        public string? Migrar { get; set; } = "";
+
+        public string? Estado { get; set; } = "";
+
+        public int? IdUserCreacion { get; set; } = 0;
+
+        public int? IdUserModifica { get; set; } = 0;
+
+        public DateTime? FechaCreacion { get; set; } = DateTime.Now;
+
+        public DateTime? FechaModifica { get; set; } = DateTime.Now;
 
         [ForeignKey("IdONA")]
         public virtual ONA? ONA { get; set; }

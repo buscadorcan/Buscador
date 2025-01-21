@@ -26,15 +26,28 @@ namespace ClientApp.Services {
                 return new List<PropiedadesTablaDto>();
             }
         }
-        public async Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquemaVista)
+        //public async Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquemaVista)
+        //{
+        //    try
+        //    {
+        //        var response = await _httpClient.GetAsync($"{url}/validacion/{idOna}/{idEsquemaVista}");
+        //        response.EnsureSuccessStatusCode();
+        //        return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaVistaDto>>>()).Result;
+        //    }
+        //    catch (System.Exception ex )
+        //    {
+        //        return new List<EsquemaVistaDto>();
+        //    }
+        //}
+        public async Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquema)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{url}/validacion/{idOna}/{idEsquemaVista}");
+                var response = await _httpClient.GetAsync($"{url}/validacion/{idOna}/{idEsquema}");
                 response.EnsureSuccessStatusCode();
                 return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<EsquemaVistaDto>>>()).Result;
             }
-            catch (System.Exception ex )
+            catch (System.Exception ex)
             {
                 return new List<EsquemaVistaDto>();
             }

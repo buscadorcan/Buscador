@@ -19,11 +19,16 @@ namespace ClientApp.Pages.BuscadorCan
         public IBusquedaService? servicio { get; set; }
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
+        [Inject]
+        public IHomologacionService? iHomologacionService { get; set; }
         private Modal modal = default!;
+        private bool isDialogOpen = false; // Control de estado del diálogo
+        private string? PdfUrl; // URL del PDF
+
         public Grid<BuscadorResultadoDataDto>? grid;
         private List<VwGrillaDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
-        public bool ModoBuscar { get; set;}
+        public bool ModoBuscar { get; set; }
         protected override async Task OnInitializedAsync()
         {
             try
@@ -32,7 +37,9 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
@@ -59,10 +66,12 @@ namespace ClientApp.Pages.BuscadorCan
                     Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
 
                     var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), PageNumber, PageSize);
+                    Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
 
                     if (!(result.Data is null))
                     {
                         listBuscadorResultadoDataDto = result.Data;
+                        Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
                     }
 
                     if (PageNumber == 1)
@@ -80,10 +89,12 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task<GridDataProviderResult<BuscadorResultadoDataDto>> ResultadoBusquedaDataProvider(GridDataProviderRequest<BuscadorResultadoDataDto> request)
         {
-            return await Task.FromResult(new GridDataProviderResult<BuscadorResultadoDataDto> {
+            return await Task.FromResult(new GridDataProviderResult<BuscadorResultadoDataDto>
+            {
                 Data = await BuscarEsquemas(request.PageNumber, request.PageSize),
                 TotalCount = totalCount
             });
+            
         }
         private async void showModal(BuscadorResultadoDataDto resultData)
         {
@@ -92,45 +103,73 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
-        private async void showModalpdf(string urlPdf)
+        private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
-            if (modal == null || string.IsNullOrEmpty(urlPdf))
+            // Obtener la URL del certificado
+            var pdfUrl = GetPdfUrlFromEsquema(resultData);
+
+            if (pdfUrl == null)
             {
-                urlPdf = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
+                // Mostrar una alerta o manejar el error si no hay URL
+                Console.WriteLine("No se encontró la URL del certificado.");
+                pdfUrl = Task.FromResult("No se encontró la URL del certificado.");
             }
-           
+
+            // Configurar los parámetros del modal
             var parameters = new Dictionary<string, object>
             {
-                { "PdfUrl", urlPdf } // "PdfUrl" debe coincidir con el nombre del [Parameter] en tu modal
+                { "PdfUrl", pdfUrl } // Enviar la URL al modal
             };
 
-            await modal.ShowAsync<PdfModal>(title: "Información PDF", parameters: parameters);
+            // Mostrar el modal con el componente PDFModal
+            await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
         }
 
-        private string ExtractUrlCertificado(string? jsonData)
+        private async Task<string?> GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
         {
-            var url = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
-            if (string.IsNullOrWhiteSpace(jsonData))
-                return url;
-
             try
             {
-                var deserialized = System.Text.Json.JsonSerializer.Deserialize<JsonData>(jsonData);
-                return deserialized?.UrlCertificado ?? string.Empty;
+                if (resultData.DataEsquemaJson == null || !resultData.DataEsquemaJson.Any())
+                    return null;
+
+                var homologaciones = await iHomologacionService.GetHomologacionsAsync();
+                var idHomologacion = homologaciones.FirstOrDefault(x => x.NombreHomologado == "UrlCertificado")?.IdHomologacion;
+
+                if (idHomologacion == null)
+                    return null;
+
+                var certificado = resultData.DataEsquemaJson
+                    .Select(item =>
+                    {
+                        try
+                        {
+                            return System.Text.Json.JsonSerializer.Deserialize<JsonData>(item.Data);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error deserializando item.Data: {item.Data}, Error: {ex.Message}");
+                            return null;
+                        }
+                    })
+                    .FirstOrDefault(data => data != null && data.IdHomologacion == idHomologacion);
+
+                if (certificado == null || string.IsNullOrEmpty(certificado.Data))
+                    return null;
+
+                return certificado.Data;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deserializando JSON: {ex.Message}");
-                return string.Empty;
+                throw new Exception("Error al obtener la URL del certificado", ex);
             }
         }
+
 
         // Clase para deserializar
         public class JsonData
         {
             public int IdHomologacion { get; set; }
             public string Data { get; set; }
-            public string UrlCertificado { get; set; }
         }
     }
 }

@@ -33,6 +33,8 @@ namespace ClientApp.Pages.Administracion.Validacion
         public Services.ToastService? toastService { get; set; }
         [Inject]
         public NavigationManager? navigationManager { get; set; }
+        [Inject]
+        private IConexionService? iConexionService { get; set; }
         private Button saveButton = default!;
         private Button validateButton = default!;
         
@@ -40,16 +42,20 @@ namespace ClientApp.Pages.Administracion.Validacion
         private List<HomologacionDto>? listaOrganizaciones = new List<HomologacionDto>();
         private List<OnaDto>? listaONAs;
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
-        private EsquemaVistaOnaDto? esquemaSelected;
+        //private EsquemaVistaOnaDto? esquemaSelected;
+        private EsquemaDto? esquemaSelected;
+
         private HomologacionDto? organizacionSelected;
         private OnaDto? onaSelected;
         private List<EsquemaVistaDto> listasHevd = new List<EsquemaVistaDto>();
         private List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna = new List<EsquemaVistaColumnaDto>();
 
         public string nombreSugerido = "";
-        private List<EsquemaVistaOnaDto>? listaEsquemasOna = new List<EsquemaVistaOnaDto>();
-        private List<string> NombresVistas { get; set; }
+        //private List<EsquemaVistaOnaDto>? listaEsquemasOna = new List<EsquemaVistaOnaDto>();
+        private List<EsquemaDto>? listaEsquemasOna = new List<EsquemaDto>();
 
+        private List<string> NombresVistas { get; set; }
+        private ONAConexionDto? currentConexion = null;
         protected override async Task OnInitializedAsync()
         {
             var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
@@ -88,18 +94,17 @@ namespace ClientApp.Pages.Administracion.Validacion
             if (grid != null)
                 await grid.RefreshDataAsync();
         }
-
-        private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
+        private async Task CambiarSeleccionEsquema(EsquemaDto _esquemaSelected)
         {
             esquemaSelected = _esquemaSelected;
-            nombreSugerido = esquemaSelected.VistaOrigen;
+            nombreSugerido = esquemaSelected.EsquemaVista;
 
             var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
             var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
 
             listasHevd = new List<EsquemaVistaDto>();
 
-            var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquemaVista);
+            var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquema);
 
             foreach (var c in Columnas)
             {
@@ -110,7 +115,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 listasHevd.Add(new EsquemaVistaDto
                 {
                     NombreEsquema = c.NombreHomologado,
-                    NombreVista = vistaCorrespondiente?.NombreVista ?? "", // Asignar NombreVista de la vista correspondiente
+                    NombreVista = vistaCorrespondiente?.NombreVista ?? c.NombreHomologado.Trim(), // Asignar NombreVista de la vista correspondiente
                     IsValid = count > 0 // Asignar IsValid con base en count
                 });
             }
@@ -118,6 +123,38 @@ namespace ClientApp.Pages.Administracion.Validacion
             if (grid != null)
                 await grid.RefreshDataAsync();
         }
+
+        //private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
+        //{
+        //    esquemaSelected = _esquemaSelected;
+        //    nombreSugerido = esquemaSelected.VistaOrigen;
+
+
+
+        //    var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
+        //    var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
+
+        //    listasHevd = new List<EsquemaVistaDto>();
+
+        //    var vistas = await iDynamicService.GetListaValidacionEsquema(onaSelected.IdONA, esquemaSelected.IdEsquemaVista);
+
+        //    foreach (var c in Columnas)
+        //    {
+        //        var vistaCorrespondiente = vistas.FirstOrDefault(n => n.NombreEsquema != null && n.NombreEsquema.Equals(c.NombreHomologado));
+        //        // Contar cuántas vistas cumplen la condición
+        //        var count = vistas.Count(n => n.NombreVista != null && n.NombreVista.Equals(c.NombreHomologado));
+
+        //        listasHevd.Add(new EsquemaVistaDto
+        //        {
+        //            NombreEsquema = c.NombreHomologado,
+        //            NombreVista = vistaCorrespondiente?.NombreVista ?? "", // Asignar NombreVista de la vista correspondiente
+        //            IsValid = count > 0 // Asignar IsValid con base en count
+        //        });
+        //    }
+
+        //    if (grid != null)
+        //        await grid.RefreshDataAsync();
+        //}
 
 
         private async Task<GridDataProviderResult<EsquemaVistaDto>> EsquemaVistaDataProvider(GridDataProviderRequest<EsquemaVistaDto> request)
@@ -136,7 +173,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
             var esquemaRegistro = new EsquemaVistaValidacionDto
             {
-                IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
                 IdOna = onaSelected.IdONA,
                 IdEsquema = esquemaSelected.IdEsquema,
                 VistaOrigen = nombreSugerido,
@@ -167,7 +204,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                     
                         listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
                         {
-                            IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                            //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
                             ColumnaEsquemaIdH = c.IdHomologacion,
                             ColumnaEsquema = vistaCorrespondiente?.NombreEsquema,
                             ColumnaVista = vistaCorrespondiente?.NombreVista, // Asigna el NombreVista correspondiente
@@ -176,7 +213,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                         });
                     }
                     
-                    var successRows = await iEsquemaService.GuardarListaEsquemaVistaColumna(listaEsquemaVistaColumna);
+                    var successRows = await iEsquemaService.GuardarListaEsquemaVistaColumna(listaEsquemaVistaColumna, onaSelected.IdONA, esquemaSelected.IdEsquema);
                     if (successRows.registroCorrecto)
                     {
                         toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
@@ -207,31 +244,186 @@ namespace ClientApp.Pages.Administracion.Validacion
 
         private async Task ValidarDatos()
         {
-            validateButton.ShowLoading("Validando...");
+            try
+            {
+                validateButton.ShowLoading("Validando...");
 
-            //var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
-            //var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
+                int IdOna = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                currentConexion = await iConexionService.GetOnaConexionByOnaAsync(IdOna);
 
-            //listasHevd = new List<EsquemaVistaDto>();
+                if (currentConexion != null && currentConexion.OrigenDatos.Equals("EXCEL"))
+                {
+                    var esquemaRegistro = new EsquemaVistaValidacionDto
+                    {
+                        //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                        IdOna = onaSelected.IdONA,
+                        IdEsquema = esquemaSelected.IdEsquema,
+                        VistaOrigen = nombreSugerido,
+                        Estado = "A"
+                    };
+                    
+                    var success = await iEsquemaService.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(esquemaRegistro);
+                    if (success)
+                    {
+                        listaEsquemaVistaColumna = new List<EsquemaVistaColumnaDto>();
 
-            ////var vistas = await iDynamicService.GetProperties(organizacionSelected.CodigoHomologacion, esquemaSelected.EsquemaVista.Trim());
-            ////var vistas = await iDynamicService.GetProperties(onaSelected.IdONA, esquemaSelected.EsquemaVista.Trim());
+                        var vistas = listasHevd.Select(item => new EsquemaVistaDto
+                        {
+                            NombreEsquema = item.NombreEsquema,
+                            NombreVista = item.NombreVista,
+                            IsValid = false
+                        }).ToList();
 
+                        var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
+                        var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson)
+                            .OrderBy(c => c.MostrarWebOrden).ToList();
+
+                        var filasNoCoinciden = new List<string>();
+
+                        foreach (var c in Columnas)
+                        {
+                            // Buscar el elemento correspondiente en vistas
+                            var vistaCorrespondiente = vistas.FirstOrDefault(v => v.NombreEsquema != null && v.NombreEsquema.Equals(c.NombreHomologado));
+
+                            // Validar coincidencias y agregar solo las filas que coincidan
+                            if (vistaCorrespondiente != null && vistaCorrespondiente.NombreVista == c.NombreHomologado)
+                            {
+                                vistaCorrespondiente.IsValid = true;
+
+                                listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
+                                {
+                                    //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                                    ColumnaEsquemaIdH = c.IdHomologacion,
+                                    ColumnaEsquema = vistaCorrespondiente.NombreEsquema,
+                                    ColumnaVista = vistaCorrespondiente.NombreVista,
+                                    ColumnaVistaPK = false,
+                                    Estado = "A"
+                                });
+                            }
+                            else
+                            {
+                                filasNoCoinciden.Add(c.NombreHomologado);
+                            }
+                        }
+
+                        var successRows = await iEsquemaService.GuardarListaEsquemaVistaColumna(listaEsquemaVistaColumna, onaSelected.IdONA, esquemaSelected.IdEsquema);
+
+                        if (successRows.registroCorrecto)
+                        {
+                            toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                            navigationManager?.NavigateTo("/validacion");
+
+                            if (filasNoCoinciden.Any())
+                            {
+                                toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
+                                navigationManager?.NavigateTo("/validacion");
+                            }
+                            await CambiarSeleccionEsquema(esquemaSelected);
+                            saveButton.HideLoading();
+                            validateButton.HideLoading();
+                        }
+                        else
+                        {
+                            toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
+                            navigationManager?.NavigateTo("/validacion");
+                            saveButton.HideLoading();
+                            validateButton.HideLoading();
+                        }
+                    }
+                    else
+                    {
+                        var resultado = await iEsquemaService.GuardarEsquemaVistaValidacionAsync(esquemaRegistro);
+                        if (resultado != null && resultado.registroCorrecto)
+                        {
+                            listaEsquemaVistaColumna = new List<EsquemaVistaColumnaDto>();
+
+                            var vistas = listasHevd.Select(item => new EsquemaVistaDto
+                            {
+                                NombreEsquema = item.NombreEsquema,
+                                NombreVista = item.NombreVista,
+                                IsValid = false
+                            }).ToList();
+
+                            var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
+                            var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson)
+                                .OrderBy(c => c.MostrarWebOrden).ToList();
+
+                            var filasNoCoinciden = new List<string>();
+
+                            foreach (var c in Columnas)
+                            {
+                                // Buscar el elemento correspondiente en vistas
+                                var vistaCorrespondiente = vistas.FirstOrDefault(v => v.NombreEsquema != null && v.NombreEsquema.Equals(c.NombreHomologado));
+
+                                // Validar coincidencias y agregar solo las filas que coincidan
+                                if (vistaCorrespondiente != null && vistaCorrespondiente.NombreVista == c.NombreHomologado)
+                                {
+                                    vistaCorrespondiente.IsValid = true;
+
+                                    listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
+                                    {
+                                        //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
+                                        ColumnaEsquemaIdH = c.IdHomologacion,
+                                        ColumnaEsquema = vistaCorrespondiente.NombreEsquema,
+                                        ColumnaVista = vistaCorrespondiente.NombreVista,
+                                        ColumnaVistaPK = false,
+                                        Estado = "A"
+                                    });
+                                }
+                                else
+                                {
+                                    filasNoCoinciden.Add(c.NombreHomologado);
+                                }
+                            }
+
+                            var successRows = await iEsquemaService.GuardarListaEsquemaVistaColumna(listaEsquemaVistaColumna, onaSelected.IdONA, esquemaSelected.IdEsquema);
+
+                            if (successRows.registroCorrecto)
+                            {
+                                toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                                navigationManager?.NavigateTo("/validacion");
+
+                                if (filasNoCoinciden.Any())
+                                {
+                                    toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
+                                    navigationManager?.NavigateTo("/validacion");
+                                }
+                                await CambiarSeleccionEsquema(esquemaSelected);
+                                saveButton.HideLoading();
+                                validateButton.HideLoading();
+                            }
+                            else
+                            {
+                                toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
+                                navigationManager?.NavigateTo("/validacion");
+                                saveButton.HideLoading();
+                                validateButton.HideLoading();
+                            }
+                        }
+                        else
+                        {
+                            navigationManager?.NavigateTo("/validacion");
+                            saveButton.HideLoading();
+                            validateButton.HideLoading();
+                        }
+
+
+                    }
+                }
+                else
+                {
+                    navigationManager?.NavigateTo("/validacion");
+                    saveButton.HideLoading();
+                    validateButton.HideLoading(); 
+                }
+            }
+            catch (Exception)
+            {
+                saveButton.HideLoading();
+                validateButton.HideLoading();
+            }
             
-            //foreach (var c in Columnas)
-            //{
-            //    var count = vistas.Count(n => n.NombreColumna != null && n.NombreColumna.Equals(c.NombreHomologado));
-            //    listasHevd.Add(new EsquemaVistaDto
-            //    {
-            //        NombreEsquema = c.NombreHomologado,
-            //        NombreVista = count > 0 ? c.NombreHomologado : "",
-            //        IsValid = count > 0
-            //    });
-            //}
-
-            //if (grid != null)
-            //    await grid.RefreshDataAsync();
-            return;
         }
+
     }
 }

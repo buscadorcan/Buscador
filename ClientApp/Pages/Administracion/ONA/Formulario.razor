@@ -56,11 +56,21 @@
                         <InputText @bind-Value="onas.PaginaWeb" class="form-control" placeholder="Página Web" />
                         <ValidationMessage For="(() => onas.PaginaWeb)" />
                     </div>
-
+@* 
                     <div class="form-group py-2">
                         <label class="col-form-label">URL Ícono</label>
                         <InputText @bind-Value="onas.UrlIcono" class="form-control" placeholder="URL Ícono" />
                         <ValidationMessage For="(() => onas.UrlIcono)" />
+                    </div> *@
+                    <div class="form-row py-2">
+                        <label class="col-form-label">Ícono</label>
+                        <div class="col">
+                            <InputFile @bind-Value="uploadedFile"
+                                       class="form-control"
+                                       placeholder="Icono de la organización"
+                                       OnChange="OnInputFileChange" />
+                            <ValidationMessage For="(() => onas.UrlIcono)" />
+                        </div>
                     </div>
                 </div>
 

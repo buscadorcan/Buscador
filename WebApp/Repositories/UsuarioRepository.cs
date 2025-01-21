@@ -117,21 +117,7 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
-        //public bool Update(Usuario usuario)
-        //{
-        //    return ExecuteDbOperation(context => {
-        //        var userExits = MergeEntityProperties(context, usuario, u => u.IdUsuario == usuario.IdUsuario);
-        //        userExits.FechaModifica = DateTime.Now;
-        //        userExits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
-        //        if (!string.IsNullOrWhiteSpace(usuario.Clave)) {
-        //            userExits.Clave = _hashService.GenerateHash(usuario.Clave);
-        //        }
-
-        //        context.Usuario.Update(userExits);
-        //        return context.SaveChanges() >= 0;
-        //    });
-        //}
         public UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
 
@@ -207,7 +193,7 @@ namespace WebApp.Repositories
                 var homologacionGrupo = context.VwHomologacionGrupo
                     .AsNoTracking()
                     .Where(c => c.CodigoHomologacion == "KEY_MENU").FirstOrDefault();
-                    
+
                 // Mapear los elementos obtenidos a la lista de DTOs
                 var homologacionGrupoDto = homologacionGrupo != null ? new VwHomologacionGrupoDto
                 {
@@ -226,6 +212,8 @@ namespace WebApp.Repositories
                 };
             });
         }
+
+
         public async Task<bool> RecoverAsync(UsuarioRecuperacionDto usuarioRecuperacionDto)
         {
             return await ExecuteDbOperation(async context =>

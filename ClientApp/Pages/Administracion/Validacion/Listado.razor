@@ -103,11 +103,11 @@
     <div class="col-md-12 py-2 text-end">
         @if (listasHevd?.Count > 0) 
         {
-            <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
+            <Button @ref="saveButton" style="display: none;" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
                 Guardar
             </Button>
-            <Button @ref="validateButton" Color="ButtonColor.Secondary" @onclick="async () => await ValidarDatos()">
-                Validar
+            <Button @ref="validateButton" Color="ButtonColor.Success" @onclick="async () => await ValidarDatos()">
+                Validar y Guardar
             </Button>
         }
     </div>

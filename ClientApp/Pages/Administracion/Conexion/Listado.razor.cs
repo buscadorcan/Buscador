@@ -33,6 +33,52 @@ namespace ClientApp.Pages.Administracion.Conexion
                 }
             }
         }
+
+        private async Task<bool> OnTestconexionClick(int conexion)
+        {
+            if (iConexionService != null && listasHevd != null && grid != null)
+            {
+                var respuesta = await iConexionService.testConexion(conexion);
+                if (respuesta.registroCorrecto)
+                {
+                    messages.Add(
+                              new ToastMessage()
+                              {
+                                  Type = ToastType.Success,
+                                  Title = "Mensaje de confirmacion",
+                                  HelpText = $"{DateTime.Now}",
+                                  Message = $"Conexion satisfactoria",
+                              });
+                    await grid.RefreshDataAsync();
+                    return true; // Devuelve true si la conexión fue exitosa
+                }
+                else
+                {
+                    messages.Add(
+                    new ToastMessage()
+                    {
+                        Type = ToastType.Danger,
+                        Title = "Mensaje de confirmacion",
+                        HelpText = $"{DateTime.Now}",
+                        Message = $"Conexion fallida",
+                    });
+                }
+            }
+            return false; // Devuelve false en caso de que las condiciones no se cumplan o haya fallado
+        }
+
+        private async Task<bool> OnMigrarClick(int conexion)
+        {
+            if (iConexionService != null && listasHevd != null && grid != null)
+            {
+                var respuesta = await iConexionService.migrarConexion(conexion);
+                if (respuesta.registroCorrecto)
+                {
+                    listasHevd = listasHevd.Where(c => c.IdONA != IdONA).ToList();
+                    await grid.RefreshDataAsync();
+                }
+            }
+        }
         private async Task<bool> OnTestconexionClick(ONAConexionDto conexion)
         {
             if (iConexionService != null && listasHevd != null && grid != null)

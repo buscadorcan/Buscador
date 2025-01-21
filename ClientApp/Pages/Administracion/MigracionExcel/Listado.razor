@@ -8,17 +8,17 @@
     <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nueva-migarcion-excel">Importar Excel</Button>
 </div>
 
-<Grid @ref="grid" TItem="MigracionExcelDto" class="table table-hover table-bordered table-striped" DataProvider="MigracionExcelDtoDataProvider" Responsive="true">
-    <GridColumn TItem="MigracionExcelDto" HeaderText="Migración" PropertyName="IdMigracionExcel">
-        @context.IdMigracionExcel
+<Grid @ref="grid" TItem="LogMigracionDto" class="table table-hover table-bordered table-striped" DataProvider="LogMigracionDtoDataProvider" Responsive="true">
+    <GridColumn TItem="LogMigracionDto" HeaderText="Migración" PropertyName="IdLogMigracion">
+        @context.IdLogMigracion
     </GridColumn>
-    <GridColumn TItem="MigracionExcelDto" HeaderText="Estado" PropertyName="MigracionEstado">
-        @context.MigracionEstado
+    <GridColumn TItem="LogMigracionDto" HeaderText="Estado" PropertyName="MigracionEstado">
+        @context.Estado
     </GridColumn>
-    <GridColumn TItem="MigracionExcelDto" HeaderText="Nombre archivo" PropertyName="ExcelFileName">
+    <GridColumn TItem="LogMigracionDto" HeaderText="Nombre archivo" PropertyName="ExcelFileName">
         @context.ExcelFileName
     </GridColumn>
-    <GridColumn TItem="MigracionExcelDto" HeaderText="Error" PropertyName="MensageError">
-        @context.MensageError
+    <GridColumn TItem="LogMigracionDto" HeaderText="Error" PropertyName="MensageError">
+        @context.Observacion
     </GridColumn>
 </Grid>

@@ -39,44 +39,86 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(FindAll));
       }
     }
-    [Authorize]
-    [HttpPost("upload")]
-    public IActionResult ImportarExcel(IFormFile file)
-    {
-      try
-      {
-        if (file == null || file.Length == 0)
+        [Authorize]
+        [HttpPost("upload")]
+        public IActionResult ImportarExcel(IFormFile file)
         {
-          return BadRequestResponse("Archivo no encontrado");
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequestResponse("Archivo no encontrado");
+                }
+
+                string fileExtension = Path.GetExtension(file.FileName);
+                if (fileExtension != ".xls" && fileExtension != ".xlsx")
+                {
+                    return BadRequestResponse("Archivo no válido");
+                }
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", file.FileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                LogMigracion migracion = iRepo.Create(new LogMigracion
+                {
+                    Estado = "PENDING"
+                    //ExcelFileName = file.FileName
+                });
+
+                var result = importer.ImportarExcel(path, migracion);
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = result
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ImportarExcel));
+            }
         }
+        //[Authorize]
+        //[HttpPost("upload")]
+        //public IActionResult ImportarExcel(IFormFile file)
+        //{
+        //  try
+        //  {
+        //    if (file == null || file.Length == 0)
+        //    {
+        //      return BadRequestResponse("Archivo no encontrado");
+        //    }
 
-        string fileExtension = Path.GetExtension(file.FileName);
-        if (fileExtension != ".xls" && fileExtension != ".xlsx")
-        {
-          return BadRequestResponse("Archivo no válido");
-        }
+        //    string fileExtension = Path.GetExtension(file.FileName);
+        //    if (fileExtension != ".xls" && fileExtension != ".xlsx")
+        //    {
+        //      return BadRequestResponse("Archivo no válido");
+        //    }
 
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", file.FileName);
+        //    var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", file.FileName);
 
-        using (var stream = new FileStream(path, FileMode.Create))
-        {
-          file.CopyTo(stream);
-        }
-          
-        MigracionExcel migracion = iRepo.Create(new MigracionExcel{
-          MigracionEstado = "PENDING",
-          ExcelFileName = file.FileName
-        });
-        var result = importer.ImportarExcel(path, migracion);
+        //    using (var stream = new FileStream(path, FileMode.Create))
+        //    {
+        //      file.CopyTo(stream);
+        //    }
 
-        return Ok(new RespuestasAPI<bool>{
-          IsSuccess = result
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(ImportarExcel));
-      }
+        //    MigracionExcel migracion = iRepo.Create(new MigracionExcel{
+        //      MigracionEstado = "PENDING",
+        //      ExcelFileName = file.FileName
+        //    });
+        //    var result = importer.ImportarExcel(path, migracion);
+
+        //    return Ok(new RespuestasAPI<bool>{
+        //      IsSuccess = result
+        //    });
+        //  }
+        //  catch (Exception e)
+        //  {
+        //    return HandleException(e, nameof(ImportarExcel));
+        //  }
+        //}
     }
-  }
 }

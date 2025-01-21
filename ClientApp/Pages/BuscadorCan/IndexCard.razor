@@ -1,34 +1,62 @@
-﻿@using ClientApp.Models;
+﻿@using BlazorBootstrap
+@using ClientApp.Models
 @using SharedApp.Models.Dtos
-@using Newtonsoft.Json;
+@using Newtonsoft.Json
 
-<div class="py-2">
-    <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
+<div class="row">
+    <!-- Columna del mapa (20%) -->
+    <div class="col-md-2">
+        <div id="map" style="width: 100%; height: 100%; background-color: grey;">
+            <!-- Aquí se cargará el mapa de Google -->
+        </div>
+    </div>
 
-    @if (listaEtiquetasGrilla != null)
-    {
+    <!-- Columna de tarjetas (80%) -->
+   @*  <div class="col-md-10">
         <div class="row">
-            @foreach (var resultado in resultados)
+            @if (listaEtiquetasGrilla != null && resultadoData != null)
             {
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <Tooltip Title="@resultado.IdEsquemaData.ToString()">@resultado.IdEsquemaData</Tooltip>
-                        </div>
-                        <div class="card-body">
-                            <p>
-                                @resultado.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == resultado.IdEsquemaData)?.Data
-                            </p>
-                            <button class="btn btn-secondary btn-sm" @onclick="() => showModal(resultado)">
-                                <i class="fas fa-info-circle"></i> Detalles
-                            </button>
-                            <button class="btn btn-secondary btn-sm">
-                                <i class="fas fa-file-pdf"></i> Exportar PDF
-                            </button>
+                @foreach (var item in resultadoData)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <!-- Encabezado dinámico basado en la primera etiqueta -->
+                                @listaEtiquetasGrilla.FirstOrDefault()?.MostrarWeb
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    @foreach (var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
+                                    {
+                                        <div class="col-6">
+                                            <h6>@etiqueta.MostrarWeb</h6>
+                                            <p>
+                                                @item.DataEsquemaJson?
+                                                .FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?
+                                                .Data
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="mt-2">
+                                    <button class="btn btn-primary" @onclick="() => MostrarDetalle(item)">
+                                        Ver Detalle
+                                    </button>
+                                    <button class="btn btn-secondary" @onclick="() => AbrirPdf(item)">
+                                        Ver PDF
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p>No se encontraron resultados.</p>
                 </div>
             }
         </div>
-    }
+    </div> *@
 </div>

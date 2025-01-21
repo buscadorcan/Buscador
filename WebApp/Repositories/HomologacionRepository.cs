@@ -63,7 +63,6 @@ namespace WebApp.Repositories
 
                 _exits.FechaModifica = DateTime.Now;
                 _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
-
                 context.Homologacion.Update(_exits);
                 return context.SaveChanges() >= 0;
             });
@@ -77,6 +76,11 @@ namespace WebApp.Repositories
                 .Where(c => c.CodigoHomologacionKEY == codigoHomologacion)
                 .OrderBy(c => c.MostrarWeb)
                 .ToList());
+        }
+
+        public List<Homologacion> FindByAll()
+        {
+            return ExecuteDbOperation(context => context.Homologacion.Where(c => c.Estado == "A").ToList());
         }
     }
 }

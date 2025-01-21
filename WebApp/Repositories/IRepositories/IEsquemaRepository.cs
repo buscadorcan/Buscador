@@ -11,11 +11,13 @@ namespace WebApp.Repositories.IRepositories
     Esquema? FindByViewName(string esquemaVista);
     List<Esquema> FindAll();
     List<Esquema> FindAllWithViews();
-    List<EsquemaVistaOnaDto> GetListaEsquemaByOna(int idONA);
+    List<Esquema> GetListaEsquemaByOna(int idONA);
     bool UpdateEsquemaValidacion(EsquemaVista data);
     bool CreateEsquemaValidacion(EsquemaVista data);
     bool EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id);
-    EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int Id);
-    bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna);
+    //EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int Id);
+    EsquemaVistaColumna? GetEsquemaVistaColumnaByIdEquemaVistaAsync(int idOna, int idEsquema);    
+    bool GuardarListaEsquemaVistaColumna(List<EsquemaVistaColumna> listaEsquemaVistaColumna, int? idOna, int? intidEsquema);
+
     }
 }

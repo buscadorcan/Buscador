@@ -5,7 +5,7 @@
 
 <Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 <PageTitle>Homologación</PageTitle>
-
+<Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 <div class="card">
     <div class="card-header">
         <h2>Validación de Campos</h2>
@@ -37,8 +37,13 @@
                 @context.Estado
             </GridColumn>
             <GridColumn TItem="ONAConexionDto" HeaderText="Probar Conexion">
-                <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(context)" Size="Size.Small">
+                <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(context.IdONA)" Size="Size.Small">
                     <Icon Name="IconName.RCircle" />
+                </Button>
+            </GridColumn>
+              <GridColumn TItem="ONAConexionDto" HeaderText="Migracion">
+                <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(context.IdONA)" Size="Size.Small">
+                    <Icon Name="IconName.DatabaseAdd" />
                 </Button>
             </GridColumn>
             <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar conexion">
