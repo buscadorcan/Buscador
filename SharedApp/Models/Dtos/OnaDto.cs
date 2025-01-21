@@ -28,9 +28,7 @@ namespace SharedApp.Models.Dtos
         [Required(ErrorMessage = "El Teléfono es obligatorio.")]
         [Phone(ErrorMessage = "El formato del teléfono no es válido.")]
         public string? Telefono { get; set; }
-        [Url(ErrorMessage = "El formato de la URL no es válido.")]
         public string? UrlIcono { get; set; }
-        [Url(ErrorMessage = "El formato de la URL no es válido.")]
         public string? UrlLogo { get; set; }
         public string? InfoExtraJson { get; set; }
         public string? Estado { get; set; }

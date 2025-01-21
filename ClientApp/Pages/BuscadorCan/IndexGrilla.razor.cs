@@ -19,6 +19,8 @@ namespace ClientApp.Pages.BuscadorCan
         public IBusquedaService? servicio { get; set; }
         [Inject]
         public ICatalogosService? iCatalogosService { get; set; }
+        [Inject]
+        public IHomologacionService? iHomologacionService { get; set; }
         private Modal modal = default!;
         private bool isDialogOpen = false; // Control de estado del diálogo
         private string? PdfUrl; // URL del PDF
@@ -69,6 +71,7 @@ namespace ClientApp.Pages.BuscadorCan
                     if (!(result.Data is null))
                     {
                         listBuscadorResultadoDataDto = result.Data;
+                        Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
                     }
 
                     if (PageNumber == 1)
@@ -91,6 +94,7 @@ namespace ClientApp.Pages.BuscadorCan
                 Data = await BuscarEsquemas(request.PageNumber, request.PageSize),
                 TotalCount = totalCount
             });
+            
         }
         private async void showModal(BuscadorResultadoDataDto resultData)
         {
@@ -104,11 +108,11 @@ namespace ClientApp.Pages.BuscadorCan
             // Obtener la URL del certificado
             var pdfUrl = GetPdfUrlFromEsquema(resultData);
 
-            if (string.IsNullOrWhiteSpace(pdfUrl))
+            if (pdfUrl == null)
             {
                 // Mostrar una alerta o manejar el error si no hay URL
                 Console.WriteLine("No se encontró la URL del certificado.");
-                pdfUrl = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
+                pdfUrl = Task.FromResult("No se encontró la URL del certificado.");
             }
 
             // Configurar los parámetros del modal
@@ -121,57 +125,51 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
         }
 
-        private string? GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
+        private async Task<string?> GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
         {
             try
             {
                 if (resultData.DataEsquemaJson == null || !resultData.DataEsquemaJson.Any())
                     return null;
 
-                // Buscar el primer objeto que contenga la propiedad "UrlCertificado" en el campo Data
+                var homologaciones = await iHomologacionService.GetHomologacionsAsync();
+                var idHomologacion = homologaciones.FirstOrDefault(x => x.NombreHomologado == "UrlCertificado")?.IdHomologacion;
+
+                if (idHomologacion == null)
+                    return null;
+
                 var certificado = resultData.DataEsquemaJson
-                    .Select(item => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(item.Data))
-                    .FirstOrDefault(data => data != null && data.ContainsKey("UrlCertificado"));
+                    .Select(item =>
+                    {
+                        try
+                        {
+                            return System.Text.Json.JsonSerializer.Deserialize<JsonData>(item.Data);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error deserializando item.Data: {item.Data}, Error: {ex.Message}");
+                            return null;
+                        }
+                    })
+                    .FirstOrDefault(data => data != null && data.IdHomologacion == idHomologacion);
 
-                return certificado != null && certificado.TryGetValue("UrlCertificado", out var url) ? url : null;
+                if (certificado == null || string.IsNullOrEmpty(certificado.Data))
+                    return null;
+
+                return certificado.Data;
             }
             catch (Exception ex)
             {
-
-                throw ex;
-            }
-       
-        }
-        private void CloseDialog()
-        {
-            isDialogOpen = false; // Cierra el diálogo
-        }
-
-
-        private string ExtractUrlCertificado(string? jsonData)
-        {
-            var url = "https://ibmetro.gob.bo/dta/catalogo-oec?download=DTA-CET-023";
-            if (string.IsNullOrWhiteSpace(jsonData))
-                return url;
-
-            try
-            {
-                var deserialized = System.Text.Json.JsonSerializer.Deserialize<JsonData>(jsonData);
-                return deserialized?.UrlCertificado ?? string.Empty;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deserializando JSON: {ex.Message}");
-                return string.Empty;
+                throw new Exception("Error al obtener la URL del certificado", ex);
             }
         }
+
 
         // Clase para deserializar
         public class JsonData
         {
             public int IdHomologacion { get; set; }
             public string Data { get; set; }
-            public string UrlCertificado { get; set; }
         }
     }
 }

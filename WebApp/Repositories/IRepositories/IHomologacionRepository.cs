@@ -14,5 +14,6 @@ namespace WebApp.Repositories.IRepositories
         /// </summary>
         /// <returns>Una lista de objetos <see cref="VwHomologacion"/>.</returns>
         List<VwHomologacion> ObtenerVwHomologacionPorCodigo(string codigoHomologacion);
+        List<Homologacion> FindByAll();
     }
 }

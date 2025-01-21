@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.ONA
@@ -20,6 +21,59 @@ namespace ClientApp.Pages.Administracion.ONA
         public int? Id { get; set; }
         [Inject]
         public Services.ToastService? toastService { get; set; }
+   
+       
+        private IBrowserFile? uploadedFile;
+        private async Task OnInputFileChange(InputFileChangeEventArgs e)
+        {
+            try
+            {
+                // Obtener el archivo subido
+                uploadedFile = e.File;
+
+                // Verificar si hay archivo cargado
+                if (uploadedFile == null)
+                {
+                    Console.WriteLine("No se seleccionó ningún archivo.");
+                    return;
+                }
+
+                // Obtener la extensión del archivo
+                var fileExtension = Path.GetExtension(uploadedFile.Name).ToLower();
+                if (fileExtension != ".png" && fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".svg")
+                {
+                    Console.WriteLine("Formato de archivo no permitido.");
+                    return;
+                }
+
+                // Generar un nombre único para el archivo
+                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+
+                // Construir la ruta absoluta manualmente
+                var folderPath = Path.Combine("wwwroot", "icono");
+                var fullPath = Path.Combine(folderPath, uniqueFileName);
+
+                // Verificar si la carpeta existe
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Guardar el archivo en la carpeta especificada
+                using var fileStream = new FileStream(fullPath, FileMode.Create);
+                await uploadedFile.OpenReadStream().CopyToAsync(fileStream);
+
+                // Actualizar la propiedad UrlIcono con la ruta relativa
+                onas.UrlIcono = $"/icono/{uniqueFileName}";
+
+                Console.WriteLine($"Archivo guardado exitosamente: {onas.UrlIcono}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cargar el archivo: {ex.Message}");
+            }
+        }
+
 
         protected override async Task OnInitializedAsync()
         {
