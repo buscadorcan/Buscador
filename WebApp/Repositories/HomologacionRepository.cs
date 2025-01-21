@@ -63,7 +63,6 @@ namespace WebApp.Repositories
 
                 _exits.FechaModifica = DateTime.Now;
                 _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
-
                 context.Homologacion.Update(_exits);
                 return context.SaveChanges() >= 0;
             });

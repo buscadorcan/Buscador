@@ -120,68 +120,73 @@ namespace WebApp.Repositories
 
         public UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
+
             return ExecuteDbOperation(context =>
             {
                 // Generar el hash de la contraseña
                 var passwordEncriptado = _hashService.GenerateHash(usuarioAutenticacionDto.Clave);
 
                 // Verificar que el email no sea nulo
-                if (string.IsNullOrWhiteSpace(usuarioAutenticacionDto.Email))
+                if (usuarioAutenticacionDto.Email == null)
                 {
                     return new UsuarioAutenticacionRespuestaDto();
                 }
 
-                // Consulta a la tabla Usuario
-                var usuario = context.Usuario
-                    .FirstOrDefault(u => u.Email != null &&
-                                         u.Email.ToLower() == usuarioAutenticacionDto.Email.ToLower() &&
-                                         u.Clave == passwordEncriptado);
+                //Buscar el usuario en la base de datos
+                //var usuario = context.Usuario.AsNoTracking().FirstOrDefault(u =>
+                //    u.Email != null &&
+                //    u.Email.ToLower() == usuarioAutenticacionDto.Email.ToLower() &&
+                //    u.Clave == passwordEncriptado);
+
+                var resultado = (from u in context.Usuario
+                                 join o in context.ONAConexion on u.IdONA equals o.IdONA
+                                 where u.Email != null &&
+                                       u.Email.ToLower() == usuarioAutenticacionDto.Email.ToLower() &&
+                                       u.Clave == passwordEncriptado
+                                 select new
+                                 {
+                                     Usuario = u,
+                                     BaseDatos = o.BaseDatos,
+                                     OrigenDatos = o.OrigenDatos,
+                                     Migrar = o.Migrar,
+                                     EstadoMigracion = o.Estado
+                                 }).FirstOrDefault();
 
                 // Si no se encuentra el usuario, retornar un objeto vacío
-                if (usuario == null)
+                if (resultado == null)
                 {
                     return new UsuarioAutenticacionRespuestaDto();
                 }
 
-                // Consulta a la tabla ONAConexion
-                var onaConexion = context.ONAConexion
-                    .FirstOrDefault(o => o.IdONA == usuario.IdONA);
-
-                // Asignar valores de ONAConexion con manejo de nulos
-                var baseDatos = onaConexion?.BaseDatos ?? "";
-                var origenDatos = onaConexion?.OrigenDatos ?? "";
-                var migrar = onaConexion?.Migrar ?? "";
-                var estadoMigracion = onaConexion?.Estado ?? "";
-
                 // Crear el token JWT
-                var token = _jwtService.GenerateJwtToken(usuario.IdUsuario);
+                var token = _jwtService.GenerateJwtToken(resultado.Usuario.IdUsuario);
 
                 // Crear el objeto UsuarioDto
                 var usuarioDto = new UsuarioDto
                 {
-                    IdUsuario = usuario.IdUsuario,
-                    Email = usuario.Email ?? "",
-                    Nombre = usuario.Nombre ?? "",
-                    Apellido = usuario.Apellido ?? "",
-                    Telefono = usuario.Telefono ?? "",
-                    IdHomologacionRol = usuario.IdHomologacionRol,
-                    IdONA = usuario.IdONA,
-                    BaseDatos = baseDatos,
-                    OrigenDatos = origenDatos,
-                    Migrar = migrar,
-                    EstadoMigracion = estadoMigracion
+                    IdUsuario = resultado.Usuario.IdUsuario,
+                    Email = resultado.Usuario.Email,
+                    Nombre = resultado.Usuario.Nombre,
+                    Apellido = resultado.Usuario.Apellido,
+                    Telefono = resultado.Usuario.Telefono,
+                    IdHomologacionRol = resultado.Usuario.IdHomologacionRol,
+                    IdONA = resultado.Usuario.IdONA,
+                    BaseDatos = resultado.BaseDatos, // Asignar BaseDatos desde resultado
+                    OrigenDatos = resultado.OrigenDatos,
+                    Migrar = resultado.Migrar,
+                    EstadoMigracion = resultado.EstadoMigracion
                 };
 
                 // Obtener el rol del usuario desde la vista VwRol usando IdHomologacionRol
                 var rol = context.VwRol.AsNoTracking().FirstOrDefault(r =>
-                    r.IdHomologacionRol == usuario.IdHomologacionRol);
+                    r.IdHomologacionRol == resultado.Usuario.IdHomologacionRol);
 
                 // Agregar el rol a la respuesta
                 var rolDto = rol != null ? new VwRolDto
                 {
                     IdHomologacionRol = rol.IdHomologacionRol,
-                    Rol = rol.Rol ?? "",
-                    CodigoHomologacion = rol.CodigoHomologacion ?? "",
+                    Rol = rol.Rol,
+                    CodigoHomologacion = rol.CodigoHomologacion
                 } : null;
 
                 // Obtener homologación grupo desde la base de datos
@@ -192,9 +197,9 @@ namespace WebApp.Repositories
                 // Mapear los elementos obtenidos a la lista de DTOs
                 var homologacionGrupoDto = homologacionGrupo != null ? new VwHomologacionGrupoDto
                 {
-                    MostrarWeb = homologacionGrupo.MostrarWeb ?? "",
-                    TooltipWeb = homologacionGrupo.TooltipWeb ?? "",
-                    CodigoHomologacion = homologacionGrupo.CodigoHomologacion ?? "",
+                    MostrarWeb = homologacionGrupo.MostrarWeb,
+                    TooltipWeb = homologacionGrupo.TooltipWeb,
+                    CodigoHomologacion = homologacionGrupo.CodigoHomologacion
                 } : null;
 
                 // Retornar la respuesta con el token y el usuario

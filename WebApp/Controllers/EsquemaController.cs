@@ -216,7 +216,7 @@ namespace WebApp.Controllers
             try
             {
                 var result = _iRepo.GetListaEsquemaByOna(idOna);
-                return Ok(new RespuestasAPI<List<EsquemaVistaOnaDto>> { Result = result });
+                return Ok(new RespuestasAPI<List<Esquema>> { Result = result });
             }
             catch (Exception e)
             {

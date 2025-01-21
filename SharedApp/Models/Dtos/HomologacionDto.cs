@@ -19,5 +19,7 @@ namespace SharedApp.Models.Dtos
         public string? CustomMostrarWeb { get; set; }
         public string? NombreFiltro { get; set; }
         public string? Indexar { get; set; }
+        public string? Estado { get; set; }
+
     }
 }

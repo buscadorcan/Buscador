@@ -9,37 +9,38 @@
 @inject IJSRuntime JS
 
 <div class="chart-container">
-    <!-- Gráficos de pastel (2 gráficos de pastel y 1 gráfico de líneas) -->
     <div class="row">
-        <div class="col-md-4">
-            <h5>Acreditaciones realizadas por Esquema</h5>
-            <canvas id="chart1" class="chart" style="height: 300px; width: 100%;"></canvas>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Acreditaciones realizadas por Esquema</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart1" class="chart"></canvas>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Estado de acreditaciones por esquema</h5>
-            <canvas id="chart2" class="chart" style="height: 300px; width: 100%;"></canvas>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Estado de acreditaciones por esquema</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart2" class="chart"></canvas>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Crecimiento de OEC acreditadas por fecha</h5>
-            <canvas id="chart3" class="chart" style="height: 350px; width: 100%;"></canvas>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Crecimiento de OEC acreditadas por fecha</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart3" class="chart"></canvas>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="map-container">
-    <!-- Mapas de calor (3 abajo) -->
     <div class="row">
-        <div class="col-md-4">
-            <h5>Acreditaciones realizadas por OA</h5>
-            <div id="heatmap1" class="heatmap" style="height: 300px; width: 100%;"></div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Acreditaciones realizadas por OA</h5>
+            <div id="heatmap1" class="heatmap"></div>
         </div>
-        <div class="col-md-4">
-            <h5>OEC Acreditadas por País</h5>
-            <div id="heatmap2" class="heatmap" style="height: 300px; width: 100%;"></div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">OEC Acreditadas por País</h5>
+            <div id="heatmap2" class="heatmap"></div>
         </div>
-        <div class="col-md-4">
-            <h5>Estado de OEC / Esquema por ubicación</h5>
-            <div id="heatmap3" class="heatmap" style="height: 300px; width: 100%;"></div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Estado de OEC / Esquema por ubicación</h5>
+            <div id="heatmap3" class="heatmap"></div>
         </div>
     </div>
 </div>
@@ -55,16 +56,35 @@
 
             const ctx = canvas.getContext('2d');
             new Chart(ctx, {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
                     labels: data.map(item => item.label || 'Sin etiqueta'),
                     datasets: [{
                         data: data.map(item => item.value || 0),
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                        backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57'],
+                        borderWidth: 2,
+                        borderColor: '#fff',
                     }]
                 },
                 options: {
                     responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    }
                 }
             });
         };
@@ -122,23 +142,21 @@
                 return;
             }
 
-            const map = L.map(elementId).setView([20, 0], 2); // Vista general del mapa
+            const map = L.map(elementId).setView([20, 0], 2);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
             data.forEach(item => {
-                // Estilo de marcador con un tamaño dinámico
                 const marker = L.circleMarker([0, 0], {
-                    radius: item.organizaciones > 50 ? 20 : item.organizaciones > 20 ? 15 : 10, // Aumentar tamaños
+                    radius: item.organizaciones > 50 ? 20 : item.organizaciones > 20 ? 15 : 10,
                     color: 'red',
                     fillColor: item.organizaciones > 50 ? 'red' : item.organizaciones > 20 ? 'orange' : 'yellow',
                     fillOpacity: 0.7,
                     weight: 1
                 }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Organizaciones:</strong> ${item.organizaciones}`);
 
-                // Intentar posicionar el marcador en el centro de los países conocidos
                 fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
                     .then(response => response.json())
                     .then(locations => {
@@ -152,7 +170,6 @@
             });
         };
 
-        // Inicializar mapas de calor
         createHeatMap('heatmap1', mapsData.heatmap1);
         createHeatMap('heatmap2', mapsData.heatmap2);
         createHeatMap('heatmap3', mapsData.heatmap3);
@@ -170,25 +187,49 @@
 </script>
 
 <style>
-    .map-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
     .chart-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .row {
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
     }
 
-    .chart, .heatmap {
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+    }
+
+    .chart {
+        width: 100%;
+        height: auto;
+    }
+
+    .heatmap {
+        height: 300px;
+        width: 100%;
         border: 1px solid #ccc;
         border-radius: 8px;
+    }
+
+    h5 {
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
     }
 </style>
