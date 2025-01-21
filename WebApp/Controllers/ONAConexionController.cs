@@ -165,5 +165,31 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GetOnaConexionByOna));
             }
         }
+
+        [Authorize]
+        [HttpGet("migrar/{idOna:int}")]
+        public IActionResult MigrarConexionByOna(int idOna)
+        {
+            try
+            {
+                var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
+                bool conexion = _iRepo.TestConnection(result);
+                if (conexion)
+                {
+                    return Ok(conexion);
+                }
+                else
+                {
+                    Console.WriteLine("No se que esta pasando");
+                }
+                return Ok(conexion);
+
+
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetOnaConexionByOna));
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+using SharedApp.Models.Dtos;
 using WebApp.Models;
 
 namespace WebApp.Repositories.IRepositories
@@ -11,6 +12,8 @@ namespace WebApp.Repositories.IRepositories
         List<ONAConexion> FindAll();
         ONAConexion? GetOnaConexionByOnaAsync(int idOna);
         bool TestConnection(ONAConexion onoConexion);
+        Task<bool> OnaMigracion(ONAConexion oNAConexion);
+        string BuildConnectionString(ONAConexion onoConexion);
 
     }
 }

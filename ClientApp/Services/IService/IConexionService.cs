@@ -13,6 +13,8 @@ namespace ClientApp.Services.IService {
 
         Task<RespuestaRegistro> testConexion(int idConexion);
 
+        Task<RespuestaRegistro> migrarConexion(int idConexion);
+
         Task<RespuestaRegistro> DeleteConexionsAsync(int idConexion);
 
     }
