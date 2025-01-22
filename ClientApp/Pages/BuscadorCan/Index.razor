@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/styleguide.css" />
     <link rel="stylesheet" href="/css/style.css" />
-<style>
+    <style>
 
-</style>
+    </style>
 
 </head>
 <body>
@@ -194,7 +194,7 @@
                                 <img class="img-2" src="login/img/format-list-bulleted-5.svg" />
                             </div>
                             <div class="tabs-2">
-                                <img class="img-2" src="login/img/location-on.svg"   @onclick="AlternarIndexCard"
+                                <img class="img-2" src="login/img/location-on.svg" @onclick="AlternarIndexCard"
                                      style="border: @(mostrarIndexCard ? "2px solid green" : "none"); cursor: pointer;" />
                             </div>
                         </div>
@@ -216,7 +216,7 @@
                                         var currentIndex = i;
                                         <div class="col form-check-label" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 14px !important;">
                                             <label for="select-@currentIndex" class="form-label text-small" style="font-weight: bold;"
-                                                title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
+                                                   title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
                                                 @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
                                             </label>
                                             <!-- Select List con Checkboxes -->
@@ -274,26 +274,30 @@
                         </div> *@
 
 
-            
-                           
+
+
                         </div>
                     </div>
-                </div>         
+                </div>
             }
+            <div class="result-container">
+                @if (!mostrarIndexCard)
+                {
+                    <IndexGrilla @ref="childComponentRef"
+                                 buscarRequest="@buscarRequest"
+                                 selectedValues="@selectedValues"
+                                 listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                }
+                else
+                {
+                    <IndexCard buscarRequest="@buscarRequest"
+                               selectedValues="@selectedValues"
+                               listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                }
 
-            @if (!mostrarIndexCard)
-            {
-                <IndexGrilla @ref="childComponentRef"
-                             buscarRequest="@buscarRequest"
-                             selectedValues="@selectedValues"
-                             listaEtiquetasFiltros="@listaEtiquetasFiltros" />
-            }
-           else
-            {
-                <IndexGrilla buscarRequest="@buscarRequest"
-                             selectedValues="@selectedValues"
-                             listaEtiquetasFiltros="@listaEtiquetasFiltros" />
-            }
+
+            </div>
+
         </div>
     </div>
 

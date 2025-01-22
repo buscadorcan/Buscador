@@ -6,68 +6,72 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class GrillaCard 
+    public partial class IndexCard
     {
         [Parameter]
-        public BuscarRequest? buscarRequest { get; set; }
+        public BuscarRequest? BuscarRequest { get; set; } = new BuscarRequest();
+
         [Parameter]
-        public List<FiltrosBusquedaSeleccion>? selectedValues { get; set; }
+        public List<FiltrosBusquedaSeleccion>? SelectedValues { get; set; } = new List<FiltrosBusquedaSeleccion>();
+
         [Parameter]
-        public List<VwFiltroDto>? listaEtiquetasFiltros { get; set; }
+        public List<VwFiltroDto>? ListaEtiquetasFiltros { get; set; } = new List<VwFiltroDto>();
 
         [Inject]
-        public IBusquedaService? servicio { get; set; }
+        public IBusquedaService? Servicio { get; set; }
+
         [Inject]
-        public ICatalogosService? iCatalogosService { get; set; }
+        public ICatalogosService? CatalogosService { get; set; }
+
         [Inject]
-        public IHomologacionService? iHomologacionService { get; set; }
+        public IHomologacionService? HomologacionService { get; set; }
 
-        private Modal modal = default!;
-        private List<BuscadorResultadoDataDto>? resultadoData;
-        private List<VwGrillaDto>? listaEtiquetasGrilla;
+        // Propiedades para la vista
+        public List<BuscadorResultadoDataDto>? ResultadoData { get; private set; } = new List<BuscadorResultadoDataDto>();
+        public List<VwGrillaDto>? ListaEtiquetasGrilla { get; private set; } = new List<VwGrillaDto>();
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    try
-        //    {
-        //        // Cargar etiquetas
-        //        if (iCatalogosService != null)
-        //        {
-        //            listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
-        //            Console.WriteLine($"Etiquetas cargadas: {JsonConvert.SerializeObject(listaEtiquetasGrilla)}");
-        //        }
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                // Cargar etiquetas
+                if (CatalogosService != null)
+                {
+                    ListaEtiquetasGrilla = await CatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema")
+                                         ?? new List<VwGrillaDto>();
+                }
 
-        //        // Cargar datos iniciales
-        //        await CargarResultados();
-        //        Console.WriteLine($"Datos cargados: {JsonConvert.SerializeObject(resultadoData)}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error en OnInitializedAsync: {ex.Message}");
-        //    }
-        //}
-
+                // Cargar resultados iniciales
+                await CargarResultados();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en OnInitializedAsync: {ex.Message}");
+            }
+        }
 
         private async Task CargarResultados()
         {
             try
             {
-                if (servicio == null) return;
+                if (Servicio == null) return;
 
+                // Construcción de filtros
                 var filtros = new
                 {
                     ExactaBuscar = false,
-                    TextoBuscar = buscarRequest?.TextoBuscar ?? "",
-                    FiltroPais = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
-                    FiltroOna = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
-                    FiltroNorma = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_NOR")?.Seleccion ?? new List<string>(),
-                    FiltroEsquema = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ESQ")?.Seleccion ?? new List<string>(),
-                    FiltroEstado = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_EST")?.Seleccion ?? new List<string>(),
-                    FiltroRecomocimiento = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
+                    TextoBuscar = BuscarRequest?.TextoBuscar ?? "",
+                    FiltroPais = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
+                    FiltroOna = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
+                    FiltroNorma = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_NOR")?.Seleccion ?? new List<string>(),
+                    FiltroEsquema = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ESQ")?.Seleccion ?? new List<string>(),
+                    FiltroEstado = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_EST")?.Seleccion ?? new List<string>(),
+                    FiltroRecomocimiento = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
                 };
 
-                var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), 1, 10); // Página y tamaño configurables
-                resultadoData = result.Data;
+                // Llamada al servicio
+                var result = await Servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), 1, 10);
+                ResultadoData = result.Data ?? new List<BuscadorResultadoDataDto>();
             }
             catch (Exception ex)
             {
@@ -78,7 +82,6 @@ namespace ClientApp.Pages.BuscadorCan
         private void MostrarDetalle(BuscadorResultadoDataDto item)
         {
             Console.WriteLine($"Mostrando detalle del item: {item.DataEsquemaJson}");
-            // Lógica para mostrar detalles (como un modal)
         }
 
         private async Task AbrirPdf(BuscadorResultadoDataDto item)
@@ -93,7 +96,6 @@ namespace ClientApp.Pages.BuscadorCan
                 }
 
                 Console.WriteLine($"Abriendo PDF: {pdfUrl}");
-                // Lógica para abrir el PDF (puede ser en un modal o redirigiendo)
             }
             catch (Exception ex)
             {
@@ -108,7 +110,7 @@ namespace ClientApp.Pages.BuscadorCan
                 if (resultData.DataEsquemaJson == null || !resultData.DataEsquemaJson.Any())
                     return null;
 
-                var homologaciones = await iHomologacionService.GetHomologacionsAsync();
+                var homologaciones = await HomologacionService.GetHomologacionsAsync();
                 var idHomologacion = homologaciones.FirstOrDefault(x => x.NombreHomologado == "UrlCertificado")?.IdHomologacion;
 
                 if (idHomologacion == null)
@@ -138,10 +140,33 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
+        private string? ObtenerDato(BuscadorResultadoDataDto item, int idHomologacion)
+        {
+            try
+            {
+                var dato = item.DataEsquemaJson?
+                    .FirstOrDefault(f => f.IdHomologacion == idHomologacion)?
+                    .Data;
+
+                if (!string.IsNullOrEmpty(dato))
+                {
+                    // Deserializar el dato si es JSON
+                    return System.Text.Json.JsonSerializer.Deserialize<string>(dato);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deserializando el dato: {ex.Message}");
+            }
+
+            return null;
+        }
+
+
         public class JsonData
         {
             public int IdHomologacion { get; set; }
-            public string Data { get; set; }
+            public string Data { get; set; } = string.Empty;
         }
     }
 }
