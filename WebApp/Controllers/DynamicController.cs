@@ -35,6 +35,22 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(GetProperties));
       }
     }
+    
+    [Authorize]
+    [HttpGet("columns/{idOna}/{valueColumn}/{viewName}", Name = "GetValueColumna")]
+    public IActionResult GetValueColumna(int idONA, string valueColumn, string viewName)    
+    {
+        try
+        {
+            var result = _vhRepo.GetValueColumna(idONA, valueColumn, viewName);
+            return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
+        }
+        catch (Exception e)
+        {
+            return HandleException(e, nameof(GetValueColumna));
+        }
+    }
+
     [Authorize]
     [HttpGet("{idOna}", Name = "getViewNames")]
     public IActionResult GetViewNames(int idOna)

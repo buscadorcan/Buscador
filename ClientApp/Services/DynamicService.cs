@@ -40,6 +40,19 @@ namespace ClientApp.Services {
         //        return new List<EsquemaVistaDto>();
         //    }
         //}
+        public async Task<List<PropiedadesTablaDto>> GetValueColumna(int idONA, string valueColumn, string viewName)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{url}/columns/{idONA}/{valueColumn}/{viewName}");
+                response.EnsureSuccessStatusCode();
+                return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<PropiedadesTablaDto>>>()).Result;
+            }
+            catch (System.Exception)
+            {
+                return new List<PropiedadesTablaDto>();
+            }
+        }
         public async Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquema)
         {
             try

@@ -4,6 +4,7 @@ namespace ClientApp.Services.IService {
     public interface IDynamicService
     {
         Task<List<PropiedadesTablaDto>> GetProperties(string codigoHomologacion, string viewName);
+        Task<List<PropiedadesTablaDto>> GetValueColumna(int idONA, string valueColumn, string viewName);
         Task<List<string>> GetViewNames(string codigoHomologacion);
         //Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquemaVista);
         Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquema);

@@ -58,6 +58,35 @@ namespace WebApp.Repositories
 
             return columnNames;
         }
+        public List<PropiedadesTablaDto> GetValueColumna(int idONA, string valueColumn, string viewName)
+        {
+            var conexion = GetConexion(idONA);
+            using var context = GetContext(conexion);
+            using var connection = context.Database.GetDbConnection();
+            connection.Open();
+
+            var columnNames = new List<PropiedadesTablaDto>();
+            using var command = connection.CreateCommand();
+            command.CommandText = $"SELECT TOP 1 {valueColumn} FROM {viewName}";
+            using var reader = command.ExecuteReader(CommandBehavior.SchemaOnly);
+            var schemaTable = reader.GetSchemaTable();
+
+            if (schemaTable == null)
+            {
+                _logger.LogWarning($"No se pudo obtener el esquema para la vista {viewName}");
+                return columnNames;
+            }
+
+            foreach (DataRow row in schemaTable.Rows)
+            {
+                columnNames.Add(new PropiedadesTablaDto
+                {
+                    NombreColumna = row["ColumnName"].ToString()
+                });
+            }
+
+            return columnNames;
+        }
         public List<string> GetViewNames(int idONA)
         {
             var conexion = GetConexion(idONA);

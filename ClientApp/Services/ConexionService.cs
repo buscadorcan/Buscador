@@ -41,7 +41,7 @@ namespace ClientApp.Services {
         }
         public async Task<ONAConexionDto> GetOnaConexionByOnaAsync(int idOna)
         {
-            var response = await _httpClient.GetAsync($"{url}/onaconexion/{idOna}");
+            var response = await _httpClient.GetAsync($"{url}/{idOna}");
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<ONAConexionDto>>()).Result;
         }
