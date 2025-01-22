@@ -24,6 +24,7 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
 
         private bool accessMigration;
         private bool isRolRead;
+        private bool isRolOna;
         private bool isRolAdmin;
         protected override async Task OnInitializedAsync()
         {
@@ -34,8 +35,9 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             var rolRelacionado = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
             isRolRead = rolRelacionado == "KEY_USER_READ";
+            isRolOna = rolRelacionado == "KEY_USER_ONA";
             isRolAdmin = rolRelacionado == "KEY_USER_CAN"; 
-            if (!isRolAdmin)
+            if (!isRolAdmin && !isRolOna)
             {
                 if (!isRolRead)
                 {
