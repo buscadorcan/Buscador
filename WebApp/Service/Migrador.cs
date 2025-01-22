@@ -319,7 +319,7 @@ namespace WebApp.Service.IService
 
                     // Obtener la lista de homologaciones indexadas
                     var homologacion = _repositoryH.FindByAll()
-                        .Where(x => x.Indexar == "S")
+                        .Where(x => x.Indexar == "S" && x.IdHomologacionGrupo == 1) //El valor 1 para pruebas
                         .Select(x => x.IdHomologacion)
                         .ToHashSet(); // Usar HashSet para búsquedas rápidas
 
