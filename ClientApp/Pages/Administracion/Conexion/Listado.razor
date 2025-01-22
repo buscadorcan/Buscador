@@ -46,11 +46,11 @@
                     <Icon Name="IconName.DatabaseAdd" />
                 </Button>
             </GridColumn>
-            <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar conexion">
+            @*   <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar conexion">
                 <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteConexionClick(context.IdONA)" Size="Size.Small">
                     <Icon Name="IconName.Trash3" />
                 </Button>
-            </GridColumn>
+            </GridColumn> *@
             <GridColumn TItem="ONAConexionDto" HeaderText="Editar">
                 <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="Size.Small">
                     <Icon Name="IconName.PencilSquare" />

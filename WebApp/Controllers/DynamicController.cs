@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Repositories;
 
 namespace WebApp.Controllers
 {
@@ -75,6 +76,57 @@ namespace WebApp.Controllers
             catch (Exception e)
             {
                 return HandleException(e, nameof(GetListaValidacionEsquema));
+            }
+        }
+
+        [Authorize]
+        [HttpGet("test/{idOna:int}")]
+        public IActionResult TestConnection(int idOna)
+        {
+            try
+            {
+                // Obtener la conexión desde el repositorio
+                var conexion = _vhRepo.GetConexion(idOna);
+                if (conexion == null)
+                {
+                    return NotFound(new { Message = "Conexión no encontrada." });
+                }
+
+                // Probar la conexión
+                var isConnected = _vhRepo.TestDatabaseConnection(conexion);
+
+                return Ok(new
+                {
+                    IsSuccess = isConnected,
+                    Message = isConnected ? "Conexión establecida correctamente." : "No se pudo establecer la conexión."
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = $"Error: {ex.Message}" });
+            }
+        }
+
+        [Authorize]
+        [HttpPost("migrar/{idOna:int}")]
+        public async Task<IActionResult> MigrarConexion(int idOna)
+        {
+            try
+            {
+                bool resultado = await _vhRepo.MigrarConexionAsync(idOna);
+
+                if (resultado)
+                {
+                    return Ok(new { Success = true, Message = "Migración completada con éxito." });
+                }
+                else
+                {
+                    return BadRequest(new { Success = false, Message = "La migración no se pudo completar." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Success = false, Message = ex.Message });
             }
         }
     }
