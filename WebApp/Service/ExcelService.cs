@@ -297,21 +297,21 @@ namespace WebApp.Service.IService
                 }
 
                 // Verificar si la columna es orgUrlCertificado (sin sensibilidad a mayúsculas/minúsculas)
-                string urlCertificado = null;
-                string columnMatch = dataTable.Columns.Cast<DataColumn>()
-                                          .FirstOrDefault(c => string.Equals(c.ColumnName, "orgUrlCertificado", StringComparison.OrdinalIgnoreCase))
-                                          ?.ColumnName;
+                //string urlCertificado = null;
+                //string columnMatch = dataTable.Columns.Cast<DataColumn>()
+                //                          .FirstOrDefault(c => string.Equals(c.ColumnName, "orgUrlCertificado", StringComparison.OrdinalIgnoreCase))
+                //                          ?.ColumnName;
 
-                if (!string.IsNullOrEmpty(columnMatch))
-                {
-                    urlCertificado = dataTable.Rows[row][columnMatch].ToString();
-                }
+                //if (!string.IsNullOrEmpty(columnMatch))
+                //{
+                //    urlCertificado = dataTable.Rows[row][columnMatch].ToString();
+                //}
 
                 data.Add(new JObject
                 {
                     ["IdHomologacion"] = currentField.ColumnaEsquemaIdH,
-                    ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString(),
-                    ["UrlCertificado"] = urlCertificado
+                    ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString()
+                    //["UrlCertificado"] = urlCertificado
                 });
             }
 
