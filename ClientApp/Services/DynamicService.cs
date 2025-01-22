@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using ClientApp.Helpers;
 using ClientApp.Services.IService;
+using Newtonsoft.Json;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
 
@@ -64,6 +65,51 @@ namespace ClientApp.Services {
             {
                 return new List<string>();
             }
+        }
+
+        public async Task<bool> TestConnectionAsync(int idOna)
+        {
+            try
+            {
+                // Realizar la solicitud al endpoint de prueba de conexión
+                var response = await _httpClient.GetAsync($"{url}/test/{idOna}");
+                response.EnsureSuccessStatusCode();
+                var jsonString = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Respuesta JSON: {jsonString}");
+                var result = JsonConvert.DeserializeObject<TestConnectionResponse>(jsonString);
+                return result?.IsSuccess ?? false;
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores
+                Console.WriteLine($"Error en TestConnectionAsync: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> MigrarConexionAsync(int idOna)
+        {
+            try
+            {
+                // Realizar la solicitud al endpoint de migración
+                var response = await _httpClient.PostAsync($"{url}/migrar/{idOna}", null);
+                response.EnsureSuccessStatusCode();
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<TestConnectionResponse>(jsonString);
+                return result?.IsSuccess ?? false;
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores y devolver un mensaje de error
+                Console.WriteLine($"Error en MigrarConexionAsync: {ex.Message}");
+                return false;
+            }
+        }
+
+        private class TestConnectionResponse
+        {
+            public bool IsSuccess { get; set; }
+            public string Message { get; set; }
         }
     }
 }

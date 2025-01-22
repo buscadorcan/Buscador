@@ -94,46 +94,46 @@ namespace ClientApp.Services {
             return await _httpClient.PostAsync($"{url}/upload", content);
         }
 
-        public async Task<RespuestaRegistro> testConexion(int idConexion)
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync($"{url}/test/{idConexion}");
-            if (response.IsSuccessStatusCode)
-            {
-                return new RespuestaRegistro { registroCorrecto = true };
-            }
-            else
-            {
-                var contentTemp = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
-            }
-        }
+        //public async Task<RespuestaRegistro> testConexion(int idConexion)
+        //{
+        //    HttpResponseMessage response = await _httpClient.GetAsync($"{url}/test/{idConexion}");
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return new RespuestaRegistro { registroCorrecto = true };
+        //    }
+        //    else
+        //    {
+        //        var contentTemp = await response.Content.ReadAsStringAsync();
+        //        return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+        //    }
+        //}
 
-        public async Task<RespuestaRegistro> migrarConexion(int idConexion)
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync($"{url}/migrar/{idConexion}");
-            if (response.IsSuccessStatusCode)
-            {
-                return new RespuestaRegistro { registroCorrecto = true };
-            }
-            else
-            {
-                var contentTemp = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
-            }
-        }
+        //public async Task<RespuestaRegistro> migrarConexion(int idConexion)
+        //{
+        //    HttpResponseMessage response = await _httpClient.GetAsync($"{url}/migrar/{idConexion}");
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return new RespuestaRegistro { registroCorrecto = true };
+        //    }
+        //    else
+        //    {
+        //        var contentTemp = await response.Content.ReadAsStringAsync();
+        //        return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+        //    }
+        //}
 
-        public async Task<RespuestaRegistro> DeleteConexionsAsync(int idConexion)
-        {
-            HttpResponseMessage response = await _httpClient.DeleteAsync($"{url}/eliminar/{idConexion}");
-            if (response.IsSuccessStatusCode)
-            {
-                return new RespuestaRegistro { registroCorrecto = true };
-            }
-            else
-            {
-                var contentTemp = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
-            }
-        }
+        //public async Task<RespuestaRegistro> DeleteConexionsAsync(int idConexion)
+        //{
+        //    HttpResponseMessage response = await _httpClient.DeleteAsync($"{url}/eliminar/{idConexion}");
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return new RespuestaRegistro { registroCorrecto = true };
+        //    }
+        //    else
+        //    {
+        //        var contentTemp = await response.Content.ReadAsStringAsync();
+        //        return JsonConvert.DeserializeObject<RespuestaRegistro>(contentTemp);
+        //    }
+        //}
     }
 }

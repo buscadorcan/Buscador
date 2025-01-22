@@ -2,6 +2,8 @@
 @layout AdminLayout
 @using SharedApp.Models.Dtos
 
+
+<Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 <PageTitle>Homologación</PageTitle>
 <Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 <div class="card">
@@ -35,20 +37,27 @@
                 @context.Estado
             </GridColumn>
             <GridColumn TItem="ONAConexionDto" HeaderText="Probar Conexion">
-                <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(context.IdONA)" Size="Size.Small">
-                    <Icon Name="IconName.RCircle" />
-                </Button>
+                @if (context.OrigenDatos != "EXCEL")
+                {
+                    <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(context.IdONA)" Size="Size.Small">
+                        <Icon Name="IconName.RCircle" />
+                    </Button>
+                }
             </GridColumn>
-              <GridColumn TItem="ONAConexionDto" HeaderText="Migracion">
-                <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(context.IdONA)" Size="Size.Small">
-                    <Icon Name="IconName.DatabaseAdd" />
-                </Button>
+
+            <GridColumn TItem="ONAConexionDto" HeaderText="Migracion">
+                @if (context.OrigenDatos != "EXCEL")
+                {
+                    <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(context.IdONA)" Size="Size.Small">
+                        <Icon Name="IconName.DatabaseAdd" />
+                    </Button>
+                }
             </GridColumn>
-            <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar conexion">
-                <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteConexionClick(context.IdONA)" Size="Size.Small">
-                    <Icon Name="IconName.Trash3" />
-                </Button>
-            </GridColumn>
+            @*   <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar conexion">
+            <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteConexionClick(context.IdONA)" Size="Size.Small">
+            <Icon Name="IconName.Trash3" />
+            </Button>
+            </GridColumn> *@
             <GridColumn TItem="ONAConexionDto" HeaderText="Editar">
                 <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="Size.Small">
                     <Icon Name="IconName.PencilSquare" />

@@ -14,16 +14,20 @@ namespace WebApp.Repositories
         private readonly IConectionStringBuilderService _connectionStringBuilderService;
         private readonly IDbContextFactory _dbContextFactory;
         private readonly ILogger<DynamicRepository> _logger;
+        private readonly IMigrador _migrador;
+
         public DynamicRepository(
           IDbContextFactory dbContextFactory,
           ILogger<DynamicRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory,
-          IConectionStringBuilderService connectionStringBuilderService
+          IConectionStringBuilderService connectionStringBuilderService,
+          IMigrador migrador
         ) : base(sqlServerDbContextFactory, logger)
         {
             _connectionStringBuilderService = connectionStringBuilderService;
             _dbContextFactory = dbContextFactory;
             _logger = logger;
+            _migrador = migrador;
         }
         public List<PropiedadesTablaDto> GetProperties(int idONA, string viewName)
         {
@@ -97,7 +101,7 @@ namespace WebApp.Repositories
                 _ => _dbContextFactory.CreateDbContext(connectionString, DatabaseType.SQLSERVER)
             };
         }
-        private ONAConexion GetConexion(int idONA)
+        public ONAConexion GetConexion(int idONA)
         {
             var conexion = ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == idONA));
             if (conexion == null)
@@ -108,20 +112,6 @@ namespace WebApp.Repositories
             }
             return conexion;
         }
-
-        //public List<EsquemaVistaDto> GetListaValidacionEsquema(int idONA, int idEsquemaVista)
-        //{
-        //    return ExecuteDbOperation(context =>
-        //        (from c in context.EsquemaVistaColumna
-        //         join v in context.EsquemaVista on c.IdEsquemaVista equals v.IdEsquemaVista
-        //         where v.IdONA == idONA && c.Estado == "A" && v.Estado == "A" && v.IdEsquemaVista == idEsquemaVista
-        //         select new EsquemaVistaDto
-        //         {
-        //             NombreEsquema = c.ColumnaEsquema,
-        //             NombreVista = c.ColumnaVista
-        //         }).ToList()
-        //    );
-        //}
         public List<EsquemaVistaDto> GetListaValidacionEsquema(int idONA, int idEsquema)
         {
             return ExecuteDbOperation(context =>
@@ -149,19 +139,66 @@ namespace WebApp.Repositories
             });
         }
 
-
-        public bool testconexion(int idONA)
+        public bool TestDatabaseConnection(ONAConexion conexion)
         {
-            bool exito = false;
-            var conexion = GetConexion(idONA);
-            using var context = GetContext(conexion);
-            using var connection = context.Database.GetDbConnection();
-            if (connection != null)
+            try
             {
-                exito = true;
+                // Construir la cadena de conexión
+                var connectionString = _connectionStringBuilderService.BuildConnectionString(conexion);
+
+                // Crear conexión según el tipo de base de datos
+                IDbConnection connection = conexion.OrigenDatos.ToUpper() switch
+                {
+                    "SQLSERVER" => new Microsoft.Data.SqlClient.SqlConnection(connectionString),
+                    "MYSQL" => new MySql.Data.MySqlClient.MySqlConnection(connectionString),
+                    "POSTGRES" => new Npgsql.NpgsqlConnection(connectionString),
+                    "SQLITE" => new Microsoft.Data.Sqlite.SqliteConnection(connectionString),
+                    _ => throw new NotSupportedException($"Tipo de base de datos '{conexion.OrigenDatos}' no soportado.")
+                };
+
+                // Abrir la conexión y verificar el estado
+                connection.Open();
+                return connection.State == ConnectionState.Open;
             }
-            
-            return exito;
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al probar la conexión: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> MigrarConexionAsync(int idONA)
+        {
+            try
+            {
+                // Obtener la conexión desde la base de datos
+                var conexion = GetConexion(idONA);
+
+                if (conexion == null)
+                {
+                    _logger.LogWarning($"No se encontró conexión para IdONA {idONA}");
+                    return false;
+                }
+
+                // Llamar al servicio `Migrador` para realizar la migración
+                bool resultado = await _migrador.MigrarAsync(conexion);
+
+                if (resultado)
+                {
+                    _logger.LogInformation($"Migración completada con éxito para IdONA {idONA}");
+                }
+                else
+                {
+                    _logger.LogWarning($"La migración no se pudo completar para IdONA {idONA}");
+                }
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error en la migración de la conexión {idONA}: {ex.Message}");
+                return false;
+            }
         }
     }
 }

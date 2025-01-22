@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Npgsql;
 using System.Data;
+using System.Net.Sockets;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 
@@ -303,7 +304,7 @@ namespace WebApp.Service.IService
 
 
                     //Eliminados los registros anteriores
-                   // _repositoryDLO.DeleteOldRecords(idEsquemaVista);
+                    // _repositoryDLO.DeleteOldRecords(idEsquemaVista);
 
                     // Insertar en la tabla EsquemaData
                     var esquemaData = new EsquemaData
@@ -316,8 +317,21 @@ namespace WebApp.Service.IService
                     _repositoryDLO.Create(esquemaData);
                     var idEsquemaData = esquemaData.IdEsquemaData;
 
+                    // Obtener la lista de homologaciones indexadas
+                    var homologacion = _repositoryH.FindByAll()
+                        .Where(x => x.Indexar == "S" && x.IdHomologacionGrupo == 1) //El valor 1 para pruebas
+                        .Select(x => x.IdHomologacion)
+                        .ToHashSet(); // Usar HashSet para búsquedas rápidas
+
+                    // Filtrar las columnas que tienen un IdHomologacion en la lista de homologaciones indexadas
+                    var columnasFiltradas = columnas
+                        .Where(col => homologacion.Contains(col.ColumnaEsquemaIdH))
+                        .ToList();
+
+
+
                     // Insertar en la tabla EsquemaFullText
-                    foreach (var col in columnas)
+                    foreach (var col in columnasFiltradas)
                     {
                         // Usar el diccionario previamente construido
                         var diccionarioFila = (IDictionary<string, object>)fila;
@@ -331,7 +345,10 @@ namespace WebApp.Service.IService
                                 : null // En caso de que no exista la columna en la fila
                         };
 
+
                         _repositoryOFT.Create(esquemaFullText);
+
+
                     }
                 }
 
