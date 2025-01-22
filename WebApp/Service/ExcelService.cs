@@ -156,6 +156,7 @@ namespace WebApp.Service.IService
                         currentONA = _repositoryO.FindBySiglas(migrationValue);
                         if (currentONA == null)
                         {
+                            
                             throw new Exception($"Error: ONA {migrationValue} no encontrada en la base de datos");
                         }
                         Console.WriteLine("Current ONA: " + currentONA.RazonSocial);

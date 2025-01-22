@@ -44,7 +44,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
         //private EsquemaVistaOnaDto? esquemaSelected;
         private EsquemaDto? esquemaSelected;
-
+        private bool enabledCeldas;
         private HomologacionDto? organizacionSelected;
         private OnaDto? onaSelected;
         private List<EsquemaVistaDto> listasHevd = new List<EsquemaVistaDto>();
@@ -66,12 +66,14 @@ namespace ClientApp.Pages.Administracion.Validacion
                 if (listaONAs is null && iONAservice != null)
                 {
                     await LoadONAs();
+                    listaEsquemasOna = await iEsquemaService.GetListEsquemasAsync();
                 }
             }
             else
             {
                 await LoadONAs();
                 listaONAs = listaONAs.Where(onas => onas.IdONA == onaPais).ToList();
+                listaEsquemasOna = await iEsquemaService.GetListEsquemasAsync();
             }
         }
 
@@ -85,17 +87,59 @@ namespace ClientApp.Pages.Administracion.Validacion
 
         private async Task CambiarSeleccionOna(OnaDto _onaSelected)
         {
-            onaSelected = _onaSelected;
-            esquemaSelected = null;
-            nombreSugerido = "";
-            listaEsquemasOna = await iEsquemaService.GetEsquemaByOnaAsync(onaSelected.IdONA);
+            if (esquemaSelected != null)
+            {
+                onaSelected = _onaSelected;
+                //esquemaSelected = null;
+                nombreSugerido = "";
+                await CambiarSeleccionEsquema(esquemaSelected);
 
-            listasHevd = new List<EsquemaVistaDto>();
-            if (grid != null)
-                await grid.RefreshDataAsync();
+                //listaEsquemasOna = await iEsquemaService.GetEsquemaByOnaAsync(onaSelected.IdONA);
+
+                //listasHevd = new List<EsquemaVistaDto>();
+                //if (grid != null)
+                //    await grid.RefreshDataAsync();
+            }
+            else
+            {
+                nombreSugerido = "";
+                onaSelected = _onaSelected;
+            }
+
         }
         private async Task CambiarSeleccionEsquema(EsquemaDto _esquemaSelected)
         {
+            var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            bool accessRol = rol == "KEY_USER_CAN";
+
+            if (accessRol)
+            {
+                currentConexion = await iConexionService.GetOnaConexionByOnaAsync(onaSelected.IdONA);
+                if (currentConexion != null && currentConexion.OrigenDatos.Equals("EXCEL"))
+                {
+                    enabledCeldas = true;
+                }
+                else
+                {
+                    enabledCeldas = false;
+                }
+            }
+            else
+            {
+                int IdOna = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                currentConexion = await iConexionService.GetOnaConexionByOnaAsync(IdOna);
+
+                if (currentConexion != null && currentConexion.OrigenDatos.Equals("EXCEL"))
+                {
+                    enabledCeldas = true;
+                }
+                else
+                {
+                    enabledCeldas = false;
+                }
+            }
+
+            
             esquemaSelected = _esquemaSelected;
             nombreSugerido = esquemaSelected.EsquemaVista;
 

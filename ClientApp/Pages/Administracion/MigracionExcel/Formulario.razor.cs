@@ -27,32 +27,42 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
       
         private async Task RegistrarMigracionExcel()
         {
-            saveButton.ShowLoading("Guardando...");
-
-            var maxFileSize = 10485760; // 10 MB
-            var buffer = new byte[uploadedFile.Size];
-            await uploadedFile.OpenReadStream(maxFileSize).ReadAsync(buffer);
-
-            using var content = new MultipartFormDataContent();
-            content.Add(new ByteArrayContent(buffer), "file", uploadedFile.Name);
-
-            if (service != null)
+            try
             {
-                var response = await service.ImportarExcel(content);
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(result);
-                }
-                else
-                {
-                    var errorResult = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Error: {errorResult}");
-                }
-            }
+                saveButton.ShowLoading("Guardando...");
 
-            saveButton.HideLoading();
-            navigationManager?.NavigateTo("/migracion-excel");
+                var maxFileSize = 10485760; // 10 MB
+                var buffer = new byte[uploadedFile.Size];
+                await uploadedFile.OpenReadStream(maxFileSize).ReadAsync(buffer);
+
+                using var content = new MultipartFormDataContent();
+                content.Add(new ByteArrayContent(buffer), "file", uploadedFile.Name);
+
+                if (service != null)
+                {
+                    var response = await service.ImportarExcel(content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(result);
+                    }
+                    else
+                    {
+                        saveButton.HideLoading();
+                        var errorResult = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Error: {errorResult}");
+                    }
+                }
+
+                saveButton.HideLoading();
+                navigationManager?.NavigateTo("/migracion-excel");
+            }
+            catch (Exception)
+            {
+                saveButton.HideLoading();
+                navigationManager?.NavigateTo("/migracion-excel");
+            }
+            
         }
     }
 }

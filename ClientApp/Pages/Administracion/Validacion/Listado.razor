@@ -88,7 +88,7 @@
             <!-- Columna habilitada para edición -->
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Nombre Campo Vista" PropertyName="NombreVista">
                 <EditorTemplate>
-                    <input class="form-control" @bind="context.NombreVista" />
+                    <input class="form-control" @bind="context.NombreVista" disabled="@enabledCeldas" />
                 </EditorTemplate>
             </GridColumn>
             
