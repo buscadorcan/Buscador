@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Npgsql;
 using System.Data;
+using System.Net.Sockets;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 
@@ -315,7 +316,7 @@ namespace WebApp.Service.IService
 
                     _repositoryDLO.Create(esquemaData);
                     var idEsquemaData = esquemaData.IdEsquemaData;
-
+                    
                     // Insertar en la tabla EsquemaFullText
                     foreach (var col in columnas)
                     {
@@ -330,8 +331,14 @@ namespace WebApp.Service.IService
                                 ? diccionarioFila[col.ColumnaEsquema]?.ToString()
                                 : null // En caso de que no exista la columna en la fila
                         };
+                        var indexar = _repositoryH.FindByParent().Where(t => t.Indexar == "S").Select(x => x.IdHomologacion == col.ColumnaEsquemaIdH).Count();
 
-                        _repositoryOFT.Create(esquemaFullText);
+                        if (indexar > 0)
+                        {
+                            Console.WriteLine($"Error al procesar los datos del indexar");
+                            _repositoryOFT.Create(esquemaFullText);
+                        }
+
                     }
                 }
 

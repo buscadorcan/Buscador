@@ -121,75 +121,57 @@ namespace WebApp.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("onaconexion/{idOna:int}")]
-        public IActionResult GetOnaConexionByOna(int idOna)
-        {
-            try
-            {
-                var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
 
-                return Ok(new RespuestasAPI<ONAConexionDto>
-                {
-                    Result = _mapper.Map<ONAConexionDto>(result)
-                });
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(GetOnaConexionByOna));
-            }
-        }
-
-        [Authorize]
-        [HttpGet("test/{idOna:int}")]
-        public IActionResult TestConexionByOna(int idOna)
-        {
-            try
-            {
-                var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
-                bool conexion = _iRepo.TestConnection(result);
-                if (conexion) 
-                { 
-                    return Ok(conexion); 
-                }
-                else
-                {
-                    Console.WriteLine("No se que esta pasando");
-                }
-                return Ok(conexion);
+        //[Authorize]
+        //[HttpGet("test/{idOna:int}")]
+        //public IActionResult TestConexionByOna(int idOna)
+        //{
+        //    try
+        //    {
+        //        var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
+        //        bool conexion = _iRepo.TestConnection(result);
+        //        if (conexion) 
+        //        { 
+        //            return Ok(conexion); 
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("No se que esta pasando");
+        //        }
+        //        return Ok(conexion);
 
                          
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(GetOnaConexionByOna));
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return HandleException(e, nameof(GetOnaConexionByOna));
+        //    }
+        //}
 
-        [Authorize]
-        [HttpGet("migrar/{idOna:int}")]
-        public IActionResult MigrarConexionByOna(int idOna)
-        {
-            try
-            {
-                var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
-                bool conexion = _iRepo.TestConnection(result);
-                if (conexion)
-                {
-                    return Ok(conexion);
-                }
-                else
-                {
-                    Console.WriteLine("No se que esta pasando");
-                }
-                return Ok(conexion);
+        //[Authorize]
+        //[HttpGet("migrar/{idOna:int}")]
+        //public IActionResult MigrarConexionByOna(int idOna)
+        //{
+        //    try
+        //    {
+        //        var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
+        //        bool conexion = _iRepo.TestConnection(result);
+        //        if (conexion)
+        //        {
+        //            return Ok(conexion);
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("No se que esta pasando");
+        //        }
+        //        return Ok(conexion);
 
 
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(GetOnaConexionByOna));
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return HandleException(e, nameof(GetOnaConexionByOna));
+        //    }
+        //}
     }
 }
