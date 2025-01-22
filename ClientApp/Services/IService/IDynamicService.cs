@@ -8,7 +8,7 @@ namespace ClientApp.Services.IService {
         //Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquemaVista);
         Task<List<EsquemaVistaDto>> GetListaValidacionEsquema(int idOna, int idEsquema);
         Task<bool> TestConnectionAsync(int idOna);
-        Task<string> MigrarConexionAsync(int idOna);
+        Task<bool> MigrarConexionAsync(int idOna);
 
     }
 }   

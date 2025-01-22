@@ -74,17 +74,9 @@ namespace ClientApp.Services {
                 // Realizar la solicitud al endpoint de prueba de conexión
                 var response = await _httpClient.GetAsync($"{url}/test/{idOna}");
                 response.EnsureSuccessStatusCode();
-
-                // Leer la respuesta como un string primero para verificar el contenido
                 var jsonString = await response.Content.ReadAsStringAsync();
-
-                // Log para depurar el contenido JSON (opcional)
                 Console.WriteLine($"Respuesta JSON: {jsonString}");
-
-                // Deserializar el JSON en un objeto fuertemente tipado
                 var result = JsonConvert.DeserializeObject<TestConnectionResponse>(jsonString);
-
-                // Analizar el resultado y devolver el éxito
                 return result?.IsSuccess ?? false;
             }
             catch (Exception ex)
@@ -95,25 +87,22 @@ namespace ClientApp.Services {
             }
         }
 
-        public async Task<string> MigrarConexionAsync(int idOna)
+        public async Task<bool> MigrarConexionAsync(int idOna)
         {
             try
             {
                 // Realizar la solicitud al endpoint de migración
                 var response = await _httpClient.PostAsync($"{url}/migrar/{idOna}", null);
                 response.EnsureSuccessStatusCode();
-
-                // Leer la respuesta como un objeto dinámico
-                var result = await response.Content.ReadFromJsonAsync<dynamic>();
-
-                // Devolver el mensaje de la migración
-                return result?.Message ?? "Migración completada.";
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<TestConnectionResponse>(jsonString);
+                return result?.IsSuccess ?? false;
             }
             catch (Exception ex)
             {
                 // Manejar errores y devolver un mensaje de error
                 Console.WriteLine($"Error en MigrarConexionAsync: {ex.Message}");
-                return $"Error al migrar: {ex.Message}";
+                return false;
             }
         }
 

@@ -304,7 +304,7 @@ namespace WebApp.Service.IService
 
 
                     //Eliminados los registros anteriores
-                   // _repositoryDLO.DeleteOldRecords(idEsquemaVista);
+                    // _repositoryDLO.DeleteOldRecords(idEsquemaVista);
 
                     // Insertar en la tabla EsquemaData
                     var esquemaData = new EsquemaData
@@ -316,9 +316,22 @@ namespace WebApp.Service.IService
 
                     _repositoryDLO.Create(esquemaData);
                     var idEsquemaData = esquemaData.IdEsquemaData;
-                    
+
+                    // Obtener la lista de homologaciones indexadas
+                    var homologacion = _repositoryH.FindByAll()
+                        .Where(x => x.Indexar == "S")
+                        .Select(x => x.IdHomologacion)
+                        .ToHashSet(); // Usar HashSet para búsquedas rápidas
+
+                    // Filtrar las columnas que tienen un IdHomologacion en la lista de homologaciones indexadas
+                    var columnasFiltradas = columnas
+                        .Where(col => homologacion.Contains(col.ColumnaEsquemaIdH))
+                        .ToList();
+
+
+
                     // Insertar en la tabla EsquemaFullText
-                    foreach (var col in columnas)
+                    foreach (var col in columnasFiltradas)
                     {
                         // Usar el diccionario previamente construido
                         var diccionarioFila = (IDictionary<string, object>)fila;
@@ -331,13 +344,10 @@ namespace WebApp.Service.IService
                                 ? diccionarioFila[col.ColumnaEsquema]?.ToString()
                                 : null // En caso de que no exista la columna en la fila
                         };
-                        var indexar = _repositoryH.FindByParent().Where(t => t.Indexar == "S").Select(x => x.IdHomologacion == col.ColumnaEsquemaIdH).Count();
 
-                        if (indexar > 0)
-                        {
-                            Console.WriteLine($"Error al procesar los datos del indexar");
-                            _repositoryOFT.Create(esquemaFullText);
-                        }
+
+                        _repositoryOFT.Create(esquemaFullText);
+
 
                     }
                 }

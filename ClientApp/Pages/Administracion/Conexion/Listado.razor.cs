@@ -73,83 +73,33 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (iDynamicService != null && listasHevd != null && grid != null)
             {
                 // Llamar al método del servicio para realizar la migración
-                string mensajeMigracion = await iDynamicService.MigrarConexionAsync(conexion);
+                bool migracion = await iDynamicService.MigrarConexionAsync(conexion);
 
-                if (mensajeMigracion.Contains("éxito", StringComparison.OrdinalIgnoreCase))
+                var toastMessage = new ToastMessage
                 {
-                    messages.Add(
-                        new ToastMessage()
-                        {
-                            Type = ToastType.Success,
-                            Title = "Mensaje de confirmación",
-                            HelpText = $"{DateTime.Now}",
-                            Message = mensajeMigracion,
-                        });
+                    Type = migracion ? ToastType.Success : ToastType.Danger,
+                    Title = "Mensaje de confirmación",
+                    HelpText = $"{DateTime.Now}",
+                    Message = migracion ? "Conexión satisfactoria" : "Conexión fallida",
+                };
 
-                    // Actualizar la lista si la migración fue exitosa
-                    listasHevd = listasHevd.Where(c => c.IdONA != conexion).ToList();
+                messages.Add(toastMessage);
+
+                // Configurar el cierre automático después de 5 segundos
+                _ = Task.Delay(5000).ContinueWith(_ =>
+                {
+                    messages.Remove(toastMessage);
+                    InvokeAsync(StateHasChanged); // Actualizar la UI
+                });
+
+                if (migracion)
+                {
                     await grid.RefreshDataAsync();
-                    return true; // Migración exitosa
-                }
-                else
-                {
-                    messages.Add(
-                        new ToastMessage()
-                        {
-                            Type = ToastType.Danger,
-                            Title = "Mensaje de confirmación",
-                            HelpText = $"{DateTime.Now}",
-                            Message = mensajeMigracion,
-                        });
+                    return true; // Devuelve true si la conexión fue exitosa
                 }
             }
             return false; // Migración fallida
         }
-        //private async Task<bool> OnTestconexionClick(ONAConexionDto conexion)
-        //{
-        //    if (iConexionService != null && listasHevd != null && grid != null)
-        //    {
-        //        var respuesta = await iConexionService.TestConexionAsync(conexion);
-        //        if (respuesta.registroCorrecto)
-        //        {
-        //            messages.Add(
-        //                      new ToastMessage()
-        //                      {
-        //                          Type = ToastType.Success,
-        //                          Title = "Mensaje de confirmacion",
-        //                          HelpText = $"{DateTime.Now}",
-        //                          Message = $"Conexion satisfactoria",
-        //                      });
-        //            await grid.RefreshDataAsync();
-        //            return true; // Devuelve true si la conexión fue exitosa
-        //        }
-        //        else
-        //        {
-        //            messages.Add(
-        //            new ToastMessage()
-        //            {
-        //                Type = ToastType.Danger,
-        //                Title = "Mensaje de confirmacion",
-        //                HelpText = $"{DateTime.Now}",
-        //                Message = $"Conexion fallida",
-        //            });
-        //        }
-        //    }
-        //    return false; // Devuelve false en caso de que las condiciones no se cumplan o haya fallado
-        //}
-
-        //private async Task OnDeleteConexionClick(int IdONA)
-        //{
-        //    if (iConexionService != null && listasHevd != null && grid != null)
-        //    {
-        //        var respuesta = await iConexionService.DeleteConexionsAsync(IdONA);
-        //        if (respuesta.registroCorrecto)
-        //        {
-
-        //            listasHevd = listasHevd.Where(c => c.IdONA != IdONA).ToList();
-        //            await grid.RefreshDataAsync();
-        //        }
-        //    }
-        //}
+      
     }
 }
