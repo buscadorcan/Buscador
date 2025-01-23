@@ -35,6 +35,13 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.ONA.AsNoTracking().FirstOrDefault(u => u.IdONA == id));
         }
+        public async Task<ONA?> FindByIdAsync(int id)
+        {
+            return await ExecuteDbOperation(async context =>
+                await context.ONA.AsNoTracking().FirstOrDefaultAsync(u => u.IdONA == id)
+            );
+        }
+
         public ONA? FindBySiglas(string siglas)
         {
             return ExecuteDbOperation(context => context.ONA.AsNoTracking().FirstOrDefault(u => u.Siglas.Equals(siglas)));

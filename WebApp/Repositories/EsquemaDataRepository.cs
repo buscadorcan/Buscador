@@ -29,7 +29,28 @@ namespace WebApp.Repositories
         return null;
       }
     }
-    public EsquemaData? FindById(int Id)
+        public async Task<EsquemaData?> CreateAsync(EsquemaData data)
+        {
+            data.IdEsquemaData = 0;
+
+            try
+            {
+                return await ExecuteDbOperation(async context =>
+                {
+                    context.EsquemaData.Add(data);
+                    await context.SaveChangesAsync();
+                    return data;
+                });
+            }
+            catch (Exception e)
+            {
+                // Registro del error
+                Console.WriteLine($"Error al crear EsquemaData: {e.Message}");
+                return null;
+            }
+        }
+
+        public EsquemaData? FindById(int Id)
     {
       return ExecuteDbOperation(context => context.EsquemaData.AsNoTracking().FirstOrDefault(u => u.IdEsquemaData == Id));
     }
@@ -65,7 +86,60 @@ namespace WebApp.Repositories
         return true;
       });
     }
-    public bool DeleteOnaRecords(int IdConexion)
+
+        //public async Task<bool> DeleteOldRecordsAsync(int IdEsquemaVista)
+        //{
+        //    return ExecuteDbOperation(context => {
+        //        var records = context.EsquemaData.Where(c => c.IdEsquemaVista == IdEsquemaVista).ToList();
+        //        List<int> deletedRecordIds = records.Select(r => r.IdEsquemaData).ToList();
+
+        //        var deletedCanFullTextRecords = context.EsquemaFullText.Where(o => deletedRecordIds.Contains(o.IdEsquemaData)).ToList();
+        //        context.EsquemaFullText.RemoveRange(deletedCanFullTextRecords);
+        //        context.SaveChanges();
+
+        //        context.EsquemaData.RemoveRange(records);
+        //        context.SaveChanges();
+
+        //        return true;
+        //    });
+        //}
+        public async Task<bool> DeleteOldRecordsAsync(int IdEsquemaVista)
+        {
+            return await ExecuteDbOperation(async context =>
+            {
+                // Obtén los registros de EsquemaData relacionados con IdEsquemaVista
+                var records = await context.EsquemaData
+                    .Where(c => c.IdEsquemaVista == IdEsquemaVista)
+                    .ToListAsync();
+
+                if (records.Any())
+                {
+                    // Obtén las IDs de los registros que serán eliminados
+                    var deletedRecordIds = records.Select(r => r.IdEsquemaData).ToList();
+
+                    // Busca los registros relacionados en EsquemaFullText
+                    var deletedCanFullTextRecords = await context.EsquemaFullText
+                        .Where(o => deletedRecordIds.Contains(o.IdEsquemaData))
+                        .ToListAsync();
+
+                    // Elimina los registros relacionados en EsquemaFullText
+                    if (deletedCanFullTextRecords.Any())
+                    {
+                        context.EsquemaFullText.RemoveRange(deletedCanFullTextRecords);
+                    }
+
+                    // Elimina los registros en EsquemaData
+                    context.EsquemaData.RemoveRange(records);
+
+                    // Guarda los cambios en una única operación para garantizar atomicidad
+                    await context.SaveChangesAsync();
+                }
+
+                return true;
+            });
+        }
+
+        public bool DeleteOnaRecords(int IdConexion)
     {
       return ExecuteDbOperation(context => {
         // var records = context.EsquemaData.Where(c => c. == IdConexion).ToList();

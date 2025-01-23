@@ -80,6 +80,13 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.Esquema.AsNoTracking().FirstOrDefault(u => u.EsquemaVista == esquemaVista));
         }
+        public async Task<Esquema?> FindByViewNameAsync(string esquemaVista)
+        {
+            return await ExecuteDbOperation(async context =>
+                await context.Esquema.AsNoTracking().FirstOrDefaultAsync(u => u.EsquemaVista == esquemaVista)
+            );
+        }
+
         public List<Esquema> FindAll()
         {
             return ExecuteDbOperation(context => context.Esquema.AsNoTracking().Where(c => c.Estado.Equals("A")).OrderBy(c => c.MostrarWebOrden).ToList());

@@ -9,6 +9,7 @@ namespace WebApp.Repositories.IRepositories
         EsquemaVistaColumna? FindById(int Id);
         List<EsquemaVistaColumna> FindByIdEsquemaVista(int IdEsquemaVista);
         List<EsquemaVistaColumna> FindByIdEsquemaVistaOna(int IdEsquemaVista, int IdOna);
+        Task<List<EsquemaVistaColumna>> FindByIdEsquemaVistaOnaAsync(int IdEsquemaVista, int IdOna);
         List<EsquemaVistaColumna> FindAll();
     }
 }

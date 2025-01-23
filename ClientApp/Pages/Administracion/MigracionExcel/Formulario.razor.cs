@@ -29,6 +29,8 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         ILocalStorageService iLocalStorageService { get; set; }
         [Inject]
         public IONAService? iONAservice { get; set; }
+        [Inject]
+        public Services.ToastService? toastService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
@@ -75,33 +77,42 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         {
             try
             {
-                saveButton.ShowLoading("Guardando...");
-
-                var maxFileSize = 10485760; // 10 MB
-                var buffer = new byte[uploadedFile.Size];
-                await uploadedFile.OpenReadStream(maxFileSize).ReadAsync(buffer);
-
-                using var content = new MultipartFormDataContent();
-                content.Add(new ByteArrayContent(buffer), "file", uploadedFile.Name);
-
-                if (service != null)
+                if (onaSelected != null && onaSelected.IdONA > 0)
                 {
-                    var response = await service.ImportarExcel(content, onaSelected.IdONA);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var result = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine(result);
-                    }
-                    else
-                    {
-                        saveButton.HideLoading();
-                        var errorResult = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Error: {errorResult}");
-                    }
-                }
+                    saveButton.ShowLoading("Guardando...");
 
-                saveButton.HideLoading();
-                navigationManager?.NavigateTo("/migracion-excel");
+                    var maxFileSize = 10485760; // 10 MB
+                    var buffer = new byte[uploadedFile.Size];
+                    await uploadedFile.OpenReadStream(maxFileSize).ReadAsync(buffer);
+
+                    using var content = new MultipartFormDataContent();
+                    content.Add(new ByteArrayContent(buffer), "file", uploadedFile.Name);
+
+                    if (service != null)
+                    {
+                        var response = await service.ImportarExcel(content, onaSelected.IdONA);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var result = await response.Content.ReadAsStringAsync();
+                            Console.WriteLine(result);
+                        }
+                        else
+                        {
+                            saveButton.HideLoading();
+                            var errorResult = await response.Content.ReadAsStringAsync();
+                            Console.WriteLine($"Error: {errorResult}");
+                        }
+                    }
+
+                    saveButton.HideLoading();
+                    navigationManager?.NavigateTo("/migracion-excel");
+                }
+                else
+                {
+                    toastService?.CreateToastMessage(ToastType.Warning, "Seleccione un Ona");
+                    navigationManager?.NavigateTo("/nueva-migarcion-excel");
+                }
+                
             }
             catch (Exception)
             {

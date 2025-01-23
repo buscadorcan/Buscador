@@ -78,13 +78,22 @@ namespace WebApp.Service
     
     /// <summary>Vista que almacena homologacion grupos disponibles en el sistema.</summary>
     public DbSet<VwHomologacionGrupo> VwHomologacionGrupo { get; set; }
+    public DbSet<VwHomologacion> VwHomologacion { get; set; }
     public DbSet<VwAcreditacionOna> VwAcreditacionOna { get; set; }
-    public DbSet<VwAcreditacionEsquema> VwAcreditacionEsquema { get; set; }
+    public DbSet<VwAcreditacionEsquema> VwAcreditacionEsquema { get; set; }        
     public DbSet<VwEstadoEsquema> VwEstadoEsquema { get; set; }
     public DbSet<VwOecPais> VwOecPais { get; set; }
     public DbSet<VwEsquemaPais> VwEsquemaPais { get; set; }
     public DbSet<VwOecFecha> VwOecFecha { get; set; }
-    public DbSet<VwHomologacion> VwHomologacion { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<VwAcreditacionOna>().HasNoKey().ToView("vw_AcreditacionOna");
+        modelBuilder.Entity<VwAcreditacionEsquema>().HasNoKey().ToView("vw_AcreditacionEsquema");
+        modelBuilder.Entity<VwEstadoEsquema>().HasNoKey().ToView("vw_EstadoEsquema");
+        modelBuilder.Entity<VwOecPais>().HasNoKey().ToView("vw_OecPais");
+        modelBuilder.Entity<VwEsquemaPais>().HasNoKey().ToView("vw_EsquemaPais");
+        modelBuilder.Entity<VwOecFecha>().HasNoKey().ToView("vw_OecFecha");
+    }
 
     }
 

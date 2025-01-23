@@ -26,6 +26,16 @@ namespace WebApp.Repositories
                 return data;
             });
         }
+        public async Task<LogMigracion> CreateAsync(LogMigracion data)
+        {
+            return await ExecuteDbOperation(async context =>
+            {
+                context.LogMigracion.Add(data);
+                await context.SaveChangesAsync();
+                return data;
+            });
+        }
+
         public LogMigracion? FindById(int id)
         {
             return ExecuteDbOperation(context => context.LogMigracion.AsNoTracking().FirstOrDefault(u => u.IdLogMigracion == id));
@@ -44,6 +54,28 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
+        public async Task<bool> UpdateAsync(LogMigracion newRecord)
+        {
+            return await ExecuteDbOperation(async context =>
+            {
+                // Busca la entidad existente y combina las propiedades con el nuevo registro
+                var existingRecord = MergeEntityProperties(context, newRecord, u => u.IdLogMigracion == newRecord.IdLogMigracion);
+
+                if (existingRecord == null)
+                {
+                    // Si no existe, no se puede actualizar
+                    return false;
+                }
+
+                // Marca la entidad como actualizada en el contexto
+                context.LogMigracion.Update(existingRecord);
+
+                // Guarda los cambios de forma asíncrona
+                var rowsAffected = await context.SaveChangesAsync();
+                return rowsAffected > 0;
+            });
+        }
+
         public LogMigracionDetalle CreateDetalle(LogMigracionDetalle data)
         {
             return ExecuteDbOperation(context =>
@@ -53,6 +85,16 @@ namespace WebApp.Repositories
                 return data;
             });
         }
+        public async Task<LogMigracionDetalle> CreateDetalleAsync(LogMigracionDetalle data)
+        {
+            return await ExecuteDbOperation(async context =>
+            {
+                context.LogMigracionDetalle.Add(data);
+                await context.SaveChangesAsync();
+                return data;
+            });
+        }
+
         public List<LogMigracionDetalle> FindAllDetalle()
         {
             return ExecuteDbOperation(context => context.LogMigracionDetalle.AsNoTracking().OrderByDescending(c => c.Fecha).ToList());

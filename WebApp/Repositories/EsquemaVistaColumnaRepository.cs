@@ -57,6 +57,26 @@ namespace WebApp.Repositories
 
                  }).ToList());
         }
+        public async Task<List<EsquemaVistaColumna>> FindByIdEsquemaVistaOnaAsync(int idEsquemaVista, int idONA)
+        {
+            return await ExecuteDbOperation(async context =>
+                await (from vista in context.EsquemaVista
+                       join columna in context.EsquemaVistaColumna
+                       on vista.IdEsquemaVista equals columna.IdEsquemaVista
+                       where vista.IdONA == idONA
+                             && vista.Estado == "A"
+                             && columna.Estado == "A"
+                             && columna.IdEsquemaVista == idEsquemaVista
+                       select new EsquemaVistaColumna
+                       {
+                           IdEsquemaVista = vista.IdEsquemaVista,
+                           ColumnaVista = columna.ColumnaVista,
+                           ColumnaEsquemaIdH = columna.ColumnaEsquemaIdH,
+                           IdEsquemaVistaColumna = columna.IdEsquemaVistaColumna,
+                           ColumnaEsquema = columna.ColumnaEsquema,
+                           ColumnaVistaPK = columna.ColumnaVistaPK,
+                       }).ToListAsync());
+        }
 
         public List<EsquemaVistaColumna> FindAll()
         {

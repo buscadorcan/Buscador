@@ -9,6 +9,7 @@ namespace WebApp.Repositories.IRepositories
     bool Create(Esquema data);
     Esquema? FindById(int Id);
     Esquema? FindByViewName(string esquemaVista);
+    Task<Esquema?> FindByViewNameAsync(string esquemaVista);    
     List<Esquema> FindAll();
     List<Esquema> FindAllWithViews();
     List<Esquema> GetListaEsquemaByOna(int idONA);
