@@ -20,8 +20,14 @@ namespace WebApp.Mappers
       CreateMap<Usuario, UsuarioDto>(); 
       CreateMap<UsuarioDto, Usuario>();
 
+      CreateMap<VwAcreditacionOna, VwAcreditacionOnaDto>();
+      CreateMap<VwAcreditacionEsquema, VwAcreditacionEsquemaDto>();
+      CreateMap<VwEstadoEsquema, VwEstadoEsquemaDto>();
+      CreateMap<VwOecPais, VwOecPaisDto>();
+      CreateMap<VwEsquemaPais, VwEsquemaPaisDto>();
+      CreateMap<VwOecFecha, VwOecFechaDto>();
       // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
-
+      
       CreateMap<Esquema, EsquemaDto>();
       CreateMap<EsquemaDto, Esquema>();
 

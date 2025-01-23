@@ -41,13 +41,17 @@ namespace WebApp.Controllers
     }
         [Authorize]
         [HttpPost("upload")]
-        public IActionResult ImportarExcel(IFormFile file)
+        public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
         {
             try
             {
                 if (file == null || file.Length == 0)
                 {
                     return BadRequestResponse("Archivo no encontrado");
+                }
+                if (idOna <= 0)
+                {
+                    return BadRequestResponse("idOna no es válido");
                 }
 
                 string fileExtension = Path.GetExtension(file.FileName);
@@ -69,7 +73,7 @@ namespace WebApp.Controllers
                     //ExcelFileName = file.FileName
                 });
 
-                var result = importer.ImportarExcel(path, migracion);
+                var result = importer.ImportarExcel(path, migracion, idOna);
 
                 return Ok(new RespuestasAPI<bool>
                 {

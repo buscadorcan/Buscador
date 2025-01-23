@@ -82,7 +82,7 @@ namespace WebApp.Service.IService
         //    return false;
         //  }
         //}
-        public Boolean ImportarExcel(string path, LogMigracion? migracion)
+        public Boolean ImportarExcel(string path, LogMigracion? migracion, int idOna)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace WebApp.Service.IService
                     // var result = true;
                     _repositoryME.Update(migracion);
                 }
-                var result = Leer(path);
+                var result = Leer(path, idOna);
                 if (result)
                 {
                     migracion.Estado = "SUCCESS";
@@ -131,7 +131,7 @@ namespace WebApp.Service.IService
                 return false;
             }
         }
-        public Boolean Leer(string fileSrc)
+        public Boolean Leer(string fileSrc, int idOna)
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -153,7 +153,8 @@ namespace WebApp.Service.IService
                     {
                         DateTime StartTime = DateTime.Now;
                         var migrationValue = DataSet.Tables[1].Rows[0][0].ToString();
-                        currentONA = _repositoryO.FindBySiglas(migrationValue);
+                        //currentONA = _repositoryO.FindBySiglas(migrationValue);
+                        currentONA = _repositoryO.FindById(idOna);
                         if (currentONA == null)
                         {
                             

@@ -512,7 +512,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
                     //        if (filasNoCoinciden.Any())
                     //        {
-                    //            toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
+                    //            toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas, no existen en la base de datos, no coinciden o tienen espacios en blanco:: {string.Join(", ", filasNoCoinciden)}");
                     //            navigationManager?.NavigateTo("/validacion");
                     //        }
                     //        await CambiarSeleccionEsquema(esquemaSelected);
@@ -575,7 +575,7 @@ namespace ClientApp.Pages.Administracion.Validacion
 
                     //            if (filasNoCoinciden.Any())
                     //            {
-                    //                toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
+                    //                toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas, no existen en la base de datos, no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
                     //                navigationManager?.NavigateTo("/validacion");
                     //            }
                     //            await CambiarSeleccionEsquema(esquemaSelected);
@@ -599,7 +599,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                     //}
                     navigationManager?.NavigateTo("/validacion");
                     saveButton.HideLoading();
-                    validateButton.HideLoading(); 
+                    validateButton.HideLoading();
                 }
             }
             catch (Exception)

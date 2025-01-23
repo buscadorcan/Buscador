@@ -25,14 +25,14 @@ namespace WebApp.WorkerService
             while (!stoppingToken.IsCancellationRequested)
             {
 
-                using (var scope = _services.CreateScope())
-                {
-                    var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
-                    excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx", null);
-                    // var service = scope.ServiceProvider.GetRequiredService<IImportador>();
-                    // service.Importar(Array.Empty<string>());
-                }
-                await Task.Delay(TimeSpan.FromMinutes(10000), stoppingToken);
+                //using (var scope = _services.CreateScope())
+                //{
+                //    var excelService = scope.ServiceProvider.GetRequiredService<IExcelService>();
+                //    excelService.ImportarExcel(@".\\Files\\cargaDataBusccadorAndino.xlsx", null, 0);
+                //    // var service = scope.ServiceProvider.GetRequiredService<IImportador>();
+                //    // service.Importar(Array.Empty<string>());
+                //}
+                //await Task.Delay(TimeSpan.FromMinutes(10000), stoppingToken);
             }
         }
     }
