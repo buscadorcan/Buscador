@@ -74,9 +74,9 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI<List<FnFiltroDetalleDto>>
+                return Ok(new RespuestasAPI<List<vwFiltroDetalleDto>>
                 {
-                    Result = _vhRepo.ObtenerFiltroDetalles(codigo)
+                    Result = _vhRepo.ObtenerFiltroDetalles(codigo).Select(item => _mapper.Map<vwFiltroDetalleDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -84,6 +84,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerFiltroDetalles));
             }
         }
+
 
         /// <summary>
         /// Obtiene el esquema de las dimensiones.

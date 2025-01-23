@@ -4,47 +4,52 @@ using SharedApp.Models.Dtos;
 
 namespace WebApp.Mappers
 {
-  public class Mapper : Profile
-  {
-    public Mapper()
+    public class Mapper : Profile
     {
-      CreateMap<VwGrilla, VwGrillaDto>();
-      CreateMap<VwFiltro, VwFiltroDto>();
-      CreateMap<VwDimension, VwDimensionDto>();
-      CreateMap<Homologacion, GruposDto>();
-      CreateMap<VwRol, VwRolDto>();
-      CreateMap<VwPais, VwPaisDto>();
-      CreateMap<VwMenu, VwMenuDto>();
-      CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
-      CreateMap<VwHomologacion, VwHomologacionDto>();
-      CreateMap<Usuario, UsuarioDto>(); 
-      CreateMap<UsuarioDto, Usuario>();
+        public Mapper()
+        {
+            CreateMap<VwGrilla, VwGrillaDto>();
+            CreateMap<VwFiltro, VwFiltroDto>();
+            CreateMap<VwDimension, VwDimensionDto>();
+            CreateMap<Homologacion, GruposDto>();
+            CreateMap<VwRol, VwRolDto>();
+            CreateMap<VwPais, VwPaisDto>();
+            CreateMap<VwMenu, VwMenuDto>();
+            CreateMap<vwFiltroDetalle, vwFiltroDetalleDto>();
+            CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
+            CreateMap<VwHomologacion, VwHomologacionDto>();
+            CreateMap<Usuario, UsuarioDto>();
+            CreateMap<UsuarioDto, Usuario>();
+           
+            // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
 
-      // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
+            CreateMap<Esquema, EsquemaDto>();
+            CreateMap<EsquemaDto, Esquema>();
 
-      CreateMap<Esquema, EsquemaDto>();
-      CreateMap<EsquemaDto, Esquema>();
+            CreateMap<Homologacion, HomologacionDto>();
+            CreateMap<HomologacionDto, Homologacion>();
 
-      CreateMap<Homologacion, HomologacionDto>();
-      CreateMap<HomologacionDto, Homologacion>();
+            CreateMap<ONAConexion, ONAConexionDto>();
+            CreateMap<ONAConexionDto, ONAConexion>();
 
-      CreateMap<ONAConexion, ONAConexionDto>();
-      CreateMap<ONAConexionDto, ONAConexion>();
+            CreateMap<ONA, OnaDto>();
+            CreateMap<OnaDto, ONA>();
 
-      CreateMap<ONA, OnaDto>();
-      CreateMap<OnaDto, ONA>();
+            //CreateMap<MigracionExcel, MigracionExcelDto>();
+            //CreateMap<MigracionExcelDto, MigracionExcel>();
 
-      //CreateMap<MigracionExcel, MigracionExcelDto>();
-      //CreateMap<MigracionExcelDto, MigracionExcel>();
+            CreateMap<LogMigracion, LogMigracionDto>();
+            CreateMap<LogMigracionDto, LogMigracion>();
 
-      CreateMap<LogMigracion, LogMigracionDto>();
-      CreateMap<LogMigracionDto, LogMigracion>();
+            CreateMap<EsquemaVista, EsquemaVistaValidacionDto>();
+            CreateMap<EsquemaVistaValidacionDto, EsquemaVista>();
 
-      CreateMap<EsquemaVista, EsquemaVistaValidacionDto>();
-      CreateMap<EsquemaVistaValidacionDto, EsquemaVista>();
+            CreateMap<EsquemaVistaColumna, EsquemaVistaColumnaDto>();
+            CreateMap<EsquemaVistaColumnaDto, EsquemaVistaColumna>();
 
-      CreateMap<EsquemaVistaColumna, EsquemaVistaColumnaDto>();
-      CreateMap<EsquemaVistaColumnaDto, EsquemaVistaColumna>();
+            // Nuevo mapeo para FnFiltroDetalleDto
+            CreateMap<vwFiltroDetalle, FnFiltroDetalleDto>()
+                .ForMember(dest => dest.MostrarWeb, opt => opt.MapFrom(src => src.MostrarWeb));
+        }
     }
-  }
 }
