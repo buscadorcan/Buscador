@@ -18,58 +18,58 @@
 
             <hr style="background-color:aliceblue" />
 
+            <!-- Combo de selección de Ona -->
+            <div class="form-row py-2">
+                <div class="col-md-4">
+                    <div>
+                        <label class="col-form-label">Ona</label>
+                    </div>
+                    <Dropdown AutoClose="true">
+                        <DropdownToggleButton Color="ButtonColor.Secondary">
+                            @if (onaSelected?.Siglas != null)
+                            {
+                                @onaSelected.Siglas
+                            }
+                            else
+                            {
+                                <span>Seleccionar Ona</span>
+                            }
+                        </DropdownToggleButton>
+                        <DropdownMenu>
+                            @if (listaONAs != null)
+                            {
+                                @foreach (var opcion in listaONAs)
+                                {
+                                    <DropdownItem @onclick="async () => await CambiarSeleccionOna(opcion)">
+                                        @opcion.Siglas
+                                    </DropdownItem>
+                                }
+                            }
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+            </div>
+
+            <!-- Campo de archivo -->
             <div class="form-row py-2">
                 <label class="col-form-label">Base Datos</label>
                 <div class="col">
-                    <InputFile
-                     @bind-Value="uploadedFile"
-                     class="form-control"
-                     placeholder="Archivo migración excel"
-                     OnChange="OnInputFileChange"
-                      />
+                    <InputFile @bind-Value="uploadedFile"
+                               class="form-control"
+                               placeholder="Archivo migración excel"
+                               OnChange="OnInputFileChange" />
                     <ValidationMessage For="(() => uploadedFile)" />
                 </div>
             </div>
             <div class="py-2">
                 <hr style="background-color:aliceblue" />
                 <div class="d-flex align-items-center">
-                    <!-- Combo de selección de Ona -->
-                    <div class="col-md-4">
-                        <div>
-                            <label class="col-form-label">Ona</label>
-                        </div>
-                        <Dropdown AutoClose="true">
-                            <DropdownToggleButton Color="ButtonColor.Secondary">
-                                @if (onaSelected?.Siglas != null)
-                                {
-                                    @onaSelected.Siglas
-                                }
-                                else
-                                {
-                                    <span>Seleccionar Ona</span>
-                                }
-                            </DropdownToggleButton>
-                            <DropdownMenu>
-                                @if (listaONAs != null)
-                                {
-                                    @foreach (var opcion in listaONAs)
-                                    {
-                                        <DropdownItem @onclick="async () => await CambiarSeleccionOna(opcion)">
-                                            @opcion.Siglas
-                                        </DropdownItem>
-                                    }
-                                }
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
-
                     <!-- Botón Guardar -->
                     <div class="ml-auto">
-                        <Button
-                         @ref="saveButton"
-                         Type="ButtonType.Submit"
-                         Color="ButtonColor.Success"
-                         @onclick="async () => await RegistrarMigracionExcel()">
+                        <Button @ref="saveButton"
+                                Type="ButtonType.Submit"
+                                Color="ButtonColor.Success"
+                                @onclick="async () => await RegistrarMigracionExcel()">
                             Guardar
                         </Button>
                     </div>
