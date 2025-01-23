@@ -4,29 +4,30 @@ using SharedApp.Models.Dtos;
 
 namespace WebApp.Mappers
 {
-  public class Mapper : Profile
-  {
-    public Mapper()
+    public class Mapper : Profile
     {
-      CreateMap<VwGrilla, VwGrillaDto>();
-      CreateMap<VwFiltro, VwFiltroDto>();
-      CreateMap<VwDimension, VwDimensionDto>();
-      CreateMap<Homologacion, GruposDto>();
-      CreateMap<VwRol, VwRolDto>();
-      CreateMap<VwPais, VwPaisDto>();
-      CreateMap<VwMenu, VwMenuDto>();
-      CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
-      CreateMap<VwHomologacion, VwHomologacionDto>();
-      CreateMap<Usuario, UsuarioDto>(); 
-      CreateMap<UsuarioDto, Usuario>();
+        public Mapper()
+        {
+            CreateMap<VwGrilla, VwGrillaDto>();
+            CreateMap<VwFiltro, VwFiltroDto>();
+            CreateMap<vwFiltroDetalle, vwFiltroDetalleDto>();
+            CreateMap<VwDimension, VwDimensionDto>();
+            CreateMap<Homologacion, GruposDto>();
+            CreateMap<VwRol, VwRolDto>();
+            CreateMap<VwPais, VwPaisDto>();
+            CreateMap<VwMenu, VwMenuDto>();
+            CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
+            CreateMap<VwHomologacion, VwHomologacionDto>();
+            CreateMap<Usuario, UsuarioDto>();
+            CreateMap<UsuarioDto, Usuario>();
 
-      CreateMap<VwAcreditacionOna, VwAcreditacionOnaDto>();
-      CreateMap<VwAcreditacionEsquema, VwAcreditacionEsquemaDto>();
-      CreateMap<VwEstadoEsquema, VwEstadoEsquemaDto>();
-      CreateMap<VwOecPais, VwOecPaisDto>();
-      CreateMap<VwEsquemaPais, VwEsquemaPaisDto>();
-      CreateMap<VwOecFecha, VwOecFechaDto>();
-      // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
+            CreateMap<VwAcreditacionOna, VwAcreditacionOnaDto>();
+            CreateMap<VwAcreditacionEsquema, VwAcreditacionEsquemaDto>();
+            CreateMap<VwEstadoEsquema, VwEstadoEsquemaDto>();
+            CreateMap<VwOecPais, VwOecPaisDto>();
+            CreateMap<VwEsquemaPais, VwEsquemaPaisDto>();
+            CreateMap<VwOecFecha, VwOecFechaDto>();
+            // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
 
             CreateMap<Esquema, EsquemaDto>();
             CreateMap<EsquemaDto, Esquema>();
@@ -52,9 +53,7 @@ namespace WebApp.Mappers
             CreateMap<EsquemaVistaColumna, EsquemaVistaColumnaDto>();
             CreateMap<EsquemaVistaColumnaDto, EsquemaVistaColumna>();
 
-            // Nuevo mapeo para FnFiltroDetalleDto
-            CreateMap<vwFiltroDetalle, FnFiltroDetalleDto>()
-                .ForMember(dest => dest.MostrarWeb, opt => opt.MapFrom(src => src.MostrarWeb));
+           
         }
     }
 }
