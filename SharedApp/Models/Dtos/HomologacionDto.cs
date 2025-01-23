@@ -20,6 +20,6 @@ namespace SharedApp.Models.Dtos
         public string? NombreFiltro { get; set; }
         public string? Indexar { get; set; }
         public string? Estado { get; set; }
-
+        public int? IdHomologacionFiltro { get; set; }
     }
 }

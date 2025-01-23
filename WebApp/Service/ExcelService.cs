@@ -4,6 +4,7 @@ using WebApp.Models;
 using System.Data;
 using WebApp.Repositories.IRepositories;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace WebApp.Service.IService
 {
@@ -82,7 +83,7 @@ namespace WebApp.Service.IService
         //    return false;
         //  }
         //}
-        public Boolean ImportarExcel(string path, LogMigracion? migracion)
+        public Boolean ImportarExcel(string path, LogMigracion? migracion, int idOna)
         {
             try
             {
@@ -90,22 +91,25 @@ namespace WebApp.Service.IService
                 {
                     migracion = new LogMigracion();
                     migracion.Estado = "PROCESSING";
-                    //migracion.ExcelFileName = path.Split("/").Last();
+                    migracion.ExcelFileName = path.Split("/").Last();
                     migracion = _repositoryME.Create(migracion);
                 }
                 else
                 {
                     migracion.Estado = "PROCESSING";
+                    migracion.ExcelFileName = path.Split("/").Last();
                     // var result = true;
                     _repositoryME.Update(migracion);
                 }
-                var result = Leer(path);
+                var result = Leer(path, idOna);
                 if (result)
                 {
+                    migracion.ExcelFileName = path.Split("/").Last();
                     migracion.Estado = "SUCCESS";
                 }
                 else
                 {
+                    migracion.ExcelFileName = path.Split("/").Last();
                     migracion.Estado = "ERROR";
                     migracion.Observacion = "Algo sslió mal en la migración";
                 }
@@ -131,7 +135,7 @@ namespace WebApp.Service.IService
                 return false;
             }
         }
-        public Boolean Leer(string fileSrc)
+        public Boolean Leer(string fileSrc, int idOna)
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -153,7 +157,8 @@ namespace WebApp.Service.IService
                     {
                         DateTime StartTime = DateTime.Now;
                         var migrationValue = DataSet.Tables[1].Rows[0][0].ToString();
-                        currentONA = _repositoryO.FindBySiglas(migrationValue);
+                        //currentONA = _repositoryO.FindBySiglas(migrationValue);
+                        currentONA = _repositoryO.FindById(idOna);
                         if (currentONA == null)
                         {
                             
@@ -191,6 +196,8 @@ namespace WebApp.Service.IService
                             logMigracion.EsquemaId = currentEsquema.IdEsquema;
                             logMigracion.EsquemaVista = currentEsquema.EsquemaVista;
                             logMigracion.Inicio = StartTime;
+
+                            logMigracion.ExcelFileName = fileSrc.Split("/").Last();
                             currentLogMigracion = _repositoryLM.Create(logMigracion);
 
                             //currentFields = _repositoryEVC.FindByIdEsquemaVista(currentEsquema.IdEsquema);
@@ -297,21 +304,21 @@ namespace WebApp.Service.IService
                 }
 
                 // Verificar si la columna es orgUrlCertificado (sin sensibilidad a mayúsculas/minúsculas)
-                string urlCertificado = null;
-                string columnMatch = dataTable.Columns.Cast<DataColumn>()
-                                          .FirstOrDefault(c => string.Equals(c.ColumnName, "orgUrlCertificado", StringComparison.OrdinalIgnoreCase))
-                                          ?.ColumnName;
+                //string urlCertificado = null;
+                //string columnMatch = dataTable.Columns.Cast<DataColumn>()
+                //                          .FirstOrDefault(c => string.Equals(c.ColumnName, "orgUrlCertificado", StringComparison.OrdinalIgnoreCase))
+                //                          ?.ColumnName;
 
-                if (!string.IsNullOrEmpty(columnMatch))
-                {
-                    urlCertificado = dataTable.Rows[row][columnMatch].ToString();
-                }
+                //if (!string.IsNullOrEmpty(columnMatch))
+                //{
+                //    urlCertificado = dataTable.Rows[row][columnMatch].ToString();
+                //}
 
                 data.Add(new JObject
                 {
                     ["IdHomologacion"] = currentField.ColumnaEsquemaIdH,
-                    ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString(),
-                    ["UrlCertificado"] = urlCertificado
+                    ["Data"] = dataTable.Rows[row][currentFieldIndex].ToString()
+                    //["UrlCertificado"] = urlCertificado
                 });
             }
 

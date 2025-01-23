@@ -1,3 +1,5 @@
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
@@ -66,15 +68,16 @@ namespace WebApp.Repositories
         }
 
         /// <inheritdoc />
-        public List<FnFiltroDetalleDto> ObtenerFiltroDetalles(string codigo)
+        public List<vwFiltroDetalle> ObtenerFiltroDetalles(string codigo)
         {
             return ExecuteDbOperation(context =>
-              context.Database
-                .SqlQuery<FnFiltroDetalleDto>($"SELECT * FROM fnFiltroDetalle({codigo})")
-                .AsNoTracking()
-                .OrderBy(c => c.MostrarWeb)
-                .ToList());
+             context.vwFiltroDetalle
+               .AsNoTracking()
+               .Where(c => c.CodigoHomologacion == codigo)
+               .ToList());
         }
+
+
 
         /// <inheritdoc />
         public List<VwRol> ObtenerVwRol()

@@ -20,31 +20,41 @@ namespace WebApp.Mappers
       CreateMap<Usuario, UsuarioDto>(); 
       CreateMap<UsuarioDto, Usuario>();
 
+      CreateMap<VwAcreditacionOna, VwAcreditacionOnaDto>();
+      CreateMap<VwAcreditacionEsquema, VwAcreditacionEsquemaDto>();
+      CreateMap<VwEstadoEsquema, VwEstadoEsquemaDto>();
+      CreateMap<VwOecPais, VwOecPaisDto>();
+      CreateMap<VwEsquemaPais, VwEsquemaPaisDto>();
+      CreateMap<VwOecFecha, VwOecFechaDto>();
       // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
 
-      CreateMap<Esquema, EsquemaDto>();
-      CreateMap<EsquemaDto, Esquema>();
+            CreateMap<Esquema, EsquemaDto>();
+            CreateMap<EsquemaDto, Esquema>();
 
-      CreateMap<Homologacion, HomologacionDto>();
-      CreateMap<HomologacionDto, Homologacion>();
+            CreateMap<Homologacion, HomologacionDto>();
+            CreateMap<HomologacionDto, Homologacion>();
 
-      CreateMap<ONAConexion, ONAConexionDto>();
-      CreateMap<ONAConexionDto, ONAConexion>();
+            CreateMap<ONAConexion, ONAConexionDto>();
+            CreateMap<ONAConexionDto, ONAConexion>();
 
-      CreateMap<ONA, OnaDto>();
-      CreateMap<OnaDto, ONA>();
+            CreateMap<ONA, OnaDto>();
+            CreateMap<OnaDto, ONA>();
 
-      //CreateMap<MigracionExcel, MigracionExcelDto>();
-      //CreateMap<MigracionExcelDto, MigracionExcel>();
+            //CreateMap<MigracionExcel, MigracionExcelDto>();
+            //CreateMap<MigracionExcelDto, MigracionExcel>();
 
-      CreateMap<LogMigracion, LogMigracionDto>();
-      CreateMap<LogMigracionDto, LogMigracion>();
+            CreateMap<LogMigracion, LogMigracionDto>();
+            CreateMap<LogMigracionDto, LogMigracion>();
 
-      CreateMap<EsquemaVista, EsquemaVistaValidacionDto>();
-      CreateMap<EsquemaVistaValidacionDto, EsquemaVista>();
+            CreateMap<EsquemaVista, EsquemaVistaValidacionDto>();
+            CreateMap<EsquemaVistaValidacionDto, EsquemaVista>();
 
-      CreateMap<EsquemaVistaColumna, EsquemaVistaColumnaDto>();
-      CreateMap<EsquemaVistaColumnaDto, EsquemaVistaColumna>();
+            CreateMap<EsquemaVistaColumna, EsquemaVistaColumnaDto>();
+            CreateMap<EsquemaVistaColumnaDto, EsquemaVistaColumna>();
+
+            // Nuevo mapeo para FnFiltroDetalleDto
+            CreateMap<vwFiltroDetalle, FnFiltroDetalleDto>()
+                .ForMember(dest => dest.MostrarWeb, opt => opt.MapFrom(src => src.MostrarWeb));
+        }
     }
-  }
 }

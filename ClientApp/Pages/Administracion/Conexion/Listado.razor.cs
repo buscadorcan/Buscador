@@ -80,7 +80,7 @@ namespace ClientApp.Pages.Administracion.Conexion
                     Type = migracion ? ToastType.Success : ToastType.Danger,
                     Title = "Mensaje de confirmación",
                     HelpText = $"{DateTime.Now}",
-                    Message = migracion ? "Conexión satisfactoria" : "Conexión fallida",
+                    Message = migracion ? "Migracion satisfactoria" : "Migracion no realizada",
                 };
 
                 messages.Add(toastMessage);

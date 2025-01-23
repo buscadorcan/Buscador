@@ -25,9 +25,9 @@ namespace ClientApp.Services {
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<MigracionExcelDto>>>()).Result;
         }
 
-        public async Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content)
+        public async Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content, int idOna)
         {
-            return await _httpClient.PostAsync($"{url}/upload", content);
+            return await _httpClient.PostAsync($"{url}/upload?idOna={idOna}", content);
         }
     }
 }

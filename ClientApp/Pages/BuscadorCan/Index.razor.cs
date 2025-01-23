@@ -20,7 +20,7 @@ namespace ClientApp.Pages.BuscadorCan
         private IndexGrilla? childComponentRef;
         private IndexCard? cardComponentRef;
         private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
-        private List<List<FnFiltroDetalleDto>?> listadeOpciones = new List<List<FnFiltroDetalleDto>?>();
+        private List<List<vwFiltroDetalleDto>?> listadeOpciones = new List<List<vwFiltroDetalleDto>?>();
         private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
         private BuscarRequest buscarRequest = new BuscarRequest();
         private bool modoBuscar = false;
@@ -44,56 +44,18 @@ namespace ClientApp.Pages.BuscadorCan
                     {
                         foreach(var opciones in listaEtiquetasFiltros)
                         {
-                            listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<FnFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
-                            
+                            listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<vwFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
+                            Console.WriteLine($"Lectura del codigo");
                         }
                         
                     }
                 }
 
-                // Si no hay datos del servicio, usar datos simulados
-                if (listaEtiquetasFiltros == null || !listaEtiquetasFiltros.Any())
-                {
-                    CargarDatosSimulados();
-                }
+             
             } catch (Exception e) {
                 Console.WriteLine(e);
-                CargarDatosSimulados();
+               
             }
-        }
-
-        private void CargarDatosSimulados()
-        {
-            // Crear etiquetas de filtro simuladas
-            listaEtiquetasFiltros = new List<VwFiltroDto>
-            {
-                new VwFiltroDto { IdHomologacion = 1, MostrarWeb = "Filtro 1" },
-                new VwFiltroDto { IdHomologacion = 2, MostrarWeb = "Filtro 2" },
-                new VwFiltroDto { IdHomologacion = 3, MostrarWeb = "Filtro 3" }
-            };
-
-            // Crear opciones simuladas para cada filtro
-            listadeOpciones = new List<List<FnFiltroDetalleDto>?>
-            {
-                new List<FnFiltroDetalleDto>
-                {
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 1.1" },
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 1.2" },
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 1.3" }
-                },
-                new List<FnFiltroDetalleDto>
-                {
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 2.1" },
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 2.2" },
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 2.3" }
-                },
-                new List<FnFiltroDetalleDto>
-                {
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 3.1" },
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 3.2" },
-                    new FnFiltroDetalleDto { MostrarWeb = "Opción 3.3" }
-                }
-            };
         }
 
         private void CambiarSeleccion(string valor, int comboIndex, object isChecked)

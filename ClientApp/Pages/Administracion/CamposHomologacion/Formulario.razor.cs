@@ -10,8 +10,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         private Button saveButton = default!;
         private HomologacionDto homologacion = new HomologacionDto();
         private HomologacionDto homologacionGrupo = new HomologacionDto();
+        private List<VwFiltroDto> filtros = new();
         [Inject]
         public IHomologacionService? iHomologacionService { get; set; }
+        [Inject]
+        public ICatalogosService? iCatalogoService { get; set; }
         [Inject]
         public NavigationManager? navigationManager { get; set; }
         [Parameter]
@@ -22,6 +25,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         public Services.ToastService? toastService { get; set; }
         protected override async Task OnInitializedAsync()
         {
+            filtros = await iCatalogoService.GetFiltrosAsync();
             homologacionGrupo = await iHomologacionService.GetHomologacionAsync((int) IdPadre);
             if (Id > 0) {
                 homologacion = await iHomologacionService.GetHomologacionAsync(Id.Value);
@@ -53,6 +57,23 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
 
         private void OnAutoCompleteChanged(string mascaraDato) {
             homologacion.MascaraDato = mascaraDato;
+        }
+
+        private void ActualizarFiltro(ChangeEventArgs e)
+        {
+            // Obtener el valor seleccionado
+            var selectedValue = e.Value?.ToString();
+
+            // Si el valor es "Sin Filtro" (vacío), asignar null a la variable
+            if (string.IsNullOrEmpty(selectedValue))
+            {
+                homologacion.IdHomologacionFiltro = null;
+            }
+            else
+            {
+                // Convertir el valor a int, si es válido
+                homologacion.IdHomologacionFiltro = int.TryParse(selectedValue, out var valor) ? valor : null;
+            }
         }
 
         private bool isIndexar // Propiedad booleana vinculada al Switch
