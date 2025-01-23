@@ -5,6 +5,8 @@ namespace WebApp.Repositories.IRepositories
   public interface IEsquemaFullTextRepository
   {
     EsquemaFullText Create(EsquemaFullText data);
-    EsquemaFullText? FindById(int Id);
+        Task<EsquemaFullText> CreateAsync(EsquemaFullText data);
+
+        EsquemaFullText? FindById(int Id);
   }
 }

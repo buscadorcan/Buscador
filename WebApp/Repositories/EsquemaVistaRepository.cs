@@ -43,6 +43,15 @@ namespace WebApp.Repositories
                     .AsNoTracking()
                     .FirstOrDefault(u => u.IdEsquema == idEsquema && u.IdONA == idOna && u.Estado == "A"));
         }
+        public async Task<EsquemaVista?> _FindByIdEsquemaAsync(int idEsquema, int idOna)
+        {
+            return await ExecuteDbOperation(async context =>
+                await context.EsquemaVista
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.IdEsquema == idEsquema && u.IdONA == idOna && u.Estado == "A")
+            );
+        }
+
         public List<EsquemaVista> FindAll()
         {
             return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());

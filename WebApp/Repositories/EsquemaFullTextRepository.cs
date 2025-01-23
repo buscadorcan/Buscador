@@ -23,7 +23,17 @@ namespace WebApp.Repositories
         return data;
       });
     }
-    public EsquemaFullText? FindById(int id)
+        public async Task<EsquemaFullText> CreateAsync(EsquemaFullText data)
+        {
+            data.IdEsquemaFullText = 0;
+
+            return ExecuteDbOperation(context => {
+                context.EsquemaFullText.Add(data);
+                context.SaveChanges();
+                return data;
+            });
+        }
+        public EsquemaFullText? FindById(int id)
     {
       return ExecuteDbOperation(context => context.EsquemaFullText.AsNoTracking().FirstOrDefault(u => u.IdEsquemaFullText == id));
     }

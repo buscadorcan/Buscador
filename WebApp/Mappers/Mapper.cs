@@ -4,24 +4,29 @@ using SharedApp.Models.Dtos;
 
 namespace WebApp.Mappers
 {
-    public class Mapper : Profile
+  public class Mapper : Profile
+  {
+    public Mapper()
     {
-        public Mapper()
-        {
-            CreateMap<VwGrilla, VwGrillaDto>();
-            CreateMap<VwFiltro, VwFiltroDto>();
-            CreateMap<VwDimension, VwDimensionDto>();
-            CreateMap<Homologacion, GruposDto>();
-            CreateMap<VwRol, VwRolDto>();
-            CreateMap<VwPais, VwPaisDto>();
-            CreateMap<VwMenu, VwMenuDto>();
-            CreateMap<vwFiltroDetalle, vwFiltroDetalleDto>();
-            CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
-            CreateMap<VwHomologacion, VwHomologacionDto>();
-            CreateMap<Usuario, UsuarioDto>();
-            CreateMap<UsuarioDto, Usuario>();
-           
-            // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
+      CreateMap<VwGrilla, VwGrillaDto>();
+      CreateMap<VwFiltro, VwFiltroDto>();
+      CreateMap<VwDimension, VwDimensionDto>();
+      CreateMap<Homologacion, GruposDto>();
+      CreateMap<VwRol, VwRolDto>();
+      CreateMap<VwPais, VwPaisDto>();
+      CreateMap<VwMenu, VwMenuDto>();
+      CreateMap<VwHomologacionGrupo, VwHomologacionGrupoDto>();
+      CreateMap<VwHomologacion, VwHomologacionDto>();
+      CreateMap<Usuario, UsuarioDto>(); 
+      CreateMap<UsuarioDto, Usuario>();
+
+      CreateMap<VwAcreditacionOna, VwAcreditacionOnaDto>();
+      CreateMap<VwAcreditacionEsquema, VwAcreditacionEsquemaDto>();
+      CreateMap<VwEstadoEsquema, VwEstadoEsquemaDto>();
+      CreateMap<VwOecPais, VwOecPaisDto>();
+      CreateMap<VwEsquemaPais, VwEsquemaPaisDto>();
+      CreateMap<VwOecFecha, VwOecFechaDto>();
+      // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
 
             CreateMap<Esquema, EsquemaDto>();
             CreateMap<EsquemaDto, Esquema>();

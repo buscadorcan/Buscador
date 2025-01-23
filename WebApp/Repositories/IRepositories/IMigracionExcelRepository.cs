@@ -6,10 +6,15 @@ namespace WebApp.Repositories.IRepositories
   {
     //bool Update(MigracionExcel data);
     bool Update(LogMigracion data);
+        Task<bool> UpdateAsync(LogMigracion data);
 
-    //MigracionExcel Create(MigracionExcel data);
-    LogMigracion Create(LogMigracion data);
-    MigracionExcel? FindById(int Id);
+
+        //MigracionExcel Create(MigracionExcel data);
+        LogMigracion Create(LogMigracion data);
+
+        Task<LogMigracion> CreateAsync(LogMigracion data);
+
+        MigracionExcel? FindById(int Id);
     List<MigracionExcel> FindAll();
   }
 }

@@ -45,6 +45,13 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().FirstOrDefault(u => u.IdONA == IdONA));
         }
+        public async Task<ONAConexion?> FindByIdONAAsync(int IdONA)
+        {
+            return await ExecuteDbOperation(async context =>
+                await context.ONAConexion.AsNoTracking().FirstOrDefaultAsync(u => u.IdONA == IdONA)
+            );
+        }
+
         public List<ONAConexion> FindAll()
         {
             return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
