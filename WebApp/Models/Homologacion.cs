@@ -7,6 +7,9 @@ namespace WebApp.Models
         [Key]
         public int IdHomologacion { get; set; }
         public int? IdHomologacionGrupo { get; set; } = 0;
+
+        public int? IdHomologacionFiltro { get; set; } = null;
+
         [Required]
         public string? Mostrar { get; set; } = "";
         [Required]
@@ -29,6 +32,6 @@ namespace WebApp.Models
         public string? Estado { get; set; } = "";
         [Required]
         public string? Indexar { get; set; } = "";
-        public int? IdHomologacionFiltro { get; set; } = null;
+       
     }
 }
