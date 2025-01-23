@@ -134,52 +134,23 @@
                         <div class="dashboard">
                             <div class="frame-4">
                                 <div class="text-wrapper-3">Total</div>
-                                <div class="element">720</div>
+                                <div class="element">@TotalEmpresa</div>
                             </div>
-                            <div class="frame-5">
-                                <div class="SAE">
-                                    <div class="frame-6">
-                                        <div class="div-3">
-                                            <img class="img-2" src="login/img/ona-10.svg" />
-                                            <div class="text-wrapper-4">SAE</div>
+                            <div class="frame-5">                            
+                                @foreach (var item in listaDatosPanel)
+                                {
+                                    <div class="@(item.Siglas)">
+                                        <div class="frame-6">
+                                            <div class="div-3">
+                                                <img class="img-2" src="@item.icono" />
+                                                <div class="text-wrapper-4">@item.Siglas</div>
+                                            </div>
+                                            <div class="text-wrapper-5">@item.pais</div>
                                         </div>
-                                        <div class="text-wrapper-5">Ecuador</div>
+                                        <div class="element-2">@item.empresas</div>
                                     </div>
-                                    <div class="element-2">200</div>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="SAE">
-                                    <div class="frame-6">
-                                        <div class="div-3">
-                                            <img class="img-2" src="login/img/ona-33.svg" />
-                                            <div class="text-wrapper-4">ONAC</div>
-                                        </div>
-                                        <div class="text-wrapper-5">Colombia</div>
-                                    </div>
-                                    <div class="element-2">270</div>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="SAE">
-                                    <div class="frame-6">
-                                        <div class="ona-inacal-icontext">
-                                            <img class="img-2" src="login/img/ona-15.svg" />
-                                            <div class="text-wrapper-4">INACAL</div>
-                                        </div>
-                                        <div class="text-wrapper-5">Perú</div>
-                                    </div>
-                                    <div class="element-2">150</div>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="SAE">
-                                    <div class="frame-6">
-                                        <div class="ona-ibmetro-icontext">
-                                            <div class="ona"><img class="image" src="login/img/image-193-4.png" /></div>
-                                            <div class="text-wrapper-4">IBMETRO</div>
-                                        </div>
-                                        <div class="text-wrapper-5">Bolivia</div>
-                                    </div>
-                                    <div class="element-2">100</div>
-                                </div>
+                                    <div class="divider"></div>
+                                }                              
                             </div>
                         </div>
                     </div>

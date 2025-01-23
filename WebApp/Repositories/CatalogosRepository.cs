@@ -116,5 +116,14 @@ namespace WebApp.Repositories
                 .ToList());
         }
 
+        public List<vwPanelONA> ObtenerVwPanelOna()
+        {
+            return ExecuteDbOperation(context =>
+              context.vwPanelONA
+                .AsNoTracking()
+                .OrderBy(c => c.empresas)
+                .ToList());
+        }
+
     }
 }
