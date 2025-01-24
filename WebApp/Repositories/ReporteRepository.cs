@@ -7,14 +7,11 @@ namespace WebApp.Repositories
 {
     public class ReporteRepository : BaseRepository, IReporteRepository
     {
-        private readonly IJwtService _jwtService;
         public ReporteRepository(
-          IJwtService jwtService,
           ILogger<ReporteRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
         }
 
         public List<VwAcreditacionOna> ObtenerVwAcreditacionOna()

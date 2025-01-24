@@ -8,8 +8,8 @@ namespace SharedApp.Models.Dtos
 {
     public class VwAcreditacionOnaDto
     {
-        public string? Pais { get; set; } = "";
-        public string? ONA { get; set; } = "";
-        public int? Organizacion { get; set; }
+        public string Pais { get; set; } = "";
+        public string ONA { get; set; } = "";
+        public int Organizacion { get; set; }
     }
 }

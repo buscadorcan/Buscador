@@ -31,6 +31,8 @@ builder.Services.AddScoped<IONAService, ONAsService>();
 builder.Services.AddScoped<IEsquemaService, EsquemaService>();
 builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
 
+builder.Services.AddScoped<IReporteService, ReporteService>();
+
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddAuthorizationCore();

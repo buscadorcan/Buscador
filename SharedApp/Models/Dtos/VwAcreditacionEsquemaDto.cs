@@ -8,7 +8,7 @@ namespace SharedApp.Models.Dtos
 {
     public class VwAcreditacionEsquemaDto
     {
-        public string? Esquema { get; set; } = "";
-        public int? Organizacion { get; set; }
+        public string Esquema { get; set; } = "";
+        public int Organizacion { get; set; }
     }
 }

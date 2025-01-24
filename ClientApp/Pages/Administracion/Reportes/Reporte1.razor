@@ -150,12 +150,12 @@
 
             data.forEach(item => {
                 const marker = L.circleMarker([0, 0], {
-                    radius: item.organizaciones > 50 ? 20 : item.organizaciones > 20 ? 15 : 10,
+                    radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
                     color: 'red',
-                    fillColor: item.organizaciones > 50 ? 'red' : item.organizaciones > 20 ? 'orange' : 'yellow',
+                    fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
                     fillOpacity: 0.7,
                     weight: 1
-                }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Organizaciones:</strong> ${item.organizaciones}`);
+                }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Organizaciones:</strong> ${item.organizacion}`);
 
                 fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
                     .then(response => response.json())

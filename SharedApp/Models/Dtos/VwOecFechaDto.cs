@@ -8,7 +8,7 @@ namespace SharedApp.Models.Dtos
 {
     public class VwOecFechaDto
     {
-        public string? Fecha { get; set; } = "";
-        public int? Organizacion { get; set; }
+        public string Fecha { get; set; } = "";
+        public int Organizacion { get; set; }
     }
 }
