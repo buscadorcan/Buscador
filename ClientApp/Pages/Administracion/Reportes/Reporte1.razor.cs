@@ -40,7 +40,7 @@ namespace ClientApp.Pages.Administracion.Reportes
                     var listaVwEstadoEsquema = await iReporteService.GetVwEstadoEsquemaAsync<List<VwEstadoEsquemaDto>>("estado-esquema");
                     foreach (var item in listaVwEstadoEsquema)
                     {
-                        Chart2Data.Add(new ChartData {Label = item.Esquema + item.Estado, Value = item.Organizacion });
+                        Chart2Data.Add(new ChartData {Label = item.Esquema + " " + item.Estado, Value = item.Organizacion });
                     }
 
                     var listaVwOecFecha = await iReporteService.GetVwOecFechaAsync<List<VwOecFechaDto>>("oec-fecha");
