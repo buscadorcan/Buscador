@@ -85,6 +85,7 @@ namespace WebApp.Extensions
             services.AddScoped<IMigracionExcelRepository, MigracionExcelRepository>();
             services.AddScoped<ILogMigracionRepository, LogMigracionRepository>();
 
+
             // Registra servicios de trabajo en segundo plano (Worker Services).
             services.AddHostedService<BackgroundWorkerService>();
             services.AddHostedService<BackgroundExcelService>();

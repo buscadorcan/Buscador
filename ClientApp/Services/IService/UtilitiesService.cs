@@ -1,0 +1,53 @@
+﻿using ClientApp.Helpers;
+using Microsoft.AspNetCore.Components.Forms;
+using System.Net.Http.Headers;
+
+namespace ClientApp.Services.IService
+{
+    public class UtilitiesService : IUtilitiesService
+    {
+        private readonly HttpClient _httpClient;
+        private string url = $"{Inicializar.UrlBaseApi}api/Utilities";
+
+        public UtilitiesService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task<string> UploadIconAsync(IBrowserFile file)
+        {
+            try
+            {
+                // Crear el contenido para la solicitud
+                var content = new MultipartFormDataContent();
+
+                // Leer el archivo en un StreamContent y agregarlo al MultipartFormDataContent
+                var streamContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 2 * 1024 * 1024)); // Tamaño máximo: 2 MB
+                streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                content.Add(streamContent, "file", file.Name);
+
+                // Enviar la solicitud al endpoint
+                var response = await _httpClient.PostAsync($"{url}/UploadIcon", content);
+
+                // Verificar si la respuesta es exitosa
+                if (response.IsSuccessStatusCode)
+                {
+                    // Obtener la ruta del archivo desde la respuesta
+                    var result = await response.Content.ReadAsStringAsync();
+                    return result; // Puedes deserializar el JSON si es necesario
+                }
+                else
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al cargar el archivo: {errorMessage}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al subir el archivo: {ex.Message}");
+            }
+        }
+
+
+    }
+}

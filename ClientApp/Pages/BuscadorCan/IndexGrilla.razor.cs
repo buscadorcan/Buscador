@@ -29,6 +29,7 @@ namespace ClientApp.Pages.BuscadorCan
         private List<VwGrillaDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
         public bool ModoBuscar { get; set; }
+        private bool isLoading = true;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -36,11 +37,16 @@ namespace ClientApp.Pages.BuscadorCan
                 if (iCatalogosService != null)
                 {
                     listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
+                    Console.WriteLine($"Filtros enviados");
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+            }
+            finally
+            {
+                isLoading = false; // Marca que los datos están listos
             }
         }
         private async Task<List<BuscadorResultadoDataDto>> BuscarEsquemas(int PageNumber, int PageSize)
@@ -72,6 +78,7 @@ namespace ClientApp.Pages.BuscadorCan
                     {
                         listBuscadorResultadoDataDto = result.Data;
                         Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
+                        await grid.RefreshDataAsync();
                     }
 
                     if (PageNumber == 1)
@@ -89,11 +96,31 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task<GridDataProviderResult<BuscadorResultadoDataDto>> ResultadoBusquedaDataProvider(GridDataProviderRequest<BuscadorResultadoDataDto> request)
         {
-            return await Task.FromResult(new GridDataProviderResult<BuscadorResultadoDataDto>
+            try
             {
-                Data = await BuscarEsquemas(request.PageNumber, request.PageSize),
-                TotalCount = totalCount
-            });
+                var data = await BuscarEsquemas(request.PageNumber, request.PageSize);
+                Console.WriteLine("No se encontraron resultados en BuscarEsquemas.");
+                if (data == null || !data.Any())
+                {
+                    Console.WriteLine("No se encontraron resultados en BuscarEsquemas.");
+                }
+
+                if (grid != null)
+                {
+                    await grid.RefreshDataAsync();
+                }
+
+                return new GridDataProviderResult<BuscadorResultadoDataDto>
+                {
+                    Data = data,
+                    TotalCount = totalCount
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
             
         }
         private async void showModal(BuscadorResultadoDataDto resultData)
@@ -163,7 +190,6 @@ namespace ClientApp.Pages.BuscadorCan
                 throw new Exception("Error al obtener la URL del certificado", ex);
             }
         }
-
 
         // Clase para deserializar
         public class JsonData

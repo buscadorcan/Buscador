@@ -42,9 +42,11 @@ namespace WebApp.Repositories
                         IdONA = c.IdONA,
                         Siglas = c.Siglas,
                         TextOverView = c.TextOverView,
-                        IdEsquemaData = c.IdEsquemaData,
                         VistaPK = c.VistaPK,
+                        VistaFK = c.VistaFK,
                         IdEsquema = c.IdEsquema,
+                        IdEsquemaVista = c.IdEsquemaVista,
+                        IdEsquemaData = c.IdEsquemaData,             
                         DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
                     }).ToList(),
                     TotalCount = (int)rowsTotal.Value

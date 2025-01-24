@@ -90,7 +90,7 @@
                 <GridColumn TItem="UsuarioDto" HeaderText="Opciones">
                     <!-- Botón Editar -->
                     <Tooltip Title="Editar registro">
-                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" Disabled="isRolRead"
+                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
                                 @onclick=@(() => EditarUsuario(context))>
                             <Icon Name="IconName.PencilSquare" />
                         </Button>
@@ -99,7 +99,7 @@
                     <!-- Botón Eliminar -->
                     <Tooltip Title="Eliminar registro">
                         <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
-                                Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdUsuario))>
+                                Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdUsuario))>
                             <Icon Name="IconName.Trash" />
                         </Button>
                     </Tooltip>

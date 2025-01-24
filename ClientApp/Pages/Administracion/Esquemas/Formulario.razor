@@ -83,7 +83,7 @@
             @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato
         </GridColumn>
         <GridColumn TItem="HomologacionDto" HeaderText="Eliminar">
-            <Button Color="ButtonColor.Danger" Outline="true" @onclick="() => EliminarElemento(context.IdHomologacion)" Size="Size.Small">
+            <Button Color="ButtonColor.Danger" Outline="true" @onclick="() => EliminarElemento(context.IdHomologacion)" Size="ButtonSize.Small">
                 <Icon Name="IconName.Trash3" />
             </Button>
         </GridColumn>

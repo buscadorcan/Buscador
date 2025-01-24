@@ -112,14 +112,14 @@
             <GridColumn TItem="HomologacionDto" HeaderText="Opciones">
                     <!-- Botón Editar -->
                     <Tooltip Title="Editar registro">
-                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-campos-homologacion/{homologacionSelected.IdHomologacion}/{context.IdHomologacion}")" Size="Size.Small">
+                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-campos-homologacion/{homologacionSelected.IdHomologacion}/{context.IdHomologacion}")" Size="ButtonSize.Small">
                             <Icon Name="IconName.PencilSquare" />
                         </Button>
                     </Tooltip>
 
                     <!-- Botón Eliminar -->
                     <Tooltip Title="Eliminar registro">
-                    <Button Color="ButtonColor.Danger" Outline="true" Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdHomologacion))>
+                    <Button Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdHomologacion))>
                         <Icon Name="IconName.Trash3" />
                     </Button>
                     </Tooltip>
