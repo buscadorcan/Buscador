@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using ClientApp.Services.IService;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
 using System;
@@ -10,46 +11,18 @@ namespace ClientApp.Pages.Administracion.Reportes
 {
     public partial class Reporte1
     {
+        [Inject]
+        private IReporteService? iReporteService { get; set; }
+
         // Datos para los gráficos
-        public List<ChartData> Chart1Data { get; set; } = new List<ChartData>
-        {
-            new ChartData { Label = "Productos", Value = 10 },
-            new ChartData { Label = "Ensayos", Value = 15 }
-        };
-
-        public List<ChartData> Chart2Data { get; set; } = new List<ChartData>
-        {
-            new ChartData { Label = "Producto Acreditado", Value = 5 },
-            new ChartData { Label = "Ensayo Retirado", Value = 6 },
-            new ChartData { Label = "Ensayo Acreditado", Value = 7 }
-        };
-
-        public List<LineChartData> Chart3Data { get; set; } = new List<LineChartData>
-        {
-            new LineChartData { Fecha = "2024-01-01", Organizaciones = 50 },
-            new LineChartData { Fecha = "2024-01-02", Organizaciones = 20 }
-        };
+        public List<ChartData> Chart1Data { get; set; } = new List<ChartData>();
+        public List<ChartData> Chart2Data { get; set; } = new List<ChartData>();
+        public List<LineChartData> Chart3Data { get; set; } = new List<LineChartData>();
 
         // Datos para los mapas de calor
-        public List<MapData> Heatmap1Data { get; set; } = new List<MapData>
-        {
-            new MapData { Pais = "Ecuador", Organizaciones = 1 },
-            new MapData { Pais = "Peru", Organizaciones = 100 }
-        };
-
-        public List<MapData> Heatmap2Data { get; set; } = new List<MapData>
-        {
-            new MapData { Pais = "Ecuador", Organizaciones = 1 },
-            new MapData { Pais = "Peru", Organizaciones = 100 },
-            new MapData { Pais = "Bolivia", Organizaciones = 1000 }
-        };
-
-        public List<MapData> Heatmap3Data { get; set; } = new List<MapData>
-        {
-            new MapData { Pais = "Ecuador", Organizaciones = 1 },
-            new MapData { Pais = "Peru", Organizaciones = 100 },
-            new MapData { Pais = "Bolivia", Organizaciones = 1000 }
-        };
+        public List<MapData> Heatmap1Data { get; set; } = new List<MapData>();
+        public List<MapData> Heatmap2Data { get; set; } = new List<MapData>();
+        public List<MapData> Heatmap3Data { get; set; } = new List<MapData>();
 
         // Método ejecutado después de renderizar el componente
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -58,13 +31,49 @@ namespace ClientApp.Pages.Administracion.Reportes
             {
                 try
                 {
+                    var listaVwAcreditacionEsquema = await iReporteService.GetVwAcreditacionEsquemaAsync<List<VwAcreditacionEsquemaDto>>("acreditacion-esquema");
+                    foreach (var item in listaVwAcreditacionEsquema)
+                    {
+                        Chart1Data.Add(new ChartData {Label = item.Esquema, Value = item.Organizacion });
+                    }
+
+                    var listaVwEstadoEsquema = await iReporteService.GetVwEstadoEsquemaAsync<List<VwEstadoEsquemaDto>>("estado-esquema");
+                    foreach (var item in listaVwEstadoEsquema)
+                    {
+                        Chart2Data.Add(new ChartData {Label = item.Esquema + item.Estado, Value = item.Organizacion });
+                    }
+
+                    var listaVwOecFecha = await iReporteService.GetVwOecFechaAsync<List<VwOecFechaDto>>("oec-fecha");
+                    foreach (var item in listaVwOecFecha)
+                    {
+                        Chart3Data.Add(new LineChartData { Fecha = item.Fecha, Organizacion = item.Organizacion });
+                    }
+
+                    var listaVwOecPais = await iReporteService.GetVwOecPaisAsync<List<VwOecPaisDto>>("oec-pais");
+                    foreach (var item in listaVwOecPais)
+                    {
+                        Heatmap1Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion });
+                    }
+
+                    var listaVwAcreditacionOna = await iReporteService.GetVwAcreditacionOnaAsync<List<VwAcreditacionOnaDto>>("acreditacion-ona");
+                    foreach (var item in listaVwAcreditacionOna)
+                    {
+                        Heatmap2Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion });
+                    }
+
+                    var listaVwEsquemaPais = await iReporteService.GetVwEsquemaPaisAsync<List<VwEsquemaPaisDto>>("esquema-pais");
+                    foreach (var item in listaVwEsquemaPais)
+                    {
+                        Heatmap3Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion });
+                    }
+
                     await JS.InvokeVoidAsync("initMap", new
                     {
                         chartsData = new[]
                         {
                             Chart1Data.Select(d => new { label = d.Label, value = d.Value }),
                             Chart2Data.Select(d => new { label = d.Label, value = d.Value }),
-                            Chart3Data.Select(d => new { label = d.Fecha, value = d.Organizaciones })
+                            Chart3Data.Select(d => new { label = d.Fecha, value = d.Organizacion })
                         },
                         mapsData = new
                         {
@@ -95,13 +104,13 @@ namespace ClientApp.Pages.Administracion.Reportes
         public class LineChartData
         {
             public string Fecha { get; set; }
-            public int Organizaciones { get; set; }
+            public int Organizacion { get; set; }
         }
 
         public class MapData
         {
             public string Pais { get; set; }
-            public int Organizaciones { get; set; }
+            public int Organizacion { get; set; }
         }
     }
 }

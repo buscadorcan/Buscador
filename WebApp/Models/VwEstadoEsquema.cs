@@ -5,8 +5,8 @@ namespace WebApp.Models
     [Table("vw_EstadoEsquema")]
     public class VwEstadoEsquema
     {
-        public string? Esquema { get; set; } = "";
-        public string? Estado { get; set; } = "";
-        public int? Organizacion { get; set; }
+        public string Esquema { get; set; } = "";
+        public string Estado { get; set; } = "";
+        public int Organizacion { get; set; }
     }
 }

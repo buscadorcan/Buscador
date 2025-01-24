@@ -8,8 +8,8 @@ namespace SharedApp.Models.Dtos
 {
     public class VwEstadoEsquemaDto
     {
-        public string? Esquema { get; set; } = "";
-        public string? Estado { get; set; } = "";
-        public int? Organizacion { get; set; }
+        public string Esquema { get; set; } = "";
+        public string Estado { get; set; } = "";
+        public int Organizacion { get; set; }
     }
 }

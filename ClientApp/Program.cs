@@ -30,6 +30,8 @@ builder.Services.AddScoped<ILogMigracionService, LogMigracionService>();
 builder.Services.AddScoped<IONAService, ONAsService>();
 builder.Services.AddScoped<IEsquemaService, EsquemaService>();
 
+builder.Services.AddScoped<IReporteService, ReporteService>();
+
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddAuthorizationCore();
