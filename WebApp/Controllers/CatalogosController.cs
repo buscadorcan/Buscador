@@ -191,5 +191,26 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerVwRol));
             }
         }
+
+        /// <summary>
+        /// Obtiene el esquema de roles. Requiere autorización.
+        /// </summary>
+        /// <returns>Una lista con el esquema de roles.</returns>
+        [HttpGet("panel")]
+        public IActionResult ObtenerPanelOna()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<vwPanelONA>>
+                {
+                    Result = _vhRepo.ObtenerVwPanelOna().Select(item => _mapper.Map<vwPanelONA>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerPanelOna));
+            }
+        }
+
     }
 }

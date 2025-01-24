@@ -55,5 +55,13 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwFiltroDto>>>()).Result;
         }
+
+        public async Task<List<vwPanelONADto>> GetPanelOnaAsync()
+        {
+            var url = _urlBaseApi + "panel";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<vwPanelONADto>>>()).Result;
+        }
     }
 }

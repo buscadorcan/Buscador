@@ -86,6 +86,7 @@ namespace WebApp.Service
         public DbSet<VwEsquemaPais> VwEsquemaPais { get; set; }
         public DbSet<VwOecFecha> VwOecFecha { get; set; }
         public DbSet<vwFiltroDetalle> vwFiltroDetalle { get; set; }
+        public DbSet<vwPanelONA> vwPanelONA { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VwAcreditacionOna>().HasNoKey().ToView("vw_AcreditacionOna");
@@ -94,6 +95,7 @@ namespace WebApp.Service
             modelBuilder.Entity<VwOecPais>().HasNoKey().ToView("vw_OecPais");
             modelBuilder.Entity<VwEsquemaPais>().HasNoKey().ToView("vw_EsquemaPais");
             modelBuilder.Entity<VwOecFecha>().HasNoKey().ToView("vw_OecFecha");
+            modelBuilder.Entity<vwPanelONA>().HasNoKey().ToView("vwPanelONA");
         }
 
     }

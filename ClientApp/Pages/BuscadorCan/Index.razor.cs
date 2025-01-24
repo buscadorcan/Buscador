@@ -20,8 +20,10 @@ namespace ClientApp.Pages.BuscadorCan
         private IndexGrilla? childComponentRef;
         private IndexCard? cardComponentRef;
         private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
+        private List<vwPanelONADto>? listaDatosPanel = new List<vwPanelONADto>();
         private List<List<vwFiltroDetalleDto>?> listadeOpciones = new List<List<vwFiltroDetalleDto>?>();
         private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
+        private int TotalEmpresa = 0;
         private BuscarRequest buscarRequest = new BuscarRequest();
         private bool modoBuscar = false;
         private List<Item> ListTypeSearch = new TypeSearch().ListTypeSearch;
@@ -108,6 +110,8 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task BuscarPalabraRequest()
         {
+            listaDatosPanel =await iCatalogosService.GetPanelOnaAsync();
+            TotalEmpresa = listaDatosPanel.Sum(x => x.empresas);
             buscarRequest.TextoBuscar = searchTerm;
             if (childComponentRef != null)
             {
@@ -119,6 +123,7 @@ namespace ClientApp.Pages.BuscadorCan
                 // Reinicia la grilla para aplicar los nuevos filtros
                 await childComponentRef.grid.ResetPageNumber();
             }
+
         }
         private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
         {
