@@ -35,6 +35,8 @@ namespace ClientApp.Pages.BuscadorCan
         private bool mostrarIndexCard = false; // Para alternar entre tarjeta de índice y grilla
         private string searchTerm = string.Empty;
         private string textoFiltrosAvanzados = "Filtros Avanzados";
+        private bool mostrarBuscador = false;
+        private bool mostrarPublicidad = true;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -113,6 +115,8 @@ namespace ClientApp.Pages.BuscadorCan
             listaDatosPanel =await iCatalogosService.GetPanelOnaAsync();
             TotalEmpresa = listaDatosPanel.Sum(x => x.empresas);
             buscarRequest.TextoBuscar = searchTerm;
+            mostrarBuscador = true;
+            mostrarPublicidad = false;
             if (childComponentRef != null)
             {
                 // Sincroniza el estado del filtro con el componente hijo (IndexGrilla)
