@@ -133,13 +133,13 @@ namespace ClientApp.Pages.BuscadorCan
         private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
             // Obtener la URL del certificado
-            var pdfUrl = GetPdfUrlFromEsquema(resultData);
-
+            var pdfUrl = await GetPdfUrlFromEsquema(resultData);
+            Console.WriteLine("No se encontró la URL del certificado.");
             if (pdfUrl == null)
             {
                 // Mostrar una alerta o manejar el error si no hay URL
                 Console.WriteLine("No se encontró la URL del certificado.");
-                pdfUrl = Task.FromResult("No se encontró la URL del certificado.");
+                pdfUrl = "No se encontró la URL del certificado.";
             }
 
             // Configurar los parámetros del modal
@@ -160,30 +160,14 @@ namespace ClientApp.Pages.BuscadorCan
                     return null;
 
                 var homologaciones = await iHomologacionService.GetHomologacionsAsync();
-                var idHomologacion = homologaciones.FirstOrDefault(x => x.NombreHomologado == "UrlCertificado")?.IdHomologacion;
+                var idHomologacion = homologaciones.FirstOrDefault(x => x.CodigoHomologacion == "KEY_ESQ_CERT")?.IdHomologacion;
 
                 if (idHomologacion == null)
                     return null;
 
-                var certificado = resultData.DataEsquemaJson
-                    .Select(item =>
-                    {
-                        try
-                        {
-                            return System.Text.Json.JsonSerializer.Deserialize<JsonData>(item.Data);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error deserializando item.Data: {item.Data}, Error: {ex.Message}");
-                            return null;
-                        }
-                    })
-                    .FirstOrDefault(data => data != null && data.IdHomologacion == idHomologacion);
+                var urlPdf = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idHomologacion)?.Data;
 
-                if (certificado == null || string.IsNullOrEmpty(certificado.Data))
-                    return null;
-
-                return certificado.Data;
+                return urlPdf;
             }
             catch (Exception ex)
             {
