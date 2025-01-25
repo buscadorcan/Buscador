@@ -24,17 +24,17 @@
                 @context.EsquemaVista
             </GridColumn>
             <GridColumn TItem="EsquemaDto" HeaderText="Columnas" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context.IdEsquema)">
+                <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModal(context.IdEsquema)">
                     <Icon Name="IconName.Front" />
                 </Button>
             </GridColumn>
             <GridColumn TItem="EsquemaDto" HeaderText="Editar" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-esquema/{context.IdEsquema}")" Size="Size.Small">
+                <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-esquema/{context.IdEsquema}")" Size="ButtonSize.Small">
                     <Icon Name="IconName.PencilSquare" />
                 </Button>
             </GridColumn>
             <GridColumn TItem="EsquemaDto" HeaderText="Eliminar" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdEsquema)" Size="Size.Small">
+                <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdEsquema)" Size="ButtonSize.Small">
                     <Icon Name="IconName.Trash3" />
                 </Button>
             </GridColumn>

@@ -42,7 +42,7 @@
                     <!-- Botón Editar -->
                     <Tooltip Title="Editar registro">
                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
-                                To="@($"/editar-ona/{context.IdONA}")" Size="Size.Small">
+                                To="@($"/editar-ona/{context.IdONA}")" Size="ButtonSize.Small">
                             <Icon Name="IconName.PencilSquare" />
                         </Button>
                     </Tooltip>
@@ -50,7 +50,7 @@
                     <!-- Botón Eliminar -->
                     <Tooltip Title="Eliminar registro">
                         <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true"
-                                Size="Size.Small" @onclick=@(() => OpenDeleteModal(context.IdONA))>
+                                Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdONA))>
                             <Icon Name="IconName.Trash" />
                         </Button>
                     </Tooltip>                  

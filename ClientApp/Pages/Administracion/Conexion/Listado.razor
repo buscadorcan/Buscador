@@ -39,7 +39,7 @@
             <GridColumn TItem="ONAConexionDto" HeaderText="Probar Conexion">
                 @if (context.OrigenDatos != "EXCEL")
                 {
-                    <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(context.IdONA)" Size="Size.Small">
+                    <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(context.IdONA)" Size="ButtonSize.Small">
                         <Icon Name="IconName.RCircle" />
                     </Button>
                 }
@@ -48,7 +48,7 @@
             <GridColumn TItem="ONAConexionDto" HeaderText="Migracion">
                 @if (context.OrigenDatos != "EXCEL")
                 {
-                    <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(context.IdONA)" Size="Size.Small">
+                    <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(context.IdONA)" Size="ButtonSize.Small">
                         <Icon Name="IconName.DatabaseAdd" />
                     </Button>
                 }
@@ -59,12 +59,12 @@
             </Button>
             </GridColumn> *@
             <GridColumn TItem="ONAConexionDto" HeaderText="Editar">
-                <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="Size.Small">
+                <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="ButtonSize.Small">
                     <Icon Name="IconName.PencilSquare" />
                 </Button>
             </GridColumn>
             <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar">
-                <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdONA)" Size="Size.Small">
+                <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdONA)" Size="ButtonSize.Small">
                     <Icon Name="IconName.Trash3" />
                 </Button>
             </GridColumn>

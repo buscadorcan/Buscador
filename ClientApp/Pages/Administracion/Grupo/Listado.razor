@@ -19,7 +19,7 @@
             </GridColumn>
             <GridColumn TItem="HomologacionDto" HeaderText="Opciones" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
                 <Tooltip Title="Editar registro">
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{context.IdHomologacion}")" Size="Size.Small">
+                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{context.IdHomologacion}")" Size="ButtonSize.Small">
                         <Icon Name="IconName.PencilSquare" />
                     </Button>
                 </Tooltip>

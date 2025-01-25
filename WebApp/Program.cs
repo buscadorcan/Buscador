@@ -50,6 +50,11 @@ app.UseCors(options => {
 });
 
 /// <summary>
+/// Habilita el middleware de archivos estáticos para que se sirvan archivos desde la carpeta wwwroot.
+/// </summary>
+app.UseStaticFiles();
+
+/// <summary>
 /// Habilita Swagger y la interfaz de usuario Swagger UI cuando el entorno sea de desarrollo.
 /// </summary>
 if (app.Environment.IsDevelopment())

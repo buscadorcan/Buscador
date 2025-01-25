@@ -21,14 +21,18 @@ namespace ClientApp.Pages.BuscadorCan
         public ICatalogosService? iCatalogosService { get; set; }
         [Inject]
         public IHomologacionService? iHomologacionService { get; set; }
+        [Inject]
+        public IONAService? iOnaService { get; set; }
         private Modal modal = default!;
         private bool isDialogOpen = false; // Control de estado del diálogo
         private string? PdfUrl; // URL del PDF
-
+        private OnaDto? OnaDto;
         public Grid<BuscadorResultadoDataDto>? grid;
         private List<VwGrillaDto>? listaEtiquetasGrilla;
         private int totalCount = 0;
         public bool ModoBuscar { get; set; }
+        private bool isLoading = true;
+        private Dictionary<int, string> iconUrls = new();
         protected override async Task OnInitializedAsync()
         {
             try
@@ -36,13 +40,20 @@ namespace ClientApp.Pages.BuscadorCan
                 if (iCatalogosService != null)
                 {
                     listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
+                    Console.WriteLine($"Filtros enviados");
                 }
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+            finally
+            {
+                isLoading = false; // Marca que los datos están listos
+            }
         }
+
         private async Task<List<BuscadorResultadoDataDto>> BuscarEsquemas(int PageNumber, int PageSize)
         {
             var listBuscadorResultadoDataDto = new List<BuscadorResultadoDataDto>();
@@ -72,6 +83,7 @@ namespace ClientApp.Pages.BuscadorCan
                     {
                         listBuscadorResultadoDataDto = result.Data;
                         Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
+                        await grid.RefreshDataAsync();
                     }
 
                     if (PageNumber == 1)
@@ -89,11 +101,34 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task<GridDataProviderResult<BuscadorResultadoDataDto>> ResultadoBusquedaDataProvider(GridDataProviderRequest<BuscadorResultadoDataDto> request)
         {
-            return await Task.FromResult(new GridDataProviderResult<BuscadorResultadoDataDto>
+            try
             {
-                Data = await BuscarEsquemas(request.PageNumber, request.PageSize),
-                TotalCount = totalCount
-            });
+                var data = await BuscarEsquemas(request.PageNumber, request.PageSize);
+                Console.WriteLine("No se encontraron resultados en BuscarEsquemas.");
+
+                
+
+                if (data == null || !data.Any())
+                {
+                    Console.WriteLine("No se encontraron resultados en BuscarEsquemas.");
+                }
+
+                if (grid != null)
+                {
+                    await grid.RefreshDataAsync();
+                }
+
+                return new GridDataProviderResult<BuscadorResultadoDataDto>
+                {
+                    Data = data,
+                    TotalCount = totalCount
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
             
         }
         private async void showModal(BuscadorResultadoDataDto resultData)
@@ -103,16 +138,24 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
+        private async void showModalOna(BuscadorResultadoDataDto resultData)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("resultData", resultData);
+            await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
+        }
+
+
         private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
             // Obtener la URL del certificado
-            var pdfUrl = GetPdfUrlFromEsquema(resultData);
-
+            var pdfUrl = await GetPdfUrlFromEsquema(resultData);
+            Console.WriteLine("No se encontró la URL del certificado.");
             if (pdfUrl == null)
             {
                 // Mostrar una alerta o manejar el error si no hay URL
                 Console.WriteLine("No se encontró la URL del certificado.");
-                pdfUrl = Task.FromResult("No se encontró la URL del certificado.");
+                pdfUrl = "No se encontró la URL del certificado.";
             }
 
             // Configurar los parámetros del modal
@@ -133,35 +176,46 @@ namespace ClientApp.Pages.BuscadorCan
                     return null;
 
                 var homologaciones = await iHomologacionService.GetHomologacionsAsync();
-                var idHomologacion = homologaciones.FirstOrDefault(x => x.NombreHomologado == "UrlCertificado")?.IdHomologacion;
+                var idHomologacion = homologaciones.FirstOrDefault(x => x.CodigoHomologacion == "KEY_ESQ_CERT")?.IdHomologacion;
 
                 if (idHomologacion == null)
                     return null;
 
-                var certificado = resultData.DataEsquemaJson
-                    .Select(item =>
-                    {
-                        try
-                        {
-                            return System.Text.Json.JsonSerializer.Deserialize<JsonData>(item.Data);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error deserializando item.Data: {item.Data}, Error: {ex.Message}");
-                            return null;
-                        }
-                    })
-                    .FirstOrDefault(data => data != null && data.IdHomologacion == idHomologacion);
+                var urlPdf = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idHomologacion)?.Data;
 
-                if (certificado == null || string.IsNullOrEmpty(certificado.Data))
-                    return null;
-
-                return certificado.Data;
+                return urlPdf;
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al obtener la URL del certificado", ex);
             }
+        }
+
+        private  async Task<string> getIconUrl(BuscadorResultadoDataDto resultData)
+        {
+            try
+            {
+                var idOna = resultData.IdONA;
+                OnaDto = await iOnaService?.GetONAsAsync(idOna ?? 0);
+
+                if (!string.IsNullOrEmpty(OnaDto.UrlIcono))
+                {
+                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(OnaDto.UrlIcono);
+                    if (deserialized != null && deserialized.ContainsKey("filePath"))
+                    {
+                        string urlOna = deserialized["filePath"];
+                        return urlOna;
+                    }
+                }
+
+                return "https://via.placeholder.com/16"; // Icono predeterminado
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
 

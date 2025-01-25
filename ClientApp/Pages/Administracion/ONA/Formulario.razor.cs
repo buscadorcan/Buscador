@@ -14,6 +14,8 @@ namespace ClientApp.Pages.Administracion.ONA
         private int? paisSeleccionado; // ID del país seleccionado
         [Inject]
         public IONAService? iONAsService { get; set; }
+        [Inject]
+        public IUtilitiesService? iUtilService { get; set; }
 
         [Inject]
         public NavigationManager? navigationManager { get; set; }
@@ -38,7 +40,7 @@ namespace ClientApp.Pages.Administracion.ONA
                     return;
                 }
 
-                // Obtener la extensión del archivo
+                // Validar la extensión del archivo
                 var fileExtension = Path.GetExtension(uploadedFile.Name).ToLower();
                 if (fileExtension != ".png" && fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".svg")
                 {
@@ -46,33 +48,20 @@ namespace ClientApp.Pages.Administracion.ONA
                     return;
                 }
 
-                // Generar un nombre único para el archivo
-                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                // Llamar al servicio para subir el archivo
+                var uploadedFilePath = await iUtilService.UploadIconAsync(uploadedFile);
 
-                // Construir la ruta absoluta manualmente
-                var folderPath = Path.Combine("wwwroot", "icono");
-                var fullPath = Path.Combine(folderPath, uniqueFileName);
+                // Actualizar la propiedad con la ruta relativa devuelta por el backend
+                onas.UrlIcono = uploadedFilePath;
 
-                // Verificar si la carpeta existe
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                // Guardar el archivo en la carpeta especificada
-                using var fileStream = new FileStream(fullPath, FileMode.Create);
-                await uploadedFile.OpenReadStream().CopyToAsync(fileStream);
-
-                // Actualizar la propiedad UrlIcono con la ruta relativa
-                onas.UrlIcono = $"/icono/{uniqueFileName}";
-
-                Console.WriteLine($"Archivo guardado exitosamente: {onas.UrlIcono}");
+                Console.WriteLine($"Archivo cargado exitosamente: {uploadedFilePath}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al cargar el archivo: {ex.Message}");
             }
         }
+
 
 
         protected override async Task OnInitializedAsync()

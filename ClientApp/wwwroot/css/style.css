@@ -1049,3 +1049,9 @@
     flex: 1;
     overflow-y: auto; /* Permite el scroll dentro del contenido */
 }
+
+.grid-header {
+    font-weight: bold; /* Negrita */
+    font-family: 'Inter-Medium', Helvetica, sans-serif;
+    font-size: 12px !important;
+}

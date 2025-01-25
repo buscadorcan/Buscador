@@ -3,15 +3,16 @@
 @using Newtonsoft.Json;
 @using BlazorBootstrap
 
+
 <div class="py-2">
     <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
 
-
-    @if (listaEtiquetasGrilla != null)
+    @if (!isLoading && listaEtiquetasGrilla != null)
     {
         <Grid @ref="grid"
               TItem="BuscadorResultadoDataDto"
               class="table table-hover table-bordered table-striped"
+              style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;"
               DataProvider="ResultadoBusquedaDataProvider"
               Responsive="true"
               AllowSorting="true"
@@ -20,29 +21,42 @@
               PageSizeSelectorVisible="true"
               PageSizeSelectorItems="@(new int[] { 5, 10, 20, 30 })"
               ItemsPerPageText="Items por página">
+            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
+                <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModalOna(context)">
+                    <!-- Llama a getIconUrl y muestra el ícono dinámicamente -->
+                    <img src="@getIconUrl(context)" alt="Icono" style="width: 16px; height: 16px;" />
+                </Button>  
+            </GridColumn>
+
             @foreach (var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
             {
                 <GridColumn TItem="BuscadorResultadoDataDto" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">
-                    <HeaderContent>
-                        <Tooltip Title="@etiqueta.TooltipWeb">@etiqueta.MostrarWeb</Tooltip>
+                    <HeaderContent> 
+                        <Tooltip Title="@etiqueta.TooltipWeb">
+                            <span class="grid-header">@etiqueta.MostrarWeb</span>
+                        </Tooltip>
                     </HeaderContent>
                     <ChildContent>
                         @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data
                     </ChildContent>
                 </GridColumn>
-
             }
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
-                <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => showModal(context)">
+                <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModal(context)">
                     <Icon Name="IconName.Front" />
                 </Button>
             </GridColumn>
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
-                <Button Color="ButtonColor.Secondary" Outline="true" Size="Size.Small" @onclick="() => ShowPdfDialog(context)">
+                    <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => ShowPdfDialog(context)">
                     <Icon Name="IconName.FileTypePdf" />
                 </Button>
             </GridColumn>
         </Grid>
     }
+    else
+    {
+        <p>Cargando datos...</p>
+    }
+
 </div>
 

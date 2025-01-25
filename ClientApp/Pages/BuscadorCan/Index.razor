@@ -17,88 +17,6 @@
 </head>
 <body>
     <div class="pagina">
-        <div class="main-container">
-            <p class="title">Aprende a usar el buscador en pocos pasos</p>
-            <div class="content-container">
-                <div class="data-table">
-                    <div class="step-container">
-                        <div class="pais">
-                            <div class="step-number"><div class="text-wrapper">01</div></div>
-                        </div>
-                        <div class="info-total">
-                            <div class="left">
-                                <div class="razon-social"><p class="step-description">Digite la palabra o Frase</p></div>
-                                <div class="div">
-                                    <div class="frame">
-                                        <p class="resultados">
-                                            EJ. “Leche”, en el cuadro de texto, el sistema sugerirá las palabras más buscadas relacionadas a
-                                            Leche, como “milk”, “lechoso”, “lacteo”.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="expanded-user-menu">
-                        <div class="popular-search">
-                            <img class="img" src="login/img/trending-up@2x.png" />
-                            <div class="popular-search-title">Populares en la busqueda</div>
-                        </div>
-                        <div class="popular-search-tags">
-                            <div class="chips"><div class="new">Minerales</div></div>
-                            <div class="chips"><div class="new">ISO 17210</div></div>
-                            <div class="chips"><div class="new">Chocolate</div></div>
-                            <div class="chips"><div class="new">Calzado</div></div>
-                            <div class="chips"><div class="new">Productos Químicos</div></div>
-                            <div class="chips"><div class="new">Alimentos</div></div>
-                            <div class="chips"><div class="new">Vestimenta</div></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="data-table-2">
-                    <div class="step-container-2">
-                        <div class="step-number-wrapper">
-                            <div class="step-number"><div class="text-wrapper">02</div></div>
-                        </div>
-                        <div class="left-wrapper">
-                            <div class="left-2">
-                                <div class="razon-social"><div class="step-description">Filtrables</div></div>
-                                <div class="div">
-                                    <div class="frame">
-                                        <p class="resultados">
-                                            Si además de la búsqueda anterior, requiere filtrar por País, Organismo o Esquema, despliegue y
-                                            seleccione la opción.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="paises-filtro">
-                        <div class="div">
-                            <div class="button-select"><div class="texas-location">Todos los Paises</div></div>
-                            <div class="button-select-2">
-                                <div class="texas-location-2">Colombia</div>
-                                <img class="chevron-right" src="login/img/chevron-right-4.svg" />
-                            </div>
-                            <div class="button-select-2">
-                                <div class="texas-location-2">Ecuador</div>
-                                <img class="chevron-right" src="login/img/chevron-right-3.svg" />
-                            </div>
-                            <div class="button-select-2">
-                                <div class="texas-location-2">Perú</div>
-                                <img class="chevron-right" src="login/img/chevron-right-2.svg" />
-                            </div>
-                            <div class="button-select-2">
-                                <div class="texas-location-2">Bolívia</div>
-                                <img class="chevron-right" src="login/img/chevron-right.svg" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <img class="step-container-3" src="login/img/step-container.svg" />
-            </div>
-        </div>
         <div class="top">
             <div class="top-2">
                 <img class="vector" src="images/logo2bg.png" />
@@ -139,9 +57,17 @@
                             <div class="frame-5">                            
                                 @foreach (var item in listaDatosPanel)
                                 {
-                                    <div class="@(item.Siglas)">
+                                    <div class="panel-item">
                                         <div class="frame-6">
                                             <div class="div-3">
+                                                @if (!string.IsNullOrEmpty(item.icono))
+                                                {
+                                                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.icono);
+                                                    if (deserialized != null && deserialized.ContainsKey("filePath"))
+                                                    {
+                                                        item.icono = deserialized["filePath"];
+                                                    }
+                                                }
                                                 <img class="img-2" src="@item.icono" />
                                                 <div class="text-wrapper-4">@item.Siglas</div>
                                             </div>
@@ -252,74 +178,118 @@
                 </div>
             }
             <div class="result-container">
-                @if (!mostrarIndexCard)
+                @if (mostrarBuscador)
                 {
-                    <IndexGrilla @ref="childComponentRef"
-                                 buscarRequest="@buscarRequest"
-                                 selectedValues="@selectedValues"
-                                 listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                    @if (!mostrarIndexCard)
+                    {
+                        <IndexGrilla @ref="childComponentRef"
+                                     buscarRequest="@buscarRequest"
+                                     selectedValues="@selectedValues"
+                                     listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                    }
+                    else
+                    {
+                        <IndexCard buscarRequest="@buscarRequest"
+                                   selectedValues="@selectedValues"
+                                   listaEtiquetasFiltros="@listaEtiquetasFiltros" />
+                    }
+                
                 }
-                else
-                {
-                    <IndexCard buscarRequest="@buscarRequest"
-                               selectedValues="@selectedValues"
-                               listaEtiquetasFiltros="@listaEtiquetasFiltros" />
-                }
+              
 
 
             </div>
 
         </div>
+        @if(mostrarPublicidad)
+        {
+            <div class="main-container">
+                <p class="title">Aprende a usar el buscador en pocos pasos</p>
+                <div class="content-container">
+                    <div class="data-table">
+                        <div class="step-container">
+                            <div class="pais">
+                                <div class="step-number"><div class="text-wrapper">01</div></div>
+                            </div>
+                            <div class="info-total">
+                                <div class="left">
+                                    <div class="razon-social"><p class="step-description">Digite la palabra o Frase</p></div>
+                                    <div class="div">
+                                        <div class="frame">
+                                            <p class="resultados">
+                                                EJ. “Leche”, en el cuadro de texto, el sistema sugerirá las palabras más buscadas relacionadas a
+                                                Leche, como “milk”, “lechoso”, “lacteo”.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="expanded-user-menu">
+                            <div class="popular-search">
+                                <img class="img" src="login/img/trending-up@2x.png" />
+                                <div class="popular-search-title">Populares en la busqueda</div>
+                            </div>
+                            <div class="popular-search-tags">
+                                <div class="chips"><div class="new">Minerales</div></div>
+                                <div class="chips"><div class="new">ISO 17210</div></div>
+                                <div class="chips"><div class="new">Chocolate</div></div>
+                                <div class="chips"><div class="new">Calzado</div></div>
+                                <div class="chips"><div class="new">Productos Químicos</div></div>
+                                <div class="chips"><div class="new">Alimentos</div></div>
+                                <div class="chips"><div class="new">Vestimenta</div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data-table-2">
+                        <div class="step-container-2">
+                            <div class="step-number-wrapper">
+                                <div class="step-number"><div class="text-wrapper">02</div></div>
+                            </div>
+                            <div class="left-wrapper">
+                                <div class="left-2">
+                                    <div class="razon-social"><div class="step-description">Filtrables</div></div>
+                                    <div class="div">
+                                        <div class="frame">
+                                            <p class="resultados">
+                                                Si además de la búsqueda anterior, requiere filtrar por País, Organismo o Esquema, despliegue y
+                                                seleccione la opción.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="paises-filtro">
+                            <div class="div">
+                                <div class="button-select"><div class="texas-location">Todos los Paises</div></div>
+                                <div class="button-select-2">
+                                    <div class="texas-location-2">Colombia</div>
+                                    <img class="chevron-right" src="login/img/chevron-right-4.svg" />
+                                </div>
+                                <div class="button-select-2">
+                                    <div class="texas-location-2">Ecuador</div>
+                                    <img class="chevron-right" src="login/img/chevron-right-3.svg" />
+                                </div>
+                                <div class="button-select-2">
+                                    <div class="texas-location-2">Perú</div>
+                                    <img class="chevron-right" src="login/img/chevron-right-2.svg" />
+                                </div>
+                                <div class="button-select-2">
+                                    <div class="texas-location-2">Bolívia</div>
+                                    <img class="chevron-right" src="login/img/chevron-right.svg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <img class="step-container-3" src="login/img/step-container.svg" />
+                </div>
+            </div>
+        }
+       
     </div>
 
 </body>
 
-@* <div class="page-container">
-    <div class="container">
-        <div class="row">
-
-            <div class="span12 page-content">
-                <div class="row-fluid">
-
-                    @if (listadeOpciones != null)
-                    {
-                        @for (int i = 0; i < listadeOpciones.Count; i += 1)
-                        {
-                            var currentIndex = i;
-                            <div class="span2">
-                                <Dropdown AutoClose="true" style="max-width: 100%; min-width: 100%">
-                                    <DropdownToggleButton Color="ButtonColor.Secondary">
-                                        @listaEtiquetasFiltros?[currentIndex].MostrarWeb
-                                    </DropdownToggleButton>
-                                    <DropdownMenu>
-                                        @if (listadeOpciones?[currentIndex] != null)
-                                        {
-                                            var listaTmp = selectedValues.FirstOrDefault(c => c.Id == listaEtiquetasFiltros?[currentIndex].IdHomologacion);
-                                            foreach (var opcion in listadeOpciones[currentIndex] ?? [])
-                                            {
-                                                <DropdownItem @onclick="() => CambiarSeleccion(opcion.MostrarWeb, listaEtiquetasFiltros?[currentIndex].IdHomologacion)">
-                                                    @if (listaTmp != null && listaTmp.Seleccion.Contains(opcion.MostrarWeb))
-                                                    {
-                                                        <Icon Name="IconName.Check" />
-                                                    }
-                                                    @opcion.MostrarWeb
-                                                </DropdownItem>
-                                            }
-                                        }
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-
-        </div>
-        <IndexGrilla @ref="childComponentRef"
-                     buscarRequest="@buscarRequest"
-                     selectedValues="@selectedValues"
-                     listaEtiquetasFiltros="@listaEtiquetasFiltros" />
-    </div>
-</div> *@
 
 
