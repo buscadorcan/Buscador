@@ -57,9 +57,17 @@
                             <div class="frame-5">                            
                                 @foreach (var item in listaDatosPanel)
                                 {
-                                    <div class="@(item.Siglas)">
+                                    <div class="panel-item">
                                         <div class="frame-6">
                                             <div class="div-3">
+                                                @if (!string.IsNullOrEmpty(item.icono))
+                                                {
+                                                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.icono);
+                                                    if (deserialized != null && deserialized.ContainsKey("filePath"))
+                                                    {
+                                                        item.icono = deserialized["filePath"];
+                                                    }
+                                                }
                                                 <img class="img-2" src="@item.icono" />
                                                 <div class="text-wrapper-4">@item.Siglas</div>
                                             </div>

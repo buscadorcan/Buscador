@@ -1,6 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
+	  <Compile Remove="Icono\**" />
+	  <Content Remove="Icono\**" />
+	  <EmbeddedResource Remove="Icono\**" />
+	  <None Remove="Icono\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\DataAccess\DataAccess.csproj" />
 		<ProjectReference Include="..\SharedApp\SharedApp.csproj" />
 	</ItemGroup>
@@ -17,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Icono\" />
+	  <Folder Include="wwwroot\Icono\" />
 	</ItemGroup>
 
 	<PropertyGroup>

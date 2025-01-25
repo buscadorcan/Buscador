@@ -21,7 +21,13 @@
               PageSizeSelectorVisible="true"
               PageSizeSelectorItems="@(new int[] { 5, 10, 20, 30 })"
               ItemsPerPageText="Items por página">
-            
+            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
+                <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModalOna(context)">
+                    <!-- Llama a getIconUrl y muestra el ícono dinámicamente -->
+                    <img src="@getIconUrl(context)" alt="Icono" style="width: 16px; height: 16px;" />
+                </Button>  
+            </GridColumn>
+
             @foreach (var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
             {
                 <GridColumn TItem="BuscadorResultadoDataDto" PropertyName="@etiqueta.MostrarWeb" SortString="@etiqueta.MostrarWeb">
