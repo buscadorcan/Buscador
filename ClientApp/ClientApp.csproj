@@ -23,4 +23,14 @@
     <ProjectReference Include="..\SharedApp\SharedApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\icono\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Pages\Administracion\Reportes\ReporteRead.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
 </Project>

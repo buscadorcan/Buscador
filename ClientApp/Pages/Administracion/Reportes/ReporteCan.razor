@@ -1,4 +1,4 @@
-﻿@page "/reporte1"
+﻿@page "/reportecan"
 @layout AdminLayout
 @using Blazored.LocalStorage
 @using Microsoft.AspNetCore.Authorization
@@ -11,38 +11,29 @@
 <div class="chart-container">
     <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">Acreditaciones realizadas por Esquema</h5>
+            <h5 class="text-primary text-center">Búsquedas Realizadas</h5>
             <div class="chart-wrapper">
                 <canvas id="chart1" class="chart"></canvas>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">Estado de acreditaciones por esquema</h5>
+            <h5 class="text-primary text-center">Búsquedas por Tipo de Filtro Aplicado</h5>
             <div class="chart-wrapper">
                 <canvas id="chart2" class="chart"></canvas>
             </div>
         </div>
+        
     </div>
     <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">Crecimiento de OEC acreditadas por fecha</h5>
+            <h5 class="text-primary text-center">Frecuencia de Actualización de Información del Organismo</h5>
             <div class="chart-wrapper">
                 <canvas id="chart3" class="chart"></canvas>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">Acreditaciones realizadas por OA</h5>
+            <h5 class="text-primary text-center">Búsquedas Geográficas</h5>
             <div id="heatmap1" class="heatmap"></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">OEC Acreditadas por País</h5>
-            <div id="heatmap2" class="heatmap"></div>
-        </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">Estado de OEC / Esquema por ubicación</h5>
-            <div id="heatmap3" class="heatmap"></div>
         </div>
     </div>
 </div>
@@ -91,7 +82,59 @@
             });
         };
 
-        const createHeatMap_Crecimiento_OEC_Fecha = (elementId, data) => {
+        const createBarChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(item => item.label || 'Sin etiqueta'),
+                    datasets: [{
+                        label: 'Actualizaciones',
+                        data: data.map(item => item.value || 0),
+                        backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57', '#ff6b6b'],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fecha'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Actualizaciones'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    const ona = data[tooltipItem.dataIndex].ona; // Mostrar campo ONA
+                                    return `${tooltipItem.label}: ${tooltipItem.raw} (${ona})`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+        const createLineChart = (elementId, data) => {
             const canvas = document.getElementById(elementId);
             if (!canvas || canvas.tagName !== 'CANVAS') {
                 console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
@@ -104,12 +147,11 @@
                 data: {
                     labels: data.map(item => item.label || 'Sin fecha'),
                     datasets: [{
-                        label: 'OEC Acreditadas',
+                        label: 'Búsquedas',
                         data: data.map(item => item.value || 0),
-                        borderColor: '#4CAF50',
-                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         fill: true,
-                        tension: 0.4 // Suavizado de la curva
                     }]
                 },
                 options: {
@@ -124,7 +166,7 @@
                         y: {
                             title: {
                                 display: true,
-                                text: 'Cantidad'
+                                text: 'Actualizaciones'
                             }
                         }
                     }
@@ -133,13 +175,13 @@
         };
 
         // Inicializar gráficos
-        createPieChart('chart1', chartsData[0]);
-        createPieChart('chart2', chartsData[1]);
-        createHeatMap_Crecimiento_OEC_Fecha('chart3', chartsData[2]);
+        createLineChart('chart1', chartsData[0]); // Gráfico de líneas
+        createPieChart('chart2', chartsData[1]); // Gráfico de pastel
+        createBarChart('chart3', chartsData[2]); // Gráfico de barras para chart3
     };
 
-    window.initHeatMaps = (mapsData) => {
-        const createHeatMap_OA = (elementId, data) => {
+    window.initHeatMaps = (mapsData, selectedCity = null) => {
+        const createHeatMap = (elementId, data) => {
             if (typeof L === 'undefined') {
                 console.error("Leaflet.js no está cargado correctamente.");
                 return;
@@ -151,7 +193,11 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            data.forEach(item => {
+            const filteredData = selectedCity
+                ? data.filter(item => item.ciudad.toLowerCase() === selectedCity.toLowerCase())
+                : data;
+
+            filteredData.forEach(item => {
                 const marker = L.circleMarker([0, 0], {
                     radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
                     color: 'red',
@@ -159,111 +205,34 @@
                     fillOpacity: 0.7,
                     weight: 1
                 }).bindPopup(
-                    `<strong>País:</strong> ${item.pais}<br>
-                             <strong>Organizaciones:</strong> ${item.organizacion}`
+                    `<strong>Ciudad:</strong> ${item.ciudad}<br>
+                         <strong>País:</strong> ${item.pais}<br>
+                         <strong>Búsquedas:</strong> ${item.organizacion}`
                 );
 
-                fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
+                fetch(`https://nominatim.openstreetmap.org/search?q=${item.ciudad},${item.pais}&format=json&limit=1`)
                     .then(response => response.json())
                     .then(locations => {
                         if (locations.length > 0) {
                             marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
                         } else {
-                            console.error(`No se encontraron coordenadas para ${item.pais}`);
+                            console.error(`No se encontraron coordenadas para ${item.ciudad}, ${item.pais}`);
                         }
                     })
-                    .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
+                    .catch(err => console.error(`Error al buscar coordenadas para ${item.ciudad}, ${item.pais}:`, err));
             });
         };
 
-        const createHeatMap_OEC_Fecha = (elementId, data) => {
-            if (typeof L === 'undefined') {
-                console.error("Leaflet.js no está cargado correctamente.");
-                return;
-            }
-
-            const map = L.map(elementId).setView([20, 0], 2);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            data.forEach(item => {
-                const marker = L.circleMarker([0, 0], {
-                    radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
-                    color: 'red',
-                    fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
-                    fillOpacity: 0.7,
-                    weight: 1
-                }).bindPopup(
-                    `<strong>País:</strong> ${item.pais}<br>
-                             <strong>Ona:</strong> ${item.esquema}<br>
-                             <strong>Organizaciones:</strong> ${item.organizacion}`
-                );
-
-                fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
-                    .then(response => response.json())
-                    .then(locations => {
-                        if (locations.length > 0) {
-                            marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
-                        } else {
-                            console.error(`No se encontraron coordenadas para ${item.pais}`);
-                        }
-                    })
-                    .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
-            });
-        };
-
-        const createHeatMap_OEC_Ubicacion = (elementId, data) => {
-            if (typeof L === 'undefined') {
-                console.error("Leaflet.js no está cargado correctamente.");
-                return;
-            }
-
-            const map = L.map(elementId).setView([20, 0], 2);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            data.forEach(item => {
-                const marker = L.circleMarker([0, 0], {
-                    radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
-                    color: 'red',
-                    fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
-                    fillOpacity: 0.7,
-                    weight: 1
-                }).bindPopup(
-                    `<strong>País:</strong> ${item.pais}<br>
-                         <strong>Esquema:</strong> ${item.esquema}<br>
-                         <strong>Organizaciones:</strong> ${item.organizacion}`
-                );
-
-                fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
-                    .then(response => response.json())
-                    .then(locations => {
-                        if (locations.length > 0) {
-                            marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
-                        } else {
-                            console.error(`No se encontraron coordenadas para ${item.pais}`);
-                        }
-                    })
-                    .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
-            });
-        };
-
-        
-
-        createHeatMap_OA('heatmap1', mapsData.heatmap1);
-        createHeatMap_OEC_Fecha('heatmap2', mapsData.heatmap2);
-        createHeatMap_OEC_Ubicacion('heatmap3', mapsData.heatmap3);
+        createHeatMap('heatmap1', mapsData.heatmap1);
     };
+
 
     window.initMap = (data) => {
         window.initCharts(data.chartsData);
         window.initHeatMaps(data.mapsData);
     };
 </script>
+
 
 <style>
     .chart-container {

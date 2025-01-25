@@ -15,6 +15,7 @@ namespace ClientApp.Services
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _urlBaseApi = $"{Inicializar.UrlBaseApi}api/reportevista/";
         }
+        //usuario
         public async Task<T?> GetVwAcreditacionOnaAsync<T>(string endpoint)
         {
             return await GetApiResponseAsync<T>($"{endpoint}");
@@ -36,6 +37,60 @@ namespace ClientApp.Services
             return await GetApiResponseAsync<T>($"{endpoint}");
         }
         public async Task<T?> GetVwOecFechaAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+
+        //read
+        public async Task<T?> GetVwProfesionalCalificadoAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwProfesionalOnaAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwProfesionalEsquemaAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwProfesionalFechaAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwCalificaUbicacionAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+
+        //can
+        public async Task<T?> GetVwBusquedaFechaAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwBusquedaFiltroAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwBusquedaUbicacionAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwActualizacionONAAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+
+        //ona
+        public async Task<T?> GetVwOrganismoRegistradoAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwOrganizacionEsquemaAsync<T>(string endpoint)
+        {
+            return await GetApiResponseAsync<T>($"{endpoint}");
+        }
+        public async Task<T?> GetVwOrganismoActividadAsync<T>(string endpoint)
         {
             return await GetApiResponseAsync<T>($"{endpoint}");
         }

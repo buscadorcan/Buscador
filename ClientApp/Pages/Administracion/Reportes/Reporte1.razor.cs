@@ -2,10 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClientApp.Pages.Administracion.Reportes
 {
@@ -13,6 +9,7 @@ namespace ClientApp.Pages.Administracion.Reportes
     {
         [Inject]
         private IReporteService? iReporteService { get; set; }
+
 
         // Datos para los gráficos
         public List<ChartData> Chart1Data { get; set; } = new List<ChartData>();
@@ -34,13 +31,13 @@ namespace ClientApp.Pages.Administracion.Reportes
                     var listaVwAcreditacionEsquema = await iReporteService.GetVwAcreditacionEsquemaAsync<List<VwAcreditacionEsquemaDto>>("acreditacion-esquema");
                     foreach (var item in listaVwAcreditacionEsquema)
                     {
-                        Chart1Data.Add(new ChartData {Label = item.Esquema, Value = item.Organizacion });
+                        Chart1Data.Add(new ChartData { Label = item.Esquema, Value = item.Organizacion });
                     }
 
                     var listaVwEstadoEsquema = await iReporteService.GetVwEstadoEsquemaAsync<List<VwEstadoEsquemaDto>>("estado-esquema");
                     foreach (var item in listaVwEstadoEsquema)
                     {
-                        Chart2Data.Add(new ChartData {Label = item.Esquema + " " + item.Estado, Value = item.Organizacion });
+                        Chart2Data.Add(new ChartData { Label = item.Esquema + " " + item.Estado, Value = item.Organizacion });
                     }
 
                     var listaVwOecFecha = await iReporteService.GetVwOecFechaAsync<List<VwOecFechaDto>>("oec-fecha");
@@ -52,19 +49,19 @@ namespace ClientApp.Pages.Administracion.Reportes
                     var listaVwOecPais = await iReporteService.GetVwOecPaisAsync<List<VwOecPaisDto>>("oec-pais");
                     foreach (var item in listaVwOecPais)
                     {
-                        Heatmap1Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion });
+                        Heatmap1Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion, Esquema = "" }); // Incluye Esquema
                     }
 
                     var listaVwAcreditacionOna = await iReporteService.GetVwAcreditacionOnaAsync<List<VwAcreditacionOnaDto>>("acreditacion-ona");
                     foreach (var item in listaVwAcreditacionOna)
                     {
-                        Heatmap2Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion });
+                        Heatmap2Data.Add(new MapData { Pais = item.Pais + "-" + item.ONA, Organizacion = item.Organizacion, Esquema = item.ONA }); // Incluye Esquema
                     }
 
                     var listaVwEsquemaPais = await iReporteService.GetVwEsquemaPaisAsync<List<VwEsquemaPaisDto>>("esquema-pais");
                     foreach (var item in listaVwEsquemaPais)
                     {
-                        Heatmap3Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion });
+                        Heatmap3Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion, Esquema = item.Esquema }); // Incluye Esquema
                     }
 
                     await JS.InvokeVoidAsync("initMap", new
@@ -77,9 +74,9 @@ namespace ClientApp.Pages.Administracion.Reportes
                         },
                         mapsData = new
                         {
-                            heatmap1 = Heatmap1Data,
-                            heatmap2 = Heatmap2Data,
-                            heatmap3 = Heatmap3Data
+                            heatmap1 = Heatmap1Data.Select(d => new { d.Pais, d.Organizacion, d.Esquema }),
+                            heatmap2 = Heatmap2Data.Select(d => new { d.Pais, d.Organizacion, d.Esquema }),
+                            heatmap3 = Heatmap3Data.Select(d => new { d.Pais, d.Organizacion, d.Esquema })
                         }
                     });
                 }
@@ -111,6 +108,7 @@ namespace ClientApp.Pages.Administracion.Reportes
         {
             public string Pais { get; set; }
             public int Organizacion { get; set; }
+            public string Esquema { get; set; } // Nuevo campo
         }
     }
 }

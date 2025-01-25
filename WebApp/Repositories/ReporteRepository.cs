@@ -14,6 +14,7 @@ namespace WebApp.Repositories
         {
         }
 
+        //usuario
         public List<VwAcreditacionOna> ObtenerVwAcreditacionOna()
         {
             return ExecuteDbOperation(context =>
@@ -58,6 +59,96 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context =>
                 context.VwOecFecha
+                    .AsNoTracking()
+                    .ToList());
+        }
+
+        //read
+        public List<VwProfesionalCalificado> ObtenerVwProfesionalCalificado()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwProfesionalCalificado
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwProfesionalOna> ObtenerVwProfesionalOna()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwProfesionalOna
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwProfesionalEsquema> ObtenerVwProfesionalEsquema()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwProfesionalEsquema
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwProfesionalFecha> ObtenerVwProfesionalFecha()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwProfesionalFecha
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwCalificaUbicacion> ObtenerVwCalificaUbicacion()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwCalificaUbicacion
+                    .AsNoTracking()
+                    .ToList());
+        }
+
+        //can
+        public List<VwBusquedaFecha> ObtenerVwBusquedaFecha()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwBusquedaFecha
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwBusquedaFiltro> ObtenerVwBusquedaFiltro()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwBusquedaFiltro
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwBusquedaUbicacion> ObtenerVwBusquedaUbicacion()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwBusquedaUbicacion
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwActualizacionONA> ObtenerVwActualizacionONA()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwActualizacionONA
+                    .AsNoTracking()
+                    .ToList());
+        }
+
+        //ona
+        public List<VwOrganismoRegistrado> ObtenerVwOrganismoRegistrado()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwOrganismoRegistrado
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwOrganizacionEsquema> ObtenerVwOrganizacionEsquema()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwOrganizacionEsquema
+                    .AsNoTracking()
+                    .ToList());
+        }
+        public List<VwOrganismoActividad> ObtenerVwOrganismoActividad()
+        {
+            return ExecuteDbOperation(context =>
+                context.VwOrganismoActividad
                     .AsNoTracking()
                     .ToList());
         }
