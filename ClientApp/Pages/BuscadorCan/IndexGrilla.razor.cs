@@ -191,32 +191,36 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-        private  async Task<string> getIconUrl(BuscadorResultadoDataDto resultData)
+        private async Task<string> getIconUrl(BuscadorResultadoDataDto resultData)
         {
             try
             {
                 var idOna = resultData.IdONA;
+
                 OnaDto = await iOnaService?.GetONAsAsync(idOna ?? 0);
 
                 if (!string.IsNullOrEmpty(OnaDto.UrlIcono))
                 {
                     var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(OnaDto.UrlIcono);
+
                     if (deserialized != null && deserialized.ContainsKey("filePath"))
                     {
-                        string urlOna = deserialized["filePath"];
-                        return urlOna;
+                        // Si el JSON tiene "filePath", lo retornamos
+                        return deserialized["filePath"];
                     }
                 }
 
-                return "https://via.placeholder.com/16"; // Icono predeterminado
+                // Retorna un ícono predeterminado si no hay URL válida
+                return "https://via.placeholder.com/16";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                // Maneja el error y retorna un ícono predeterminado
+                Console.WriteLine(ex.Message);
+                return "https://via.placeholder.com/16";
             }
-           
         }
+
 
 
         // Clase para deserializar

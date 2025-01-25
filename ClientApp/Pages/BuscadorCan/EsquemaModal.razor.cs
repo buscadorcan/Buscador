@@ -19,7 +19,7 @@ namespace ClientApp.Pages.BuscadorCan
             try
             {
                 if (servicio != null) {
-                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync(resultData?.IdEsquemaData.ToString() ?? "");
+                    listaEsquemas = await servicio.FnHomologacionEsquemaTodoAsync(resultData?.VistaFK, resultData?.IdONA ?? 0);
                     Console.WriteLine($"Error en listaEsquemas:");
                 }
             }

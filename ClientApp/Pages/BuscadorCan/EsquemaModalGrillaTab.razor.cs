@@ -12,7 +12,9 @@ namespace ClientApp.Pages.BuscadorCan
         [Parameter]
         public int IdEsquema { get; set; }
         [Parameter]
-        public string? VistaPK { get; set; }
+        public int? idONA { get; set; }
+        [Parameter]
+        public string? VistaFK { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
@@ -38,7 +40,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaPK ?? "");
+                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaFK, idONA ?? 0);
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));

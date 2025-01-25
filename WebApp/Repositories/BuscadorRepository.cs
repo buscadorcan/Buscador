@@ -53,19 +53,14 @@ namespace WebApp.Repositories
                 };
             });
         }
-        public List<EsquemaDto> FnHomologacionEsquemaTodo(string idEnte)
+        public List<EsquemaDto> FnHomologacionEsquemaTodo(string VistaFK, int idOna)
         {
             return ExecuteDbOperation(context =>
             {
-                return context.Database.SqlQuery<EsquemaDto>($"select * from fnEsquemaTodo({idEnte})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
+                return context.Database.SqlQuery<EsquemaDto>($"select * from fnEsquemaTodo({VistaFK},{idOna})").AsNoTracking().OrderBy(c => c.MostrarWebOrden).ToList();
             });
         }
-        //public FnHomologacionEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema)
-        //{
-        //  return ExecuteDbOperation(context => {
-        //    return context.Database.SqlQuery<FnHomologacionEsquemaDto>($"select * from fnHomologacionEsquema({idHomologacionEsquema})").AsNoTracking().FirstOrDefault();
-        //  });
-        //}
+
         public FnEsquemaDto? FnHomologacionEsquema(int idEsquema)
         {
             return ExecuteDbOperation(context =>
@@ -73,11 +68,11 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<FnEsquemaDto>($"select * from fnEsquema({idEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
-        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idEsquema, string vistaPK)
+        public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idEsquema, string VistaFK, int idOna)
         {
             return ExecuteDbOperation(context =>
             {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDato({idEsquema}, {vistaPK})").AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDato({idEsquema},{VistaFK}, {idOna})").AsNoTracking().ToList();
 
                 return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
                 {

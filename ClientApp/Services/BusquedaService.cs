@@ -18,12 +18,23 @@ namespace ClientApp.Services
 
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<BuscadorDto>>()).Result;
         }
-        public async Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync(string idEnte)
+        public async Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync(string vistaFK, int idOna)
         {
-            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaTodo/{idEnte}");
-            response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionEsquemaDto>>>()).Result;
+            try
+            {
+                var url = $"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaTodo?VistaFk={Uri.EscapeDataString(vistaFK)}&idOna={idOna}";
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadFromJsonAsync<RespuestasAPI<List<HomologacionEsquemaDto>>>();
+                return result?.Result ?? new List<HomologacionEsquemaDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en FnHomologacionEsquemaTodoAsync: {ex.Message}");
+                throw;
+            }
         }
+
         public async Task<HomologacionEsquemaDto?> FnHomologacionEsquemaAsync(int idHomologacionEsquema)
         {
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquema/{idHomologacionEsquema}");
@@ -38,12 +49,23 @@ namespace ClientApp.Services
 
             return default;
         }
-        public async Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, string idEnte)
+        public async Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, string VistaFK, int idOna)
         {
-            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaDato/{idHomologacionEsquema}/{idEnte}");
-            response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<DataHomologacionEsquema>>>()).Result;
+            try
+            {
+                var url = $"{Inicializar.UrlBaseApi}api/buscador/homologacionEsquemaDato/{idHomologacionEsquema}/{idOna}?VistaFK={Uri.EscapeDataString(VistaFK)}";
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadFromJsonAsync<RespuestasAPI<List<DataHomologacionEsquema>>>();
+                return result?.Result ?? new List<DataHomologacionEsquema>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en FnHomologacionEsquemaDatoAsync: {ex.Message}");
+                throw;
+            }
         }
+
         public async Task<List<FnPredictWordsDto>> FnPredictWords(string word)
         {
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/predictWords?word={word}");
