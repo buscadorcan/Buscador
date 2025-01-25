@@ -23,7 +23,6 @@
     <ProjectReference Include="..\SharedApp\SharedApp.csproj" />
   </ItemGroup>
 
-<<<<<<< HEAD
   <ItemGroup>
     <Folder Include="wwwroot\icono\" />
   </ItemGroup>
@@ -34,6 +33,4 @@
     </Content>
   </ItemGroup>
 
-=======
->>>>>>> 4ed99faf37ef147d01a130a46025eb7aedaa1cd5
 </Project>
