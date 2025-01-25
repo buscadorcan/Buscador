@@ -79,16 +79,38 @@ namespace WebApp.Service
         /// <summary>Vista que almacena homologacion grupos disponibles en el sistema.</summary>
         public DbSet<VwHomologacionGrupo> VwHomologacionGrupo { get; set; }
         public DbSet<VwHomologacion> VwHomologacion { get; set; }
+
+        //usuario
         public DbSet<VwAcreditacionOna> VwAcreditacionOna { get; set; }
         public DbSet<VwAcreditacionEsquema> VwAcreditacionEsquema { get; set; }
         public DbSet<VwEstadoEsquema> VwEstadoEsquema { get; set; }
         public DbSet<VwOecPais> VwOecPais { get; set; }
         public DbSet<VwEsquemaPais> VwEsquemaPais { get; set; }
         public DbSet<VwOecFecha> VwOecFecha { get; set; }
+
+        //read
+        public DbSet<VwProfesionalCalificado> VwProfesionalCalificado { get; set; }
+        public DbSet<VwProfesionalOna> VwProfesionalOna { get; set; }
+        public DbSet<VwProfesionalEsquema> VwProfesionalEsquema { get; set; }
+        public DbSet<VwProfesionalFecha> VwProfesionalFecha { get; set; }
+        public DbSet<VwCalificaUbicacion> VwCalificaUbicacion { get; set; }
+
+        //can
+        public DbSet<VwBusquedaFecha> VwBusquedaFecha { get; set; }
+        public DbSet<VwBusquedaFiltro> VwBusquedaFiltro { get; set; }
+        public DbSet<VwBusquedaUbicacion> VwBusquedaUbicacion { get; set; }
+        public DbSet<VwActualizacionONA> VwActualizacionONA { get; set; }
+
+        //ona
+        public DbSet<VwOrganismoRegistrado> VwOrganismoRegistrado { get; set; }
+        public DbSet<VwOrganizacionEsquema> VwOrganizacionEsquema { get; set; }
+        public DbSet<VwOrganismoActividad> VwOrganismoActividad { get; set; }
+
         public DbSet<vwFiltroDetalle> vwFiltroDetalle { get; set; }
         public DbSet<vwPanelONA> vwPanelONA { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //usuario
             modelBuilder.Entity<VwAcreditacionOna>().HasNoKey().ToView("vw_AcreditacionOna");
             modelBuilder.Entity<VwAcreditacionEsquema>().HasNoKey().ToView("vw_AcreditacionEsquema");
             modelBuilder.Entity<VwEstadoEsquema>().HasNoKey().ToView("vw_EstadoEsquema");
@@ -96,6 +118,24 @@ namespace WebApp.Service
             modelBuilder.Entity<VwEsquemaPais>().HasNoKey().ToView("vw_EsquemaPais");
             modelBuilder.Entity<VwOecFecha>().HasNoKey().ToView("vw_OecFecha");
             modelBuilder.Entity<vwPanelONA>().HasNoKey().ToView("vwPanelONA");
+
+            //read
+            modelBuilder.Entity<VwProfesionalCalificado>().HasNoKey().ToView("vw_ProfesionalCalificado");
+            modelBuilder.Entity<VwProfesionalOna>().HasNoKey().ToView("vw_ProfesionalOna");
+            modelBuilder.Entity<VwProfesionalEsquema>().HasNoKey().ToView("vw_ProfesionalEsquema");
+            modelBuilder.Entity<VwProfesionalFecha>().HasNoKey().ToView("vw_ProfesionalFecha");
+            modelBuilder.Entity<VwCalificaUbicacion>().HasNoKey().ToView("vw_CalificaUbicacion");
+
+            //can
+            modelBuilder.Entity<VwBusquedaFecha>().HasNoKey().ToView("vw_BusquedaFecha");
+            modelBuilder.Entity<VwBusquedaFiltro>().HasNoKey().ToView("vw_BusquedaFiltro");
+            modelBuilder.Entity<VwBusquedaUbicacion>().HasNoKey().ToView("vw_BusquedaUbicacion");
+            modelBuilder.Entity<VwActualizacionONA>().HasNoKey().ToView("vw_ActualizacionONA");
+
+            //ona
+            modelBuilder.Entity<VwOrganismoRegistrado>().HasNoKey().ToView("vw_OrganismoRegistrado");
+            modelBuilder.Entity<VwOrganizacionEsquema>().HasNoKey().ToView("vw_OrganizacionEsquema");
+            modelBuilder.Entity<VwOrganismoActividad>().HasNoKey().ToView("vw_OrganismoActividad");
         }
 
     }

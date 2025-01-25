@@ -1,0 +1,189 @@
+﻿@page "/reporteona"
+@layout AdminLayout
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using ClientApp.Services.IService
+@using SharedApp.Models.Dtos
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+<div class="chart-container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Organismos Registrados</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart1" class="chart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Distribución de OEC por Tipo de Evaluación</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart2" class="chart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="text-primary text-center">Organismos con Mayor Actividad</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart3-bar" class="chart"></canvas> <!-- Gráfico de barras horizontales -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.initCharts = (chartsData) => {
+        const createBarChart = (elementId, data, horizontal = false) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un canvas o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(item => item.label || 'Sin etiqueta'),
+                    datasets: [{
+                        data: data.map(item => item.value || 0),
+                        backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57', '#ff6b6b'],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    indexAxis: horizontal ? 'y' : 'x', // Cambiar orientación: vertical (x) u horizontal (y)
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: !horizontal,
+                                text: horizontal ? 'Cantidad' : 'Fechas'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: horizontal,
+                                text: horizontal ? 'Organismos' : 'Cantidad'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // No mostrar leyenda
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        const createPieChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un canvas o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(item => item.label || 'Sin etiqueta'),
+                    datasets: [{
+                        data: data.map(item => item.value || 0),
+                        backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57'],
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Inicializar gráficos
+        createBarChart('chart1', chartsData[0], false); // Gráfico de barras verticales
+        createPieChart('chart2', chartsData[1]); // Gráfico de pastel
+        createBarChart('chart3-bar', chartsData[2], true); // Gráfico de barras horizontales
+    };
+
+    window.initMap = (data) => {
+        window.initCharts(data.chartsData);
+    };
+</script>
+
+
+<style>
+    .chart-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+    }
+
+    .chart {
+        width: 100%;
+        height: auto;
+    }
+
+    .heatmap {
+        height: 300px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    h5 {
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+</style>

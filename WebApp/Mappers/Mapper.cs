@@ -22,12 +22,32 @@ namespace WebApp.Mappers
             CreateMap<Usuario, UsuarioDto>();
             CreateMap<UsuarioDto, Usuario>();
 
+            //Usuario
             CreateMap<VwAcreditacionOna, VwAcreditacionOnaDto>();
             CreateMap<VwAcreditacionEsquema, VwAcreditacionEsquemaDto>();
             CreateMap<VwEstadoEsquema, VwEstadoEsquemaDto>();
             CreateMap<VwOecPais, VwOecPaisDto>();
             CreateMap<VwEsquemaPais, VwEsquemaPaisDto>();
             CreateMap<VwOecFecha, VwOecFechaDto>();
+
+            //Read
+            CreateMap<VwProfesionalCalificado, VwProfesionalCalificadoDto>();
+            CreateMap<VwProfesionalOna, VwProfesionalOnaDto>();
+            CreateMap<VwProfesionalEsquema, VwProfesionalEsquemaDto>();
+            CreateMap<VwProfesionalFecha, VwProfesionalFechaDto>();
+            CreateMap<VwCalificaUbicacion, VwCalificaUbicacionDto>();
+
+            //Can
+            CreateMap<VwBusquedaFecha, VwBusquedaFechaDto>();
+            CreateMap<VwBusquedaFiltro, VwBusquedaFiltroDto>();
+            CreateMap<VwBusquedaUbicacion, VwBusquedaUbicacionDto>();
+            CreateMap<VwActualizacionONA, VwActualizacionONADto>();
+
+            //Ona
+            CreateMap<VwOrganismoRegistrado, VwOrganismoRegistradoDto>();
+            CreateMap<VwOrganizacionEsquema, VwOrganizacionEsquemaDto>();
+            CreateMap<VwOrganismoActividad, VwOrganismoActividadDto>();
+
             // CreateMap<UsuarioEndpointPermiso, UsuarioEndpointPermisoDto>();
 
             CreateMap<Esquema, EsquemaDto>();
