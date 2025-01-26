@@ -31,29 +31,48 @@
     {
         var menuItems = await _Icatalogo.GetMenusAsync();
         TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
-        StateHasChanged();
-        return menuItems.Select(menu =>
-         {
-             BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
-             {
-                 "KEY_MENU_ONA" => BlazorBootstrap.IconName.PersonFill,
-                 "KEY_MENU_CON" => BlazorBootstrap.IconName.Link,
-                 "KEY_MENU_USU" => BlazorBootstrap.IconName.PeopleFill,
-                 "KEY_MENU_GRU" => BlazorBootstrap.IconName.Diagram2Fill,
-                 "KEY_MENU_CAM" => BlazorBootstrap.IconName.Columns,
-                 "KEY_MENU_ESQ" => BlazorBootstrap.IconName.Diagram3Fill,
-                 "KEY_MENU_VAL" => BlazorBootstrap.IconName.CheckCircleFill,
-                 "KEY_MENU_SEP" => BlazorBootstrap.IconName.Dash,
-                 _ => BlazorBootstrap.IconName.QuestionCircleFill
-             };
+        var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
-             return new NavItem
-                 {
-                     Id = menu.IdHomologacionMenu.ToString(),
-                     Text = menu.MostrarWeb,
-                     Href = menu.href,
-                     IconName = iconName
-                 };
-         });
+        // Definir exclusiones basadas en el rol
+        var excludedHrefs = rol switch
+        {
+            "KEY_USER" => new[] { "/reportecan", "/reporteona", "/reporteread" },
+            "KEY_USER_CAN" => new[] { "/reporte1", "/reporteona", "/reporteread" },
+            "KEY_USER_ONA" => new[] { "/reporte1", "/reportecan", "/reporteread" },
+            "KEY_USER_READ" => new[] { "/reporte1", "/reportecan", "/reporteona" },
+            _ => Array.Empty<string>() // Si el rol no coincide con ninguno, no excluye nada
+        };
+
+        // Filtrar los elementos del menú basados en las exclusiones
+        var filteredMenuItems = menuItems.Where(menu => !excludedHrefs.Contains(menu.href));
+
+        // Transformar los elementos filtrados en NavItem
+        var navItems = filteredMenuItems.Select(menu =>
+        {
+            BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
+            {
+                "KEY_MENU_ONA" => BlazorBootstrap.IconName.PersonFill,
+                "KEY_MENU_CON" => BlazorBootstrap.IconName.Link,
+                "KEY_MENU_USU" => BlazorBootstrap.IconName.PeopleFill,
+                "KEY_MENU_GRU" => BlazorBootstrap.IconName.Diagram2Fill,
+                "KEY_MENU_CAM" => BlazorBootstrap.IconName.Columns,
+                "KEY_MENU_ESQ" => BlazorBootstrap.IconName.Diagram3Fill,
+                "KEY_MENU_VAL" => BlazorBootstrap.IconName.CheckCircleFill,
+                "KEY_MENU_SEP" => BlazorBootstrap.IconName.Dash,
+                _ => BlazorBootstrap.IconName.QuestionCircleFill
+            };
+
+            return new NavItem
+                {
+                    Id = menu.IdHomologacionMenu.ToString(),
+                    Text = menu.MostrarWeb,
+                    Href = menu.href,
+                    IconName = iconName
+                };
+        });
+
+        StateHasChanged();
+        return navItems;
     }
+
 }
