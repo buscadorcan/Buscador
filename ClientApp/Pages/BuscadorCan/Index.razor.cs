@@ -112,23 +112,31 @@ namespace ClientApp.Pages.BuscadorCan
         }
         private async Task BuscarPalabraRequest()
         {
-            listaDatosPanel =await iCatalogosService.GetPanelOnaAsync();
-            TotalEmpresa = listaDatosPanel.Sum(x => x.empresas);
-            buscarRequest.TextoBuscar = searchTerm;
-            mostrarBuscador = true;
-            mostrarPublicidad = false;
-            if (childComponentRef != null)
+            try
             {
-                // Sincroniza el estado del filtro con el componente hijo (IndexGrilla)
-                childComponentRef.ModoBuscar = isExactSearch ? true : false;
-                childComponentRef.selectedValues = selectedValues;
-                 
+                listaDatosPanel = await iCatalogosService.GetPanelOnaAsync();
+                TotalEmpresa = listaDatosPanel.Sum(x => x.empresas);
+                buscarRequest.TextoBuscar = searchTerm;
+                mostrarBuscador = true;
 
-                // Reinicia la grilla para aplicar los nuevos filtros
-                await childComponentRef.grid.ResetPageNumber();
+                if (childComponentRef != null)
+                {
+                    childComponentRef.ModoBuscar = isExactSearch;
+                    childComponentRef.selectedValues = selectedValues;
+
+                    await childComponentRef.grid.ResetPageNumber();
+                }
+
+                // No alteres mostrarFiltrosAvanzados aquí
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en BuscarPalabraRequest: {ex.Message}");
             }
 
+            StateHasChanged(); // Asegúrate de que la página se renderice correctamente
         }
+
         private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
         {
             buscarRequest.TextoBuscar = request.Filter.Value;

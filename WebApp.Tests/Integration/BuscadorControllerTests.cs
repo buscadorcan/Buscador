@@ -62,7 +62,7 @@ namespace WebApp.Tests.Integration
       // Setup mock behavior here if necessary
 
       // Act MJIV
-      var result = _controller.FnHomologacionEsquemaTodo("1");
+      var result = _controller.FnHomologacionEsquemaTodo("1", 1);
 
       // Assert
       Assert.IsType<OkObjectResult>(result);

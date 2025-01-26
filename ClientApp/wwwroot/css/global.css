@@ -190,3 +190,10 @@ a {
     margin-bottom: 10px; /* Espaciado entre cada fila */
 }
 
+.mostrar {
+    display: block;
+}
+
+.ocultar {
+    display: none;
+}

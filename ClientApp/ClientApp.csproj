@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\icono\**" />
+    <Content Remove="wwwroot\icono\**" />
+    <EmbeddedResource Remove="wwwroot\icono\**" />
+    <None Remove="wwwroot\icono\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazor.Bootstrap" Version="3.2.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.4" />
@@ -21,10 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SharedApp\SharedApp.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\icono\" />
   </ItemGroup>
 
   <ItemGroup>
