@@ -36,10 +36,10 @@
         // Definir exclusiones basadas en el rol
         var excludedHrefs = rol switch
         {
-            "KEY_USER" => new[] { "/reportecan", "/reporteona", "/reporteread" },
-            "KEY_USER_CAN" => new[] { "/reporte1", "/reporteona", "/reporteread" },
-            "KEY_USER_ONA" => new[] { "/reporte1", "/reportecan", "/reporteread" },
-            "KEY_USER_READ" => new[] { "/reporte1", "/reportecan", "/reporteona" },
+            // "KEY_USER" => new[] { "/reportecan", "/reporteona", "/reporteread" },
+            "KEY_USER_CAN" => new[] { "/reporteona", "/reporteread" },
+            "KEY_USER_ONA" => new[] { "/reportecan", "/reporteread" },
+            "KEY_USER_READ" => new[] { "/reportecan", "/reporteona" },
             _ => Array.Empty<string>() // Si el rol no coincide con ninguno, no excluye nada
         };
 
