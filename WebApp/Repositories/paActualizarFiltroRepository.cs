@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using System.Configuration;
 using System.Data;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -9,17 +10,22 @@ namespace WebApp.Repositories
     public class paActualizarFiltroRepository : IpaActualizarFiltroRepository
     {
         private readonly string _connectionString;
-        public paActualizarFiltroRepository(string connectionString)
+
+        public paActualizarFiltroRepository(IConfiguration configuration)
         {
-            _connectionString = connectionString;
+            _connectionString = configuration.GetConnectionString("Mssql-CanDb");
+            if (string.IsNullOrWhiteSpace(_connectionString))
+            {
+                throw new InvalidOperationException("La cadena de conexión 'Mssql-CanDb' no está configurada.");
+            }
         }
 
         // Método para ejecutar el procedimiento almacenado
-        public async Task<bool> ActualizarFiltroAsync(string connectionString)
+        public async Task<bool> ActualizarFiltroAsync()
         {
             try
             {
-                using (var connection = new SqlConnection(connectionString))
+                using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
                     var result = await connection.ExecuteAsync(

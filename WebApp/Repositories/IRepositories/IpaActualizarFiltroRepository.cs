@@ -2,6 +2,6 @@
 {
     public interface IpaActualizarFiltroRepository
     {
-        Task<bool> ActualizarFiltroAsync(string connectionString);
+        Task<bool> ActualizarFiltroAsync();
     }
 }

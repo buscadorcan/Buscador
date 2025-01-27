@@ -147,7 +147,7 @@ namespace WebApp.Service.IService
                     }
 
 
-                    var resultadoSP = await _ipaActualizarFiltro.ActualizarFiltroAsync(connectionString);
+                    var resultadoSP = await _ipaActualizarFiltro.ActualizarFiltroAsync();
                     if (resultadoSP)
                     {
                         Console.WriteLine("El procedimiento almacenado se ejecutó correctamente.");
