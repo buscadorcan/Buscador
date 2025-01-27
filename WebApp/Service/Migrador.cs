@@ -6,13 +6,12 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Npgsql;
 using System.Data;
-using System.Net.Sockets;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 
 namespace WebApp.Service.IService
 {
-    public class Migrador(IEsquemaDataRepository esquemaDataRepository, IEsquemaFullTextRepository esquemaFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository esquemaRepository, IONAConexionRepository conexionRepository, IConfiguration configuration, IConectionStringBuilderService connectionStringBuilderService, IEsquemaVistaRepository esquemaVistaRepository, IEsquemaVistaColumnaRepository esquemaVistaColumnaRepository, ILogMigracionRepository logMigracionRepository) : IMigrador
+    public class Migrador(IEsquemaDataRepository esquemaDataRepository, IEsquemaFullTextRepository esquemaFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository esquemaRepository, IONAConexionRepository conexionRepository, IConfiguration configuration, IConectionStringBuilderService connectionStringBuilderService, IEsquemaVistaRepository esquemaVistaRepository, IEsquemaVistaColumnaRepository esquemaVistaColumnaRepository, ILogMigracionRepository logMigracionRepository, IpaActualizarFiltroRepository ipaActualizarFiltro) : IMigrador
     {
         private IEsquemaDataRepository _repositoryDLO = esquemaDataRepository;
         private IEsquemaFullTextRepository _repositoryOFT = esquemaFullTextRepository;
@@ -23,6 +22,7 @@ namespace WebApp.Service.IService
         private IONAConexionRepository _repositoryC = conexionRepository;
         private IConectionStringBuilderService _connectionStringBuilderService = connectionStringBuilderService;
         private ILogMigracionRepository _logMigracion = logMigracionRepository;
+        private IpaActualizarFiltroRepository _ipaActualizarFiltro = ipaActualizarFiltro;
         private string connectionString = configuration.GetConnectionString("Mssql-CanDb") ?? throw new InvalidOperationException("La cadena de conexión 'Mssql-CanDb' no está configurada.");
         private ONAConexion? currentConexion = null;
         private int executionIndex = 0;
@@ -146,6 +146,17 @@ namespace WebApp.Service.IService
                         _logMigracion.Create(data);
                     }
 
+
+                    var resultadoSP = await _ipaActualizarFiltro.ActualizarFiltroAsync(connectionString);
+                    if (resultadoSP)
+                    {
+                        Console.WriteLine("El procedimiento almacenado se ejecutó correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error al ejecutar el procedimiento almacenado.");
+                    }
+
                 }
 
                 return resultado;
@@ -157,13 +168,7 @@ namespace WebApp.Service.IService
             }
 
         }
-        /// <summary>
-        /// Importacion de vistas externas de acuerdo a la conexion.
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="origenDatos"></param>
-        /// <returns></returns>
-        /// <exception cref="NotSupportedException"></exception>
+
         public async Task<bool> ValidarVistaAsync(string connectionString, string origenDatos, string vista)
         {
             try

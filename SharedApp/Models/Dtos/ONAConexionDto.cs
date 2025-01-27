@@ -9,7 +9,6 @@ namespace SharedApp.Models.Dtos
         [Required(ErrorMessage = "El campo es obligatorio.")]
         public string? Host { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio.")]
-        [Range(1000, 9999, ErrorMessage = "El puerto debe tener 4 dígitos.")]
         public int Puerto { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio.")]
         public string? Usuario { get; set; }
