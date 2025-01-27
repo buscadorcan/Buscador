@@ -125,5 +125,14 @@ namespace WebApp.Repositories
                 .ToList());
         }
 
+        public List<vwONA> ObtenervwOna()
+        {
+            return ExecuteDbOperation(context =>
+                context.vwONA
+                .AsNoTracking()
+                .OrderBy(c => c.IdONA)
+                .ToList());
+        }
+
     }
 }

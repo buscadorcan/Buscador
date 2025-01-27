@@ -63,5 +63,14 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<vwPanelONADto>>>()).Result;
         }
+
+        public async Task<List<vwONADto>> GetvwOnaAsync()
+        {
+            var url = _urlBaseApi + "vwona";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<vwONADto>>>()).Result;
+        }
+
     }
 }

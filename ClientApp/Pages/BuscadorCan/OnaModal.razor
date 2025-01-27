@@ -1,0 +1,31 @@
+﻿<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h3>@onaSeleccionado?.RazonSocial</h3>
+                <p><strong>Pais:</strong> @onaSeleccionado?.Pais</p>
+                <p><strong>Siglas:</strong> @onaSeleccionado?.Siglas</p>
+                <p><strong>Ciudad:</strong> @onaSeleccionado?.Ciudad</p>
+                <p><strong>Correo:</strong> @onaSeleccionado?.Correo</p>
+                <p><strong>Dirección:</strong> @onaSeleccionado?.Direccion</p>
+                <p><strong>Página Web:</strong> <a href="@onaSeleccionado?.PaginaWeb" target="_blank">@onaSeleccionado?.PaginaWeb</a></p>
+                <p><strong>Teléfono:</strong> @onaSeleccionado?.Telefono</p>
+            </div>
+            @if (!string.IsNullOrEmpty(onaSeleccionado?.UrlIcono))
+            {
+                <div>
+                    <img src="@onaSeleccionado.UrlIcono" alt="Icono ONA" class="img-fluid" style="max-width: 150px; max-height: 150px;" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (loading)
+{
+    <p>Cargando información...</p>
+}
+else if (onaSeleccionado == null)
+{
+    <p>No se encontró información del ONA.</p>
+}

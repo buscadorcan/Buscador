@@ -23,9 +23,12 @@
               ItemsPerPageText="Items por página">
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModalOna(context)">
-                    <!-- Llama a getIconUrl y muestra el ícono dinámicamente -->
-                    <img src="@getIconUrl(context)" alt="Icono" style="width: 16px; height: 16px;" />
-                </Button>  
+                    <!-- Usa el diccionario precargado para obtener la URL del ícono -->
+                    <img src="@(iconUrls.ContainsKey(context.IdONA.GetValueOrDefault())
+                    ? iconUrls[context.IdONA.GetValueOrDefault()]
+                    : "https://via.placeholder.com/16")"
+                         alt="Icono" style="width: 16px; height: 16px;" />
+                </Button>
             </GridColumn>
 
             @foreach (var etiqueta in listaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))

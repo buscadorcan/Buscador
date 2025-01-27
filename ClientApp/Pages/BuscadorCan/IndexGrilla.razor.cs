@@ -74,15 +74,21 @@ namespace ClientApp.Pages.BuscadorCan
                         FiltroRecomocimiento = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
                     };
 
-                    Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
-
                     var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), PageNumber, PageSize);
-                    Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
 
                     if (!(result.Data is null))
                     {
                         listBuscadorResultadoDataDto = result.Data;
-                        Console.WriteLine($"Filtros enviados: {JsonConvert.SerializeObject(filtros)}");
+
+                        // Prepara las URLs de los íconos
+                        foreach (var item in listBuscadorResultadoDataDto)
+                        {
+                            if (item.IdONA.HasValue && !iconUrls.ContainsKey(item.IdONA.Value))
+                            {
+                                iconUrls[item.IdONA.Value] = await getIconUrl(item);
+                            }
+                        }
+
                         await grid.RefreshDataAsync();
                     }
 
@@ -99,6 +105,7 @@ namespace ClientApp.Pages.BuscadorCan
 
             return listBuscadorResultadoDataDto;
         }
+
         private async Task<GridDataProviderResult<BuscadorResultadoDataDto>> ResultadoBusquedaDataProvider(GridDataProviderRequest<BuscadorResultadoDataDto> request)
         {
             try
@@ -142,7 +149,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
-            await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
+            await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
 
@@ -220,6 +227,7 @@ namespace ClientApp.Pages.BuscadorCan
                 return "https://via.placeholder.com/16";
             }
         }
+
 
 
 

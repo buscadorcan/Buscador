@@ -21,6 +21,7 @@ namespace WebApp.Mappers
             CreateMap<VwHomologacion, VwHomologacionDto>();
             CreateMap<Usuario, UsuarioDto>();
             CreateMap<UsuarioDto, Usuario>();
+            CreateMap<vwONA, vwONADto>();
 
             //Usuario
             CreateMap<VwAcreditacionOna, VwAcreditacionOnaDto>();

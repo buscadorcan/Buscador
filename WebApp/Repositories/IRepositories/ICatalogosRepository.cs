@@ -51,9 +51,16 @@ namespace WebApp.Repositories.IRepositories
         /// </summary>
         /// <returns>Una lista de objetos <see cref="VwMenu"/>.</returns>
         List<VwMenu> ObtenerVwMenu();
-
+        /// <summary>
+        /// Obtiene el esquema de roles.
+        /// </summary>
+        /// <returns>Una lista de objetos <see cref="ONA"/>.</returns>
         List<ONA> ObtenerOna();
-
+        /// <summary>
+        /// Obtiene el esquema de roles.
+        /// </summary>
+        /// <returns>Una lista de objetos <see cref="vwONA"/>.</returns>
+        List<vwONA> ObtenervwOna();
         /// <summary>
         /// Obtiene el Homologación grupos.
         /// </summary>

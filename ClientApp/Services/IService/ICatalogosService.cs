@@ -9,5 +9,6 @@ namespace ClientApp.Services.IService
         Task<List<VwMenuDto>> GetMenusAsync();
         Task<List<VwFiltroDto>> GetFiltrosAsync();
         Task<List<vwPanelONADto>> GetPanelOnaAsync();
+        Task<List<vwONADto>> GetvwOnaAsync();
     }
 }
