@@ -15,6 +15,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         [Inject]
         private IDynamicService? iDynamicService { get; set; }
         private List<ONAConexionDto>? listasHevd = null;
+        private bool IsLoading { get; set; } = false;
         private async Task<GridDataProviderResult<ONAConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ONAConexionDto> request)
         {
             if (listasHevd == null && iConexionService != null)
@@ -72,34 +73,48 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             if (iDynamicService != null && listasHevd != null && grid != null)
             {
-                // Llamar al método del servicio para realizar la migración
-                bool migracion = await iDynamicService.MigrarConexionAsync(conexion);
+                // Mostrar el indicador de carga
+                IsLoading = true;
+                StateHasChanged();
 
-                var toastMessage = new ToastMessage
+                try
                 {
-                    Type = migracion ? ToastType.Success : ToastType.Danger,
-                    Title = "Mensaje de confirmación",
-                    HelpText = $"{DateTime.Now}",
-                    Message = migracion ? "Migracion satisfactoria" : "Migracion no realizada",
-                };
+                    // Llamar al método del servicio para realizar la migración
+                    bool migracion = await iDynamicService.MigrarConexionAsync(conexion);
 
-                messages.Add(toastMessage);
+                    var toastMessage = new ToastMessage
+                    {
+                        Type = migracion ? ToastType.Success : ToastType.Danger,
+                        Title = "Mensaje de confirmación",
+                        HelpText = $"{DateTime.Now}",
+                        Message = migracion ? "Migracion satisfactoria" : "Migracion no realizada",
+                    };
 
-                // Configurar el cierre automático después de 5 segundos
-                _ = Task.Delay(5000).ContinueWith(_ =>
+                    messages.Add(toastMessage);
+
+                    // Configurar el cierre automático después de 5 segundos
+                    _ = Task.Delay(5000).ContinueWith(_ =>
+                    {
+                        messages.Remove(toastMessage);
+                        InvokeAsync(StateHasChanged); // Actualizar la UI
+                    });
+
+                    if (migracion)
+                    {
+                        await grid.RefreshDataAsync();
+                        return true; // Devuelve true si la conexión fue exitosa
+                    }
+                }
+                finally
                 {
-                    messages.Remove(toastMessage);
-                    InvokeAsync(StateHasChanged); // Actualizar la UI
-                });
-
-                if (migracion)
-                {
-                    await grid.RefreshDataAsync();
-                    return true; // Devuelve true si la conexión fue exitosa
+                    // Ocultar el indicador de carga después de completar la migración
+                    IsLoading = false;
+                    StateHasChanged();
                 }
             }
             return false; // Migración fallida
         }
-      
+
+
     }
 }

@@ -2,10 +2,11 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using Newtonsoft.Json;
 using Npgsql;
 using System.Data;
+using System.Diagnostics;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 
@@ -43,6 +44,7 @@ namespace WebApp.Service.IService
         {
             List<EsquemaVista> viewRegistradas = new List<EsquemaVista>();
             List<EsquemaVistaColumna> viewColumns = new List<EsquemaVistaColumna>();
+            Stopwatch stopwatch = new Stopwatch();
             try
             {
                 bool resultado = true;
@@ -73,7 +75,8 @@ namespace WebApp.Service.IService
                     Console.WriteLine("Hubo un problema al conectar a la base de datos.");
                 }
 
-
+                // Inicia el temporizador
+                stopwatch.Start();
 
                 //recuperar vistas de la tabla esquemasVista
                 viewRegistradas = _repositoryEVRP.FindAll().Where(v => v.IdONA == idOna).ToList();
@@ -83,13 +86,13 @@ namespace WebApp.Service.IService
                 bool procesar = true;
                 foreach (var vista in viewRegistradas)
                 {
-                    vistaAp = await ValidarVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen);
+                    vistaAp = await ValidarVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, idOna);
                     if (vistaAp)
                     {
                         viewColumns = _repositoryEVCRP.FindByIdEsquemaVista(vista.IdEsquemaVista);
                         foreach (var column in viewColumns)
                         {
-                            columnAp = await ValidarColumnaEnVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, column.ColumnaEsquema);
+                            columnAp = await ValidarColumnaEnVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, column.ColumnaEsquema, idOna);
                             if (!columnAp)
                             {
                                 procesar = false;
@@ -103,36 +106,37 @@ namespace WebApp.Service.IService
                                 };
                                 _logMigracion.Create(data);
                             }
-                        }
-                        if (procesar)
-                        {
-                            // Llamar a ProcesarMigracionAsync para procesar los datos
-                            bool resspuesta = await ProcesarVistaConDatosAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, viewColumns, vista.IdEsquemaVista);
-
-                            if (resspuesta)
+                            if (procesar)
                             {
-                                Console.WriteLine($"Vista '{vista.VistaOrigen}' procesada exitosamente.");
-                                var data = new LogMigracion
-                                {
-                                    IdONA = idOna,
-                                    OrigenDatos = conexion.OrigenDatos,
-                                    Observacion = "Vista: " + vista.VistaOrigen + " procesada exitosamente."
-                                };
-                                _logMigracion.Create(data);
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Error al procesar la vista '{vista.VistaOrigen}'. Verificar log.");
-                                var data = new LogMigracion
-                                {
-                                    IdONA = idOna,
-                                    OrigenDatos = conexion.OrigenDatos,
-                                    Observacion = "Error al procesar la vista: " + vista.VistaOrigen + " verificar."
-                                };
-                                _logMigracion.Create(data);
-                            }
+                                // Llamar a ProcesarMigracionAsync para procesar los datos
+                                bool resspuesta = await ProcesarVistaConDatosAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, viewColumns, vista.IdEsquemaVista, idOna);
 
+                                if (resspuesta)
+                                {
+                                    Console.WriteLine($"Vista '{vista.VistaOrigen}' procesada exitosamente.");
+                                    var data = new LogMigracion
+                                    {
+                                        IdONA = idOna,
+                                        OrigenDatos = conexion.OrigenDatos,
+                                        Observacion = "Vista: " + vista.VistaOrigen + " procesada exitosamente."
+                                    };
+                                    _logMigracion.Create(data);
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Error al procesar la vista '{vista.VistaOrigen}'. Verificar log.");
+                                    var data = new LogMigracion
+                                    {
+                                        IdONA = idOna,
+                                        OrigenDatos = conexion.OrigenDatos,
+                                        Observacion = "Error al procesar la vista: " + vista.VistaOrigen + " verificar."
+                                    };
+                                    _logMigracion.Create(data);
+                                }
+
+                            }
                         }
+               
                     }
                     else
                     {
@@ -159,6 +163,19 @@ namespace WebApp.Service.IService
 
                 }
 
+                // Detiene el temporizador
+                stopwatch.Stop();
+                TimeSpan tiempoTotal = stopwatch.Elapsed;
+
+                // Guardar el tiempo total en el log
+                var logTiempo = new LogMigracion
+                {
+                    IdONA = idOna,
+                    OrigenDatos = conexion.OrigenDatos,
+                    Observacion = $"Tiempo total de migración: {tiempoTotal.Hours}h {tiempoTotal.Minutes}m {tiempoTotal.Seconds}s {tiempoTotal.Milliseconds}ms."
+                };
+                _logMigracion.Create(logTiempo);
+
                 return resultado;
             }
             catch (Exception ex)
@@ -169,7 +186,7 @@ namespace WebApp.Service.IService
 
         }
 
-        public async Task<bool> ValidarVistaAsync(string connectionString, string origenDatos, string vista)
+        public async Task<bool> ValidarVistaAsync(string connectionString, string origenDatos, string vista, int idONA)
         {
             try
             {
@@ -177,7 +194,7 @@ namespace WebApp.Service.IService
                 var connectionFactories = new Dictionary<string, Func<string, IDbConnection>>
                 {
                     { "SQLSERVER", connStr => new SqlConnection(connStr) },
-                    { "MYSQL", connStr => new MySql.Data.MySqlClient.MySqlConnection(connStr) },
+                    { "MYSQL", connStr => new MySqlConnection(connStr) },
                     { "POSTGRES", connStr => new Npgsql.NpgsqlConnection(connStr) },
                     { "SQLLITE", connStr => new Microsoft.Data.Sqlite.SqliteConnection(connStr) }
                 };
@@ -185,14 +202,22 @@ namespace WebApp.Service.IService
                 if (!connectionFactories.TryGetValue(origenDatos.ToUpper(), out var createConnection))
                 {
                     throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.");
-
                 }
 
                 using var connection = createConnection(connectionString);
                 connection.Open();
 
-                // Realizar el SELECT * para validar la vista
-                var query = $"SELECT TOP 1 * FROM {vista}"; // Agrega LIMIT para evitar cargar todos los datos
+                // Generar la consulta adecuada según el tipo de base de datos
+                string query = origenDatos.ToUpper() switch
+                {
+                    "SQLSERVER" => $"SELECT TOP 1 * FROM {vista}",
+                    "MYSQL" => $"SELECT * FROM {vista} LIMIT 1",
+                    "POSTGRES" => $"SELECT * FROM {vista} LIMIT 1",
+                    "SQLLITE" => $"SELECT * FROM {vista} LIMIT 1",
+                    _ => throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.")
+                };
+
+                // Ejecutar la consulta para validar la vista
                 await connection.QueryAsync(query);
 
                 // Si no hay excepciones, la vista existe
@@ -201,11 +226,21 @@ namespace WebApp.Service.IService
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al validar la vista '{vista}': {ex.Message}");
+
+                var data = new LogMigracion
+                {
+                    IdONA = idONA,
+                    OrigenDatos = origenDatos,
+                    Observacion = "Vista no encontrada: " + vista + " verificar."
+                };
+                _logMigracion.Create(data);
+
                 return false;
             }
         }
 
-        public async Task<bool> ValidarColumnaEnVistaAsync(string connectionString, string origenDatos, string vista, string columna)
+
+        public async Task<bool> ValidarColumnaEnVistaAsync(string connectionString, string origenDatos, string vista, string columna, int idONA)
         {
             try
             {
@@ -213,7 +248,7 @@ namespace WebApp.Service.IService
                 var connectionFactories = new Dictionary<string, Func<string, IDbConnection>>
                 {
                     { "SQLSERVER", connStr => new SqlConnection(connStr) },
-                    { "MYSQL", connStr => new MySql.Data.MySqlClient.MySqlConnection(connStr) },
+                    { "MYSQL", connStr => new MySqlConnection(connStr) },
                     { "POSTGRES", connStr => new Npgsql.NpgsqlConnection(connStr) },
                     { "SQLLITE", connStr => new Microsoft.Data.Sqlite.SqliteConnection(connStr) }
                 };
@@ -226,17 +261,36 @@ namespace WebApp.Service.IService
                 using var connection = createConnection(connectionString);
                 connection.Open();
 
-                // Consulta básica para validar la columna
-                var query = origenDatos.ToUpper() switch
+                // Escapar los nombres de la vista y la columna según el motor de base de datos
+                string escapedVista = origenDatos.ToUpper() switch
                 {
-                    "SQLSERVER" => $"SELECT TOP 1 [{columna}] FROM {vista}",
-                    "MYSQL" => $"SELECT TOP 1 '{columna}' FROM {vista}",
-                    "POSTGRES" => $"SELECT TOP 1 \"{columna}\" FROM {vista}",
-                    "SQLLITE" => $"SELECT TOP 1 \"{columna}\" FROM {vista}",
+                    "SQLSERVER" => $"[{vista}]",
+                    "MYSQL" => $"`{vista}`",
+                    "POSTGRES" => $"\"{vista}\"",
+                    "SQLLITE" => $"\"{vista}\"",
                     _ => throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.")
                 };
 
-                // Ejecutar el SELECT
+                string escapedColumna = origenDatos.ToUpper() switch
+                {
+                    "SQLSERVER" => $"[{columna}]",
+                    "MYSQL" => $"`{columna}`",
+                    "POSTGRES" => $"\"{columna}\"",
+                    "SQLLITE" => $"\"{columna}\"",
+                    _ => throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.")
+                };
+
+                // Crear la consulta para verificar la columna
+                string query = origenDatos.ToUpper() switch
+                {
+                    "SQLSERVER" => $"SELECT TOP 1 {escapedColumna} FROM {escapedVista}",
+                    "MYSQL" => $"SELECT {escapedColumna} FROM {escapedVista} LIMIT 1",
+                    "POSTGRES" => $"SELECT {escapedColumna} FROM {escapedVista} LIMIT 1",
+                    "SQLLITE" => $"SELECT {escapedColumna} FROM {escapedVista} LIMIT 1",
+                    _ => throw new NotSupportedException($"Tipo de base de datos '{origenDatos}' no soportado.")
+                };
+
+                // Ejecutar la consulta
                 await connection.QueryAsync(query);
 
                 // Si no hay excepciones, la columna existe
@@ -245,11 +299,22 @@ namespace WebApp.Service.IService
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al validar la columna '{columna}' en la vista '{vista}': {ex.Message}");
+
+                // Registrar el error en el log
+                var data = new LogMigracion
+                {
+                    IdONA = idONA,
+                    OrigenDatos = origenDatos,
+                    Observacion = $"Columna '{columna}' no encontrada en la vista '{vista}'. Verificar."
+                };
+                _logMigracion.Create(data);
+
                 return false;
             }
         }
 
-        public async Task<bool> ProcesarVistaConDatosAsync(string connectionString, string origenDatos, string vista, List<EsquemaVistaColumna> columnas, int idEsquemaVista)
+
+        public async Task<bool> ProcesarVistaConDatosAsync(string connectionString, string origenDatos, string vista, List<EsquemaVistaColumna> columnas, int idEsquemaVista, int idONA)
         {
             try
             {
@@ -257,7 +322,7 @@ namespace WebApp.Service.IService
                 var connectionFactories = new Dictionary<string, Func<string, IDbConnection>>
                 {
                     { "SQLSERVER", connStr => new SqlConnection(connStr) },
-                    { "MYSQL", connStr => new MySql.Data.MySqlClient.MySqlConnection(connStr) },
+                    { "MYSQL", connStr => new MySqlConnection(connStr) },
                     { "POSTGRES", connStr => new Npgsql.NpgsqlConnection(connStr) },
                     { "SQLLITE", connStr => new Microsoft.Data.Sqlite.SqliteConnection(connStr) }
                 };
@@ -333,8 +398,6 @@ namespace WebApp.Service.IService
                         .Where(col => homologacion.Contains(col.ColumnaEsquemaIdH))
                         .ToList();
 
-
-
                     // Insertar en la tabla EsquemaFullText
                     foreach (var col in columnasFiltradas)
                     {
@@ -362,6 +425,12 @@ namespace WebApp.Service.IService
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al procesar los datos de la vista '{vista}': {ex.Message}");
+                var data = new LogMigracion
+                {
+                    IdONA = idONA,
+                    OrigenDatos = origenDatos,
+                    Observacion = "Error al procesar los datos de la vista " + vista + " el error: " + ex.Message
+                };
                 return false;
             }
         }
