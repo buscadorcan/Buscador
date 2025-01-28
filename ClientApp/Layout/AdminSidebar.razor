@@ -36,15 +36,15 @@
         // Definir exclusiones basadas en el rol
         var excludedHrefs = rol switch
         {
-            // "KEY_USER" => new[] { "/reportecan", "/reporteona", "/reporteread" },
-            "KEY_USER_CAN" => new[] { "/reporteona", "/reporteread" },
-            "KEY_USER_ONA" => new[] { "/reportecan", "/reporteread" },
-            "KEY_USER_READ" => new[] { "/reportecan", "/reporteona" },
+            "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG"},
+            "KEY_USER_CAN" => new[] { "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ" },
+            "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ"},
+            "KEY_USER_READ" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA" },
             _ => Array.Empty<string>() // Si el rol no coincide con ninguno, no excluye nada
         };
 
         // Filtrar los elementos del menú basados en las exclusiones
-        var filteredMenuItems = menuItems.Where(menu => !excludedHrefs.Contains(menu.href));
+        var filteredMenuItems = menuItems.Where(menu => !excludedHrefs.Contains(menu.CodigoHomologacion));
 
         // Transformar los elementos filtrados en NavItem
         var navItems = filteredMenuItems.Select(menu =>
