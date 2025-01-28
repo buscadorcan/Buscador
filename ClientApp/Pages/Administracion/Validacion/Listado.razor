@@ -11,64 +11,43 @@
         <div>
             <label class="col-form-label">Ona</label>
         </div>
-        <Dropdown AutoClose="true">
-            <DropdownToggleButton Color="ButtonColor.Secondary">
-                @if (onaSelected?.Siglas != null)
+        <select id="onaSelect" class="form-control" @onchange="CambiarSeleccionOna">
+            <option value="" selected disabled>Seleccionar Ona</option>
+            @if (listaONAs != null)
+            {
+                @foreach (var opcion in listaONAs)
                 {
-                    @onaSelected.Siglas
+                    <option value="@opcion.IdONA">@opcion.Siglas</option>
                 }
-                else
-                {
-                    <span>Seleccionar Ona</span>
-                }
-            </DropdownToggleButton>
-            <DropdownMenu>
-                @if (listaONAs != null)
-                {
-                    @foreach (var opcion in listaONAs)
-                    {
-                        <DropdownItem @onclick="async () => await CambiarSeleccionOna(opcion)">
-                            @opcion.Siglas
-                        </DropdownItem>
-                    }
-                }
-            </DropdownMenu>
-        </Dropdown>
+            }
+        </select>
     </div>
     <div class="col-md-4">
         <div>
             <label class="col-form-label">Esquemas</label>
         </div>
-        <Dropdown AutoClose="true">
-            <DropdownToggleButton Color="ButtonColor.Secondary">
-                @if (esquemaSelected?.MostrarWeb != null)
-                {
-                    @esquemaSelected.MostrarWeb
-                }
-                else
-                {
-                    <span>Seleccionar ESQ</span>
-                }
-            </DropdownToggleButton>
-            <DropdownMenu>
-                @if (listaEsquemasOna != null)
-                {
-                    @foreach (var opcion in listaEsquemasOna)
+        <div class="form-group">
+            <div class="form-group">
+                <select id="esquemaSelect" class="form-control" @onchange="HandleEsquemaSelectionChange">
+                    <option value="" selected disabled>Seleccionar ESQ</option>
+                    @if (listaEsquemasOna != null)
                     {
-                        <DropdownItem @onclick="() => CambiarSeleccionEsquema(opcion)">
-                            @if (NombresVistas != null)
-                            {
-                                @if (NombresVistas.Count(c => c.Equals(opcion.MostrarWeb)) > 0)
+                        @foreach (var opcion in listaEsquemasOna)
+                        {
+                            <option value="@opcion.IdEsquema">
+                                @if (NombresVistas != null && NombresVistas.Any(c => c.Equals(opcion.MostrarWeb)))
                                 {
                                     <Icon Name="IconName.Check" />
                                 }
-                            }
-                            @opcion.MostrarWeb
-                        </DropdownItem>
+                                @opcion.MostrarWeb
+                            </option>
+                        }
                     }
-                }
-            </DropdownMenu>
-        </Dropdown>
+                </select>
+            </div>
+
+        </div>
+
     </div>
     <div class="col-md-4">
         <div>
@@ -103,9 +82,9 @@
     <div class="col-md-12 py-2 text-end">
         @if (listasHevd?.Count > 0) 
         {
-            <Button @ref="saveButton" style="display: none;" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
+@*             <Button @ref="saveButton" style="display: none;" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
                 Guardar
-            </Button>
+            </Button> *@
             <Button @ref="validateButton" Color="ButtonColor.Success" @onclick="async () => await ValidarDatos()">
                 Validar y Guardar
             </Button>

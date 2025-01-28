@@ -86,70 +86,70 @@ namespace ClientApp.Pages.Administracion.Validacion
             }
         }
 
-        private async Task CambiarSeleccionOna(OnaDto _onaSelected)
+        private async Task CambiarSeleccionOna(ChangeEventArgs e)
         {
-            if (esquemaSelected != null)
+            var selectedId = Convert.ToInt32(e.Value);
+
+            // Busca el objeto correspondiente en la lista
+            onaSelected = listaONAs?.FirstOrDefault(o => o.IdONA == selectedId);
+
+            if (onaSelected != null)
             {
-                onaSelected = _onaSelected;
-                //esquemaSelected = null;
-                nombreSugerido = "";
-                await CambiarSeleccionEsquema(esquemaSelected);
-
-                //listaEsquemasOna = await iEsquemaService.GetEsquemaByOnaAsync(onaSelected.IdONA);
-
-                //listasHevd = new List<EsquemaVistaDto>();
-                //if (grid != null)
-                //    await grid.RefreshDataAsync();
+                await CambiarSeleccionEsquema(esquemaSelected); // Opcional, si necesitas actualizar algo más.
+                StateHasChanged();
             }
-            else
-            {
-                nombreSugerido = "";
-                onaSelected = _onaSelected;
-            }
-
         }
+
+        private async Task HandleEsquemaSelectionChange(ChangeEventArgs e)
+        {
+            var selectedId = Convert.ToInt32(e.Value);
+
+            // Encuentra el esquema seleccionado en la lista
+            var selectedEsquema = listaEsquemasOna?.FirstOrDefault(es => es.IdEsquema == selectedId);
+
+            if (selectedEsquema != null)
+            {
+                await CambiarSeleccionEsquema(selectedEsquema);
+            }
+        }
+
         private async Task CambiarSeleccionEsquema(EsquemaDto _esquemaSelected)
         {
+            // Obtiene el rol del usuario desde el LocalStorage
             var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             bool accessRol = rol == "KEY_USER_CAN";
 
+            // Configura `currentConexion` y `enabledCeldas` dependiendo del rol
             if (accessRol)
             {
                 currentConexion = await iConexionService.GetOnaConexionByOnaAsync(onaSelected.IdONA);
-                if (currentConexion != null && currentConexion.OrigenDatos.Equals("EXCEL"))
-                {
-                    origenDatosValidar = currentConexion.OrigenDatos;
-                    enabledCeldas = true;
-                }
-                else
-                {
-                    origenDatosValidar = currentConexion.OrigenDatos;
-                    enabledCeldas = false;
-                }
             }
             else
             {
                 int IdOna = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
                 currentConexion = await iConexionService.GetOnaConexionByOnaAsync(IdOna);
-
-                if (currentConexion != null && currentConexion.OrigenDatos.Equals("EXCEL"))
-                {
-                    origenDatosValidar = currentConexion.OrigenDatos;
-                    enabledCeldas = true;
-                }
-                else
-                {
-                    origenDatosValidar = currentConexion.OrigenDatos;
-                    enabledCeldas = false;
-                }
             }
 
-            
+            if (currentConexion != null && currentConexion.OrigenDatos.Equals("EXCEL"))
+            {
+                origenDatosValidar = currentConexion.OrigenDatos;
+                enabledCeldas = true;
+            }
+            else
+            {
+                origenDatosValidar = currentConexion.OrigenDatos;
+                enabledCeldas = false;
+            }
+
+            // Actualiza el esquema seleccionado y el nombre sugerido
             esquemaSelected = _esquemaSelected;
             nombreSugerido = esquemaSelected.EsquemaVista;
 
+            // Lógica para obtener y procesar las columnas del esquema
             var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
-            var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
+            var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson)
+                .OrderBy(c => c.MostrarWebOrden)
+                .ToList();
 
             listasHevd = new List<EsquemaVistaDto>();
 
@@ -158,20 +158,23 @@ namespace ClientApp.Pages.Administracion.Validacion
             foreach (var c in Columnas)
             {
                 var vistaCorrespondiente = vistas.FirstOrDefault(n => n.NombreEsquema != null && n.NombreEsquema.Equals(c.NombreHomologado));
-                // Contar cuántas vistas cumplen la condición
                 var count = vistas.Count(n => n.NombreVista != null && n.NombreVista.Equals(c.NombreHomologado));
 
                 listasHevd.Add(new EsquemaVistaDto
                 {
                     NombreEsquema = c.NombreHomologado,
-                    NombreVista = vistaCorrespondiente?.NombreVista ?? c.NombreHomologado.Trim(), // Asignar NombreVista de la vista correspondiente
-                    IsValid = count > 0 // Asignar IsValid con base en count
+                    NombreVista = vistaCorrespondiente?.NombreVista ?? c.NombreHomologado.Trim(),
+                    IsValid = count > 0
                 });
             }
 
+            // Refresca la tabla si es necesario
             if (grid != null)
+            {
                 await grid.RefreshDataAsync();
+            }
         }
+
 
         //private async Task CambiarSeleccionEsquema(EsquemaVistaOnaDto _esquemaSelected)
         //{
@@ -213,83 +216,100 @@ namespace ClientApp.Pages.Administracion.Validacion
 
         private async Task GuardarCambios()
         {
-            saveButton.ShowLoading("Guardando...");
-            if (onaSelected == null || esquemaSelected == null || string.IsNullOrEmpty(nombreSugerido))
+            try
             {
-                saveButton.HideLoading();
-                return;
-            }
+                saveButton.ShowLoading("Guardando...");
 
-            var esquemaRegistro = new EsquemaVistaValidacionDto
-            {
-                //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
-                IdOna = onaSelected.IdONA,
-                IdEsquema = esquemaSelected.IdEsquema,
-                VistaOrigen = nombreSugerido,
-                Estado = "A"
-            };
-
-            var resultado = await iEsquemaService.GuardarEsquemaVistaValidacionAsync(esquemaRegistro);
-            if (resultado != null && resultado.registroCorrecto)
-            {
-                var success = await iEsquemaService.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(esquemaRegistro);
-                if (success)
+                if (onaSelected == null)
                 {
-                    listaEsquemaVistaColumna = new List<EsquemaVistaColumnaDto>();
-                    var vistas = listasHevd.Select(item => new EsquemaVistaDto
+                    toastService?.CreateToastMessage(ToastType.Warning, "Por favor, selecciona una ONA antes de guardar.");
+                    saveButton.HideLoading();
+                    return;
+                }
+
+                if (esquemaSelected == null)
+                {
+                    toastService?.CreateToastMessage(ToastType.Warning, "Por favor, selecciona un esquema antes de guardar.");
+                    saveButton.HideLoading();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(nombreSugerido))
+                {
+                    toastService?.CreateToastMessage(ToastType.Warning, "El nombre sugerido no puede estar vacío.");
+                    saveButton.HideLoading();
+                    return;
+                }
+
+                var esquemaRegistro = new EsquemaVistaValidacionDto
+                {
+                    IdOna = onaSelected.IdONA,
+                    IdEsquema = esquemaSelected.IdEsquema,
+                    VistaOrigen = nombreSugerido,
+                    Estado = "A"
+                };
+
+                var resultado = await iEsquemaService.GuardarEsquemaVistaValidacionAsync(esquemaRegistro);
+
+                if (resultado?.registroCorrecto != true)
+                {
+                    toastService?.CreateToastMessage(ToastType.Danger, "Error al guardar el esquema.");
+                    saveButton.HideLoading();
+                    return;
+                }
+
+                // Elimina columnas asociadas
+                var success = await iEsquemaService.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(esquemaRegistro);
+                if (!success)
+                {
+                    toastService?.CreateToastMessage(ToastType.Danger, "Error al eliminar columnas existentes.");
+                    saveButton.HideLoading();
+                    return;
+                }
+
+                // Procesa columnas
+                listaEsquemaVistaColumna = new List<EsquemaVistaColumnaDto>();
+                var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
+                var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson)
+                    .OrderBy(c => c.MostrarWebOrden)
+                    .ToList();
+
+                foreach (var c in Columnas)
+                {
+                    var vistaCorrespondiente = listasHevd.FirstOrDefault(v => v.NombreEsquema == c.NombreHomologado);
+
+                    listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
                     {
-                        NombreEsquema = item.NombreEsquema,
-                        NombreVista = item.NombreVista,
-                        IsValid = item.IsValid
-                    }).ToList();
-                    
-                    var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
-                    var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson).OrderBy(c => c.MostrarWebOrden).ToList();
-                    
-                    foreach (var c in Columnas)
-                    {
-                        // Buscar el elemento correspondiente en vistas por NombreEsquema
-                        var vistaCorrespondiente = vistas.FirstOrDefault(v => v.NombreEsquema != null && v.NombreEsquema.Equals(c.NombreHomologado));
-                    
-                        listaEsquemaVistaColumna.Add(new EsquemaVistaColumnaDto
-                        {
-                            //IdEsquemaVista = esquemaSelected.IdEsquemaVista,
-                            ColumnaEsquemaIdH = c.IdHomologacion,
-                            ColumnaEsquema = vistaCorrespondiente?.NombreEsquema,
-                            ColumnaVista = vistaCorrespondiente?.NombreVista, // Asigna el NombreVista correspondiente
-                            ColumnaVistaPK = false,
-                            Estado = "A"
-                        });
-                    }
-                    
-                    var successRows = await iEsquemaService.GuardarListaEsquemaVistaColumna(listaEsquemaVistaColumna, onaSelected.IdONA, esquemaSelected.IdEsquema);
-                    if (successRows.registroCorrecto)
-                    {
-                        toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
-                        navigationManager?.NavigateTo("/validacion");
-                    }
-                    else
-                    {
-                        toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
-                        navigationManager?.NavigateTo("/validacion");
-                        saveButton.HideLoading();
-                    }                  
+                        ColumnaEsquemaIdH = c.IdHomologacion,
+                        ColumnaEsquema = c.NombreHomologado,
+                        ColumnaVista = vistaCorrespondiente?.NombreVista,
+                        ColumnaVistaPK = false,
+                        Estado = "A"
+                    });
+                }
+
+                var successRows = await iEsquemaService.GuardarListaEsquemaVistaColumna(listaEsquemaVistaColumna, onaSelected.IdONA, esquemaSelected.IdEsquema);
+
+                if (successRows?.registroCorrecto == true)
+                {
+                    toastService?.CreateToastMessage(ToastType.Success, "Guardado exitosamente.");
+                    navigationManager?.NavigateTo("/validacion");
                 }
                 else
                 {
-                    toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
-                    navigationManager?.NavigateTo("/validacion");
-                    saveButton.HideLoading();
+                    toastService?.CreateToastMessage(ToastType.Danger, "Error al guardar columnas.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
-                navigationManager?.NavigateTo("/validacion");
+                toastService?.CreateToastMessage(ToastType.Danger, $"Error inesperado: {ex.Message}");
+            }
+            finally
+            {
                 saveButton.HideLoading();
             }
-            saveButton.HideLoading();
         }
+
 
         private async Task ValidarDatos()
         {

@@ -915,20 +915,6 @@
         position: relative;
     }
 
-    .pagina .dropdown {
-        width: 173px;
-        align-items: center;
-        padding: 0px 8px 0px 12px;
-        background-color: #ffffff;
-        border: 1px solid;
-        border-color: #dbdde6;
-        display: flex;
-        height: 36px;
-        justify-content: space-between;
-        position: relative;
-        border-radius: 8px;
-    }
-
     .pagina .div-4 {
         display: inline-flex;
         align-items: center;
@@ -950,20 +936,6 @@
         white-space: nowrap;
     }
 
-    .pagina .dropdown-2 {
-        display: flex;
-        height: 36px;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0px 8px 0px 12px;
-        position: relative;
-        flex: 1;
-        flex-grow: 1;
-        background-color: #ffffff;
-        border-radius: 8px;
-        border: 1px solid;
-        border-color: #dbdde6;
-    }
 
     .pagina .label-container {
         display: flex;
@@ -985,17 +957,6 @@
         line-height: Truepx;
     }
 
-    .pagina .dropdown-3 {
-        flex-direction: column;
-        align-items: flex-start;
-        flex: 1;
-        flex-grow: 1;
-        display: flex;
-        height: 36px;
-        justify-content: space-between;
-        position: relative;
-        border-radius: 8px;
-    }
 
     .pagina .frame-7 {
         display: flex;
