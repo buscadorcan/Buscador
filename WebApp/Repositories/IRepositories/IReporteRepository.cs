@@ -5,6 +5,9 @@ namespace WebApp.Repositories.IRepositories
 {
     public interface IReporteRepository
     {
+        //titulos
+        VwHomologacion findByVista(string codigoHomologacion);
+
         //usuario
         List<VwAcreditacionOna> ObtenerVwAcreditacionOna();
         List<VwAcreditacionEsquema> ObtenerVwAcreditacionEsquema();

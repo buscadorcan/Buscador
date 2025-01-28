@@ -19,6 +19,11 @@ namespace ClientApp.Pages.Administracion.Reportes
         // Datos para los mapas de calor
         public List<MapData> Heatmap1Data { get; set; } = new List<MapData>();
 
+        public string Titulo_vw_BusquedaFecha { get; set; } = "";
+        public string Titulo_vw_BusquedaFiltro { get; set; } = "";
+        public string Titulo_vw_BusquedaUbicacion { get; set; } = "";
+        public string Titulo_vw_ActualizacionONA { get; set; } = "";
+
         // Método ejecutado después de renderizar el componente
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -28,6 +33,7 @@ namespace ClientApp.Pages.Administracion.Reportes
                 {
                     // Cargar datos para Chart1
                     var listaVwBusquedaFecha = await iReporteService.GetVwBusquedaFechaAsync<List<VwBusquedaFechaDto>>("busqueda-fecha");
+                    Titulo_vw_BusquedaFecha = (await iReporteService.findByVista("vw_BusquedaFecha"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwBusquedaFecha)
                     {
                         Chart1Data.Add(new LineChartData { Fecha = item.Fecha, Organizacion = item.Busqueda });
@@ -35,6 +41,7 @@ namespace ClientApp.Pages.Administracion.Reportes
 
                     // Cargar datos para Chart2
                     var listaVwBusquedaFiltro = await iReporteService.GetVwBusquedaFiltroAsync<List<VwBusquedaFiltroDto>>("busqueda-filtro");
+                    Titulo_vw_BusquedaFiltro = (await iReporteService.findByVista("vw_BusquedaFiltro"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwBusquedaFiltro)
                     {
                         Chart2Data.Add(new ChartData { Label = item.FiltroPor, Value = item.Busqueda });
@@ -42,6 +49,7 @@ namespace ClientApp.Pages.Administracion.Reportes
 
                     // Cargar datos para Heatmap
                     var listaVwBusquedaUbicacion = await iReporteService.GetVwBusquedaUbicacionAsync<List<VwBusquedaUbicacionDto>>("busqueda-ubicacion");
+                    Titulo_vw_BusquedaUbicacion = (await iReporteService.findByVista("vw_BusquedaUbicacion"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwBusquedaUbicacion)
                     {
                         Heatmap1Data.Add(new MapData { Pais = item.Pais, Ciudad = item.Ciudad, Organizacion = item.Busqueda });
@@ -49,6 +57,7 @@ namespace ClientApp.Pages.Administracion.Reportes
 
                     // Cargar datos para Chart3 (incluyendo ONA)
                     var listaVwActualizacionONA = await iReporteService.GetVwActualizacionONAAsync<List<VwActualizacionONADto>>("actualizacion-ona");
+                    Titulo_vw_ActualizacionONA = (await iReporteService.findByVista("vw_ActualizacionONA"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwActualizacionONA)
                     {
                         Chart3Data.Add(new LineChartData
@@ -59,6 +68,7 @@ namespace ClientApp.Pages.Administracion.Reportes
                         });
                     }
 
+                    StateHasChanged();
                     // Enviar datos a JavaScript
                     await JS.InvokeVoidAsync("initMap", new
                     {

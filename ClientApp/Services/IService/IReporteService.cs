@@ -1,7 +1,12 @@
-﻿namespace ClientApp.Services.IService
+﻿using SharedApp.Models.Dtos;
+
+namespace ClientApp.Services.IService
 {
     public interface IReporteService
     {
+        //titulo
+        Task<HomologacionDto> findByVista(string codigoHomologacion);
+
         //usuario
         Task<T?> GetVwAcreditacionOnaAsync<T>(string endpoint);
         Task<T?> GetVwAcreditacionEsquemaAsync<T>(string endpoint);

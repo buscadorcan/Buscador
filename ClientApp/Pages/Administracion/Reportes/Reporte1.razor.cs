@@ -1,4 +1,5 @@
-﻿using ClientApp.Services.IService;
+﻿using ClientApp.Services;
+using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
@@ -10,7 +11,6 @@ namespace ClientApp.Pages.Administracion.Reportes
         [Inject]
         private IReporteService? iReporteService { get; set; }
 
-
         // Datos para los gráficos
         public List<ChartData> Chart1Data { get; set; } = new List<ChartData>();
         public List<ChartData> Chart2Data { get; set; } = new List<ChartData>();
@@ -21,6 +21,14 @@ namespace ClientApp.Pages.Administracion.Reportes
         public List<MapData> Heatmap2Data { get; set; } = new List<MapData>();
         public List<MapData> Heatmap3Data { get; set; } = new List<MapData>();
 
+        //titulos
+        public string Titulo_vw_AcreditacionEsquema { get; set; } = "";
+        public string Titulo_vw_EstadoEsquema { get; set; } = "";
+        public string Titulo_vw_OecFecha { get; set; } = "";
+        public string Titulo_vw_OecPais { get; set; } = "";
+        public string Titulo_vw_AcreditacionOna { get; set; } = "";
+        public string Titulo_vw_EsquemaPais { get; set; } = "";
+
         // Método ejecutado después de renderizar el componente
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -29,41 +37,47 @@ namespace ClientApp.Pages.Administracion.Reportes
                 try
                 {
                     var listaVwAcreditacionEsquema = await iReporteService.GetVwAcreditacionEsquemaAsync<List<VwAcreditacionEsquemaDto>>("acreditacion-esquema");
+                    Titulo_vw_AcreditacionEsquema = (await iReporteService.findByVista("vw_AcreditacionEsquema"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwAcreditacionEsquema)
                     {
                         Chart1Data.Add(new ChartData { Label = item.Esquema, Value = item.Organizacion });
                     }
 
                     var listaVwEstadoEsquema = await iReporteService.GetVwEstadoEsquemaAsync<List<VwEstadoEsquemaDto>>("estado-esquema");
+                    Titulo_vw_EstadoEsquema = (await iReporteService.findByVista("vw_EstadoEsquema"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwEstadoEsquema)
                     {
                         Chart2Data.Add(new ChartData { Label = item.Esquema + " " + item.Estado, Value = item.Organizacion });
                     }
 
                     var listaVwOecFecha = await iReporteService.GetVwOecFechaAsync<List<VwOecFechaDto>>("oec-fecha");
+                    Titulo_vw_OecFecha = (await iReporteService.findByVista("vw_OecFecha"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwOecFecha)
                     {
                         Chart3Data.Add(new LineChartData { Fecha = item.Fecha, Organizacion = item.Organizacion });
                     }
 
                     var listaVwOecPais = await iReporteService.GetVwOecPaisAsync<List<VwOecPaisDto>>("oec-pais");
+                    Titulo_vw_OecPais = (await iReporteService.findByVista("vw_OecPais"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwOecPais)
                     {
-                        Heatmap1Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion, Esquema = "" }); // Incluye Esquema
+                        Heatmap1Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion, Esquema = "" }); 
                     }
 
                     var listaVwAcreditacionOna = await iReporteService.GetVwAcreditacionOnaAsync<List<VwAcreditacionOnaDto>>("acreditacion-ona");
+                    Titulo_vw_AcreditacionOna = (await iReporteService.findByVista("vw_AcreditacionOna"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwAcreditacionOna)
                     {
-                        Heatmap2Data.Add(new MapData { Pais = item.Pais + "-" + item.ONA, Organizacion = item.Organizacion, Esquema = item.ONA }); // Incluye Esquema
+                        Heatmap2Data.Add(new MapData { Pais = item.Pais + "-" + item.ONA, Organizacion = item.Organizacion, Esquema = item.ONA }); 
                     }
 
                     var listaVwEsquemaPais = await iReporteService.GetVwEsquemaPaisAsync<List<VwEsquemaPaisDto>>("esquema-pais");
+                    Titulo_vw_EsquemaPais = (await iReporteService.findByVista("vw_EsquemaPais"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwEsquemaPais)
                     {
-                        Heatmap3Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion, Esquema = item.Esquema }); // Incluye Esquema
+                        Heatmap3Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion, Esquema = item.Esquema }); 
                     }
-
+                    StateHasChanged();
                     await JS.InvokeVoidAsync("initMap", new
                     {
                         chartsData = new[]
