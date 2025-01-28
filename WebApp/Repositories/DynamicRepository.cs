@@ -1,8 +1,8 @@
-using System.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using SharedApp.Data;
 using SharedApp.Models.Dtos;
+using System.Data;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -175,26 +175,64 @@ namespace WebApp.Repositories
                 // Construir la cadena de conexión
                 var connectionString = _connectionStringBuilderService.BuildConnectionString(conexion);
 
+                if (string.IsNullOrWhiteSpace(connectionString))
+                {
+                    _logger.LogError("La cadena de conexión es nula o vacía.");
+                    return false;
+                }
+
                 // Crear conexión según el tipo de base de datos
-                IDbConnection connection = conexion.OrigenDatos.ToUpper() switch
+                using IDbConnection connection = conexion.OrigenDatos.ToUpper() switch
                 {
                     "SQLSERVER" => new Microsoft.Data.SqlClient.SqlConnection(connectionString),
-                    "MYSQL" => new MySql.Data.MySqlClient.MySqlConnection(connectionString),
+                    "MYSQL" => new MySqlConnection(connectionString),
                     "POSTGRES" => new Npgsql.NpgsqlConnection(connectionString),
                     "SQLITE" => new Microsoft.Data.Sqlite.SqliteConnection(connectionString),
                     _ => throw new NotSupportedException($"Tipo de base de datos '{conexion.OrigenDatos}' no soportado.")
                 };
 
-                // Abrir la conexión y verificar el estado
+                // Abrir la conexión
                 connection.Open();
-                return connection.State == ConnectionState.Open;
+
+                // Ejecutar un comando simple para verificar la conexión
+                using var command = connection.CreateCommand();
+                command.CommandText = "SELECT 1"; // Comando básico para validar
+                var result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value && Convert.ToInt32(result) == 1)
+                {
+                    _logger.LogInformation("Conexión establecida y validada correctamente.");
+                    return true;
+                }
+
+                _logger.LogWarning("Conexión establecida, pero la validación falló.");
+                return false;
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error de MySQL: {ex.Number} - {ex.Message}");
+                // Manejo de errores específicos de MySQL
+                if (ex.Number == 1042)
+                {
+                    Console.WriteLine("Host no encontrado o puerto incorrecto.");
+                }
+                else if (ex.Number == 1045)
+                {
+                    Console.WriteLine("Usuario o contraseña incorrectos.");
+                }
+                else if (ex.Number == 1130)
+                {
+                    Console.WriteLine("El usuario no tiene permiso para conectarse desde esta IP.");
+                }
+                return false;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al probar la conexión: {ex.Message}");
+                Console.WriteLine($"Error general: {ex.Message}");
                 return false;
             }
         }
+
 
         public async Task<bool> MigrarConexionAsync(int idONA)
         {

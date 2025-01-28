@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
+using System.Drawing;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -142,6 +143,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
+            modal.Size = ModalSize.ExtraLarge;
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
@@ -149,6 +151,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
+            modal.Size = ModalSize.Regular;
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
@@ -172,6 +175,7 @@ namespace ClientApp.Pages.BuscadorCan
             };
 
             // Mostrar el modal con el componente PDFModal
+            modal.Size = ModalSize.Large;
             await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
         }
 

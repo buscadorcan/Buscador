@@ -60,6 +60,7 @@ namespace WebApp.Extensions
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IPasswordGenerationStrategy, RandomPasswordGenerationStrategy>();
             services.AddScoped<IPasswordService, PasswordService>();
+   
 
             // Proporciona acceso al contexto HTTP actual.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -85,11 +86,12 @@ namespace WebApp.Extensions
             services.AddScoped<IMigracionExcelRepository, MigracionExcelRepository>();
             services.AddScoped<ILogMigracionRepository, LogMigracionRepository>();
             services.AddScoped<IReporteRepository, ReporteRepository>();
-
+            services.AddScoped<IpaActualizarFiltroRepository, paActualizarFiltroRepository>();
 
             // Registra servicios de trabajo en segundo plano (Worker Services).
             services.AddHostedService<BackgroundWorkerService>();
             services.AddHostedService<BackgroundExcelService>();
+
             //services.AddHostedService<MigracionJob>();
 
 
