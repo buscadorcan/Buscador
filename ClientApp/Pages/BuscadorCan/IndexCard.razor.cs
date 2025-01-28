@@ -29,7 +29,12 @@ namespace ClientApp.Pages.BuscadorCan
         // Propiedades para la vista
         public List<BuscadorResultadoDataDto>? ResultadoData { get; private set; } = new List<BuscadorResultadoDataDto>();
         public List<VwGrillaDto>? ListaEtiquetasGrilla { get; private set; } = new List<VwGrillaDto>();
-
+        public bool ModoBuscar { get; set; }
+        private int currentPage = 1; // Página actual
+        private int totalCount = 0; // Total de registros
+        private int pageSize = 10; // Tamaño de página
+        public string SearchTerm { get; set; } = ""; // Texto ingresado en el input del buscador
+        public bool IsExactSearch { get; set; } = false;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -42,7 +47,7 @@ namespace ClientApp.Pages.BuscadorCan
                 }
 
                 // Cargar resultados iniciales
-                await CargarResultados();
+                await CargarResultados(1, pageSize);
             }
             catch (Exception ex)
             {
@@ -50,7 +55,7 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-        private async Task CargarResultados()
+        private async Task CargarResultados(int pageNumber, int pageSize)
         {
             try
             {
@@ -59,7 +64,7 @@ namespace ClientApp.Pages.BuscadorCan
                 // Construcción de filtros
                 var filtros = new
                 {
-                    ExactaBuscar = false,
+                    ExactaBuscar = ModoBuscar,
                     TextoBuscar = BuscarRequest?.TextoBuscar ?? "",
                     FiltroPais = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
                     FiltroOna = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
@@ -69,14 +74,29 @@ namespace ClientApp.Pages.BuscadorCan
                     FiltroRecomocimiento = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
                 };
 
-                // Llamada al servicio
-                var result = await Servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), 1, 10);
-                ResultadoData = result.Data ?? new List<BuscadorResultadoDataDto>();
+                // Llamada al servicio con paginación
+                var result = await Servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), pageNumber, pageSize);
+
+                if (result?.Data != null)
+                {
+                    ResultadoData = result.Data;
+                    totalCount = result.TotalCount; // Guardar el total de registros para la paginación
+                }
+                else
+                {
+                    ResultadoData = new List<BuscadorResultadoDataDto>();
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error en CargarResultados: {ex.Message}");
             }
+        }
+
+        private async Task OnPageChange(int pageNumber)
+        {
+            currentPage = pageNumber; // Actualiza la página actual
+            await CargarResultados(pageNumber, pageSize);
         }
 
         private void MostrarDetalle(BuscadorResultadoDataDto item)
@@ -161,7 +181,6 @@ namespace ClientApp.Pages.BuscadorCan
 
             return null;
         }
-
 
         public class JsonData
         {

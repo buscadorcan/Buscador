@@ -63,11 +63,27 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         //        await grid.RefreshDataAsync();
         //    }
         //}
-        private async void OnAutoCompleteChanged(HomologacionDto _vwHomologacionSelected)
+        private async Task OnAutoCompleteChangedHandler(ChangeEventArgs e)
         {
-            homologacionSelected = _vwHomologacionSelected;
-            await grid.RefreshDataAsync();
+            // Obtén el ID seleccionado desde el <select>
+            var selectedId = Convert.ToInt32(e.Value);
+
+            // Busca el elemento correspondiente en la lista
+            var selectedHomologacion = listaVwHomologacion?.FirstOrDefault(h => h.IdHomologacion == selectedId);
+
+            // Si se encuentra, actualiza la selección
+            if (selectedHomologacion != null)
+            {
+                homologacionSelected = selectedHomologacion;
+
+                // Refresca la grilla si es necesario
+                if (grid != null)
+                {
+                    await grid.RefreshDataAsync();
+                }
+            }
         }
+
         [JSInvokable]
         public async Task OnDragEnd(string[] sortedIds)
         {

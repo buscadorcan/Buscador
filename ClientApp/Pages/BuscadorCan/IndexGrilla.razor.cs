@@ -232,9 +232,6 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-
-
-
         // Clase para deserializar
         public class JsonData
         {

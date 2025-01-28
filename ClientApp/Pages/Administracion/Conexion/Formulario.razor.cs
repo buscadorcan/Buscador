@@ -117,6 +117,13 @@ namespace ClientApp.Pages.Administracion.Conexion
                 TotalCount = resultados.Count
             };
         }
+
+        private bool isMigrar // Propiedad booleana vinculada al Switch
+        {
+            get => conexion.Migrar == "S"; // Convertir "S" a true
+            set => conexion.Migrar = value ? "S" : "N"; // Convertir true a "S"
+        }
+
         private void OnAutoCompleteChanged(HomologacionDto vwHomologacionSelected)
         {
             lista = lista?.Append(vwHomologacionSelected).ToList();

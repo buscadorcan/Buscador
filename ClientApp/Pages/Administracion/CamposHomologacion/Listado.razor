@@ -53,17 +53,19 @@
 
 <div class="row py-2">
     <div class="col-md-6">
-        <Dropdown AutoClose="true">
-            <DropdownToggleButton Color="ButtonColor.Secondary">
-                @getNameDefault()
-            </DropdownToggleButton>
-            <DropdownMenu>
+        <div class="form-group">
+            <label for="grupoHomologacionSelect" class="col-form-label">Grupo de Homologación</label>
+            <select id="grupoHomologacionSelect" class="form-control" @onchange="OnAutoCompleteChangedHandler">
+                <option value="" selected disabled>Seleccione Grupo de Homologación</option>
                 @if (listaVwHomologacion != null)
-                    @foreach(var g in listaVwHomologacion) {
-                        <DropdownItem @onclick="() => OnAutoCompleteChanged(g)">@g.MostrarWeb</DropdownItem>
+                {
+                    @foreach (var g in listaVwHomologacion)
+                    {
+                        <option value="@g.IdHomologacion">@g.MostrarWeb</option>
                     }
-            </DropdownMenu>
-        </Dropdown>
+                }
+            </select>
+        </div>
     </div>
     <div class="col-md-6">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">

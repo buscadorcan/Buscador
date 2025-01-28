@@ -1,16 +1,6 @@
-﻿@using ClientApp.Models
-@using SharedApp.Models.Dtos
-@using Newtonsoft.Json
-@using BlazorBootstrap
-
-<div class="index-card">
+﻿<div class="index-card">
     <div class="row">
         <!-- Columna del mapa (20%) -->
-        @*     <div class="col-md-2">
-        <div id="map" style="width: 100%; height: 100%; background-color: grey;">
-        <!-- Aquí se carga el mapa de Google -->
-        </div>
-        </div> *@
         <div class="col-md-4">
             <iframe id="map"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99769.21423248247!2d-78.57956327686247!3d-0.22016469512648144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59a1d0627cf35%3A0xe9f898434b2a8ad7!2sQuito%2C%20Ecuador!5e0!3m2!1sen!2sus!4v1692724900163!5m2!1sen!2sus"
@@ -22,17 +12,17 @@
                     referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
+
         <!-- Columna de tarjetas (80%) -->
         <div class="col-md-8">
             <div class="row">
-                @if (ListaEtiquetasGrilla != null && ResultadoData != null)
+                @if (ResultadoData != null && ResultadoData.Any())
                 {
                     @foreach (var item in ResultadoData)
                     {
                         <div class="col-md-6 mb-4">
                             <div class="card shadow">
                                 <div class="card-header text-center font-weight-bold">
-                                    <!-- Encabezado dinámico basado en la primera etiqueta -->
                                     @ListaEtiquetasGrilla.FirstOrDefault()?.MostrarWeb
                                 </div>
                                 <div class="card-body">
@@ -67,5 +57,9 @@
             </div>
         </div>
     </div>
-</div>
 
+    <Pagination TotalItems="@totalCount"
+                PageSize="@pageSize"
+                CurrentPage="@currentPage"
+                OnPageChange="OnPageChange" />
+</div>

@@ -14,9 +14,7 @@ namespace ClientApp.Pages.BuscadorCan
         public ICatalogosService? iCatalogosService { get; set; }
         [Inject]
         public IBusquedaService? iBusquedaService { get; set; }
-        //[Inject] 
-        //protected IJSRuntime? JSRuntime { get; set; }
-        //protected string ApiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk";
+
         private IndexGrilla? childComponentRef;
         private IndexCard? cardComponentRef;
         private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
@@ -126,7 +124,7 @@ namespace ClientApp.Pages.BuscadorCan
 
                     await childComponentRef.grid.ResetPageNumber();
                 }
-
+                mostrarPublicidad = false;
                 // No alteres mostrarFiltrosAvanzados aquí
             }
             catch (Exception ex)

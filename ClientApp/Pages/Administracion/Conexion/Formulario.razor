@@ -90,12 +90,10 @@
 
 
             <div class="form-group py-2">
+                <ValidationMessage For="(() => conexion.Migrar)" />
                 <label class="col-form-label">Migración</label>
-                <select class="form-control col-6" @bind="conexion.Migrar">
-                    <option value="">Seleccione una opción</option>
-                    <option value="S">SI</option>
-                    <option value="N">NO</option>
-                </select>
+                <Switch @bind-Value="isMigrar" Label="Seleccione una opción" />
+                <div class="mt-3"><b>@(isMigrar ? "SI" : "NO")</b></div>
                 <ValidationMessage For="(() => conexion.Migrar)" />
             </div>
 
