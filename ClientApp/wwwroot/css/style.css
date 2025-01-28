@@ -915,20 +915,6 @@
         position: relative;
     }
 
-    .pagina .dropdown {
-        width: 173px;
-        align-items: center;
-        padding: 0px 8px 0px 12px;
-        background-color: #ffffff;
-        border: 1px solid;
-        border-color: #dbdde6;
-        display: flex;
-        height: 36px;
-        justify-content: space-between;
-        position: relative;
-        border-radius: 8px;
-    }
-
     .pagina .div-4 {
         display: inline-flex;
         align-items: center;
@@ -950,20 +936,6 @@
         white-space: nowrap;
     }
 
-    .pagina .dropdown-2 {
-        display: flex;
-        height: 36px;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0px 8px 0px 12px;
-        position: relative;
-        flex: 1;
-        flex-grow: 1;
-        background-color: #ffffff;
-        border-radius: 8px;
-        border: 1px solid;
-        border-color: #dbdde6;
-    }
 
     .pagina .label-container {
         display: flex;
@@ -985,17 +957,6 @@
         line-height: Truepx;
     }
 
-    .pagina .dropdown-3 {
-        flex-direction: column;
-        align-items: flex-start;
-        flex: 1;
-        flex-grow: 1;
-        display: flex;
-        height: 36px;
-        justify-content: space-between;
-        position: relative;
-        border-radius: 8px;
-    }
 
     .pagina .frame-7 {
         display: flex;
@@ -1054,5 +1015,37 @@
     font-weight: bold; /* Negrita */
     font-family: 'Inter-Medium', Helvetica, sans-serif;
     font-size: 12px !important;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asegura que esté por encima de todo */
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #f3f3f3; /* Color del fondo */
+    border-top: 6px solid #3498db; /* Color del borde */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animación del spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 

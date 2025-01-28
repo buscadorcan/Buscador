@@ -2,6 +2,12 @@
 @layout AdminLayout
 @using SharedApp.Models.Dtos
 
+@if (IsLoading)
+{
+    <div class="overlay">
+        <div class="spinner"></div>
+    </div>
+}
 
 <Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 <PageTitle>Homologación</PageTitle>

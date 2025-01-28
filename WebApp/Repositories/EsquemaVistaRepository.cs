@@ -54,7 +54,16 @@ namespace WebApp.Repositories
 
         public List<EsquemaVista> FindAll()
         {
-            return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
+            try
+            {
+                return ExecuteDbOperation(context => context.EsquemaVista.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
         public bool Update(EsquemaVista newRecord)
         {

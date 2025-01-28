@@ -1,9 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using System.Configuration;
 using System.Data;
 using WebApp.Repositories.IRepositories;
-using WebApp.Service.IService;
 
 namespace WebApp.Repositories
 {
