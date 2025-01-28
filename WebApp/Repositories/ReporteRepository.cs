@@ -14,6 +14,16 @@ namespace WebApp.Repositories
         {
         }
 
+        //titulos de reportes
+        public VwHomologacion findByVista(string codigoHomologacion)
+        {
+            return ExecuteDbOperation(context =>
+              context.VwHomologacion
+                .AsNoTracking()
+                .Where(c => c.CodigoHomologacion == codigoHomologacion)
+                .FirstOrDefault());
+        }
+
         //usuario
         public List<VwAcreditacionOna> ObtenerVwAcreditacionOna()
         {

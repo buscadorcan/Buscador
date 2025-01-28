@@ -1,6 +1,9 @@
 ﻿using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using SharedApp.Models;
+using SharedApp.Models.Dtos;
+using System;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace ClientApp.Services
@@ -15,6 +18,15 @@ namespace ClientApp.Services
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _urlBaseApi = $"{Inicializar.UrlBaseApi}api/reportevista/";
         }
+        //titulo
+        public async Task<HomologacionDto> findByVista(string codigoHomologacion)
+        {
+            var response = await _httpClient.GetAsync($"{_urlBaseApi}findByVista/{codigoHomologacion}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<HomologacionDto>>()).Result;
+        }
+
+
         //usuario
         public async Task<T?> GetVwAcreditacionOnaAsync<T>(string endpoint)
         {

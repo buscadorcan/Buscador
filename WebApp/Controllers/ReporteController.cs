@@ -20,6 +20,37 @@ namespace WebApp.Controllers
         private readonly IReporteRepository _vhRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
+        //titulo
+        [Authorize]
+        [HttpGet("findByVista/{codigoHomologacion}")]
+        public IActionResult findByVista(string codigoHomologacion)
+        {
+            try
+            {
+                var homologacion = _vhRepo.findByVista(codigoHomologacion);
+
+                if (homologacion == null)
+                {
+                    return NotFound(new RespuestasAPI<string>
+                    {
+                        Result = null
+                    });
+                }
+
+                // Mapear el objeto a VwHomologacionDto
+                var homologacionDto = _mapper.Map<VwHomologacionDto>(homologacion);
+
+                return Ok(new RespuestasAPI<VwHomologacionDto>
+                {
+                    Result = homologacionDto
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(findByVista));
+            }
+        }
+
         //usuario
 
         [Authorize]
