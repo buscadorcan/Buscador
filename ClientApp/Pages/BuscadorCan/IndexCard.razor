@@ -1,6 +1,7 @@
 ﻿<div class="index-card">
+    <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
     <div class="row">
-        <!-- Columna del mapa (20%) -->
+        <!-- Columna del mapa (30%) -->
         <div class="col-md-4">
             <iframe id="map"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99769.21423248247!2d-78.57956327686247!3d-0.22016469512648144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59a1d0627cf35%3A0xe9f898434b2a8ad7!2sQuito%2C%20Ecuador!5e0!3m2!1sen!2sus!4v1692724900163!5m2!1sen!2sus"
@@ -13,7 +14,7 @@
             </iframe>
         </div>
 
-        <!-- Columna de tarjetas (80%) -->
+        <!-- Columna de tarjetas (70%) -->
         <div class="col-md-8">
             <div class="row">
                 @if (ResultadoData != null && ResultadoData.Any())
@@ -22,26 +23,46 @@
                     {
                         <div class="col-md-6 mb-4">
                             <div class="card shadow">
-                                <div class="card-header text-center font-weight-bold">
+                                @* <div class="card-header text-center font-weight-bold grid-header">
                                     @ListaEtiquetasGrilla.FirstOrDefault()?.MostrarWeb
-                                </div>
+                                </div> *@
+
                                 <div class="card-body">
-                                    <div class="row">
-                                        @foreach (var etiqueta in ListaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
-                                        {
-                                            <div class="col-6">
-                                                <h6>@etiqueta.MostrarWeb</h6>
-                                                <p>@ObtenerDato(item, etiqueta.IdHomologacion)</p>
-                                            </div>
-                                        }
+                                    <div class="row align-items-center">
+                                        <!-- Ícono ONA a la izquierda -->
+                                        <div class="col-auto d-flex flex-column align-items-center align-self-start">
+                                            <Button @onclick="() => showModalOna(item)">
+                                                <img src="@(iconUrls.ContainsKey(item.IdONA.GetValueOrDefault())
+                                                ? iconUrls[item.IdONA.GetValueOrDefault()]
+                                                : "https://via.placeholder.com/40")"
+                                                     alt="Icono ONA"
+                                                     class="img-fluid"
+                                                     style="width: 40px; height: 40px;">
+                                            </Button>                               
+                                        </div>
+
+                                        <!-- Contenido principal -->
+                                        <div class="col">
+                                            @foreach (var etiqueta in ListaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
+                                            {
+                                                <div class="mb-2">
+                                                    <h6 class="mb-1">@etiqueta.MostrarWeb</h6>
+                                                    <p class="text-muted small">
+                                                        @(item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data ?? "N/A")
+                                                    </p>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-footer text-center">
+
+                                <!-- Pie de tarjeta con botones -->
+                                <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <button class="btn btn-outline-danger btn-sm" @onclick="() => AbrirPdf(item)">
+                                        <i class="bi bi-file-pdf"></i> Ver PDF
+                                    </button>
                                     <button class="btn btn-primary btn-sm" @onclick="() => MostrarDetalle(item)">
                                         Ver Detalle
-                                    </button>
-                                    <button class="btn btn-secondary btn-sm" @onclick="() => AbrirPdf(item)">
-                                        Ver PDF
                                     </button>
                                 </div>
                             </div>
@@ -55,6 +76,7 @@
                     </div>
                 }
             </div>
+
         </div>
     </div>
 

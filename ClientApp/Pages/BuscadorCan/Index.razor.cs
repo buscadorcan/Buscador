@@ -35,6 +35,7 @@ namespace ClientApp.Pages.BuscadorCan
         private string textoFiltrosAvanzados = "Filtros Avanzados";
         private bool mostrarBuscador = false;
         private bool mostrarPublicidad = true;
+        private bool esModoGrilla = true;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -114,26 +115,33 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 listaDatosPanel = await iCatalogosService.GetPanelOnaAsync();
                 TotalEmpresa = listaDatosPanel.Sum(x => x.empresas);
-                buscarRequest.TextoBuscar = searchTerm;
-                mostrarBuscador = true;
+                buscarRequest.TextoBuscar = searchTerm; // Asignar el término de búsqueda
+                mostrarBuscador = true; // Habilitar la visualización de resultados
 
-                if (childComponentRef != null)
+                if (esModoGrilla && childComponentRef != null) // Modo grilla
                 {
                     childComponentRef.ModoBuscar = isExactSearch;
                     childComponentRef.selectedValues = selectedValues;
-
                     await childComponentRef.grid.ResetPageNumber();
                 }
-                mostrarPublicidad = false;
-                // No alteres mostrarFiltrosAvanzados aquí
+                else if (!esModoGrilla && cardComponentRef != null) // Modo tarjeta
+                {
+                    cardComponentRef.SearchTerm = searchTerm;
+                    cardComponentRef.IsExactSearch = isExactSearch;
+                    cardComponentRef.SelectedValues = selectedValues;
+                    await cardComponentRef.BuscarPalabraRequest();
+                }
+
+                mostrarPublicidad = false; // Ocultar publicidad después de la búsqueda
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error en BuscarPalabraRequest: {ex.Message}");
             }
 
-            StateHasChanged(); // Asegúrate de que la página se renderice correctamente
+            StateHasChanged(); // Forzar actualización de la UI
         }
+
 
         private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
         {
@@ -218,6 +226,7 @@ namespace ClientApp.Pages.BuscadorCan
         private void AlternarIndexCard()
         {
             mostrarIndexCard = !mostrarIndexCard;
+            esModoGrilla = !mostrarIndexCard; // Actualiza la bandera para definir si la búsqueda va a grilla o tarjetas
         }
         private class Seleccion
         {

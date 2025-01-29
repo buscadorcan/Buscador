@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
+using System.Reflection;
+using ClientApp.Services;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -16,6 +18,8 @@ namespace ClientApp.Pages.BuscadorCan
 
         [Parameter]
         public List<VwFiltroDto>? ListaEtiquetasFiltros { get; set; } = new List<VwFiltroDto>();
+        [Parameter]
+        public bool IsExactSearch { get; set; } = false;
 
         [Inject]
         public IBusquedaService? Servicio { get; set; }
@@ -25,16 +29,21 @@ namespace ClientApp.Pages.BuscadorCan
 
         [Inject]
         public IHomologacionService? HomologacionService { get; set; }
+        [Inject]
+        public IONAService? iOnaService { get; set; }
 
         // Propiedades para la vista
         public List<BuscadorResultadoDataDto>? ResultadoData { get; private set; } = new List<BuscadorResultadoDataDto>();
         public List<VwGrillaDto>? ListaEtiquetasGrilla { get; private set; } = new List<VwGrillaDto>();
+
         public bool ModoBuscar { get; set; }
         private int currentPage = 1; // Página actual
         private int totalCount = 0; // Total de registros
         private int pageSize = 10; // Tamaño de página
         public string SearchTerm { get; set; } = ""; // Texto ingresado en el input del buscador
-        public bool IsExactSearch { get; set; } = false;
+        private Modal modal = default!;
+        private Dictionary<int, string> iconUrls = new();
+        private OnaDto? OnaDto;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -47,12 +56,17 @@ namespace ClientApp.Pages.BuscadorCan
                 }
 
                 // Cargar resultados iniciales
-                await CargarResultados(1, pageSize);
+                await BuscarPalabraRequest();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error en OnInitializedAsync: {ex.Message}");
             }
+        }
+
+        public async Task BuscarPalabraRequest()
+        {
+            await CargarResultados(1, pageSize); // Llamar directamente con la paginación inicial
         }
 
         private async Task CargarResultados(int pageNumber, int pageSize)
@@ -64,8 +78,8 @@ namespace ClientApp.Pages.BuscadorCan
                 // Construcción de filtros
                 var filtros = new
                 {
-                    ExactaBuscar = ModoBuscar,
-                    TextoBuscar = BuscarRequest?.TextoBuscar ?? "",
+                    ExactaBuscar = IsExactSearch,
+                    TextoBuscar = SearchTerm,
                     FiltroPais = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
                     FiltroOna = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
                     FiltroNorma = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_NOR")?.Seleccion ?? new List<string>(),
@@ -81,6 +95,15 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     ResultadoData = result.Data;
                     totalCount = result.TotalCount; // Guardar el total de registros para la paginación
+
+                    // Prepara las URLs de los íconos para cada ONA
+                    foreach (var item in ResultadoData)
+                    {
+                        if (item.IdONA.HasValue && !iconUrls.ContainsKey(item.IdONA.Value))
+                        {
+                            iconUrls[item.IdONA.Value] = await getIconUrl(item);
+                        }
+                    }
                 }
                 else
                 {
@@ -99,28 +122,42 @@ namespace ClientApp.Pages.BuscadorCan
             await CargarResultados(pageNumber, pageSize);
         }
 
-        private void MostrarDetalle(BuscadorResultadoDataDto item)
+        private async void MostrarDetalle(BuscadorResultadoDataDto item)
         {
-            Console.WriteLine($"Mostrando detalle del item: {item.DataEsquemaJson}");
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("resultData", item);
+            modal.Size = ModalSize.ExtraLarge;
+            await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
+        private async void showModalOna(BuscadorResultadoDataDto resultData)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("resultData", resultData);
+            modal.Size = ModalSize.Regular;
+            await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
+        }
         private async Task AbrirPdf(BuscadorResultadoDataDto item)
         {
-            try
+            // Obtener la URL del certificado
+            var pdfUrl = await GetPdfUrlFromEsquema(item);
+            Console.WriteLine("No se encontró la URL del certificado.");
+            if (pdfUrl == null)
             {
-                var pdfUrl = await GetPdfUrlFromEsquema(item);
-                if (string.IsNullOrEmpty(pdfUrl))
-                {
-                    Console.WriteLine("No se encontró la URL del PDF.");
-                    return;
-                }
+                // Mostrar una alerta o manejar el error si no hay URL
+                Console.WriteLine("No se encontró la URL del certificado.");
+                pdfUrl = "No se encontró la URL del certificado.";
+            }
 
-                Console.WriteLine($"Abriendo PDF: {pdfUrl}");
-            }
-            catch (Exception ex)
+            // Configurar los parámetros del modal
+            var parameters = new Dictionary<string, object>
             {
-                Console.WriteLine($"Error al abrir el PDF: {ex.Message}");
-            }
+                { "PdfUrl", pdfUrl } // Enviar la URL al modal
+            };
+
+            // Mostrar el modal con el componente PDFModal
+            modal.Size = ModalSize.Large;
+            await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
         }
 
         private async Task<string?> GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
@@ -131,32 +168,18 @@ namespace ClientApp.Pages.BuscadorCan
                     return null;
 
                 var homologaciones = await HomologacionService.GetHomologacionsAsync();
-                var idHomologacion = homologaciones.FirstOrDefault(x => x.NombreHomologado == "UrlCertificado")?.IdHomologacion;
+                var idHomologacion = homologaciones.FirstOrDefault(x => x.CodigoHomologacion == "KEY_ESQ_CERT")?.IdHomologacion;
 
                 if (idHomologacion == null)
                     return null;
 
-                var certificado = resultData.DataEsquemaJson
-                    .Select(item =>
-                    {
-                        try
-                        {
-                            return System.Text.Json.JsonSerializer.Deserialize<JsonData>(item.Data);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error deserializando item.Data: {item.Data}, Error: {ex.Message}");
-                            return null;
-                        }
-                    })
-                    .FirstOrDefault(data => data != null && data.IdHomologacion == idHomologacion);
+                var urlPdf = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idHomologacion)?.Data;
 
-                return certificado?.Data;
+                return urlPdf;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener la URL del certificado: {ex.Message}");
-                return null;
+                throw new Exception("Error al obtener la URL del certificado", ex);
             }
         }
 
@@ -181,6 +204,38 @@ namespace ClientApp.Pages.BuscadorCan
 
             return null;
         }
+
+        private async Task<string> getIconUrl(BuscadorResultadoDataDto item)
+        {
+            try
+            {
+                var idOna = item.IdONA;
+
+                OnaDto = await iOnaService?.GetONAsAsync(idOna ?? 0);
+
+                if (!string.IsNullOrEmpty(OnaDto.UrlIcono))
+                {
+                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(OnaDto.UrlIcono);
+
+                    if (deserialized != null && deserialized.ContainsKey("filePath"))
+                    {
+                        // Si el JSON tiene "filePath", lo retornamos
+                        return deserialized["filePath"];
+                    }
+                }
+
+                // Retorna un ícono predeterminado si no hay URL válida
+                return "https://via.placeholder.com/16";
+            }
+            catch (Exception ex)
+            {
+                // Maneja el error y retorna un ícono predeterminado
+                Console.WriteLine(ex.Message);
+                return "https://via.placeholder.com/16";
+            }
+        }
+
+
 
         public class JsonData
         {

@@ -1049,3 +1049,27 @@
     }
 }
 
+.bifile-pdf {
+    height: 25px;
+    position: relative;
+    width: 25px;
+}
+.frame-1000003830 {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    position: relative;
+    width: 190px;
+}
+
+.button-1 {
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 4px 4px 12px #02536314;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    justify-content: center;
+    padding: 4px;
+    position: relative;
+}
