@@ -8,46 +8,124 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JS
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <div class="chart-container">
     <div class="row">
+        <!-- Gráfico 1: Acreditación Esquema -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">@Titulo_vw_AcreditacionEsquema</h5>
             <div class="chart-wrapper">
+                <div class="title-wrapper">
+                    <h5 class="text-primary">@Titulo_vw_AcreditacionEsquema</h5>
+                </div>
                 <canvas id="chart1" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'AcreditacionEsquema')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
             </div>
         </div>
+
+        <!-- Gráfico 2: Estado Esquema -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">@Titulo_vw_EstadoEsquema</h5>
             <div class="chart-wrapper">
+                <div class="title-wrapper">
+                    <h5 class="text-primary">@Titulo_vw_EstadoEsquema</h5>
+                </div>
                 <canvas id="chart2" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'EstadoEsquema')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
     <div class="row">
+        <!-- Gráfico 3: Crecimiento OEC Fecha -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">@Titulo_vw_OecFecha</h5>
             <div class="chart-wrapper">
+                <div class="title-wrapper">
+                    <h5 class="text-primary">@Titulo_vw_OecFecha</h5>
+                </div>
                 <canvas id="chart3" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'OecFecha')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
             </div>
         </div>
+
+        <!-- Mapa 1: OEC por País -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">@Titulo_vw_OecPais</h5>
-            <div id="heatmap1" class="heatmap"></div>
+            <div class="chart-wrapper">
+                <div class="title-wrapper">
+                    <h5 class="text-primary">@Titulo_vw_OecPais</h5>
+                </div>
+                <div id="heatmap1" class="heatmap"></div>
+            </div>
         </div>
     </div>
+
     <div class="row">
+        <!-- Mapa 2: Acreditación Ona -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">@Titulo_vw_AcreditacionOna</h5>
-            <div id="heatmap2" class="heatmap"></div>
+            <div class="chart-wrapper">
+                <div class="title-wrapper">
+                    <h5 class="text-primary">@Titulo_vw_AcreditacionOna</h5>
+                </div>
+                <div id="heatmap2" class="heatmap"></div>
+            </div>
         </div>
+
+        <!-- Mapa 3: Esquema por País -->
         <div class="col-lg-4 col-md-6 mb-4">
-            <h5 class="text-primary text-center">@Titulo_vw_EsquemaPais</h5>
-            <div id="heatmap3" class="heatmap"></div>
+            <div class="chart-wrapper">
+                <div class="title-wrapper">
+                    <h5 class="text-primary">@Titulo_vw_EsquemaPais</h5>
+                </div>
+                <div id="heatmap3" class="heatmap"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
+
+    window.exportChartToExcel = (chartId, fileName) => {
+        const canvas = document.getElementById(chartId);
+        if (!canvas) {
+            console.error(`No se encontró el gráfico con ID ${chartId}`);
+            return;
+        }
+
+        const chart = Chart.getChart(canvas);
+        if (!chart) {
+            console.error(`No se encontró el objeto Chart.js para ${chartId}`);
+            return;
+        }
+
+        const labels = chart.data.labels;
+        const data = chart.data.datasets[0].data;
+
+        // Crear hoja de Excel con los datos
+        let ws_data = [['Categoría', 'Valor']];
+        labels.forEach((label, index) => {
+            ws_data.push([label, data[index]]);
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(ws_data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Reporte");
+
+        // Descargar archivo
+        XLSX.writeFile(wb, `${fileName}.xlsx`);
+    };
+
     window.initCharts = (chartsData) => {
         const createPieChart = (elementId, data) => {
             const canvas = document.getElementById(elementId);
@@ -118,7 +196,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Fecha'
+                                text: ''
                             }
                         },
                         y: {
@@ -252,7 +330,6 @@
             });
         };
 
-        
 
         createHeatMap_OA('heatmap1', mapsData.heatmap1);
         createHeatMap_OEC_Fecha('heatmap2', mapsData.heatmap2);
@@ -311,4 +388,64 @@
     .mb-4 {
         margin-bottom: 1.5rem;
     }
+
+    /* exportar */
+    .chart-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .title-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -20px; /* Ajuste para subir un poco el botón */
+        width: 100%;
+    }
+
+    .export-btn-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        width: 48px; /* Aumentado el tamaño */
+        height: 48px; /* Aumentado el tamaño */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .export-btn-icon img {
+            width: 100%;
+            height: auto;
+        }
+
+
+
 </style>
