@@ -11,6 +11,7 @@ namespace SharedApp.Models.Dtos
         public int? IdEsquemaVista { get; set; }
         public int? IdEsquemaData { get; set; }           
         public string? DataEsquemaJson { get; set; }
+
     }
     public class BuscadorResultadoDataDto
     {
@@ -23,5 +24,6 @@ namespace SharedApp.Models.Dtos
         public int? IdEsquemaVista { get; set; }
         public int? IdEsquemaData { get; set; }
         public List<ColumnaEsquema>? DataEsquemaJson { get; set; }
+
     }
 }

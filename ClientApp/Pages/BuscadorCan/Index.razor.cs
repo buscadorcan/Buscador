@@ -26,6 +26,7 @@ namespace ClientApp.Pages.BuscadorCan
         private bool modoBuscar = false;
         private List<Item> ListTypeSearch = new TypeSearch().ListTypeSearch;
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
+        private FnPredictWordsDto? selectedWord;
         private List<Seleccion> Selecciones = new();
         private List<int> SelectedIds = new List<int>();
         private bool mostrarFiltrosAvanzados = false;
@@ -59,6 +60,7 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine(e);
                
             }
+            StateHasChanged();
         }
 
         private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
@@ -145,22 +147,27 @@ namespace ClientApp.Pages.BuscadorCan
 
         private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
         {
+            if (request.Filter == null || string.IsNullOrWhiteSpace(request.Filter.Value))
+            {
+                return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = [], TotalCount = 0 };
+            }
+
             buscarRequest.TextoBuscar = request.Filter.Value;
+
             if (iBusquedaService != null)
             {
                 var words = await iBusquedaService.FnPredictWords(request.Filter.Value);
-                return await Task.FromResult(new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = words, TotalCount = words.Count() });
+                return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = words, TotalCount = words.Count() };
             }
 
-            return await Task.FromResult(new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = [], TotalCount = 0 });
+            return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = [], TotalCount = 0 };
         }
-        private void OnAutoCompleteChanged(FnPredictWordsDto _fnPredictWordsDto)
+        private void OnAutoCompleteChanged(ChangeEventArgs e)
         {
-            if (_fnPredictWordsDto?.Word != null)
+            var selectedWord = e.Value?.ToString();
+            if (!string.IsNullOrWhiteSpace(selectedWord))
             {
-                buscarRequest.TextoBuscar = _fnPredictWordsDto.Word;
-            } else {
-                selectedValues = new List<FiltrosBusquedaSeleccion>();
+                buscarRequest.TextoBuscar = selectedWord;
             }
         }
 
@@ -238,14 +245,34 @@ namespace ClientApp.Pages.BuscadorCan
             public string MostrarWeb { get; set; }
         }
 
-        //protected override async Task OnAfterRenderAsync(bool firstRender)
-        //{
-        //    if (firstRender)
-        //    {
-        //        // Llama a la inicialización del mapa desde JavaScript
-        //        await JSRuntime.InvokeVoidAsync("initMap", ApiKey);
-        //    }
-        //}
+        private async Task OnSearchChanged(ChangeEventArgs e)
+        {
+            searchTerm = e.Value?.ToString();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                // Crear un FilterItem con los parámetros requeridos
+                var filterItem = new FilterItem(
+                    propertyName: "Word",                  // Nombre de la propiedad a filtrar
+                    value: searchTerm,                     // Valor de búsqueda
+                    @operator: FilterOperator.Contains,    // Operador de comparación
+                    stringComparison: StringComparison.OrdinalIgnoreCase // Tipo de comparación
+                );
+
+                // Crear la solicitud de autocompletado con el filtro
+                var request = new AutoCompleteDataProviderRequest<FnPredictWordsDto>
+                {
+                    Filter = filterItem
+                };
+
+                var result = await FnPredictWordsDtoDataProvider(request);
+                ListFnPredictWordsDto = result.Data.ToList();
+            }
+        }
+
+
+
+
 
     }
 

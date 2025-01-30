@@ -86,7 +86,7 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context =>
             {
-                return context.Database.SqlQuery<FnPredictWordsDto>($"select * from fn_PredictWords({word})").AsNoTracking().OrderBy(c => c.Word).ToList();
+                return context.Database.SqlQuery<FnPredictWordsDto>($"select * from fnPredictWord({word})").AsNoTracking().OrderBy(c => c.Word).ToList();
             });
         }
     }

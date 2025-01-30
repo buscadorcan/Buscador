@@ -110,6 +110,7 @@ namespace ClientApp.Pages.Administracion.Validacion
             if (selectedEsquema != null)
             {
                 await CambiarSeleccionEsquema(selectedEsquema);
+                StateHasChanged();
             }
         }
 
