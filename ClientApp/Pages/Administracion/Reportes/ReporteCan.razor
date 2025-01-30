@@ -8,18 +8,34 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JS
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 <div class="chart-container">
     <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="text-primary text-center">@Titulo_vw_BusquedaFecha</h5>
             <div class="chart-wrapper">
                 <canvas id="chart1" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'BusquedaFecha')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="text-primary text-center">@Titulo_vw_BusquedaFiltro</h5>
             <div class="chart-wrapper">
                 <canvas id="chart2" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'BusquedaFiltro')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -29,6 +45,11 @@
             <h5 class="text-primary text-center">@Titulo_vw_ActualizacionONA</h5>
             <div class="chart-wrapper">
                 <canvas id="chart3" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'ActualizacionONA')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
@@ -39,6 +60,57 @@
 </div>
 
 <script>
+    window.exportChartToExcel = async (chartId, fileName) => {
+        const canvas = document.getElementById(chartId);
+        if (!canvas) {
+            console.error(`No se encontró el gráfico con ID ${chartId}`);
+            return;
+        }
+
+        const chart = Chart.getChart(canvas);
+        if (!chart) {
+            console.error(`No se encontró el objeto Chart.js para ${chartId}`);
+            return;
+        }
+
+        const labels = chart.data.labels;
+        const data = chart.data.datasets[0].data;
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Reporte");
+
+        // Agregar los datos en la hoja de Excel
+        worksheet.columns = [
+            { header: "Categoría", key: "categoria", width: 20 },
+            { header: "Valor", key: "valor", width: 10 },
+        ];
+
+        labels.forEach((label, index) => {
+            worksheet.addRow({ categoria: label, valor: data[index] });
+        });
+
+        // Capturar el gráfico en imagen con html2canvas
+        html2canvas(canvas).then(async (capturedCanvas) => {
+            const imageData = capturedCanvas.toDataURL("image/png").replace(/^data:image\/png;base64,/, "");
+            const imageId = workbook.addImage({
+                base64: imageData,
+                extension: "png",
+            });
+
+            // Insertar la imagen en la hoja de Excel
+            worksheet.addImage(imageId, {
+                tl: { col: 3, row: 1 },
+                br: { col: 8, row: 10 },
+            });
+
+            // Guardar y descargar el archivo
+            workbook.xlsx.writeBuffer().then((buffer) => {
+                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                saveAs(blob, `${fileName}.xlsx`);
+            });
+        });
+    };
+
     window.initCharts = (chartsData) => {
         const createPieChart = (elementId, data) => {
             const canvas = document.getElementById(elementId);
@@ -107,7 +179,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Fecha'
+                                text: ''
                             }
                         },
                         y: {
@@ -160,7 +232,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Fecha'
+                                text: ''
                             }
                         },
                         y: {
@@ -280,4 +352,63 @@
     .mb-4 {
         margin-bottom: 1.5rem;
     }
+
+    /* exportar */
+    .chart-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .title-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -20px; /* Ajuste para subir un poco el botón */
+        width: 100%;
+    }
+
+    .export-btn-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        width: 48px; /* Aumentado el tamaño */
+        height: 48px; /* Aumentado el tamaño */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .export-btn-icon img {
+            width: 100%;
+            height: auto;
+        }
+
 </style>
+

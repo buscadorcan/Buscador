@@ -1,39 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-	<OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseRazorSourceGenerator>false</UseRazorSourceGenerator>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="wwwroot\icono\**" />
-    <Content Remove="wwwroot\icono\**" />
-    <EmbeddedResource Remove="wwwroot\icono\**" />
-    <None Remove="wwwroot\icono\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="wwwroot\icono\**" />
+		<Content Remove="wwwroot\icono\**" />
+		<EmbeddedResource Remove="wwwroot\icono\**" />
+		<None Remove="wwwroot\icono\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Blazor.Bootstrap" Version="3.2.0" />
-    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Npgsql" Version="9.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Blazor.Bootstrap" Version="3.2.0" />
+		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Npgsql" Version="9.0.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SharedApp\SharedApp.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SharedApp\SharedApp.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Pages\Administracion\Reportes\ReporteRead.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Update="Pages\Administracion\Reportes\ReporteRead.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+	</ItemGroup>
 
 </Project>
