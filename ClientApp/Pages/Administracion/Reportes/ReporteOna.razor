@@ -11,6 +11,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 <div class="chart-container">
     <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
@@ -38,7 +41,7 @@
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="text-primary text-center">@Titulo_vw_OrganismoActividad</h5>
             <div class="chart-wrapper">
-                <canvas id="chart3-bar" class="chart"></canvas>
+                <canvas id="chart3" class="chart"></canvas>
                 <div class="button-container">
                     <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'OrganismoActividad')" title="Exportar a Excel">
                         <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
@@ -50,7 +53,7 @@
 </div>
 
 <script>
-    window.exportChartToExcel = (chartId, fileName) => {
+    window.exportChartToExcel = async (chartId, fileName) => {
         const canvas = document.getElementById(chartId);
         if (!canvas) {
             console.error(`No se encontró el gráfico con ID ${chartId}`);
@@ -66,18 +69,39 @@
         const labels = chart.data.labels;
         const data = chart.data.datasets[0].data;
 
-        // Crear hoja de Excel con los datos
-        let ws_data = [['Categoría', 'Valor']];
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Reporte");
+
+        // Agregar los datos en la hoja de Excel
+        worksheet.columns = [
+            { header: "Categoría", key: "categoria", width: 20 },
+            { header: "Valor", key: "valor", width: 10 },
+        ];
+
         labels.forEach((label, index) => {
-            ws_data.push([label, data[index]]);
+            worksheet.addRow({ categoria: label, valor: data[index] });
         });
 
-        const ws = XLSX.utils.aoa_to_sheet(ws_data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Reporte");
+        // Capturar el gráfico en imagen con html2canvas
+        html2canvas(canvas).then(async (capturedCanvas) => {
+            const imageData = capturedCanvas.toDataURL("image/png").replace(/^data:image\/png;base64,/, "");
+            const imageId = workbook.addImage({
+                base64: imageData,
+                extension: "png",
+            });
 
-        // Descargar archivo
-        XLSX.writeFile(wb, `${fileName}.xlsx`);
+            // Insertar la imagen en la hoja de Excel
+            worksheet.addImage(imageId, {
+                tl: { col: 3, row: 1 },
+                br: { col: 8, row: 10 },
+            });
+
+            // Guardar y descargar el archivo
+            workbook.xlsx.writeBuffer().then((buffer) => {
+                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                saveAs(blob, `${fileName}.xlsx`);
+            });
+        });
     };
 
     window.initCharts = (chartsData) => {
@@ -179,7 +203,7 @@
         // Inicializar gráficos
         createBarChart('chart1', chartsData[0], false); // Gráfico de barras verticales
         createPieChart('chart2', chartsData[1]); // Gráfico de pastel
-        createBarChart('chart3-bar', chartsData[2], true); // Gráfico de barras horizontales
+        createBarChart('chart3', chartsData[2], true); // Gráfico de barras horizontales
     };
 
     window.initMap = (data) => {
