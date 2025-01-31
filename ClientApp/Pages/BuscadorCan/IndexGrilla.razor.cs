@@ -17,6 +17,8 @@ namespace ClientApp.Pages.BuscadorCan
 
         [Parameter]
         public List<VwFiltroDto>? listaEtiquetasFiltros { get; set; }
+        [Parameter]
+        public EventCallback<List<vwPanelONADto>> OnPanelONAUpdated { get; set; }
         [Inject]
         public IBusquedaService? servicio { get; set; }
         [Inject]
@@ -96,9 +98,10 @@ namespace ClientApp.Pages.BuscadorCan
                         await grid.RefreshDataAsync();
                     }
 
-                    if (PageNumber == 1)
+                    if (PageNumber == 1 && result.PanelONA != null)
                     {
                         totalCount = result.TotalCount;
+                        await OnPanelONAUpdated.InvokeAsync(result.PanelONA);
                     }
                 }
             }

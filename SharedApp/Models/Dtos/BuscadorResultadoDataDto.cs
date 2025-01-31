@@ -12,6 +12,7 @@ namespace SharedApp.Models.Dtos
         public int? IdEsquemaData { get; set; }           
         public string? DataEsquemaJson { get; set; }
 
+
     }
     public class BuscadorResultadoDataDto
     {

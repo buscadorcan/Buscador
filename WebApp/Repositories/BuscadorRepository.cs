@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
+using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
 
@@ -27,13 +28,36 @@ namespace WebApp.Repositories
                     Direction = ParameterDirection.Output
                 };
 
+                var panelONAjson = new SqlParameter
+                {
+                    ParameterName = "@vwPanelONAjson",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = -1, // -1 para valores grandes tipo NVARCHAR(MAX)
+                    Direction = ParameterDirection.Output
+                };
+
+
                 var lstTem = context.Database.SqlQueryRaw<BuscadorResultadoData>(
-                  "exec paBuscar2K25 @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT",
-                  new SqlParameter("@paramJSON", paramJSON),
-                  new SqlParameter("@PageNumber", PageNumber),
-                  new SqlParameter("@RowsPerPage", RowsPerPage),
-                  rowsTotal
-                ).AsNoTracking().ToList();
+                   "exec paBuscar2K25 @paramJSON, @PageNumber, @RowsPerPage, @RowsTotal OUT, @vwPanelONAjson OUT",
+                   new SqlParameter("@paramJSON", paramJSON),
+                   new SqlParameter("@PageNumber", PageNumber),
+                   new SqlParameter("@RowsPerPage", RowsPerPage),
+                   rowsTotal,
+                   panelONAjson
+                 ).AsNoTracking().ToList();
+
+                var panelONAData = string.IsNullOrEmpty(panelONAjson.Value as string)
+                        ? new List<vwPanelONA>()
+                        : JsonConvert.DeserializeObject<List<vwPanelONA>>(panelONAjson.Value.ToString());
+
+                var panelONADataDto = panelONAData.Select(o => new vwPanelONADto
+                {
+                    Siglas = o.Siglas,
+                    pais = o.pais,
+                    icono = o.icono,
+                    empresas = o.empresas
+                }).ToList();
+
 
                 return new BuscadorDto
                 {
@@ -46,10 +70,11 @@ namespace WebApp.Repositories
                         VistaFK = c.VistaFK,
                         IdEsquema = c.IdEsquema,
                         IdEsquemaVista = c.IdEsquemaVista,
-                        IdEsquemaData = c.IdEsquemaData,             
+                        IdEsquemaData = c.IdEsquemaData,
                         DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
                     }).ToList(),
-                    TotalCount = (int)rowsTotal.Value
+                    TotalCount = (int)rowsTotal.Value,
+                    PanelONA = panelONADataDto
                 };
             });
         }
