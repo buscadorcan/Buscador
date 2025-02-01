@@ -58,6 +58,9 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="02_paBuscar2k25.sql" />
+    <Build Include="02_EsquemaOrganiza.sql" />
+    <Build Include="03_paActualizaFiltro.sql" />
+    <Build Include="04_paBuscar2k25.sql" />
+    <Build Include="05_vwPanelONA.sql" />
   </ItemGroup>
 </Project>
