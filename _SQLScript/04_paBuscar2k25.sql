@@ -1,11 +1,10 @@
-GO
-ALTER PROCEDURE [dbo].[paBuscar2k25] (	
-	--DECLARE  
-	 @paramJSON			NVARCHAR(MAX) = '{}' 
-	,@PageNumber		INT = 1 
-	,@RowsPerPage		INT = 10 
-	,@RowsTotal			INT = 0				 OUTPUT 
-	,@vwPanelONAjson	NVARCHAR(MAX) = '{}' OUTPUT
+CREATE OR ALTER PROCEDURE [dbo].[paBuscar2k25] (	
+--DECLARE  
+ @paramJSON			NVARCHAR(MAX) = '{}' 
+,@PageNumber		INT = 1 
+,@RowsPerPage		INT = 10 
+,@RowsTotal			INT = 0				 OUTPUT 
+,@vwPanelONAjson	NVARCHAR(MAX) = '{}' OUTPUT
 ) AS
 BEGIN 
 --SET @paramJSON =
@@ -18,7 +17,7 @@ BEGIN
 --	,"FiltroEstado"			:[]
 --	,"FiltroRecomocimiento"	:[]
 --}'
---,1,10;
+
 	IF  ISJSON(@paramJSON) <> 1		
 		THROW 50000, 'ERROR: @paramJSON mal formado', 1;
 	BEGIN TRY	
@@ -59,12 +58,9 @@ BEGIN
 					JOIN	Homologacion		h (NOLOCK)	ON hf.IdHomologacionFiltro = h.IdHomologacionFiltro
 				) h	ON h.CodigoHomologacionFil= f.CodigoHomologacion
 
-	INSERT INTO	@organizacion
-	SELECT DISTINCT d.IdEsquemaData  , d.VistaPK
-    FROM  EsquemaFullText	e
-    JOIN  EsquemaData		d(NOLOCK)ON e.IdEsquemaData  = d.IdEsquemaData
-    JOIN  EsquemaVista		v(NOLOCK)ON d.IdEsquemaVista = v.IdEsquemaVista
-	WHERE v.IdEsquema	=  @IdEsquema
+	INSERT	INTO	 @organizacion
+	SELECT	DISTINCT IdEsquemaData, PK
+	FROM	EsquemaOrganiza(NOLOCK)
 
 	IF EXISTS(SELECT 1 FROM @FiltrarPor WHERE CodigoHomologacion='KEY_FIL_ESQ') 
 	BEGIN
@@ -156,10 +152,6 @@ BEGIN
 			ON		o.IdEsquemaFullText		= ftt.[KEY]			--AND o.IdEsquemaData	= ftt.IdEsquemaData 	 
 			--ORDER BY RANK DESC; 
 		END
-
---Select  '@organizacion', count(distinct IdEsquemaData) from @organizacion	 
---UNION
---Select  '@EnteBuscado', count(distinct IdEsquemaData) from  @EnteBuscado	  
  
 	INSERT  INTO @EnteBuscadoUnico   
 	SELECT  o.IdEsquemaData, o.VistaPK, e.Texto		-- PADRES-ORG
@@ -171,44 +163,38 @@ BEGIN
 	JOIN	EsquemaData		d(NOLOCK) ON  e.IdEsquemaData  = d.IdEsquemaData
 	JOIN	@organizacion	o ON o.VistaPK = d.VistaFK 
 
+--		Select  '@organizacion', count(distinct IdEsquemaData)		from  @organizacion	 
+--UNION	Select  '@EnteBuscado', count(distinct IdEsquemaData)		from  @EnteBuscado	 
+--UNION	Select  '@EnteBuscadoUnico', count(distinct IdEsquemaData)	from  @EnteBuscadoUnico	
+
 	IF  (@PageNumber = 1)
 		WITH vwPanelONA AS
-		(	SELECT  DISTINCT  n.Siglas, count(d.IdEsquemaData) NroOrg
-			FROM	@EnteBuscadoUnico	o
-			JOIN	EsquemaData			d(NOLOCK) ON  d.IdEsquemaData		= o.IdEsquemaData
-			JOIN	EsquemaVista		v(NOLOCK) ON  v.IdEsquemaVista		= d.IdEsquemaVista
-			JOIN	ONA					n(NOLOCK) ON  v.IdONA				= n.IdONA
-			GROUP BY n.Siglas 
+		(	SELECT DISTINCT	 n.Siglas				Sigla 
+							,h.MostrarWeb			Pais 
+							,isnull(n.UrlIcono,'')	Icono 
+							,count(e.IdEsquemaData) NroOrg
+			FROM	@EnteBuscadoUnico	e
+			INNER JOIN EsquemaOrganiza	o(NOLOCK)ON	o.PK			= e.VistaPK
+			RIGHT JOIN ONA				n(NOLOCK)ON o.ONAIdONA		= n.IdONA
+			INNER JOIN Homologacion		h(NOLOCK)ON h.IdHomologacion= n.IdHomologacionPais
+			GROUP BY n.Siglas, h.MostrarWeb, isnull(n.UrlIcono,'')
 		)	SELECT   @RowsTotal		= ( SELECT SUM(NroOrg) FROM vwPanelONA )
-					,@vwPanelONAjson= ( SELECT	 o.Siglas				 Sigla
-												,h.MostrarWeb			 Pais
-												,isnull(o.UrlIcono,'')	 Icono 
-												,isnull(v.NroOrg,0)		 NroOrg
-										FROM vwPanelONA			 v
-										RIGHT JOIN  ONA			 o (NOLOCK) ON v.Siglas = o.Siglas
-										INNER JOIN	Homologacion h (NOLOCK) ON o.IdHomologacionPais	= h.IdHomologacion
-										FOR JSON AUTO ); 
-	
+					,@vwPanelONAjson= ( SELECT Sigla, Pais, Icono, NroOrg FROM vwPanelONA FOR JSON AUTO ); 
+
 	--> returnGrilla
 	SELECT  DISTINCT
-			 n.IdONA			 
-			,n.Siglas			 
-			,o.Texto	 
-			,d.VistaPK 
-			,d.VistaFK 
-			,v.IdEsquema
-			,v.IdEsquemaVista
-			,d.IdEsquemaData 
-			,d.DataEsquemaJson	
-			,@RowsTotal
-			,@vwPanelONAjson
-	FROM	@EnteBuscadoUnico	o
-	JOIN	EsquemaData			d(NOLOCK) ON  d.IdEsquemaData  = o.IdEsquemaData
-	JOIN	EsquemaVista		v(NOLOCK) ON  v.IdEsquemaVista = d.IdEsquemaVista
-	JOIN	ONA					n(NOLOCK) ON  v.IdONA		   = n.IdONA
-	--WHERE   o.VistaPK	= d.VistaFK
-	--	v.IdEsquema  = @IdEsquema
-	ORDER BY  d.VistaFK   
+			 o.ONAIdONA				IdONA	
+			,o.ONASiglas			Siglas	 
+			,e.Texto	 
+			,o.VistaPK 
+			,o.VistaFK 
+			,o.IdEsquema
+			,o.IdEsquemaVista
+			,o.IdEsquemaData 
+			,o.DataEsquemaJson	
+	FROM	@EnteBuscadoUnico	e
+	JOIN	EsquemaOrganiza		o(NOLOCK)ON  o.PK  = e.VistaPK
+	ORDER BY o.VistaPK   
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
 END
