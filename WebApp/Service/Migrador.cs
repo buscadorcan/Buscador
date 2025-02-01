@@ -83,58 +83,40 @@ namespace WebApp.Service.IService
 
                 bool vistaAp;
                 bool columnAp;
-                bool procesar = true;
+                var columnasValidas = new List<EsquemaVistaColumna>();
+                
+                
+                //Eliminados los registros anteriores
+                _repositoryDLO.DeleteOldRecords(idOna);
+
+
                 foreach (var vista in viewRegistradas)
                 {
                     vistaAp = await ValidarVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, idOna);
                     if (vistaAp)
                     {
                         viewColumns = _repositoryEVCRP.FindByIdEsquemaVista(vista.IdEsquemaVista);
+                       
                         foreach (var column in viewColumns)
                         {
                             columnAp = await ValidarColumnaEnVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, column.ColumnaEsquema, idOna);
-                            if (!columnAp)
+                            if (columnAp)
                             {
-                                procesar = false;
+                                columnasValidas.Add(column); // Agregar columna válida a la lista
+                            }
+                            else
+                            {
                                 Console.WriteLine("Columna no encontrada verificar Log.");
 
                                 var data = new LogMigracion
                                 {
                                     IdONA = idOna,
                                     OrigenDatos = conexion.OrigenDatos,
-                                    Observacion = "Columna no encontrada verificar."
+                                    Observacion = $"Columna '{column.ColumnaEsquema}' no encontrada, verificar."
                                 };
                                 _logMigracion.Create(data);
                             }
-                            if (procesar)
-                            {
-                                // Llamar a ProcesarMigracionAsync para procesar los datos
-                                bool resspuesta = await ProcesarVistaConDatosAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, viewColumns, vista.IdEsquemaVista, idOna);
 
-                                if (resspuesta)
-                                {
-                                    Console.WriteLine($"Vista '{vista.VistaOrigen}' procesada exitosamente.");
-                                    var data = new LogMigracion
-                                    {
-                                        IdONA = idOna,
-                                        OrigenDatos = conexion.OrigenDatos,
-                                        Observacion = "Vista: " + vista.VistaOrigen + " procesada exitosamente."
-                                    };
-                                    _logMigracion.Create(data);
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"Error al procesar la vista '{vista.VistaOrigen}'. Verificar log.");
-                                    var data = new LogMigracion
-                                    {
-                                        IdONA = idOna,
-                                        OrigenDatos = conexion.OrigenDatos,
-                                        Observacion = "Error al procesar la vista: " + vista.VistaOrigen + " verificar."
-                                    };
-                                    _logMigracion.Create(data);
-                                }
-
-                            }
                         }
                
                     }
@@ -150,17 +132,47 @@ namespace WebApp.Service.IService
                         _logMigracion.Create(data);
                     }
 
-
-                    var resultadoSP = await _ipaActualizarFiltro.ActualizarFiltroAsync();
-                    if (resultadoSP)
+                    if (columnasValidas.Any())
                     {
-                        Console.WriteLine("El procedimiento almacenado se ejecutó correctamente.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error al ejecutar el procedimiento almacenado.");
-                    }
+                        // Llamar a ProcesarMigracionAsync para procesar los datos
+                        bool resspuesta = await ProcesarVistaConDatosAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, columnasValidas, vista.IdEsquemaVista, idOna);
 
+                        if (resspuesta)
+                        {
+                            Console.WriteLine($"Vista '{vista.VistaOrigen}' procesada exitosamente.");
+                            var data = new LogMigracion
+                            {
+                                IdONA = idOna,
+                                OrigenDatos = conexion.OrigenDatos,
+                                Observacion = "Vista: " + vista.VistaOrigen + " procesada exitosamente."
+                            };
+                            _logMigracion.Create(data);
+                            columnasValidas.Clear();
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Error al procesar la vista '{vista.VistaOrigen}'. Verificar log.");
+                            var data = new LogMigracion
+                            {
+                                IdONA = idOna,
+                                OrigenDatos = conexion.OrigenDatos,
+                                Observacion = "Error al procesar la vista: " + vista.VistaOrigen + " verificar."
+                            };
+                            _logMigracion.Create(data);
+                        }
+
+                    }                
+
+                }
+
+                var resultadoSP = await _ipaActualizarFiltro.ActualizarFiltroAsync();
+                if (resultadoSP)
+                {
+                    Console.WriteLine("El procedimiento almacenado se ejecutó correctamente.");
+                }
+                else
+                {
+                    Console.WriteLine("Error al ejecutar el procedimiento almacenado.");
                 }
 
                 // Detiene el temporizador
@@ -299,16 +311,6 @@ namespace WebApp.Service.IService
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al validar la columna '{columna}' en la vista '{vista}': {ex.Message}");
-
-                // Registrar el error en el log
-                var data = new LogMigracion
-                {
-                    IdONA = idONA,
-                    OrigenDatos = origenDatos,
-                    Observacion = $"Columna '{columna}' no encontrada en la vista '{vista}'. Verificar."
-                };
-                _logMigracion.Create(data);
-
                 return false;
             }
         }
@@ -370,11 +372,7 @@ namespace WebApp.Service.IService
                         })
                         .ToList();
 
-                    var json = JsonConvert.SerializeObject(dataEsquemaJson);
-
-
-                    //Eliminados los registros anteriores
-                     _repositoryDLO.DeleteOldRecords(idEsquemaVista);
+                    var json = JsonConvert.SerializeObject(dataEsquemaJson);                  
 
                     // Insertar en la tabla EsquemaData
                     var esquemaData = new EsquemaData
@@ -412,11 +410,7 @@ namespace WebApp.Service.IService
                                 ? diccionarioFila[col.ColumnaEsquema]?.ToString()
                                 : null // En caso de que no exista la columna en la fila
                         };
-
-
                         _repositoryOFT.Create(esquemaFullText);
-
-
                     }
                 }
 

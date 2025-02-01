@@ -65,7 +65,7 @@ namespace WebApp.Repositories
                     {
                         IdONA = c.IdONA,
                         Siglas = c.Siglas,
-                        TextOverView = c.TextOverView,
+                        Texto = c.Texto,
                         VistaPK = c.VistaPK,
                         VistaFK = c.VistaFK,
                         IdEsquema = c.IdEsquema,

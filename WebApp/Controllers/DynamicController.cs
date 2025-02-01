@@ -131,14 +131,11 @@ namespace WebApp.Controllers
             {
                 bool resultado = await _vhRepo.MigrarConexionAsync(idOna);
 
-                if (resultado)
+                return Ok(new
                 {
-                    return Ok(new { Success = true, Message = "Migración completada con éxito." });
-                }
-                else
-                {
-                    return BadRequest(new { Success = false, Message = "La migración no se pudo completar." });
-                }
+                    IsSuccess = resultado,
+                    Message = resultado ? "Conexión establecida correctamente." : "No se pudo establecer la conexión."
+                });
             }
             catch (Exception ex)
             {

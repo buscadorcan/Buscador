@@ -5,9 +5,16 @@
 @if (IsLoading)
 {
     <div class="overlay">
-        <div class="spinner"></div>
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <div class="progress mt-2" style="width: 100%;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: @ProgressValue%;" aria-valuenow="@ProgressValue" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <p>Procesando migración, por favor espere...</p>
     </div>
 }
+
 
 <Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 <PageTitle>Homologación</PageTitle>

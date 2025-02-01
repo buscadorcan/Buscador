@@ -4,7 +4,7 @@ namespace SharedApp.Models.Dtos
     {
         public int? IdONA { get; set; }
         public string? Siglas { get; set; }
-        public string? TextOverView { get; set; }
+        public string? Texto { get; set; }
         public string? VistaPK { get; set; }
         public string? VistaFK { get; set; }
         public int? IdEsquema { get; set; }
@@ -18,7 +18,7 @@ namespace SharedApp.Models.Dtos
     {
         public int? IdONA { get; set; }
         public string? Siglas { get; set; }
-        public string? TextOverView { get; set; }
+        public string? Texto { get; set; }
         public string? VistaPK { get; set; }
         public string? VistaFK { get; set; }
         public int? IdEsquema { get; set; }
