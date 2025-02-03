@@ -4,9 +4,21 @@
 
 <PageTitle>Migraciones desde excel</PageTitle>
 
-<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
+@* <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
     <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nueva-migarcion-excel">Importar Excel</Button>
 </div>
+<header class="header">
+    <div class="button">
+        <img class="add-24px" src="admin/img/add-24px.svg" alt="add-24px">
+        <div class="button-1 headingheadline5-h5">Importar excel</div>
+    </div>
+</header> *@
+<header class="header">
+    <div class="button">
+        <img class="add-24px" src="admin/img/add-24px.svg" alt="add-24px">
+        <NavLink class="button-1 headingheadline5-h5" href="/nueva-migarcion-excel">Importar Excel</NavLink>
+    </div>
+</header>
 
 <Grid @ref="grid" TItem="LogMigracionDto" class="table table-hover table-bordered table-striped" DataProvider="LogMigracionDtoDataProvider" Responsive="true">
     <GridColumn TItem="LogMigracionDto" HeaderText="Migración" PropertyName="IdLogMigracion">
