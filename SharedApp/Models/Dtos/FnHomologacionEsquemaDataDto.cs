@@ -17,4 +17,6 @@ namespace SharedApp.Models.Dtos
         public int IdHomologacion { get; set; }
         public string? Data { get; set; }
     }
+
+
 }

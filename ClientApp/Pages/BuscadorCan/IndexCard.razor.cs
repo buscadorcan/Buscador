@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 using System.Reflection;
 using ClientApp.Services;
+using Microsoft.JSInterop;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -31,7 +32,8 @@ namespace ClientApp.Pages.BuscadorCan
         public IHomologacionService? HomologacionService { get; set; }
         [Inject]
         public IONAService? iOnaService { get; set; }
-
+        [Inject]
+        public IJSRuntime? iJSRuntime { get; set; }
         // Propiedades para la vista
         public List<BuscadorResultadoDataDto>? ResultadoData { get; private set; } = new List<BuscadorResultadoDataDto>();
         public List<VwGrillaDto>? ListaEtiquetasGrilla { get; private set; } = new List<VwGrillaDto>();
@@ -141,23 +143,15 @@ namespace ClientApp.Pages.BuscadorCan
         {
             // Obtener la URL del certificado
             var pdfUrl = await GetPdfUrlFromEsquema(item);
-            Console.WriteLine("No se encontró la URL del certificado.");
-            if (pdfUrl == null)
+
+            if (string.IsNullOrWhiteSpace(pdfUrl))
             {
-                // Mostrar una alerta o manejar el error si no hay URL
                 Console.WriteLine("No se encontró la URL del certificado.");
-                pdfUrl = "No se encontró la URL del certificado.";
+                return;
             }
 
-            // Configurar los parámetros del modal
-            var parameters = new Dictionary<string, object>
-            {
-                { "PdfUrl", pdfUrl } // Enviar la URL al modal
-            };
-
-            // Mostrar el modal con el componente PDFModal
-            modal.Size = ModalSize.Large;
-            await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
+            // Llamar a la función JavaScript para abrir la ventana emergente
+            await iJSRuntime.InvokeVoidAsync("abrirVentanaPDF", pdfUrl);
         }
 
         private async Task<string?> GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)

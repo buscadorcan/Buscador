@@ -4,6 +4,7 @@ using ClientApp.Services.IService;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 using System.Drawing;
+using Microsoft.JSInterop;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -16,6 +17,8 @@ namespace ClientApp.Pages.BuscadorCan
 
         [Parameter]
         public List<VwFiltroDto>? listaEtiquetasFiltros { get; set; }
+        [Parameter]
+        public EventCallback<List<vwPanelONADto>> OnPanelONAUpdated { get; set; }
         [Inject]
         public IBusquedaService? servicio { get; set; }
         [Inject]
@@ -24,6 +27,8 @@ namespace ClientApp.Pages.BuscadorCan
         public IHomologacionService? iHomologacionService { get; set; }
         [Inject]
         public IONAService? iOnaService { get; set; }
+        [Inject]
+        public IJSRuntime? iJSRuntime { get; set; }
         private Modal modal = default!;
         private bool isDialogOpen = false; // Control de estado del diálogo
         private string? PdfUrl; // URL del PDF
@@ -93,9 +98,10 @@ namespace ClientApp.Pages.BuscadorCan
                         await grid.RefreshDataAsync();
                     }
 
-                    if (PageNumber == 1)
+                    if (PageNumber == 1 && result.PanelONA != null)
                     {
                         totalCount = result.TotalCount;
+                        await OnPanelONAUpdated.InvokeAsync(result.PanelONA);
                     }
                 }
             }
@@ -156,27 +162,42 @@ namespace ClientApp.Pages.BuscadorCan
         }
 
 
+        //private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
+        //{
+        //    // Obtener la URL del certificado
+        //    var pdfUrl = await GetPdfUrlFromEsquema(resultData);
+        //    Console.WriteLine("No se encontró la URL del certificado.");
+        //    if (pdfUrl == null)
+        //    {
+        //        // Mostrar una alerta o manejar el error si no hay URL
+        //        Console.WriteLine("No se encontró la URL del certificado.");
+        //        pdfUrl = "No se encontró la URL del certificado.";
+        //    }
+
+        //    // Configurar los parámetros del modal
+        //    var parameters = new Dictionary<string, object>
+        //    {
+        //        { "PdfUrl", pdfUrl } // Enviar la URL al modal
+        //    };
+
+        //    // Mostrar el modal con el componente PDFModal
+        //    modal.Size = ModalSize.Large;
+        //    await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
+        //}
+
         private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
             // Obtener la URL del certificado
             var pdfUrl = await GetPdfUrlFromEsquema(resultData);
-            Console.WriteLine("No se encontró la URL del certificado.");
-            if (pdfUrl == null)
+
+            if (string.IsNullOrWhiteSpace(pdfUrl))
             {
-                // Mostrar una alerta o manejar el error si no hay URL
                 Console.WriteLine("No se encontró la URL del certificado.");
-                pdfUrl = "No se encontró la URL del certificado.";
+                return;
             }
 
-            // Configurar los parámetros del modal
-            var parameters = new Dictionary<string, object>
-            {
-                { "PdfUrl", pdfUrl } // Enviar la URL al modal
-            };
-
-            // Mostrar el modal con el componente PDFModal
-            modal.Size = ModalSize.Large;
-            await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
+            // Llamar a la función JavaScript para abrir la ventana emergente
+            await iJSRuntime.InvokeVoidAsync("abrirVentanaPDF", pdfUrl);
         }
 
         private async Task<string?> GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
@@ -193,7 +214,8 @@ namespace ClientApp.Pages.BuscadorCan
                     return null;
 
                 var urlPdf = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idHomologacion)?.Data;
-
+                
+                //urlPdf = SanitizeUrl(urlPdf);
                 return urlPdf;
             }
             catch (Exception ex)
@@ -201,6 +223,11 @@ namespace ClientApp.Pages.BuscadorCan
                 throw new Exception("Error al obtener la URL del certificado", ex);
             }
         }
+        //private string SanitizeUrl(string url)
+        //{
+        //    return url.Replace(" ", "%20")
+        //              .Replace("–", "%E2%80%93");
+        //}
 
         private async Task<string> getIconUrl(BuscadorResultadoDataDto resultData)
         {

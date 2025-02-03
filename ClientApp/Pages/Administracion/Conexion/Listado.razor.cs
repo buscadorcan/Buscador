@@ -16,6 +16,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IDynamicService? iDynamicService { get; set; }
         private List<ONAConexionDto>? listasHevd = null;
         private bool IsLoading { get; set; } = false;
+        private int ProgressValue { get; set; } = 0;
         private async Task<GridDataProviderResult<ONAConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ONAConexionDto> request)
         {
             if (listasHevd == null && iConexionService != null)
@@ -73,47 +74,65 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             if (iDynamicService != null && listasHevd != null && grid != null)
             {
-                // Mostrar el indicador de carga
                 IsLoading = true;
+                ProgressValue = 45;
                 StateHasChanged();
 
                 try
                 {
-                    // Llamar al método del servicio para realizar la migración
+                    // Iniciar un temporizador que aumente progresivamente hasta el 50%
+                    var progressTask = Task.Run(async () =>
+                    {
+                        while (ProgressValue < 50)
+                        {
+                            await Task.Delay(500); // Espera 500ms antes de aumentar
+                            ProgressValue += 5; // Aumenta en 5% cada 500ms
+                        }
+                    });
+
+                    // Ejecutar la migración en paralelo mientras se actualiza la barra de progreso
                     bool migracion = await iDynamicService.MigrarConexionAsync(conexion);
+
+                    // Esperar a que la barra de progreso llegue a 50% antes de completarla
+                    await progressTask;
+
+                    // Completar la barra de progreso
+                    ProgressValue = 100;
+                    StateHasChanged();
 
                     var toastMessage = new ToastMessage
                     {
                         Type = migracion ? ToastType.Success : ToastType.Danger,
                         Title = "Mensaje de confirmación",
                         HelpText = $"{DateTime.Now}",
-                        Message = migracion ? "Migracion satisfactoria" : "Migracion no realizada",
+                        Message = migracion ? "Migración satisfactoria" : "Migración no realizada",
                     };
 
                     messages.Add(toastMessage);
 
-                    // Configurar el cierre automático después de 5 segundos
+                    // Ocultar mensaje después de 5 segundos
                     _ = Task.Delay(5000).ContinueWith(_ =>
                     {
                         messages.Remove(toastMessage);
-                        InvokeAsync(StateHasChanged); // Actualizar la UI
+                        InvokeAsync(StateHasChanged);
                     });
 
                     if (migracion)
                     {
                         await grid.RefreshDataAsync();
-                        return true; // Devuelve true si la conexión fue exitosa
+                        return true;
                     }
                 }
                 finally
                 {
-                    // Ocultar el indicador de carga después de completar la migración
                     IsLoading = false;
+                    ProgressValue = 0;
                     StateHasChanged();
                 }
             }
-            return false; // Migración fallida
+            return false;
         }
+
 
 
     }

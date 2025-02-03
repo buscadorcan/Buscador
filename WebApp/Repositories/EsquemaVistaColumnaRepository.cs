@@ -34,7 +34,7 @@ namespace WebApp.Repositories
         }
         public List<EsquemaVistaColumna> FindByIdEsquemaVista(int IdEsquemaVista)
         {
-            return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().Where(u => u.IdEsquemaVista == IdEsquemaVista).ToList());
+            return ExecuteDbOperation(context => context.EsquemaVistaColumna.AsNoTracking().Where(u => u.IdEsquemaVista == IdEsquemaVista && u.Estado == "A").ToList());
         }
         public List<EsquemaVistaColumna> FindByIdEsquemaVistaOna(int idEsquemaVista, int idONA)
         {
