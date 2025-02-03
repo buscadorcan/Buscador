@@ -7,6 +7,7 @@
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
 
+<link href="~/admin/css/usuario.css" rel="stylesheet" />
 <style>
     .striped-table tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
@@ -49,10 +50,11 @@
 </style>
 
 <PageTitle>Usuarios</PageTitle>
-<div class="card">
+
+<div class="">
     <!-- Card Header -->
-    <div class="card-header">
-        <h2>Administración de Usuarios</h2>
+    <div class="general title">
+        <h2 class="title headlineheadline2-h2">Administración de Usuarios</h2>
     </div>
 
     <!-- Botón Nuevo -->
@@ -63,8 +65,8 @@
         </div>
     }
     <!-- Card Body -->
-    <div class="card-body">
-        <div class="table-responsive">
+    <div class="">
+        <div class="general table">
             <Grid TItem="UsuarioDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="UsuariosDataProvider" @ref="grid" Responsive="true">
                 <GridColumn TItem="UsuarioDto" HeaderText="Nombre" PropertyName="Nombre">
                     @context.Nombre
@@ -107,14 +109,6 @@
             </Grid>
         </div>
     </div>
-
-    @* @if (!isRolRead)
-    {
-        <!-- Card Footer -->
-        <div class="card-footer">
-            <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-usuario">Nuevo</Button>
-        </div>
-    } *@
 
 </div>
 

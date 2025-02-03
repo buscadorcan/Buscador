@@ -12,14 +12,14 @@
 <Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 <PageTitle>Homologación</PageTitle>
 <Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
-<div class="card">
-    <div class="card-header">
-        <h2>Validación de Campos</h2>
+<div class="">
+    <div class="general title">
+        <h2 class="title headlineheadline2-h2">Validación de Campos</h2>
     </div>
     <div class="text-end my-3" style="margin-right: 1%;">
         <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-conexion">Agregar Registro</Button>
     </div>
-    <div class="card-body">
+    <div class="general table">
         <Grid @ref="grid" TItem="ONAConexionDto" class="table table-hover table-bordered table-striped" DataProvider="ConexionDtoDataProvider" Responsive="true">
             <GridColumn TItem="ONAConexionDto" HeaderText="Host">
                 @context.Host

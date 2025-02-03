@@ -11,7 +11,7 @@
 /* Banner */
 .banner {
     height: 160px;
-    background: linear-gradient(90deg, #046AB8 0%, #03488D 66.62%);
+/*    background: linear-gradient(90deg, #046AB8 0%, #03488D 66.62%);*/
     color: #FFF;
     text-align: center;
     font-family: Inter, sans-serif;

@@ -16,15 +16,22 @@
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/custom-styles.css" rel="stylesheet">
 
+    <link href="admin/css/globals.css" rel="stylesheet" />
+    <link href="admin/css/styleguide.css" rel="stylesheet" />
+    <link href="admin/css/pantalla-inicio.css" rel="stylesheet" />
+
 </head>
 
-<body>
-    <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+<body style="margin: 0; background: #ffffff">
+    <input type="hidden" id="anPageName" name="page" value="pantalla-inicio">
+    <div id="app" class="container-center-horizontal">
+
+            <svg class="loading-progress">
+                <circle r="40%" cx="50%" cy="50%" />
+                <circle r="40%" cx="50%" cy="50%" />
+            </svg>
+            <div class="loading-progress-text"></div>
+
     </div>
 
     <div id="blazor-error-ui">

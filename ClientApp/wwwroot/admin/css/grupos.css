@@ -1,0 +1,881 @@
+/* screen - grupos */
+
+.grupos {
+  align-items: flex-start;
+  background-color: var(--neutral-color00);
+  display: flex;
+  height: 871px;
+  width: 1440px;
+}
+
+.grupos .menu-adminitrador-can {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  height: 871px;
+  overflow-y: scroll;
+  padding: 16px 0px;
+  position: relative;
+  width: 260px;
+}
+
+.grupos .frame-1000002369 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.grupos .frame-1000002370 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.grupos .expand_more {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.grupos .men {
+  align-items: center;
+  gap: 24px;
+}
+
+.grupos .men-1 {
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0px 8px;
+}
+
+.grupos .inicio-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .inicio-3 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .place {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .usuarios {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .usuarios-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .menu {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .estadisticas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .menu-1 {
+  background-color: var(--neutral-color00);
+  flex: 0 0 auto;
+  padding: 0px 10px 8px;
+}
+
+.grupos .menu-2 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .menu-3 {
+  background-color: var(--white-lilac-2);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .grupos-1 {
+  color: var(--mirage);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .menu-4 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .surname {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .menu-5 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .esquemas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .menu-6 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .migracin-excel {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .menu-7 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .logs-de-migracin {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .fields-section {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.grupos .fields-items {
+  flex: 0 0 auto;
+  margin-bottom: -4.00px;
+}
+
+.grupos .help-section {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: -52px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .help-items {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .menu-8 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.grupos .ayuda {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .flex-col {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 856px;
+  width: 1180px;
+}
+
+.grupos .top {
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+  display: flex;
+  height: 130px;
+  overflow: hidden;
+  width: 1180px;
+}
+
+.grupos .overlap-group {
+  height: 301px;
+  margin-left: 56px;
+  margin-top: -203px;
+  position: relative;
+  width: 1485px;
+}
+
+.grupos .vector-1 {
+  height: 301px;
+  left: 311px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 1174px;
+}
+
+.grupos .frame {
+  cursor: pointer;
+  height: 62px;
+  left: 0;
+  position: absolute;
+  top: 235px;
+  width: 335px;
+}
+
+.grupos .tabla {
+  gap: 24px;
+  padding: 40px 0px;
+  width: 1180px;
+}
+
+.grupos .administracin-de-grupos-homologacin {
+  align-self: stretch;
+  color: var(--neutraldark80);
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.grupos .tabla-1 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.grupos .table-heading {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 12px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .table-heading-1 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  padding: 8px;
+  width: 273px;
+}
+
+.grupos .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.grupos .table-heading-2 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  padding: 8px;
+  width: 314px;
+}
+
+.grupos .table-heading-3 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  padding: 8px;
+  width: 313px;
+}
+
+.grupos .table-heading-4 {
+  padding: 8px;
+  width: 136px;
+}
+
+.grupos .header-label-1 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 1px 8px;
+}
+
+.grupos .table-heading-5 {
+  flex: 1;
+  flex-grow: 1;
+  padding: 8px;
+}
+
+.grupos .table-heading-6 {
+  align-self: stretch;
+  background-color: var(--whisper);
+  border: 0px none;
+  flex: 0 0 auto;
+  padding: 4px 24px;
+  width: 100%;
+}
+
+.grupos .table-heading-7 {
+  border-color: var(--mystic);
+  border-right-style: solid;
+  border-right-width: 1px;
+  padding: 8px;
+  width: 273px;
+}
+
+.grupos .table-heading-8 {
+  border-color: var(--mystic);
+  border-right-style: solid;
+  border-right-width: 1px;
+  padding: 8px;
+  width: 315px;
+}
+
+.grupos .header-label-2 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 1px 0px;
+}
+
+.grupos .table-heading-9 {
+  border-color: var(--mystic);
+  border-right-style: solid;
+  border-right-width: 1px;
+  padding: 8px;
+  width: 312px;
+}
+
+.grupos .header-label-3 {
+  display: flex;
+  padding: 1px 0px;
+  width: 137px;
+}
+
+.grupos .table-heading-10 {
+  padding: 8px;
+  width: 118px;
+}
+
+.grupos .header-label-4 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  opacity: 0;
+  padding: 1px 8px;
+}
+
+.grupos .container-3 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  justify-content: center;
+  opacity: 0;
+  position: relative;
+}
+
+.grupos .arrow-icon {
+  height: 20px;
+  margin-left: -1586.00px;
+  margin-top: -10180.00px;
+  position: relative;
+  width: 20px;
+}
+
+.grupos .content {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  position: relative;
+  width: 1180px;
+}
+
+.grupos .componente {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 32px;
+  justify-content: center;
+  position: relative;
+}
+
+.grupos .container-1 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.grupos .container-4 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.grupos .ads-rules-list {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  height: 75px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .container-2 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding: 12px 12px 8px 24px;
+  position: relative;
+  width: 296px;
+}
+
+.grupos .text {
+  align-self: stretch;
+  color: var(--mako);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.grupos .landing-page {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 316px;
+}
+
+.grupos .landing-page-1 {
+  padding: 12px 12px 8px;
+  width: 311px;
+}
+
+.grupos .landing-page-2 {
+  padding: 12px 12px 8px;
+  width: 136px;
+}
+
+.grupos .button {
+  border: 2px solid;
+  border-color: var(--neutrallight30);
+  border-radius: 8px;
+}
+
+.grupos .landing-page-5 {
+  padding: 12px 0px 8px;
+  width: 96px;
+}
+
+.grupos .landing-page-3 {
+  padding: 12px 12px 8px;
+  width: 59px;
+}
+
+.grupos .actions-1 {
+  margin-right: -59.00px;
+}
+
+.grupos .button-1 {
+  border: 2px solid;
+  border-color: var(--red-orange);
+  border-radius: 8px;
+}
+
+.grupos .container-5 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.grupos .landing-page-4 {
+  padding: 12px 0px 8px;
+  width: 61px;
+}
+
+.grupos .container-6 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 1120px;
+}
+
+.grupos .ads-rules-list-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  height: 75px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .text-1 {
+  flex: 1;
+  letter-spacing: 0;
+  line-height: 20px;
+  position: relative;
+}
+
+.grupos .text-2 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  position: relative;
+}
+
+.grupos .landing-page-6 {
+  padding: 12px 0px 8px;
+  width: 95px;
+}
+
+.grupos .container-7 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  width: 1154px;
+}
+
+.grupos .filter {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  position: relative;
+}
+
+.grupos .container-8 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 1155px;
+}
+
+.grupos .container-9 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.grupos .paginacin {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 16px 0px 0px;
+  position: relative;
+  width: 1155px;
+}
+
+.grupos .pagination-container {
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 1px;
+  height: 48px;
+}
+
+.grupos .pagination-items-container {
+  height: 32px;
+  position: relative;
+  width: 256px;
+}
+
+.grupos .pagination {
+  align-items: flex-start;
+}
+
+.grupos .button-pagination {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+}
+
+.grupos .number {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.grupos .address {
+  color: var(--eerie-black);
+  font-weight: 500;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.grupos .actions-2 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  position: relative;
+  width: 94px;
+}
+
+.grupos .button-2 {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.grupos .delete-5 {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-left: -2.00px;
+  margin-right: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.grupos .edit-20px-5 {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-left: -2.00px;
+  margin-right: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.grupos .fields {
+  align-self: stretch;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .header-label-5 {
+  align-items: center;
+  border-radius: 8px;
+  gap: 8px;
+  height: 32px;
+  position: relative;
+}
+
+.grupos .landing-page-7 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  position: relative;
+}
+
+.grupos .men-2 {
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .menu-9 {
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.grupos .pagination-1 {
+  display: inline-flex;
+  position: relative;
+}
+
+.grupos .subtitle-3 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  position: relative;
+}
+
+.grupos .tabla-2 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.grupos .table-heading-11 {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.grupos .title-4 {
+  flex: 1;
+  letter-spacing: 0;
+  line-height: 20px;
+  position: relative;
+}

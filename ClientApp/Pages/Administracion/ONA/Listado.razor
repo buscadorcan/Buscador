@@ -4,18 +4,18 @@
 @using SharedApp.Models.Dtos;
 @attribute [Authorize]
 
-
-<div class="card">
+<link href="~/admin/css/ona.css" rel="stylesheet" />
+<div class="">
     <!-- Card Header -->
-    <div class="card-header">
-        <h2>Administración de ONA</h2>
+    <div class="genetal title">
+        <h2 class="title headlineheadline2-h2">Administración de ONA</h2>
     </div>
     <div class="text-end my-3" style="margin-right: 1%;">
         <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-ona">Agregar Registro</Button>
     </div>
     <!-- Card Body -->
-    <div class="card-body">
-        <div class="table-responsive">
+    <div class="">
+        <div class="general table">
             <Grid TItem="OnaDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" @ref="grid" Responsive="true">
                 <GridColumn TItem="OnaDto" HeaderText="Razon Social" PropertyName="RazonSocial">
                     @context.RazonSocial

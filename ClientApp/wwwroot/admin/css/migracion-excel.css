@@ -1,0 +1,714 @@
+/* screen - migracion-excel */
+
+.migracion-excel {
+  align-items: flex-start;
+  background-color: var(--neutral-color00);
+  display: flex;
+  height: 871px;
+  width: 1440px;
+}
+
+.migracion-excel .menu-adminitrador-can {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  height: 871px;
+  overflow-y: scroll;
+  padding: 16px 0px;
+  position: relative;
+  width: 260px;
+}
+
+.migracion-excel .user-info {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .expand_more {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.migracion-excel .men {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .inicio-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .inicio-3 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .menu {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .place {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .usuarios {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .usuarios-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .menu-1 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .estadisticas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .menu-2 {
+  background-color: var(--neutral-color00);
+  flex: 0 0 auto;
+  padding: 0px 10px 8px;
+}
+
+.migracion-excel .menu-3 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .menu-4 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .grupos {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .menu-5 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .surname {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .menu-6 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .esquemas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .menu-7 {
+  background-color: var(--white-lilac-2);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .migracin-excel {
+  color: var(--mirage);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .menu-8 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .logs-de-migracin {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .help-section {
+  align-items: flex-start;
+  flex: 1;
+  flex-grow: 1;
+  gap: 24px;
+  justify-content: flex-end;
+}
+
+.migracion-excel .help-container {
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 24px;
+}
+
+.migracion-excel .help-item {
+  align-items: flex-start;
+  flex: 0 0 auto;
+  padding: 0px 8px;
+}
+
+.migracion-excel .menu-9 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.migracion-excel .ayuda {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.migracion-excel .flex-col {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 867px;
+  width: 1180px;
+}
+
+.migracion-excel .top {
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+  display: flex;
+  height: 130px;
+  overflow: hidden;
+  width: 1180px;
+}
+
+.migracion-excel .overlap-group {
+  height: 301px;
+  margin-left: 56px;
+  margin-top: -203px;
+  position: relative;
+  width: 1485px;
+}
+
+.migracion-excel .vector-1 {
+  height: 301px;
+  left: 311px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 1174px;
+}
+
+.migracion-excel .frame {
+  cursor: pointer;
+  height: 62px;
+  left: 0;
+  position: absolute;
+  top: 235px;
+  width: 335px;
+}
+
+.migracion-excel .main-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 736px;
+  padding: 40px 0px;
+  position: relative;
+  width: 1180px;
+}
+
+.migracion-excel .title {
+  align-self: stretch;
+  color: var(--neutraldark80);
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.migracion-excel .header {
+  align-items: flex-start;
+  background-color: transparent;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 24px;
+  justify-content: flex-end;
+  position: relative;
+  width: 1155px;
+}
+
+.migracion-excel .button {
+  align-items: center;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 24px;
+  position: relative;
+}
+
+.migracion-excel .button-1 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  margin-top: -1.50px;
+  position: relative;
+  width: fit-content;
+}
+
+.migracion-excel .table {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .table-heading {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 12px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .table-heading-1 {
+  width: 220px;
+}
+
+.migracion-excel .header-label-1 {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 8px;
+  height: 32px;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.migracion-excel .table-heading-2 {
+  width: 225px;
+}
+
+.migracion-excel .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.migracion-excel .table-heading-3 {
+  justify-content: space-around;
+  width: 333px;
+}
+
+.migracion-excel .table-heading-4 {
+  width: 354px;
+}
+
+.migracion-excel .content {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .row {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  position: relative;
+  width: 1180px;
+}
+
+.migracion-excel .componente {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 32px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .row-1 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  width: 100%;
+}
+
+.migracion-excel .row-2 {
+  flex: 0 0 auto;
+  gap: 4px;
+  width: 1156px;
+}
+
+.migracion-excel .ads-rules-list {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  height: 75px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .cell {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding: 12px 12px 8px 24px;
+  position: relative;
+  width: 244px;
+}
+
+.migracion-excel .migration-id {
+  align-self: stretch;
+  color: var(--mako);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.migracion-excel .landing-page {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 225px;
+}
+
+.migracion-excel .status {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.migracion-excel .landing-page-1 {
+  width: 333px;
+}
+
+.migracion-excel .file-name {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.migracion-excel .landing-page-2 {
+  width: 354px;
+}
+
+.migracion-excel .error-message {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  position: relative;
+}
+
+.migracion-excel .row-3 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  width: 1180px;
+}
+
+.migracion-excel .row-4 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  width: 100%;
+}
+
+.migracion-excel .row-5 {
+  flex: 0 0 auto;
+  gap: 4px;
+  width: 1156px;
+}
+
+.migracion-excel .row-6 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  width: 1180px;
+}
+
+.migracion-excel .row-7 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  width: 100%;
+}
+
+.migracion-excel .row-8 {
+  flex: 0 0 auto;
+  gap: 4px;
+  width: 1156px;
+}
+
+.migracion-excel .row-9 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  width: 1180px;
+}
+
+.migracion-excel .row-10 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  width: 100%;
+}
+
+.migracion-excel .row-11 {
+  flex: 0 0 auto;
+  gap: 4px;
+  width: 1156px;
+}
+
+.migracion-excel .pagination-container {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 16px 0px 0px;
+  position: relative;
+  width: 1155px;
+}
+
+.migracion-excel .pagination {
+  align-items: flex-start;
+  display: inline-flex;
+  position: relative;
+}
+
+.migracion-excel .button-pagination {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.migracion-excel .number {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.migracion-excel .file-name-4 {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.migracion-excel .landing-page-3 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+}
+
+.migracion-excel .menu-10 {
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.migracion-excel .row-12 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.migracion-excel .status-4 {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.migracion-excel .table-heading-5 {
+  align-items: center;
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  padding: 8px;
+  position: relative;
+}

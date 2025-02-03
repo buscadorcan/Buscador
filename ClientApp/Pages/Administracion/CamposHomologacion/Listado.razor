@@ -2,6 +2,7 @@
 @layout AdminLayout
 @using SharedApp.Models.Dtos
 
+<link href="~/admin/css/campos.css" rel="stylesheet" />
 <style>
     .striped-table tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
@@ -44,15 +45,12 @@
 </style>
 
 <PageTitle>Campos Homologación</PageTitle>
-<div class="card">
-    <!-- Card Header -->
-    <div class="card-header">
-        <h2>Administración de campos de Homologación</h2>
-    </div>
+<div class="general title" style="margin-top:0px !important">
+    <h2 class="title headlineheadline2-h2">Administración de campos de Homologación</h2>
 </div>
 
 <div class="row py-2">
-    <div class="col-md-6">
+    <div class="">
         <div class="form-group">
             <label for="grupoHomologacionSelect" class="col-form-label">Grupo de Homologación</label>
             <select id="grupoHomologacionSelect" class="form-control" @onchange="OnAutoCompleteChangedHandler">
@@ -85,8 +83,8 @@
     </div>
 </div>
 
-<div class="card-body">
-        <div class="table-responsive">
+<div class="">
+        <div class="general table">
         <Grid Id="sortableGrid"
               @ref="grid"
               TItem="HomologacionDto"

@@ -1,0 +1,545 @@
+/* screen - campos-edicion */
+
+.campos-edicion {
+  align-items: flex-start;
+  background-color: var(--neutral-color00);
+  display: flex;
+  height: 871px;
+  width: 1440px;
+}
+
+.campos-edicion .menu-adminitrador-can {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  height: 871px;
+  overflow-y: scroll;
+  padding: 16px 0px;
+  position: relative;
+  width: 260px;
+}
+
+.campos-edicion .user-info {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .expand_more {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.campos-edicion .men {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .inicio-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .inicio-3 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .menu {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--white-lilac);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .place {
+  color: var(--mirage);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .usuarios {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .usuarios-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .menu-1 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .estadisticas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .section {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .menu-2 {
+  flex: 0 0 auto;
+  padding: 0px 10px 8px;
+}
+
+.campos-edicion .subsection {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .menu-3 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .menu-4 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .grupos {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .menu-5 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .surname {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .menu-6 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .esquemas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .menu-7 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .migracin-excel {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .menu-8 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .logs-de-migracin {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .section-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  justify-content: flex-end;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .menu-9 {
+  height: 48px;
+  padding: 10px;
+}
+
+.campos-edicion .ayuda {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .flex-col {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 619px;
+  width: 1180px;
+}
+
+.campos-edicion .top {
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+  display: flex;
+  height: 130px;
+  overflow: hidden;
+  width: 1180px;
+}
+
+.campos-edicion .overlap-group {
+  height: 301px;
+  margin-left: 56px;
+  margin-top: -203px;
+  position: relative;
+  width: 1485px;
+}
+
+.campos-edicion .vector-1 {
+  height: 301px;
+  left: 311px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 1174px;
+}
+
+.campos-edicion .frame {
+  cursor: pointer;
+  height: 62px;
+  left: 0;
+  position: absolute;
+  top: 235px;
+  width: 335px;
+}
+
+.campos-edicion .main-container {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 40px 0px;
+  position: relative;
+  width: 1180px;
+}
+
+.campos-edicion .title {
+  align-self: stretch;
+  color: var(--neutraldark80);
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.campos-edicion .form-container {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .field-container {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 24px;
+  width: 100%;
+}
+
+.campos-edicion .field {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 10px;
+  justify-content: space-around;
+  position: relative;
+}
+
+.campos-edicion .field-content {
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 16px;
+}
+
+.campos-edicion .label {
+  align-self: stretch;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.campos-edicion .dropdown {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border: 1px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  display: flex;
+  gap: 67px;
+  height: 44px;
+  padding: 12px 8px 12px 12px;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .label-container-1 {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  position: relative;
+  width: 43px;
+}
+
+.campos-edicion .label-2 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-right: -11.00px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .label-container {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 4px;
+  position: relative;
+}
+
+.campos-edicion .label-1 {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .row-container {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  justify-content: space-around;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .field-container-1 {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 24px;
+  position: relative;
+}
+
+.campos-edicion .field-1 {
+  align-self: stretch;
+  flex: 1;
+  flex-grow: 1;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+.campos-edicion .field-content-1 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 561px;
+}
+
+.campos-edicion .icon-container {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  margin-bottom: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+}
+
+.campos-edicion .icon-2 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.campos-edicion .button-container {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 24px;
+  padding: 0px 24px 0px 0px;
+  position: relative;
+}
+
+.campos-edicion .button {
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  padding: 10px 32px;
+  position: relative;
+  width: 200px;
+}
+
+.campos-edicion .button-1 {
+  color: var(--blue);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .button-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: flex;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  padding: 10px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.campos-edicion .button-3 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.campos-edicion .field-2 {
+  align-items: flex-start;
+  display: flex;
+  position: relative;
+}
+
+.campos-edicion .menu-10 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}

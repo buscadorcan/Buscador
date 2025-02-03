@@ -1,22 +1,24 @@
-@using BlazorBootstrap;
+@inherits LayoutComponentBase
 @using Blazored.LocalStorage
-@using ClientApp.Services.IService
-
-
-<Sidebar2 @ref="sidebar"
-          Title=@TituloMenu
-          BadgeText="v2.1.0"
-          DataProvider="Sidebar2DataProvider" />
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@using ClientApp.Services.IService  
 
 @code {
     Sidebar2 sidebar;
-    IEnumerable<NavItem>? navItems;
+    private IEnumerable<NavItem>? navItems;
+
     [Inject]
     private ICatalogosService? _Icatalogo { get; set; }
 
     [Inject]
     ILocalStorageService iLocalStorageService { get; set; }
+
     private string TituloMenu;
+
+    [Parameter] public EventCallback<List<NavItem>> OnNavItemsChanged { get; set; } // ?? Nuevo parámetro
 
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
     {
@@ -33,21 +35,20 @@
         TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
         var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
-        // Definir exclusiones basadas en el rol
+        // Excluir ciertos menús según el rol
         var excludedHrefs = rol switch
         {
-            "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG"},
+            "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG" },
             "KEY_USER_CAN" => new[] { "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ" },
-            "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ"},
+            "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ" },
             "KEY_USER_READ" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA" },
-            _ => Array.Empty<string>() // Si el rol no coincide con ninguno, no excluye nada
+            _ => Array.Empty<string>()
         };
 
-        // Filtrar los elementos del menú basados en las exclusiones
         var filteredMenuItems = menuItems.Where(menu => !excludedHrefs.Contains(menu.CodigoHomologacion));
 
-        // Transformar los elementos filtrados en NavItem
-        var navItems = filteredMenuItems.Select(menu =>
+        // Convertir en NavItem
+        var navItemsList = filteredMenuItems.Select(menu =>
         {
             BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
             {
@@ -69,10 +70,10 @@
                     Href = menu.href,
                     IconName = iconName
                 };
-        });
+        }).ToList(); // ?? Convertir a List<NavItem> para el EventCallback
 
-        StateHasChanged();
-        return navItems;
+        await OnNavItemsChanged.InvokeAsync(navItemsList); // ?? Enviar valores a AdminLayout.razor
+
+        return navItemsList;
     }
-
 }

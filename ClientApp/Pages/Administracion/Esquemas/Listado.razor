@@ -4,17 +4,18 @@
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
 
+<link href="~/admin/css/esquemas.css" rel="stylesheet" />
 <PageTitle>Homologación Esquemas</PageTitle>
 
-<div class="card">
-    <div class="card-header">
-        <h3>Administación de Homologación Esquemas</h3>
+<div class="">
+    <div class="general title">
+        <h2 class="title headlineheadline2-h2">Administación de Homologación Esquemas</h2>
         <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
     </div>
      <div class="text-end my-3" style="margin-right: 1%;">
         <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-esquema">Agregar Registro</Button>
     </div>
-    <div class="card-body">
+    <div class="general table">
         <Grid @ref="grid" TItem="EsquemaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemasDataProvider" Responsive="true" Id="sortableGrid">
             <GridColumn TItem="EsquemaDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
                 @context.MostrarWeb
