@@ -19,13 +19,13 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         private IMigracionExcelService? iMigracionExcelService { get; set; }
         [Inject]
         private ILogMigracionService? iLogMigracionService { get; set; }
-        //private List<MigracionExcelDto>? listasHevd = null;
-        private List<LogMigracionDto>? listasHevd = null;
+        //private List<LogMigracionDto>? listasHevd = null;
 
         private bool accessMigration;
         private bool isRolRead;
         private bool isRolOna;
         private bool isRolAdmin;
+        private List<LogMigracionDto> listasHevd = new();
         protected override async Task OnInitializedAsync()
         {
             var usuarioBaseDatos = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_BaseDatos_Local);
@@ -57,24 +57,13 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
                 }
                 
             }
-            
+
+            if (listasHevd != null && iLogMigracionService != null)
+            {
+                listasHevd = await iLogMigracionService.GetLogMigracionesAsync() ?? new List<LogMigracionDto>();
+            }
 
         }
-        private async Task<GridDataProviderResult<LogMigracionDto>> LogMigracionDtoDataProvider(GridDataProviderRequest<LogMigracionDto> request)
-        {
-            if (listasHevd == null && iLogMigracionService != null)
-            {
-                listasHevd = await iLogMigracionService.GetLogMigracionesAsync();
-            }
-            return await Task.FromResult(request.ApplyTo(listasHevd ?? []));
-        }
-        //private async Task<GridDataProviderResult<MigracionExcelDto>> MigracionExcelDtoDataProvider(GridDataProviderRequest<MigracionExcelDto> request)
-        //{
-        //    if (listasHevd == null && iMigracionExcelService != null)
-        //    {
-        //        listasHevd = await iMigracionExcelService.GetMigracionExcelsAsync();
-        //    }
-        //    return await Task.FromResult(request.ApplyTo(listasHevd ?? []));
-        //}
+       
     }
 }

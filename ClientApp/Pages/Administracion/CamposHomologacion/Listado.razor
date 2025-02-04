@@ -2,7 +2,6 @@
 @layout AdminLayout
 @using SharedApp.Models.Dtos
 
-<link href="~/admin/css/campos.css" rel="stylesheet" />
 <style>
     .striped-table tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
@@ -49,8 +48,6 @@
     <h2 class="title headlineheadline2-h2">Administración de campos de Homologación</h2>
 </div>
 
-<div class="row py-2">
-    <div class="">
         <div class="form-group">
             <label for="grupoHomologacionSelect" class="col-form-label">Grupo de Homologación</label>
             <select id="grupoHomologacionSelect" class="form-control" @onchange="OnAutoCompleteChangedHandler">
@@ -64,7 +61,6 @@
                 }
             </select>
         </div>
-    </div>
     <div class="col-md-6">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
             @if (IsAdd)
@@ -81,10 +77,173 @@
             
         </div>
     </div>
+
+
+@* <div class="table table-1">
+    <div class="table-heading table-1">
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Vista Código Homologado</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Tooltip Web</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Tipo de Dato</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-5.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Opciones</div>
+            </div>
+        </div>
+    </div>
+
+    @if (listaHomologacions != null && listaHomologacions.Any())
+    {
+        <div class="content content-2">
+            @foreach (var homologacion in listaHomologacions)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row-1 row-15">
+                            <div class="ads-rules-list">
+                                <div class="landing-page"><div class="bodybody-small">@homologacion.NombreHomologado</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@homologacion.MostrarWeb</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@homologacion.TooltipWeb</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@homologacion.MascaraDato</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@homologacion.SiNoHayDato</div></div>
+                                <div class="landing-page">
+                                    <Tooltip Title="Editar registro">
+                                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
+                                                To="@($"/editar-campos-homologacion/{homologacionSelected?.IdHomologacion}/{homologacion.IdHomologacion}")"
+                                                Size="ButtonSize.Small">
+                                            <Icon Name="IconName.PencilSquare" />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip Title="Eliminar registro">
+                                        <Button Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(homologacion.IdHomologacion))>
+                                            <Icon Name="IconName.Trash3" />
+                                        </Button>
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No hay datos disponibles.</p>
+    }
+</div> *@
+
+<style>
+    .general.table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        .general.table th,
+        .general.table td {
+            width: auto; /* Distribuye equitativamente el ancho */
+            text-align: left;
+            white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+            min-width: 150px; /* Asegura que cada columna tenga un tamaño mínimo */
+        }
+
+        .general.table tbody {
+            width: 100%;
+            display: table; /* Permite que el tbody ocupe todo el ancho */
+            table-layout: fixed;
+        }
+</style>
+
+<div class="general table">
+    <Grid Id="sortableGrid"
+          @ref="grid"
+          TItem="HomologacionDto"
+          class="table table-hover table-bordered table-striped striped-table"
+          DataProvider="HomologacionDataProvider"
+          Responsive="true"
+          AllowFiltering="true"
+          Style="width:100%;">
+
+        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado" Class="bodybody-small">
+            @(string.IsNullOrWhiteSpace(context.NombreHomologado) ? "-" : context.NombreHomologado)
+            <input type="hidden" value="@context.IdHomologacion" />
+        </GridColumn>
+
+        <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" Class="bodybody-small">
+            @(string.IsNullOrWhiteSpace(context.MostrarWeb) ? "-" : context.MostrarWeb)
+            <input type="hidden" value="@context.IdHomologacion" />
+        </GridColumn>
+
+        <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" Class="bodybody-small">
+            @(string.IsNullOrWhiteSpace(context.TooltipWeb) ? "-" : context.TooltipWeb)
+        </GridColumn>
+
+        <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato" Class="bodybody-small">
+            @(string.IsNullOrWhiteSpace(context.MascaraDato) ? "-" : context.MascaraDato)
+        </GridColumn>
+
+        <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato" Class="bodybody-small">
+            @(string.IsNullOrWhiteSpace(context.SiNoHayDato) ? "-" : context.SiNoHayDato)
+        </GridColumn>
+
+        <GridColumn TItem="HomologacionDto" HeaderText="Opciones">
+            <!-- Botón Editar -->
+            <Tooltip Title="Editar registro">
+                <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-campos-homologacion/{homologacionSelected.IdHomologacion}/{context.IdHomologacion}")" Size="ButtonSize.Small">
+                    <Icon Name="IconName.PencilSquare" />
+                </Button>
+            </Tooltip>
+
+            <!-- Botón Eliminar -->
+            <Tooltip Title="Eliminar registro">
+                <Button Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdHomologacion))>
+                    <Icon Name="IconName.Trash3" />
+                </Button>
+            </Tooltip>
+        </GridColumn>
+
+    </Grid>
 </div>
 
-<div class="">
-        <div class="general table">
+
+
+@*         <div class="general table">
         <Grid Id="sortableGrid"
               @ref="grid"
               TItem="HomologacionDto"
@@ -92,21 +251,21 @@
               DataProvider="HomologacionDataProvider"
               Responsive="true"
               AllowFiltering="true">
-            <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
+        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado" Class="bodybody-small">
                 @context.NombreHomologado
                 <input type="hidden" value="@context.IdHomologacion" />
             </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
+            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" Class="bodybody-small">
                 @context.MostrarWeb
                 <input type="hidden" value="@context.IdHomologacion" />
             </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
+            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" Class="bodybody-small">
                 @context.TooltipWeb
             </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
+            <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato" Class="bodybody-small">
                 @context.MascaraDato
             </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
+        <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato" Class="bodybody-small">
                 @context.SiNoHayDato
             </GridColumn>
             <GridColumn TItem="HomologacionDto" HeaderText="Opciones">
@@ -126,8 +285,7 @@
              </GridColumn>
         </Grid>
         </div>
-</div>
-
+ *@
 @if (showModal)
 {
     <div class="modal show d-block" tabindex="-1" role="dialog">

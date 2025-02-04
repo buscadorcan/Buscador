@@ -5,7 +5,20 @@
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
 
+
 <PageTitle>Formulario Migración Excel</PageTitle>
+
+@code {
+    private bool showDropdown = false; // Controla la visibilidad del menú
+
+
+
+    private void ToggleDropdown()
+    {
+        showDropdown = !showDropdown; // Alternar visibilidad
+    }
+
+}
 
 <EditForm EditContext="@editContext" class="pt-4">
     <DataAnnotationsValidator />
@@ -18,6 +31,137 @@
 
             <!-- Combo de selección de Ona -->
             <div class="form-row py-2">
+                <div class="col-md-4">
+                    <div>
+                        <label class="col-form-label">Ona</label>
+                    </div>
+
+                    <!-- Botón para desplegar la lista -->
+                    <button class="btn btn-secondary dropdown-toggle custom-dropdown-button" type="button" @onclick="ToggleDropdown">
+                        @if (onaSelected?.Siglas != null)
+                        {
+                            @onaSelected.Siglas
+                        }
+                        else
+                        {
+                            <span>Seleccionar Ona</span>
+                        }
+                    </button>
+
+                    <!-- Lista de opciones, visible solo si showDropdown es true -->
+                    <ul class="form-control" style="display:@(showDropdown ? "block" : "none");">
+                        @if (listaONAs != null && listaONAs.Any())
+                        {
+                            @foreach (var opcion in listaONAs)
+                            {
+                                <li>
+                                    <a class="custom-dropdown-item" @onclick="() => CambiarSeleccionOna(opcion)">
+                                        @opcion.Siglas
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li><span class="custom-dropdown-item disabled">No hay ONAs disponibles</span></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <style>
+                .custom-dropdown-button {
+                    background-color: #6c757d; /* Color gris oscuro */
+                    color: white;
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    text-align: left;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                    .custom-dropdown-button:hover {
+                        background-color: #5a6268;
+                    }
+
+                .custom-dropdown-menu {
+                    position: absolute;
+                    background: white;
+                    list-style: none;
+                    padding: 5px 0;
+                    margin: 5px 0;
+                    width: 100%;
+                    border-radius: 5px;
+                    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                    border: 1px solid #ddd;
+                    z-index: 1000;
+                    max-height: 200px; /* Agregamos un límite para que no crezca demasiado */
+                    overflow-y: auto;
+                }
+
+                .custom-dropdown-item {
+                    display: block;
+                    padding: 10px 15px;
+                    text-decoration: none;
+                    color: #333;
+                    cursor: pointer;
+                    transition: background 0.2s;
+                }
+
+                    .custom-dropdown-item:hover {
+                        background: #f8f9fa;
+                    }
+
+                    .custom-dropdown-item.disabled {
+                        color: #999;
+                        cursor: not-allowed;
+                    }
+            </style>
+
+@*             <div class="form-row py-2">
+                <div class="col-md-4">
+                    <div>
+                        <label class="col-form-label">Ona</label>
+                    </div>
+
+                    <!-- Botón para desplegar la lista -->
+                    <button class="btn btn-secondary dropdown-toggle" type="button" @onclick="ToggleDropdown">
+                        @if (onaSelected?.Siglas != null)
+                        {
+                            @onaSelected.Siglas
+                        }
+                        else
+                        {
+                            <span>Seleccionar Ona</span>
+                        }
+                    </button>
+
+                    <!-- Lista de opciones, visible solo si showDropdown es true -->
+                    <ul class="dropdown-menu" style="display:@(showDropdown ? "block" : "none"); position: absolute;">
+                        @if (listaONAs != null && listaONAs.Any())
+                        {
+                            @foreach (var opcion in listaONAs)
+                            {
+                                <li>
+                                    <a class="dropdown-item" @onclick="async () => await CambiarSeleccionOna(opcion)">
+                                        @opcion.Siglas
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li><span class="dropdown-item disabled">No hay ONAs disponibles</span></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+ *@
+            @* <div class="form-row py-2">
                 <div class="col-md-4">
                     <div>
                         <label class="col-form-label">Ona</label>
@@ -46,7 +190,7 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-            </div>
+            </div> *@
 
             <!-- Campo de archivo -->
             <div class="form-row py-2">
@@ -59,7 +203,18 @@
                     <ValidationMessage For="(() => uploadedFile)" />
                 </div>
             </div>
-            <div class="py-2">
+
+            <div class="button-container">
+                <div class="button-container-1">
+                    <div class="button-2" @onclick="async () => await RegistrarMigracionExcel()">
+                        <div class="button-3 headingheadline4-h4">Guardar</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            @* <div class="py-2">
                 <hr style="background-color:aliceblue" />
                 <div class="d-flex align-items-center">
                     <!-- Botón Guardar -->
@@ -72,7 +227,7 @@
                         </Button>
                     </div>
                 </div>
-            </div>
+            </div> *@
         </div>
     </div>
 </EditForm>

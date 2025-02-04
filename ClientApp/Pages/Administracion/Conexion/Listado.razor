@@ -23,10 +23,150 @@
     <div class="general title">
         <h2 class="title headlineheadline2-h2">Validación de Campos</h2>
     </div>
-    <div class="text-end my-3" style="margin-right: 1%;">
+    @* <div class="text-end my-3" style="margin-right: 1%;">
         <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-conexion">Agregar Registro</Button>
+    </div> *@
+    <div class="text-end my-3">
+        <div class="button-container">
+            <Button Type="ButtonType.Link" class="button-2" To="/nuevo-conexion"><div class="button-3 headingheadline4-h4">Agregar Registro</div></Button>
+        </div>
     </div>
-    <div class="general table">
+
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Host</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Puerto</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Usuario</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Base Datos</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Origen Datos</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-5.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Migrar</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-6.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Estado</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-7.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Probar Conexion</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Migracion</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Editar</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Eliminar</div>
+                </div>
+            </div>
+        </div>
+
+        @if (listasHevd != null && listasHevd.Any())
+        {
+            <div class="content content-2">
+                @foreach (var conexion in listasHevd)
+                {
+                    <div class="row row-15">
+                        <div class="componente">
+                            <div class="row-1 row-15">
+                                <div class="ads-rules-list">
+                                    <div class="landing-page"><div class="bodybody-small">@conexion.Host</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@conexion.Puerto</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@conexion.Usuario</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@conexion.BaseDatos</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@conexion.OrigenDatos</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@conexion.Migrar</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@conexion.Estado</div></div>
+                                    <div class="landing-page">
+                                        @if (conexion.OrigenDatos != "EXCEL")
+                                        {
+                                            <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(conexion.IdONA)" Size="ButtonSize.Small">
+                                                <Icon Name="IconName.RCircle" />
+                                            </Button>
+                                        }
+                                    </div>
+                                    <div class="landing-page">
+                                        @if (conexion.OrigenDatos != "EXCEL")
+                                        {
+                                            <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(conexion.IdONA)" Size="ButtonSize.Small">
+                                                <Icon Name="IconName.DatabaseAdd" />
+                                            </Button>
+                                        }
+                                    </div>
+                                    <div class="landing-page">
+                                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{conexion.IdONA}")" Size="ButtonSize.Small">
+                                            <Icon Name="IconName.PencilSquare" />
+                                        </Button>
+                                    </div>
+                                    <div class="landing-page">
+                                        <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(conexion.IdONA)" Size="ButtonSize.Small">
+                                            <Icon Name="IconName.Trash3" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No hay datos disponibles.</p>
+        }
+    </div>
+@*     <div class="general table">
         <Grid @ref="grid" TItem="ONAConexionDto" class="table table-hover table-bordered table-striped" DataProvider="ConexionDtoDataProvider" Responsive="true">
             <GridColumn TItem="ONAConexionDto" HeaderText="Host">
                 @context.Host
@@ -66,11 +206,6 @@
                     </Button>
                 }
             </GridColumn>
-            @*   <GridColumn TItem="ONAConexionDto" HeaderText="Eliminar conexion">
-            <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteConexionClick(context.IdONA)" Size="Size.Small">
-            <Icon Name="IconName.Trash3" />
-            </Button>
-            </GridColumn> *@
             <GridColumn TItem="ONAConexionDto" HeaderText="Editar">
                 <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{context.IdONA}")" Size="ButtonSize.Small">
                     <Icon Name="IconName.PencilSquare" />
@@ -83,5 +218,6 @@
             </GridColumn>
         </Grid>
     </div>
+ *@
 </div>
 

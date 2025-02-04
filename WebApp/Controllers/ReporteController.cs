@@ -31,9 +31,9 @@ namespace WebApp.Controllers
 
                 if (homologacion == null)
                 {
-                    return NotFound(new RespuestasAPI<string>
+                    return NotFound(new RespuestasAPI<VwHomologacionDto>
                     {
-                        Result = null
+                        Result = new VwHomologacionDto()
                     });
                 }
 
