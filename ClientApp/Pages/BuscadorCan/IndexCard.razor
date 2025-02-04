@@ -1,18 +1,29 @@
 ﻿<div class="index-card">
     <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
     <div class="row">
-        <!-- Columna del mapa (30%) -->
-        <div class="col-md-4">
-            <iframe id="map"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99769.21423248247!2d-78.57956327686247!3d-0.22016469512648144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59a1d0627cf35%3A0xe9f898434b2a8ad7!2sQuito%2C%20Ecuador!5e0!3m2!1sen!2sus!4v1692724900163!5m2!1sen!2sus"
-                    width="100%"
-                    height="100%"
-                    style="border:0;"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+        <!-- Botón para ocultar/mostrar el mapa -->
+@*         <div class="col-12 text-end mb-2">
+            <button class="btn btn-secondary" @onclick="ToggleMapa">
+                <i class="bi @(mostrarMapa ? "bi-chevron-left" : "bi-chevron-right")"></i>
+                @(mostrarMapa ? " Ocultar Mapa" : " Mostrar Mapa")
+            </button>
         </div>
+
+        @if (mostrarMapa)
+        { *@
+            <!-- Columna del mapa (30%) -->
+            <div class="col-md-4">
+                <iframe id="map"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99769.21423248247!2d-78.57956327686247!3d-0.22016469512648144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59a1d0627cf35%3A0xe9f898434b2a8ad7!2sQuito%2C%20Ecuador!5e0!3m2!1sen!2sus!4v1692724900163!5m2!1sen!2sus"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+      @*   } *@
 
         <!-- Columna de tarjetas (70%) -->
         <div class="col-md-8">
@@ -23,35 +34,55 @@
                     {
                         <div class="col-md-6 mb-4">
                             <div class="card shadow">
-                                @* <div class="card-header text-center font-weight-bold grid-header">
-                                    @ListaEtiquetasGrilla.FirstOrDefault()?.MostrarWeb
-                                </div> *@
-
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <!-- Ícono ONA a la izquierda -->
                                         <div class="col-auto d-flex flex-column align-items-center align-self-start">
                                             <Button @onclick="() => showModalOna(item)">
                                                 <img src="@(iconUrls.ContainsKey(item.IdONA.GetValueOrDefault())
-                                                ? iconUrls[item.IdONA.GetValueOrDefault()]
-                                                : "https://via.placeholder.com/40")"
+                                                    ? iconUrls[item.IdONA.GetValueOrDefault()]
+                                                    : "https://via.placeholder.com/40")"
                                                      alt="Icono ONA"
                                                      class="img-fluid"
                                                      style="width: 40px; height: 40px;">
-                                            </Button>                               
+                                            </Button>
                                         </div>
 
-                                        <!-- Contenido principal -->
+                                        <!-- Contenido principal con dos columnas -->
                                         <div class="col">
-                                            @foreach (var etiqueta in ListaEtiquetasGrilla.OrderBy(c => c.MostrarWebOrden))
-                                            {
-                                                <div class="mb-2">
-                                                    <h6 class="mb-1">@etiqueta.MostrarWeb</h6>
-                                                    <p class="text-muted small">
-                                                        @(item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data ?? "N/A")
-                                                    </p>
-                                                </div>
+                                            @{
+                                                var mitad = (int)Math.Ceiling(ListaEtiquetasGrilla.Count / 2.0);
+                                                var primeraMitad = ListaEtiquetasGrilla.Take(mitad).ToList();
+                                                var segundaMitad = ListaEtiquetasGrilla.Skip(mitad).ToList();
                                             }
+
+                                            <div class="row">
+                                                <!-- Primera columna -->
+                                                <div class="col-md-6">
+                                                    @foreach (var etiqueta in primeraMitad)
+                                                    {
+                                                        <div class="mb-2">
+                                                            <h6 class="mb-1">@etiqueta.MostrarWeb</h6>
+                                                            <p class="text-muted small">
+                                                                @(item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data ?? "N/A")
+                                                            </p>
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                <!-- Segunda columna -->
+                                                <div class="col-md-6">
+                                                    @foreach (var etiqueta in segundaMitad)
+                                                    {
+                                                        <div class="mb-2">
+                                                            <h6 class="mb-1">@etiqueta.MostrarWeb</h6>
+                                                            <p class="text-muted small">
+                                                                @(item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data ?? "N/A")
+                                                            </p>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -68,6 +99,7 @@
                             </div>
                         </div>
                     }
+
                 }
                 else
                 {

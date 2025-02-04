@@ -162,29 +162,6 @@ namespace ClientApp.Pages.BuscadorCan
         }
 
 
-        //private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
-        //{
-        //    // Obtener la URL del certificado
-        //    var pdfUrl = await GetPdfUrlFromEsquema(resultData);
-        //    Console.WriteLine("No se encontró la URL del certificado.");
-        //    if (pdfUrl == null)
-        //    {
-        //        // Mostrar una alerta o manejar el error si no hay URL
-        //        Console.WriteLine("No se encontró la URL del certificado.");
-        //        pdfUrl = "No se encontró la URL del certificado.";
-        //    }
-
-        //    // Configurar los parámetros del modal
-        //    var parameters = new Dictionary<string, object>
-        //    {
-        //        { "PdfUrl", pdfUrl } // Enviar la URL al modal
-        //    };
-
-        //    // Mostrar el modal con el componente PDFModal
-        //    modal.Size = ModalSize.Large;
-        //    await modal.ShowAsync<PdfModal>(title: "Visualizador de PDF", parameters: parameters);
-        //}
-
         private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
             // Obtener la URL del certificado
@@ -223,11 +200,6 @@ namespace ClientApp.Pages.BuscadorCan
                 throw new Exception("Error al obtener la URL del certificado", ex);
             }
         }
-        //private string SanitizeUrl(string url)
-        //{
-        //    return url.Replace(" ", "%20")
-        //              .Replace("–", "%E2%80%93");
-        //}
 
         private async Task<string> getIconUrl(BuscadorResultadoDataDto resultData)
         {

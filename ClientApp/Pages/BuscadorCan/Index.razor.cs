@@ -53,6 +53,9 @@ namespace ClientApp.Pages.BuscadorCan
                         }
                         
                     }
+
+                    listaDatosPanel = await iCatalogosService.GetPanelOnaAsync();
+                    TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
                 }
 
              
@@ -271,7 +274,7 @@ namespace ClientApp.Pages.BuscadorCan
         private void ActualizarPanelONA(List<vwPanelONADto> panelOnaData)
         {
             listaDatosPanel = panelOnaData;
-            TotalEmpresa = listaDatosPanel.Sum(x => x.empresas);
+            TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
             StateHasChanged(); 
         }
 

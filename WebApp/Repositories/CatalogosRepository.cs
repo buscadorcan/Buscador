@@ -121,7 +121,7 @@ namespace WebApp.Repositories
             return ExecuteDbOperation(context =>
               context.vwPanelONA
                 .AsNoTracking()
-                .OrderBy(c => c.empresas)
+                .OrderBy(c => c.NroOrg)
                 .ToList());
         }
 

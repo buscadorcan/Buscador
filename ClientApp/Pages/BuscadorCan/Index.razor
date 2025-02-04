@@ -75,24 +75,24 @@
                                     <div class="panel-item">
                                         <div class="frame-6">
                                             <div class="div-3">
-                                                @if (!string.IsNullOrEmpty(item.icono) && item.icono.TrimStart().StartsWith("{"))
+                                                @if (!string.IsNullOrEmpty(item.Icono) && item.Icono.TrimStart().StartsWith("{"))
                                                 {
-                                                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.icono);
+                                                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.Icono);
                                                     if (deserialized != null && deserialized.ContainsKey("filePath"))
                                                     {
-                                                        item.icono = deserialized["filePath"];
+                                                        item.Icono = deserialized["filePath"];
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine($"Valor inválido en item.icono: {item.icono}");
+                                                    Console.WriteLine($"Valor inválido en item.icono: {item.Icono}");
                                                 }
-                                                <img class="img-2" src="@item.icono" />
-                                                <div class="text-wrapper-4">@item.Siglas</div>
+                                                <img class="img-2" src="@item.Icono" />
+                                                <div class="text-wrapper-4">@item.Sigla</div>
                                             </div>
-                                            <div class="text-wrapper-5">@item.pais</div>
+                                            <div class="text-wrapper-5">@item.Pais</div>
                                         </div>
-                                        <div class="element-2">@item.empresas</div>
+                                        <div class="element-2">@item.NroOrg</div>
                                     </div>
                                     <div class="divider"></div>
                                 }

@@ -17,3 +17,5 @@ CREATE TABLE [dbo].[EsquemaOrganiza](
 	,CONSTRAINT         [PK_EO_IdEsquemaData]	PRIMARY KEY CLUSTERED (IdEsquemaData)
 	,CONSTRAINT         [FK_EO_IdEsquemaVista]  FOREIGN KEY (IdEsquemaVista) REFERENCES EsquemaVista(IdEsquemaVista)
 );
+
+
