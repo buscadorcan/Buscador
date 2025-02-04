@@ -40,7 +40,13 @@
                         </Tooltip>
                     </HeaderContent>
                     <ChildContent>
-                        @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data
+                        @if(etiqueta.IdHomologacion == 81){
+                            <Button @onclick="() => showModalOEC(context)">@context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data </Button>
+                        }
+                        else{
+                            @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data
+                        }
+                        
                     </ChildContent>
                 </GridColumn>
             }

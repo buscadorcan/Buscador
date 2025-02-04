@@ -161,6 +161,14 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
+        private async void showModalOEC(BuscadorResultadoDataDto resultData)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("resultData", resultData);
+            modal.Size = ModalSize.Regular;
+            await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
+        }
+
 
         private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
