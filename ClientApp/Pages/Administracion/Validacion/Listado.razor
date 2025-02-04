@@ -9,9 +9,9 @@
 <div class="row py-2">
     <div class="col-md-4">
         <div>
-            <label class="col-form-label">Ona</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Ona</label>
         </div>
-        <select id="onaSelect" class="form-control"  @onchange="CambiarSeleccionOna">
+        <select id="onaSelect" class="form-control" @onchange="CambiarSeleccionOna" style="margin-top: 2% !important;">
             <option value="" selected disabled>Seleccionar Ona</option>
             @if (listaONAs != null)
             {
@@ -24,9 +24,9 @@
     </div>
     <div class="col-md-4">
         <div>
-            <label class="col-form-label">Esquemas</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Esquemas</label>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 2% !important;">
             <div class="form-group">
                 <select id="esquemaSelect" class="form-control" @onchange="HandleEsquemaSelectionChange">
                     <option value="" selected disabled>Seleccionar ESQ</option>
@@ -51,9 +51,9 @@
     </div>
     <div class="col-md-4">
         <div>
-            <label class="col-form-label">Vista Origen</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Vista Origen</label>
         </div>
-        <input type="text" class="form-control" placeholder="" @bind="nombreSugerido" />
+        <input type="text" class="form-control" placeholder="" @bind="nombreSugerido" style="margin-top: 2% !important;" />
     </div>
     <div class="col-md-12 py-2">
         <Grid @ref="grid" TItem="EsquemaVistaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemaVistaDataProvider" Responsive="true">

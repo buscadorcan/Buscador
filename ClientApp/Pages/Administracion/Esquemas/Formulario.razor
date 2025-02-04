@@ -15,34 +15,34 @@
 
         <hr style="background-color:aliceblue" />
         <div class="form-row py-2">
-            <label class="col-form-label">Mostrar web</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Mostrar web</label>
             <div class="col">
-                <InputText @bind-Value="Esquema.MostrarWeb" class="form-control" placeholder="Mostrar web..." />
+                <InputText @bind-Value="Esquema.MostrarWeb" class="form-control" placeholder="Mostrar web..." style="margin-top: 2% !important;" />
             </div>
         </div>
 
         <div class="form-row py-2">
-            <label class="col-form-label">Tooltip Web</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Tooltip Web</label>
             <div class="col">
-                <InputText @bind-Value="Esquema.TooltipWeb" class="form-control" placeholder="Tooltip Web..." />
+                <InputText @bind-Value="Esquema.TooltipWeb" class="form-control" placeholder="Tooltip Web..." style="margin-top: 2% !important;" />
             </div>
         </div>
         <div class="form-row py-2">
-            <label class="col-form-label">Esquema Vista</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Esquema Vista</label>
             <div class="col">
-                <InputText @bind-Value="Esquema.EsquemaVista" class="form-control" placeholder="Esquema vista..." />
+                <InputText @bind-Value="Esquema.EsquemaVista" class="form-control" placeholder="Esquema vista..." style="margin-top: 2% !important;" />
             </div>
 
         </div>
 
         @*             <div class="form-row py-2">
-        <label class="col-form-label">Esquema Json</label>
+        <label class="label valign-text-middle inter-regular-normal-comet-16px">Esquema Json</label>
         <div class="col">
         <InputText @bind-Value="Esquema.EsquemaJson" class="form-control" placeholder="Esquema Json..." />
         </div>
         </div> *@
         <div class="form-row py-2">
-            <label class="col-form-label">Buscar y agregar campo homologado</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Buscar y agregar campo homologado</label>
             <div class="col">
                 <AutoComplete @bind-Value="homologacionName"
                               TItem="HomologacionDto"

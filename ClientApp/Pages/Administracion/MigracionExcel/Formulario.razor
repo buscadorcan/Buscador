@@ -33,11 +33,11 @@
             <div class="form-row py-2">
                 <div class="col-md-4">
                     <div>
-                        <label class="col-form-label">Ona</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">Ona</label>
                     </div>
 
                     <!-- Botón para desplegar la lista -->
-                    <button class="btn btn-secondary dropdown-toggle custom-dropdown-button" type="button" @onclick="ToggleDropdown">
+                    <button class="btn btn-secondary dropdown-toggle custom-dropdown-button" type="button" @onclick="ToggleDropdown" style="margin-top: 2% !important;">
                         @if (onaSelected?.Siglas != null)
                         {
                             @onaSelected.Siglas
@@ -125,7 +125,7 @@
 @*             <div class="form-row py-2">
                 <div class="col-md-4">
                     <div>
-                        <label class="col-form-label">Ona</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Ona</label>
                     </div>
 
                     <!-- Botón para desplegar la lista -->
@@ -164,7 +164,7 @@
             @* <div class="form-row py-2">
                 <div class="col-md-4">
                     <div>
-                        <label class="col-form-label">Ona</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Ona</label>
                     </div>
                     <Dropdown AutoClose="true">
                         <DropdownToggleButton Color="ButtonColor.Secondary">
@@ -194,8 +194,8 @@
 
             <!-- Campo de archivo -->
             <div class="form-row py-2">
-                <label class="col-form-label">Base Datos</label>
-                <div class="col">
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Base Datos</label>
+                <div class="col" style="margin-top: 2% !important;">
                     <InputFile @bind-Value="uploadedFile"
                                class="form-control"
                                placeholder="Archivo migración excel"

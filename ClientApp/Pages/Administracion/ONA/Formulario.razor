@@ -61,7 +61,7 @@
                 <!-- Columna 2 -->
                 <div class="col-md-6">
                     <div class="form-group py-2">
-                        <label class="col-form-label">Siglas</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">Siglas</label>
                         <InputText @bind-Value="onas.Siglas" class="form-control" placeholder="Siglas" />
                         <ValidationMessage For="(() => onas.Siglas)" />
                     </div>
@@ -79,13 +79,13 @@
                     </div>
 
                     <div class="form-group py-2">
-                        <label class="col-form-label">Teléfono</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">Teléfono</label>
                         <InputText @bind-Value="onas.Telefono" class="form-control" placeholder="Teléfono" />
                         <ValidationMessage For="(() => onas.Telefono)" />
                     </div>
 
                     <div class="form-group py-2">
-                        <label class="col-form-label">URL Logo</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">URL Logo</label>
                         <InputText @bind-Value="onas.UrlLogo" class="form-control" placeholder="URL Logo" />
                         <ValidationMessage For="(() => onas.UrlLogo)" />
                     </div>
@@ -127,14 +127,14 @@
             <!-- Columna 1 -->
             <div class="col-md-6">
                 <div class="form-group py-2">
-                    <label class="col-form-label">Razón Social</label>
-                    <InputText @bind-Value="onas.RazonSocial" class="form-control" placeholder="Razón Social" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Razón Social</label>
+                    <InputText @bind-Value="onas.RazonSocial" class="form-control" placeholder="Razón Social" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.RazonSocial)" />
                 </div>
 
                 <div class="form-group py-2">
-                    <label class="col-form-label">País</label>
-                    <select class="form-control" @onchange="ActualizarPais" value="@onas.IdHomologacionPais">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">País</label>
+                    <select class="form-control" @onchange="ActualizarPais" value="@onas.IdHomologacionPais" style="margin-top: 2% !important;">
                         <option value="">Seleccione un país</option>
                         @foreach (var pais in paises)
                         {
@@ -145,20 +145,20 @@
                 </div>
 
                 <div class="form-group py-2">
-                    <label class="col-form-label">Correo</label>
-                    <InputText @bind-Value="onas.Correo" class="form-control" placeholder="Correo" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Correo</label>
+                    <InputText @bind-Value="onas.Correo" class="form-control" placeholder="Correo" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.Correo)" />
                 </div>
 
                 <div class="form-group py-2">
-                    <label class="col-form-label">Página Web</label>
-                    <InputText @bind-Value="onas.PaginaWeb" class="form-control" placeholder="Página Web" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Página Web</label>
+                    <InputText @bind-Value="onas.PaginaWeb" class="form-control" placeholder="Página Web" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.PaginaWeb)" />
                 </div>
                 <div class="form-row py-2">
-                    <label class="col-form-label">Ícono</label>
-                    <div class="col">
-                        <InputFile @bind-Value="uploadedFile"
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Ícono</label>
+                    <div class="col" style="margin-top: 2% !important;">
+                        <InputFile @bind-Value="uploadedFile" style="margin-top: 2% !important;"
                                    class="form-control"
                                    placeholder="Icono de la organización"
                                    OnChange="OnInputFileChange" />
@@ -170,32 +170,32 @@
             <!-- Columna 2 -->
             <div class="col-md-6">
                 <div class="form-group py-2">
-                    <label class="col-form-label">Siglas</label>
-                    <InputText @bind-Value="onas.Siglas" class="form-control" placeholder="Siglas" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Siglas</label>
+                    <InputText @bind-Value="onas.Siglas" class="form-control" placeholder="Siglas" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.Siglas)" />
                 </div>
 
                 <div class="form-group py-2">
-                    <label class="col-form-label">Ciudad</label>
-                    <InputText @bind-Value="onas.Ciudad" class="form-control" placeholder="Ciudad" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Ciudad</label>
+                    <InputText @bind-Value="onas.Ciudad" class="form-control" placeholder="Ciudad" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.Ciudad)" />
                 </div>
 
                 <div class="form-group py-2">
-                    <label class="col-form-label">Dirección</label>
-                    <InputText @bind-Value="onas.Direccion" class="form-control" placeholder="Dirección" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Dirección</label>
+                    <InputText @bind-Value="onas.Direccion" class="form-control" placeholder="Dirección" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.Direccion)" />
                 </div>
 
                 <div class="form-group py-2">
-                    <label class="col-form-label">Teléfono</label>
-                    <InputText @bind-Value="onas.Telefono" class="form-control" placeholder="Teléfono" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Teléfono</label>
+                    <InputText @bind-Value="onas.Telefono" class="form-control" placeholder="Teléfono" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.Telefono)" />
                 </div>
 
                 <div class="form-group py-2">
-                    <label class="col-form-label">URL Logo</label>
-                    <InputText @bind-Value="onas.UrlLogo" class="form-control" placeholder="URL Logo" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">URL Logo</label>
+                    <InputText @bind-Value="onas.UrlLogo" class="form-control" placeholder="URL Logo" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => onas.UrlLogo)" />
                 </div>
             </div>
