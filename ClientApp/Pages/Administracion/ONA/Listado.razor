@@ -4,17 +4,134 @@
 @using SharedApp.Models.Dtos;
 @attribute [Authorize]
 
-<link href="~/admin/css/ona.css" rel="stylesheet" />
-<div class="">
+
     <!-- Card Header -->
     <div class="genetal title">
         <h2 class="title headlineheadline2-h2">Administración de ONA</h2>
     </div>
-    <div class="text-end my-3" style="margin-right: 1%;">
+    @* <div class="text-end my-3" style="margin-right: 1%;">
         <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-ona">Agregar Registro</Button>
+    </div> *@
+    <div class="text-end my-3">
+        <div class="button-container">
+            <Button Type="ButtonType.Link" class="button-2" To="/nuevo-ona"><div class="button-3 headingheadline4-h4">Crear nuevo ona</div></Button>
+        </div>
     </div>
     <!-- Card Body -->
-    <div class="">
+<div class="table table-1">
+    <div class="table-heading table-1">
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Razon Social</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Siglas</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Ciudad</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Correo</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Dirección</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-5.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Página Web</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-6.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Teléfono</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-7.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Editar</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Eliminar</div>
+            </div>
+        </div>
+    </div>
+
+    @if (listaONAs != null && listaONAs.Any())
+    {
+        <div class="content content-2">
+            @foreach (var ona in listaONAs)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row-1 row-15">
+                            <div class="ads-rules-list">
+                                <div class="landing-page"><div class="bodybody-small">@ona.RazonSocial</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@ona.Siglas</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@ona.Ciudad</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@ona.Correo</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@ona.Direccion</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@ona.PaginaWeb</div></div>
+                                <div class="landing-page"><div class="bodybody-small">@ona.Telefono</div></div>
+                                <div class="landing-page">
+                                    <Tooltip Title="Editar registro">
+                                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-ona/{ona.IdONA}")" Size="ButtonSize.Small">
+                                            <Icon Name="IconName.PencilSquare" />
+                                        </Button>
+                                    </Tooltip>
+                                </div>
+                                <div class="landing-page">
+                                    <Tooltip Title="Eliminar registro">
+                                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(ona.IdONA))>
+                                            <Icon Name="IconName.Trash" />
+                                        </Button>
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No hay datos disponibles.</p>
+    }
+</div>
+
+@*     <div class="">
         <div class="general table">
             <Grid TItem="OnaDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" @ref="grid" Responsive="true">
                 <GridColumn TItem="OnaDto" HeaderText="Razon Social" PropertyName="RazonSocial">
@@ -58,8 +175,7 @@
             </Grid>
         </div>
     </div>
-   
-</div>
+ *@   
 
  @if (showModal)
 {

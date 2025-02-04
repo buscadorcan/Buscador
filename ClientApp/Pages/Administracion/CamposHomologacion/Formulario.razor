@@ -53,38 +53,38 @@
             <hr style="background-color:aliceblue" />
 
             <div class="form-row py-2">
-                <label class="col-form-label">Vista Código Homologado</label>
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Vista Código Homologado</label>
                 <div class="col">
-                    <InputText @bind-Value="homologacion.NombreHomologado" class="form-control" placeholder="ingresar..." />
+                    <InputText @bind-Value="homologacion.NombreHomologado" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.NombreHomologado)" />
                 </div>
             </div>
 
             <div class="form-row py-2">
-                <label class="col-form-label">Texto a Mostrar en la Web</label>
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Texto a Mostrar en la Web</label>
                 <div class="col">
-                    <InputText @bind-Value="homologacion.MostrarWeb" class="form-control" placeholder="ingresar..." />
+                    <InputText @bind-Value="homologacion.MostrarWeb" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.MostrarWeb)" />
                 </div>
             </div>
 
             <div class="form-row py-2">
-                <label class="col-form-label">Tooltip Web</label>
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Tooltip Web</label>
                 <div class="col">
-                    <InputText @bind-Value="homologacion.TooltipWeb" class="form-control" placeholder="ingresar..." />
+                    <InputText @bind-Value="homologacion.TooltipWeb" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.TooltipWeb)" />
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-4">
-                    <label class="col-form-label">Indexar</label>
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Indexar</label>
                     <Switch @bind-Value="isIndexar" Label="Seleccione una opción" />
                     <div class="mt-3"><b>@(isIndexar ? "SI" : "NO")</b></div>
                     <ValidationMessage For="(() => homologacion.Indexar)" />
                 </div>
                 <div class="col-4">
-                    <label class="col-form-label">Mostrar</label>
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px" >Mostrar</label>
                     <Switch @bind-Value="isMostrar" Label="Seleccione una opción" />
                     <div class="mt-3"><b>@(isMostrar ? "SI" : "NO")</b></div>
                     <ValidationMessage For="(() => homologacion.Indexar)" />
@@ -92,7 +92,7 @@
                 @if (isIndexar)
                 {
                     <div class="col-4">
-                        <label class="col-form-label">Ligar al filtro</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">Ligar al filtro</label>
                         <select class="form-control" @onchange="ActualizarFiltro" value="@homologacion.IdHomologacionFiltro">
                             <option value="">Sin Filtro</option>
                             @foreach (var filtro in filtros)
@@ -107,8 +107,8 @@
 
             <div class="form-group row py-2">
                 <div class="col-md-4">
-                    <label class="col-form-label">Tipo de Dato</label>
-                    <div>
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px" >Tipo de Dato</label>
+                    <div style="margin-top: 2% !important;">
                         <Dropdown AutoClose="true">
                             <DropdownToggleButton Color="ButtonColor.Secondary">
                                 @homologacion?.MascaraDato
@@ -124,14 +124,14 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="col-form-label">Si No Hay Dato</label>
-                    <InputText @bind-Value="homologacion.SiNoHayDato" class="form-control" placeholder="ingresar..." maxlength="10" />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Si No Hay Dato</label>
+                    <InputText @bind-Value="homologacion.SiNoHayDato" class="form-control" placeholder="ingresar..." maxlength="10" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.SiNoHayDato)" />
                 </div>
 
                 <div class="col-md-4">
-                    <label class="col-form-label">Ancho Columna</label>
-                    <InputNumber @bind-Value="homologacion.AnchoColumna" class="form-control" placeholder="ingresar..." />
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Ancho Columna</label>
+                    <InputNumber @bind-Value="homologacion.AnchoColumna" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.AnchoColumna)" />
                 </div>
             </div>
@@ -140,13 +140,24 @@
     
 </EditForm>
 
-<div class="py-2 d-flex justify-content-end gap-2">
+@* <div class="py-2 d-flex justify-content-end gap-2">
     <Button Color="ButtonColor.Secondary" @onclick="Regresar">
         Regresar
     </Button>
     <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarHomologacion()">
         Guardar
     </Button>
+</div> *@
+<div class="py-2 d-flex justify-content-end gap-2">
+    <a @onclick="Regresar">
+        <div class="button">
+            <img class="icons" src="admin/img/icons.svg" alt="Icons">
+            <div class="button-1 headingheadline4-h4">Regresar</div>
+        </div>
+    </a>
+    <div class="save-button-container">
+        <Button @ref="saveButton" class="button-2" @onclick="async () => await GuardarHomologacion()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+    </div>
 </div>
 
 @code {

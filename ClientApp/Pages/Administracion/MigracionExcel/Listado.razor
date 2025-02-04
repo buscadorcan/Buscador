@@ -4,36 +4,94 @@
 
 <PageTitle>Migraciones desde excel</PageTitle>
 
-@* <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 py-2">
-    <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nueva-migarcion-excel">Importar Excel</Button>
-</div>
+<h1 class="title headlineheadline2-h2">Migración Excel</h1>
+
 <header class="header">
-    <div class="button">
+    <div class="button" style="background-color: var(--amber) !important;">
         <img class="add-24px" src="admin/img/add-24px.svg" alt="add-24px">
-        <div class="button-1 headingheadline5-h5">Importar excel</div>
-    </div>
-</header> *@
-<header class="header">
-    <div class="button">
-        <img class="add-24px" src="admin/img/add-24px.svg" alt="add-24px">
-        <NavLink class="button-1 headingheadline5-h5" href="/nueva-migarcion-excel">Importar Excel</NavLink>
+        <NavLink class="button-1 headingheadline5-h5" href="/nueva-migarcion-excel" style="color:black">Importar Excel</NavLink>
     </div>
 </header>
 
-<Grid @ref="grid" TItem="LogMigracionDto" class="table table-hover table-bordered table-striped" DataProvider="LogMigracionDtoDataProvider" Responsive="true">
-    <GridColumn TItem="LogMigracionDto" HeaderText="Migración" PropertyName="IdLogMigracion">
-        @context.IdLogMigracion
-    </GridColumn>
-    <GridColumn TItem="LogMigracionDto" HeaderText="EsquemaVista" PropertyName="EsquemaVista">
-        @context.EsquemaVista
-    </GridColumn>
-    <GridColumn TItem="LogMigracionDto" HeaderText="Estado" PropertyName="MigracionEstado">
-        @context.Estado
-    </GridColumn>
-    <GridColumn TItem="LogMigracionDto" HeaderText="Nombre archivo" PropertyName="ExcelFileName">
-        @context.ExcelFileName
-    </GridColumn>
-    <GridColumn TItem="LogMigracionDto" HeaderText="Error" PropertyName="MensageError">
-        @context.Observacion
-    </GridColumn>
-</Grid>
+<div class="table" style="margin-top: 1% !important;">
+    <div class="table-heading">
+        <article class="table-heading-1 table-heading-5">
+            <div class="header-label-1">
+                <div class="label-heading headingheadline5-h5">Migración</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </article>
+        <article class="table-heading-2 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">EsquemaVista</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </article>
+        <article class="table-heading-3 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Estado</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </article>
+        <article class="table-heading-4 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Nombre archivo</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </article>
+        <article class="table-heading-5 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Error</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </article>
+    </div>
+    @if (listasHevd != null && listasHevd.Any())
+    {
+        <div class="content">
+            @foreach (var item in listasHevd)
+            {
+                <div class="row">
+                    <div class="componente">
+                        <div class="row-1 row-12">
+                            <div class="ads-rules-list">
+                                <div class="cell">
+                                    <div class="migration-id bodybody-small">@item.IdLogMigracion</div>
+                                </div>
+                                <div class="landing-page">
+                                    <div class="esquema-vista bodybody-small">@item.EsquemaVista</div>
+                                </div>
+                                <div class="landing-page">
+                                    <div class="status bodybody-small">@item.Estado</div>
+                                </div>
+                                <div class="landing-page-1 landing-page-3">
+                                    <div class="file-name bodybody-small">@item.ExcelFileName</div>
+                                </div>
+                                <div class="landing-page-2 landing-page-3">
+                                    <p class="error-message bodybody-small">
+                                        @item.Observacion
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No hay datos disponibles.</p>
+    }
+
+</div>

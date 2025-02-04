@@ -59,6 +59,8 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             {
                 onaSelected = _onaSelected;
             }
+            showDropdown = false;
+            StateHasChanged();
         }
         private async Task LoadONAs()
         {
