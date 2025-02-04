@@ -53,7 +53,8 @@ namespace ClientApp.Pages.BuscadorCan
                         }
                         
                     }
-
+                    listaDatosPanel = new List<vwPanelONADto>();
+                    TotalEmpresa = 0;
                     listaDatosPanel = await iCatalogosService.GetPanelOnaAsync();
                     TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
                 }
@@ -273,14 +274,12 @@ namespace ClientApp.Pages.BuscadorCan
 
         private void ActualizarPanelONA(List<vwPanelONADto> panelOnaData)
         {
+            listaDatosPanel = new List<vwPanelONADto>();
+            TotalEmpresa = 0;
             listaDatosPanel = panelOnaData;
             TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
             StateHasChanged(); 
         }
-
-
-
-
     }
 
     public class FiltrosBusquedaSeleccion
