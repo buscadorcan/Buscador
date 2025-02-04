@@ -343,7 +343,7 @@ namespace WebApp.Service.IService
                     ? $"`{c.ColumnaEsquema}`"
                     : $"[{c.ColumnaEsquema}]"));
 
-                var query = $"SELECT {columnasQuery} FROM {vista}";
+                var query = $"SELECT {columnasQuery} FROM {vista} ";
 
                 // Ejecutar la consulta
                 var filas = (await connection.QueryAsync(query)).ToList();
