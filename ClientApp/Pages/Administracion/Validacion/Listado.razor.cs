@@ -147,8 +147,14 @@ namespace ClientApp.Pages.Administracion.Validacion
             nombreSugerido = esquemaSelected.EsquemaVista;
 
             // Lógica para obtener y procesar las columnas del esquema
+            List<HomologacionDto> Columnas;
             var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
-            var Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson)
+            if (string.IsNullOrWhiteSpace(homologacionEsquema.EsquemaJson))
+            {
+                toastService?.CreateToastMessage(ToastType.Danger, "Error: No hay datos en el esquema seleccionado.");
+                return;
+            }
+            Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson)
                 .OrderBy(c => c.MostrarWebOrden)
                 .ToList();
 
