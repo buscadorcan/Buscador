@@ -8,9 +8,9 @@ namespace SharedApp.Models.Dtos
 {
     public class vwPanelONADto
     {
-        public string Siglas { get; set; }
-        public string pais { get; set; }
-        public string icono { get; set; }
-        public int empresas { get; set; }
+        public string Sigla { get; set; }
+        public string Pais { get; set; }
+        public string Icono { get; set; }
+        public int NroOrg { get; set; }
     }
 }

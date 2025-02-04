@@ -46,6 +46,7 @@ namespace ClientApp.Pages.BuscadorCan
         private Modal modal = default!;
         private Dictionary<int, string> iconUrls = new();
         private OnaDto? OnaDto;
+        private bool mostrarMapa = true;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -53,10 +54,26 @@ namespace ClientApp.Pages.BuscadorCan
                 // Cargar etiquetas
                 if (CatalogosService != null)
                 {
-                    ListaEtiquetasGrilla = await CatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema")
-                                         ?? new List<VwGrillaDto>();
-                }
 
+                    var ordenPersonalizado = new Dictionary<int, int>
+                    {
+                        { 84, 1 },
+                        { 78, 2 },
+                        { 82, 3 }, // Eliminado el duplicado
+                        { 83, 4 },
+                        { 90, 5 },
+                        { 93, 6 },
+                        { 81, 7 },
+                        { 92, 8 },
+                        { 91, 9 }
+                    };
+
+                    ListaEtiquetasGrilla = (await CatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema"))
+                                 ?.OrderBy(x => ordenPersonalizado.ContainsKey(x.IdHomologacion) ? ordenPersonalizado[x.IdHomologacion] : int.MaxValue)
+                                 .ToList()
+                                 ?? new List<VwGrillaDto>();
+                }
+                Console.WriteLine($"Error en OnInitializedAsync");
                 // Cargar resultados iniciales
                 await BuscarPalabraRequest();
             }
@@ -229,6 +246,10 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
+        private void ToggleMapa()
+        {
+            mostrarMapa = !mostrarMapa; // Cambia el estado
+        }
 
 
         public class JsonData

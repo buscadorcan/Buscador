@@ -52,10 +52,10 @@ namespace WebApp.Repositories
 
                 var panelONADataDto = panelONAData.Select(o => new vwPanelONADto
                 {
-                    Siglas = o.Siglas,
-                    pais = o.pais,
-                    icono = o.icono,
-                    empresas = o.empresas
+                    Sigla  = o.Sigla,
+                    Pais = o.Pais,
+                    Icono = o.Icono,
+                    NroOrg = o.NroOrg
                 }).ToList();
 
 
