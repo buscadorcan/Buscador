@@ -9,9 +9,9 @@
 <div class="row py-2">
     <div class="col-md-4">
         <div>
-            <label class="col-form-label">Ona</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Ona</label>
         </div>
-        <select id="onaSelect" class="form-control"  @onchange="CambiarSeleccionOna">
+        <select id="onaSelect" class="form-control" @onchange="CambiarSeleccionOna" style="margin-top: 2% !important;">
             <option value="" selected disabled>Seleccionar Ona</option>
             @if (listaONAs != null)
             {
@@ -24,9 +24,9 @@
     </div>
     <div class="col-md-4">
         <div>
-            <label class="col-form-label">Esquemas</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Esquemas</label>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 2% !important;">
             <div class="form-group">
                 <select id="esquemaSelect" class="form-control" @onchange="HandleEsquemaSelectionChange">
                     <option value="" selected disabled>Seleccionar ESQ</option>
@@ -51,11 +51,12 @@
     </div>
     <div class="col-md-4">
         <div>
-            <label class="col-form-label">Vista Origen</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Vista Origen</label>
         </div>
-        <input type="text" class="form-control" placeholder="" @bind="nombreSugerido" />
+        <input type="text" class="form-control" placeholder="" @bind="nombreSugerido" style="margin-top: 2% !important;" />
     </div>
-    <div class="col-md-12 py-2">
+    
+    @* <div class="col-md-12 py-2">
         <Grid @ref="grid" TItem="EsquemaVistaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemaVistaDataProvider" Responsive="true">
             <!-- Columna de solo lectura -->
             <GridColumn TItem="EsquemaVistaDto" HeaderText="Nombre Campo Esquema" PropertyName="NombreEsquema">
@@ -78,18 +79,77 @@
                 </DisplayTemplate>
             </GridColumn>
         </Grid>
-    </div>
-    <div class="col-md-12 py-2 text-end">
+    </div> *@
+    
+</div>
+
+<div class="col-md-2 py-2 text-end" style="margin-left: auto !important;">
         @if (listasHevd?.Count > 0) 
         {
-@*             <Button @ref="saveButton" style="display: none;" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
+            @*<Button @ref="saveButton" style="display: none;" Color="ButtonColor.Success" @onclick="async () => await GuardarCambios()">
                 Guardar
             </Button> *@
-            <Button @ref="validateButton" Color="ButtonColor.Success" @onclick="async () => await ValidarDatos()">
+            @* <Button @ref="validateButton" Color="ButtonColor.Success" @onclick="async () => await ValidarDatos()">
                 Validar y Guardar
-            </Button>
+            </Button> *@
+            <div class="save-button-container">
+                <Button @ref="saveButton" class="button-2" @onclick="async () => await ValidarDatos()"><div class="button-3 headingheadline4-h4">Validar y Guardar</div></Button>
+            </div>
         }
     </div>
+<div class="table table-1">
+    <div class="table-heading table-1">
+        <div class="table-heading-1 table-heading-10" style="width:50% !important">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Nombre Campo Esquema</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10" style="width:50% !important">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Nombre Campo Vista</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10" style="width:20% !important">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Existe</div>
+                <div class="frame-1000003808">
+                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (listasHevd != null && listasHevd.Any())
+    {
+        <div class="content content-2">
+            @foreach (var esquema in listasHevd)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row-1 row-15">
+                            <div class="ads-rules-list">
+                                <div class="landing-page" style="width:50% !important"><div class="bodybody-small">@esquema.NombreEsquema</div></div>
+                                <div class="landing-page" style="width:50% !important">
+                                    <input class="form-control" @bind="esquema.NombreVista" disabled="@enabledCeldas" />
+                                </div>
+                                <div class="landing-page" style="width:23% !important"><div class="bodybody-small">@esquema.IsValid</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No hay datos disponibles.</p>
+    }
 </div>
 
 

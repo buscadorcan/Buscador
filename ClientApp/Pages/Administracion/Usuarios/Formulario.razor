@@ -44,7 +44,7 @@
 <EditForm Model="usuario" OnValidSubmit="RegistrarUsuario" class="pt-4">
     <DataAnnotationsValidator />
 
-    <div class="card border">
+    @* <div class="card border"> *@
         <!-- Título -->
         <h1 class="title headlineheadline2-h2">Usuario del Sistema</h1>
 
@@ -54,8 +54,8 @@
             <!-- Primera fila: Rol y Razón Social -->
             <div class="row py-2">
                 <div class="col-md-6">
-                    <label class="col-form-label">Rol</label>
-                    <div class="col">
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Rol</label>
+                <div class="col" style="margin-top: 2% !important;">
                         @if (listaRoles != null && listaRoles.Any() && usuario != null)
                         {
                             <Dropdown AutoClose="true">
@@ -79,8 +79,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="col-form-label">Razón Social</label>
-                    <div class="col">
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Razón Social</label>
+                <div class="col" style="margin-top: 2% !important;">
                         @if (listaOna != null && listaOna.Any() && usuario != null)
                         {
                             <Dropdown AutoClose="true">
@@ -107,17 +107,17 @@
             <!-- Segunda fila: Nombre y Apellido -->
             <div class="row py-2">
                 <div class="col-md-6">
-                    <label class="col-form-label">Nombre</label>
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Nombre</label>
                     <div class="col">
-                        <InputText @bind-Value="usuario.Nombre" class="form-control" placeholder="Nombre..." />
+                    <InputText @bind-Value="usuario.Nombre" class="form-control" placeholder="Nombre..." style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Nombre)" />
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="col-form-label">Apellido</label>
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Apellido</label>
                     <div class="col">
-                        <InputText @bind-Value="usuario.Apellido" class="form-control" placeholder="Apellido..." />
+                    <InputText @bind-Value="usuario.Apellido" class="form-control" placeholder="Apellido..." style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Apellido)" />
                     </div>
                 </div>
@@ -125,17 +125,10 @@
 
             <!-- Tercera fila: Email y Teléfono -->
             <div class="row py-2">
-                @* <div class="col-md-6">
-                    <label class="col-form-label">Email</label>
-                    <div class="col">
-                        <InputText @bind-Value="usuario.Email" class="form-control" placeholder="Email..." />
-                        <ValidationMessage For="(() => usuario.Email)" />
-                    </div>
-                </div> *@
                 <div class="col-md-6">
-                    <label class="col-form-label">Email</label>
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Email</label>
                     <div class="col">
-                        <InputText @bind-Value="usuario.Email" class="form-control"
+                        <InputText @bind-Value="usuario.Email" class="form-control" style="margin-top: 2% !important;"
                                    placeholder="Email..."
                                    @oninput="ValidateEmail" />
                         <ValidationMessage For="(() => usuario.Email)" />
@@ -147,9 +140,9 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="col-form-label">Teléfono</label>
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Teléfono</label>
                     <div class="col">
-                        <InputText @bind-Value="usuario.Telefono" class="form-control" placeholder="+34 654321987" />
+                    <InputText @bind-Value="usuario.Telefono" class="form-control" placeholder="+34 654321987" style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Telefono)" />
                     </div>
                 </div>
@@ -157,25 +150,37 @@
 
             <!-- Clave -->
             <div class="form-row py-2">
-                <label class="col-form-label">Clave</label>
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Clave</label>
                 <div class="col">
-                    <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave..." class="form-control" />
+                    <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave..." style="margin-top: 2% !important;" class="form-control" />
                     <ValidationMessage For="(() => usuario.Clave)" />
                 </div>
             </div>
         </div>
 
-    </div>
+  @*   </div> *@
 </EditForm>
 
 <div class="py-2 d-flex justify-content-end gap-2">
+    <a @onclick="Regresar">
+        <div class="button">
+            <img class="icons" src="admin/img/icons.svg" alt="Icons">
+            <div class="button-1 headingheadline4-h4">Regresar</div>
+        </div>
+    </a>
+    <div class="save-button-container">
+        <Button @ref="saveButton" class="button-2" @onclick="async () => await RegistrarUsuario()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+    </div>
+</div>
+
+@* <div class="py-2 d-flex justify-content-end gap-2">
     <Button Color="ButtonColor.Secondary" @onclick="Regresar">
         Regresar
     </Button>
     <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await RegistrarUsuario()">
         Guardar
     </Button>
-</div>
+</div> *@
 
 @code {
     private void Regresar()

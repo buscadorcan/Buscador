@@ -7,7 +7,6 @@
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
 
-<link href="~/admin/css/usuario.css" rel="stylesheet" />
 <style>
     .striped-table tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
@@ -60,12 +59,131 @@
     <!-- Botón Nuevo -->
     @if (!isRolRead)
     {
-        <div class="text-end my-3" style="margin-right: 1%;">
+        @* <div class="text-end my-3" style="margin-right: 1%;">
             <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-usuario">Nuevo Usuario</Button>
+        </div> *@
+        <div class="text-end my-3">
+                <div class="button-container">
+                    <Button Type="ButtonType.Link" class="button-2" To="/nuevo-usuario"><div class="button-3 headingheadline4-h4">Crear nuevo usuario</div></Button>
+                </div>
         </div>
     }
     <!-- Card Body -->
-    <div class="">
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Nombre</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Apellido</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Teléfono</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-5.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Email</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-6.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Rol</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-7.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Razón Social</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-8.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Estado</div>
+                    <div class="frame-1000003808">
+                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-9.svg" alt="arrow_downward_alt">
+                    </div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Editar</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Eliminar</div>
+                </div>
+            </div>
+        </div>
+
+        @if (listaUsuarios != null && listaUsuarios.Any())
+        {
+            <div class="content content-2">
+                @foreach (var usuario in listaUsuarios)
+                {
+                    <div class="row row-15">
+                        <div class="componente">
+                            <div class="row-1 row-15">
+                                <div class="ads-rules-list">
+                                    <div class="landing-page"><div class="bodybody-small">@usuario.Nombre</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@usuario.Apellido</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@usuario.Telefono</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@usuario.Email</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@usuario.Rol</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@usuario.RazonSocial</div></div>
+                                    <div class="landing-page"><div class="bodybody-small">@usuario.Estado</div></div>
+                                    <div class="landing-page">
+                                        <Tooltip Title="Editar registro">
+                                            <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
+                                                    @onclick=@(() => EditarUsuario(usuario))>
+                                                <Icon Name="IconName.PencilSquare" />
+                                            </Button>
+                                        </Tooltip>
+                                    </div>
+                                    <div class="landing-page">
+                                        <Tooltip Title="Eliminar registro">
+                                            <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
+                                                    Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(usuario.IdUsuario))>
+                                                <Icon Name="IconName.Trash" />
+                                            </Button>
+                                        </Tooltip>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No hay datos disponibles.</p>
+        }
+    </div>
+    @*     <div class="">
         <div class="general table">
             <Grid TItem="UsuarioDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="UsuariosDataProvider" @ref="grid" Responsive="true">
                 <GridColumn TItem="UsuarioDto" HeaderText="Nombre" PropertyName="Nombre">
@@ -109,7 +227,7 @@
             </Grid>
         </div>
     </div>
-
+ *@
 </div>
 
  @if (showModal)

@@ -43,7 +43,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         private List<OnaDto>? listaONAs;
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
         //private EsquemaVistaOnaDto? esquemaSelected;
-        private EsquemaDto? esquemaSelected;
+        private EsquemaDto? esquemaSelected = new();
         private bool enabledCeldas;
         private HomologacionDto? organizacionSelected;
         private OnaDto? onaSelected;

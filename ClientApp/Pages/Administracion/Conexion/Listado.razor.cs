@@ -1,4 +1,5 @@
 using BlazorBootstrap;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -14,9 +15,18 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IConexionService? iConexionService { get; set; }
         [Inject]
         private IDynamicService? iDynamicService { get; set; }
-        private List<ONAConexionDto>? listasHevd = null;
+        //private List<ONAConexionDto>? listasHevd = null;
+        private List<ONAConexionDto> listasHevd = new();
+
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
+        protected override async Task OnInitializedAsync()
+        {
+            if (listasHevd != null && iConexionService != null)
+            {
+                listasHevd = await iConexionService.GetConexionsAsync() ?? new List<ONAConexionDto>();
+            }
+        }
         private async Task<GridDataProviderResult<ONAConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ONAConexionDto> request)
         {
             if (listasHevd == null && iConexionService != null)
@@ -27,20 +37,20 @@ namespace ClientApp.Pages.Administracion.Conexion
         }
         private async Task OnDeleteClick(int IdONA)
         {
-            if (iConexionService != null && listasHevd != null && grid != null)
+            if (iConexionService != null && listasHevd != null)
             {
                 var respuesta = await iConexionService.EliminarConexion(IdONA);
                 if (respuesta.registroCorrecto)
                 {
                     listasHevd = listasHevd.Where(c => c.IdONA != IdONA).ToList();
-                    await grid.RefreshDataAsync();
+                    await OnInitializedAsync();
                 }
             }
         }
 
         private async Task<bool> OnTestconexionClick(int conexion)
         {
-            if (iDynamicService != null && listasHevd != null && grid != null)
+            if (iDynamicService != null && listasHevd != null)
             {
                 // Llamar al método del servicio para probar la conexión
                 bool isConnected = await iDynamicService.TestConnectionAsync(conexion);
@@ -72,7 +82,7 @@ namespace ClientApp.Pages.Administracion.Conexion
 
         private async Task<bool> OnMigrarClick(int conexion)
         {
-            if (iDynamicService != null && listasHevd != null && grid != null)
+            if (iDynamicService != null && listasHevd != null)
             {
                 IsLoading = true;
                 ProgressValue = 45;

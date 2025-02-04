@@ -4,18 +4,103 @@
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
 
-<link href="~/admin/css/esquemas.css" rel="stylesheet" />
 <PageTitle>Homologación Esquemas</PageTitle>
 
-<div class="">
     <div class="general title">
         <h2 class="title headlineheadline2-h2">Administación de Homologación Esquemas</h2>
         <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
     </div>
-     <div class="text-end my-3" style="margin-right: 1%;">
+     @* <div class="text-end my-3" style="margin-right: 1%;">
         <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-esquema">Agregar Registro</Button>
+    </div> *@
+    <div class="text-end my-3">
+        <div class="button-container">
+            <Button Type="ButtonType.Link" class="button-2" To="/nuevo-esquema"><div class="button-3 headingheadline4-h4">Agregar Registro</div></Button>
+        </div>
     </div>
-    <div class="general table">
+<style>
+    .general.table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* Asegura que las columnas de thead y tbody sean iguales */
+    }
+
+        .general.table thead {
+            display: table-header-group; /* Asegura que el thead se expanda correctamente */
+            width: 100%; /* Hace que el encabezado ocupe el ancho completo */
+        }
+
+        .general.table th,
+        .general.table td {
+            width: 100% !important; /* Permite que cada columna tenga el mismo ancho */
+            min-width: 180px; /* Ajusta este valor si necesitas más espacio */
+            text-align: left; /* Alinea el contenido a la izquierda */
+            padding: 10px; /* Agrega espacio interno */
+            box-sizing: border-box; /* Evita que el padding afecte el tamaño total */
+        }
+
+        .general.table th {
+            background-color: #f4f4f4; /* Diferencia visualmente el encabezado */
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .general.table tbody {
+            width: 100%;
+            display: table-row-group; /* Asegura que el tbody ocupe el ancho total */
+        }
+
+        .general.table .table-primary {
+            background-color: #cce5ff !important; /* Resalta las filas con esta clase */
+        }
+</style>
+
+<div class="general table">
+    <Grid @ref="grid"
+          TItem="EsquemaDto"
+          class="table table-hover table-striped"
+          DataProvider="EsquemasDataProvider"
+          Responsive="true"
+          Id="sortableGrid"
+          Style="width:100%;">
+
+        <GridColumn TItem="EsquemaDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" class="bodybody-small"
+                    ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+            @(string.IsNullOrWhiteSpace(context.MostrarWeb) ? "-" : context.MostrarWeb)
+            <input type="hidden" value="@context.IdEsquema" />
+        </GridColumn>
+
+        <GridColumn TItem="EsquemaDto" HeaderText="Nombre Vista" PropertyName="NombreVista" class="bodybody-small"
+                    ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")" >
+            @(string.IsNullOrWhiteSpace(context.EsquemaVista) ? "-" : context.EsquemaVista) 
+        </GridColumn>
+
+        <GridColumn TItem="EsquemaDto" HeaderText="Columnas" class="bodybody-small"
+                    ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+            <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModal(context.IdEsquema)">
+                <Icon Name="IconName.Front" />
+            </Button>
+        </GridColumn>
+
+        <GridColumn TItem="EsquemaDto" HeaderText="Editar" class="bodybody-small"
+                    ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+            <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
+                    To="@($"/editar-esquema/{context.IdEsquema}")" Size="ButtonSize.Small">
+                <Icon Name="IconName.PencilSquare" />
+            </Button>
+        </GridColumn>
+
+        <GridColumn TItem="EsquemaDto" HeaderText="Eliminar" class="bodybody-small"
+                    ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
+            <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdEsquema)" Size="ButtonSize.Small">
+                <Icon Name="IconName.Trash3" />
+            </Button>
+        </GridColumn>
+
+    </Grid>
+</div>
+
+    @* <div class="general table">
         <Grid @ref="grid" TItem="EsquemaDto" class="table table-hover table-bordered table-striped" DataProvider="EsquemasDataProvider" Responsive="true" Id="sortableGrid">
             <GridColumn TItem="EsquemaDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
                 @context.MostrarWeb
@@ -40,7 +125,7 @@
                 </Button>
             </GridColumn>
         </Grid>
-    </div>
+    </div> *@
     <div class="card-footer">
         <div class="py-2">
             <Alert Color="AlertColor.Primary" Dismissable="false">
@@ -49,7 +134,6 @@
             </Alert>
         </div>
     </div>
-</div>
 
 
 

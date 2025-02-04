@@ -20,6 +20,12 @@ namespace ClientApp.Pages.Administracion.Grupo
         protected IJSRuntime? JSRuntime { get; set; }
         protected override async Task OnInitializedAsync()
         {
+            if (iCatalogosService != null)
+            {
+                listaHomologacions = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupos");
+            }
+            
+
             DataLoaded += async () =>
             {
                 if (listaHomologacions != null && JSRuntime != null)

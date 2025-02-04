@@ -1,4 +1,4 @@
-@page "/nuevo-ona"
+@* @page "/nuevo-ona"
 @page "/editar-ona/{Id:int}"
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization
@@ -6,15 +6,9 @@
 @using SharedApp.Models.Dtos
 
 
-<style>
-
-
-</style>
-
 <EditForm Model="onas" OnValidSubmit="RegistrarONA" class="pt-4">
     <DataAnnotationsValidator />
 
-    <div class="card border">
         <!-- Título -->
             <h1 class="title headlineheadline2-h2">Información Principal ONA</h1>
 
@@ -52,12 +46,6 @@
                         <InputText @bind-Value="onas.PaginaWeb" class="form-control" placeholder="Página Web" />
                         <ValidationMessage For="(() => onas.PaginaWeb)" />
                     </div>
-@* 
-                    <div class="form-group py-2">
-                        <label class="col-form-label">URL Ícono</label>
-                        <InputText @bind-Value="onas.UrlIcono" class="form-control" placeholder="URL Ícono" />
-                        <ValidationMessage For="(() => onas.UrlIcono)" />
-                    </div> *@
                     <div class="form-row py-2">
                         <label class="col-form-label">Ícono</label>
                         <div class="col">
@@ -73,7 +61,7 @@
                 <!-- Columna 2 -->
                 <div class="col-md-6">
                     <div class="form-group py-2">
-                        <label class="col-form-label">Siglas</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">Siglas</label>
                         <InputText @bind-Value="onas.Siglas" class="form-control" placeholder="Siglas" />
                         <ValidationMessage For="(() => onas.Siglas)" />
                     </div>
@@ -91,19 +79,22 @@
                     </div>
 
                     <div class="form-group py-2">
-                        <label class="col-form-label">Teléfono</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">Teléfono</label>
                         <InputText @bind-Value="onas.Telefono" class="form-control" placeholder="Teléfono" />
                         <ValidationMessage For="(() => onas.Telefono)" />
                     </div>
 
                     <div class="form-group py-2">
-                        <label class="col-form-label">URL Logo</label>
+                        <label class="label valign-text-middle inter-regular-normal-comet-16px">URL Logo</label>
                         <InputText @bind-Value="onas.UrlLogo" class="form-control" placeholder="URL Logo" />
                         <ValidationMessage For="(() => onas.UrlLogo)" />
                     </div>
                 </div>
             </div>
         </div>
+
+       
+        
 
         <!-- Pie -->
         <div class="py-2 d-flex justify-content-end gap-2">
@@ -115,7 +106,112 @@
             </Button>
            
         </div>
-    </div>
 </EditForm>
+ *@
+@page "/nuevo-ona"
+@page "/editar-ona/{Id:int}"
+@layout AdminLayout
+@using Microsoft.AspNetCore.Authorization
+@using ClientApp.Services.IService
+@using SharedApp.Models.Dtos
 
+<EditForm Model="onas" OnValidSubmit="RegistrarONA" class="pt-4">
+    <DataAnnotationsValidator />
 
+    <!-- Título -->
+    <h1 class="title headlineheadline2-h2">Información Principal ONA</h1>
+
+    <!-- Cuerpo -->
+    <div class="card-body px-lg-5 pt-4">
+        <div class="row py-2">
+            <!-- Columna 1 -->
+            <div class="col-md-6">
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Razón Social</label>
+                    <InputText @bind-Value="onas.RazonSocial" class="form-control" placeholder="Razón Social" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.RazonSocial)" />
+                </div>
+
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">País</label>
+                    <select class="form-control" @onchange="ActualizarPais" value="@onas.IdHomologacionPais" style="margin-top: 2% !important;">
+                        <option value="">Seleccione un país</option>
+                        @foreach (var pais in paises)
+                        {
+                            <option value="@pais.IdHomologacionPais">@pais.Pais</option>
+                        }
+                    </select>
+                    <ValidationMessage For="(() => onas.IdHomologacionPais)" />
+                </div>
+
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Correo</label>
+                    <InputText @bind-Value="onas.Correo" class="form-control" placeholder="Correo" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.Correo)" />
+                </div>
+
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Página Web</label>
+                    <InputText @bind-Value="onas.PaginaWeb" class="form-control" placeholder="Página Web" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.PaginaWeb)" />
+                </div>
+                <div class="form-row py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Ícono</label>
+                    <div class="col" style="margin-top: 2% !important;">
+                        <InputFile @bind-Value="uploadedFile" style="margin-top: 2% !important;"
+                                   class="form-control"
+                                   placeholder="Icono de la organización"
+                                   OnChange="OnInputFileChange" />
+                        <ValidationMessage For="(() => onas.UrlIcono)" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna 2 -->
+            <div class="col-md-6">
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Siglas</label>
+                    <InputText @bind-Value="onas.Siglas" class="form-control" placeholder="Siglas" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.Siglas)" />
+                </div>
+
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Ciudad</label>
+                    <InputText @bind-Value="onas.Ciudad" class="form-control" placeholder="Ciudad" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.Ciudad)" />
+                </div>
+
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Dirección</label>
+                    <InputText @bind-Value="onas.Direccion" class="form-control" placeholder="Dirección" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.Direccion)" />
+                </div>
+
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Teléfono</label>
+                    <InputText @bind-Value="onas.Telefono" class="form-control" placeholder="Teléfono" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.Telefono)" />
+                </div>
+
+                <div class="form-group py-2">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">URL Logo</label>
+                    <InputText @bind-Value="onas.UrlLogo" class="form-control" placeholder="URL Logo" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => onas.UrlLogo)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</EditForm>
+<div class="py-2 d-flex justify-content-end gap-2" style="margin-top: 33% !important;">
+    <a @onclick="Regresar">
+        <div class="button">
+            <img class="icons" src="admin/img/icons.svg" alt="Icons">
+            <div class="button-1 headingheadline4-h4">Regresar</div>
+        </div>
+    </a>
+    <div class="save-button-container">
+        <Button @ref="saveButton" class="button-2" @onclick="async () => await RegistrarONA()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+    </div>
+</div>

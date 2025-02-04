@@ -280,10 +280,6 @@ namespace ClientApp.Pages.BuscadorCan
             TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
             StateHasChanged(); 
         }
-
-
-
-
     }
 
     public class FiltrosBusquedaSeleccion
