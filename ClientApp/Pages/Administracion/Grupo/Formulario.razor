@@ -76,15 +76,25 @@
     </div>
 </EditForm>
 
-<div class="py-2 d-flex justify-content-end gap-2">
+@* <div class="py-2 d-flex justify-content-end gap-2">
     <Button Color="ButtonColor.Secondary" @onclick="Regresar">
         Regresar
     </Button>
     <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarHomologacion()">
         Guardar
     </Button>
+</div> *@
+<div class="py-2 d-flex justify-content-end gap-2">
+    <a @onclick="Regresar">
+        <div class="button">
+            <img class="icons" src="admin/img/icons.svg" alt="Icons">
+            <div class="button-1 headingheadline4-h4">Regresar</div>
+        </div>
+    </a>
+    <div class="save-button-container">
+        <Button @ref="saveButton" class="button-2" @onclick="async () => await GuardarHomologacion()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+    </div>
 </div>
-
 @code {
     private void Regresar()
     {
