@@ -5,6 +5,7 @@ using System.Data;
 using WebApp.Repositories.IRepositories;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Diagnostics;
 
 namespace WebApp.Service.IService
 {
@@ -18,7 +19,8 @@ namespace WebApp.Service.IService
       IHomologacionRepository homologacionRepository,
       IMigracionExcelRepository migracionExcelRepository,
       ILogMigracionRepository logMigracionRepository,
-      IONAConexionRepository conexionRepository
+      IONAConexionRepository conexionRepository,
+      IpaActualizarFiltroRepository ipaActualizarFiltro
       ) : IExcelService
     {
         private IONARepository _repositoryO = onaRepository;
@@ -43,6 +45,7 @@ namespace WebApp.Service.IService
         Esquema? currentEsquema = null;
         private string idEnteName = " IdOrganizacion";
         private string[] errors = Array.Empty<string>();
+        private IpaActualizarFiltroRepository _ipaActualizarFiltro = ipaActualizarFiltro;
 
         //public Boolean ImportarExcel(string path, MigracionExcel? migracion) 
         //{
@@ -83,7 +86,7 @@ namespace WebApp.Service.IService
         //    return false;
         //  }
         //}
-        public Boolean ImportarExcel(string path, LogMigracion? migracion, int idOna)
+        public async Task<Boolean> ImportarExcel(string path, LogMigracion? migracion, int idOna)
         {
             try
             {
@@ -101,7 +104,7 @@ namespace WebApp.Service.IService
                     // var result = true;
                     _repositoryME.Update(migracion);
                 }
-                var result = Leer(path, idOna);
+                var result = await Leer(path, idOna);
                 if (result)
                 {
                     migracion.ExcelFileName = path.Split("/").Last();
@@ -135,8 +138,11 @@ namespace WebApp.Service.IService
                 return false;
             }
         }
-        public Boolean Leer(string fileSrc, int idOna)
+        public async Task<Boolean> Leer(string fileSrc, int idOna)
         {
+            bool resultado = true;
+            Stopwatch stopwatch = new Stopwatch();
+
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
             using (var stream = File.Open(fileSrc, FileMode.Open, FileAccess.Read))
@@ -225,7 +231,33 @@ namespace WebApp.Service.IService
                                 _repositoryLM.Update(currentLogMigracion);
                             }
                         }
-                        return true;
+
+                        #region Funcion para actualizar
+                        bool resultadoSP = await _ipaActualizarFiltro.ActualizarFiltroAsync();
+                        if (resultadoSP)
+                        {
+                            Console.WriteLine("El procedimiento almacenado se ejecutó correctamente.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error al ejecutar el procedimiento almacenado.");
+                        }
+
+                        // Detiene el temporizador
+                        //stopwatch.Stop();
+                        //TimeSpan tiempoTotal = stopwatch.Elapsed;
+
+                        //// Guardar el tiempo total en el log
+                        //var logTiempo = new LogMigracion
+                        //{
+                        //    IdONA = idOna,
+                        //    OrigenDatos = currentConexion.OrigenDatos,
+                        //    Observacion = $"Tiempo total de migración: {tiempoTotal.Hours}h {tiempoTotal.Minutes}m {tiempoTotal.Seconds}s {tiempoTotal.Milliseconds}ms."
+                        //};
+                        //_repositoryLM.Create(logTiempo);
+                        #endregion
+
+                        return resultado;
                     }
                     else
                     {
