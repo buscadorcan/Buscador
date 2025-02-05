@@ -10,6 +10,8 @@
 	- Description   : Vista para las organicaiones certificadas
 \----------------------------------------------------------------------------------------*/
 CREATE OR ALTER VIEW [vwEsquemaOrganiza] AS
+--| 2K25.FEB.05 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0 
+--| Description   : Vista para las organicaiones certificadas
 SELECT [PK]
       ,[IdEsquemaData]
       ,[IdEsquema]
