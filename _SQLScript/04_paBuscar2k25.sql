@@ -1,4 +1,18 @@
+/*----------------------------------------------------------------------------------------\
+|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
+|-----------------------------------------------------------------------------------------|
+| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
+\-----------------------------------------------------------------------------------------/
+  [App]				: Buscador Andino											
+	- Date          : 2K24.FEB.25	
+	- Author        : patricio.paccha														
+	- Version	    : 1.0										 
+	- Description   : Función de busqueda (exacta, RANK +  INFLECTIONAL + THESAURUS - stopWord  ) + filtros
+\----------------------------------------------------------------------------------------*/
+
 CREATE OR ALTER PROCEDURE [dbo].[paBuscar2k25] (	
+--| 2K25.FEB.05 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0 
+--| Descripción:  Función de busqueda (exacta, RANK +  INFLECTIONAL + THESAURUS - stopWord  ) + filtros
 --DECLARE  
  @paramJSON			NVARCHAR(MAX) = '{}' 
 ,@PageNumber		INT = 1 
@@ -153,7 +167,7 @@ BEGIN
 			FROM	EsquemaFullText  (NOLOCK) o 
 			JOIN	FREETEXTTABLE(EsquemaFullText, FullTextData, @TextoBuscar) as ftt		--,LANGUAGE N'English', 2) AS ftt  
 			ON		o.IdEsquemaFullText		= ftt.[KEY]			--AND o.IdEsquemaData	= ftt.IdEsquemaData 	 
-			ORDER BY RANK DESC; 
+			--ORDER BY RANK DESC; 
 		END
 	END
 	--
@@ -181,7 +195,7 @@ BEGIN
 	IF  (@PageNumber = 1)
 		WITH vwPanelONA AS
 		(	
-		SELECT DISTINCT	 n.Siglas				Sigla 
+			SELECT DISTINCT	 n.Siglas				Sigla 
 							,h.MostrarWeb			Pais 
 							,isnull(n.UrlIcono,'')	Icono 
 							,count(e.PK)			NroOrg

@@ -4,7 +4,7 @@
 | Este código está protegido por las leyes y tratados internacionales de derechos de autor|
 \-----------------------------------------------------------------------------------------/
   [App]				: Buscador Andino											
-	- Date          : 2K25.FEB.25	
+	- Date          : 2K25.FEB.05	
 	- Author        : patricio.paccha														
 	- Version	    : 1.0										
 	- Description   : función para obtener el esquema con sus campos de homologación

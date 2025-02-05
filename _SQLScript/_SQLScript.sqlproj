@@ -66,5 +66,6 @@
     <Build Include="06_vwEsquemaOrganiza.sql" />
     <Build Include="07_fnPredictWord.sql" />
     <Build Include="08_fnEsquema.sql" />
+    <Build Include="10_fnEsquemaDatoBuscado.sql" />
   </ItemGroup>
 </Project>
