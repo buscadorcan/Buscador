@@ -62,5 +62,6 @@
     <Build Include="03_paActualizaFiltro.sql" />
     <Build Include="04_paBuscar2k25.sql" />
     <Build Include="05_vwPanelONA.sql" />
+    <Build Include="01_EsquemaFullText.sql" />
   </ItemGroup>
 </Project>

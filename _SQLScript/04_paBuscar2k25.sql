@@ -3,13 +3,13 @@ CREATE OR ALTER PROCEDURE [dbo].[paBuscar2k25] (
  @paramJSON			NVARCHAR(MAX) = '{}' 
 ,@PageNumber		INT = 1 
 ,@RowsPerPage		INT = 10 
-,@RowsTotal			INT = 0				 OUTPUT 
+,@RowsTotal		INT = 0				 OUTPUT 
 ,@vwPanelONAjson	NVARCHAR(MAX) = '{}' OUTPUT
 ) AS
 BEGIN 
---SET @paramJSON =
+--DECLARE @paramJSON			NVARCHAR(MAX) = 
 --N'{"ExactaBuscar"			:false
---	,"TextoBuscar"			:"antimonio"
+--	,"TextoBuscar"			:"agua"
 --	,"FiltroPais"			:[]
 --	,"FiltroOna"			:[]
 --	,"FiltroEsquema"		:[]
@@ -17,17 +17,20 @@ BEGIN
 --	,"FiltroEstado"			:[]
 --	,"FiltroRecomocimiento"	:[]
 --}'
+--,@PageNumber	INT = 1 
+--,@RowsPerPage	INT = 1000 
+--,@RowsTotal		INT = 0				  
+--,@vwPanelONAjson	NVARCHAR(MAX) = '{}';
 
-	IF  ISJSON(@paramJSON) <> 1		
-		THROW 50000, 'ERROR: @paramJSON mal formado', 1;
+	IF  ISJSON(@paramJSON) = 1		
 	BEGIN TRY	
 		SELECT  @RowsTotal			=0;
 		DECLARE @IdHomologacion		INT
-		DECLARE @organizacion		TABLE	(IdEsquemaData  INT, VistaPK NVARCHAR(400))
+		DECLARE @organizacion		TABLE	(IdEsquemaData  INT, PK NVARCHAR(400))
 		DECLARE @IdEsquema			INTEGER=(SELECT TOP 1 IdEsquema FROM Esquema(NOLOCK) WHERE MostrarWebOrden = 1)
-		DECLARE @EnteBuscado 		TABLE	(IdEsquemaData  INT, TipoBusqueda   VARCHAR(40), IdHomologacion INT,Texto NVARCHAR(4000) COLLATE Latin1_General_CI_AI)
-		DECLARE @FiltrarPor			TABLE	(IdHomologacion INT default (0), CodigoHomologacion NVARCHAR(20),	Texto NVARCHAR(400)  COLLATE Latin1_General_CI_AI)
-		DECLARE @EnteBuscadoUnico	TABLE	(IdEsquemaData  INT, VistaPK NVARCHAR(400),	  Texto NVARCHAR(4000) COLLATE Latin1_General_CI_AI)    
+		DECLARE @EnteBuscado 		TABLE	(IdEsquemaData  INT, TipoBusqueda   VARCHAR(40), IdHomologacion INT,Texto NVARCHAR(4000) COLLATE Latin1_General_CI_AI, Ranking INT)   
+		DECLARE @FiltrarPor			TABLE	(IdHomologacion INT default (0), CodigoHomologacion NVARCHAR(20),	Texto NVARCHAR(4000) COLLATE Latin1_General_CI_AI)
+		DECLARE @EnteBuscadoUnico	TABLE	(RankTotal  INT, PK NVARCHAR(400),	  Texto NVARCHAR(4000) COLLATE Latin1_General_CI_AI)    
 		DECLARE @TextoBuscar		NVARCHAR(200)	= lower(trim(isnull(JSON_VALUE(@paramJSON,'$.TextoBuscar'),'')))
 		DECLARE @ExactaBuscar		BIT				= isnull(JSON_VALUE(@paramJSON, '$.ExactaBuscar'),0)
 	END TRY
@@ -38,7 +41,7 @@ BEGIN
 														'* Error: '  + CAST(@ErrorNumber AS NVARCHAR(10)) + CHAR(13) + CHAR(10) +
 														'* Line : '	 + CAST(@ErrorLine AS NVARCHAR(10))	 + CHAR(13) + CHAR(10) +
 														'* Message: '+ ERROR_MESSAGE();
-		PRINT @FullErrorMessage;
+		THROW 50000, @FullErrorMessage, 1;
 	END CATCH
 
 	SElECT @TextoBuscar = dbo.fnDropSpacesTabs(isnull(@TextoBuscar,'')),  @ExactaBuscar = isnull(@ExactaBuscar,0)
@@ -59,7 +62,7 @@ BEGIN
 				) h	ON h.CodigoHomologacionFil= f.CodigoHomologacion
 
 	INSERT	INTO	 @organizacion
-	SELECT	DISTINCT IdEsquemaData, PK
+	SELECT	DISTINCT IdEsquemaData, PK 
 	FROM	EsquemaOrganiza(NOLOCK)
 
 	IF EXISTS(SELECT 1 FROM @FiltrarPor WHERE CodigoHomologacion='KEY_FIL_ESQ') 
@@ -130,53 +133,62 @@ BEGIN
 	END
 
 	IF  @TextoBuscar <> ''	
-		IF  @ExactaBuscar = 1	 
-			INSERT	INTO @EnteBuscado (IdEsquemaData, TipoBusqueda, IdHomologacion , Texto)
-			SELECT	DISTINCT IdEsquemaData  ,  'Exacta'	, IdHomologacion , @TextoBuscar
-			FROM	EsquemaFullText  (NOLOCK)
-			WHERE	IdEsquemaData is not null
-			AND		FullTextData  =  @TextoBuscar
-		ELSE
+	BEGIN	 
+		INSERT	INTO @EnteBuscado (IdEsquemaData, TipoBusqueda, IdHomologacion , Texto, Ranking)
+		SELECT	DISTINCT IdEsquemaData  ,  'Exacta'	, IdHomologacion , FullTextData, 1000
+		FROM	EsquemaFullText  (NOLOCK)
+		WHERE	IdEsquemaData is not null
+		AND		FullTextData  =  @TextoBuscar
+		IF  @ExactaBuscar <> 1
 		BEGIN	
 			--> INFLECTIONAL + THESAURUS - stopWord 
 			DECLARE @TextoBuscarInfle NVARCHAR(200) = ' FORMSOF(INFLECTIONAL, "' + @TextoBuscar +'" )'
-			INSERT	INTO @EnteBuscado (IdEsquemaData, TipoBusqueda	,IdHomologacion , Texto)
-			SELECT  DISTINCT o.IdEsquemaData  , 'Inflec'		,o.[IdHomologacion] ,o.[FullTextData]   
+			INSERT	INTO @EnteBuscado (IdEsquemaData, TipoBusqueda	,IdHomologacion , Texto , Ranking)
+			SELECT  DISTINCT o.IdEsquemaData  , 'Inflec'		,o.[IdHomologacion] ,o.[FullTextData]  , 500 
 			FROM	EsquemaFullText  (NOLOCK) o 
 			WHERE	CONTAINS(FullTextData,  @TextoBuscarInfle )
 			--> RANK + THESAURUS
-			INSERT	INTO @EnteBuscado (IdEsquemaData, TipoBusqueda ,IdHomologacion , Texto)
-			SELECT	DISTINCT o.IdEsquemaData  , 'RankThesa'		,o.[IdHomologacion] ,o.[FullTextData]  --, ftt.RANK  
+			INSERT	INTO @EnteBuscado (IdEsquemaData, TipoBusqueda ,IdHomologacion , Texto , Ranking)
+			SELECT	DISTINCT o.IdEsquemaData  , 'RankThesa'		,o.[IdHomologacion] ,o.[FullTextData]  , ftt.RANK  
 			FROM	EsquemaFullText  (NOLOCK) o 
 			JOIN	FREETEXTTABLE(EsquemaFullText, FullTextData, @TextoBuscar) as ftt		--,LANGUAGE N'English', 2) AS ftt  
 			ON		o.IdEsquemaFullText		= ftt.[KEY]			--AND o.IdEsquemaData	= ftt.IdEsquemaData 	 
-			--ORDER BY RANK DESC; 
+			ORDER BY RANK DESC; 
 		END
- 
-	INSERT  INTO @EnteBuscadoUnico   
-	SELECT  o.IdEsquemaData, o.VistaPK, e.Texto		-- PADRES-ORG
-	FROM	@organizacion	o
-	JOIN	@EnteBuscado	e	ON  e.IdEsquemaData = o.IdEsquemaData
-	UNION
-	SELECT  d.IdEsquemaData , d.VistaFK, e.Texto	-- HIJOS
-	FROM	@EnteBuscado	e	
-	JOIN	EsquemaData		d(NOLOCK) ON  e.IdEsquemaData  = d.IdEsquemaData
-	JOIN	@organizacion	o ON o.VistaPK = d.VistaFK 
+	END
+	--
 
---		Select  '@organizacion', count(distinct IdEsquemaData)		from  @organizacion	 
---UNION	Select  '@EnteBuscado', count(distinct IdEsquemaData)		from  @EnteBuscado	 
---UNION	Select  '@EnteBuscadoUnico', count(distinct IdEsquemaData)	from  @EnteBuscadoUnico	
+	;WITH EnteBuscadoRank AS
+	(
+		SELECT IdEsquemaData, sum(Ranking) RankTotal
+		FROM @EnteBuscado
+		GROUP BY IdEsquemaData
+	)
+	INSERT  INTO @EnteBuscadoUnico 
+	SELECT	SUM (RankTotal) RankTotal, pk , '' -- TEXTO
+	FROM (
+			SELECT  DISTINCT RankTotal, o.PK   			-- PADRES-ORG   o.IdEsquemaData
+			FROM	@organizacion	o
+			JOIN	EnteBuscadoRank	e	ON  e.IdEsquemaData = o.IdEsquemaData
+			UNION
+			SELECT  DISTINCT RankTotal, d.VistaFK	-- HIJOS   d.IdEsquemaData 
+			FROM	EnteBuscadoRank	e	
+			JOIN	EsquemaData		d(NOLOCK) ON  e.IdEsquemaData  = d.IdEsquemaData
+			JOIN	@organizacion	o ON o.PK = d.VistaFK 
+	)  T	GROUP BY PK
+	 
 
 	IF  (@PageNumber = 1)
 		WITH vwPanelONA AS
-		(	SELECT DISTINCT	 n.Siglas				Sigla 
+		(	
+		SELECT DISTINCT	 n.Siglas				Sigla 
 							,h.MostrarWeb			Pais 
 							,isnull(n.UrlIcono,'')	Icono 
-							,count(e.IdEsquemaData) NroOrg
-			FROM	@EnteBuscadoUnico	e
-			INNER JOIN EsquemaOrganiza	o(NOLOCK)ON	o.PK			= e.VistaPK
-			RIGHT JOIN ONA				n(NOLOCK)ON o.ONAIdONA		= n.IdONA
-			INNER JOIN Homologacion		h(NOLOCK)ON h.IdHomologacion= n.IdHomologacionPais
+							,count(e.PK)			NroOrg
+			FROM		@EnteBuscadoUnico	e 	
+			INNER JOIN	EsquemaOrganiza		o(NOLOCK)ON	o.PK				= e.PK
+			RIGHT JOIN  ONA					n(NOLOCK)ON o.ONAIdONA		= n.IdONA
+			INNER JOIN  Homologacion		h(NOLOCK)ON h.IdHomologacion= n.IdHomologacionPais
 			GROUP BY n.Siglas, h.MostrarWeb, isnull(n.UrlIcono,'')
 		)	SELECT   @RowsTotal		= ( SELECT SUM(NroOrg) FROM vwPanelONA )
 					,@vwPanelONAjson= ( SELECT Sigla, Pais, Icono, NroOrg FROM vwPanelONA FOR JSON AUTO ); 
@@ -185,7 +197,7 @@ BEGIN
 	SELECT  DISTINCT
 			 o.ONAIdONA				IdONA	
 			,o.ONASiglas			Siglas	 
-			,e.Texto	 
+			,@TextoBuscar			Texto	 
 			,o.VistaPK 
 			,o.VistaFK 
 			,o.IdEsquema
@@ -193,7 +205,7 @@ BEGIN
 			,o.IdEsquemaData 
 			,o.DataEsquemaJson	
 	FROM	@EnteBuscadoUnico	e
-	JOIN	EsquemaOrganiza		o(NOLOCK)ON  o.PK  = e.VistaPK
+	JOIN	EsquemaOrganiza		o(NOLOCK)ON  o.PK  = e.PK
 	ORDER BY o.VistaPK   
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
