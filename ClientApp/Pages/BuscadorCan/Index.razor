@@ -45,21 +45,21 @@
                             <div class="search-bar-2">
                                 <div class="search-input">
                                     <div class="input-group">
-                                        <input type="text" @bind="searchTerm" @oninput="OnSearchChanged" class="form-control" list="suggestions" placeholder="Buscar..." />
+                                        <input type="text" @bind="searchTerm" @oninput="OnSearchChanged" class="form-control" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;" list="suggestions" placeholder="Buscar..." />
                                         <datalist id="suggestions">
                                             @foreach (var word in ListFnPredictWordsDto)
                                             {
                                                 <option value="@word.Word"></option>
                                             }
                                         </datalist>
-                                        <button class="btn btn-primary" @onclick="BuscarPalabraRequest">Buscar</button>
+                                        <button class="btn btn-primary" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;" @onclick="BuscarPalabraRequest">Buscar</button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="div-2">
                                 <input class="form-check-input" type="checkbox" id="exactSearch" @bind="isExactSearch" />
-                                <label class="form-check-label" for="exactSearch">
+                                <label class="form-check-label" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;" for="exactSearch">
                                     Búsqueda exacta
                                 </label>
                             </div>
@@ -101,7 +101,7 @@
                     </div>
                     <!-- Botón para alternar visibilidad -->
                     <div class="container-2">
-                        <div class="advanced-filters" @onclick="AlternarFiltrosAvanzados" style="cursor: pointer; font-weight: bold;">
+                        <div class="advanced-filters" @onclick="AlternarFiltrosAvanzados" style="font-weight: bold; font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important; cursor: pointer;">
                             @textoFiltrosAvanzados
                         </div>
                         <div class="divider-2"></div>
@@ -130,7 +130,7 @@
                                     @for (int i = 0; i < listadeOpciones.Count; i++)
                                     {
                                         var currentIndex = i;
-                                        <div class="col form-check-label" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 14px !important;">
+                                        <div class="col form-check-label" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
                                             <label for="select-@currentIndex" class="form-label text-small" style="font-weight: bold;"
                                                    title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
                                                 @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
@@ -138,14 +138,14 @@
                                             <!-- Select List con Checkboxes -->
                                             <div>
                                                 <button class="btn btn-secondary dropdown-toggle custom-bg"
-                                                        style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 14px !important;"
+                                                        style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;"
                                                         type="button"
                                                         id="dropdownMenuButton-@currentIndex"
                                                         data-bs-toggle="dropdown"
                                                         aria-expanded="false">
                                                     Seleccionar Opciones
                                                 </button>
-                                                <ul class="dropdown-menu p-2" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 14px !important;" aria-labelledby="dropdownMenuButton-@currentIndex">
+                                                <ul class="dropdown-menu p-2" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;" aria-labelledby="dropdownMenuButton-@currentIndex">
                                                     @if (listadeOpciones?[currentIndex] != null)
                                                     {
                                                         @foreach (var opcion in listadeOpciones[currentIndex] ?? [])

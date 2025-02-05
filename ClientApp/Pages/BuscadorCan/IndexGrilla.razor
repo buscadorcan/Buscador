@@ -46,7 +46,7 @@
 
                         @if (etiqueta.IdHomologacion == 81)
                         {
-                            <Button @onclick="() => showModalOEC(context)">
+                            <Button @onclick="() => showModalOEC(context)" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
                                 @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
                             </Button>
                         }

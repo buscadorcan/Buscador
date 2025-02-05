@@ -62,8 +62,8 @@
                                                     @foreach (var etiqueta in primeraMitad)
                                                     {
                                                         <div class="mb-2">
-                                                            <h6 class="mb-1">@etiqueta.MostrarWeb</h6>
-                                                            <p class="text-muted small">
+                                                            <h6 class="mb-1" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">@etiqueta.MostrarWeb</h6>
+                                                            <p class="text-muted small" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
                                                                 @(item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data ?? "N/A")
                                                             </p>
                                                         </div>
@@ -75,8 +75,8 @@
                                                     @foreach (var etiqueta in segundaMitad)
                                                     {
                                                         <div class="mb-2">
-                                                            <h6 class="mb-1">@etiqueta.MostrarWeb</h6>
-                                                            <p class="text-muted small">
+                                                            <h6 class="mb-1" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">@etiqueta.MostrarWeb</h6>
+                                                            <p class="text-muted small" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
                                                                 @(item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data ?? "N/A")
                                                             </p>
                                                         </div>
@@ -89,10 +89,10 @@
 
                                 <!-- Pie de tarjeta con botones -->
                                 <div class="card-footer d-flex justify-content-between align-items-center">
-                                    <button class="btn btn-outline-danger btn-sm" @onclick="() => AbrirPdf(item)">
+                                    <button class="btn btn-outline-danger btn-sm" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;" @onclick="() => AbrirPdf(item)">
                                         <i class="bi bi-file-pdf"></i> Ver PDF
                                     </button>
-                                    <button class="btn btn-primary btn-sm" @onclick="() => MostrarDetalle(item)">
+                                    <button class="btn btn-primary btn-sm" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;" @onclick="() => MostrarDetalle(item)">
                                         Ver Detalle
                                     </button>
                                 </div>
@@ -103,7 +103,7 @@
                 }
                 else
                 {
-                    <div class="col-12 text-center">
+                    <div class="col-12 text-center" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
                         <p>No se encontraron resultados.</p>
                     </div>
                 }
