@@ -9,14 +9,30 @@
 	- Version	    : 1.0										
 	- Description   : Vista para las organicaiones certificadas
 \----------------------------------------------------------------------------------------*/
-
-CREATE OR ALTER VIEW [dbo].[vwPanelONA] AS
-SELECT DISTINCT	 o.Siglas				Sigla 
-				,h.MostrarWeb			Pais 
-				,isnull(o.UrlIcono,'')	Icono 
-				,count(e.IdEsquemaData) NroOrg
-FROM  EsquemaOrganiza	e(NOLOCK) 
-RIGHT JOIN ONA			o(NOLOCK) ON e.ONAIdONA		 = o.IdONA
-INNER JOIN Homologacion	h(NOLOCK) ON h.IdHomologacion=o.IdHomologacionPais
-GROUP BY o.Siglas, h.MostrarWeb, isnull(o.UrlIcono,'')
-GO
+CREATE OR ALTER VIEW [vwEsquemaOrganiza] AS
+SELECT [PK]
+      ,[IdEsquemaData]
+      ,[IdEsquema]
+      ,[ONAIdONA]
+      ,[ONAPais]
+      ,[ONAUrlIcono]
+      ,[ONASiglas]
+      ,[OrgNombreComercial]
+      ,[OrgRazonSocial]
+      ,[OrgPais]
+      ,[OrgCiudad]
+      ,[OrgDireccion]
+      ,[OrgTelefono]
+      ,[OrgWeb]
+      ,[OrgCorreo]
+      ,[OrgEstadoAcreditado]
+      ,[OrgEsquemaAcreditado]
+      ,[OrgNormaAcreditada]
+      ,[OrgReconocimiento]
+      ,[OrgFechaEfectivaAcreditacion]
+      ,[OrgPeriodoVigencia]
+      ,[OrgFechaActualizacion]
+      ,[OrgCodigoAcreditacion]
+      ,[OrgUrlCertificado]
+      ,[DataFecha]
+  FROM [CAN].[dbo].[EsquemaOrganiza](NOLOCK)
