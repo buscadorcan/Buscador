@@ -399,5 +399,6 @@ ON e.IdEsquemaData = c.IdEsquemaData;
 	where	e.MostrarWebOrden  = 1;
 	print '[paActualizaFiltro]: Finaliza poblar [EsquemaOrganiza]'
 END;
+GO;
 
-
+EXEC paActualizaFiltro

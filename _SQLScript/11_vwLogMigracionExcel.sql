@@ -1,0 +1,29 @@
+/*----------------------------------------------------------------------------------------\
+|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
+|-----------------------------------------------------------------------------------------|
+| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
+\-----------------------------------------------------------------------------------------/
+  [App]				: Buscador Andino											
+	- Date          : 2K25.FEB.05	
+	- Author        : patricio.paccha														
+	- Version	    : 1.0										
+	- Description   : vista para ver los logs de migración de excel
+\----------------------------------------------------------------------------------------*/
+CREATE OR ALTER VIEW [vwLogMigracionExcel] AS 
+--| 2K25.FEB.25 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0
+--| Descripción: Vista para ver los logs de migración de excel
+SELECT [IdLogMigracion]
+      ,[IdONA]
+      ,[Usuario]
+      ,[Migracion]
+      ,[Estado]
+      ,[EsquemaId]
+      ,[EsquemaVista]
+      ,[EsquemaFilas]
+      ,[VistaOrigen]
+      ,[VistaFilas]
+      ,[Tiempo]
+      ,[Fecha]
+      ,[Observacion]
+      ,[ExcelFileName]
+  FROM [CAN].[dbo].[LogMigracion]
