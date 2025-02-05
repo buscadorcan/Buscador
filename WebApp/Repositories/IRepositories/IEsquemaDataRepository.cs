@@ -15,5 +15,7 @@ namespace WebApp.Repositories.IRepositories
     Task<bool> DeleteOldRecordsAsync(int IdEsquemaVista);
     bool DeleteOldRecord(string idVista, string idEnte, int idConexion, int idHomologacionEsquema);
     bool DeleteByExcludingVistaIds(List<string> idsVista, string idEnte, int idConexion, int idEsquemaData);
-  }
+    bool DeleteDataAntigua(int idONA);
+
+    }
 }

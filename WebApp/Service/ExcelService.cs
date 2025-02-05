@@ -217,12 +217,15 @@ namespace WebApp.Service.IService
 
                             executionIndex = DataSet.Tables.IndexOf(dataTable);
                             Console.WriteLine("Execution Index: " + executionIndex + " Sheet: " + dataTable.TableName);
+
+                            DeleteDataAntigua(idOna);
+
                             for (int i = 0; i < dataTable.Rows.Count; i++)
                             {
                                 // Se borra los datos antiguos de todo el esquema que se está migrando y se los vuelve a cargar
                                 // Console.WriteLine($"Deleting old records for {esquema.IdHomologacionEsquema}");
 
-                                deleteOldRecords(esquemaVista.IdEsquemaVista);
+                                //deleteOldRecords(esquemaVista.IdEsquemaVista);
                                 EsquemaData esquemaData = addEsquemaData(dataTable, i, esquemaVista.IdEsquemaVista);
                                 addEsquemaFullText(dataTable, i, esquemaData.IdEsquemaData);
                                 currentLogMigracion.Final = DateTime.Now;
@@ -236,7 +239,7 @@ namespace WebApp.Service.IService
                         bool resultadoSP = await _ipaActualizarFiltro.ActualizarFiltroAsync();
                         if (resultadoSP)
                         {
-                            Console.WriteLine("El procedimiento almacenado se ejecutó correctamente.");
+                            Console.WriteLine("El procedimiento paActualizaFiltro almacenado se ejecutó correctamente.");
                         }
                         else
                         {
@@ -357,9 +360,21 @@ namespace WebApp.Service.IService
             return data.ToString();
         }
 
-        bool deleteOldRecords(int idEsquemaVista)
+        //bool deleteOldRecords(int idEsquemaVista)
+        //{
+        //    Console.WriteLine($"Deleting old records for {idEsquemaVista}");
+        //    if (deleted)
+        //    {
+        //        Console.WriteLine("Already deleted");
+        //        return true;
+        //    }
+        //    deleted = true;
+        //    Console.WriteLine("Predelete");
+        //    return _repositoryED.DeleteOldRecords(idEsquemaVista);
+        //}
+        bool DeleteDataAntigua(int idOna)
         {
-            Console.WriteLine($"Deleting old records for {idEsquemaVista}");
+            Console.WriteLine($"Deleting old records for {idOna}");
             if (deleted)
             {
                 Console.WriteLine("Already deleted");
@@ -367,13 +382,13 @@ namespace WebApp.Service.IService
             }
             deleted = true;
             Console.WriteLine("Predelete");
-            return _repositoryED.DeleteOldRecords(idEsquemaVista);
+            return _repositoryED.DeleteDataAntigua(idOna);
         }
 
-        bool deleteOldRecord(string idVista, string idOrganizacion, int idHomologacionEsquema, int idConexion)
-        {
-            return _repositoryED.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);
-        }
+        //bool deleteOldRecord(string idVista, string idOrganizacion, int idHomologacionEsquema, int idConexion)
+        //{
+        //    return _repositoryED.DeleteOldRecord(idVista, idOrganizacion, idConexion, idHomologacionEsquema);
+        //}
 
         bool addLogDetail(EsquemaVistaColumna field)
         {

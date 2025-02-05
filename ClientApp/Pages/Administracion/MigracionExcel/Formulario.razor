@@ -204,11 +204,18 @@
                 </div>
             </div>
 
-            <div class="button-container">
+            @* <div class="button-container">
                 <div class="button-container-1">
                     <div class="button-2" @onclick="async () => await RegistrarMigracionExcel()">
                         <div class="button-3 headingheadline4-h4">Guardar</div>
                     </div>
+                </div>
+            </div> *@
+            <div class="button-container">
+                <div class="button-container-1">
+                            <Button @ref="saveButton" class="button-2" @onclick="async () => await RegistrarMigracionExcel()">
+                                <div class="button-3 headingheadline4-h4">Guardar</div>
+                            </Button>
                 </div>
             </div>
 
