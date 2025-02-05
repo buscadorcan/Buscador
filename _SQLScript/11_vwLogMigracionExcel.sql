@@ -12,7 +12,8 @@
 CREATE OR ALTER VIEW [vwLogMigracionExcel] AS 
 --| 2K25.FEB.25 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0
 --| Descripción: Vista para ver los logs de migración de excel
-SELECT [IdLogMigracion]
+SELECT TOP 20
+       [IdLogMigracion]
       ,[IdONA]
       ,[Usuario]
       ,[Migracion]
@@ -26,4 +27,5 @@ SELECT [IdLogMigracion]
       ,[Fecha]
       ,[Observacion]
       ,[ExcelFileName]
-  FROM [CAN].[dbo].[LogMigracion]
+  FROM [LogMigracion] (NOLOCK)
+  ORDER BY [Fecha] DESC
