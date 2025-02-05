@@ -112,6 +112,53 @@ namespace WebApp.Repositories
             });
         }
 
+        public bool DeleteDataAntigua(int idONA)
+        {
+            return ExecuteDbOperation(context =>
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Obtener los IdEsquemaData relacionados con el IdONA en EsquemaVista
+                        var esquemaDataIds = context.EsquemaData
+                            .Where(d => context.EsquemaVista
+                                .Any(v => v.IdEsquemaVista == d.IdEsquemaVista && v.IdONA == idONA))
+                            .Select(d => d.IdEsquemaData)
+                            .ToList();
+
+                        if (esquemaDataIds.Any())
+                        {
+                            // Eliminar registros en EsquemaFullText relacionados con EsquemaData
+                            var esquemaFullText = context.EsquemaFullText
+                                .Where(e => esquemaDataIds.Contains(e.IdEsquemaData));
+
+                            context.EsquemaFullText.RemoveRange(esquemaFullText);
+                            context.SaveChanges();
+
+                            // Eliminar registros en EsquemaData
+                            var esquemaData = context.EsquemaData
+                                .Where(d => esquemaDataIds.Contains(d.IdEsquemaData));
+
+                            context.EsquemaData.RemoveRange(esquemaData);
+                            context.SaveChanges();
+                        }
+
+                        // Confirmar la transacción
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Revertir cambios en caso de error
+                        transaction.Rollback();
+                        Console.WriteLine($"Error eliminando datos: {ex.Message}");
+                        return false;
+                    }
+                }
+            });
+        }
+
 
         //public async Task<bool> DeleteOldRecordsAsync(int IdEsquemaVista)
         //{
