@@ -1,8 +1,6 @@
 ﻿using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 using SharedApp.Data;
 using SharedApp.Models.Dtos;
 
@@ -41,17 +39,18 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
-                if (iCatalogosService != null) {
+                if (iCatalogosService != null)
+                {
                     listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
 
                     if (listaEtiquetasFiltros != null)
                     {
-                        foreach(var opciones in listaEtiquetasFiltros)
+                        foreach (var opciones in listaEtiquetasFiltros)
                         {
                             listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<vwFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
                             Console.WriteLine($"Lectura del codigo");
                         }
-                        
+
                     }
                     listaDatosPanel = new List<vwPanelONADto>();
                     TotalEmpresa = 0;
@@ -59,10 +58,12 @@ namespace ClientApp.Pages.BuscadorCan
                     TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
                 }
 
-             
-            } catch (Exception e) {
+
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
-               
+
             }
             StateHasChanged();
         }
@@ -164,68 +165,11 @@ namespace ClientApp.Pages.BuscadorCan
 
             return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = [], TotalCount = 0 };
         }
-        private void OnAutoCompleteChanged(ChangeEventArgs e)
-        {
-            var selectedWord = e.Value?.ToString();
-            if (!string.IsNullOrWhiteSpace(selectedWord))
-            {
-                buscarRequest.TextoBuscar = selectedWord;
-            }
-        }
-
-        private void AgregarSeleccion(string valor, int? idHomologacion, int comboIndex)
-        {
-            if (!string.IsNullOrWhiteSpace(valor) && idHomologacion.HasValue)
-            {
-                // Agregar la selección sin verificar duplicados, ya que debería permitir múltiples opciones del mismo select
-                Selecciones.Add(new Seleccion
-                {
-                    Texto = valor,
-                    ComboIndex = comboIndex
-                });
-            }
-        }
-
-        private void QuitarSeleccion(int comboIndex, string texto)
-        {
-            Selecciones.RemoveAll(s => s.ComboIndex == comboIndex && s.Texto == texto);
-        }
-
-        private void SeleccionarTodos(int comboIndex, object isChecked)
-        {
-            bool seleccionarTodo = bool.Parse(isChecked.ToString());
-
-            // Verificar si listadeOpciones y el índice son válidos
-            if (listadeOpciones != null && comboIndex >= 0 && comboIndex < listadeOpciones.Count)
-            {
-                var opciones = listadeOpciones[comboIndex];
-                if (seleccionarTodo)
-                {
-                    // Seleccionar todas las opciones del combo
-                    foreach (var opcion in opciones)
-                    {
-                        if (!Selecciones.Any(s => s.ComboIndex == comboIndex && s.Texto == opcion.MostrarWeb))
-                        {
-                            Selecciones.Add(new Seleccion { ComboIndex = comboIndex, Texto = opcion.MostrarWeb });
-                        }
-                    }
-                }
-                else
-                {
-                    // Quitar todas las opciones del combo
-                    Selecciones.RemoveAll(s => s.ComboIndex == comboIndex);
-                }
-            }
-        }
-        private string ObtenerSeleccionesComoJson()
-        {
-            return System.Text.Json.JsonSerializer.Serialize(Selecciones);
-        }
 
         private void AlternarFiltrosAvanzados()
         {
             mostrarFiltrosAvanzados = !mostrarFiltrosAvanzados;
-
+            mostrarPublicidad = false;
             // Cambiar el texto según el estado
             textoFiltrosAvanzados = mostrarFiltrosAvanzados
                 ? "Ocultar Filtros Avanzados"
@@ -236,6 +180,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             mostrarIndexCard = !mostrarIndexCard;
             esModoGrilla = !mostrarIndexCard; // Actualiza la bandera para definir si la búsqueda va a grilla o tarjetas
+
         }
         private class Seleccion
         {
@@ -278,7 +223,7 @@ namespace ClientApp.Pages.BuscadorCan
             TotalEmpresa = 0;
             listaDatosPanel = panelOnaData;
             TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
-            StateHasChanged(); 
+            StateHasChanged();
         }
     }
 

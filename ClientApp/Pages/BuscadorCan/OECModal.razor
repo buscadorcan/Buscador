@@ -1,0 +1,57 @@
+﻿<div class="card shadow-lg">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover w-100">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="text-center p-3">Información</th>
+                        <th class="text-center p-3">Descripción general del OEC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="fw-bold p-3">SIGLAS</td>
+                        <td class="p-3">@onaSeleccionado?.Siglas</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold p-3">Nombre del OEC</td>
+                        <td class="p-3">@datoOEC</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold p-3">Razón Social</td>
+                        <td class="p-3">@onaSeleccionado?.RazonSocial</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold p-3">País</td>
+                        <td class="p-3">@onaSeleccionado?.Pais</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold p-3">Dirección</td>
+                        <td class="p-3">@onaSeleccionado?.Direccion</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold p-3">Teléfono</td>
+                        <td class="p-3">@onaSeleccionado?.Telefono</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold p-3">Página Web</td>
+                        <td class="p-3"><a href="@onaSeleccionado?.PaginaWeb" target="_blank">@onaSeleccionado?.PaginaWeb</a></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold p-3">Correo electrónico</td>
+                        <td class="p-3"><a href="mailto:@onaSeleccionado?.Correo">@onaSeleccionado?.Correo</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (loading)
+{
+    <p class="text-center text-muted mt-3">Cargando información...</p>
+}
+else if (onaSeleccionado == null)
+{
+    <p class="text-center text-danger mt-3">No se encontró información del ONA.</p>
+}

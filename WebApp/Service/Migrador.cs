@@ -186,6 +186,7 @@ namespace WebApp.Service.IService
                     OrigenDatos = conexion.OrigenDatos,
                     Observacion = $"Tiempo total de migración: {tiempoTotal.Hours}h {tiempoTotal.Minutes}m {tiempoTotal.Seconds}s {tiempoTotal.Milliseconds}ms."
                 };
+
                 _logMigracion.Create(logTiempo);
 
                 return resultado;

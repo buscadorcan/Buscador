@@ -166,7 +166,7 @@ namespace ClientApp.Pages.BuscadorCan
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
             modal.Size = ModalSize.Regular;
-            await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
+            await modal.ShowAsync < OECModal>(title: "Información del OEC", parameters: parameters);
         }
 
 

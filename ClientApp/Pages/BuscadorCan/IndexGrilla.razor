@@ -40,11 +40,19 @@
                         </Tooltip>
                     </HeaderContent>
                     <ChildContent>
-                        @if(etiqueta.IdHomologacion == 81){
-                            <Button @onclick="() => showModalOEC(context)">@context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data </Button>
+                        @{
+                            var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data;
                         }
-                        else{
-                            @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data
+
+                        @if (etiqueta.IdHomologacion == 81)
+                        {
+                            <Button @onclick="() => showModalOEC(context)">
+                                @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
+                            </Button>
+                        }
+                        else
+                        {
+                            @(string.IsNullOrWhiteSpace(dato) ? "Sin datos" : dato)
                         }
                         
                     </ChildContent>
