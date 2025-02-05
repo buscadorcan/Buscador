@@ -9,7 +9,7 @@
 	- Version	    : 1.0										
 	- Description   : Tabla indexada para la busqueda de organizaciones certificadas
 \----------------------------------------------------------------------------------------*/
-
+-- para el migrado
 DROP TABLE if exists EsquemaFullText_BK;
 GO
 SELECT *
