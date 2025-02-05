@@ -1,4 +1,5 @@
 DROP TABLE if exists [dbo].[EsquemaOrganiza]
+GO
 CREATE TABLE [dbo].[EsquemaOrganiza](
 	-- ESQ-ORG
 	 PK								NVARCHAR (400)  
