@@ -77,7 +77,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = result
+                    IsSuccess = true
                 });
             }
             catch (Exception e)

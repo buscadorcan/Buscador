@@ -22,16 +22,36 @@ namespace ClientApp.Pages.BuscadorCan
                 var listaOnas = await iCatalogoService.GetvwOnaAsync();
                 onaSeleccionado = listaOnas.FirstOrDefault(ona => ona.IdONA == ResultData.IdONA);
 
+                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81 OEC
+                datoOEC = ResultData?.DataEsquemaJson?
+                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
+
+                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81 Esquema Acreditado
+                datoOEC = ResultData?.DataEsquemaJson?
+                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
+
+                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
+                datoOEC = ResultData?.DataEsquemaJson?
+                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
+
+                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
+                datoOEC = ResultData?.DataEsquemaJson?
+                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
+
+                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
+                datoOEC = ResultData?.DataEsquemaJson?
+                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
+
                 // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
                 datoOEC = ResultData?.DataEsquemaJson?
                     .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
 
 
-                //if (!string.IsNullOrEmpty(onaSeleccionado?.UrlIcono) && onaSeleccionado.UrlIcono.Contains("filePath"))
-                //{
-                //    var iconoJson = System.Text.Json.JsonDocument.Parse(onaSeleccionado.UrlIcono);
-                //    onaSeleccionado.UrlIcono = iconoJson.RootElement.GetProperty("filePath").GetString();
-                //}
+                if (!string.IsNullOrEmpty(onaSeleccionado?.UrlIcono) && onaSeleccionado.UrlIcono.Contains("filePath"))
+                {
+                    var iconoJson = System.Text.Json.JsonDocument.Parse(onaSeleccionado.UrlIcono);
+                    onaSeleccionado.UrlIcono = iconoJson.RootElement.GetProperty("filePath").GetString();
+                }
             }
             catch (Exception ex)
             {
