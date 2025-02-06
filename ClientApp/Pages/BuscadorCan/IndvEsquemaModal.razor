@@ -1,9 +1,11 @@
-@using ClientApp.Models;
+﻿@using ClientApp.Models;
 @using SharedApp.Models.Dtos
 
-@if(Columnas != null) {
+@if (Columnas != null)
+{
     <Grid TItem="DataHomologacionEsquema" class="table table-hover table-bordered table-striped" DataProvider="HomologacionEsquemasDataProvider" Responsive="true" FixedHeader="true" Height="350" Style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
-        @foreach(var item in Columnas) {
+        @foreach (var item in Columnas)
+        {
             <GridColumn TItem="DataHomologacionEsquema" PropertyName="@item.MostrarWeb">
                 <HeaderContent>
                     <Tooltip Title="@item.TooltipWeb">@item.MostrarWeb</Tooltip>
