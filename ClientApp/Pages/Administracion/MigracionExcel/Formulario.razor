@@ -213,7 +213,7 @@
             </div> *@
             <div class="button-container">
                 <div class="button-container-1">
-                            <Button @ref="saveButton" class="button-2" @onclick="async () => await RegistrarMigracionExcel()">
+                    <Button @ref="saveButton" class="button-2" @onclick="async () => await OpenDeleteModal()">
                                 <div class="button-3 headingheadline4-h4">Guardar</div>
                             </Button>
                 </div>
@@ -238,3 +238,26 @@
         </div>
     </div>
 </EditForm>
+
+
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar carga</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea cargar este archivo?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Success" @onclick=@(() => ConfirmDelete())>Confirmar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
