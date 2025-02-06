@@ -169,7 +169,7 @@ namespace ClientApp.Pages.BuscadorCan
             parameters.Add("resultData", resultData);
             modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
             modal.Size = ModalSize.Regular;
-            await modal.ShowAsync < OECModal>(title: "Información del OEC", parameters: parameters);
+            await modal.ShowAsync<OECModal>(title: "Información del OEC", parameters: parameters);
         }
 
         private async void showModalESQ(BuscadorResultadoDataDto resultData)
