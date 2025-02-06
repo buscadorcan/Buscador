@@ -218,9 +218,10 @@ BEGIN
 			,o.IdEsquemaVista
 			,o.IdEsquemaData 
 			,o.DataEsquemaJson	
+			,e.RankTotal
 	FROM	@EnteBuscadoUnico	e
 	JOIN	EsquemaOrganiza		o(NOLOCK)ON  o.PK  = e.PK
-	ORDER BY o.VistaPK   
+	ORDER BY e.RankTotal 
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
 END
