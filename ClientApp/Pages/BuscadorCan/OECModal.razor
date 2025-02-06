@@ -1,6 +1,10 @@
-﻿<div class="card shadow-lg">
+﻿<div class="card shadow-lg position-relative">
+    <!-- Ícono de cierre en la esquina superior derecha -->
+    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+
     <div class="card-body">
-        <div class="table-responsive" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
+        <!-- Contenedor con Scroll Vertical -->
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto; font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
             <table class="table table-bordered table-striped table-hover w-100">
                 <thead class="table-primary">
                     <tr>
@@ -9,62 +13,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="fw-bold p-3">SIGLAS</td>
-                        <td class="p-3">@onaSeleccionado?.Siglas</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Nombre del OEC</td>
-                        <td class="p-3">@datoOEC</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Razón Social</td>
-                        <td class="p-3">@onaSeleccionado?.RazonSocial</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">País</td>
-                        <td class="p-3">@onaSeleccionado?.Pais</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Dirección</td>
-                        <td class="p-3">@onaSeleccionado?.Direccion</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Teléfono</td>
-                        <td class="p-3">@onaSeleccionado?.Telefono</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Página Web</td>
-                        <td class="p-3"><a href="@onaSeleccionado?.PaginaWeb" target="_blank">@onaSeleccionado?.PaginaWeb</a></td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Correo electrónico</td>
-                        <td class="p-3"><a href="mailto:@onaSeleccionado?.Correo">@onaSeleccionado?.Correo</a></td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Esquema Acreditado</td>
-                        <td class="p-3">@onaSeleccionado?</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Norma de Acreditación</td>
-                        <td class="p-3">@onaSeleccionado?.Telefono</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Acuerdo de reconocimiento</td>
-                        <td class="p-3">@onaSeleccionado?.Telefono</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Fecha efectiva de la acreditación</td>
-                        <td class="p-3">@onaSeleccionado?.Telefono</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Periodo de vigencia</td>
-                        <td class="p-3">@onaSeleccionado?.Telefono</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold p-3">Fecha de actualización</td>
-                        <td class="p-3">@onaSeleccionado?.Telefono</td>
-                    </tr>
+                    <tr><td class="fw-bold p-3">SIGLAS</td><td class="p-3">@onaSeleccionado?.ONASiglas</td></tr>
+                    <tr><td class="fw-bold p-3">Nombre del OEC</td><td class="p-3">@onaSeleccionado?.OrgNombreComercial</td></tr>
+                    <tr><td class="fw-bold p-3">Razón Social</td><td class="p-3">@onaSeleccionado?.OrgRazonSocial</td></tr>
+                    <tr><td class="fw-bold p-3">País</td><td class="p-3">@onaSeleccionado?.ONAPais</td></tr>
+                    <tr><td class="fw-bold p-3">Dirección</td><td class="p-3">@onaSeleccionado?.OrgDireccion</td></tr>
+                    <tr><td class="fw-bold p-3">Teléfono</td><td class="p-3">@onaSeleccionado?.OrgTelefono</td></tr>
+                    <tr><td class="fw-bold p-3">Página Web</td><td class="p-3"><a href="@onaSeleccionado?.OrgWeb" target="_blank">@onaSeleccionado?.OrgWeb</a></td></tr>
+                    <tr><td class="fw-bold p-3">Correo electrónico</td><td class="p-3"><a href="mailto:@onaSeleccionado?.OrgCorreo">@onaSeleccionado?.OrgCorreo</a></td></tr>
+                    <tr><td class="fw-bold p-3">Esquema Acreditado</td><td class="p-3">@onaSeleccionado?.OrgEsquemaAcreditado</td></tr>
+                    <tr><td class="fw-bold p-3">Norma de Acreditación</td><td class="p-3">@onaSeleccionado?.OrgNormaAcreditada</td></tr>
+                    <tr><td class="fw-bold p-3">Acuerdo de reconocimiento</td><td class="p-3">@onaSeleccionado?.OrgReconocimiento</td></tr>
+                    <tr><td class="fw-bold p-3">Fecha efectiva de la acreditación</td><td class="p-3">@onaSeleccionado?.OrgFechaEfectivaAcreditacion</td></tr>
+                    <tr><td class="fw-bold p-3">Periodo de vigencia</td><td class="p-3">@onaSeleccionado?.OrgPeriodoVigencia</td></tr>
+                    <tr><td class="fw-bold p-3">Fecha de actualización</td><td class="p-3">@onaSeleccionado?.OrgFechaActualizacion</td></tr>
                 </tbody>
             </table>
         </div>

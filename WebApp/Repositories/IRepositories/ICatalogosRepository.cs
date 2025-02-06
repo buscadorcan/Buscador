@@ -71,5 +71,11 @@ namespace WebApp.Repositories.IRepositories
         /// </summary>
         /// <returns>Una lista de objetos <see cref="vwPanelONA"/>.</returns>
         List<vwPanelONA> ObtenerVwPanelOna();
+        /// <summary>
+        /// Obtiene el Homologación grupos.
+        /// </summary>
+        /// <returns>Una lista de objetos <see cref="vwEsquemaOrganiza"/>.</returns>
+
+        List<vwEsquemaOrganiza> ObtenervwEsquemaOrganiza();
     }
 }

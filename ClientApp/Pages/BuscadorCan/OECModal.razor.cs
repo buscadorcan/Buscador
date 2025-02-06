@@ -8,9 +8,8 @@ namespace ClientApp.Pages.BuscadorCan
     {
         [Parameter]
         public BuscadorResultadoDataDto ResultData { get; set; } = default!;
-        private vwONADto? onaSeleccionado;
+        private vwEsquemaOrganizaDto? onaSeleccionado;
         private bool loading = true;
-        private string? datoOEC;
 
         [Inject]
         private ICatalogosService iCatalogoService { get; set; } = default!;
@@ -19,38 +18,15 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
-                var listaOnas = await iCatalogoService.GetvwOnaAsync();
-                onaSeleccionado = listaOnas.FirstOrDefault(ona => ona.IdONA == ResultData.IdONA);
+                //var listaOnas = await iCatalogoService.GetvwOnaAsync();
+                var listaOnas = await iCatalogoService.GetvwEsquemaOrganizaAsync();
+                onaSeleccionado = listaOnas.FirstOrDefault(ona => ona.ONAIdONA == ResultData.IdONA);
 
-                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81 OEC
-                datoOEC = ResultData?.DataEsquemaJson?
-                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
-
-                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81 Esquema Acreditado
-                datoOEC = ResultData?.DataEsquemaJson?
-                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
-
-                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
-                datoOEC = ResultData?.DataEsquemaJson?
-                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
-
-                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
-                datoOEC = ResultData?.DataEsquemaJson?
-                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
-
-                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
-                datoOEC = ResultData?.DataEsquemaJson?
-                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
-
-                // Extraer el dato de DataEsquemaJson donde IdHomologacion == 81
-                datoOEC = ResultData?.DataEsquemaJson?
-                    .FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
-
-
-                if (!string.IsNullOrEmpty(onaSeleccionado?.UrlIcono) && onaSeleccionado.UrlIcono.Contains("filePath"))
+            
+                if (!string.IsNullOrEmpty(onaSeleccionado?.ONAUrlIcono) && onaSeleccionado.ONAUrlIcono.Contains("filePath"))
                 {
-                    var iconoJson = System.Text.Json.JsonDocument.Parse(onaSeleccionado.UrlIcono);
-                    onaSeleccionado.UrlIcono = iconoJson.RootElement.GetProperty("filePath").GetString();
+                    var iconoJson = System.Text.Json.JsonDocument.Parse(onaSeleccionado.ONAUrlIcono);
+                    onaSeleccionado.ONAUrlIcono = iconoJson.RootElement.GetProperty("filePath").GetString();
                 }
             }
             catch (Exception ex)

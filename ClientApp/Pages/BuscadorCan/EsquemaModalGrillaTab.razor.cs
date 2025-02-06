@@ -15,11 +15,15 @@ namespace ClientApp.Pages.BuscadorCan
         public int? idONA { get; set; }
         [Parameter]
         public string? VistaFK { get; set; }
+        [Parameter]
+        public string? VistaPK { get; set; }
+        [Parameter]
+        public string? Texto { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
         private List<HomologacionDto>? Columnas;
-        private List<DataHomologacionEsquema>? resultados;
+        private List<DataEsquemaDatoBuscar>? resultados;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -36,11 +40,11 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine(e);
             }
         }
-        private async Task<GridDataProviderResult<DataHomologacionEsquema>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataHomologacionEsquema> request)
+        private async Task<GridDataProviderResult<DataEsquemaDatoBuscar>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataEsquemaDatoBuscar> request)
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaFK, idONA ?? 0);
+                resultados = await servicio.FnEsquemaDatoBuscarAsync(idONA ?? 0, IdEsquema, VistaPK, Texto);
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
