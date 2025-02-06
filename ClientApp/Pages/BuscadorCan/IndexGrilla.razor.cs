@@ -172,6 +172,15 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync < OECModal>(title: "Información del OEC", parameters: parameters);
         }
 
+        private async void showModalESQ(BuscadorResultadoDataDto resultData)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("resultData", resultData);
+            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
+            modal.Size = ModalSize.ExtraLarge;
+            await modal.ShowAsync<IndvEsquemaModal>(title: "Información Esquema", parameters: parameters);
+        }
+
 
         private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {

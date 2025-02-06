@@ -1,4 +1,4 @@
-using BlazorBootstrap;
+﻿using BlazorBootstrap;
 using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -7,7 +7,7 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class EsquemaModalGrillaTab
+    public partial class IndvEsquemaModal
     {
         [Parameter]
         public int IdEsquema { get; set; }
@@ -24,6 +24,7 @@ namespace ClientApp.Pages.BuscadorCan
         private HomologacionEsquemaDto? homologacionEsquema;
         private List<HomologacionDto>? Columnas;
         private List<DataHomologacionEsquema>? resultados;
+
         protected override async Task OnInitializedAsync()
         {
             try
@@ -39,6 +40,7 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine(e);
             }
         }
+
         private async Task<GridDataProviderResult<DataHomologacionEsquema>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataHomologacionEsquema> request)
         {
             if (resultados is null && servicio != null)
