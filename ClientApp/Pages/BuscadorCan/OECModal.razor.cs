@@ -20,7 +20,7 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 //var listaOnas = await iCatalogoService.GetvwOnaAsync();
                 var listaOnas = await iCatalogoService.GetvwEsquemaOrganizaAsync();
-                onaSeleccionado = listaOnas.FirstOrDefault(ona => ona.ONAIdONA == ResultData.IdONA);
+                onaSeleccionado = listaOnas.FirstOrDefault(ona => ona.IdEsquemaData == ResultData.IdEsquemaData);
 
             
                 if (!string.IsNullOrEmpty(onaSeleccionado?.ONAUrlIcono) && onaSeleccionado.ONAUrlIcono.Contains("filePath"))

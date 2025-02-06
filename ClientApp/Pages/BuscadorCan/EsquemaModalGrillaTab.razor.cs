@@ -31,7 +31,6 @@ namespace ClientApp.Pages.BuscadorCan
                 if (servicio != null)
                 {
                     homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(IdEsquema);
-
                     Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema?.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
                 }
             }

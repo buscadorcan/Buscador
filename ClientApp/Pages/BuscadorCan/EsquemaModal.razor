@@ -3,7 +3,7 @@
     {
         @foreach (var esquema in listaEsquemas)
         {
-            <Tab style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
+            <Tab style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
                 <TitleTemplate>
                     <Tooltip Title="@esquema.TooltipWeb">@esquema.MostrarWeb</Tooltip>
                 </TitleTemplate>
@@ -12,7 +12,7 @@
                         <EsquemaModalGrillaTab IdEsquema="@esquema.IdEsquema"
                                                idONA="@resultData.IdONA"
                                                VistaPK="@resultData.VistaPK"
-                                               TextoBuscar="@resultData.Texto" />
+                                               Texto="@resultData.Texto" />
                     </div>
                 </Content>
             </Tab>
@@ -20,7 +20,7 @@
     }
     else
     {
-        <div class="alert alert-warning" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
+        <div class="alert alert-warning" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
             No se encontraron esquemas o los datos no estan cargados correctamente.
         </div>
     }

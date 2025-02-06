@@ -212,7 +212,7 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
+        /// <summary>System.Exception: 'A null value was encountered in the database operation'
         /// Obtiene el esquema de roles. Requiere autorización.
         /// </summary>
         /// <returns>Una lista con el esquema de roles.</returns>
