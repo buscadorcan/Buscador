@@ -55,7 +55,7 @@
             <div class="form-row py-2">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Vista Código Homologado</label>
                 <div class="col">
-                    <InputText @bind-Value="homologacion.NombreHomologado" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="homologacion.NombreHomologado" class="form-control inter-regular-normal-comet-14px" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.NombreHomologado)" />
                 </div>
             </div>
@@ -63,7 +63,7 @@
             <div class="form-row py-2">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Texto a Mostrar en la Web</label>
                 <div class="col">
-                    <InputText @bind-Value="homologacion.MostrarWeb" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="homologacion.MostrarWeb" class="form-control inter-regular-normal-comet-14px" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.MostrarWeb)" />
                 </div>
             </div>
@@ -71,7 +71,7 @@
             <div class="form-row py-2">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Tooltip Web</label>
                 <div class="col">
-                    <InputText @bind-Value="homologacion.TooltipWeb" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="homologacion.TooltipWeb" class="form-control inter-regular-normal-comet-14px" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.TooltipWeb)" />
                 </div>
             </div>
@@ -93,7 +93,7 @@
                 {
                     <div class="col-4">
                         <label class="label valign-text-middle inter-regular-normal-comet-16px">Ligar al filtro</label>
-                        <select class="form-control" @onchange="ActualizarFiltro" value="@homologacion.IdHomologacionFiltro">
+                        <select class="form-control inter-regular-normal-comet-14px" @onchange="ActualizarFiltro" value="@homologacion.IdHomologacionFiltro">
                             <option value="">Sin Filtro</option>
                             @foreach (var filtro in filtros)
                             {
@@ -125,13 +125,13 @@
 
                 <div class="col-md-4">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Si No Hay Dato</label>
-                    <InputText @bind-Value="homologacion.SiNoHayDato" class="form-control" placeholder="ingresar..." maxlength="10" style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="homologacion.SiNoHayDato" class="form-control inter-regular-normal-comet-14px" placeholder="ingresar..." maxlength="10" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.SiNoHayDato)" />
                 </div>
 
                 <div class="col-md-4">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Ancho Columna</label>
-                    <InputNumber @bind-Value="homologacion.AnchoColumna" class="form-control" placeholder="ingresar..." style="margin-top: 2% !important;" />
+                    <InputNumber @bind-Value="homologacion.AnchoColumna" class="form-control inter-regular-normal-comet-14px" placeholder="ingresar..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(()=>homologacion.AnchoColumna)" />
                 </div>
             </div>
