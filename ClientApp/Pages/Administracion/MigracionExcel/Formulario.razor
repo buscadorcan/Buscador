@@ -49,7 +49,7 @@
                     </button>
 
                     <!-- Lista de opciones, visible solo si showDropdown es true -->
-                    <ul class="form-control" style="display:@(showDropdown ? "block" : "none");">
+                    <ul class="form-control inter-regular-normal-comet-14px" style="display:@(showDropdown ? "block" : "none");">
                         @if (listaONAs != null && listaONAs.Any())
                         {
                             @foreach (var opcion in listaONAs)
@@ -246,7 +246,7 @@
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Base Datos</label>
                 <div class="col" style="margin-top: 2% !important;">
                     <InputFile @bind-Value="uploadedFile"
-                               class="form-control"
+                               class="form-control inter-regular-normal-comet-14px"
                                placeholder="Archivo migración excel"
                                OnChange="OnInputFileChange" />
                     <ValidationMessage For="(() => uploadedFile)" />
