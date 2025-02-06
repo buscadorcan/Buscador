@@ -4,7 +4,7 @@
 @using SharedApp.Data
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
-
+@inject NavigationManager NavigationManager
 
 <PageTitle>Formulario Migración Excel</PageTitle>
 
@@ -44,12 +44,12 @@
                         }
                         else
                         {
-                            <span>Seleccionar Ona</span>
+                            <span class="label valign-text-middle inter-regular-normal-comet-14px">Seleccionar Ona</span>
                         }
                     </button>
 
                     <!-- Lista de opciones, visible solo si showDropdown es true -->
-                    <ul class="form-control" style="display:@(showDropdown ? "block" : "none");">
+                    <ul class="form-control inter-regular-normal-comet-14px" style="display:@(showDropdown ? "block" : "none");">
                         @if (listaONAs != null && listaONAs.Any())
                         {
                             @foreach (var opcion in listaONAs)
@@ -71,22 +71,29 @@
 
             <style>
                 .custom-dropdown-button {
-                    background-color: #6c757d; /* Color gris oscuro */
-                    color: white;
+                    background-color: white; /* Fondo blanco */
+                    color: #495057; /* Color de texto oscuro */
                     padding: 10px 15px;
-                    border-radius: 5px;
-                    border: none;
+                    border-radius: 6px;
+                    border: 1px solid #ced4da; /* Color de borde gris */
                     cursor: pointer;
                     width: 100%;
                     text-align: left;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
+                    font-size: 14px;
+                    font-family: Arial, sans-serif;
                 }
 
                     .custom-dropdown-button:hover {
-                        background-color: #5a6268;
+                        background-color: #f8f9fa; /* Cambio de color al pasar el cursor */
                     }
+
+                .dropdown-arrow {
+                    font-size: 12px;
+                    color: #495057;
+                }
 
                 .custom-dropdown-menu {
                     position: absolute;
@@ -95,11 +102,11 @@
                     padding: 5px 0;
                     margin: 5px 0;
                     width: 100%;
-                    border-radius: 5px;
+                    border-radius: 6px;
                     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                    border: 1px solid #ddd;
+                    border: 1px solid #ced4da;
                     z-index: 1000;
-                    max-height: 200px; /* Agregamos un límite para que no crezca demasiado */
+                    max-height: 200px;
                     overflow-y: auto;
                 }
 
@@ -107,9 +114,11 @@
                     display: block;
                     padding: 10px 15px;
                     text-decoration: none;
-                    color: #333;
+                    color: #495057;
                     cursor: pointer;
                     transition: background 0.2s;
+                    font-size: 14px;
+                    font-family: Arial, sans-serif;
                 }
 
                     .custom-dropdown-item:hover {
@@ -192,12 +201,52 @@
                 </div>
             </div> *@
 
+            <style>
+                .form-row label {
+                    font-size: 14px;
+                    font-family: Arial, sans-serif;
+                    color: #495057;
+                    margin-bottom: 5px;
+                    display: block;
+                }
+
+                .form-control[type="file"] {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    height: 35px;
+                    border: 1px solid #ced4da;
+                    border-radius: 6px;
+                    background-color: white;
+                    font-size: 14px;
+                    font-family: Arial, sans-serif;
+                    padding: 5px;
+                    color: #495057;
+                }
+
+                    .form-control[type="file"]::file-selector-button {
+                        background-color: #f8f9fa;
+                        border: none;
+                        padding: 5px 10px;
+                        margin-right: 10px;
+                        font-size: 14px;
+                        color: #495057;
+                        cursor: pointer;
+                        border-right: 1px solid #ced4da;
+                    }
+
+                        .form-control[type="file"]::file-selector-button:hover {
+                            background-color: #e9ecef;
+                        }
+            </style>
+
             <!-- Campo de archivo -->
             <div class="form-row py-2">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Base Datos</label>
                 <div class="col" style="margin-top: 2% !important;">
                     <InputFile @bind-Value="uploadedFile"
-                               class="form-control"
+                               class="form-control inter-regular-normal-comet-14px"
                                placeholder="Archivo migración excel"
                                OnChange="OnInputFileChange" />
                     <ValidationMessage For="(() => uploadedFile)" />
@@ -211,11 +260,23 @@
                     </div>
                 </div>
             </div> *@
-            <div class="button-container">
+            @* <div class="button-container">
                 <div class="button-container-1">
-                            <Button @ref="saveButton" class="button-2" @onclick="async () => await RegistrarMigracionExcel()">
+                    <Button @ref="saveButton" class="button-2" @onclick="async () => await OpenDeleteModal()">
                                 <div class="button-3 headingheadline4-h4">Guardar</div>
                             </Button>
+                </div>
+            </div> *@
+            <div class="py-2 d-flex justify-content-end gap-2">
+                <a @onclick="Regresar">
+                    <div class="button">
+                        <img class="icons" src="admin/img/icons.svg" alt="Icons">
+                        <div class="button-1 headingheadline4-h4">Regresar</div>
+                    </div>
+                </a>
+                <div class="save-button-container">
+                    <Button @ref="saveButton" class="button-2" @onclick="async () => await OpenDeleteModal()">
+                        <div class="button-3 headingheadline4-h4">Guardar</div></Button>
                 </div>
             </div>
 
@@ -238,3 +299,32 @@
         </div>
     </div>
 </EditForm>
+
+
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar carga</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea cargar este archivo?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Success" @onclick=@(() => ConfirmDelete())>Confirmar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    private void Regresar()
+    {
+        NavigationManager.NavigateTo("/migracion-excel");
+    }
+}

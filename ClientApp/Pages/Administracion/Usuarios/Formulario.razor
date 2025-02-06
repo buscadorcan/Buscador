@@ -109,7 +109,7 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Nombre</label>
                     <div class="col">
-                    <InputText @bind-Value="usuario.Nombre" class="form-control" placeholder="Nombre..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="usuario.Nombre" class="form-control inter-regular-normal-comet-14px" placeholder="Nombre..." style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Nombre)" />
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Apellido</label>
                     <div class="col">
-                    <InputText @bind-Value="usuario.Apellido" class="form-control" placeholder="Apellido..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="usuario.Apellido" class="form-control inter-regular-normal-comet-14px" placeholder="Apellido..." style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Apellido)" />
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Email</label>
                     <div class="col">
-                        <InputText @bind-Value="usuario.Email" class="form-control" style="margin-top: 2% !important;"
+                        <InputText @bind-Value="usuario.Email" class="form-control inter-regular-normal-comet-14px" style="margin-top: 2% !important;"
                                    placeholder="Email..."
                                    @oninput="ValidateEmail" />
                         <ValidationMessage For="(() => usuario.Email)" />
@@ -142,7 +142,7 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Teléfono</label>
                     <div class="col">
-                    <InputText @bind-Value="usuario.Telefono" class="form-control" placeholder="+34 654321987" style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="usuario.Telefono" class="form-control inter-regular-normal-comet-14px" placeholder="+34 654321987" style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Telefono)" />
                     </div>
                 </div>
@@ -152,7 +152,7 @@
             <div class="form-row py-2">
             <label class="label valign-text-middle inter-regular-normal-comet-16px">Clave</label>
                 <div class="col">
-                    <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave..." style="margin-top: 2% !important;" class="form-control" />
+                <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave..." style="margin-top: 2% !important;" class="form-control inter-regular-normal-comet-14px" />
                     <ValidationMessage For="(() => usuario.Clave)" />
                 </div>
             </div>

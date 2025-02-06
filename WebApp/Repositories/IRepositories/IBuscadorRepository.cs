@@ -8,6 +8,7 @@ namespace WebApp.Repositories.IRepositories
         List<EsquemaDto> FnHomologacionEsquemaTodo(string VistaFK, int idOna);
         FnEsquemaDto? FnHomologacionEsquema(int idHomologacionEsquema);
         List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idEsquema, string VistaFK, int idOna);
+        List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int idOna, int idEsquema, string VistaPK, string TextoBuscar);
         List<FnPredictWordsDto> FnPredictWords(string word);
     }
 }

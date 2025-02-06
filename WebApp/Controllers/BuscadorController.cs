@@ -75,6 +75,26 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnHomologacionEsquemaDato));
             }
         }
+
+        [HttpGet("EsquemaDatoBuscado")]
+        public IActionResult FnEsquemaDato(int idOna, int idEsquema, string VistaPK, string TextoBuscar)
+        {
+            try
+            {
+                var result = _vhRepo.FnEsquemaDatoBuscar(idOna, idEsquema, VistaPK, TextoBuscar);
+                return Ok(new RespuestasAPI<List<FnEsquemaDataBuscadoDto>>
+                {
+                    Result = result
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FnEsquemaDato));
+            }
+        }
+
+
+
         [HttpGet("predictWords")]
         public IActionResult FnPredictWords(string word)
         {

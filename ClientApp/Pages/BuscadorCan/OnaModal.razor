@@ -1,31 +1,40 @@
 ﻿<div class="card" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <h3>@onaSeleccionado?.RazonSocial</h3>
-                <p><strong>Pais:</strong> @onaSeleccionado?.Pais</p>
-                <p><strong>Siglas:</strong> @onaSeleccionado?.Siglas</p>
-                <p><strong>Ciudad:</strong> @onaSeleccionado?.Ciudad</p>
-                <p><strong>Correo:</strong> @onaSeleccionado?.Correo</p>
-                <p><strong>Dirección:</strong> @onaSeleccionado?.Direccion</p>
-                <p><strong>Página Web:</strong> <a href="@onaSeleccionado?.PaginaWeb" target="_blank">@onaSeleccionado?.PaginaWeb</a></p>
-                <p><strong>Teléfono:</strong> @onaSeleccionado?.Telefono</p>
-            </div>
-            @if (!string.IsNullOrEmpty(onaSeleccionado?.UrlIcono))
-            {
-                <div>
-                    <img src="@onaSeleccionado.UrlIcono" alt="Icono ONA" class="img-fluid" style="max-width: 150px; max-height: 150px;" />
-                </div>
-            }
-        </div>
-    </div>
+	<div class="card-body">
+		@if (!string.IsNullOrEmpty(onaSeleccionado?.UrlIcono))
+		{
+			<div>
+				<img src="@onaSeleccionado.UrlIcono" alt="Icono ONA" class="img-fluid" style="max-width: 150px; max-height: 150px;" />
+			</div>
+		}
+		<div class="table-responsive" style="max-height: 400px; overflow-y: auto; font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
+			<h3>@onaSeleccionado?.RazonSocial</h3>
+			<table class="table table-bordered table-striped table-hover w-100">
+				@*        <thead class="table-primary">
+                        <tr>
+                            <th class="text-center p-3">Información</th>
+                            <th class="text-center p-3">Descripción general del OEC</th>
+                        </tr>
+                    </thead> *@
+				<tbody>
+					<tr><td class="fw-bold p-3">Pais:</td><td class="p-3">@onaSeleccionado?.Pais</td></tr>
+					<tr><td class="fw-bold p-3">Siglas:</td><td class="p-3">@onaSeleccionado?.Siglas</td></tr>
+					<tr><td class="fw-bold p-3">Ciudad:</td><td class="p-3">@onaSeleccionado?.Ciudad</td></tr>
+					<tr><td class="fw-bold p-3">Correo:</td><td class="p-3">@onaSeleccionado?.Correo</td></tr>
+					<tr><td class="fw-bold p-3">Dirección:</td><td class="p-3">@onaSeleccionado?.Direccion</td></tr>
+					<tr><td class="fw-bold p-3">Página Web:</td><td class="p-3"><a href="@onaSeleccionado?.PaginaWeb" target="_blank">@onaSeleccionado?.PaginaWeb</a></td></tr>
+					<tr><td class="fw-bold p-3">Teléfono:</td><td class="p-3">@onaSeleccionado?.Telefono</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
 </div>
 
 @if (loading)
 {
-    <p>Cargando información...</p>
+	<p>Cargando información...</p>
 }
 else if (onaSeleccionado == null)
 {
-    <p>No se encontró información del ONA.</p>
+	<p>No se encontró información del ONA.</p>
 }

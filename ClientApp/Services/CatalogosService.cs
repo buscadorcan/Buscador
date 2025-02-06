@@ -72,5 +72,13 @@ namespace ClientApp.Services
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<vwONADto>>>()).Result;
         }
 
+        public async Task<List<vwEsquemaOrganizaDto>> GetvwEsquemaOrganizaAsync()
+        {
+            var url = _urlBaseApi + "EsquemaOrganiza";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<vwEsquemaOrganizaDto>>>()).Result;
+        }
+
     }
 }

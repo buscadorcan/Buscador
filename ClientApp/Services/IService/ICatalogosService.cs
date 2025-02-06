@@ -10,5 +10,6 @@ namespace ClientApp.Services.IService
         Task<List<VwFiltroDto>> GetFiltrosAsync();
         Task<List<vwPanelONADto>> GetPanelOnaAsync();
         Task<List<vwONADto>> GetvwOnaAsync();
+        Task<List<vwEsquemaOrganizaDto>> GetvwEsquemaOrganizaAsync();
     }
 }

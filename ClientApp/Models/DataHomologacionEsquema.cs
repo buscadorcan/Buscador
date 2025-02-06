@@ -11,6 +11,13 @@ namespace ClientApp.Models
         public int IdHomologacionEsquema { get; set; }
         public List<ColumnaEsquema>? DataEsquemaJson { get; set; }
     }
+
+    public class DataEsquemaDatoBuscar
+    {
+        public int IdDataLakeOrganizacion { get; set; }
+        public int IdHomologacionEsquema { get; set; }
+        public List<ColumnaEsquema>? DataEsquemaJson { get; set; }
+    }
     public class ColumnaEsquema
     {
         public int IdHomologacion { get; set; }

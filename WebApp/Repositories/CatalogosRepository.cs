@@ -134,5 +134,14 @@ namespace WebApp.Repositories
                 .ToList());
         }
 
+        public List<vwEsquemaOrganiza> ObtenervwEsquemaOrganiza()
+        {
+            return ExecuteDbOperation(context =>
+                context.vwEsquemaOrganiza
+                .AsNoTracking()
+                .OrderBy(c => c.ONAPais)
+                .ToList());
+        }
+
     }
 }
