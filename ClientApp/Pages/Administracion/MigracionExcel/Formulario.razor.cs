@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
 using ClientApp.Helpers;
+using ClientApp.Pages.Administracion.Esquemas;
 using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -25,6 +26,10 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         private List<OnaDto>? listaONAs;
         private OnaDto? onaSelected;
         private EsquemaDto? esquemaSelected;
+        private int? selectedIdUsuario;
+        private string modalMessage;
+        private bool showModal; // Controlar la visibilidad de la ventana modal  
+
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
         [Inject]
@@ -74,13 +79,18 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             uploadedFile = e.File;
             Console.WriteLine("OnInputFileChange method called");
         }
-
         private async Task RegistrarMigracionExcel()
         {
             try
             {
                 if (onaSelected != null && onaSelected.IdONA > 0)
                 {
+                    if (uploadedFile == null)
+                    {
+                        toastService?.CreateToastMessage(ToastType.Warning, "Debe seleccionar un archivo");
+                        navigationManager?.NavigateTo("/nueva-migarcion-excel");
+                        return;
+                    }
                     saveButton.ShowLoading("Guardando...");
 
                     var maxFileSize = 10485760; // 10 MB
@@ -122,6 +132,28 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
                 navigationManager?.NavigateTo("/migracion-excel");
             }
             
+        }
+        private async Task OpenDeleteModal()
+        {
+            showModal = true;
+        }
+
+        // Cierra el modal
+        private void CloseModal()
+        {
+            selectedIdUsuario = null;
+            showModal = false;
+        }
+
+        // Confirmar carga del archivo
+        private async Task ConfirmDelete()
+        {
+            if (service != null)
+            {
+                CloseModal();
+                await RegistrarMigracionExcel();
+            }
+
         }
     }
 }
