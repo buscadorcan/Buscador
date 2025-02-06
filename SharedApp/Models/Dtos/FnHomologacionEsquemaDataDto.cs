@@ -12,6 +12,13 @@ namespace SharedApp.Models.Dtos
         public int IdEsquema { get; set; }
         public List<ColumnaEsquema>? DataEsquemaJson { get; set; }
     }
+
+    public class FnEsquemaDataBuscadoDto
+    {
+        public int IdEsquemaData { get; set; }
+        public int IdEsquema { get; set; }
+        public List<ColumnaEsquema>? DataEsquemaJson { get; set; }
+    }
     public class ColumnaEsquema
     {
         public int IdHomologacion { get; set; }

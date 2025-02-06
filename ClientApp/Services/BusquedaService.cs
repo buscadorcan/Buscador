@@ -66,6 +66,29 @@ namespace ClientApp.Services
             }
         }
 
+        public async Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idOna, int idEsquema, string VistaPK, string TextoBuscar)
+        {
+            try
+            {
+                // Construcción correcta de la URL con los parámetros adecuados
+                var url = $"{Inicializar.UrlBaseApi}api/buscador/EsquemaDatoBuscado?idOna={idOna}&idEsquema={idEsquema}&VistaPK={Uri.EscapeDataString(VistaPK)}&TextoBuscar={Uri.EscapeDataString(TextoBuscar)}";
+
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<RespuestasAPI<List<DataEsquemaDatoBuscar>>>();
+
+                return result?.Result ?? new List<DataEsquemaDatoBuscar>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en FnEsquemaDatoBuscarAsync: {ex.Message}");
+                throw;
+            }
+        }
+
+
+
         public async Task<List<FnPredictWordsDto>> FnPredictWords(string word)
         {
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/predictWords?word={word}");

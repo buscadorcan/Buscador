@@ -212,6 +212,26 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>System.Exception: 'A null value was encountered in the database operation'
+        /// Obtiene el esquema de roles. Requiere autorización.
+        /// </summary>
+        /// <returns>Una lista con el esquema de roles.</returns>
+        [HttpGet("EsquemaOrganiza")]
+        public IActionResult ObtenerEsquemaOrganiza()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<vwEsquemaOrganiza>>
+                {
+                    Result = _vhRepo.ObtenervwEsquemaOrganiza().Select(item => _mapper.Map<vwEsquemaOrganiza>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerEsquemaOrganiza));
+            }
+        }
+
         /// <summary>
         /// Obtiene el esquema de roles. Requiere autorización.
         /// </summary>
