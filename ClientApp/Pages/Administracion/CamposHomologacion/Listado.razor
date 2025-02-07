@@ -41,6 +41,15 @@
     .table-responsive {
         overflow-x: auto;
     }
+
+    .text-center text-secondary my-5{
+    color: var(--neutral-dark30) !important;
+    font-family: var(--font-family-inter-regular) !important;
+    font-size: var(--font-size-l) !important;
+    font-style: normal !important;
+        font-weight: 400 !important;
+    }
+
 </style>
 
 <PageTitle>Campos Homologación</PageTitle>
@@ -297,7 +306,7 @@
                             @onclick="CloseModal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Está seguro que desea eliminar este registro?</p>
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
                 </div>
                 <div class="modal-footer">
                     <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>

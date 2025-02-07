@@ -157,7 +157,7 @@
             <Button @ref="saveButton" style="display: none;" class="button-2" @onclick="async () => await GuardarCambios()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
             </div>
             <div class="save-button-container">
-            <Button @ref="validateButton" class="button-2" @onclick="async () => await ValidarDatos()"><div class="button-3 headingheadline4-h4">Validar y Guardar</div></Button>
+            <Button @ref="validateButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await ValidarDatos()"><div class="button-3 headingheadline4-h4">Validar y Guardar</div></Button>
             </div>
         }
     </div>
@@ -219,7 +219,7 @@
     }
     else
     {
-        <p>No hay datos disponibles.</p>
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
 @* <div class="table table-1">

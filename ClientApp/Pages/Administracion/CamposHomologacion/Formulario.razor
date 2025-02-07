@@ -73,13 +73,13 @@
             <div class="row">
                 <div class="col-4">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Indexar</label>
-                    <Switch @bind-Value="isIndexar" Label="Seleccione una opción" />
+                <Switch @bind-Value="isIndexar" Class="label valign-text-middle inter-regular-normal-comet-16px" Label="Seleccione una opción" />
                     <div class="mt-3"><b>@(isIndexar ? "SI" : "NO")</b></div>
                     <ValidationMessage For="(() => homologacion.Indexar)" />
                 </div>
                 <div class="col-4">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px" >Mostrar</label>
-                    <Switch @bind-Value="isMostrar" Label="Seleccione una opción" />
+                <Switch @bind-Value="isMostrar" Class="label valign-text-middle inter-regular-normal-comet-16px" Label="Seleccione una opción" />
                     <div class="mt-3"><b>@(isMostrar ? "SI" : "NO")</b></div>
                     <ValidationMessage For="(() => homologacion.Indexar)" />
                 </div>
@@ -149,7 +149,7 @@
         </div>
     </a>
     <div class="save-button-container">
-        <Button @ref="saveButton" class="button-2" @onclick="async () => await GuardarHomologacion()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+        <Button @ref="saveButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await GuardarHomologacion()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
     </div>
 </div>
 

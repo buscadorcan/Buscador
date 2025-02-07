@@ -34,6 +34,11 @@ a, .btn-link {
 
 .validation-message {
     color: red;
+    font-family: var(--font-family-inter-regular) !important;
+    font-size: var(--font-size-xs) !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
 }
 
 #blazor-error-ui {
