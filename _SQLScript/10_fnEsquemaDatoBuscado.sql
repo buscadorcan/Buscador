@@ -1,4 +1,5 @@
-create or ALTER FUNCTION [dbo].[fnEsquemaDatoBuscado] ( 
+
+create or ALTER   FUNCTION [dbo].[fnEsquemaDatoBuscado] ( 
     @IdEsquemadata INT,  
     @TextoBuscar VARCHAR(200)
 )
@@ -14,17 +15,14 @@ RETURN
 		FROM	EsquemaOrganiza	(NOLOCK)  
 		WHERE	IdEsquemaData = @IdEsquemadata
 	)
-	 SELECT DISTINCT 
-		ed.IdEsquemaData,
-        ev.IdEsquema, 
-        ed.DataEsquemaJson
+	 SELECT 
+		 ed.IdEsquemaData
+        ,ev.IdEsquema 
+        ,ed.DataEsquemaJson
         FROM EsquemaFullText (NOLOCK) ef
 		join esquemadata (NOLOCK) ed  on  ef.IdEsquemaData = ed.IdEsquemaData
 		join EsquemaVista ev on ev.IdEsquemaVista = ed.IdEsquemaVista
         JOIN Organizacion org on org.VistaPK = ed.VistaFK and  ev.IdONA  = org.ONAIdONA
 		JOIN	FREETEXTTABLE(EsquemaFullText, FullTextData, @TextoBuscar) as ftt		--,LANGUAGE N'English', 2) AS ftt  
 		ON		ef.IdEsquemaFullText		= ftt.[KEY]	
-		 
 );
-go
-     
