@@ -12,12 +12,12 @@
 
                 <div class="py-2">
                     <Grid TItem="DataEsquemaDatoBuscar"
-                    class="table table-hover table-bordered table-striped"
-                    DataProvider="HomologacionEsquemasDataProvider"
-                    Responsive="true"
-                    FixedHeader="true"
-                    Height="350"
-                    Style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
+                          class="table table-hover table-bordered table-striped"
+                          DataProvider="HomologacionEsquemasDataProvider"
+                          Responsive="true"
+                          FixedHeader="true"
+                          Height="350"
+                          Style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
                         @foreach (var item in Columnas)
                         {
                             <GridColumn TItem="DataEsquemaDatoBuscar" PropertyName="@item.MostrarWeb">
@@ -28,12 +28,11 @@
                                     @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data
                                 </ChildContent>
                             </GridColumn>
-                        }                  
-                        </Grid>
-                    </div>
-                        
-                </Content>
-            </Tab>
+                        }
+                    </Grid>
+                </div>
+            </Content>
+        </Tab>
 
     }
 

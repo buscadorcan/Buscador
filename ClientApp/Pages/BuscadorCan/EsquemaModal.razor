@@ -1,9 +1,11 @@
 <Tabs @ref="tabs" EnableFadeEffect="true">
     @if (listaEsquemas != null && listaEsquemas.Any() && resultData != null)
     {
+        bool isFirstTab = true;
         @foreach (var esquema in listaEsquemas)
         {
-            <Tab style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
+
+            <Tab Active="isFirstTab" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
                 <TitleTemplate>
                     <Tooltip Title="@esquema.TooltipWeb">@esquema.MostrarWeb</Tooltip>
                 </TitleTemplate>
@@ -17,6 +19,7 @@
                     </div>
                 </Content>
             </Tab>
+            isFirstTab = false;
         }
     }
     else

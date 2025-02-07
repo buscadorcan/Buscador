@@ -30,6 +30,7 @@ namespace ClientApp.Pages.BuscadorCan
                     homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
                     Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema?.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
                 }
+                StateHasChanged();
             }
             catch (Exception e)
             {
