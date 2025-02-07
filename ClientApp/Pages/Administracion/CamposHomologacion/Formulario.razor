@@ -39,18 +39,12 @@
 
 <PageTitle>Formulario de Esquema</PageTitle>
 
-<EditForm Model="homologacion" OnValidSubmit="GuardarHomologacion" class="pt-4">
+<EditForm Model="homologacion" OnValidSubmit="GuardarHomologacion">
     <DataAnnotationsValidator />
-    <div class="card border">
         <!-- Título -->
             <h1 class="title headlineheadline2-h2">Actualizar / Registrar [@homologacionGrupo?.MostrarWeb]</h1>
         
         <div class="card-body px-lg-5 pt-4">
-            @* <h3 class="text-success text-center">
-                <strong>Actualizar / Registrar [@homologacionGrupo?.MostrarWeb]</strong>
-            </h3> *@
-
-            <hr style="background-color:aliceblue" />
 
             <div class="form-row py-2">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Vista Código Homologado</label>
@@ -136,7 +130,6 @@
                 </div>
             </div>
         </div>
-    </div>
     
 </EditForm>
 
