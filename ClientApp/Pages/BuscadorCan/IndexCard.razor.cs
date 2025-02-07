@@ -204,6 +204,15 @@ namespace ClientApp.Pages.BuscadorCan
             modal.Size = ModalSize.Regular;
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
+
+        private async void showModalESQ(BuscadorResultadoDataDto resultData)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("resultData", resultData);
+            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
+            modal.Size = ModalSize.ExtraLarge;
+            await modal.ShowAsync<IndvEsquemaModal>(title: "Información Esquema", parameters: parameters);
+        }
         private async Task AbrirPdf(BuscadorResultadoDataDto item)
         {
             // Obtener la URL del certificado
