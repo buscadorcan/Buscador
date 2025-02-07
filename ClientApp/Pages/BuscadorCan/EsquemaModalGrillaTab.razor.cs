@@ -43,7 +43,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaPK, idONA ?? 0);
+                resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaFK, idONA ?? 0);
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
