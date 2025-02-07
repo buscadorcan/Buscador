@@ -1,4 +1,5 @@
 using BlazorBootstrap;
+using ClientApp.Pages.Administracion.Esquemas;
 using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -9,6 +10,11 @@ namespace ClientApp.Pages.Administracion.Conexion
     public partial class Listado
     {
         ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
+        private bool showModal; // Controlar la visibilidad de la ventana modal  
+        private string modalMessage;
+        private int? selectedIdOna;    // Almacena el ID del usuario seleccionado
+        [Inject]
+        public Services.ToastService? toastService { get; set; }
         List<ToastMessage> messages = new();
         private Grid<ONAConexionDto>? grid;
         [Inject]
@@ -47,7 +53,6 @@ namespace ClientApp.Pages.Administracion.Conexion
                 }
             }
         }
-
         private async Task<bool> OnTestconexionClick(int conexion)
         {
             if (iDynamicService != null && listasHevd != null)
@@ -79,7 +84,6 @@ namespace ClientApp.Pages.Administracion.Conexion
             }
             return false; // Devuelve false si algo falla
         }
-
         private async Task<bool> OnMigrarClick(int conexion)
         {
             if (iDynamicService != null && listasHevd != null)
@@ -143,7 +147,39 @@ namespace ClientApp.Pages.Administracion.Conexion
             return false;
         }
 
+        private void OpenDeleteModal(int idOna)
+        {
+            selectedIdOna = idOna;
+            showModal = true;
+        }
 
+        // Cierra el modal
+        private void CloseModal()
+        {
+            selectedIdOna = null;
+            showModal = false;
+        }
+
+        // Confirmar eliminación del registro
+        private async Task ConfirmDelete()
+        {
+            if (selectedIdOna.HasValue && iConexionService != null)
+            {
+                int idOna = selectedIdOna.Value;
+                var respuesta = await iConexionService.EliminarConexion(selectedIdOna.Value);
+                if (respuesta.registroCorrecto)
+                {
+                    CloseModal();                    
+                    listasHevd = listasHevd.Where(c => c.IdONA != idOna).ToList();
+                    await OnInitializedAsync();
+                }
+                else
+                {
+                    toastService?.CreateToastMessage(ToastType.Danger, "Error al eliminar el registro.");
+                }
+            }
+
+        }
 
     }
 }
