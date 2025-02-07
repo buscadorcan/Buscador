@@ -108,11 +108,11 @@ namespace WebApp.Repositories
             });
         }
 
-        public List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int IdEsquemaData, string VistaPK, string TextoBuscar)
+        public List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int IdEsquemaData, string TextoBuscar)
         {
             return ExecuteDbOperation(context =>
             {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDatoBuscado({IdEsquemaData},{VistaPK}, {TextoBuscar})").AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDatoBuscado({IdEsquemaData},{TextoBuscar})").AsNoTracking().ToList();
 
                 return lstTem.Select(c => new FnEsquemaDataBuscadoDto()
                 {

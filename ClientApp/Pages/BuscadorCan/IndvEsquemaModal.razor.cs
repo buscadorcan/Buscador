@@ -42,7 +42,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.VistaPK, resultData.Texto);
+                resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
