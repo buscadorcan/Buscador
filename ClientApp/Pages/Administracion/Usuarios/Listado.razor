@@ -50,7 +50,6 @@
 
 <PageTitle>Usuarios</PageTitle>
 
-<div class="">
     <!-- Card Header -->
     <div class="general title">
         <h2 class="title headlineheadline2-h2">Administración de Usuarios</h2>
@@ -148,14 +147,14 @@
                         <div class="componente">
                             <div class="row-1 row-15">
                                 <div class="ads-rules-list">
-                                    <div class="landing-page"><div class="bodybody-small">@usuario.Nombre</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@usuario.Apellido</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@usuario.Telefono</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@usuario.Email</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@usuario.Rol</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@usuario.RazonSocial</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@usuario.Estado</div></div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Nombre</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Apellido</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Telefono</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Email</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Rol</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.RazonSocial</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Estado</div></div>
+                                    <div class="cell cell-1">
                                         <Tooltip Title="Editar registro">
                                             <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
                                                     @onclick=@(() => EditarUsuario(usuario))>
@@ -163,7 +162,7 @@
                                             </Button>
                                         </Tooltip>
                                     </div>
-                                    <div class="landing-page">
+                                <div class="cell cell-1">
                                         <Tooltip Title="Eliminar registro">
                                             <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
                                                     Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(usuario.IdUsuario))>
@@ -228,7 +227,6 @@
         </div>
     </div>
  *@
-</div>
 
  @if (showModal)
 {

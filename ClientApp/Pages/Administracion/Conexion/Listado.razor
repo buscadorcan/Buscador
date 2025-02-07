@@ -121,14 +121,14 @@
                         <div class="componente">
                             <div class="row-1 row-15">
                                 <div class="ads-rules-list">
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Host</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Puerto</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Usuario</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.BaseDatos</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.OrigenDatos</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Migrar</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Estado</div></div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Host</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Puerto</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Usuario</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.BaseDatos</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.OrigenDatos</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Migrar</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Estado</div></div>
+                                    <div class="cell cell-1">
                                         @if (conexion.OrigenDatos != "EXCEL")
                                         {
                                             <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(conexion.IdONA)" Size="ButtonSize.Small">
@@ -136,7 +136,7 @@
                                             </Button>
                                         }
                                     </div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1">
                                         @if (conexion.OrigenDatos != "EXCEL")
                                         {
                                             <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(conexion.IdONA)" Size="ButtonSize.Small">
@@ -144,12 +144,12 @@
                                             </Button>
                                         }
                                     </div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1">
                                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{conexion.IdONA}")" Size="ButtonSize.Small">
                                             <Icon Name="IconName.PencilSquare" />
                                         </Button>
                                     </div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1">
                                         <Button Color="ButtonColor.Danger" Outline="true" @onclick=@(() => OpenDeleteModal(conexion.IdONA)) Size="ButtonSize.Small">
                                             <Icon Name="IconName.Trash3" />
                                         </Button>
