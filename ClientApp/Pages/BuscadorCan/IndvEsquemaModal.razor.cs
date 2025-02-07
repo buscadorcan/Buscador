@@ -17,8 +17,8 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
-        private fnEsquemaCabeceraDto? EsquemaCabecera;
-        private List<HomologacionDto>? Columnas;
+        private fnEsquemaCabeceraDto? EsquemaCabecera = new fnEsquemaCabeceraDto();
+        private List<HomologacionDto>? Columnas = new List<HomologacionDto>();
         private List<fnEsquemaCabeceraDto>? Cabeceras;
         private List<DataEsquemaDatoBuscar>? resultados;
 
