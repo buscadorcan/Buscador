@@ -15,7 +15,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 <div class="chart-container">
-    <div class="row">
+   @*  <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_ProfesionalCalificado</h5>
             <div class="chart-wrapper">
@@ -38,8 +38,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
+    </div> *@
+    @* <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_ProfesionalEsquema</h5>
             <div class="chart-wrapper">
@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
     <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_CalificaUbicacion</h5>
@@ -123,96 +123,96 @@
         });
     };
 
-    window.initCharts = (chartsData) => {
-        const createPieChart = (elementId, data) => {
-            const canvas = document.getElementById(elementId);
-            if (!canvas || canvas.tagName !== 'CANVAS') {
-                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
-                return;
-            }
+    // window.initCharts = (chartsData) => {
+    //     const createPieChart = (elementId, data) => {
+    //         const canvas = document.getElementById(elementId);
+    //         if (!canvas || canvas.tagName !== 'CANVAS') {
+    //             console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+    //             return;
+    //         }
 
-            const ctx = canvas.getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: data.map(item => item.label || 'Sin etiqueta'),
-                    datasets: [{
-                        data: data.map(item => item.value || 0),
-                        backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57'],
-                        borderWidth: 2,
-                        borderColor: '#fff',
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                font: {
-                                    size: 14
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (tooltipItem) {
-                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        };
+    //         const ctx = canvas.getContext('2d');
+    //         new Chart(ctx, {
+    //             type: 'doughnut',
+    //             data: {
+    //                 labels: data.map(item => item.label || 'Sin etiqueta'),
+    //                 datasets: [{
+    //                     data: data.map(item => item.value || 0),
+    //                     backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57'],
+    //                     borderWidth: 2,
+    //                     borderColor: '#fff',
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 plugins: {
+    //                     legend: {
+    //                         position: 'right',
+    //                         labels: {
+    //                             font: {
+    //                                 size: 14
+    //                             }
+    //                         }
+    //                     },
+    //                     tooltip: {
+    //                         callbacks: {
+    //                             label: function (tooltipItem) {
+    //                                 return `${tooltipItem.label}: ${tooltipItem.raw}`;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     };
 
-        const createLineChart = (elementId, data) => {
-            const canvas = document.getElementById(elementId);
-            if (!canvas || canvas.tagName !== 'CANVAS') {
-                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
-                return;
-            }
+    //     const createLineChart = (elementId, data) => {
+    //         const canvas = document.getElementById(elementId);
+    //         if (!canvas || canvas.tagName !== 'CANVAS') {
+    //             console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+    //             return;
+    //         }
 
-            const ctx = canvas.getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.map(item => item.label || 'Sin fecha'),
-                    datasets: [{
-                        label: 'E&E calificados',
-                        data: data.map(item => item.value || 0),
-                        borderColor: '#4CAF50',
-                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                        fill: true,
-                        tension: 0.4 // Suavizado de la curva
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: ''
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Profesionales'
-                            }
-                        }
-                    }
-                }
-            });
-        };
+    //         const ctx = canvas.getContext('2d');
+    //         new Chart(ctx, {
+    //             type: 'line',
+    //             data: {
+    //                 labels: data.map(item => item.label || 'Sin fecha'),
+    //                 datasets: [{
+    //                     label: 'E&E calificados',
+    //                     data: data.map(item => item.value || 0),
+    //                     borderColor: '#4CAF50',
+    //                     backgroundColor: 'rgba(76, 175, 80, 0.2)',
+    //                     fill: true,
+    //                     tension: 0.4 // Suavizado de la curva
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 scales: {
+    //                     x: {
+    //                         title: {
+    //                             display: true,
+    //                             text: ''
+    //                         }
+    //                     },
+    //                     y: {
+    //                         title: {
+    //                             display: true,
+    //                             text: 'Profesionales'
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     };
 
-        // Inicializar gráficos
-        createPieChart('chart1', chartsData[0]);
-        createPieChart('chart2', chartsData[1]);
-        createPieChart('chart3', chartsData[2]);
-        createLineChart('chart4', chartsData[3]);
-    };
+    //     // Inicializar gráficos
+    //     createPieChart('chart1', chartsData[0]);
+    //     createPieChart('chart2', chartsData[1]);
+    //     createPieChart('chart3', chartsData[2]);
+    //     createLineChart('chart4', chartsData[3]);
+    // };
 
     window.initHeatMaps = (mapsData) => {
         const createHeatMap = (elementId, data) => {
@@ -253,7 +253,7 @@
     };
 
     window.initMap = (data) => {
-        window.initCharts(data.chartsData);
+        // window.initCharts(data.chartsData);
         window.initHeatMaps(data.mapsData);
     };
 </script>

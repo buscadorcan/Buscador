@@ -116,6 +116,7 @@
     }
 
 </style>
+
 @if (IsLoading)
 {
     <div class="overlay">
@@ -246,7 +247,12 @@
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Estado</div></div>
+                                    <div class="cell cell-1">
+                                        <label class="switch">
+                                            <input type="checkbox" checked="@(conexion.Estado == "A")" disabled>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
                                     <div class="cell cell-1">
                                         @if (conexion.OrigenDatos != "EXCEL")
                                         {

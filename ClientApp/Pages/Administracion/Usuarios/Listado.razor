@@ -47,6 +47,120 @@
         overflow-x: auto;
     }
 </style>
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 20px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider {
+        background-color: #4CAF50;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(14px);
+        }
+
+    /* Contenedor de la tabla */
+    .table {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    /* Estilo de la fila */
+    .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 8px 0;
+    }
+
+    /* Contenedor de la lista */
+    .ads-rules-list {
+        display: flex;
+        width: 100%;
+    }
+
+    /* Estilo de celdas con ajuste automático del texto */
+    .cell {
+        flex: 1;
+        text-align: center;
+        padding: 5px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 100px; /* Ajusta el ancho mínimo para evitar deformaciones */
+        word-wrap: break-word; /* Permite que el texto largo se divida en varias líneas */
+        white-space: normal; /* Permite el salto de línea */
+        text-align: center;
+    }
+
+    /* Celdas de texto que se ajustan en varias líneas */
+    .cell-text {
+        word-break: break-word;
+        max-width: 100%;
+        text-align: center;
+        display: block;
+    }
+
+    /* Asegurar que los switches estén alineados */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 20px;
+        margin: 0 auto;
+    }
+
+    /* Botones bien alineados */
+    .cell button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 30px;
+    }
+
+    /* Evita que los botones se desplacen cuando el contenido crece */
+    .cell button,
+    .cell img {
+        flex-shrink: 0;
+    }
+
+</style>
 
 <PageTitle>Usuarios</PageTitle>
 
@@ -153,7 +267,12 @@
                                     <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Email</div></div>
                                     <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Rol</div></div>
                                     <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.RazonSocial</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Estado</div></div>
+                                <div class="cell cell-1">
+                                    <label class="switch">
+                                        <input type="checkbox" checked="@(usuario.Estado == "A")" disabled>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                                     <div class="cell cell-1">
                                         <Tooltip Title="Editar registro">
                                             <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
