@@ -92,7 +92,7 @@
 
         <GridColumn TItem="EsquemaDto" HeaderText="Eliminar" class="bodybody-small"
                     ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-            <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdEsquema)" Size="ButtonSize.Small">
+            <Button Color="ButtonColor.Danger" Outline="true" @onclick=@(() => OpenDeleteModal(context.IdEsquema)) Size="ButtonSize.Small">
                 <Icon Name="IconName.Trash3" />
             </Button>
         </GridColumn>
@@ -136,7 +136,27 @@
     </div>
 
 
-
+@if (deleteshowModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 
 

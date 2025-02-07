@@ -13,6 +13,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private Modal modal = default!;
         private Grid<EsquemaDto>? grid;
         public event Action? DataLoaded;
+        private bool deleteshowModal; 
+        private string modalMessage;
+        private int? selectedIdEsquema;
+        [Inject]
+        public Services.ToastService? toastService { get; set; }
         private IEnumerable<EsquemaDto>? listaEsquemas;
         [Inject]
         private IEsquemaService? iEsquemaService { get; set; }
@@ -93,6 +98,50 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 parameters.Add("columnas", columnas ?? []);
                 parameters.Add("listaVwHomologacion", listaVwHomologacion ?? []);
                 await modal.ShowAsync<RowModal>(title: $"{homo?.MostrarWeb}", parameters: parameters);
+            }
+        }
+
+        private void OpenDeleteModal(int idOna)
+        {
+            selectedIdEsquema = idOna;
+            deleteshowModal = true;
+        }
+
+        // Cierra el modal
+        private void CloseModal()
+        {
+            selectedIdEsquema = null;
+            deleteshowModal = false;
+        }
+
+        // Confirmar eliminación del registro
+        private async Task ConfirmDelete()
+        {
+            if (selectedIdEsquema.HasValue && iEsquemaService != null)
+            {
+                int idEsquema = selectedIdEsquema.Value;
+                var respuesta = await iEsquemaService.DeleteEsquemaAsync(selectedIdEsquema.Value);
+                if (respuesta)
+                {
+                    CloseModal();
+                    listaEsquemas = listaEsquemas.Where(c => c.IdEsquema != idEsquema);
+                    await LoadEsquemas();
+                }
+                else
+                {
+                    toastService?.CreateToastMessage(ToastType.Danger, "Error al eliminar el registro.");
+                }
+            }
+        }
+        private async Task LoadEsquemas()
+        {
+            if (iEsquemaService != null)
+            {
+                listaEsquemas = await iEsquemaService.GetListEsquemasAsync();
+            }
+            if (grid != null)
+            {
+                await grid.RefreshDataAsync();
             }
         }
     }
