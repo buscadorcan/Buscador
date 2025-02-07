@@ -1,19 +1,40 @@
 ﻿@using ClientApp.Models;
-@using SharedApp.Models.Dtos
+@using SharedApp.Models.Dtos;
 
-@if (Columnas != null)
-{
-    <Grid TItem="DataEsquemaDatoBuscar" class="table table-hover table-bordered table-striped" DataProvider="HomologacionEsquemasDataProvider" Responsive="true" FixedHeader="true" Height="350" Style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
-        @foreach (var item in Columnas)
-        {
-            <GridColumn TItem="DataEsquemaDatoBuscar" PropertyName="@item.MostrarWeb">
-                <HeaderContent>
-                    <Tooltip Title="@item.TooltipWeb">@item.MostrarWeb</Tooltip>
-                </HeaderContent>
-                <ChildContent>
-                    @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data
-                </ChildContent>
-            </GridColumn>
-        }
-    </Grid>
-}
+<Tabs EnableFadeEffect="true">
+    @if (Columnas != null && Columnas.Any())
+    {
+        <Tab Active="true" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
+            <TitleTemplate>
+                <Tooltip Title="">@esquema</Tooltip>
+            </TitleTemplate>
+            <Content>
+
+                <div class="py-2">
+                    <Grid TItem="DataEsquemaDatoBuscar"
+                    class="table table-hover table-bordered table-striped"
+                    DataProvider="HomologacionEsquemasDataProvider"
+                    Responsive="true"
+                    FixedHeader="true"
+                    Height="350"
+                    Style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
+                        @foreach (var item in Columnas)
+                        {
+                            <GridColumn TItem="DataEsquemaDatoBuscar" PropertyName="@item.MostrarWeb">
+                                <HeaderContent>
+                                    <Tooltip Title="@item.TooltipWeb">@item.MostrarWeb</Tooltip>
+                                </HeaderContent>
+                                <ChildContent>
+                                    @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data
+                                </ChildContent>
+                            </GridColumn>
+                        }                  
+                        </Grid>
+                    </div>
+                        
+                </Content>
+            </Tab>
+
+    }
+
+</Tabs>

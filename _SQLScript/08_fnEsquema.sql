@@ -31,8 +31,7 @@ RETURN
 											WHERE	IdEsquema = @IdEsquema
 										))	WITH	(IdHomologacion INT '$.IdHomologacion')
 				) HE	ON HE.IdHomologacion = H.IdHomologacion
-				WHERE	H.Mostrar = 'S'
-				AND		H.Estado = 'A'
+				WHERE	H.Estado = 'A'
 				FOR JSON AUTO
 			)	EsquemaJson
 	FROM	Esquema (NOLOCK)

@@ -10,15 +10,10 @@ namespace ClientApp.Pages.BuscadorCan
     public partial class IndvEsquemaModal
     {
         [Parameter]
-        public int IdEsquema { get; set; }
+        public BuscadorResultadoDataDto? resultData { get; set; }
         [Parameter]
-        public int? idONA { get; set; }
-        [Parameter]
-        public string? VistaFK { get; set; }
-        [Parameter]
-        public string? VistaPK { get; set; }
-        [Parameter]
-        public string? Texto { get; set; }
+        public string? esquema { get; set; }
+
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
@@ -29,9 +24,10 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
+                esquema = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
                 if (servicio != null)
                 {
-                    homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(IdEsquema);
+                    homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
                     Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema?.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
                 }
             }
@@ -45,7 +41,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (resultados is null && servicio != null)
             {
-                resultados = await servicio.FnEsquemaDatoBuscarAsync(idONA ?? 0, IdEsquema, VistaPK, Texto);
+                resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.VistaPK, resultData.Texto);
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));

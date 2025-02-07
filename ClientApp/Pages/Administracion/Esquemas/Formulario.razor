@@ -8,29 +8,27 @@
 
 <PageTitle>Formulario de Esquema</PageTitle>
 
-<EditForm EditContext="@editContext" class="pt-4">
+<EditForm EditContext="@editContext">
 
-    <div class="card border p-4">
         <h1 class="title headlineheadline2-h2">Esquema Homologado</h1>
 
-        <hr style="background-color:aliceblue" />
         <div class="form-row py-2">
             <label class="label valign-text-middle inter-regular-normal-comet-16px">Mostrar web</label>
             <div class="col">
-                <InputText @bind-Value="Esquema.MostrarWeb" class="form-control" placeholder="Mostrar web..." style="margin-top: 2% !important;" />
+                <InputText @bind-Value="Esquema.MostrarWeb" class="form-control inter-regular-normal-comet-14px" placeholder="Mostrar web..." style="margin-top: 2% !important;" />
             </div>
         </div>
 
         <div class="form-row py-2">
             <label class="label valign-text-middle inter-regular-normal-comet-16px">Tooltip Web</label>
             <div class="col">
-                <InputText @bind-Value="Esquema.TooltipWeb" class="form-control" placeholder="Tooltip Web..." style="margin-top: 2% !important;" />
+                <InputText @bind-Value="Esquema.TooltipWeb" class="form-control inter-regular-normal-comet-14px" placeholder="Tooltip Web..." style="margin-top: 2% !important;" />
             </div>
         </div>
         <div class="form-row py-2">
             <label class="label valign-text-middle inter-regular-normal-comet-16px">Esquema Vista</label>
             <div class="col">
-                <InputText @bind-Value="Esquema.EsquemaVista" class="form-control" placeholder="Esquema vista..." style="margin-top: 2% !important;" />
+                <InputText @bind-Value="Esquema.EsquemaVista" class="form-control inter-regular-normal-comet-14px" placeholder="Esquema vista..." style="margin-top: 2% !important;" />
             </div>
 
         </div>
@@ -49,10 +47,9 @@
                               DataProvider="VwHomologacionDataProvider"
                               PropertyName="MostrarWeb"
                               Placeholder="Buscar..."
-                              OnChanged="OnAutoCompleteChanged" />
+                              OnChanged="OnAutoCompleteChanged" Style="margin-top: 2% !important;" />
             </div>
         </div>
-    </div>
 </EditForm>
 <div class="py-2">
     <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="lista" Responsive="true" FixedHeader="true" Height="350" Id="sortableGrid">

@@ -39,6 +39,57 @@
 
 </style>
 
+<style>
+    .custom-dropdown {
+        width: 100%;
+    }
+
+    .styled-dropdown {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .dropdown-btn {
+        width: 100%;
+        background-color: white;
+        color: #4a4a4a;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 6px 12px; /* 🔹 Se redujo el padding para hacer el combo más compacto */
+        font-size: 14px; /* 🔹 Se redujo la fuente ligeramente */
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .dropdown-btn::after {
+        display: inline-block;
+        margin-left: auto;
+    }
+
+    .dropdown-menu-styled {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+        padding: 5px 0;
+    }
+
+    .dropdown-item-styled {
+        padding: 8px 12px; /* 🔹 Se redujo el padding de los items para menor altura */
+        font-size: 14px; /* 🔹 Fuente más pequeña para más compactación */
+        color: #4a4a4a;
+        cursor: pointer;
+    }
+
+    .dropdown-item-styled:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
 <PageTitle>Formulario Usuarios</PageTitle>
 
 <EditForm Model="usuario" OnValidSubmit="RegistrarUsuario" class="pt-4">
@@ -49,23 +100,22 @@
         <h1 class="title headlineheadline2-h2">Usuario del Sistema</h1>
 
         <div class="card-body px-lg-5 pt-4">
-            <hr style="background-color:aliceblue" />
 
             <!-- Primera fila: Rol y Razón Social -->
             <div class="row py-2">
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Rol</label>
-                <div class="col" style="margin-top: 2% !important;">
+                <div class="col custom-dropdown" style="margin-top: 2% !important;">
                         @if (listaRoles != null && listaRoles.Any() && usuario != null)
                         {
-                            <Dropdown AutoClose="true">
-                                <DropdownToggleButton Color="ButtonColor.Secondary">
+                        <Dropdown AutoClose="true" class="styled-dropdown">
+                            <DropdownToggleButton class="dropdown-btn inter-regular-normal-comet-14px">
                                     @usuario.Rol
                                 </DropdownToggleButton>
-                                <DropdownMenu>
+                                <DropdownMenu class="dropdown-menu-styled">
                                     @foreach (var rol in listaRoles)
                                     {
-                                        <DropdownItem @onclick="@(() => OnAutoCompleteChanged(rol.Rol,rol.IdHomologacionRol))">@rol.Rol</DropdownItem>
+                                    <DropdownItem class="dropdown-item-styled inter-regular-normal-comet-14px" @onclick="@(() => OnAutoCompleteChanged(rol.Rol,rol.IdHomologacionRol))">@rol.Rol</DropdownItem>
                                     }
                                 </DropdownMenu>
                             </Dropdown>
@@ -83,14 +133,14 @@
                 <div class="col" style="margin-top: 2% !important;">
                         @if (listaOna != null && listaOna.Any() && usuario != null)
                         {
-                            <Dropdown AutoClose="true">
-                                <DropdownToggleButton Color="ButtonColor.Secondary">
+                        <Dropdown AutoClose="true" class="styled-dropdown">
+                            <DropdownToggleButton class="dropdown-btn inter-regular-normal-comet-14px">
                                     @usuario.RazonSocial
                                 </DropdownToggleButton>
-                                <DropdownMenu>
+                            <DropdownMenu class="dropdown-menu-styled">
                                     @foreach (var ona in listaOna)
                                     {
-                                        <DropdownItem @onclick="@(() => OnAutoCompleteRazonSocOnaChanged(ona.RazonSocial, ona.IdONA))">@ona.RazonSocial</DropdownItem>
+                                    <DropdownItem class="dropdown-item-styled inter-regular-normal-comet-14px" @onclick="@(() => OnAutoCompleteRazonSocOnaChanged(ona.RazonSocial, ona.IdONA))">@ona.RazonSocial</DropdownItem>
                                     }
                                 </DropdownMenu>
                             </Dropdown>
@@ -109,7 +159,7 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Nombre</label>
                     <div class="col">
-                    <InputText @bind-Value="usuario.Nombre" class="form-control" placeholder="Nombre..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="usuario.Nombre" class="form-control inter-regular-normal-comet-14px" placeholder="Nombre..." style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Nombre)" />
                     </div>
                 </div>
@@ -117,7 +167,7 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Apellido</label>
                     <div class="col">
-                    <InputText @bind-Value="usuario.Apellido" class="form-control" placeholder="Apellido..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="usuario.Apellido" class="form-control inter-regular-normal-comet-14px" placeholder="Apellido..." style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Apellido)" />
                     </div>
                 </div>
@@ -128,7 +178,7 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Email</label>
                     <div class="col">
-                        <InputText @bind-Value="usuario.Email" class="form-control" style="margin-top: 2% !important;"
+                        <InputText @bind-Value="usuario.Email" class="form-control inter-regular-normal-comet-14px" style="margin-top: 2% !important;"
                                    placeholder="Email..."
                                    @oninput="ValidateEmail" />
                         <ValidationMessage For="(() => usuario.Email)" />
@@ -142,18 +192,20 @@
                 <div class="col-md-6">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Teléfono</label>
                     <div class="col">
-                    <InputText @bind-Value="usuario.Telefono" class="form-control" placeholder="+34 654321987" style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="usuario.Telefono" class="form-control inter-regular-normal-comet-14px" placeholder="+34 654321987" style="margin-top: 2% !important;" />
                         <ValidationMessage For="(() => usuario.Telefono)" />
                     </div>
                 </div>
             </div>
 
             <!-- Clave -->
-            <div class="form-row py-2">
-            <label class="label valign-text-middle inter-regular-normal-comet-16px">Clave</label>
-                <div class="col">
-                    <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave..." style="margin-top: 2% !important;" class="form-control" />
-                    <ValidationMessage For="(() => usuario.Clave)" />
+            <div class="row py-2">
+                <div class="col-md-6">
+                    <label class="label valign-text-middle inter-regular-normal-comet-16px">Clave</label>
+                    <div class="col">
+                    <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave..." style="margin-top: 2% !important;" class="form-control inter-regular-normal-comet-14px" />
+                        <ValidationMessage For="(() => usuario.Clave)" />
+                    </div>
                 </div>
             </div>
         </div>

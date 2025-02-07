@@ -11,7 +11,7 @@
         <div>
             <label class="label valign-text-middle inter-regular-normal-comet-16px">Ona</label>
         </div>
-        <select id="onaSelect" class="form-control" @onchange="CambiarSeleccionOna" style="margin-top: 2% !important;">
+        <select id="onaSelect" class="form-control inter-regular-normal-comet-14px" @onchange="CambiarSeleccionOna" style="margin-top: 2% !important;">
             <option value="" selected disabled>Seleccionar Ona</option>
             @if (listaONAs != null)
             {
@@ -28,7 +28,24 @@
         </div>
         <div class="form-group" style="margin-top: 2% !important;">
             <div class="form-group">
-                <select id="esquemaSelect" class="form-control" @onchange="HandleEsquemaSelectionChange">
+                @* <select id="esquemaSelect" class="form-control inter-regular-normal-comet-14px" @onchange="HandleEsquemaSelectionChange">
+                    <option value="" selected disabled>Seleccionar ESQ</option>
+                    @if (listaEsquemasOna != null)
+                    {
+                        @foreach (var opcion in listaEsquemasOna)
+                        {
+                            <option value="@opcion.IdEsquema">
+                                @if (NombresVistas != null && NombresVistas.Any(c => c.Equals(opcion.MostrarWeb)))
+                                {
+                                    <Icon Name="IconName.Check" />
+                                }
+                                @opcion.MostrarWeb
+                            </option>
+                        }
+                    }
+                </select> *@
+                <select id="esquemaSelect" class="form-control inter-regular-normal-comet-14px"
+                        @onchange="async (e) => await HandleEsquemaSelectionChange(e)">
                     <option value="" selected disabled>Seleccionar ESQ</option>
                     @if (listaEsquemasOna != null)
                     {
@@ -44,6 +61,7 @@
                         }
                     }
                 </select>
+
             </div>
 
         </div>
@@ -53,7 +71,7 @@
         <div>
             <label class="label valign-text-middle inter-regular-normal-comet-16px">Vista Origen</label>
         </div>
-        <input type="text" class="form-control" placeholder="" @bind="nombreSugerido" style="margin-top: 2% !important;" />
+        <input type="text" class="form-control inter-regular-normal-comet-14px" placeholder="" @bind="nombreSugerido" style="margin-top: 2% !important;" />
     </div>
     
     @* <div class="col-md-12 py-2">
@@ -93,7 +111,10 @@
                 Validar y Guardar
             </Button> *@
             <div class="save-button-container">
-                <Button @ref="saveButton" class="button-2" @onclick="async () => await ValidarDatos()"><div class="button-3 headingheadline4-h4">Validar y Guardar</div></Button>
+            <Button @ref="saveButton" style="display: none;" class="button-2" @onclick="async () => await GuardarCambios()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+            </div>
+            <div class="save-button-container">
+            <Button @ref="validateButton" class="button-2" @onclick="async () => await ValidarDatos()"><div class="button-3 headingheadline4-h4">Validar y Guardar</div></Button>
             </div>
         }
     </div>
@@ -136,7 +157,7 @@
                             <div class="ads-rules-list">
                                 <div class="landing-page" style="width:50% !important"><div class="bodybody-small">@esquema.NombreEsquema</div></div>
                                 <div class="landing-page" style="width:50% !important">
-                                    <input class="form-control" @bind="esquema.NombreVista" disabled="@enabledCeldas" />
+                                    <input class="form-control inter-regular-normal-comet-14px" @bind="esquema.NombreVista" disabled="@enabledCeldas" />
                                 </div>
                                 <div class="landing-page" style="width:23% !important"><div class="bodybody-small">@esquema.IsValid</div></div>
                             </div>

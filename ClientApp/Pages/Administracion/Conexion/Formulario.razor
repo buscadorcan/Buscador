@@ -9,18 +9,16 @@
 
 <PageTitle>Formulario Conexion</PageTitle>
 
-<EditForm Model="conexion" OnValidSubmit="RegistrarConexion" class="pt-4">
+<EditForm Model="conexion" OnValidSubmit="RegistrarConexion">
     <DataAnnotationsValidator />
 
-    <div class="card border">
         <div class="card-body px-lg-5 pt-4">
             <h1 class="title headlineheadline2-h2">Conexión al origen de datos</h1>
 
-            <hr style="background-color:aliceblue" />
-            <div class="row">
-                <div class="col-6">
+            <div class="row" style="margin-top: 2% !important;">
+                <div class="col-5">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Sistema</label>
-                    <select class="form-control" @bind="conexion.IdONA" style="margin-top: 2% !important;">
+                    <select class="form-control inter-regular-normal-comet-14px" @bind="conexion.IdONA" style="margin-top: 2% !important;">
                         <option value="">Seleccione una organización</option>
                         @if (listaOrganizaciones != null)
                         {
@@ -32,9 +30,9 @@
                     </select>
                     <ValidationMessage For="(() => conexion.IdONA)" />
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Origen de Datos</label>
-                    <select class="form-control" @onchange="CambiarSeleccionMotor" value="@conexion.OrigenDatos" style="margin-top: 2% !important;">
+                    <select class="form-control inter-regular-normal-comet-14px" @onchange="CambiarSeleccionMotor" value="@conexion.OrigenDatos" style="margin-top: 2% !important;">
                         <option value="">Seleccionar Motor de Base Datos</option>
                         @foreach (var databaseType in Enum.GetValues(typeof(DatabaseType)))
                         {
@@ -47,7 +45,7 @@
             <div class="form-row py-2">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Nombre Base de Datos</label>
                 <div class="col">
-                    <InputText @bind-Value="conexion.BaseDatos" class="form-control" placeholder="BaseDatos..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="conexion.BaseDatos" class="form-control inter-regular-normal-comet-14px" placeholder="BaseDatos..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => conexion.BaseDatos)" />
                 </div>
             </div>
@@ -55,7 +53,7 @@
             <div class="form-row py-2">
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Host</label>
                 <div class="col">
-                    <InputText @bind-Value="conexion.Host" class="form-control" placeholder="Host..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="conexion.Host" class="form-control inter-regular-normal-comet-14px" placeholder="Host..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => conexion.Host)" />
                 </div>
             </div>
@@ -64,7 +62,7 @@
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Puerto</label>
                 <div class="col">
                     <InputNumber @bind-Value="conexion.Puerto" style="margin-top: 2% !important;"
-                                 class="form-control"
+                                 class="form-control inter-regular-normal-comet-14px"
                                  placeholder="Puerto..."
                                  oninput="if (this.value.length > 6) this.value = this.value.slice(0, 6);
                               this.value = this.value.replace(/[^0-9]/g, '');" />
@@ -73,19 +71,19 @@
             </div>
 
             <div class="form-row py-2">
-                <div class="col-6">
+                <div class="col">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Usuario</label>
-                    <InputText @bind-Value="conexion.Usuario" class="form-control" placeholder="Usuario..." style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="conexion.Usuario" class="form-control inter-regular-normal-comet-14px" placeholder="Usuario..." style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => conexion.Usuario)" />
                 </div>
-
-                <div class="col-6">
+            </div>
+            <div class="form-row py-2">
+                <div class="col">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Contraseña</label>
-                    <InputText @bind-Value="conexion.Contrasenia" class="form-control" placeholder="Contrasenia..." type="password" id="password" style="margin-top: 2% !important;" />
+                    <InputText @bind-Value="conexion.Contrasenia" class="form-control inter-regular-normal-comet-14px" placeholder="Contrasenia..." type="password" id="password" style="margin-top: 2% !important;" />
                     <ValidationMessage For="(() => conexion.Contrasenia)" />
                 </div>
             </div>
-
 
             <div class="form-group py-2">
                 <ValidationMessage For="(() => conexion.Migrar)" />
@@ -108,7 +106,6 @@
             </div>
 
         </div>
-    </div>
 </EditForm>
 
 @* <div class="py-2 d-flex justify-content-end gap-2">

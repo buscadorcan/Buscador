@@ -13,7 +13,9 @@ namespace ClientApp.Services
 
         public async Task<BuscadorDto> PsBuscarPalabraAsync(string paramJSON, int PageNumber, int RowsPerPage)
         {
-            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/search/phrase?paramJSON={paramJSON}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
+            string encodedJson = Uri.EscapeDataString(paramJSON);
+
+            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/search/phrase?paramJSON={encodedJson}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
             response.EnsureSuccessStatusCode();
 
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<BuscadorDto>>()).Result;
@@ -66,12 +68,12 @@ namespace ClientApp.Services
             }
         }
 
-        public async Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idOna, int idEsquema, string VistaPK, string TextoBuscar)
+        public async Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idEsquemaData, string VistaPK, string TextoBuscar)
         {
             try
             {
                 // Construcción correcta de la URL con los parámetros adecuados
-                var url = $"{Inicializar.UrlBaseApi}api/buscador/EsquemaDatoBuscado?idOna={idOna}&idEsquema={idEsquema}&VistaPK={Uri.EscapeDataString(VistaPK)}&TextoBuscar={Uri.EscapeDataString(TextoBuscar)}";
+                var url = $"{Inicializar.UrlBaseApi}api/buscador/EsquemaDatoBuscado?idEsquemaData={idEsquemaData}&VistaPK={Uri.EscapeDataString(VistaPK)}&TextoBuscar={Uri.EscapeDataString(TextoBuscar)}";
 
                 var response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
