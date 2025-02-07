@@ -205,6 +205,15 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
+        private async void showModalOEC(BuscadorResultadoDataDto resultData)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("resultData", resultData);
+            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
+            modal.Size = ModalSize.Regular;
+            await modal.ShowAsync<OECModal>(title: "Información del OEC", parameters: parameters);
+        }
+
         private async void showModalESQ(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
