@@ -17,8 +17,8 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
-        private fnEsquemaCabeceraDto? EsquemaCabecera = new fnEsquemaCabeceraDto();
-        private List<HomologacionDto>? Columnas = new List<HomologacionDto>();
+        private fnEsquemaCabeceraDto? EsquemaCabecera;
+        private List<HomologacionDto>? Columnas;
         private List<fnEsquemaCabeceraDto>? Cabeceras;
         private List<DataEsquemaDatoBuscar>? resultados;
 
@@ -26,6 +26,8 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
+                EsquemaCabecera = new fnEsquemaCabeceraDto();
+                Columnas = new List<HomologacionDto>();
                 esquema = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
 
                 if (servicio != null)
@@ -45,12 +47,21 @@ namespace ClientApp.Pages.BuscadorCan
 
         private async Task<GridDataProviderResult<DataEsquemaDatoBuscar>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataEsquemaDatoBuscar> request)
         {
-            if (resultados is null && servicio != null)
+            try
             {
-                resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
-            }
+               
+                if (resultados is null && servicio != null)
+                {
+                    resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
+                }
 
-            return await Task.FromResult(request.ApplyTo(resultados ?? []));
+                return await Task.FromResult(request.ApplyTo(resultados ?? []));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+          
         }
     }
 }
