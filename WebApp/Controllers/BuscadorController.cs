@@ -60,6 +60,25 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
+
+        [HttpGet("fnesquemacabecera/{IdEsquemadata}")]
+        public IActionResult FnEsquemaCabecera(int IdEsquemadata)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<fnEsquemaCabeceraDto>
+                {
+                    Result = _vhRepo.FnEsquemaCabecera(IdEsquemadata)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FnEsquemaCabecera));
+            }
+        }
+
+
+
         [HttpGet("homologacionEsquemaDato/{idEsquema}/{idOna}")]
         public IActionResult FnHomologacionEsquemaDato(int idEsquema,string VistaFK, int idOna)
         {

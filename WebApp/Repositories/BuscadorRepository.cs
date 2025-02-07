@@ -93,6 +93,14 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<FnEsquemaDto>($"select * from fnEsquema({idEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
+
+        public fnEsquemaCabeceraDto? FnEsquemaCabecera(int IdEsquemadata)
+        {
+            return ExecuteDbOperation(context =>
+            {
+                return context.Database.SqlQuery<fnEsquemaCabeceraDto>($"select * from fnEsquemaCabecera({IdEsquemadata})").AsNoTracking().FirstOrDefault();
+            });
+        }
         public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idEsquema, string VistaFK, int idOna)
         {
             return ExecuteDbOperation(context =>
@@ -108,11 +116,11 @@ namespace WebApp.Repositories
             });
         }
 
-        public List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int IdEsquemaData, string TextoBuscar)
+        public List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int IdEsquemadata, string TextoBuscar)
         {
             return ExecuteDbOperation(context =>
             {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDatoBuscado({IdEsquemaData},{TextoBuscar})").AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQuery<FnEsquemaDataBuscado>($"select * from fnEsquemaDatoBuscado({IdEsquemadata},{TextoBuscar})").AsNoTracking().ToList();
 
                 return lstTem.Select(c => new FnEsquemaDataBuscadoDto()
                 {

@@ -10,5 +10,7 @@ namespace WebApp.Repositories.IRepositories
         List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idEsquema, string VistaFK, int idOna);
         List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int IdEsquemaData, string TextoBuscar);
         List<FnPredictWordsDto> FnPredictWords(string word);
+
+        fnEsquemaCabeceraDto? FnEsquemaCabecera(int IdEsquemadata);
     }
 }
