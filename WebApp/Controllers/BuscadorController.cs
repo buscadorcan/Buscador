@@ -77,11 +77,11 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("EsquemaDatoBuscado")]
-        public IActionResult FnEsquemaDato(int idOna, int idEsquema, string VistaPK, string TextoBuscar)
+        public IActionResult FnEsquemaDato(int idEsquemaData, string TextoBuscar)
         {
             try
             {
-                var result = _vhRepo.FnEsquemaDatoBuscar(idOna, idEsquema, VistaPK, TextoBuscar);
+                var result = _vhRepo.FnEsquemaDatoBuscar(idEsquemaData, TextoBuscar);
                 return Ok(new RespuestasAPI<List<FnEsquemaDataBuscadoDto>>
                 {
                     Result = result
