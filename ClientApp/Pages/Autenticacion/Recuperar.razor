@@ -4,11 +4,11 @@
 
 <div class="py-4">
     <div class=" row form-group ">
-        <div class="col-6 offset-3 ">
+        <div class="">
             <div class="card border">
                 <div class="card-body px-lg-5 pt-4">
-                    <h3 class="col-12 text-success text-center py-2">
-                        <strong>Recuperar Clave</strong>
+                    <h3 class="col-12 text-success text-center py-2 label valign-text-middle inter-regular-normal-comet-16px">
+                        <strong class="">Recuperar Clave</strong>
                     </h3>
 
                     <EditForm Model="usuarioRecuperacion" OnValidSubmit="RecuperarClave">
@@ -19,16 +19,16 @@
                         }
 
                         <div class="form-row py-2">
-                            <InputText @bind-Value="usuarioRecuperacion.Email" id="email" placeholder="Nombre usuario..." class="form-control mb-2" />
+                            <InputText @bind-Value="usuarioRecuperacion.Email" id="email" placeholder="Nombre usuario..." class="form-control mb-2 label valign-text-middle inter-regular-normal-comet-14px" />
                             <ValidationMessage For="(() => usuarioRecuperacion.Email)"></ValidationMessage>
                         </div>
 
-                        <div class="form-row d-grid gap-2">
+                        <div class="form-row d-grid gap-2 button-3 headingheadline4-h4">
                             <Button @ref="saveButton" Type="ButtonType.Submit" Color="ButtonColor.Success">
                                 Recuperar
                             </Button>
                             <div class="d-md-flex justify-content-md-end mt-2">
-                                <Button Type="ButtonType.Link" Color="ButtonColor.Link" To="acceder"> Acceder </Button>
+                                <Button Type="ButtonType.Link" Color="ButtonColor.Link" To="acceder" class="label valign-text-middle inter-regular-normal-comet-16px"> Acceder </Button>
                             </div>
                         </div>
                     </EditForm>

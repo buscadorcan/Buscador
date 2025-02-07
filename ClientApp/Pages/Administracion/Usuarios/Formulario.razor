@@ -122,7 +122,7 @@
                         }
                         else
                         {
-                            <p>Cargando roles...</p>
+                        <p class="label valign-text-middle inter-regular-normal-comet-14px">Cargando roles...</p>
                         }
                         <ValidationMessage For="(() => usuario.Rol)" />
                     </div>
@@ -147,7 +147,7 @@
                         }
                         else
                         {
-                            <p>Cargando Razon Social...</p>
+                        <p class="label valign-text-middle inter-regular-normal-comet-14px">Cargando Razon Social...</p>
                         }
                         <ValidationMessage For="(() => usuario.RazonSocial)" />
                     </div>
@@ -221,7 +221,7 @@
         </div>
     </a>
     <div class="save-button-container">
-        <Button @ref="saveButton" class="button-2" @onclick="async () => await RegistrarUsuario()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+        <Button @ref="saveButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await RegistrarUsuario()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
     </div>
 </div>
 
