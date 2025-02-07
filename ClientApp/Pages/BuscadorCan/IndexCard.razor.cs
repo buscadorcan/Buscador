@@ -34,6 +34,7 @@ namespace ClientApp.Pages.BuscadorCan
         public IONAService? iOnaService { get; set; }
         [Inject]
         public IJSRuntime? iJSRuntime { get; set; }
+
         // Propiedades para la vista
         public List<BuscadorResultadoDataDto>? ResultadoData { get; private set; } = new List<BuscadorResultadoDataDto>();
         public List<VwGrillaDto>? ListaEtiquetasGrilla { get; private set; } = new List<VwGrillaDto>();
@@ -47,6 +48,8 @@ namespace ClientApp.Pages.BuscadorCan
         private Dictionary<int, string> iconUrls = new();
         private OnaDto? OnaDto;
         private bool mostrarMapa = true;
+        private IJSObjectReference? _googleMapsModule;
+        private List<(string Pais, string Ciudad)> uniqueLocations = new();
         protected override async Task OnInitializedAsync()
         {
             try
@@ -82,6 +85,51 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine($"Error en OnInitializedAsync: {ex.Message}");
             }
         }
+
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                try
+                {
+                    _googleMapsModule = await iJSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/google-maps.js");
+
+                    if (ResultadoData != null && ResultadoData.Any())
+                    {
+                        await CargarMapa();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error en OnAfterRenderAsync: {ex.Message}");
+                }
+            }
+        }
+
+        private async Task CargarMapa()
+        {
+            if (_googleMapsModule == null) return;
+
+            // Filtrar ubicaciones únicas obteniendo país y ciudad desde DataEsquemaJson
+            uniqueLocations = ResultadoData
+                .Select(d =>
+                {
+                    var pais = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data;
+                    var ciudad = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 85)?.Data;
+
+                    return new { Pais = pais, Ciudad = ciudad };
+                })
+                .Where(loc => !string.IsNullOrEmpty(loc.Pais) && !string.IsNullOrEmpty(loc.Ciudad))
+                .Select(loc => (loc.Pais!, loc.Ciudad!)) 
+                .Distinct()
+                .ToList();
+
+            // Llamar al método JS para mostrar los marcadores en el mapa
+            await _googleMapsModule.InvokeVoidAsync("initMap", uniqueLocations);
+        }
+
+
 
         public async Task BuscarPalabraRequest()
         {

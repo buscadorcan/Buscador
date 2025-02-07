@@ -93,6 +93,14 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<FnEsquemaDto>($"select * from fnEsquema({idEsquema})").AsNoTracking().FirstOrDefault();
             });
         }
+
+        public fnEsquemaCabeceraDto? FnEsquemaCabecera(int IdEsquemadata)
+        {
+            return ExecuteDbOperation(context =>
+            {
+                return context.Database.SqlQuery<fnEsquemaCabeceraDto>($"select * from fnEsquemaCabecera({IdEsquemadata})").AsNoTracking().FirstOrDefault();
+            });
+        }
         public List<FnHomologacionEsquemaDataDto> FnHomologacionEsquemaDato(int idEsquema, string VistaFK, int idOna)
         {
             return ExecuteDbOperation(context =>
@@ -108,20 +116,61 @@ namespace WebApp.Repositories
             });
         }
 
-        public List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int IdEsquemaData, string TextoBuscar)
+        public List<FnEsquemaDataBuscadoDto> FnEsquemaDatoBuscar(int IdEsquemadata, string TextoBuscar)
         {
             return ExecuteDbOperation(context =>
             {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDatoBuscado({IdEsquemaData},{TextoBuscar})").AsNoTracking().ToList();
-
-                return lstTem.Select(c => new FnEsquemaDataBuscadoDto()
+                try
                 {
-                    IdEsquemaData = c.IdEsquemaData,
-                    IdEsquema = c.IdEsquema,
-                    DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
-                }).ToList();
+                    Console.WriteLine($"Ejecutando SQL con parámetros: IdEsquemadata={IdEsquemadata}, TextoBuscar={TextoBuscar}");
+
+                    // Definir los parámetros de la consulta
+                    var paramIdEsquemadata = new SqlParameter("@IdEsquemadata", SqlDbType.Int) { Value = IdEsquemadata };
+                    var paramTextoBuscar = new SqlParameter("@TextoBuscar", SqlDbType.NVarChar, 400) { Value = TextoBuscar ?? (object)DBNull.Value };
+
+                    // Ejecutar la consulta con parámetros
+                    var lstTem = context.Database.SqlQueryRaw<FnEsquemaDataBuscado>(
+                        "SELECT * FROM fnEsquemaDatoBuscado(@IdEsquemadata, @TextoBuscar)",
+                        paramIdEsquemadata, paramTextoBuscar
+                    ).AsNoTracking().ToList();
+
+                    Console.WriteLine($"Registros obtenidos de SQL: {lstTem.Count}");
+
+                    // Transformar los datos en DTOs
+                    var resultado = lstTem.Select(c =>
+                    {
+                        Console.WriteLine($"Procesando JSON para IdEsquemaData={c.IdEsquemaData}");
+
+                        List<ColumnaEsquema> jsonData;
+                        try
+                        {
+                            jsonData = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error al deserializar JSON: {ex.Message}");
+                            jsonData = new List<ColumnaEsquema>();
+                        }
+
+                        return new FnEsquemaDataBuscadoDto()
+                        {
+                            IdEsquemaData = c.IdEsquemaData,
+                            IdEsquema = c.IdEsquema,
+                            DataEsquemaJson = jsonData
+                        };
+                    }).ToList();
+
+                    Console.WriteLine($"Registros transformados a DTOs: {resultado.Count}");
+                    return resultado;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error en ExecuteDbOperation: {ex.Message}");
+                    return new List<FnEsquemaDataBuscadoDto>(); // Retorna lista vacía en caso de error
+                }
             });
         }
+
 
         public List<FnPredictWordsDto> FnPredictWords(string word)
         {

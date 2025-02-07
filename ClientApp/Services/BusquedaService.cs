@@ -89,7 +89,20 @@ namespace ClientApp.Services
             }
         }
 
+        public async Task<fnEsquemaCabeceraDto?> FnEsquemaCabeceraAsync(int IdEsquemadata)
+        {
+            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/fnesquemacabecera/{IdEsquemadata}");
+            response.EnsureSuccessStatusCode();
 
+            var result = await response.Content.ReadFromJsonAsync<RespuestasAPI<fnEsquemaCabeceraDto>>();
+
+            if (result != null)
+            {
+                return result.Result;
+            }
+
+            return default;
+        }
 
         public async Task<List<FnPredictWordsDto>> FnPredictWords(string word)
         {

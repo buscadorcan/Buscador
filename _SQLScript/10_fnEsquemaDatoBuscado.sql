@@ -1,7 +1,7 @@
 
 create or ALTER   FUNCTION [dbo].[fnEsquemaDatoBuscado] ( 
     @IdEsquemadata INT,  
-    @TextoBuscar VARCHAR(200)
+    @TextoBuscar NVARCHAR(400)
 )
 --| 2K25.FEB.25 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0
 --| Descripción: Función para mostrar el esquema con sus datos buscados

@@ -17,7 +17,9 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
-        private List<HomologacionDto>? Columnas;
+        private fnEsquemaCabeceraDto? EsquemaCabecera = new fnEsquemaCabeceraDto();
+        private List<HomologacionDto>? Columnas = new List<HomologacionDto>();
+        private List<fnEsquemaCabeceraDto>? Cabeceras;
         private List<DataEsquemaDatoBuscar>? resultados;
 
         protected override async Task OnInitializedAsync()
@@ -25,10 +27,13 @@ namespace ClientApp.Pages.BuscadorCan
             try
             {
                 esquema = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
+
                 if (servicio != null)
                 {
-                    homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
-                    Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema?.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
+                    //homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
+                    EsquemaCabecera = await servicio.FnEsquemaCabeceraAsync(resultData.IdEsquemaData ?? 0);
+                    //Cabeceras = (List<fnEsquemaCabeceraDto>?)JsonConvert.DeserializeObject<List<fnEsquemaCabeceraDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
+                    Columnas = (List<HomologacionDto>?)JsonConvert.DeserializeObject<List<HomologacionDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
                 }
                 StateHasChanged();
             }
