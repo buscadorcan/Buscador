@@ -9,15 +9,13 @@
 
 <PageTitle>Formulario Conexion</PageTitle>
 
-<EditForm Model="conexion" OnValidSubmit="RegistrarConexion" class="pt-4">
+<EditForm Model="conexion" OnValidSubmit="RegistrarConexion">
     <DataAnnotationsValidator />
 
-    <div class="card border">
         <div class="card-body px-lg-5 pt-4">
             <h1 class="title headlineheadline2-h2">Conexión al origen de datos</h1>
 
-            <hr style="background-color:aliceblue" />
-            <div class="row">
+            <div class="row" style="margin-top: 2% !important;">
                 <div class="col-5">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Sistema</label>
                     <select class="form-control inter-regular-normal-comet-14px" @bind="conexion.IdONA" style="margin-top: 2% !important;">
@@ -108,7 +106,6 @@
             </div>
 
         </div>
-    </div>
 </EditForm>
 
 @* <div class="py-2 d-flex justify-content-end gap-2">

@@ -43,7 +43,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         private List<OnaDto>? listaONAs;
         private List<HomologacionEsquemaDto>? listaHomologacionEsquemas = new List<HomologacionEsquemaDto>();
         //private EsquemaVistaOnaDto? esquemaSelected;
-        private EsquemaDto? esquemaSelected = new();
+        private EsquemaDto? esquemaSelected;
         private bool enabledCeldas;
         private HomologacionDto? organizacionSelected;
         private OnaDto? onaSelected;
@@ -90,29 +90,78 @@ namespace ClientApp.Pages.Administracion.Validacion
         {
             var selectedId = Convert.ToInt32(e.Value);
 
+            if (listaONAs == null || !listaONAs.Any())
+            {
+                toastService?.CreateToastMessage(ToastType.Warning, "No hay ONAs disponibles.");
+                navigationManager?.NavigateTo("/validacion");
+                return;
+            }
+
             // Busca el objeto correspondiente en la lista
             onaSelected = listaONAs?.FirstOrDefault(o => o.IdONA == selectedId);
 
             if (onaSelected != null)
             {
-                await CambiarSeleccionEsquema(esquemaSelected); // Opcional, si necesitas actualizar algo más.
+                if (esquemaSelected != null)
+                {
+                    await CambiarSeleccionEsquema(esquemaSelected);
+                }
                 StateHasChanged();
             }
         }
-
         private async Task HandleEsquemaSelectionChange(ChangeEventArgs e)
         {
-            var selectedId = Convert.ToInt32(e.Value);
+            Console.WriteLine($"Evento onchange detectado con valor: {e.Value}");
 
-            // Encuentra el esquema seleccionado en la lista
+            if (e.Value is null)
+            {
+                toastService?.CreateToastMessage(ToastType.Warning, "Debe seleccionar un esquema válido.");
+                return;
+            }
+
+            // Convierte el valor a un número
+            if (!int.TryParse(e.Value.ToString(), out int selectedId))
+            {
+                toastService?.CreateToastMessage(ToastType.Warning, "El ID del esquema seleccionado no es válido.");
+                return;
+            }
+
+            // Busca el esquema en la lista
             var selectedEsquema = listaEsquemasOna?.FirstOrDefault(es => es.IdEsquema == selectedId);
 
             if (selectedEsquema != null)
             {
-                await CambiarSeleccionEsquema(selectedEsquema);
+                // Asignamos el esquema seleccionado
+                esquemaSelected = selectedEsquema;
+
+                // Llamamos al método asincrónico
+                await CambiarSeleccionEsquema(esquemaSelected);
+
+                // Refrescamos la UI
                 StateHasChanged();
             }
+            else
+            {
+                toastService?.CreateToastMessage(ToastType.Warning, "Esquema seleccionado no encontrado.");
+            }
         }
+
+        //private async Task HandleEsquemaSelectionChange(ChangeEventArgs e)
+        //{
+        //    var selectedId = Convert.ToInt32(e.Value);
+
+        //    // Encuentra el esquema seleccionado en la lista
+        //    var selectedEsquema = listaEsquemasOna?.FirstOrDefault(es => es.IdEsquema == selectedId);
+
+        //    if (selectedEsquema != null)
+        //    {
+        //        if (esquemaSelected != null)
+        //        {
+        //            await CambiarSeleccionEsquema(esquemaSelected);
+        //        }
+        //        StateHasChanged();
+        //    }
+        //}
 
         private async Task CambiarSeleccionEsquema(EsquemaDto _esquemaSelected)
         {
@@ -123,6 +172,12 @@ namespace ClientApp.Pages.Administracion.Validacion
             // Configura `currentConexion` y `enabledCeldas` dependiendo del rol
             if (accessRol)
             {
+                if (onaSelected == null)
+                {
+                    toastService?.CreateToastMessage(ToastType.Warning, "Debe seleccionar una ONA antes de continuar.");
+                    navigationManager?.NavigateTo("/validacion");
+                    return;
+                }
                 currentConexion = await iConexionService.GetOnaConexionByOnaAsync(onaSelected.IdONA);
             }
             else
@@ -131,7 +186,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 currentConexion = await iConexionService.GetOnaConexionByOnaAsync(IdOna);
             }
 
-            if (currentConexion != null && currentConexion.OrigenDatos.Equals("EXCEL"))
+            if (currentConexion?.OrigenDatos == "EXCEL")
             {
                 origenDatosValidar = currentConexion.OrigenDatos;
                 enabledCeldas = true;
@@ -149,11 +204,18 @@ namespace ClientApp.Pages.Administracion.Validacion
             // Lógica para obtener y procesar las columnas del esquema
             List<HomologacionDto> Columnas;
             var homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(esquemaSelected.IdEsquema);
-            if (string.IsNullOrWhiteSpace(homologacionEsquema.EsquemaJson))
+            //if (string.IsNullOrWhiteSpace(homologacionEsquema.EsquemaJson))
+            //{
+            //    toastService?.CreateToastMessage(ToastType.Danger, "Error: No hay datos en el esquema seleccionado.");
+            //    return;
+            //}
+            if (homologacionEsquema == null || string.IsNullOrWhiteSpace(homologacionEsquema.EsquemaJson))
             {
                 toastService?.CreateToastMessage(ToastType.Danger, "Error: No hay datos en el esquema seleccionado.");
+                navigationManager?.NavigateTo("/validacion");
                 return;
             }
+
             Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema.EsquemaJson)
                 .OrderBy(c => c.MostrarWebOrden)
                 .ToList();
@@ -176,10 +238,10 @@ namespace ClientApp.Pages.Administracion.Validacion
             }
 
             // Refresca la tabla si es necesario
-            if (grid != null)
-            {
-                await grid.RefreshDataAsync();
-            }
+            //if (grid != null)
+            //{
+            //    await grid.RefreshDataAsync();
+            //}
         }
 
 
@@ -230,6 +292,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 if (onaSelected == null)
                 {
                     toastService?.CreateToastMessage(ToastType.Warning, "Por favor, selecciona una ONA antes de guardar.");
+                    navigationManager?.NavigateTo("/validacion");
                     saveButton.HideLoading();
                     return;
                 }
@@ -237,6 +300,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 if (esquemaSelected == null)
                 {
                     toastService?.CreateToastMessage(ToastType.Warning, "Por favor, selecciona un esquema antes de guardar.");
+                    navigationManager?.NavigateTo("/validacion");
                     saveButton.HideLoading();
                     return;
                 }
@@ -244,6 +308,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 if (string.IsNullOrEmpty(nombreSugerido))
                 {
                     toastService?.CreateToastMessage(ToastType.Warning, "El nombre sugerido no puede estar vacío.");
+                    navigationManager?.NavigateTo("/validacion");
                     saveButton.HideLoading();
                     return;
                 }
@@ -261,6 +326,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 if (resultado?.registroCorrecto != true)
                 {
                     toastService?.CreateToastMessage(ToastType.Danger, "Error al guardar el esquema.");
+                    navigationManager?.NavigateTo("/validacion");
                     saveButton.HideLoading();
                     return;
                 }
@@ -270,6 +336,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 if (!success)
                 {
                     toastService?.CreateToastMessage(ToastType.Danger, "Error al eliminar columnas existentes.");
+                    navigationManager?.NavigateTo("/validacion");
                     saveButton.HideLoading();
                     return;
                 }
@@ -305,11 +372,13 @@ namespace ClientApp.Pages.Administracion.Validacion
                 else
                 {
                     toastService?.CreateToastMessage(ToastType.Danger, "Error al guardar columnas.");
+                    navigationManager?.NavigateTo("/validacion");
                 }
             }
             catch (Exception ex)
             {
                 toastService?.CreateToastMessage(ToastType.Danger, $"Error inesperado: {ex.Message}");
+                navigationManager?.NavigateTo("/validacion");
             }
             finally
             {
@@ -392,7 +461,11 @@ namespace ClientApp.Pages.Administracion.Validacion
                                 toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
                                 navigationManager?.NavigateTo("/validacion");
                             }
-                            await CambiarSeleccionEsquema(esquemaSelected);
+                            if (esquemaSelected != null)
+                            {
+                                await CambiarSeleccionEsquema(esquemaSelected);
+                            }
+                            validateButton.HideLoading();
                             saveButton.HideLoading();
                             validateButton.HideLoading();
                         }
@@ -461,7 +534,10 @@ namespace ClientApp.Pages.Administracion.Validacion
                                     toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
                                     navigationManager?.NavigateTo("/validacion");
                                 }
-                                await CambiarSeleccionEsquema(esquemaSelected);
+                                if (esquemaSelected != null)
+                                {
+                                    await CambiarSeleccionEsquema(esquemaSelected);
+                                }
                                 saveButton.HideLoading();
                                 validateButton.HideLoading();
                             }
@@ -542,7 +618,10 @@ namespace ClientApp.Pages.Administracion.Validacion
                     //            toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas, no existen en la base de datos, no coinciden o tienen espacios en blanco:: {string.Join(", ", filasNoCoinciden)}");
                     //            navigationManager?.NavigateTo("/validacion");
                     //        }
-                    //        await CambiarSeleccionEsquema(esquemaSelected);
+                    //        if (esquemaSelected != null)
+                    //{
+                    //    await CambiarSeleccionEsquema(esquemaSelected);
+                    //}
                     //        saveButton.HideLoading();
                     //        validateButton.HideLoading();
                     //    }
@@ -605,7 +684,10 @@ namespace ClientApp.Pages.Administracion.Validacion
                     //                toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas, no existen en la base de datos, no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
                     //                navigationManager?.NavigateTo("/validacion");
                     //            }
-                    //            await CambiarSeleccionEsquema(esquemaSelected);
+                    //if (esquemaSelected != null)
+                    //{
+                    //    await CambiarSeleccionEsquema(esquemaSelected);
+                    //}
                     //            saveButton.HideLoading();
                     //            validateButton.HideLoading();
                     //        }
@@ -629,7 +711,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                     validateButton.HideLoading();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 saveButton.HideLoading();
                 validateButton.HideLoading();

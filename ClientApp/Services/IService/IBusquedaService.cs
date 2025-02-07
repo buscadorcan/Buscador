@@ -8,7 +8,7 @@ namespace ClientApp.Services.IService {
         Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync(string vistaFK, int idOna);
         Task<HomologacionEsquemaDto?> FnHomologacionEsquemaAsync(int idHomologacionEsquema);
         Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, string VistaFK, int idOna);
-        Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idOna, int idEsquema, string VistaPK, string TextoBuscar);
+        Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idEsquemaData, string VistaPK, string TextoBuscar);
         Task<List<FnPredictWordsDto>> FnPredictWords(string word);
     }
 }
