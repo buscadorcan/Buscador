@@ -68,5 +68,7 @@
     <Build Include="08_fnEsquema.sql" />
     <Build Include="10_fnEsquemaDatoBuscado.sql" />
     <Build Include="11_vwLogMigracionExcel.sql" />
+    <Build Include="12_EventTracking.sql" />
+    <Build Include="13_paAddEventTracking.sql" />
   </ItemGroup>
 </Project>
