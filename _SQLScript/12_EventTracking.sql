@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[EventTracking](
 	,NombrePagina		NVARCHAR(100) NOT NULL DEFAULT('')
 	,NombreControl		NVARCHAR(100) NOT NULL DEFAULT('')
 	,NombreAccion		NVARCHAR(100) NOT NULL DEFAULT('')
+	,UbicacionJson		NVARCHAR(max) NOT NULL DEFAULT('{}')
 	,ParametroJson		NVARCHAR(max) NOT NULL DEFAULT('{}')
 	,ErrorTracking		NVARCHAR(max) NOT NULL DEFAULT('')
 	,FechaCreacion		DATETIME NOT NULL DEFAULT(GETDATE())  
