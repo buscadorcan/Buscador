@@ -1,6 +1,6 @@
 @using SharedApp.Models.Dtos
 
-<div class="card">
+@* <div class="card">
     <div class="card-body">
         <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="columnas" Responsive="true" FixedHeader="true" Height="450" Id="sortableGrid">
             <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
@@ -24,4 +24,77 @@
             </GridColumn>
         </Grid>
     </div>
+</div> *@
+<style>
+    .modal-title {
+    align-self: stretch !important;
+    color: var(--neutraldark80);
+    font-weight: 600 !important;
+    line-height: 30px !important;
+    position: relative !important;
+    text-align: center !important;
+    font-size: medium !important;
+    font-family: var(--font-family-inter-semibold) !important;
+}
+</style>
+<div class="table table-1">
+    <div class="table-heading table-1">
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Vista Código Homologado</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Tooltip Web</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Mostrar</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Tipo de Dato</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
+            </div>
+        </div>
+    </div>
+
+    @if (columnas != null && columnas.Any())
+    {
+        <div class="content content-2">
+            @foreach (var context in columnas)
+            {
+                <div class="row row-15" style="width: -webkit-fill-available !important;">
+                    <div class="componente">
+                        <div class="row-1 row-15">
+                            <div class="ads-rules-list">
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+    }
 </div>

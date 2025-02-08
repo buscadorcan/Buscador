@@ -68,12 +68,12 @@ namespace ClientApp.Services
             }
         }
 
-        public async Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idEsquemaData, string VistaPK, string TextoBuscar)
+        public async Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idEsquemaData, string TextoBuscar)
         {
             try
             {
                 // Construcción correcta de la URL con los parámetros adecuados
-                var url = $"{Inicializar.UrlBaseApi}api/buscador/EsquemaDatoBuscado?idEsquemaData={idEsquemaData}&VistaPK={Uri.EscapeDataString(VistaPK)}&TextoBuscar={Uri.EscapeDataString(TextoBuscar)}";
+                var url = $"{Inicializar.UrlBaseApi}api/buscador/EsquemaDatoBuscado?idEsquemaData={idEsquemaData}&TextoBuscar={Uri.EscapeDataString(TextoBuscar)}";
 
                 var response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
@@ -89,7 +89,20 @@ namespace ClientApp.Services
             }
         }
 
+        public async Task<fnEsquemaCabeceraDto?> FnEsquemaCabeceraAsync(int IdEsquemadata)
+        {
+            var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/fnesquemacabecera/{IdEsquemadata}");
+            response.EnsureSuccessStatusCode();
 
+            var result = await response.Content.ReadFromJsonAsync<RespuestasAPI<fnEsquemaCabeceraDto>>();
+
+            if (result != null)
+            {
+                return result.Result;
+            }
+
+            return default;
+        }
 
         public async Task<List<FnPredictWordsDto>> FnPredictWords(string word)
         {

@@ -60,6 +60,25 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnHomologacionEsquemaTodo));
             }
         }
+
+        [HttpGet("fnesquemacabecera/{IdEsquemadata}")]
+        public IActionResult FnEsquemaCabecera(int IdEsquemadata)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<fnEsquemaCabeceraDto>
+                {
+                    Result = _vhRepo.FnEsquemaCabecera(IdEsquemadata)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FnEsquemaCabecera));
+            }
+        }
+
+
+
         [HttpGet("homologacionEsquemaDato/{idEsquema}/{idOna}")]
         public IActionResult FnHomologacionEsquemaDato(int idEsquema,string VistaFK, int idOna)
         {
@@ -77,11 +96,11 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("EsquemaDatoBuscado")]
-        public IActionResult FnEsquemaDato(int idEsquemaData, string VistaPK, string TextoBuscar)
+        public IActionResult FnEsquemaDato(int idEsquemaData, string TextoBuscar)
         {
             try
             {
-                var result = _vhRepo.FnEsquemaDatoBuscar(idEsquemaData, VistaPK, TextoBuscar);
+                var result = _vhRepo.FnEsquemaDatoBuscar(idEsquemaData, TextoBuscar);
                 return Ok(new RespuestasAPI<List<FnEsquemaDataBuscadoDto>>
                 {
                     Result = result

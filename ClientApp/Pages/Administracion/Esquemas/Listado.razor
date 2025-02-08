@@ -53,6 +53,9 @@
         .general.table .table-primary {
             background-color: #cce5ff !important; /* Resalta las filas con esta clase */
         }
+        .table-responsive{
+            width: -webkit-fill-available !important;
+        }
 </style>
 
 <div class="general table">
@@ -62,27 +65,27 @@
           DataProvider="EsquemasDataProvider"
           Responsive="true"
           Id="sortableGrid"
-          Style="width:100%;">
+          Style="width:100%; width: -webkit-fill-available !important;">
 
-        <GridColumn TItem="EsquemaDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" class="bodybody-small"
+        <GridColumn TItem="EsquemaDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" class="cell-text cell-1 bodybody-small"
                     ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
             @(string.IsNullOrWhiteSpace(context.MostrarWeb) ? "-" : context.MostrarWeb)
             <input type="hidden" value="@context.IdEsquema" />
         </GridColumn>
 
-        <GridColumn TItem="EsquemaDto" HeaderText="Nombre Vista" PropertyName="NombreVista" class="bodybody-small"
+        <GridColumn TItem="EsquemaDto" HeaderText="Nombre Vista" PropertyName="NombreVista" class="cell-text cell-1 bodybody-small"
                     ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")" >
             @(string.IsNullOrWhiteSpace(context.EsquemaVista) ? "-" : context.EsquemaVista) 
         </GridColumn>
 
-        <GridColumn TItem="EsquemaDto" HeaderText="Columnas" class="bodybody-small"
+        <GridColumn TItem="EsquemaDto" HeaderText="Columnas" class="cell-text cell-1 bodybody-small"
                     ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
             <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModal(context.IdEsquema)">
                 <Icon Name="IconName.Front" />
             </Button>
         </GridColumn>
 
-        <GridColumn TItem="EsquemaDto" HeaderText="Editar" class="bodybody-small"
+        <GridColumn TItem="EsquemaDto" HeaderText="Editar" class="cell-text cell-1 bodybody-small"
                     ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
             <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
                     To="@($"/editar-esquema/{context.IdEsquema}")" Size="ButtonSize.Small">
@@ -90,9 +93,9 @@
             </Button>
         </GridColumn>
 
-        <GridColumn TItem="EsquemaDto" HeaderText="Eliminar" class="bodybody-small"
+        <GridColumn TItem="EsquemaDto" HeaderText="Eliminar" class="cell-text cell-1 bodybody-small"
                     ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-            <Button Color="ButtonColor.Danger" Outline="true" @onclick="async () => await OnDeleteClick(context.IdEsquema)" Size="ButtonSize.Small">
+            <Button Color="ButtonColor.Danger" Outline="true" @onclick=@(() => OpenDeleteModal(context.IdEsquema)) Size="ButtonSize.Small">
                 <Icon Name="IconName.Trash3" />
             </Button>
         </GridColumn>
@@ -130,13 +133,33 @@
         <div class="py-2">
             <Alert Color="AlertColor.Primary" Dismissable="false">
                 <Icon Name="IconName.InfoCircleFill" class="me-2"></Icon>
-                <span>Esquema a mostrar por defecto en el buscador</span>
+            <span class="label valign-text-middle inter-regular-normal-comet-16px">Esquema a mostrar por defecto en el buscador</span>
             </Alert>
         </div>
     </div>
 
 
-
+@if (deleteshowModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 
 

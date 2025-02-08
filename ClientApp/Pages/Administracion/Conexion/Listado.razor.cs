@@ -12,7 +12,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
         private bool showModal; // Controlar la visibilidad de la ventana modal  
         private string modalMessage;
-        private int? selectedIdOna;    // Almacena el ID del usuario seleccionado
+        private int? selectedIdOna;    
         [Inject]
         public Services.ToastService? toastService { get; set; }
         List<ToastMessage> messages = new();

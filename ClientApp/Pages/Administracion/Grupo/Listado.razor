@@ -43,9 +43,9 @@
                     <div class="componente">
                         <div class="row-1 row-15">
                             <div class="ads-rules-list @(homologacion.MostrarWebOrden == 1 ? "table-primary" : "")">
-                                <div class="landing-page" style="width:50% !important"><div class="bodybody-small">@homologacion.MostrarWeb</div></div>
-                                <div class="landing-page" style="width:50% !important"><div class="bodybody-small">@homologacion.TooltipWeb</div></div>
-                                <div class="landing-page" style="width:20% !important">
+                                <div class="cell cell-1" style="width:50% !important"><div class="cell-text cell-1 bodybody-small">@homologacion.MostrarWeb</div></div>
+                                <div class="cell cell-1" style="width:50% !important"><div class="cell-text cell-1 bodybody-small">@homologacion.TooltipWeb</div></div>
+                                <div class="cell cell-1" style="width:20% !important">
                                     <Tooltip Title="Editar registro">
                                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{homologacion.IdHomologacion}")" Size="ButtonSize.Small">
                                             <Icon Name="IconName.PencilSquare" />
@@ -61,7 +61,7 @@
     }
     else
     {
-        <p>No hay datos disponibles.</p>
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
 
@@ -88,6 +88,6 @@
 <div class="form-row py-2">
     <Alert Color="AlertColor.Secondary" Dismissable="false">
         <Icon Name="IconName.ExclamationTriangleFill" class="me-2"></Icon>
-        <span class="text-white">Registro para organización lógico [No es filtro]</span>
+        <span class="text-white label valign-text-middle inter-regular-normal-comet-16px">Registro para organización lógico [No es filtro]</span>
     </Alert>
 </div>

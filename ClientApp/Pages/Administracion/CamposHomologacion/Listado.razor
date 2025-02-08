@@ -41,6 +41,15 @@
     .table-responsive {
         overflow-x: auto;
     }
+
+    .text-center text-secondary my-5{
+    color: var(--neutral-dark30) !important;
+    font-family: var(--font-family-inter-regular) !important;
+    font-size: var(--font-size-l) !important;
+    font-style: normal !important;
+        font-weight: 400 !important;
+    }
+
 </style>
 
 <PageTitle>Campos Homologación</PageTitle>
@@ -50,7 +59,7 @@
 
         <div class="form-group">
     <label for="grupoHomologacionSelect" class="label valign-text-middle inter-regular-normal-comet-16px">Grupo de Homologación</label>
-    <select id="grupoHomologacionSelect" class="form-control inter-regular-normal-comet-14px" @onchange="OnAutoCompleteChangedHandler" style="margin-top: 2% !important;">
+    <select id="grupoHomologacionSelect" class="form-control inter-regular-normal-comet-14px" @onchange="OnAutoCompleteChangedHandler" style="margin-top: 2% !important; width: 338.8px !important;">
                 <option value="" selected disabled>Seleccione Grupo de Homologación</option>
                 @if (listaVwHomologacion != null)
                 {
@@ -200,25 +209,25 @@
           AllowFiltering="true"
           Style="width:100%;">
 
-        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado" Class="bodybody-small">
+        <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado" Class="cell-text cell-1 bodybody-small">
             @(string.IsNullOrWhiteSpace(context.NombreHomologado) ? "-" : context.NombreHomologado)
             <input type="hidden" value="@context.IdHomologacion" />
         </GridColumn>
 
-        <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" Class="bodybody-small">
+        <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" Class="cell-text cell-1 bodybody-small">
             @(string.IsNullOrWhiteSpace(context.MostrarWeb) ? "-" : context.MostrarWeb)
             <input type="hidden" value="@context.IdHomologacion" />
         </GridColumn>
 
-        <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" Class="bodybody-small">
+        <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" Class="cell-text cell-1 bodybody-small">
             @(string.IsNullOrWhiteSpace(context.TooltipWeb) ? "-" : context.TooltipWeb)
         </GridColumn>
 
-        <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato" Class="bodybody-small">
+        <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato" Class="cell-text cell-1 bodybody-small">
             @(string.IsNullOrWhiteSpace(context.MascaraDato) ? "-" : context.MascaraDato)
         </GridColumn>
 
-        <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato" Class="bodybody-small">
+        <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato" Class="cell-text cell-1 bodybody-small">
             @(string.IsNullOrWhiteSpace(context.SiNoHayDato) ? "-" : context.SiNoHayDato)
         </GridColumn>
 
@@ -297,7 +306,7 @@
                             @onclick="CloseModal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Está seguro que desea eliminar este registro?</p>
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
                 </div>
                 <div class="modal-footer">
                     <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>

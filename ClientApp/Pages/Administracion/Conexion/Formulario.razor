@@ -88,7 +88,7 @@
             <div class="form-group py-2">
                 <ValidationMessage For="(() => conexion.Migrar)" />
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Migración</label>
-                <Switch @bind-Value="isMigrar" Label="Seleccione una opción" style="margin-top: 2% !important;" />
+            <Switch @bind-Value="isMigrar" Label="Seleccione una opción" Class="label valign-text-middle inter-regular-normal-comet-16px" style="margin-top: 2% !important;" />
                 <div class="mt-3"><b>@(isMigrar ? "SI" : "NO")</b></div>
                 <ValidationMessage For="(() => conexion.Migrar)" />
             </div>
@@ -124,7 +124,7 @@
         </div>
     </a>
     <div class="save-button-container">
-        <Button @ref="saveButton" class="button-2" @onclick="async () => await RegistrarConexion()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
+        <Button @ref="saveButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await RegistrarConexion()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
     </div>
 </div>
 

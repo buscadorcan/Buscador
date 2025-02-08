@@ -2,6 +2,121 @@
 @layout AdminLayout
 @using SharedApp.Models.Dtos
 
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 20px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider {
+        background-color: #4CAF50;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(14px);
+        }
+
+    /* Contenedor de la tabla */
+    .table {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    /* Estilo de la fila */
+    .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 8px 0;
+    }
+
+    /* Contenedor de la lista */
+    .ads-rules-list {
+        display: flex;
+        width: 100%;
+    }
+
+    /* Estilo de celdas con ajuste automático del texto */
+    .cell {
+        flex: 1;
+        text-align: center;
+        padding: 5px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 100px; /* Ajusta el ancho mínimo para evitar deformaciones */
+        word-wrap: break-word; /* Permite que el texto largo se divida en varias líneas */
+        white-space: normal; /* Permite el salto de línea */
+        text-align: center;
+    }
+
+    /* Celdas de texto que se ajustan en varias líneas */
+    .cell-text {
+        word-break: break-word;
+        max-width: 100%;
+        text-align: center;
+        display: block;
+    }
+
+    /* Asegurar que los switches estén alineados */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 20px;
+        margin: 0 auto;
+    }
+
+    /* Botones bien alineados */
+    .cell button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 30px;
+    }
+
+    /* Evita que los botones se desplacen cuando el contenido crece */
+    .cell button,
+    .cell img {
+        flex-shrink: 0;
+    }
+
+</style>
+
 @if (IsLoading)
 {
     <div class="overlay">
@@ -11,7 +126,7 @@
         <div class="progress mt-2" style="width: 100%;">
             <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: @ProgressValue%;" aria-valuenow="@ProgressValue" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <p>Procesando migración, por favor espere...</p>
+        <p class="label valign-text-middle inter-regular-normal-comet-14px">Procesando migración, por favor espere...</p>
     </div>
 }
 
@@ -121,14 +236,24 @@
                         <div class="componente">
                             <div class="row-1 row-15">
                                 <div class="ads-rules-list">
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Host</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Puerto</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Usuario</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.BaseDatos</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.OrigenDatos</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Migrar</div></div>
-                                    <div class="landing-page"><div class="bodybody-small">@conexion.Estado</div></div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Host</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Puerto</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Usuario</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.BaseDatos</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.OrigenDatos</div></div>
+                                    <div class="cell cell-1">
+                                        <label class="switch">
+                                            <input type="checkbox" checked="@(conexion.Migrar == "S")" disabled>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <label class="switch">
+                                            <input type="checkbox" checked="@(conexion.Estado == "A")" disabled>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="cell cell-1">
                                         @if (conexion.OrigenDatos != "EXCEL")
                                         {
                                             <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(conexion.IdONA)" Size="ButtonSize.Small">
@@ -136,7 +261,7 @@
                                             </Button>
                                         }
                                     </div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1">
                                         @if (conexion.OrigenDatos != "EXCEL")
                                         {
                                             <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(conexion.IdONA)" Size="ButtonSize.Small">
@@ -144,12 +269,12 @@
                                             </Button>
                                         }
                                     </div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1">
                                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{conexion.IdONA}")" Size="ButtonSize.Small">
                                             <Icon Name="IconName.PencilSquare" />
                                         </Button>
                                     </div>
-                                    <div class="landing-page">
+                                    <div class="cell cell-1">
                                         <Button Color="ButtonColor.Danger" Outline="true" @onclick=@(() => OpenDeleteModal(conexion.IdONA)) Size="ButtonSize.Small">
                                             <Icon Name="IconName.Trash3" />
                                         </Button>
@@ -163,7 +288,7 @@
         }
         else
         {
-            <p>No hay datos disponibles.</p>
+            <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
         }
     </div>
 @*     <div class="general table">
@@ -232,7 +357,7 @@
                             @onclick="CloseModal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Está seguro que desea eliminar este registro?</p>
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
                 </div>
                 <div class="modal-footer">
                     <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>

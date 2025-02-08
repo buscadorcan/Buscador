@@ -58,18 +58,18 @@
                         }
                         else
                         {
-                            @(string.IsNullOrWhiteSpace(dato) ? "Sin datos" : dato)
+                            @(string.IsNullOrWhiteSpace(dato) ? "--" : dato)
                         }
                         
                     </ChildContent>
                 </GridColumn>
             }
-            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
+            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="Detalle del alcance" class="grid-header">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModal(context)">
                     <Icon Name="IconName.Front" />
                 </Button>
             </GridColumn>
-            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
+            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="Alcance acreditado ONA" class="grid-header">
                     <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => ShowPdfDialog(context)">
                     <Icon Name="IconName.FileTypePdf" />
                 </Button>
@@ -78,7 +78,7 @@
     }
     else
     {
-        <p>Cargando datos...</p>
+        <p class="label valign-text-middle inter-regular-normal-comet-14px">Cargando datos...</p>
     }
 
 </div>

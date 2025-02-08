@@ -97,21 +97,21 @@
                     <div class="componente">
                         <div class="row-1 row-15">
                             <div class="ads-rules-list">
-                                <div class="landing-page"><div class="bodybody-small">@ona.RazonSocial</div></div>
-                                <div class="landing-page"><div class="bodybody-small">@ona.Siglas</div></div>
-                                <div class="landing-page"><div class="bodybody-small">@ona.Ciudad</div></div>
-                                <div class="landing-page"><div class="bodybody-small">@ona.Correo</div></div>
-                                <div class="landing-page"><div class="bodybody-small">@ona.Direccion</div></div>
-                                <div class="landing-page"><div class="bodybody-small">@ona.PaginaWeb</div></div>
-                                <div class="landing-page"><div class="bodybody-small">@ona.Telefono</div></div>
-                                <div class="landing-page">
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@ona.RazonSocial</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@ona.Siglas</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@ona.Ciudad</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@ona.Correo</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@ona.Direccion</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@ona.PaginaWeb</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@ona.Telefono</div></div>
+                                <div class="cell cell-1">
                                     <Tooltip Title="Editar registro">
                                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-ona/{ona.IdONA}")" Size="ButtonSize.Small">
                                             <Icon Name="IconName.PencilSquare" />
                                         </Button>
                                     </Tooltip>
                                 </div>
-                                <div class="landing-page">
+                                <div class="cell cell-1">
                                     <Tooltip Title="Eliminar registro">
                                         <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(ona.IdONA))>
                                             <Icon Name="IconName.Trash" />
@@ -127,7 +127,7 @@
     }
     else
     {
-        <p>No hay datos disponibles.</p>
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
 
@@ -188,7 +188,7 @@
                             @onclick="CloseModal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Está seguro que desea eliminar este registro?</p>
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
                 </div>
                 <div class="modal-footer">
                     <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>

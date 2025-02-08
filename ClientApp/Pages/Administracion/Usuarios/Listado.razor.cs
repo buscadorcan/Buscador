@@ -137,7 +137,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
                     CloseModal(); // Cierra el modal
                     toastService?.CreateToastMessage(ToastType.Success, "Registro eliminado exitosamente.");
                     await LoadUsuarios(); // Actualiza la lista
-                    await grid?.RefreshDataAsync(); //resfresca la grilla
+                    //await grid?.RefreshDataAsync(); //resfresca la grilla
                 }
                 else
                 {

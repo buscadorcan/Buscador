@@ -17,18 +17,25 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         private IBusquedaService? servicio { get; set; }
         private HomologacionEsquemaDto? homologacionEsquema;
+        private fnEsquemaCabeceraDto? EsquemaCabecera;
         private List<HomologacionDto>? Columnas;
+        private List<fnEsquemaCabeceraDto>? Cabeceras;
         private List<DataEsquemaDatoBuscar>? resultados;
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
+                EsquemaCabecera = new fnEsquemaCabeceraDto();
+                Columnas = new List<HomologacionDto>();
                 esquema = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
+
                 if (servicio != null)
                 {
-                    homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
-                    Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(homologacionEsquema?.EsquemaJson ?? "[]")?.OrderBy(c => c.MostrarWebOrden).ToList();
+                    //homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
+                    EsquemaCabecera = await servicio.FnEsquemaCabeceraAsync(resultData.IdEsquemaData ?? 0);
+                    //Cabeceras = (List<fnEsquemaCabeceraDto>?)JsonConvert.DeserializeObject<List<fnEsquemaCabeceraDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
+                    Columnas = (List<HomologacionDto>?)JsonConvert.DeserializeObject<List<HomologacionDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
                 }
                 StateHasChanged();
             }
@@ -40,12 +47,21 @@ namespace ClientApp.Pages.BuscadorCan
 
         private async Task<GridDataProviderResult<DataEsquemaDatoBuscar>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataEsquemaDatoBuscar> request)
         {
-            if (resultados is null && servicio != null)
+            try
             {
-                resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.VistaPK, resultData.Texto);
-            }
+               
+                if (resultados is null && servicio != null)
+                {
+                    resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
+                }
 
-            return await Task.FromResult(request.ApplyTo(resultados ?? []));
+                return await Task.FromResult(request.ApplyTo(resultados ?? []));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+          
         }
     }
 }
