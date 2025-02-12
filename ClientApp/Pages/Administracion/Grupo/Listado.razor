@@ -1,7 +1,10 @@
 @page "/grupos"
 @layout AdminLayout
+@using OfficeOpenXml
 @using SharedApp.Models.Dtos
-
+@inject IJSRuntime JSRuntime
+@using System.IO
+@using System.Text
 
 <PageTitle>Homologación</PageTitle>
 
@@ -9,6 +12,15 @@
     <h2 class="title headlineheadline2-h2">Administación de Entidades</h2>
 </div>
 
+<div class="text-end my-3 d-flex justify-content-between">
+    <!-- Botón de Exportar -->
+    <div>
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
+            <Icon Name="IconName.FileEarmarkArrowDown" />
+            <span class="ms-2 inter-regular-normal-comet-14px">Exportar a Excel</span>
+        </Button>
+    </div>
+</div>
 <div class="tabla-1 tabla-2">
     <div class="table-heading table-1">
         <div class="table-heading-1 table-heading-11" style="width:50% !important">
@@ -37,7 +49,7 @@
     @if (listaHomologacions != null && listaHomologacions.Any())
     {
         <div class="content content-2">
-            @foreach (var homologacion in listaHomologacions)
+            @foreach (var homologacion in PaginatedItems)
             {
                 <div class="row row-15">
                     <div class="componente">
@@ -57,6 +69,18 @@
                     </div>
                 </div>
             }
+        </div>
+        <!-- Controles de paginación -->
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
+
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
         </div>
     }
     else
@@ -91,3 +115,50 @@
         <span class="text-white label valign-text-middle inter-regular-normal-comet-16px">Registro para organización lógico [No es filtro]</span>
     </Alert>
 </div>
+
+<script>
+    window.downloadExcel = (fileName, base64) => {
+        const link = document.createElement("a");
+        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+</script>
+
+@code {
+    private async Task ExportarExcel()
+    {
+        if (listaHomologacions == null || !listaHomologacions.Any())
+        {
+            return;
+        }
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Homologaciones");
+
+        // Agregar encabezados
+        worksheet.Cells[1, 1].Value = "Texto a Mostrar en la Web";
+        worksheet.Cells[1, 2].Value = "Tooltip Web";
+
+        int row = 2;
+        foreach (var homologacion in listaHomologacions)
+        {
+            worksheet.Cells[row, 1].Value = homologacion.MostrarWeb;
+            worksheet.Cells[row, 2].Value = homologacion.TooltipWeb;
+            row++;
+        }
+
+        worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+        var fileName = "Homologaciones_Export.xlsx";
+        var fileBytes = package.GetAsByteArray();
+        var fileBase64 = Convert.ToBase64String(fileBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+}

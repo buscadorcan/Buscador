@@ -70,7 +70,8 @@
                 }
             </select>
         </div>
-    <div class="col-md-6">
+
+    @* <div class="col-md-6">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
             @if (IsAdd)
             {
@@ -85,7 +86,7 @@
             }
             
         </div>
-    </div>
+    </div> *@
 
 
 @* <div class="table table-1">
@@ -199,6 +200,22 @@
         }
 </style>
 
+<div class="col-md-12">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+            @* @if (IsAdd)
+            { *@
+                @if (homologacionSelected != null)
+                {
+                <div class="text-end my-3">
+                    <div class="button-container">
+                        <Button Type="ButtonType.Link" class="button-2" To="@($"/nuevo-campos-homologacion/{homologacionSelected?.IdHomologacion}")"><div class="button-3 headingheadline4-h4">Agregar Registro</div></Button>
+                    </div>
+                </div>
+                }
+            @* } *@
+        </div>
+    </div>
+
 <div class="general table">
     <Grid Id="sortableGrid"
           @ref="grid"
@@ -301,8 +318,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" aria-label="Close"
+                    <h5 class="modal-title inter-regular-normal-comet-14px">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close inter-regular-normal-comet-14px" aria-label="Close"
                             @onclick="CloseModal"></button>
                 </div>
                 <div class="modal-body">

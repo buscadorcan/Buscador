@@ -1,7 +1,9 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
+using System.Text;
 
 namespace ClientApp.Pages.Administracion.ONA
 {
@@ -28,8 +30,40 @@ namespace ClientApp.Pages.Administracion.ONA
             {
                 listaONAs = await iONAservice.GetONAsAsync();
             }
+            // Ajusta la paginación si la lista está vacía o cambia
+            if (listaONAs.Count > 0 && CurrentPage > TotalPages)
+            {
+                CurrentPage = TotalPages;
+            }
+        }
+        //private List<LogMigracionDto> listasHevd = new();
+        private int PageSize = 10; // Cantidad de registros por página
+        private int CurrentPage = 1;
+
+        private IEnumerable<OnaDto> PaginatedItems => listaONAs
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize);
+
+        private int TotalPages => listaONAs.Count > 0 ? (int)Math.Ceiling((double)listaONAs.Count / PageSize) : 1;
+
+        private bool CanGoPrevious => CurrentPage > 1;
+        private bool CanGoNext => CurrentPage < TotalPages;
+
+        private void PreviousPage()
+        {
+            if (CanGoPrevious)
+            {
+                CurrentPage--;
+            }
         }
 
+        private void NextPage()
+        {
+            if (CanGoNext)
+            {
+                CurrentPage++;
+            }
+        }
         // Proveedor de datos para el grid
         private async Task<GridDataProviderResult<OnaDto>> ONAsDataProvider(GridDataProviderRequest<OnaDto> request)
         {
@@ -89,5 +123,6 @@ namespace ClientApp.Pages.Administracion.ONA
         {
             await LoadONAs(); // Carga la lista al iniciar el componente
         }
+
     }
 }

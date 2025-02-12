@@ -51,7 +51,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
                 //listaHomologacions = await iHomologacionService.GetHomologacionsAsync();
                 listaHomologacions = await iHomologacionService.GetHomologacionsSelectAsync(homologacionSelected.CodigoHomologacion);
             }
-
+            //IsAdd = true;
             DataLoaded?.Invoke();
 
             return await Task.FromResult(request.ApplyTo(listaHomologacions ?? []));

@@ -1,22 +1,40 @@
 @page "/onas"
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization;
+@using OfficeOpenXml
 @using SharedApp.Models.Dtos;
+@using System.Text
 @attribute [Authorize]
-
+@inject IJSRuntime JSRuntime
+@using System.IO
+@using System.Text
 
     <!-- Card Header -->
     <div class="genetal title">
         <h2 class="title headlineheadline2-h2">Administración de ONA</h2>
     </div>
-    @* <div class="text-end my-3" style="margin-right: 1%;">
-        <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-ona">Agregar Registro</Button>
-    </div> *@
-    <div class="text-end my-3">
+    
+    @* <div class="text-end my-3">
         <div class="button-container">
             <Button Type="ButtonType.Link" class="button-2" To="/nuevo-ona"><div class="button-3 headingheadline4-h4">Crear nuevo ona</div></Button>
         </div>
+    </div> *@
+<div class="text-end my-3 d-flex justify-content-between">
+    <!-- Botón de Exportar -->
+    <div>
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
+            <Icon Name="IconName.FileEarmarkArrowDown" />
+            <span class="ms-2 inter-regular-normal-comet-14px">Exportar a Excel</span>
+        </Button>
     </div>
+
+    <!-- Botón Crear Nuevo -->
+    <div class="button-container">
+        <Button Type="ButtonType.Link" class="button-2" To="/nuevo-ona">
+            <div class="button-3 headingheadline4-h4">Crear nuevo ona</div>
+        </Button>
+    </div>
+</div>
     <!-- Card Body -->
 <div class="table table-1">
     <div class="table-heading table-1">
@@ -91,7 +109,7 @@
     @if (listaONAs != null && listaONAs.Any())
     {
         <div class="content content-2">
-            @foreach (var ona in listaONAs)
+            @foreach (var ona in PaginatedItems)
             {
                 <div class="row row-15">
                     <div class="componente">
@@ -124,6 +142,20 @@
                 </div>
             }
         </div>
+
+        <!-- Controles de paginación -->
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
+
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
+        </div>
+
     }
     else
     {
@@ -183,8 +215,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" aria-label="Close"
+                    <h5 class="modal-title inter-regular-normal-comet-14px">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close inter-regular-normal-comet-14px" aria-label="Close"
                             @onclick="CloseModal"></button>
                 </div>
                 <div class="modal-body">
@@ -197,4 +229,61 @@
             </div>
         </div>
     </div>
+}
+
+<script>
+    window.downloadExcel = (fileName, base64) => {
+        const link = document.createElement("a");
+        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+</script>
+
+@code {
+    private async Task ExportarExcel()
+    {
+        if (listaONAs == null || !listaONAs.Any())
+        {
+            return;
+        }
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // 🔹 Solución: Configurar licencia
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("ONAs");
+
+        // Agregar encabezados
+        worksheet.Cells[1, 1].Value = "Razon Social";
+        worksheet.Cells[1, 2].Value = "Siglas";
+        worksheet.Cells[1, 3].Value = "Ciudad";
+        worksheet.Cells[1, 4].Value = "Correo";
+        worksheet.Cells[1, 5].Value = "Dirección";
+        worksheet.Cells[1, 6].Value = "Página Web";
+        worksheet.Cells[1, 7].Value = "Teléfono";
+
+        int row = 2;
+        foreach (var ona in listaONAs)
+        {
+            worksheet.Cells[row, 1].Value = ona.RazonSocial;
+            worksheet.Cells[row, 2].Value = ona.Siglas;
+            worksheet.Cells[row, 3].Value = ona.Ciudad;
+            worksheet.Cells[row, 4].Value = ona.Correo;
+            worksheet.Cells[row, 5].Value = ona.Direccion;
+            worksheet.Cells[row, 6].Value = ona.PaginaWeb;
+            worksheet.Cells[row, 7].Value = ona.Telefono;
+            row++;
+        }
+
+        worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente columnas
+
+        var fileName = "ONAs_Export.xlsx";
+        var fileBytes = package.GetAsByteArray();
+        var fileBase64 = Convert.ToBase64String(fileBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
 }

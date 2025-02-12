@@ -33,12 +33,6 @@
 
         </div>
 
-        @*             <div class="form-row py-2">
-        <label class="label valign-text-middle inter-regular-normal-comet-16px">Esquema Json</label>
-        <div class="col">
-        <InputText @bind-Value="Esquema.EsquemaJson" class="form-control" placeholder="Esquema Json..." />
-        </div>
-        </div> *@
         <div class="form-row py-2">
             <label class="label valign-text-middle inter-regular-normal-comet-16px">Buscar y agregar campo homologado</label>
             <div class="col">
@@ -51,6 +45,54 @@
             </div>
         </div>
 </EditForm>
+@* @if (lista != null && lista.Any())
+{
+    <div class="content content-2">
+        @foreach (var item in PaginatedItems)
+        {
+            <div class="row row-15">
+                <div class="componente">
+                    <div class="row-1 row-15">
+                        <div class="ads-rules-list">
+                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.NombreHomologado</div></div>
+                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.MostrarWeb</div></div>
+                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.TooltipWeb</div></div>
+                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.MascaraDato</div></div>
+                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.SiNoHayDato</div></div>
+
+                            <!-- Botón Eliminar -->
+                            <div class="cell cell-1">
+                                <Tooltip Title="Eliminar registro">
+                                    <Button Color="ButtonColor.Danger" Outline="true" @onclick="() => EliminarElemento(item.IdHomologacion)" Size="ButtonSize.Small">
+                                        <Icon Name="IconName.Trash3" />
+                                    </Button>
+                                </Tooltip>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Controles de paginación -->
+    <div class="pagination-container">
+        <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+            ⏪
+        </button>
+
+        <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+        <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+            ⏩
+        </button>
+    </div>
+}
+else
+{
+    <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+} *@
+
 <div class="py-2">
     <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="lista" Responsive="true" FixedHeader="true" Height="350" Id="sortableGrid">
         <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
@@ -76,24 +118,7 @@
         </GridColumn>
     </Grid>
 </div>
-@* <div class="py-2">
-    <hr style="background-color:aliceblue" />
-    <Button @ref="saveButton"
-            Color="ButtonColor.Success"
-            Type="ButtonType.Submit"
-            @onclick="async () => await GuardarEsquema()">
-        Guardar
-    </Button>
-</div> *@
 
-@* <div class="py-2 d-flex justify-content-end gap-2">
-    <Button Color="ButtonColor.Secondary" @onclick="Regresar">
-        Regresar
-    </Button>
-    <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarEsquema()">
-        Guardar
-    </Button>
-</div> *@
 <div class="py-2 d-flex justify-content-end gap-2">
     <a @onclick="Regresar">
         <div class="button">
