@@ -206,12 +206,13 @@ namespace ClientApp.Pages.BuscadorCan
 
                 var homologaciones = await iHomologacionService.GetHomologacionsAsync();
                 var idHomologacion = homologaciones.FirstOrDefault(x => x.CodigoHomologacion == "KEY_ESQ_CERT")?.IdHomologacion;
-
+               
                 if (idHomologacion == null)
                     return null;
 
                 var urlPdf = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idHomologacion)?.Data;
-                
+                Console.WriteLine("urlPDF:" + urlPdf);
+                Console.WriteLine("idHomologacion:" + idHomologacion);
                 //urlPdf = SanitizeUrl(urlPdf);
                 return urlPdf;
             }
