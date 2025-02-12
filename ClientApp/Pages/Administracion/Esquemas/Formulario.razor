@@ -45,55 +45,8 @@
             </div>
         </div>
 </EditForm>
-@* @if (lista != null && lista.Any())
-{
-    <div class="content content-2">
-        @foreach (var item in PaginatedItems)
-        {
-            <div class="row row-15">
-                <div class="componente">
-                    <div class="row-1 row-15">
-                        <div class="ads-rules-list">
-                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.NombreHomologado</div></div>
-                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.MostrarWeb</div></div>
-                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.TooltipWeb</div></div>
-                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.MascaraDato</div></div>
-                            <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@item.SiNoHayDato</div></div>
 
-                            <!-- Botón Eliminar -->
-                            <div class="cell cell-1">
-                                <Tooltip Title="Eliminar registro">
-                                    <Button Color="ButtonColor.Danger" Outline="true" @onclick="() => EliminarElemento(item.IdHomologacion)" Size="ButtonSize.Small">
-                                        <Icon Name="IconName.Trash3" />
-                                    </Button>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-
-    <!-- Controles de paginación -->
-    <div class="pagination-container">
-        <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
-            ⏪
-        </button>
-
-        <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
-
-        <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
-            ⏩
-        </button>
-    </div>
-}
-else
-{
-    <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
-} *@
-
-<div class="py-2">
+@* <div class="py-2">
     <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="lista" Responsive="true" FixedHeader="true" Height="350" Id="sortableGrid">
         <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
             @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado
@@ -117,6 +70,97 @@ else
             </Button>
         </GridColumn>
     </Grid>
+</div> *@
+<style>
+    .table-responsive {
+        width: -webkit-fill-available !important;
+    }
+</style>
+<div class="table" style="margin-top: 1% !important; ">
+    
+@*     <div class="table-heading">
+        <article class="table-heading-1 table-heading-5">
+            <div class="header-label-1">
+                <div class="label-heading headingheadline5-h5">Vista Código Homologado</div>
+            </div>
+        </article>
+        <article class="table-heading-2 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
+            </div>
+        </article>
+        <article class="table-heading-3 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Tooltip Web</div>
+            </div>
+        </article>
+        <article class="table-heading-4 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Tipo de Dato</div>
+            </div>
+        </article>
+        <article class="table-heading-5 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
+            </div>
+        </article>
+        <article class="table-heading-6 table-heading-5">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">Eliminar</div>
+            </div>
+        </article>
+    </div>
+ *@
+    <div class="py-2 content">
+        <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped ads-rules-list" Data="lista" Responsive="true" FixedHeader="true" Height="350" Id="sortableGrid">
+            <GridColumn TItem="HomologacionDto" Class="label-heading headingheadline5-h5" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
+                <div class="cell migration-id bodybody-small">
+                    @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado
+                    <input type="hidden" value="@context.IdHomologacion" />
+                </div>
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" Class="label-heading headingheadline5-h5" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
+                <div class="cell cell-1 esquema-vista bodybody-small">
+                    @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb
+                </div>
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" Class="label-heading headingheadline5-h5" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
+                <div class="cell cell-1 status bodybody-small">
+                    @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb
+                </div>
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" Class="label-heading headingheadline5-h5" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
+                <div class="cell cell-1 landing-page-3 file-name bodybody-small">
+                    @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato
+                </div>
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" Class="label-heading headingheadline5-h5" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
+                <div class="cell cell-1 landing-page-3 file-name bodybody-small">
+                    @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato
+                </div>
+            </GridColumn>
+            <GridColumn TItem="HomologacionDto" Class="label-heading headingheadline5-h5" HeaderText="Eliminar">
+                <div class="cell cell-1">
+                    <Button Color="ButtonColor.Danger" Outline="true" @onclick="() => EliminarElemento(context.IdHomologacion)" Size="ButtonSize.Small">
+                        <Icon Name="IconName.Trash3" />
+                    </Button>
+                </div>
+            </GridColumn>
+        </Grid>
+    </div>
+
+    <!-- Controles de paginación -->
+    @* <div class="pagination-container">
+        <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+            ⏪
+        </button>
+
+        <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+        <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+            ⏩
+        </button>
+    </div> *@
 </div>
 
 <div class="py-2 d-flex justify-content-end gap-2">

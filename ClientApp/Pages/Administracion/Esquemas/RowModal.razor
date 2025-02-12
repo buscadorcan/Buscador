@@ -3,32 +3,9 @@
 @using OfficeOpenXml
 @using System.IO
 @using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
-@* <div class="card">
-    <div class="card-body">
-        <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="columnas" Responsive="true" FixedHeader="true" Height="450" Id="sortableGrid">
-            <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado
-                <input type="hidden" value="@context.IdHomologacion" />
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Mostrar" PropertyName="TooltipWeb">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato
-            </GridColumn>
-        </Grid>
-    </div>
-</div> *@
 <style>
     .modal-title {
     align-self: stretch !important;
@@ -41,16 +18,78 @@
     font-family: var(--font-family-inter-semibold) !important;
 }
 </style>
+<style>
+    .btnExp {
+        font-family: var(--font-family-inter-regular) !important;
+        font-size: var(--font-size-m) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 20px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider {
+        background-color: #4CAF50;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(14px);
+        }
+
+</style>
 
 <div class="text-end my-3 d-flex justify-content-between">
-    <!-- Botón de Exportar -->
-    <div>
-        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
+    <!-- Grupo de botones de exportación -->
+    <div class="d-flex gap-2">
+        <!-- Botón Exportar a Excel -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
             <Icon Name="IconName.FileEarmarkArrowDown" />
-            <span class="ms-2 inter-regular-normal-comet-14px">Exportar a Excel</span>
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+
+        <!-- Botón Exportar a PDF -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Icon Name="IconName.FileEarmarkPdf" />
+            <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>
     </div>
 </div>
+
 <div class="table table-1">
     <div class="table-heading table-1">
         <div class="table-heading-1 table-heading-10">
@@ -97,7 +136,15 @@
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar</div></div>
+
+                                <!-- Switch de encendido/apagado para "Mostrar" -->
+                                <div class="cell cell-1">
+                                    <label class="switch">
+                                        <input type="checkbox" checked="@(listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar == "S")" />
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato</div></div>
                             </div>
@@ -126,6 +173,14 @@
 </div>
 
 <script>
+    window.downloadFile = (fileName, fileType, base64) => {
+        const link = document.createElement("a");
+        link.href = `data:${fileType};base64,` + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     window.downloadExcel = (fileName, base64) => {
         const link = document.createElement("a");
         link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
@@ -177,5 +232,46 @@
         var fileBase64 = Convert.ToBase64String(fileBytes);
 
         await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+    private async Task ExportarPDF()
+    {
+        if (columnas == null || !columnas.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(6) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Vista Código Homologado", font));
+        table.AddCell(new Phrase("Texto a Mostrar en la Web", font));
+        table.AddCell(new Phrase("Tooltip Web", font));
+        table.AddCell(new Phrase("Mostrar", font));
+        table.AddCell(new Phrase("Tipo de Dato", font));
+        table.AddCell(new Phrase("Si No Hay Dato", font));
+
+        foreach (var context in columnas)
+        {
+            var homologacion = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion);
+            table.AddCell(homologacion?.NombreHomologado ?? "-");
+            table.AddCell(homologacion?.MostrarWeb ?? "-");
+            table.AddCell(homologacion?.TooltipWeb ?? "-");
+            table.AddCell(homologacion?.Mostrar ?? "-");
+            table.AddCell(homologacion?.MascaraDato ?? "-");
+            table.AddCell(homologacion?.SiNoHayDato ?? "-");
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Homologaciones_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
     }
 }

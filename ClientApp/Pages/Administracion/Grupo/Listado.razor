@@ -5,6 +5,8 @@
 @inject IJSRuntime JSRuntime
 @using System.IO
 @using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
 <PageTitle>Homologación</PageTitle>
 
@@ -13,14 +15,22 @@
 </div>
 
 <div class="text-end my-3 d-flex justify-content-between">
-    <!-- Botón de Exportar -->
-    <div>
-        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
+    <!-- Grupo de botones de exportación -->
+    <div class="d-flex gap-2">
+        <!-- Botón Exportar a Excel -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
             <Icon Name="IconName.FileEarmarkArrowDown" />
-            <span class="ms-2 inter-regular-normal-comet-14px">Exportar a Excel</span>
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+
+        <!-- Botón Exportar a PDF -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Icon Name="IconName.FileEarmarkPdf" />
+            <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>
     </div>
 </div>
+
 <div class="tabla-1 tabla-2">
     <div class="table-heading table-1">
         <div class="table-heading-1 table-heading-11" style="width:50% !important">
@@ -88,26 +98,14 @@
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
-
-    @* <div class="general table">
-        <Grid @ref="grid" TItem="HomologacionDto" class="table table-hover table-bordered table-striped" DataProvider="HomologacionDataProvider" Responsive="true" Id="sortableGrid">
-            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                @context.MostrarWeb
-                <input type="hidden" value="@context.IdHomologacion" />
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                @context.TooltipWeb
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Opciones" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                <Tooltip Title="Editar registro">
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{context.IdHomologacion}")" Size="ButtonSize.Small">
-                        <Icon Name="IconName.PencilSquare" />
-                    </Button>
-                </Tooltip>
-            </GridColumn>
-        </Grid>
-    </div> *@
-
+<style>
+    .btnExp {
+        font-family: var(--font-family-inter-regular) !important;
+        font-size: var(--font-size-m) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+</style>
 
 <div class="form-row py-2">
     <Alert Color="AlertColor.Secondary" Dismissable="false">
@@ -117,6 +115,14 @@
 </div>
 
 <script>
+    window.downloadFile = (fileName, fileType, base64) => {
+        const link = document.createElement("a");
+        link.href = `data:${fileType};base64,` + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     window.downloadExcel = (fileName, base64) => {
         const link = document.createElement("a");
         link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
@@ -160,5 +166,37 @@
         var fileBase64 = Convert.ToBase64String(fileBytes);
 
         await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+    private async Task ExportarPDF()
+    {
+        if (listaHomologacions == null || !listaHomologacions.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(2) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Texto a Mostrar en la Web", font));
+        table.AddCell(new Phrase("Tooltip Web", font));
+
+        foreach (var homologacion in listaHomologacions)
+        {
+            table.AddCell(homologacion.MostrarWeb);
+            table.AddCell(homologacion.TooltipWeb);
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Homologaciones_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
     }
 }

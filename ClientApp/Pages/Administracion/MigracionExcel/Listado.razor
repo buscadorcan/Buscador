@@ -5,99 +5,8 @@
 @using OfficeOpenXml
 @using System.IO
 @using System.Text
-@* <PageTitle>Migraciones desde excel</PageTitle>
-
-<h1 class="title headlineheadline2-h2">Migración Excel</h1>
-
-<header class="header">
-    <div class="button" style="background-color: var(--amber) !important;">
-        <img class="add-24px" src="admin/img/add-24px.svg" alt="add-24px">
-        <NavLink class="button-1 headingheadline5-h5" href="/nueva-migarcion-excel" style="color:black">Importar Excel</NavLink>
-    </div>
-</header>
-
-<div class="table" style="margin-top: 1% !important;">
-    <div class="table-heading">
-        <article class="table-heading-1 table-heading-5">
-            <div class="header-label-1">
-                <div class="label-heading headingheadline5-h5">Migración</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt.svg" alt="arrow_downward_alt">
-                </div>
-            </div>
-        </article>
-        <article class="table-heading-2 table-heading-5">
-            <div class="header-label">
-                <div class="label-heading headingheadline5-h5">EsquemaVista</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
-                </div>
-            </div>
-        </article>
-        <article class="table-heading-3 table-heading-5">
-            <div class="header-label">
-                <div class="label-heading headingheadline5-h5">Estado</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
-                </div>
-            </div>
-        </article>
-        <article class="table-heading-4 table-heading-5">
-            <div class="header-label">
-                <div class="label-heading headingheadline5-h5">Nombre archivo</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
-                </div>
-            </div>
-        </article>
-        <article class="table-heading-5 table-heading-5">
-            <div class="header-label">
-                <div class="label-heading headingheadline5-h5">Error</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
-                </div>
-            </div>
-        </article>
-    </div>
-    @if (listasHevd != null && listasHevd.Any())
-    {
-        <div class="content">
-            @foreach (var item in listasHevd)
-            {
-                <div class="row">
-                    <div class="componente">
-                        <div class="row-1 row-12">
-                            <div class="ads-rules-list">
-                                <div class="cell">
-                                    <div class="migration-id bodybody-small">@item.IdLogMigracion</div>
-                                </div>
-                                <div class="cell cell-1">
-                                    <div class="esquema-vista bodybody-small">@item.EsquemaVista</div>
-                                </div>
-                                <div class="cell cell-1">
-                                    <div class="status bodybody-small">@item.Estado</div>
-                                </div>
-                                <div class="cell cell-1 landing-page-3">
-                                    <div class="file-name bodybody-small">@item.ExcelFileName</div>
-                                </div>
-                                <div class="cell cell-1 landing-page-3">
-                                    <p class="error-message bodybody-small">
-                                        @item.Observacion
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
-    }
-
-</div> *@
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
 <PageTitle>Migraciones desde Excel</PageTitle>
 
@@ -111,14 +20,22 @@
 </header>
 
 <div class="text-end my-3 d-flex justify-content-between">
-    <!-- Botón de Exportar -->
-    <div>
-        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
+    <!-- Grupo de botones de exportación -->
+    <div class="d-flex gap-2">
+        <!-- Botón Exportar a Excel -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
             <Icon Name="IconName.FileEarmarkArrowDown" />
-            <span class="ms-2 inter-regular-normal-comet-14px">Exportar a Excel</span>
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+
+        <!-- Botón Exportar a PDF -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Icon Name="IconName.FileEarmarkPdf" />
+            <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>
     </div>
 </div>
+
 <div class="table" style="margin-top: 1% !important;">
     <div class="table-heading">
         <article class="table-heading-1 table-heading-5">
@@ -200,8 +117,23 @@
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
-
+<style>
+    .btnExp {
+        font-family: var(--font-family-inter-regular) !important;
+        font-size: var(--font-size-m) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+</style>
 <script>
+    window.downloadFile = (fileName, fileType, base64) => {
+        const link = document.createElement("a");
+        link.href = `data:${fileType};base64,` + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     window.downloadExcel = (fileName, base64) => {
         const link = document.createElement("a");
         link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
@@ -251,5 +183,43 @@
         var fileBase64 = Convert.ToBase64String(fileBytes);
 
         await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+    private async Task ExportarPDF()
+    {
+        if (listasHevd == null || !listasHevd.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(5) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Migración", font));
+        table.AddCell(new Phrase("EsquemaVista", font));
+        table.AddCell(new Phrase("Estado", font));
+        table.AddCell(new Phrase("Nombre archivo", font));
+        table.AddCell(new Phrase("Error", font));
+
+        foreach (var item in listasHevd)
+        {
+            table.AddCell(item.IdLogMigracion.ToString());
+            table.AddCell(item.EsquemaVista);
+            table.AddCell(item.Estado);
+            table.AddCell(item.ExcelFileName);
+            table.AddCell(item.Observacion ?? "-");
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Migraciones_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
     }
 }

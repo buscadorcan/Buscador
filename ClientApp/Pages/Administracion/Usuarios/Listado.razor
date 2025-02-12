@@ -10,6 +10,8 @@
 @inject IJSRuntime JSRuntime
 @using System.IO
 @using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
 <style>
     .striped-table tbody tr:nth-child(odd) {
@@ -165,7 +167,14 @@
     }
 
 </style>
-
+<style>
+    .btnExp {
+        font-family: var(--font-family-inter-regular) !important;
+        font-size: var(--font-size-m) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+</style>
 <PageTitle>Usuarios</PageTitle>
 
     <!-- Card Header -->
@@ -174,14 +183,21 @@
     </div>
 
     <!-- Botón Nuevo -->
-    @if (!isRolRead)
-    {
+@if (!isRolRead)
+{
     <div class="text-end my-3 d-flex justify-content-between">
-        <!-- Botón de Exportar -->
-        <div>
-            <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
+        <!-- Grupo de botones de exportación -->
+        <div class="d-flex gap-2">
+            <!-- Botón Exportar a Excel -->
+            <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
                 <Icon Name="IconName.FileEarmarkArrowDown" />
-                <span class="ms-2 inter-regular-normal-comet-14px">Exportar a Excel</span>
+                <span class="ms-2 btnExp">Exportar a Excel</span>
+            </Button>
+
+            <!-- Botón Exportar a PDF -->
+            <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+                <Icon Name="IconName.FileEarmarkPdf" />
+                <span class="ms-2 btnExp">Exportar a PDF</span>
             </Button>
         </div>
 
@@ -192,13 +208,7 @@
             </Button>
         </div>
     </div>
-
-        @* <div class="text-end my-3">
-                <div class="button-container">
-                    <Button Type="ButtonType.Link" class="button-2" To="/nuevo-usuario"><div class="button-3 headingheadline4-h4">Crear nuevo usuario</div></Button>
-                </div>
-        </div> *@
-    }
+}
     <!-- Card Body -->
     <div class="table table-1">
         <div class="table-heading table-1">
@@ -332,75 +342,16 @@
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
         }
     </div>
-    @*     <div class="">
-        <div class="general table">
-            <Grid TItem="UsuarioDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="UsuariosDataProvider" @ref="grid" Responsive="true">
-                <GridColumn TItem="UsuarioDto" HeaderText="Nombre" PropertyName="Nombre">
-                    @context.Nombre
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Apellido" PropertyName="Apellido">
-                    @context.Apellido
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Teléfono" PropertyName="Telefono">
-                    @context.Telefono
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Email" PropertyName="Email">
-                    @context.Email
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Rol" PropertyName="IdHomologacionRol">
-                    @context.Rol
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Razón Social" PropertyName="idOna">
-                    @context.RazonSocial
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
-                    @context.Estado
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Opciones">
-                    <!-- Botón Editar -->
-                    <Tooltip Title="Editar registro">
-                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
-                                @onclick=@(() => EditarUsuario(context))>
-                            <Icon Name="IconName.PencilSquare" />
-                        </Button>
-                    </Tooltip>
-
-                    <!-- Botón Eliminar -->
-                    <Tooltip Title="Eliminar registro">
-                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
-                                Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdUsuario))>
-                            <Icon Name="IconName.Trash" />
-                        </Button>
-                    </Tooltip>
-                </GridColumn>
-            </Grid>
-        </div>
-    </div>
- *@
-
- @if (showModal)
-{
-    <div class="modal show d-block" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title inter-regular-normal-comet-14px">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close inter-regular-normal-comet-14px" aria-label="Close"
-                            @onclick="CloseModal"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
-                </div>
-                <div class="modal-footer">
-                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
-                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
 
 <script>
+    window.downloadFile = (fileName, fileType, base64) => {
+        const link = document.createElement("a");
+        link.href = `data:${fileType};base64,` + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     window.downloadExcel = (fileName, base64) => {
         const link = document.createElement("a");
         link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
@@ -454,4 +405,67 @@
 
         await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
     }
+    private async Task ExportarPDF()
+    {
+        if (listaUsuarios == null || !listaUsuarios.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(7) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Nombre", font));
+        table.AddCell(new Phrase("Apellido", font));
+        table.AddCell(new Phrase("Teléfono", font));
+        table.AddCell(new Phrase("Email", font));
+        table.AddCell(new Phrase("Rol", font));
+        table.AddCell(new Phrase("Razón Social", font));
+        table.AddCell(new Phrase("Estado", font));
+
+        foreach (var usuario in listaUsuarios)
+        {
+            table.AddCell(usuario.Nombre);
+            table.AddCell(usuario.Apellido);
+            table.AddCell(usuario.Telefono);
+            table.AddCell(usuario.Email);
+            table.AddCell(usuario.Rol);
+            table.AddCell(usuario.RazonSocial);
+            table.AddCell(usuario.Estado == "A" ? "Activo" : "Inactivo");
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Usuarios_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
+    }
+}
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title inter-regular-normal-comet-14px">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close inter-regular-normal-comet-14px" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
 }

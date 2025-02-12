@@ -7,24 +7,50 @@
 @attribute [Authorize]
 @inject IJSRuntime JSRuntime
 @using System.IO
-@using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
     <!-- Card Header -->
     <div class="genetal title">
         <h2 class="title headlineheadline2-h2">Administración de ONA</h2>
     </div>
     
-    @* <div class="text-end my-3">
-        <div class="button-container">
-            <Button Type="ButtonType.Link" class="button-2" To="/nuevo-ona"><div class="button-3 headingheadline4-h4">Crear nuevo ona</div></Button>
-        </div>
-    </div> *@
-<div class="text-end my-3 d-flex justify-content-between">
+@* <div class="text-end my-3 d-flex justify-content-between">
     <!-- Botón de Exportar -->
     <div>
         <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
             <Icon Name="IconName.FileEarmarkArrowDown" />
-            <span class="ms-2 inter-regular-normal-comet-14px">Exportar a Excel</span>
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+    </div>
+
+    <!-- Botón Crear Nuevo -->
+    <div class="button-container">
+        <Button Type="ButtonType.Link" class="button-2" To="/nuevo-ona">
+            <div class="button-3 headingheadline4-h4">Crear nuevo ona</div>
+        </Button>
+    </div>
+</div> *@
+<style>
+    .btnExp {
+        font-family: var(--font-family-inter-regular) !important;
+        font-size: var(--font-size-m) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+</style>
+<div class="text-end my-3 d-flex justify-content-between">
+    <div>
+        <!-- Botón Exportar a Excel -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
+            <Icon Name="IconName.FileEarmarkArrowDown" />
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+
+        <!-- Botón Exportar a PDF -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Icon Name="IconName.FileEarmarkPdf" />
+            <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>
     </div>
 
@@ -40,7 +66,7 @@
     <div class="table-heading table-1">
         <div class="table-heading-1 table-heading-10">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Razon Social</div>
+                <div class="label-heading headingheadline5-h5">Razón Social</div>
                 <div class="frame-1000003808">
                     <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
                 </div>
@@ -163,75 +189,17 @@
     }
 </div>
 
-@*     <div class="">
-        <div class="general table">
-            <Grid TItem="OnaDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="ONAsDataProvider" @ref="grid" Responsive="true">
-                <GridColumn TItem="OnaDto" HeaderText="Razon Social" PropertyName="RazonSocial">
-                    @context.RazonSocial
-                </GridColumn>
-                <GridColumn TItem="OnaDto" HeaderText="Siglas" PropertyName="Siglas">
-                    @context.Siglas
-                </GridColumn>
-                <GridColumn TItem="OnaDto" HeaderText="Ciudad" PropertyName="Ciudad">
-                    @context.Ciudad
-                </GridColumn>
-                <GridColumn TItem="OnaDto" HeaderText="Correo" PropertyName="Correo">
-                    @context.Correo
-                </GridColumn>
-                <GridColumn TItem="OnaDto" HeaderText="Dirección" PropertyName="Direccion">
-                    @context.Direccion
-                </GridColumn>
-                <GridColumn TItem="OnaDto" HeaderText="Página Web" PropertyName="PaginaWeb">
-                    @context.PaginaWeb
-                </GridColumn>
-                <GridColumn TItem="OnaDto" HeaderText="Teléfono" PropertyName="Telefono">
-                    @context.Telefono
-                </GridColumn>
-                <GridColumn TItem="OnaDto" HeaderText="Opciones">
-                    <!-- Botón Editar -->
-                    <Tooltip Title="Editar registro">
-                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true"
-                                To="@($"/editar-ona/{context.IdONA}")" Size="ButtonSize.Small">
-                            <Icon Name="IconName.PencilSquare" />
-                        </Button>
-                    </Tooltip>
-               
-                    <!-- Botón Eliminar -->
-                    <Tooltip Title="Eliminar registro">
-                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true"
-                                Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdONA))>
-                            <Icon Name="IconName.Trash" />
-                        </Button>
-                    </Tooltip>                  
-                </GridColumn>
-            </Grid>
-        </div>
-    </div>
- *@   
-
- @if (showModal)
-{
-    <div class="modal show d-block" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title inter-regular-normal-comet-14px">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close inter-regular-normal-comet-14px" aria-label="Close"
-                            @onclick="CloseModal"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
-                </div>
-                <div class="modal-footer">
-                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
-                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
 
 <script>
+
+    window.downloadFile = (fileName, fileType, base64) => {
+        const link = document.createElement("a");
+        link.href = `data:${fileType};base64,` + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     window.downloadExcel = (fileName, base64) => {
         const link = document.createElement("a");
         link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
@@ -240,10 +208,10 @@
         link.click();
         document.body.removeChild(link);
     };
-
 </script>
 
 @code {
+
     private async Task ExportarExcel()
     {
         if (listaONAs == null || !listaONAs.Any())
@@ -257,7 +225,7 @@
         var worksheet = package.Workbook.Worksheets.Add("ONAs");
 
         // Agregar encabezados
-        worksheet.Cells[1, 1].Value = "Razon Social";
+        worksheet.Cells[1, 1].Value = "Razón Social";
         worksheet.Cells[1, 2].Value = "Siglas";
         worksheet.Cells[1, 3].Value = "Ciudad";
         worksheet.Cells[1, 4].Value = "Correo";
@@ -286,4 +254,69 @@
 
         await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
     }
+
+    private async Task ExportarPDF()
+    {
+        if (listaONAs == null || !listaONAs.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(7) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Razón Social", font));
+        table.AddCell(new Phrase("Siglas", font));
+        table.AddCell(new Phrase("Ciudad", font));
+        table.AddCell(new Phrase("Correo", font));
+        table.AddCell(new Phrase("Dirección", font));
+        table.AddCell(new Phrase("Página Web", font));
+        table.AddCell(new Phrase("Teléfono", font));
+
+        foreach (var ona in listaONAs)
+        {
+            table.AddCell(ona.RazonSocial);
+            table.AddCell(ona.Siglas);
+            table.AddCell(ona.Ciudad);
+            table.AddCell(ona.Correo);
+            table.AddCell(ona.Direccion);
+            table.AddCell(ona.PaginaWeb);
+            table.AddCell(ona.Telefono);
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "ONAs_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
+    }
+}
+
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title inter-regular-normal-comet-14px">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close inter-regular-normal-comet-14px" aria-label="Close"
+                            @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
+                </div>
+            </div>
+        </div>
+    </div>
 }

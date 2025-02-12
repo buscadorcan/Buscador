@@ -43,33 +43,33 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private List<HomologacionDto>? listaVwHomologacion;
         private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
 
-        private int PageSize = 10; // Cantidad de registros por página
-        private int CurrentPage = 1;
+        //private int PageSize = 10; // Cantidad de registros por página
+        //private int CurrentPage = 1;
 
-        private IEnumerable<HomologacionDto> PaginatedItems => listaVwHomologacion
-            .Skip((CurrentPage - 1) * PageSize)
-            .Take(PageSize);
+        //private IEnumerable<HomologacionDto> PaginatedItems => lista
+        //    .Skip((CurrentPage - 1) * PageSize)
+        //    .Take(PageSize);
 
-        private int TotalPages => listaVwHomologacion.Count > 0 ? (int)Math.Ceiling((double)listaVwHomologacion.Count / PageSize) : 1;
+        //private int TotalPages => listaVwHomologacion.Count > 0 ? (int)Math.Ceiling((double)listaVwHomologacion.Count / PageSize) : 1;
 
-        private bool CanGoPrevious => CurrentPage > 1;
-        private bool CanGoNext => CurrentPage < TotalPages;
+        //private bool CanGoPrevious => CurrentPage > 1;
+        //private bool CanGoNext => CurrentPage < TotalPages;
 
-        private void PreviousPage()
-        {
-            if (CanGoPrevious)
-            {
-                CurrentPage--;
-            }
-        }
+        //private void PreviousPage()
+        //{
+        //    if (CanGoPrevious)
+        //    {
+        //        CurrentPage--;
+        //    }
+        //}
 
-        private void NextPage()
-        {
-            if (CanGoNext)
-            {
-                CurrentPage++;
-            }
-        }
+        //private void NextPage()
+        //{
+        //    if (CanGoNext)
+        //    {
+        //        CurrentPage++;
+        //    }
+        //}
         protected override async Task OnInitializedAsync()
         {
             if (Esquema != null)
