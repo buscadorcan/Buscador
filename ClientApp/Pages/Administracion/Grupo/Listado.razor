@@ -1,12 +1,34 @@
 @page "/grupos"
 @layout AdminLayout
+@using OfficeOpenXml
 @using SharedApp.Models.Dtos
-
+@inject IJSRuntime JSRuntime
+@using System.IO
+@using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
 <PageTitle>Homologación</PageTitle>
 
 <div class="general title">
     <h2 class="title headlineheadline2-h2">Administación de Entidades</h2>
+</div>
+
+<div class="text-end my-3 d-flex justify-content-between">
+    <!-- Grupo de botones de exportación -->
+    <div class="d-flex gap-2">
+        <!-- Botón Exportar a Excel -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+            <Icon Name="IconName.FileEarmarkArrowDown" />
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+
+        <!-- Botón Exportar a PDF -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Icon Name="IconName.FileEarmarkPdf" />
+            <span class="ms-2 btnExp">Exportar a PDF</span>
+        </Button>
+    </div>
 </div>
 
 <div class="tabla-1 tabla-2">
@@ -37,7 +59,7 @@
     @if (listaHomologacions != null && listaHomologacions.Any())
     {
         <div class="content content-2">
-            @foreach (var homologacion in listaHomologacions)
+            @foreach (var homologacion in PaginatedItems)
             {
                 <div class="row row-15">
                     <div class="componente">
@@ -58,32 +80,32 @@
                 </div>
             }
         </div>
+        <!-- Controles de paginación -->
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
+
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
+        </div>
     }
     else
     {
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
-
-    @* <div class="general table">
-        <Grid @ref="grid" TItem="HomologacionDto" class="table table-hover table-bordered table-striped" DataProvider="HomologacionDataProvider" Responsive="true" Id="sortableGrid">
-            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                @context.MostrarWeb
-                <input type="hidden" value="@context.IdHomologacion" />
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                @context.TooltipWeb
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Opciones" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                <Tooltip Title="Editar registro">
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{context.IdHomologacion}")" Size="ButtonSize.Small">
-                        <Icon Name="IconName.PencilSquare" />
-                    </Button>
-                </Tooltip>
-            </GridColumn>
-        </Grid>
-    </div> *@
-
+<style>
+    .btnExp {
+        font-family: var(--font-family-inter-regular) !important;
+        font-size: var(--font-size-m) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+</style>
 
 <div class="form-row py-2">
     <Alert Color="AlertColor.Secondary" Dismissable="false">
@@ -91,3 +113,90 @@
         <span class="text-white label valign-text-middle inter-regular-normal-comet-16px">Registro para organización lógico [No es filtro]</span>
     </Alert>
 </div>
+
+<script>
+    window.downloadFile = (fileName, fileType, base64) => {
+        const link = document.createElement("a");
+        link.href = `data:${fileType};base64,` + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+    window.downloadExcel = (fileName, base64) => {
+        const link = document.createElement("a");
+        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+</script>
+
+@code {
+    private async Task ExportarExcel()
+    {
+        if (listaHomologacions == null || !listaHomologacions.Any())
+        {
+            return;
+        }
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Homologaciones");
+
+        // Agregar encabezados
+        worksheet.Cells[1, 1].Value = "Texto a Mostrar en la Web";
+        worksheet.Cells[1, 2].Value = "Tooltip Web";
+
+        int row = 2;
+        foreach (var homologacion in listaHomologacions)
+        {
+            worksheet.Cells[row, 1].Value = homologacion.MostrarWeb;
+            worksheet.Cells[row, 2].Value = homologacion.TooltipWeb;
+            row++;
+        }
+
+        worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+        var fileName = "Homologaciones_Export.xlsx";
+        var fileBytes = package.GetAsByteArray();
+        var fileBase64 = Convert.ToBase64String(fileBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+    private async Task ExportarPDF()
+    {
+        if (listaHomologacions == null || !listaHomologacions.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(2) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Texto a Mostrar en la Web", font));
+        table.AddCell(new Phrase("Tooltip Web", font));
+
+        foreach (var homologacion in listaHomologacions)
+        {
+            table.AddCell(homologacion.MostrarWeb);
+            table.AddCell(homologacion.TooltipWeb);
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Homologaciones_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
+    }
+}

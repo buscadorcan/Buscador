@@ -16,24 +16,55 @@ namespace ClientApp.Pages.Administracion.Grupo
         [Inject]
         private IHomologacionService? iHomologacionService { get; set; }
         public event Action? DataLoaded;
-        [Inject]
-        protected IJSRuntime? JSRuntime { get; set; }
+        //[Inject]
+        //protected IJSRuntime? JSRuntime { get; set; }
+        private int PageSize = 10; // Cantidad de registros por página
+        private int CurrentPage = 1;
+
+        private IEnumerable<HomologacionDto> PaginatedItems => listaHomologacions
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize);
+
+        private int TotalPages => listaHomologacions.Count > 0 ? (int)Math.Ceiling((double)listaHomologacions.Count / PageSize) : 1;
+
+        private bool CanGoPrevious => CurrentPage > 1;
+        private bool CanGoNext => CurrentPage < TotalPages;
+
+        private void PreviousPage()
+        {
+            if (CanGoPrevious)
+            {
+                CurrentPage--;
+            }
+        }
+
+        private void NextPage()
+        {
+            if (CanGoNext)
+            {
+                CurrentPage++;
+            }
+        }
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
             {
                 listaHomologacions = await iCatalogosService.GetHomologacionAsync<List<HomologacionDto>>("grupos");
             }
-            
-
-            DataLoaded += async () =>
+            // Ajusta la paginación si la lista está vacía o cambia
+            if (listaHomologacions.Count > 0 && CurrentPage > TotalPages)
             {
-                if (listaHomologacions != null && JSRuntime != null)
-                {
-                    await Task.Delay(2000);
-                    await JSRuntime.InvokeVoidAsync("initSortable", DotNetObjectReference.Create(this));
-                }
-            };
+                CurrentPage = TotalPages;
+            }
+
+            //DataLoaded += async () =>
+            //{
+            //    if (listaHomologacions != null && JSRuntime != null)
+            //    {
+            //        await Task.Delay(2000);
+            //        await JSRuntime.InvokeVoidAsync("initSortable", DotNetObjectReference.Create(this));
+            //    }
+            //};
         }
         private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {

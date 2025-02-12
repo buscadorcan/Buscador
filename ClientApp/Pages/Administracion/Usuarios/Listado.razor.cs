@@ -33,6 +33,33 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private int? selectedIdUsuario;    // Almacena el ID del usuario seleccionado
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        private int PageSize = 10; // Cantidad de registros por página
+        private int CurrentPage = 1;
+
+        private IEnumerable<UsuarioDto> PaginatedItems => listaUsuarios
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize);
+
+        private int TotalPages => listaUsuarios.Count > 0 ? (int)Math.Ceiling((double)listaUsuarios.Count / PageSize) : 1;
+
+        private bool CanGoPrevious => CurrentPage > 1;
+        private bool CanGoNext => CurrentPage < TotalPages;
+
+        private void PreviousPage()
+        {
+            if (CanGoPrevious)
+            {
+                CurrentPage--;
+            }
+        }
+
+        private void NextPage()
+        {
+            if (CanGoNext)
+            {
+                CurrentPage++;
+            }
+        }
         protected override async Task OnInitializedAsync()
         {
 
@@ -48,6 +75,12 @@ namespace ClientApp.Pages.Administracion.Usuarios
             var onaRelacionado = listaOna.FirstOrDefault(ona => ona.IdONA == onaPais);
  
             isRolRead = rolRelacionado == "KEY_USER_READ";
+
+            // Ajusta la paginación si la lista está vacía o cambia
+            if (listaUsuarios.Count > 0 && CurrentPage > TotalPages)
+            {
+                CurrentPage = TotalPages;
+            }
         }
         private async void EditarUsuario(UsuarioDto usuario)
         {
