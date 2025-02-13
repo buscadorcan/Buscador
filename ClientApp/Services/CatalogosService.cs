@@ -19,6 +19,7 @@ namespace ClientApp.Services
         }
         public async Task<T?> GetHomologacionAsync<T>(string endpoint)
         {
+            var url = _urlBaseApi;
             return await GetApiResponseAsync<T>($"{endpoint}");
         }
         public async Task<T?> GetFiltroDetalleAsync<T>(string endpoint, string CodigoHomologacion)

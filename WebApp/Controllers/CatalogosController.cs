@@ -33,6 +33,10 @@ namespace WebApp.Controllers
         {
             try
             {
+                if (_vhRepo == null)
+                {
+                    return StatusCode(500, new { mensaje = "El repositorio está NULL" });
+                }
                 return Ok(new RespuestasAPI<List<VwGrillaDto>>
                 {
                     Result = _vhRepo.ObtenerVwGrilla().Select(item => _mapper.Map<VwGrillaDto>(item)).ToList()
@@ -40,7 +44,8 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(ObtenerVwGrilla));
+                //return HandleException(e, nameof(ObtenerVwGrilla));
+                return StatusCode(500, new { mensaje = "Error interno", detalle = e.Message });
             }
         }
 
