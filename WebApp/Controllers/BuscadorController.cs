@@ -129,5 +129,27 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnPredictWords));
             }
         }
+
+        [HttpPost("addEventTracking")]
+        public IActionResult AddEventTracking([FromBody] EventTrackingDto eventTracking)
+        {
+            try
+            {
+                if (eventTracking == null)
+                    return BadRequest("El objeto EventTracking no puede ser nulo.");
+
+                _vhRepo.AddEventTracking(eventTracking);
+
+                return Ok(new RespuestasAPI<string>
+                {
+                    Result = "Evento registrado con éxito."
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(AddEventTracking));
+            }
+        }
+
     }
 }

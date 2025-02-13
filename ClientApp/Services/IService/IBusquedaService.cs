@@ -11,5 +11,6 @@ namespace ClientApp.Services.IService {
         Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idEsquemaData, string TextoBuscar);
         Task<List<FnPredictWordsDto>> FnPredictWords(string word);
         Task<fnEsquemaCabeceraDto?> FnEsquemaCabeceraAsync(int IdEsquemadata);
+        Task<bool> AddEventTrackingAsync(EventTrackingDto eventTracking);
     }
 }

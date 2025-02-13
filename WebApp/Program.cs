@@ -37,17 +37,30 @@ builder.Services.ConfigureSwagger();
 /// </summary>
 builder.Services.AddControllers().AddNewtonsoftJson();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
 
 /// <summary>
 /// Configura las políticas CORS (Cross-Origin Resource Sharing) para permitir cualquier origen,
 /// cualquier método HTTP y cualquier encabezado en las solicitudes.
 /// </summary>
-app.UseCors(options => {
-  options.AllowAnyOrigin();
-  options.AllowAnyMethod();
-  options.AllowAnyHeader();
-});
+/// 
+app.UseCors("AllowAll");
+//app.UseCors(options => {
+//  options.AllowAnyOrigin();
+//  options.AllowAnyMethod();
+//  options.AllowAnyHeader();
+//});
 
 /// <summary>
 /// Habilita el middleware de archivos estáticos para que se sirvan archivos desde la carpeta wwwroot.

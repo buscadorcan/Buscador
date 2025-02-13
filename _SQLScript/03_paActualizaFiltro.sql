@@ -33,7 +33,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (79)   and IdEsquemaVista in (  1,6,11,16)) hija
+         WHERE IdHomologacion IN (79)   and IdEsquemaVista in (  1,6,11,17)) hija
     INNER JOIN 
         (SELECT 
             idesquemadata AS IdEsquemaData,
@@ -44,7 +44,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (82)  and  IdEsquemaVista in( 1,6,11,16) ) padre
+         WHERE IdHomologacion IN (82)  and  IdEsquemaVista in( 1,6,11,17) ) padre
     ON padre.IdEsquemaData = hija.IdEsquemaData
 ) c
 ON e.IdEsquemaData = c.IdEsquemaData;
@@ -74,7 +74,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (109)   and IdEsquemaVista in (  2,7,12,17)) hija
+         WHERE IdHomologacion IN (109)   and IdEsquemaVista in (  2,7,12,18)) hija
     INNER JOIN 
         (SELECT 
             idesquemadata AS IdEsquemaData,
@@ -85,7 +85,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 2,7,12,17) ) padre
+         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 2,7,12,18) ) padre
     ON padre.IdEsquemaData = hija.IdEsquemaData
 ) c
 ON e.IdEsquemaData = c.IdEsquemaData;
@@ -115,7 +115,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (99)   and IdEsquemaVista in (  3,8,13,18)) hija
+         WHERE IdHomologacion IN (99)   and IdEsquemaVista in (  3,8,13,19)) hija
     INNER JOIN 
         (SELECT 
             idesquemadata AS IdEsquemaData,
@@ -126,7 +126,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 3,8,13,18) ) padre
+         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 3,8,13,19) ) padre
     ON padre.IdEsquemaData = hija.IdEsquemaData
 ) c
 ON e.IdEsquemaData = c.IdEsquemaData;
@@ -156,7 +156,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (67)   and IdEsquemaVista in (  4,9,14,19)) hija
+         WHERE IdHomologacion IN (67)   and IdEsquemaVista in (  4,9,14,20)) hija
     INNER JOIN 
         (SELECT 
             idesquemadata AS IdEsquemaData,
@@ -167,7 +167,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 4,9,14,19) ) padre
+         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 4,9,14,20) ) padre
     ON padre.IdEsquemaData = hija.IdEsquemaData
 ) c
 ON e.IdEsquemaData = c.IdEsquemaData;
@@ -196,7 +196,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (57)   and IdEsquemaVista in ( 5,10,15,20)) hija
+         WHERE IdHomologacion IN (57)   and IdEsquemaVista in ( 5,10,15,21)) hija
     INNER JOIN 
         (SELECT 
             idesquemadata AS IdEsquemaData,
@@ -207,7 +207,7 @@ JOIN (
              IdHomologacion INT '$.IdHomologacion',
              Data NVARCHAR(MAX) '$.Data'
          )
-         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 5,10,15,20) ) padre
+         WHERE IdHomologacion IN (79)  and  IdEsquemaVista in( 5,10,15,21) ) padre
     ON padre.IdEsquemaData = hija.IdEsquemaData
 ) c
 ON e.IdEsquemaData = c.IdEsquemaData;

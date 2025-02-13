@@ -80,9 +80,10 @@ namespace WebApp.Controllers
                     IsSuccess = true
                 });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return HandleException(e, nameof(ImportarExcel));
+                return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
+                //return HandleException(e, nameof(ImportarExcel));
             }
         }
         //[Authorize]

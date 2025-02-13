@@ -14,7 +14,7 @@ namespace ClientApp.Services
         public async Task<BuscadorDto> PsBuscarPalabraAsync(string paramJSON, int PageNumber, int RowsPerPage)
         {
             string encodedJson = Uri.EscapeDataString(paramJSON);
-
+            var Url = Inicializar.UrlBaseApi;
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/search/phrase?paramJSON={encodedJson}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
             response.EnsureSuccessStatusCode();
 
@@ -111,5 +111,25 @@ namespace ClientApp.Services
 
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<FnPredictWordsDto>>>()).Result;
         }
+
+        public async Task<bool> AddEventTrackingAsync(EventTrackingDto eventTracking)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{Inicializar.UrlBaseApi}api/buscador/addEventTracking", eventTracking);
+
+                response.EnsureSuccessStatusCode(); // Lanza una excepción si la respuesta no es exitosa
+
+                var result = await response.Content.ReadFromJsonAsync<RespuestasAPI<string>>();
+
+                return result != null && result.Result == "Evento registrado con éxito.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en AddEventTrackingAsync: {ex.Message}");
+                return false; // Devuelve false en caso de error
+            }
+        }
+
     }
 }

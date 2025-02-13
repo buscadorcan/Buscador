@@ -23,6 +23,7 @@ namespace WebApp.Repositories
             data.IdUserModifica = data.IdUserCreacion;
             data.Estado = "A";
             data.Mostrar = "S";
+            data.Indexar = data.Indexar == null ? "N" : data.Indexar.ToString();
             return ExecuteDbOperation(context =>
             {
                 context.Homologacion.Add(data);

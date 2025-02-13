@@ -328,6 +328,7 @@
                NavigationManager.Uri.Contains("/editar-grupos") ||
                NavigationManager.Uri.Contains("/campos-homologacion") ||
                NavigationManager.Uri.Contains("/editar-campos-homologacion") ||
+               NavigationManager.Uri.Contains("/nuevo-campos-homologacion") ||
                NavigationManager.Uri.Contains("/migracion-excel") ||
                NavigationManager.Uri.Contains("/nueva-migarcion-excel") ||
                NavigationManager.Uri.Contains("/conexion") ||
@@ -338,6 +339,54 @@
                NavigationManager.Uri.Contains("/validacion"))   
                {
                    <style type="text/css">
+                        .pagination-container {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 20px; /* Espacio entre elementos */
+                            margin: 20px auto; /* Centrado */
+                            padding: 10px;
+                        }
+
+                        .btn {
+                            padding: 10px 15px;
+                            font-size: 18px;
+                            font-weight: bold;
+                            border-radius: 8px;
+                            transition: all 0.3s ease-in-out;
+                        }
+
+                            @* .btn:hover {
+                                background-color: #0056b3;
+                                color: white;
+                            } *@
+
+                            .btn:disabled {
+                                background-color: #d6d6d6 !important;
+                                color: #6c757d !important;
+                                cursor: not-allowed;
+                            }
+
+                        .pagination-text {
+                            font-size: 16px;
+                            font-weight: bold;
+                            color: #333;
+                        }
+                        .modal-footer {
+                            background-color: #f8f9fa; /* Color de fondo */
+                            padding: 15px;
+                            text-align: right;
+                            border-top: 1px solid #dee2e6;
+                        }
+
+                       .modal-footer button {
+                            margin-left: 10px !important;
+                            font-family: var(--font-family-inter-regular) !important;
+                            font-size: var(--font-size-m) !important;
+                            font-style: normal !important;
+                            font-weight: 400 !important;
+                       }
+
                         .general .main-container {
                             align-items: flex-end;
                             flex-direction: column;
