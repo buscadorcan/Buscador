@@ -1,8 +1,9 @@
 ﻿using ClientApp.Helpers;
+using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Net.Http.Headers;
 
-namespace ClientApp.Services.IService
+namespace ClientApp.Services
 {
     public class UtilitiesService : IUtilitiesService
     {
@@ -14,17 +15,20 @@ namespace ClientApp.Services.IService
             _httpClient = httpClient;
         }
 
-        public async Task<string> UploadIconAsync(IBrowserFile file)
+        public async Task<string> UploadIconAsync(IBrowserFile file, int idONA)
         {
             try
             {
                 // Crear el contenido para la solicitud
                 var content = new MultipartFormDataContent();
 
-                // Leer el archivo en un StreamContent y agregarlo al MultipartFormDataContent
-                var streamContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 2 * 1024 * 1024)); // Tamaño máximo: 2 MB
+                // Agregar el archivo al contenido del formulario
+                var streamContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 2 * 1024 * 1024)); // Máx. 2MB
                 streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
                 content.Add(streamContent, "file", file.Name);
+
+                // Agregar el idONA como otro campo en el formulario
+                content.Add(new StringContent(idONA.ToString()), "idONA");
 
                 // Enviar la solicitud al endpoint
                 var response = await _httpClient.PostAsync($"{url}/UploadIcon", content);
@@ -47,6 +51,8 @@ namespace ClientApp.Services.IService
                 throw new Exception($"Error al subir el archivo: {ex.Message}");
             }
         }
+
+
 
 
     }

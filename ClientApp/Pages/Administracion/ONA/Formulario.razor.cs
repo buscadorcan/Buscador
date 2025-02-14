@@ -23,17 +23,15 @@ namespace ClientApp.Pages.Administracion.ONA
         public int? Id { get; set; }
         [Inject]
         public Services.ToastService? toastService { get; set; }
-   
-       
+
+
         private IBrowserFile? uploadedFile;
-        private async Task OnInputFileChange(InputFileChangeEventArgs e)
+        private async Task OnInputFileChange(InputFileChangeEventArgs e, int idOna)
         {
             try
             {
-                // Obtener el archivo subido
                 uploadedFile = e.File;
 
-                // Verificar si hay archivo cargado
                 if (uploadedFile == null)
                 {
                     Console.WriteLine("No se seleccionó ningún archivo.");
@@ -42,14 +40,14 @@ namespace ClientApp.Pages.Administracion.ONA
 
                 // Validar la extensión del archivo
                 var fileExtension = Path.GetExtension(uploadedFile.Name).ToLower();
-                if (fileExtension != ".png" && fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".svg")
+                if (fileExtension != ".png" && fileExtension != ".svg")
                 {
                     Console.WriteLine("Formato de archivo no permitido.");
                     return;
                 }
 
-                // Llamar al servicio para subir el archivo
-                var uploadedFilePath = await iUtilService.UploadIconAsync(uploadedFile);
+                // Llamar al servicio para subir el archivo con el idOna
+                var uploadedFilePath = await iUtilService.UploadIconAsync(uploadedFile, idOna);
 
                 // Actualizar la propiedad con la ruta relativa devuelta por el backend
                 onas.UrlIcono = uploadedFilePath;
@@ -63,14 +61,14 @@ namespace ClientApp.Pages.Administracion.ONA
         }
 
 
-
         protected override async Task OnInitializedAsync()
         {
             paises = await iONAsService.GetPaisesAsync();
 
-            if (Id > 0 && iONAsService != null) {
+            if (Id > 0 && iONAsService != null)
+            {
                 onas = await iONAsService.GetONAsAsync(Id.Value);
-            } 
+            }
         }
         private async Task RegistrarONA()
         {

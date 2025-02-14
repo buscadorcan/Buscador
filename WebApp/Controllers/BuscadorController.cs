@@ -1,4 +1,4 @@
-using WebApp.Repositories.IRepositories;
+﻿using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
@@ -142,12 +142,31 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<string>
                 {
-                    Result = "Evento registrado con �xito."
+                    Result = "Evento registrado con éxito."
                 });
             }
             catch (Exception e)
             {
                 return HandleException(e, nameof(AddEventTracking));
+            }
+        }
+
+        [HttpGet("geocode")]
+        public async Task<IActionResult> GetCoordinates([FromQuery] string address)
+        {
+            try
+            {
+                var apiKey = "AIzaSyBfJMTooTtkGw_hZC3DenLPlEpjq-t_7nY"; // Reemplaza con tu API Key
+                var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={Uri.EscapeDataString(address)}&key={apiKey}";
+
+                using var httpClient = new HttpClient();
+                var response = await httpClient.GetStringAsync(url);
+
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetCoordinates));
             }
         }
 

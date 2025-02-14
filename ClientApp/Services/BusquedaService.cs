@@ -131,5 +131,25 @@ namespace ClientApp.Services
             }
         }
 
+        public async Task<GeocodeResponseDto?> ObtenerCoordenadasAsync(string pais, string ciudad)
+        {
+            try
+            {
+                // Llamar al backend en lugar de Google Maps directamente
+                var url = $"{Inicializar.UrlBaseApi}api/buscador/geocode?address={Uri.EscapeDataString($"{ciudad}, {pais}")}";
+
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                return await response.Content.ReadFromJsonAsync<GeocodeResponseDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en ObtenerCoordenadasAsync: {ex.Message}");
+                return null;
+            }
+        }
+
+
     }
 }

@@ -4,6 +4,6 @@ namespace ClientApp.Services.IService
 {
     public interface IUtilitiesService
     {
-        Task<string> UploadIconAsync(IBrowserFile file);
+        Task<string> UploadIconAsync(IBrowserFile file, int idONA);
     }
 }
