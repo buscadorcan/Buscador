@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<div class="table" style="margin-top: 1% !important;">
+@* <div class="table" style="margin-top: 1% !important;">
     <div class="table-heading">
         <article class="table-heading-1 table-heading-5">
             <div class="header-label-1">
@@ -117,35 +117,122 @@
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
-<style>
-    .btnExp {
-        font-family: var(--font-family-inter-regular) !important;
-        font-size: var(--font-size-m) !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-    }
-</style>
-<script>
-    window.downloadFile = (fileName, fileType, base64) => {
-        const link = document.createElement("a");
-        link.href = `data:${fileType};base64,` + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-    window.downloadExcel = (fileName, base64) => {
-        const link = document.createElement("a");
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
+ *@
+ <div class="table" style="margin-top: 1% !important;">
+    <div class="table-heading">
+        <article class="table-heading-1 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.IdLogMigracion))">
+            <div class="header-label-1">
+                <div class="label-heading headingheadline5-h5">
+                    Migración @(sortColumn == nameof(LogMigracionDto.IdLogMigracion) ? (sortAscending ? "⬆" : "⬇") : "")
+                </div>
+            </div>
+        </article>
 
-</script>
+        <article class="table-heading-2 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.EsquemaVista))">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">
+                    EsquemaVista @(sortColumn == nameof(LogMigracionDto.EsquemaVista) ? (sortAscending ? "⬆" : "⬇") : "")
+                </div>
+            </div>
+        </article>
+
+        <article class="table-heading-3 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Estado))">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">
+                    Estado @(sortColumn == nameof(LogMigracionDto.Estado) ? (sortAscending ? "⬆" : "⬇") : "")
+                </div>
+            </div>
+        </article>
+
+        <article class="table-heading-4 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.ExcelFileName))">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">
+                    Nombre archivo @(sortColumn == nameof(LogMigracionDto.ExcelFileName) ? (sortAscending ? "⬆" : "⬇") : "")
+                </div>
+            </div>
+        </article>
+
+        <article class="table-heading-5 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Observacion))">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">
+                    Error @(sortColumn == nameof(LogMigracionDto.Observacion) ? (sortAscending ? "⬆" : "⬇") : "")
+                </div>
+            </div>
+        </article>
+    </div>
+
+    @if (listasHevd != null && listasHevd.Any())
+    {
+        <div class="content">
+            @foreach (var item in PaginatedItems)
+            {
+                <div class="row">
+                    <div class="componente">
+                        <div class="row-1 row-12">
+                            <div class="ads-rules-list">
+                                <div class="cell">
+                                    <div class="migration-id bodybody-small">@item.IdLogMigracion</div>
+                                </div>
+                                <div class="cell cell-1">
+                                    <div class="esquema-vista bodybody-small">@item.EsquemaVista</div>
+                                </div>
+                                <div class="cell cell-1">
+                                    <div class="status bodybody-small">@item.Estado</div>
+                                </div>
+                                <div class="cell cell-1 landing-page-3">
+                                    <div class="file-name bodybody-small">@item.ExcelFileName</div>
+                                </div>
+                                <div class="cell cell-1 landing-page-3">
+                                    <p class="error-message bodybody-small">@item.Observacion</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Controles de paginación -->
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
+
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
+        </div>
+
+    }
+    else
+    {
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+    }
+</div>
 
 @code {
+    private string sortColumn = nameof(LogMigracionDto.IdLogMigracion);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        listasHevd = sortAscending
+            ? listasHevd.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+            : listasHevd.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+    }
+
     private async Task ExportarExcel()
     {
         if (listasHevd == null || !listasHevd.Any())

@@ -18,60 +18,6 @@
     font-family: var(--font-family-inter-semibold) !important;
 }
 </style>
-<style>
-    .btnExp {
-        font-family: var(--font-family-inter-regular) !important;
-        font-size: var(--font-size-m) !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-    }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 34px;
-        height: 20px;
-    }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 20px;
-    }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-    input:checked + .slider {
-        background-color: #4CAF50;
-    }
-
-        input:checked + .slider:before {
-            transform: translateX(14px);
-        }
-
-</style>
 
 <div class="text-end my-3 d-flex justify-content-between">
     <!-- Grupo de botones de exportación -->
@@ -90,108 +36,223 @@
     </div>
 </div>
 
-<div class="table table-1">
-    <div class="table-heading table-1">
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Vista Código Homologado</div>
+@* <div class="modal-scroll">
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Vista Código Homologado</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Tooltip Web</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Mostrar</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Tipo de Dato</div>
+                </div>
+            </div>
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
+                </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Tooltip Web</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Mostrar</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Tipo de Dato</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
-            </div>
-        </div>
-    </div>
 
-    @if (columnas != null && columnas.Any())
-    {
-        <div class="content content-2">
-            @foreach (var context in PaginatedItems)
-            {
-                <div class="row row-15" style="width: -webkit-fill-available !important;">
-                    <div class="componente">
-                        <div class="row-1 row-15">
-                            <div class="ads-rules-list">
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb</div></div>
-
-                                <!-- Switch de encendido/apagado para "Mostrar" -->
-                                <div class="cell cell-1">
-                                    <label class="switch">
-                                        <input type="checkbox" checked="@(listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar == "S")" />
-                                        <span class="slider"></span>
-                                    </label>
+        @if (columnas != null && columnas.Any())
+        {
+            <div class="content content-2">
+                @foreach (var context in PaginatedItems)
+                {
+                    <div class="row row-15" style="width: -webkit-fill-available !important;">
+                        <div class="componente">
+                            <div class="row-1 row-15">
+                                <div class="ads-rules-list">
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb</div></div>
+                                    <!-- Estado con Check o X -->
+                                    <div class="cell cell-1">
+                                        @if (listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar == "S")
+                                        {
+                                            <span class="estado-activo">✔</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="estado-inactivo">✖</span>
+                                        }
+                                    </div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato</div></div>
                                 </div>
-
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato</div></div>
                             </div>
                         </div>
                     </div>
+                }
+            </div>
+            <!-- Controles de paginación -->
+            <div class="pagination-container">
+                <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                    ⏪
+                </button>
+
+                <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+                <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                    ⏩
+                </button>
+            </div>
+        }
+        else
+        {
+            <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+        }
+    </div>
+</div>
+ *@
+<div class="modal-scroll">
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.NombreHomologado))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Vista Código Homologado @(sortColumn == nameof(HomologacionDto.NombreHomologado) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
                 </div>
-            }
-        </div>
-        <!-- Controles de paginación -->
-        <div class="pagination-container">
-            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
-                ⏪
-            </button>
+            </div>
 
-            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.MostrarWeb))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Texto a Mostrar en la Web @(sortColumn == nameof(HomologacionDto.MostrarWeb) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
 
-            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
-                ⏩
-            </button>
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.TooltipWeb))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Tooltip Web @(sortColumn == nameof(HomologacionDto.TooltipWeb) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Mostrar</div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.MascaraDato))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Tipo de Dato @(sortColumn == nameof(HomologacionDto.MascaraDato) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
+                </div>
+            </div>
         </div>
-    }
-    else
-    {
-        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
-    }
+
+        @if (columnas != null && columnas.Any())
+        {
+            <div class="content content-2">
+                @foreach (var context in PaginatedItems)
+                {
+                    <div class="row row-15">
+                        <div class="componente">
+                            <div class="row-1 row-15">
+                                <div class="ads-rules-list">
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado</div>
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb</div>
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb</div>
+                                    </div>
+                                    <!-- Estado con Check o X -->
+                                    <div class="cell cell-1">
+                                        @if (listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar == "S")
+                                        {
+                                            <span class="estado-activo">✔</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="estado-inactivo">✖</span>
+                                        }
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato</div>
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Controles de paginación -->
+            <div class="pagination-container">
+                <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                    ⏪
+                </button>
+
+                <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+                <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                    ⏩
+                </button>
+            </div>
+        }
+        else
+        {
+            <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+        }
+    </div>
 </div>
 
-<script>
-    window.downloadFile = (fileName, fileType, base64) => {
-        const link = document.createElement("a");
-        link.href = `data:${fileType};base64,` + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-    window.downloadExcel = (fileName, base64) => {
-        const link = document.createElement("a");
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-</script>
 @code {
+    private string sortColumn = nameof(HomologacionDto.NombreHomologado);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        columnas = sortAscending
+            ? columnas.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+            : columnas.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+    }
+
     private async Task ExportarExcel()
     {
         if (columnas == null || !columnas.Any())

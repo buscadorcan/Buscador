@@ -60,60 +60,8 @@
         </div>
         <input type="text" class="form-control inter-regular-normal-comet-14px" placeholder="" @bind="nombreSugerido" style="margin-top: 2% !important;" />
     </div>
-    
-    
+        
 </div>
-
-<style>
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 34px;
-        height: 20px;
-    }
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 34px;
-    }
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 14px;
-        width: 14px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
-    }
-    input:checked + .slider {
-        background-color: #4CAF50;
-    }
-    input:checked + .slider:before {
-        transform: translateX(14px);
-    }
-</style>
-
-<style>
-    .btnExp {
-        font-family: var(--font-family-inter-regular) !important;
-        font-size: var(--font-size-m) !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-    }
-</style>
 
 <div class="col-md-12">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
@@ -189,11 +137,16 @@
                                 <div class="cell cell-1" style="width:50% !important">
                                     <input class="form-control inter-regular-normal-comet-14px" @bind="esquema.NombreVista" disabled="@enabledCeldas" />
                                 </div>
+                                <!-- Estado con Check o X -->
                                 <div class="cell cell-1" style="width:23% !important">
-                                    <label class="switch">
-                                        <input type="checkbox" checked="@(esquema.IsValid ? "checked" : null)" disabled>
-                                        <span class="slider round"></span>
-                                    </label>
+                                    @if (esquema.IsValid)
+                                    {
+                                        <span class="estado-activo">✔</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="estado-inactivo">✖</span>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -207,26 +160,6 @@
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
-
- <script>
-    window.downloadFile = (fileName, fileType, base64) => {
-        const link = document.createElement("a");
-        link.href = `data:${fileType};base64,` + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-    window.downloadExcel = (fileName, base64) => {
-        const link = document.createElement("a");
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-</script>
 
 @code {
     private async Task ExportarExcel()

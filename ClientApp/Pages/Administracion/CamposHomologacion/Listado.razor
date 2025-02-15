@@ -95,14 +95,7 @@
             table-layout: fixed;
         }
 </style>
-<style>
-    .btnExp{
-        font-family: var(--font-family-inter-regular) !important;
-        font-size: var(--font-size-m) !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-    }
-</style>
+
 <div class="col-md-12">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
         @if (homologacionSelected != null)
@@ -186,26 +179,6 @@
     </Grid>
 </div>
 
-
-<script>
-    window.downloadFile = (fileName, fileType, base64) => {
-        const link = document.createElement("a");
-        link.href = `data:${fileType};base64,` + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-    window.downloadExcel = (fileName, base64) => {
-        const link = document.createElement("a");
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-</script>
 @code {
     private async Task ExportarExcel()
     {
