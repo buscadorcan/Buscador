@@ -51,7 +51,7 @@
                         <InputFile @bind-Value="uploadedFile" style="margin-top: 2% !important;"
                                    class="form-control inter-regular-normal-comet-14px"
                                    placeholder="Icono de la organización"
-                                   OnChange="OnInputFileChange" />
+                                   OnChange="e => OnInputFileChange(e, onas.IdONA)" />
                         <ValidationMessage For="(() => onas.UrlIcono)" />
                     </div>
                 </div>

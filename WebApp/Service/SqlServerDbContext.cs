@@ -114,6 +114,8 @@ namespace WebApp.Service
         public DbSet<vwPanelONA> vwPanelONA { get; set; }
         public DbSet<vwEsquemaOrganiza> vwEsquemaOrganiza { get; set; }
 
+        public DbSet<EventTracking> EventTracking { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //usuario

@@ -81,12 +81,13 @@
                                                     var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.Icono);
                                                     if (deserialized != null && deserialized.ContainsKey("filePath"))
                                                     {
-                                                        item.Icono = deserialized["filePath"];
+                                                        // Concatenar correctamente la URL base con el filePath
+                                                        item.Icono = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{deserialized["filePath"].TrimStart('/')}";
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine($"Valor inválido en item.icono: {item.Icono}");
+                                                    Console.WriteLine($"Valor inválido en item.Icono: {item.Icono}");
                                                 }
                                                 <img class="img-2" src="@item.Icono" />
                                                 <div class="text-wrapper-4">@item.Sigla</div>
@@ -248,7 +249,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="expanded-user-menu">
+@*                         <div class="expanded-user-menu">
                             <div class="popular-search">
                                 <img class="img" src="login/img/trending-up@2x.png" />
                                 <div class="popular-search-title">Populares en la busqueda</div>
@@ -262,7 +263,7 @@
                                 <div class="chips"><div class="new">Alimentos</div></div>
                                 <div class="chips"><div class="new">Vestimenta</div></div>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                     <div class="data-table-2">
                         <div class="step-container-2">

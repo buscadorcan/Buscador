@@ -4,6 +4,7 @@ using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
+using System.Runtime.CompilerServices;
 
 namespace ClientApp.Pages.Administracion.Conexion
 {
@@ -21,9 +22,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IConexionService? iConexionService { get; set; }
         [Inject]
         private IDynamicService? iDynamicService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
         //private List<ONAConexionDto>? listasHevd = null;
         private List<ONAConexionDto> listasHevd = new();
-
+        private EventTrackingDto objEventTracking { get; set; } 
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
         private int PageSize = 10; // Cantidad de registros por página
@@ -43,6 +46,12 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (CanGoPrevious)
             {
                 CurrentPage--;
+
+                objEventTracking.NombrePagina = null;
+                objEventTracking.ParametroJson = "";
+
+
+                iBusquedaService.AddEventTrackingAsync(objEventTracking);
             }
         }
 
