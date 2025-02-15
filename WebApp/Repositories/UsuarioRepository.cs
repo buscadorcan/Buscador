@@ -104,20 +104,53 @@ namespace WebApp.Repositories
                 return context.SaveChanges() >= 0;
             });
         }
+        //public bool Update(Usuario usuario)
+        //{
+        //    return ExecuteDbOperation(context =>
+        //    {
+        //        var _exits = MergeEntityProperties(context, usuario, u => u.IdUsuario == usuario.IdUsuario);
+
+        //        _exits.FechaModifica = DateTime.Now;
+        //        _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+        //        _exits.Clave = _hashService.GenerateHash(usuario.Clave);
+        //        context.Usuario.Update(_exits);
+        //        return context.SaveChanges() >= 0;
+        //    });
+        //}
         public bool Update(Usuario usuario)
         {
             return ExecuteDbOperation(context =>
             {
                 var _exits = MergeEntityProperties(context, usuario, u => u.IdUsuario == usuario.IdUsuario);
 
+                if (_exits == null)
+                {
+                    return false; // Si el usuario no existe, no continuamos
+                }
+
                 _exits.FechaModifica = DateTime.Now;
                 _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
-                _exits.Clave = _hashService.GenerateHash(usuario.Clave);
+
+                // Consultamos la clave actual del usuario en la base de datos
+                var claveActual = context.Usuario
+                    .Where(u => u.IdUsuario == usuario.IdUsuario)
+                    .Select(u => u.Clave)
+                    .FirstOrDefault();
+
+                // Si la clave entrante es nula o vacía, mantenemos la clave actual
+                if (string.IsNullOrEmpty(usuario.Clave))
+                {
+                    _exits.Clave = claveActual;
+                }
+                else
+                {
+                    _exits.Clave = _hashService.GenerateHash(usuario.Clave);
+                }
+
                 context.Usuario.Update(_exits);
-                return context.SaveChanges() >= 0;
+                return context.SaveChanges() > 0; // Si se guardaron cambios, retornará true
             });
         }
-
         public UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
 
