@@ -8,128 +8,6 @@
 @using iTextSharp.text
 @using iTextSharp.text.pdf
 
-<style>
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 34px;
-        height: 20px;
-    }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 20px;
-    }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-    input:checked + .slider {
-        background-color: #4CAF50;
-    }
-
-        input:checked + .slider:before {
-            transform: translateX(14px);
-        }
-
-    /* Contenedor de la tabla */
-    .table {
-        display: table;
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    /* Estilo de la fila */
-    .row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #ddd;
-        padding: 8px 0;
-    }
-
-    /* Contenedor de la lista */
-    .ads-rules-list {
-        display: flex;
-        width: 100%;
-    }
-
-    /* Estilo de celdas con ajuste automático del texto */
-    .cell {
-        flex: 1;
-        text-align: center;
-        padding: 5px 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 100px; /* Ajusta el ancho mínimo para evitar deformaciones */
-        word-wrap: break-word; /* Permite que el texto largo se divida en varias líneas */
-        white-space: normal; /* Permite el salto de línea */
-        text-align: center;
-    }
-
-    /* Celdas de texto que se ajustan en varias líneas */
-    .cell-text {
-        word-break: break-word;
-        max-width: 100%;
-        text-align: center;
-        display: block;
-    }
-
-    /* Asegurar que los switches estén alineados */
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 34px;
-        height: 20px;
-        margin: 0 auto;
-    }
-
-    /* Botones bien alineados */
-    .cell button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 30px;
-    }
-
-    /* Evita que los botones se desplacen cuando el contenido crece */
-    .cell button,
-    .cell img {
-        flex-shrink: 0;
-    }
-
-</style>
-<style>
-    .btnExp {
-        font-family: var(--font-family-inter-regular) !important;
-        font-size: var(--font-size-m) !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-    }
-</style>
 @if (IsLoading)
 {
     <div class="overlay">
@@ -176,185 +54,165 @@
     </div>
 </div>
 
-    <div class="table table-1">
-        <div class="table-heading table-1">
-            <div class="table-heading-1 table-heading-10">
+<div class="table table-1">
+    <div class="table-heading table-1">
+        <!-- Encabezados con funcionalidad de ordenamiento -->
+        @foreach (var column in new[]
+        {
+            (nameof(ONAConexionDto.Host), "Host"),
+            (nameof(ONAConexionDto.Puerto), "Puerto"),
+            (nameof(ONAConexionDto.Usuario), "Usuario"),
+            (nameof(ONAConexionDto.BaseDatos), "Base Datos"),
+            (nameof(ONAConexionDto.OrigenDatos), "Origen Datos"),
+            (nameof(ONAConexionDto.Migrar), "Migrar"),
+            (nameof(ONAConexionDto.Estado), "Estado")
+        })
+        {
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(column.Item1)">
                 <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Host</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                    <div class="label-heading headingheadline5-h5">
+                        @column.Item2 @(sortColumn == column.Item1 ? (sortAscending ? "⬆" : "⬇") : "")
                     </div>
                 </div>
             </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Puerto</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Usuario</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Base Datos</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Origen Datos</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-5.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Migrar</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-6.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Estado</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-7.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Probar Conexion</div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Migracion</div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Editar</div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Eliminar</div>
-                </div>
+        }
+
+        <!-- Columnas sin ordenamiento -->
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Probar Conexion</div>
             </div>
         </div>
+        <div class="table-heading-1 table-heading-10" style="margin-left:1%">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Migracion</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Editar</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Eliminar</div>
+            </div>
+        </div>
+    </div>
 
-        @if (listasHevd != null && listasHevd.Any())
-        {
-            <div class="content content-2">
-                @foreach (var conexion in PaginatedItems)
-                {
-                    <div class="row row-15">
-                        <div class="componente">
-                            <div class="row-1 row-15">
-                                <div class="ads-rules-list">
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Host</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Puerto</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Usuario</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.BaseDatos</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.OrigenDatos</div></div>
-                                    <div class="cell cell-1">
-                                        <label class="switch">
-                                            <input type="checkbox" checked="@(conexion.Migrar == "S")" disabled>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="cell cell-1">
-                                        <label class="switch">
-                                            <input type="checkbox" checked="@(conexion.Estado == "A")" disabled>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="cell cell-1">
-                                        @if (conexion.OrigenDatos != "EXCEL")
-                                        {
-                                            <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(conexion.IdONA)" Size="ButtonSize.Small">
-                                                <Icon Name="IconName.RCircle" />
-                                            </Button>
-                                        }
-                                    </div>
-                                    <div class="cell cell-1">
-                                        @if (conexion.OrigenDatos != "EXCEL")
-                                        {
-                                            <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(conexion.IdONA)" Size="ButtonSize.Small">
-                                                <Icon Name="IconName.DatabaseAdd" />
-                                            </Button>
-                                        }
-                                    </div>
-                                    <div class="cell cell-1">
-                                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{conexion.IdONA}")" Size="ButtonSize.Small">
-                                            <Icon Name="IconName.PencilSquare" />
+    @if (listasHevd != null && listasHevd.Any())
+    {
+        <div class="content content-2">
+            @foreach (var conexion in PaginatedItems)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row-1 row-15">
+                            <div class="ads-rules-list">
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Host</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Puerto</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.Usuario</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.BaseDatos</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@conexion.OrigenDatos</div></div>
+
+                                <!-- Estado con Check o X -->
+                                <div class="cell cell-1">
+                                    @if (conexion.Migrar == "S")
+                                    {
+                                        <span class="estado-activo">✔</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="estado-inactivo">✖</span>
+                                    }
+                                </div>
+
+                                <div class="cell cell-1">
+                                    @if (conexion.Estado == "A")
+                                    {
+                                        <span class="estado-activo">✔</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="estado-inactivo">✖</span>
+                                    }
+                                </div>
+
+                                <div class="cell cell-1">
+                                    @if (conexion.OrigenDatos != "EXCEL")
+                                    {
+                                        <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnTestconexionClick(conexion.IdONA)" Size="ButtonSize.Small">
+                                            <Icon Name="IconName.RCircle" />
                                         </Button>
-                                    </div>
-                                    <div class="cell cell-1">
-                                        <Button Color="ButtonColor.Danger" Outline="true" @onclick=@(() => OpenDeleteModal(conexion.IdONA)) Size="ButtonSize.Small">
-                                            <Icon Name="IconName.Trash3" />
+                                    }
+                                </div>
+
+                                <div class="cell cell-1">
+                                    @if (conexion.OrigenDatos != "EXCEL")
+                                    {
+                                        <Button Color="ButtonColor.Info" Outline="true" @onclick="async () => await OnMigrarClick(conexion.IdONA)" Size="ButtonSize.Small">
+                                            <Icon Name="IconName.DatabaseAdd" />
                                         </Button>
-                                    </div>
+                                    }
+                                </div>
+
+                                <div class="cell cell-1">
+                                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-conexion/{conexion.IdONA}")" Size="ButtonSize.Small">
+                                        <Icon Name="IconName.PencilSquare" />
+                                    </Button>
+                                </div>
+
+                                <div class="cell cell-1">
+                                    <Button Color="ButtonColor.Danger" Outline="true" @onclick=@(() => OpenDeleteModal(conexion.IdONA)) Size="ButtonSize.Small">
+                                        <Icon Name="IconName.Trash3" />
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                }
-            </div>
+                </div>
+            }
+        </div>
+        <!-- Controles de paginación -->
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
 
-            <!-- Controles de paginación -->
-            <div class="pagination-container">
-                <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
-                    ⏪
-                </button>
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
 
-                <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
+        </div>
+    }
+    else
+    {
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+    }
+</div>
 
-                <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
-                    ⏩
-                </button>
-            </div>
+@code {
+    private string sortColumn = nameof(ONAConexionDto.Host);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
         }
         else
         {
-            <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+            sortColumn = column;
+            sortAscending = true;
         }
-    </div>
 
-<script>
-    window.downloadFile = (fileName, fileType, base64) => {
-        const link = document.createElement("a");
-        link.href = `data:${fileType};base64,` + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-    window.downloadExcel = (fileName, base64) => {
-        const link = document.createElement("a");
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
+        listasHevd = sortAscending
+            ? listasHevd.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+            : listasHevd.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+    }
 
-</script>
-
-@code {
     private async Task ExportarExcel()
     {
         if (listasHevd == null || !listasHevd.Any())
