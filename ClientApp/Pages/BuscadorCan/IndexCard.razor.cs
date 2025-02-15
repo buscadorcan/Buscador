@@ -53,9 +53,10 @@ namespace ClientApp.Pages.BuscadorCan
         private OnaDto? OnaDto;
         private bool mostrarMapa = true;
         private IJSObjectReference? _googleMapsModule;
-        private string ApiKey = "AIzaSyBfJMTooTtkGw_hZC3DenLPlEpjq-t_7nY";
+        private string ApiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk";
         private GoogleMapCenter mapCenter = new(0, 0);
         private List<GoogleMapMarker> markers = new();
+        private GoogleMap? mapa;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -98,7 +99,10 @@ namespace ClientApp.Pages.BuscadorCan
             await CargarResultados(1, pageSize); // Llamar directamente con la paginación inicial
             StateHasChanged();
             await ObtenerCoordenadasYMarcarMapa();
-            
+            if (mapa != null)
+            {
+                await mapa.RefreshAsync();
+            }
 
         }
 
@@ -254,7 +258,7 @@ namespace ClientApp.Pages.BuscadorCan
 
         private async Task ObtenerCoordenadasYMarcarMapa()
         {
-            markers.Clear(); // 🔄 Limpiar los marcadores previos
+            markers.Clear(); // Limpiar los marcadores previos
             var processedLocations = new HashSet<string>();
 
             uniqueLocations = ResultadoData?
@@ -289,6 +293,11 @@ namespace ClientApp.Pages.BuscadorCan
                         mapCenter = coordenadas;
                     }
                 }
+            }
+
+            if (mapa != null)
+            {
+                await mapa.RefreshAsync();
             }
 
             markers = new List<GoogleMapMarker>(markers);
