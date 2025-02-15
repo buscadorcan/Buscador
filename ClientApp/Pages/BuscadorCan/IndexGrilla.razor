@@ -11,7 +11,7 @@
     {
         <Grid @ref="grid"
               TItem="BuscadorResultadoDataDto"
-              class="table table-hover table-bordered table-striped"
+              class="table table-hover table-bordered table-striped text-center"
               style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;"
               DataProvider="ResultadoBusquedaDataProvider"
               Responsive="true"
@@ -24,9 +24,8 @@
             <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="-">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModalOna(context)">
                     <!-- Usa el diccionario precargado para obtener la URL del ícono -->
-                    <img src="@(iconUrls.ContainsKey(context.IdONA.GetValueOrDefault())
-                    ? iconUrls[context.IdONA.GetValueOrDefault()]
-                    : "https://via.placeholder.com/16")"
+                    <img src="@(iconUrls.ContainsKey(context.IdONA.GetValueOrDefault()) ? iconUrls[context.IdONA.GetValueOrDefault()]
+                    : "")"
                          alt="Icono" style="width: 16px; height: 16px;" />
                 </Button>
             </GridColumn>
@@ -46,14 +45,14 @@
 
                         @if (etiqueta.IdHomologacion == 81)
                         {
-                            <Button @onclick="() => showModalOEC(context)" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
-                                @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
+                            <Button @onclick="() => showModalOEC(context)" Color="ButtonColor.Link" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
+                                @(string.IsNullOrWhiteSpace(dato.Trim()) ? "ModalPrueba" : dato)
                             </Button>
                         }
                         else if (etiqueta.IdHomologacion == 91)
                         {
-                            <Button @onclick="() => showModalESQ(context)" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
-                                @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
+                            <Button @onclick="() => showModalESQ(context)" Color="ButtonColor.Link" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
+                                @(string.IsNullOrWhiteSpace(dato.Trim()) ? "ModalPrueba" : dato)
                             </Button>
                         }
                         else

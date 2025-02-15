@@ -15,7 +15,8 @@
         @if (markers.Any())
         {
             <div class="col-md-4">
-                <GoogleMap ApiKey="@ApiKey"
+                <GoogleMap @ref="@mapa"
+                           ApiKey="@ApiKey"
                            Center="mapCenter"
                            Height="400"
                            Width="100"
