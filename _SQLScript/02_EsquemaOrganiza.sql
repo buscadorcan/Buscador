@@ -1,38 +1,38 @@
-DROP TABLE if exists [dbo].[EsquemaOrganiza]
-GO
-CREATE TABLE [dbo].[EsquemaOrganiza](
-	-- ESQ-ORG
-	 PK								NVARCHAR (400)  
-	,IdEsquemaData					INT NOT  NULL
-	,IdEsquemaVista					INT NOT  NULL
-	,VistaFK						NVARCHAR (400)  
-	,VistaPK						NVARCHAR (400)  
-	,DataEsquemaJson				NVARCHAR (max)
-	,IdEsquema						INT NOT  NULL
-	,ONAIdONA						INT NOT  NULL
-	,ONAPais						NVARCHAR (40)
-	,ONAUrlIcono					NVARCHAR (400)
-	-- ORG
-	,ONASiglas						NVARCHAR (40)
-	,OrgNombreComercial				NVARCHAR (400) 
-	,OrgRazonSocial					NVARCHAR (400) 
-	,OrgPais						NVARCHAR (400) 
-	,OrgCiudad						NVARCHAR (400) 
-	,OrgDireccion					NVARCHAR (400) 
-	,OrgTelefono					NVARCHAR (400)
-	,OrgWeb							NVARCHAR (900)
-	,OrgCorreo						NVARCHAR (400)
-	,OrgEstadoAcreditado			NVARCHAR (400)	
-	,OrgEsquemaAcreditado			NVARCHAR (400)	
-	,OrgNormaAcreditada				NVARCHAR (400)	
-	,OrgReconocimiento				NVARCHAR (400)	
-	,OrgFechaEfectivaAcreditacion	NVARCHAR (400)	
-	,OrgPeriodoVigencia				NVARCHAR (400)	
-	,OrgFechaActualizacion			NVARCHAR (400)	
-	,OrgCodigoAcreditacion			NVARCHAR (400)	
-	,OrgUrlCertificado				NVARCHAR (400)	
-	--
-	,DataFecha          DATETIME NOT NULL DEFAULT(GETDATE())
-	,CONSTRAINT         [PK_EO_IdEsquemaData]	PRIMARY KEY CLUSTERED (IdEsquemaData)
-	,CONSTRAINT         [FK_EO_IdEsquemaVista]  FOREIGN KEY (IdEsquemaVista) REFERENCES EsquemaVista(IdEsquemaVista)
-);
+--DROP TABLE if exists [dbo].[EsquemaOrganiza]
+--GO
+--CREATE TABLE [dbo].[EsquemaOrganiza](
+--	-- ESQ-ORG
+--	 PK								NVARCHAR (400)  
+--	,IdEsquemaData					INT NOT  NULL
+--	,IdEsquemaVista					INT NOT  NULL
+--	,VistaFK						NVARCHAR (400)  
+--	,VistaPK						NVARCHAR (400)  
+--	,DataEsquemaJson				NVARCHAR (max)
+--	,IdEsquema						INT NOT  NULL
+--	,ONAIdONA						INT NOT  NULL
+--	,ONAPais						NVARCHAR (40)
+--	,ONAUrlIcono					NVARCHAR (400)
+--	-- ORG
+--	,ONASiglas						NVARCHAR (40)
+--	,OrgNombreComercial				NVARCHAR (400) 
+--	,OrgRazonSocial					NVARCHAR (400) 
+--	,OrgPais						NVARCHAR (400) 
+--	,OrgCiudad						NVARCHAR (400) 
+--	,OrgDireccion					NVARCHAR (400) 
+--	,OrgTelefono					NVARCHAR (400)
+--	,OrgWeb							NVARCHAR (900)
+--	,OrgCorreo						NVARCHAR (400)
+--	,OrgEstadoAcreditado			NVARCHAR (400)	
+--	,OrgEsquemaAcreditado			NVARCHAR (400)	
+--	,OrgNormaAcreditada				NVARCHAR (400)	
+--	,OrgReconocimiento				NVARCHAR (400)	
+--	,OrgFechaEfectivaAcreditacion	NVARCHAR (400)	
+--	,OrgPeriodoVigencia				NVARCHAR (400)	
+--	,OrgFechaActualizacion			NVARCHAR (400)	
+--	,OrgCodigoAcreditacion			NVARCHAR (400)	
+--	,OrgUrlCertificado				NVARCHAR (400)	
+--	--
+--	,DataFecha          DATETIME NOT NULL DEFAULT(GETDATE())
+--	,CONSTRAINT         [PK_EO_IdEsquemaData]	PRIMARY KEY CLUSTERED (IdEsquemaData)
+--	,CONSTRAINT         [FK_EO_IdEsquemaVista]  FOREIGN KEY (IdEsquemaVista) REFERENCES EsquemaVista(IdEsquemaVista)
+--);
