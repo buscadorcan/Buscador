@@ -11,6 +11,7 @@ namespace WebApp.Repositories.IRepositories
     List<ONA> FindAll();
     List<VwPais> FindAllPaises();
     Task<ONA?> FindByIdAsync(int Id);
+    List<ONA> GetListByONAsAsync(int idOna);
 
     }
 }

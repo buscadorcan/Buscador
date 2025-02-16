@@ -1,23 +1,23 @@
-/*----------------------------------------------------------------------------------------\
-|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
-|-----------------------------------------------------------------------------------------|
-| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
-\-----------------------------------------------------------------------------------------/
-  [App]				: Buscador Andino											
-	- Date          : 2K25.FEB.25	
-	- Author        : patricio.paccha														
-	- Version	    : 1.0										
-	- Description   : Vista para predecir palabras
-\----------------------------------------------------------------------------------------*/
-CREATE OR ALTER FUNCTION [dbo].[fnPredictWord] (@Prefix NVARCHAR(100))
---| 2K25.FEB.05 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0 
---| Descripción: Función para predecir palabras cuando se escribe en el buscador
-RETURNS @TopWords TABLE (Word NVARCHAR(max)) AS
-BEGIN
-    INSERT INTO @TopWords (Word)
-    SELECT DISTINCT TOP 10 FullTextData
-    FROM   [EsquemaFullText] (NOLOCK)
-    WHERE  FullTextData LIKE @Prefix + '%'
-	ORDER  BY 1 
-    RETURN
-END
+--/*----------------------------------------------------------------------------------------\
+--|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
+--|-----------------------------------------------------------------------------------------|
+--| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
+--\-----------------------------------------------------------------------------------------/
+--  [App]				: Buscador Andino											
+--	- Date          : 2K25.FEB.25	
+--	- Author        : patricio.paccha														
+--	- Version	    : 1.0										
+--	- Description   : Vista para predecir palabras
+--\----------------------------------------------------------------------------------------*/
+--CREATE OR ALTER FUNCTION [dbo].[fnPredictWord] (@Prefix NVARCHAR(100))
+----| 2K25.FEB.05 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0 
+----| Descripción: Función para predecir palabras cuando se escribe en el buscador
+--RETURNS @TopWords TABLE (Word NVARCHAR(max)) AS
+--BEGIN
+--    INSERT INTO @TopWords (Word)
+--    SELECT DISTINCT TOP 10 FullTextData
+--    FROM   [EsquemaFullText] (NOLOCK)
+--    WHERE  FullTextData LIKE @Prefix + '%'
+--	ORDER  BY 1 
+--    RETURN
+--END

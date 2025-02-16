@@ -1,4 +1,6 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Pages.Administracion.Esquemas;
 using ClientApp.Services;
 using ClientApp.Services.IService;
@@ -24,8 +26,12 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IDynamicService? iDynamicService { get; set; }
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
         //private List<ONAConexionDto>? listasHevd = null;
         private List<ONAConexionDto> listasHevd = new();
+        private bool isRolAdmin;
+
         private EventTrackingDto objEventTracking { get; set; } 
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
@@ -66,7 +72,17 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             if (listasHevd != null && iConexionService != null)
             {
-                listasHevd = await iConexionService.GetConexionsAsync() ?? new List<ONAConexionDto>();
+                var rolRelacionado = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                isRolAdmin = rolRelacionado == "KEY_USER_CAN";
+                if (isRolAdmin)
+                {
+                    listasHevd = await iConexionService.GetConexionsAsync() ?? new List<ONAConexionDto>();
+                }
+                else
+                {
+                    int IdOna = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                    listasHevd = await iConexionService.GetOnaConexionByOnaListAsync(IdOna) ?? new List<ONAConexionDto>();
+                }
             }
             // Ajusta la paginación si la lista está vacía o cambia
             if (listasHevd.Count > 0 && CurrentPage > TotalPages)

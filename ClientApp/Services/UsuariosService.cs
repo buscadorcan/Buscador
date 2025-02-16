@@ -69,8 +69,11 @@ namespace ClientApp.Services {
                 registro.RazonSocial = "";
             }
 
-
-            var content = JsonConvert.SerializeObject(registro);
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore 
+            };
+            var content = JsonConvert.SerializeObject(registro, settings);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             HttpResponseMessage response = null;
 
@@ -79,7 +82,8 @@ namespace ClientApp.Services {
                 // Si el IdUsuario es mayor a 0, realizamos un PUT (actualización)
                 if (registro.IdUsuario > 0)
                 {
-                    response = await _httpClient.PutAsync($"{url}/{registro.IdUsuario}", bodyContent);
+                    int idUsuario = registro.IdUsuario;
+                    response = await _httpClient.PutAsync($"{url}/{idUsuario}", bodyContent);
                 }
                 else
                 {

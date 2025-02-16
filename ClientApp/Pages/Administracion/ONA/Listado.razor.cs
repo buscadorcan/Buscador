@@ -1,4 +1,7 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -22,13 +25,26 @@ namespace ClientApp.Pages.Administracion.ONA
 
         [Inject]
         public NavigationManager? navigationManager { get; set; }
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
+        private bool isRolAdmin;
 
         // Método para cargar la lista de ONAs
         private async Task LoadONAs()
         {
             if (iONAservice != null)
             {
-                listaONAs = await iONAservice.GetONAsAsync();
+                var rolRelacionado = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                isRolAdmin = rolRelacionado == "KEY_USER_CAN";
+                if (isRolAdmin)
+                {
+                    listaONAs = await iONAservice.GetONAsAsync() ?? new List<OnaDto>();
+                }
+                else
+                {
+                    int IdOna = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                    listaONAs = await iONAservice.GetListByONAsAsync(IdOna) ?? new List<OnaDto>();
+                }
             }
             // Ajusta la paginación si la lista está vacía o cambia
             if (listaONAs.Count > 0 && CurrentPage > TotalPages)

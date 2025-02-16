@@ -255,48 +255,188 @@
     window.initHeatMaps = (mapsData, selectedCity = null) => {
         const createHeatMap = (elementId, data) => {
             if (typeof L === 'undefined') {
-                console.error("Leaflet.js no está cargado correctamente.");
+                console.error("❌ Leaflet.js no está cargado correctamente.");
                 return;
             }
 
-            const map = L.map(elementId).setView([20, 0], 2);
+            // Inicializa el mapa con una vista centrada en Sudamérica
+            const map = L.map(elementId).setView([-15, -60], 4);
 
+            // Capa base del mapa
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
+            // Ubicaciones predefinidas de las principales ciudades de Sudamérica
+            const coordenadasPredefinidas = {
+                // 🇦🇷 Argentina
+                "Buenos Aires, Argentina": [-34.6037, -58.3816],
+                "Córdoba, Argentina": [-31.4201, -64.1888],
+                "Rosario, Argentina": [-32.9468, -60.6393],
+                "Mendoza, Argentina": [-32.8902, -68.8441],
+                "Salta, Argentina": [-24.7821, -65.4232],
+
+                // 🇧🇴 Bolivia
+                "La Paz, Bolivia": [-16.5000, -68.1500],
+                "Santa Cruz de la Sierra, Bolivia": [-17.7833, -63.1833],
+                "Cochabamba, Bolivia": [-17.3936, -66.1573],
+                "Sucre, Bolivia": [-19.0333, -65.2627],
+                "Oruro, Bolivia": [-17.9833, -67.1500],
+
+                // 🇧🇷 Brasil
+                "Brasilia, Brasil": [-15.8267, -47.9218],
+                "São Paulo, Brasil": [-23.5505, -46.6333],
+                "Rio de Janeiro, Brasil": [-22.9068, -43.1729],
+                "Salvador, Brasil": [-12.9777, -38.5016],
+                "Fortaleza, Brasil": [-3.7319, -38.5267],
+                "Belo Horizonte, Brasil": [-19.9167, -43.9345],
+                "Manaus, Brasil": [-3.1190, -60.0217],
+                "Curitiba, Brasil": [-25.4296, -49.2713],
+                "Recife, Brasil": [-8.0476, -34.8770],
+                "Porto Alegre, Brasil": [-30.0346, -51.2177],
+
+                // 🇨🇱 Chile
+                "Santiago, Chile": [-33.4489, -70.6693],
+                "Valparaíso, Chile": [-33.0472, -71.6127],
+                "Concepción, Chile": [-36.8201, -73.0444],
+                "Antofagasta, Chile": [-23.6500, -70.4000],
+
+                // 🇨🇴 Colombia
+                "Bogotá, Colombia": [4.7110, -74.0721],
+                "Medellín, Colombia": [6.2442, -75.5812],
+                "Cali, Colombia": [3.4516, -76.5320],
+                "Barranquilla, Colombia": [10.9685, -74.7813],
+                "Cartagena, Colombia": [10.3910, -75.4794],
+                "Bucaramanga, Colombia": [7.1254, -73.1198],
+
+                // 🇪🇨 Ecuador
+                "Quito, Ecuador": [-0.2295, -78.5243],
+                "Guayaquil, Ecuador": [-2.1894, -79.8891],
+                "Cuenca, Ecuador": [-2.9006, -79.0045],
+                "Ambato, Ecuador": [-1.2417, -78.6197],
+                "Manta, Ecuador": [-0.9676, -80.7136],
+
+                // 🇬🇾 Guyana
+                "Georgetown, Guyana": [6.8013, -58.1551],
+
+                // 🇵🇾 Paraguay
+                "Asunción, Paraguay": [-25.2637, -57.5759],
+                "Ciudad del Este, Paraguay": [-25.5167, -54.6167],
+
+                // 🇵🇪 Perú
+                "Lima, Perú": [-12.0464, -77.0428],
+                "Arequipa, Perú": [-16.3988, -71.5350],
+                "Trujillo, Perú": [-8.1159, -79.0299],
+                "Cusco, Perú": [-13.5320, -71.9675],
+                "Chiclayo, Perú": [-6.7766, -79.8445],
+
+                // 🇸🇷 Surinam
+                "Paramaribo, Surinam": [5.8664, -55.1668],
+
+                // 🇺🇾 Uruguay
+                "Montevideo, Uruguay": [-34.9011, -56.1645],
+                "Punta del Este, Uruguay": [-34.9594, -54.9436],
+
+                // 🇻🇪 Venezuela
+                "Caracas, Venezuela": [10.4806, -66.9036],
+                "Maracaibo, Venezuela": [10.6333, -71.6333],
+                "Valencia, Venezuela": [10.1667, -68.0000],
+                "Barquisimeto, Venezuela": [10.0739, -69.3228],
+                "Maturín, Venezuela": [9.7500, -63.1767]
+            };
+
+            // Filtra los datos si se selecciona una ciudad específica
             const filteredData = selectedCity
                 ? data.filter(item => item.ciudad.toLowerCase() === selectedCity.toLowerCase())
                 : data;
 
+            // Almacena los puntos de calor
+            let heatMapData = [];
+
             filteredData.forEach(item => {
-                const marker = L.circleMarker([0, 0], {
-                    radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
-                    color: 'red',
-                    fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
-                    fillOpacity: 0.7,
-                    weight: 1
-                }).bindPopup(
-                    `<strong>Ciudad:</strong> ${item.ciudad}<br>
+                const key = `${item.ciudad}, ${item.pais}`;
+                if (coordenadasPredefinidas[key]) {
+                    // Genera el tamaño y color del marcador basado en el número de búsquedas
+                    const intensidad = Math.random() * 1.5; // Intensidad aleatoria
+                    heatMapData.push([...coordenadasPredefinidas[key], intensidad]);
+
+                    const marker = L.circleMarker(coordenadasPredefinidas[key], {
+                        radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+                        color: 'red',
+                        fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+                        fillOpacity: 0.7,
+                        weight: 1
+                    }).bindPopup(
+                        `<strong>Ciudad:</strong> ${item.ciudad}<br>
                          <strong>País:</strong> ${item.pais}<br>
                          <strong>Búsquedas:</strong> ${item.organizacion}`
-                );
+                    ).addTo(map);
 
-                fetch(`https://nominatim.openstreetmap.org/search?q=${item.ciudad},${item.pais}&format=json&limit=1`)
-                    .then(response => response.json())
-                    .then(locations => {
-                        if (locations.length > 0) {
-                            marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
-                        } else {
-                            console.error(`No se encontraron coordenadas para ${item.ciudad}, ${item.pais}`);
-                        }
-                    })
-                    .catch(err => console.error(`Error al buscar coordenadas para ${item.ciudad}, ${item.pais}:`, err));
+                    // Centrar el mapa en la primera ciudad encontrada
+                    map.setView(coordenadasPredefinidas[key], 5);
+                } else {
+                    console.warn(`⚠️ No hay coordenadas predefinidas para ${item.ciudad}, ${item.pais}`);
+                }
             });
+
+            // Agregar la capa de calor
+            if (heatMapData.length > 0) {
+                L.heatLayer(heatMapData, {
+                    radius: 25,
+                    blur: 15,
+                    maxZoom: 10
+                }).addTo(map);
+            }
         };
 
         createHeatMap('heatmap1', mapsData.heatmap1);
     };
+
+    // window.initHeatMaps = (mapsData, selectedCity = null) => {
+    //     const createHeatMap = (elementId, data) => {
+    //         if (typeof L === 'undefined') {
+    //             console.error("Leaflet.js no está cargado correctamente.");
+    //             return;
+    //         }
+
+    //         const map = L.map(elementId).setView([20, 0], 2);
+
+    //         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    //         }).addTo(map);
+
+    //         const filteredData = selectedCity
+    //             ? data.filter(item => item.ciudad.toLowerCase() === selectedCity.toLowerCase())
+    //             : data;
+
+    //         filteredData.forEach(item => {
+    //             const marker = L.circleMarker([0, 0], {
+    //                 radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+    //                 color: 'red',
+    //                 fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+    //                 fillOpacity: 0.7,
+    //                 weight: 1
+    //             }).bindPopup(
+    //                 `<strong>Ciudad:</strong> ${item.ciudad}<br>
+    //                      <strong>País:</strong> ${item.pais}<br>
+    //                      <strong>Búsquedas:</strong> ${item.organizacion}`
+    //             );
+
+    //             fetch(`https://nominatim.openstreetmap.org/search?q=${item.ciudad},${item.pais}&format=json&limit=1`)
+    //                 .then(response => response.json())
+    //                 .then(locations => {
+    //                     if (locations.length > 0) {
+    //                         marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
+    //                     } else {
+    //                         console.error(`No se encontraron coordenadas para ${item.ciudad}, ${item.pais}`);
+    //                     }
+    //                 })
+    //                 .catch(err => console.error(`Error al buscar coordenadas para ${item.ciudad}, ${item.pais}:`, err));
+    //         });
+    //     };
+
+    //     createHeatMap('heatmap1', mapsData.heatmap1);
+    // };
 
 
     window.initMap = (data) => {

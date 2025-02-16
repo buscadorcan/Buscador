@@ -12,8 +12,8 @@
         @if (mostrarMapa)
         { *@
             <!-- Columna del mapa (30%) -->
-        @if (markers.Any())
-        {
+@*         @if (markers.Any())
+        { *@
             <div class="col-md-4">
                 <GoogleMap @ref="@mapa"
                            ApiKey="@ApiKey"
@@ -23,7 +23,7 @@
                            Zoom="5"
                            Markers="markers" />
             </div>
-        }
+        @* } *@
        
 @*         <div class="col-md-4">
             <div id="map" style="width: 100%; height: 400px;"></div>
