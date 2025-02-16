@@ -1,4 +1,4 @@
-@using ClientApp.Models;
+﻿@using ClientApp.Models;
 @using SharedApp.Models.Dtos
 
 @if(Columnas != null) {
@@ -9,7 +9,18 @@
                     <Tooltip Title="@item.TooltipWeb"><span style="font-weight: bold;">@item.MostrarWeb</span> </Tooltip>
                 </HeaderContent>
                 <ChildContent>
-                    @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data
+                    @{
+                        var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;
+                        @((MarkupString)dato)
+                    }
+@*                     @if (item.IdHomologacion == 79)  // 🔹 Renderiza HTML solo si es ID 79
+                    {
+                        @((MarkupString)dato)
+                    }
+                    else
+                    {
+                        @(string.IsNullOrWhiteSpace(dato) ? "--" : dato)
+                    } *@
                 </ChildContent>
             </GridColumn>
         }
