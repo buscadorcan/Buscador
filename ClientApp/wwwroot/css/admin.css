@@ -193,7 +193,12 @@
     justify-content: center;
     padding: 12px 12px 8px 24px;
     position: relative;
-    width: 244px;
+/*    width: 244px;
+*/
+
+    display: block;
+    width: 200px; 
+    word-break: break-word;
 }
 
 .general .migration-id {
