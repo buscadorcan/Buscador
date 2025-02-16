@@ -214,43 +214,102 @@
     //     createLineChart('chart4', chartsData[3]);
     // };
 
+    // window.initHeatMaps = (mapsData) => {
+    //     const createHeatMap = (elementId, data) => {
+    //         if (typeof L === 'undefined') {
+    //             console.error("Leaflet.js no está cargado correctamente.");
+    //             return;
+    //         }
+
+    //         const map = L.map(elementId).setView([20, 0], 2);
+
+    //         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    //         }).addTo(map);
+
+    //         data.forEach(item => {
+    //             const marker = L.circleMarker([0, 0], {
+    //                 radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+    //                 color: 'red',
+    //                 fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+    //                 fillOpacity: 0.7,
+    //                 weight: 1
+    //             }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Calificados:</strong> ${item.organizacion}`);
+
+    //             fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
+    //                 .then(response => response.json())
+    //                 .then(locations => {
+    //                     if (locations.length > 0) {
+    //                         marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
+    //                     } else {
+    //                         console.error(`No se encontraron coordenadas para ${item.pais}`);
+    //                     }
+    //                 })
+    //                 .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
+    //         });
+    //     };
+
+    //     createHeatMap('heatmap1', mapsData.heatmap1);
+    // };
+
     window.initHeatMaps = (mapsData) => {
-        const createHeatMap = (elementId, data) => {
-            if (typeof L === 'undefined') {
-                console.error("Leaflet.js no está cargado correctamente.");
+    console.log("Datos recibidos en initHeatMaps:", mapsData);
+
+    if (!mapsData || !Array.isArray(mapsData.heatmap1)) {
+        console.error("Error: mapsData.heatmap1 no está definido o no es un array.");
+        return;
+    }
+
+    const createHeatMap = (elementId, data) => {
+        console.log("Datos del heatmap:", data);
+        if (!Array.isArray(data)) {
+            console.error(`Error: ${elementId} no es un array.`);
+            return;
+        }
+
+        if (typeof L === 'undefined') {
+            console.error("Leaflet.js no está cargado correctamente.");
+            return;
+        }
+
+        const map = L.map(elementId).setView([20, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        data.forEach(item => {
+            console.log("Procesando item:", item);
+            if (!item.pais || !item.organizacion) {
+                console.error("Error: item inválido", item);
                 return;
             }
 
-            const map = L.map(elementId).setView([20, 0], 2);
+            const marker = L.circleMarker([0, 0], {
+                radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+                color: 'red',
+                fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+                fillOpacity: 0.7,
+                weight: 1
+            }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Calificados:</strong> ${item.organizacion}`);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            data.forEach(item => {
-                const marker = L.circleMarker([0, 0], {
-                    radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
-                    color: 'red',
-                    fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
-                    fillOpacity: 0.7,
-                    weight: 1
-                }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Calificados:</strong> ${item.organizacion}`);
-
-                fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
-                    .then(response => response.json())
-                    .then(locations => {
-                        if (locations.length > 0) {
-                            marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
-                        } else {
-                            console.error(`No se encontraron coordenadas para ${item.pais}`);
-                        }
-                    })
-                    .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
-            });
-        };
-
-        createHeatMap('heatmap1', mapsData.heatmap1);
+            fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
+                .then(response => response.json())
+                .then(locations => {
+                    console.log(`Coordenadas de ${item.pais}:`, locations);
+                    if (locations.length > 0) {
+                        marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
+                    } else {
+                        console.error(`No se encontraron coordenadas para ${item.pais}`);
+                    }
+                })
+                .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
+        });
     };
+
+    createHeatMap('heatmap1', mapsData.heatmap1);
+};
+
 
     window.initMap = (data) => {
         // window.initCharts(data.chartsData);
