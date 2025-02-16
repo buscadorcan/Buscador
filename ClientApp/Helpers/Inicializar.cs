@@ -3,14 +3,11 @@ namespace ClientApp.Helpers
     public static class Inicializar
     {
         //public const string UrlBaseApi = "https://localhost:7116/"; 
-<<<<<<< HEAD
-        public const string UrlBaseApi = "http://216.172.100.184/Webapp/";
+        //public const string UrlBaseApi = "http://216.172.100.184/Webapp/";
         //public const string UrlBaseApi = "https://localhost:7154/";
-=======
         //public const string UrlBaseApi = "http://216.172.100.184/Webapp/";
         public const string UrlBaseApi = "https://localhost:7154/";
         //public const string UrlBaseApiBa = "https://localhost:7154/";
->>>>>>> bb2425f2a0a112828ed91f42c63111462fdb2e91
         public const string Token_Local = "JWT Token";
         public const string Datos_Usuario_Nombre_Local = "Nombre Usuario";
         public const string Datos_Usuario_Apellido_Local = "Apellido Usuario";

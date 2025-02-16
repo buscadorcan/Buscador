@@ -206,8 +206,9 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 {
                     if (String.IsNullOrEmpty(usuario.Clave))
                     {
-                        toastService?.CreateToastMessage(ToastType.Success, "Debe ingresar la clave");
+                        toastService?.CreateToastMessage(ToastType.Info, "Debe ingresar la clave");
                         navigationManager?.NavigateTo("/nuevo-usuario");
+                        saveButton.HideLoading();
                         return;
                     }
                 }
