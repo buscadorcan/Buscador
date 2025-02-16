@@ -21,7 +21,7 @@
               PageSizeSelectorVisible="true"
               PageSizeSelectorItems="@(new int[] { 5, 10, 20, 30 })"
               ItemsPerPageText="Items por página">
-            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="ONA">
+            <GridColumn TItem="BuscadorResultadoDataDto" HeaderText="Informacion de Organismos de Acreditación" class="grid-header">
                 <Button Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" @onclick="() => showModalOna(context)">
                     <!-- Usa el diccionario precargado para obtener la URL del ícono -->
                     <img src="@(iconUrls.ContainsKey(context.IdONA.GetValueOrDefault()) ? iconUrls[context.IdONA.GetValueOrDefault()]

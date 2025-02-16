@@ -1,4 +1,5 @@
-﻿using ClientApp.Services.IService;
+﻿using ClientApp.Helpers;
+using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
 
@@ -14,6 +15,7 @@ namespace ClientApp.Pages.BuscadorCan
         [Inject]
         private ICatalogosService iCatalogoService { get; set; } = default!;
 
+        private string url = Inicializar.UrlBaseApi;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -23,7 +25,7 @@ namespace ClientApp.Pages.BuscadorCan
                 if (!string.IsNullOrEmpty(onaSeleccionado?.UrlIcono) && onaSeleccionado.UrlIcono.Contains("filePath"))
                 {
                     var iconoJson = System.Text.Json.JsonDocument.Parse(onaSeleccionado.UrlIcono);
-                    onaSeleccionado.UrlIcono = iconoJson.RootElement.GetProperty("filePath").GetString();
+                    onaSeleccionado.UrlIcono = url + iconoJson.RootElement.GetProperty("filePath").GetString();
                 }
             }
             catch (Exception ex)
