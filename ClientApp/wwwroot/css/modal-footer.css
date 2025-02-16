@@ -1,0 +1,20 @@
+﻿.modal-footer {
+    background-color: #f8f9fa; /* Color de fondo */
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #dee2e6;
+}
+
+    .modal-footer button {
+        margin-left: 10px !important;
+        font-family: var(--font-family-inter-regular) !important;
+        font-size: var(--font-size-m) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+.modal-scroll {
+    max-height: 400px; /* Altura máxima del modal */
+    overflow-y: auto; /* Habilita el scroll vertical */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ddd; /* Bordes ligeros */
+}

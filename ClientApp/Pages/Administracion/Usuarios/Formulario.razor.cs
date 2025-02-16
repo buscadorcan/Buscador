@@ -202,7 +202,15 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             if (iUsuariosService != null)
             {
-                
+                if (usuario.IdUsuario <= 0)
+                {
+                    if (String.IsNullOrEmpty(usuario.Clave))
+                    {
+                        toastService?.CreateToastMessage(ToastType.Success, "Debe ingresar la clave");
+                        navigationManager?.NavigateTo("/nuevo-usuario");
+                        return;
+                    }
+                }
                 var result = await iUsuariosService.RegistrarOActualizar(usuario);
 
                 if (result.registroCorrecto)

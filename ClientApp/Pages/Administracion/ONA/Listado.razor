@@ -14,31 +14,7 @@
     <div class="genetal title">
         <h2 class="title headlineheadline2-h2">Administración de ONA</h2>
     </div>
-    
-@* <div class="text-end my-3 d-flex justify-content-between">
-    <!-- Botón de Exportar -->
-    <div>
-        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
-            <Icon Name="IconName.FileEarmarkArrowDown" />
-            <span class="ms-2 btnExp">Exportar a Excel</span>
-        </Button>
-    </div>
 
-    <!-- Botón Crear Nuevo -->
-    <div class="button-container">
-        <Button Type="ButtonType.Link" class="button-2" To="/nuevo-ona">
-            <div class="button-3 headingheadline4-h4">Crear nuevo ona</div>
-        </Button>
-    </div>
-</div> *@
-<style>
-    .btnExp {
-        font-family: var(--font-family-inter-regular) !important;
-        font-size: var(--font-size-m) !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-    }
-</style>
 <div class="text-end my-3 d-flex justify-content-between">
     <div>
         <!-- Botón Exportar a Excel -->
@@ -61,70 +37,71 @@
         </Button>
     </div>
 </div>
-    <!-- Card Body -->
-<div class="table table-1">
+
+ <div class="table table-1">
     <div class="table-heading table-1">
-        <div class="table-heading-1 table-heading-10">
+        <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(OnaDto.RazonSocial))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Razón Social</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Razón Social @(sortColumn == nameof(OnaDto.RazonSocial) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-10">
+
+        <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(OnaDto.Siglas))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Siglas</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Siglas @(sortColumn == nameof(OnaDto.Siglas) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-10">
+
+        <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(OnaDto.Ciudad))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Ciudad</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Ciudad @(sortColumn == nameof(OnaDto.Ciudad) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-10">
+
+        <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(OnaDto.Correo))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Correo</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Correo @(sortColumn == nameof(OnaDto.Correo) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-10">
+
+        <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(OnaDto.Direccion))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Dirección</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-5.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Dirección @(sortColumn == nameof(OnaDto.Direccion) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-10">
+
+        <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(OnaDto.PaginaWeb))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Página Web</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-6.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Página Web @(sortColumn == nameof(OnaDto.PaginaWeb) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-10">
+
+        <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(OnaDto.Telefono))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Teléfono</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-7.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Teléfono @(sortColumn == nameof(OnaDto.Telefono) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
+
         <div class="table-heading-1 table-heading-10">
             <div class="header-label-1 header-label-4">
                 <div class="label-heading headingheadline5-h5">Editar</div>
             </div>
         </div>
+
         <div class="table-heading-1 table-heading-10">
             <div class="header-label-1 header-label-4">
                 <div class="label-heading headingheadline5-h5">Eliminar</div>
@@ -168,7 +145,6 @@
                 </div>
             }
         </div>
-
         <!-- Controles de paginación -->
         <div class="pagination-container">
             <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
@@ -181,7 +157,6 @@
                 ⏩
             </button>
         </div>
-
     }
     else
     {
@@ -189,28 +164,26 @@
     }
 </div>
 
-
-<script>
-
-    window.downloadFile = (fileName, fileType, base64) => {
-        const link = document.createElement("a");
-        link.href = `data:${fileType};base64,` + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-    window.downloadExcel = (fileName, base64) => {
-        const link = document.createElement("a");
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-</script>
-
 @code {
+    private string sortColumn = nameof(OnaDto.RazonSocial);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        listaONAs = sortAscending
+            ? listaONAs.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+            : listaONAs.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+    }
 
     private async Task ExportarExcel()
     {

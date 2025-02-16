@@ -25,7 +25,12 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<OnaDto>>>()).Result;
         }
-
+        public async Task<List<OnaDto>> GetListByONAsAsync(int idOna)
+        {
+            var response = await _httpClient.GetAsync($"{url}/Lista/{idOna}");
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<OnaDto>>>()).Result;
+        }
         public async Task<OnaDto> GetONAsAsync(int IdONA)
         {
             var response = await _httpClient.GetAsync($"{url}/{IdONA}");

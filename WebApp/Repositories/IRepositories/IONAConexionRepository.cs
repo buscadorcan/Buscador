@@ -11,7 +11,6 @@ namespace WebApp.Repositories.IRepositories
         ONAConexion? FindByIdONA(int IdONA);
         Task<ONAConexion?> FindByIdONAAsync(int IdONA);
         List<ONAConexion> FindAll();
-    
-
+        List<ONAConexion> GetOnaConexionByOnaListAsync(int IdONA);
     }
 }

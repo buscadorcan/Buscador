@@ -33,22 +33,22 @@
 
 <div class="tabla-1 tabla-2">
     <div class="table-heading table-1">
-        <div class="table-heading-1 table-heading-11" style="width:50% !important">
+        <div class="table-heading-1 table-heading-11 sortable-header" style="width:50% !important" @onclick="() => OrdenarPor(nameof(HomologacionDto.MostrarWeb))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Texto a Mostrar en la Web @(sortColumn == nameof(HomologacionDto.MostrarWeb) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-11" style="width:50% !important">
+
+        <div class="table-heading-1 table-heading-11 sortable-header" style="width:50% !important" @onclick="() => OrdenarPor(nameof(HomologacionDto.TooltipWeb))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Tooltip Web</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Tooltip Web @(sortColumn == nameof(HomologacionDto.TooltipWeb) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
+
         <div class="table-heading-1 table-heading-11" style="width:20% !important">
             <div class="header-label-1 header-label-4">
                 <div class="label-heading headingheadline5-h5">Editar</div>
@@ -65,8 +65,12 @@
                     <div class="componente">
                         <div class="row-1 row-15">
                             <div class="ads-rules-list @(homologacion.MostrarWebOrden == 1 ? "table-primary" : "")">
-                                <div class="cell cell-1" style="width:50% !important"><div class="cell-text cell-1 bodybody-small">@homologacion.MostrarWeb</div></div>
-                                <div class="cell cell-1" style="width:50% !important"><div class="cell-text cell-1 bodybody-small">@homologacion.TooltipWeb</div></div>
+                                <div class="cell cell-1" style="width:50% !important">
+                                    <div class="cell-text cell-1 bodybody-small">@homologacion.MostrarWeb</div>
+                                </div>
+                                <div class="cell cell-1" style="width:50% !important">
+                                    <div class="cell-text cell-1 bodybody-small">@homologacion.TooltipWeb</div>
+                                </div>
                                 <div class="cell cell-1" style="width:20% !important">
                                     <Tooltip Title="Editar registro">
                                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{homologacion.IdHomologacion}")" Size="ButtonSize.Small">
@@ -80,6 +84,7 @@
                 </div>
             }
         </div>
+
         <!-- Controles de paginación -->
         <div class="pagination-container">
             <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
@@ -98,15 +103,6 @@
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
-<style>
-    .btnExp {
-        font-family: var(--font-family-inter-regular) !important;
-        font-size: var(--font-size-m) !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-    }
-</style>
-
 <div class="form-row py-2">
     <Alert Color="AlertColor.Secondary" Dismissable="false">
         <Icon Name="IconName.ExclamationTriangleFill" class="me-2"></Icon>
@@ -114,27 +110,27 @@
     </Alert>
 </div>
 
-<script>
-    window.downloadFile = (fileName, fileType, base64) => {
-        const link = document.createElement("a");
-        link.href = `data:${fileType};base64,` + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-    window.downloadExcel = (fileName, base64) => {
-        const link = document.createElement("a");
-        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + base64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-</script>
-
 @code {
+    private string sortColumn = nameof(HomologacionDto.MostrarWeb);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        listaHomologacions = sortAscending
+            ? listaHomologacions.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+            : listaHomologacions.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+    }
+
     private async Task ExportarExcel()
     {
         if (listaHomologacions == null || !listaHomologacions.Any())

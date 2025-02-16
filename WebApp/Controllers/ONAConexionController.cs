@@ -36,6 +36,23 @@ namespace WebApp.Controllers
             }
         }
         [Authorize]
+        [HttpGet("ListaOna/{idOna:int}")]
+        public IActionResult GetOnaConexionByOnaListAsync(int idOna)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<ONAConexionDto>>
+                {
+                    Result = _iRepo.GetOnaConexionByOnaListAsync(idOna).Select(item => _mapper.Map<ONAConexionDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetOnaConexionByOnaListAsync));
+            }
+        }     
+
+        [Authorize]
         [HttpGet("{id:int}")]
         public IActionResult FindById(int Id)
         {
