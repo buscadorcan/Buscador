@@ -38,6 +38,22 @@ namespace WebApp.Controllers
         }
 
         [Authorize]
+        [HttpGet("Lista/{idOna:int}")]
+        public IActionResult GetListByONAsAsync(int idOna)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<OnaDto>>
+                {
+                    Result = _iRepo.GetListByONAsAsync(idOna).Select(item => _mapper.Map<OnaDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetListByONAsAsync));
+            }
+        }
+        [Authorize]
         [HttpGet("paises")]
         public IActionResult FindAllPais()
         {

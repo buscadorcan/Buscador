@@ -50,6 +50,16 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.ONA.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
         }
+        public List<ONA> GetListByONAsAsync(int idOna)
+        {
+            return ExecuteDbOperation(context =>
+                context.ONA
+                    .AsNoTracking()
+                    .Where(c => c.IdONA == idOna && c.Estado == "A")
+                    .ToList()
+            );
+        }
+
         public List<VwPais> FindAllPaises()
         {
             return ExecuteDbOperation(context => context.VwPais.AsNoTracking().ToList());
