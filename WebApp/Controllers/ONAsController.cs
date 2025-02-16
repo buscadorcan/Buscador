@@ -20,7 +20,7 @@ namespace WebApp.Controllers
     {
         private readonly IONARepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
-        [Authorize]
+
         [HttpGet]
         public IActionResult FindAll()
         {
@@ -54,7 +54,7 @@ namespace WebApp.Controllers
             }
         }
 
-        [Authorize]
+
         [HttpGet("{id:int}")]
         public IActionResult FindById(int Id)
         {

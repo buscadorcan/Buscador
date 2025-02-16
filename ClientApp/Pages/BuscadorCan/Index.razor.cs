@@ -225,6 +225,41 @@ namespace ClientApp.Pages.BuscadorCan
             TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
             StateHasChanged();
         }
+
+        async Task LimpiarFiltros()
+        {
+            try
+            {
+                // 1. Limpiar las selecciones activas
+                selectedValues.Clear();
+
+                // 2. Resetear la lista de opciones
+                listadeOpciones.Clear();
+                listaEtiquetasFiltros.Clear();
+
+                // 3. Volver a cargar los filtros desde el backend
+                if (iCatalogosService != null)
+                {
+                    listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
+
+                    if (listaEtiquetasFiltros != null)
+                    {
+                        foreach (var opciones in listaEtiquetasFiltros)
+                        {
+                            listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<vwFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
+                        }
+                    }
+                }
+
+                // 4. Forzar la actualización de la UI en Blazor
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al recargar los filtros: {e.Message}");
+            }
+        }
+
     }
 
     public class FiltrosBusquedaSeleccion

@@ -6,7 +6,11 @@
     {
         <Tab Active="true" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
             <TitleTemplate>
-                <Tooltip Title="">@esquema</Tooltip>
+                <Tooltip Title="" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 9px !important;">
+                    <span style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 9px !important; color: inherit;">
+                        @esquema
+                    </span>
+                </Tooltip>
             </TitleTemplate>
             <Content>
 
@@ -22,7 +26,7 @@
                         {
                             <GridColumn TItem="DataEsquemaDatoBuscar" PropertyName="@item.MostrarWeb">
                                 <HeaderContent>
-                                    <Tooltip Title="@item.TooltipWeb">@item.MostrarWeb</Tooltip>
+                                    <Tooltip Title="@item.TooltipWeb"><span style="font-weight: bold;">@item.MostrarWeb</span></Tooltip>
                                 </HeaderContent>
                                 <ChildContent>
                                     @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data

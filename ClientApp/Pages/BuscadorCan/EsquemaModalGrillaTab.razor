@@ -6,7 +6,7 @@
         @foreach(var item in Columnas) {
             <GridColumn TItem="DataHomologacionEsquema" PropertyName="@item.MostrarWeb">
                 <HeaderContent>
-                    <Tooltip Title="@item.TooltipWeb">@item.MostrarWeb</Tooltip>
+                    <Tooltip Title="@item.TooltipWeb"><span style="font-weight: bold;">@item.MostrarWeb</span> </Tooltip>
                 </HeaderContent>
                 <ChildContent>
                     @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data

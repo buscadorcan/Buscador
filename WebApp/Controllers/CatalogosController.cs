@@ -115,7 +115,7 @@ namespace WebApp.Controllers
         /// Obtiene el esquema de los grupos. Requiere autorización.
         /// </summary>
         /// <returns>Una lista con el esquema de los grupos.</returns>
-        [Authorize]
+        /// 
         [HttpGet("grupos")]
         public IActionResult ObtenerGrupos()
         {
@@ -136,7 +136,7 @@ namespace WebApp.Controllers
         /// Obtiene el esquema de roles. Requiere autorización.
         /// </summary>
         /// <returns>Una lista con el esquema de roles.</returns>
-        //[Authorize]
+
         [HttpGet("roles")]
         public IActionResult ObtenerVwRol()
         {
@@ -158,7 +158,7 @@ namespace WebApp.Controllers
         /// Obtiene el esquema de roles. Requiere autorización.
         /// </summary>
         /// <returns>Una lista con el esquema de roles.</returns>
-        [Authorize]
+
 
         [HttpGet("onas")]
         public IActionResult ObtenerOna()
@@ -180,7 +180,7 @@ namespace WebApp.Controllers
         /// Obtiene los datos para el menu. Requiere autorización.
         /// </summary>
         /// <returns>Una lista con el esquema de menus.</returns>
-        [Authorize]
+
         [HttpGet("menu")]
         public IActionResult ObtenerVwMenu()
         {

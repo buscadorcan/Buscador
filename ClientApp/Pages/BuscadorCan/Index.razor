@@ -118,6 +118,13 @@
                     <div class="container-3">
                         <div class="container">
                             <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <button class="btn btn-primary"
+                                            style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;"
+                                            @onclick="LimpiarFiltros">
+                                        🗑 Limpiar
+                                    </button>
+                                </div>
                                 <!-- Generar Selects Dinámicamente -->
                                 @if (listadeOpciones != null)
                                 {
@@ -298,7 +305,32 @@
                             </div>
                         </div>
                     </div>
-                    <img class="step-container-3" src="login/img/step-container.svg" />
+                    <div class="data-table-2">
+                        <div class="step-container-2">
+                            <div class="step-number-wrapper">
+                                <div class="step-number"><div class="text-wrapper">03</div></div>
+                            </div>
+                            <div class="left-wrapper">
+                                <div class="left-2">
+                                    <div class="razon-social"><div class="step-description">Usuario experto</div></div>
+                                    <div class="div">
+                                        <div class="frame">
+                                            <p class="resultados">
+                                                Si eres un usuario experto y
+                                                necesitas filtrar por norma
+                                                Acreditada, Estado o
+                                                Reconocimiento, despliega y
+                                                selecciona la opción.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                  
+                   @*  <img class="step-container-3" src="login/img/step-container.svg" /> *@
                 </div>
             </div>
         }
