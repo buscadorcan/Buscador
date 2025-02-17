@@ -32,9 +32,10 @@ namespace ClientApp.Pages.BuscadorCan
         private bool mostrarIndexCard = false; // Para alternar entre tarjeta de índice y grilla
         private string searchTerm = string.Empty;
         private string textoFiltrosAvanzados = "Filtros Avanzados";
-        private bool mostrarBuscador = false;
+        //private bool mostrarBuscador = false;
         private bool mostrarPublicidad = true;
         private bool esModoGrilla = true;
+        private bool mostrarBuscador = false;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -176,11 +177,41 @@ namespace ClientApp.Pages.BuscadorCan
                 : "Filtros Avanzados";
         }
 
-        private void AlternarIndexCard()
+        private async Task AlternarIndexCard()
         {
-            mostrarIndexCard = !mostrarIndexCard;
-            esModoGrilla = !mostrarIndexCard; // Actualiza la bandera para definir si la búsqueda va a grilla o tarjetas
+            mostrarIndexCard = true;
+            esModoGrilla = false;
 
+            if (cardComponentRef != null) // Asegurar que el componente existe
+            {
+                // Si ya hay datos cargados, no se vuelve a buscar
+                if (cardComponentRef.ResultadoData == null || !cardComponentRef.ResultadoData.Any())
+                {
+                    cardComponentRef.SearchTerm = searchTerm;
+                    cardComponentRef.IsExactSearch = isExactSearch;
+                    cardComponentRef.SelectedValues = selectedValues;
+                    await cardComponentRef.BuscarPalabraRequest();
+                }
+            }
+            StateHasChanged();
+        }
+
+        private async Task AlternarIndexGrilla()
+        {
+            mostrarIndexCard = false;
+            esModoGrilla = true;
+
+            if (childComponentRef != null) // Asegurar que el componente existe
+            {
+                // Si ya hay datos cargados, no se vuelve a buscar
+                if (childComponentRef.grid != null)
+                {
+                    childComponentRef.ModoBuscar = isExactSearch;
+                    childComponentRef.selectedValues = selectedValues;
+                    await childComponentRef.grid.ResetPageNumber();
+                }
+            }
+            StateHasChanged();
         }
         private class Seleccion
         {
