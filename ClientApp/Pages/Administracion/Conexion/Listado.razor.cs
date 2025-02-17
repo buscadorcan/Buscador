@@ -1,12 +1,9 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
 using ClientApp.Helpers;
-using ClientApp.Pages.Administracion.Esquemas;
-using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
-using System.Runtime.CompilerServices;
 
 namespace ClientApp.Pages.Administracion.Conexion
 {
@@ -15,11 +12,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
         private bool showModal; // Controlar la visibilidad de la ventana modal  
         private string modalMessage;
-        private int? selectedIdOna;    
+        private int? selectedIdOna;
         [Inject]
         public Services.ToastService? toastService { get; set; }
         List<ToastMessage> messages = new();
-        private Grid<ONAConexionDto>? grid;
+
         [Inject]
         private IConexionService? iConexionService { get; set; }
         [Inject]
@@ -32,7 +29,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         private List<ONAConexionDto> listasHevd = new();
         private bool isRolAdmin;
 
-        private EventTrackingDto objEventTracking { get; set; } 
+        private EventTrackingDto objEventTracking { get; set; }
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
         private int PageSize = 10; // Cantidad de registros por página
@@ -135,7 +132,6 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                 if (isConnected)
                 {
-                    await grid.RefreshDataAsync();
                     return true; // Devuelve true si la conexión fue exitosa
                 }
             }
@@ -190,7 +186,6 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                     if (migracion)
                     {
-                        await grid.RefreshDataAsync();
                         return true;
                     }
                 }
@@ -226,7 +221,7 @@ namespace ClientApp.Pages.Administracion.Conexion
                 var respuesta = await iConexionService.EliminarConexion(selectedIdOna.Value);
                 if (respuesta.registroCorrecto)
                 {
-                    CloseModal();                    
+                    CloseModal();
                     listasHevd = listasHevd.Where(c => c.IdONA != idOna).ToList();
                     await OnInitializedAsync();
                 }

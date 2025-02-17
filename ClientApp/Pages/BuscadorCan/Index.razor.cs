@@ -182,19 +182,23 @@ namespace ClientApp.Pages.BuscadorCan
             mostrarIndexCard = true;
             esModoGrilla = false;
 
-            if (cardComponentRef != null) // Asegurar que el componente existe
+            // Esperar a que la UI se actualice y el componente se renderice
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(50); // Pequeño retraso para dar tiempo a Blazor a asignar la referencia
+
+            if (cardComponentRef != null) // Ahora `cardComponentRef` debería estar disponible
             {
-                // Si ya hay datos cargados, no se vuelve a buscar
-                if (cardComponentRef.ResultadoData == null || !cardComponentRef.ResultadoData.Any())
-                {
                     cardComponentRef.SearchTerm = searchTerm;
                     cardComponentRef.IsExactSearch = isExactSearch;
                     cardComponentRef.SelectedValues = selectedValues;
                     await cardComponentRef.BuscarPalabraRequest();
-                }
             }
-            StateHasChanged();
+            else
+            {
+                Console.WriteLine("cardComponentRef aún no está inicializado.");
+            }
         }
+
 
         private async Task AlternarIndexGrilla()
         {

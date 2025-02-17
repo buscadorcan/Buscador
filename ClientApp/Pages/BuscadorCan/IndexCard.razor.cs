@@ -98,12 +98,6 @@ namespace ClientApp.Pages.BuscadorCan
 
         public async Task BuscarPalabraRequest()
         {
-            if (ResultadoData != null && ResultadoData.Any())
-            {
-                Console.WriteLine("Datos ya cargados, evitando nueva consulta...");
-                return; // No hace nada si ya hay datos
-            }
-
             await CargarResultados(1, pageSize); // Llamar directamente con la paginación inicial
             StateHasChanged();
             await ObtenerCoordenadasYMarcarMapa();
@@ -168,6 +162,7 @@ namespace ClientApp.Pages.BuscadorCan
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", item);
             modal.Size = ModalSize.ExtraLarge;
+            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
@@ -176,6 +171,7 @@ namespace ClientApp.Pages.BuscadorCan
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
             modal.Size = ModalSize.Regular;
+            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 

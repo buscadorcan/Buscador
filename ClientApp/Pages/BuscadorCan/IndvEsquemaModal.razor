@@ -29,7 +29,19 @@
                                     <Tooltip Title="@item.TooltipWeb"><span style="font-weight: bold;">@item.MostrarWeb</span></Tooltip>
                                 </HeaderContent>
                                 <ChildContent>
-                                    @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data
+                                    @{
+                                        var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;
+                                    }
+                                    @if (dato != null && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
+                                    {
+                                        <!-- Renderizamos la fórmula LaTeX -->
+                                        <span class="latex-formula">@((MarkupString)($"\\({dato}\\)"))</span>
+                                    }
+                                    else
+                                    {
+                                        <!-- Renderizamos texto normal -->
+                                        @((MarkupString)dato)
+                                    }
                                 </ChildContent>
                             </GridColumn>
                         }

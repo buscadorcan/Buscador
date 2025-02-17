@@ -11,16 +11,17 @@
                 <ChildContent>
                     @{
                         var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;
-                        @((MarkupString)dato)
                     }
-@*                     @if (item.IdHomologacion == 79)  // 🔹 Renderiza HTML solo si es ID 79
+                    @if (dato != null && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
                     {
-                        @((MarkupString)dato)
+                    <!-- Renderizamos la fórmula LaTeX -->
+                    <span class="latex-formula">@((MarkupString)($"\\({dato}\\)"))</span>
                     }
                     else
                     {
-                        @(string.IsNullOrWhiteSpace(dato) ? "--" : dato)
-                    } *@
+                    <!-- Renderizamos texto normal -->
+                        @((MarkupString)dato)
+                    }
                 </ChildContent>
             </GridColumn>
         }
