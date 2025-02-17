@@ -265,10 +265,21 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
-                // 1. Limpiar las selecciones activas
-                selectedValues.Clear();
+                // 1. Recorrer cada filtro seleccionado y deseleccionarlo
+                foreach (var filtro in selectedValues.ToList())  // Convertimos a lista para evitar modificación en el `foreach`
+                {
+                    foreach (var valor in filtro.Seleccion.ToList())  // Convertimos a lista para evitar modificación durante la iteración
+                    {
+                        int comboIndex = listaEtiquetasFiltros.FindIndex(f => f.CodigoHomologacion == filtro.CodigoHomologacion);
+                        if (comboIndex >= 0)
+                        {
+                            CambiarSeleccion(valor, comboIndex, false); // Desmarcar
+                        }
+                    }
+                }
 
-                // 2. Resetear la lista de opciones
+                // 2. Limpiar listas de filtros y opciones
+                selectedValues.Clear();
                 listadeOpciones.Clear();
                 listaEtiquetasFiltros.Clear();
 
@@ -286,14 +297,15 @@ namespace ClientApp.Pages.BuscadorCan
                     }
                 }
 
-                // 4. Forzar la actualización de la UI en Blazor
+                // 4. Forzar la actualización de la UI
                 StateHasChanged();
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error al recargar los filtros: {e.Message}");
+                Console.WriteLine($"Error al limpiar los filtros: {e.Message}");
             }
         }
+
 
     }
 
