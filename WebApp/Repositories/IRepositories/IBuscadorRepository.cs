@@ -12,6 +12,5 @@ namespace WebApp.Repositories.IRepositories
         List<FnPredictWordsDto> FnPredictWords(string word);
         bool ValidateWords(List<string> words);
         fnEsquemaCabeceraDto? FnEsquemaCabecera(int IdEsquemadata);
-        void AddEventTracking(EventTrackingDto eventTracking);
     }
 }
