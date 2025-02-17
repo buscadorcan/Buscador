@@ -253,9 +253,9 @@
     };
 
     window.initHeatMaps = (mapsData, selectedCity = null) => {
-        const createHeatMap = (elementId, data) => {
+    const createHeatMap = (elementId, data) => {
             if (typeof L === 'undefined') {
-                console.error("❌ Leaflet.js no está cargado correctamente.");
+                console.error("Leaflet.js no está cargado correctamente.");
                 return;
             }
 
@@ -375,7 +375,7 @@
                     // Centrar el mapa en la primera ciudad encontrada
                     map.setView(coordenadasPredefinidas[key], 5);
                 } else {
-                    console.warn(`⚠️ No hay coordenadas predefinidas para ${item.ciudad}, ${item.pais}`);
+                    console.warn(`No hay coordenadas predefinidas para ${item.ciudad}, ${item.pais}`);
                 }
             });
 
@@ -392,53 +392,7 @@
         createHeatMap('heatmap1', mapsData.heatmap1);
     };
 
-    // window.initHeatMaps = (mapsData, selectedCity = null) => {
-    //     const createHeatMap = (elementId, data) => {
-    //         if (typeof L === 'undefined') {
-    //             console.error("Leaflet.js no está cargado correctamente.");
-    //             return;
-    //         }
-
-    //         const map = L.map(elementId).setView([20, 0], 2);
-
-    //         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    //         }).addTo(map);
-
-    //         const filteredData = selectedCity
-    //             ? data.filter(item => item.ciudad.toLowerCase() === selectedCity.toLowerCase())
-    //             : data;
-
-    //         filteredData.forEach(item => {
-    //             const marker = L.circleMarker([0, 0], {
-    //                 radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
-    //                 color: 'red',
-    //                 fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
-    //                 fillOpacity: 0.7,
-    //                 weight: 1
-    //             }).bindPopup(
-    //                 `<strong>Ciudad:</strong> ${item.ciudad}<br>
-    //                      <strong>País:</strong> ${item.pais}<br>
-    //                      <strong>Búsquedas:</strong> ${item.organizacion}`
-    //             );
-
-    //             fetch(`https://nominatim.openstreetmap.org/search?q=${item.ciudad},${item.pais}&format=json&limit=1`)
-    //                 .then(response => response.json())
-    //                 .then(locations => {
-    //                     if (locations.length > 0) {
-    //                         marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
-    //                     } else {
-    //                         console.error(`No se encontraron coordenadas para ${item.ciudad}, ${item.pais}`);
-    //                     }
-    //                 })
-    //                 .catch(err => console.error(`Error al buscar coordenadas para ${item.ciudad}, ${item.pais}:`, err));
-    //         });
-    //     };
-
-    //     createHeatMap('heatmap1', mapsData.heatmap1);
-    // };
-
-
+    
     window.initMap = (data) => {
         window.initCharts(data.chartsData);
         window.initHeatMaps(data.mapsData);
