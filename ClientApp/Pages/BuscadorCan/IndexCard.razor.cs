@@ -85,7 +85,9 @@ namespace ClientApp.Pages.BuscadorCan
                 }
                 Console.WriteLine($"Error en OnInitializedAsync");
                 // Cargar resultados iniciales
+                StateHasChanged();
                 await BuscarPalabraRequest();
+
             }
             catch (Exception ex)
             {
@@ -96,6 +98,12 @@ namespace ClientApp.Pages.BuscadorCan
 
         public async Task BuscarPalabraRequest()
         {
+            if (ResultadoData != null && ResultadoData.Any())
+            {
+                Console.WriteLine("Datos ya cargados, evitando nueva consulta...");
+                return; // No hace nada si ya hay datos
+            }
+
             await CargarResultados(1, pageSize); // Llamar directamente con la paginación inicial
             StateHasChanged();
             await ObtenerCoordenadasYMarcarMapa();

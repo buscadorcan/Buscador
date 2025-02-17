@@ -100,13 +100,20 @@
                         </div>
                         <div class="divider-2"></div>
                         <div class="view-mode">
-                            <div class="tabs">
-                                <img class="img-2" src="login/img/format-list-bulleted-5.svg" />
-                            </div>
-                            <div class="tabs-2">
-                                <img class="img-2" src="login/img/location-on.svg" @onclick="AlternarIndexCard"
-                                     style="border: @(mostrarIndexCard ? "2px solid green" : "none"); cursor: pointer;" />
-                            </div>
+                            @if (mostrarIndexCard)
+                            {
+                                <div class="tabs">
+                                    <img class="img-2" src="login/img/format-list-bulleted-5.svg" @onclick="AlternarIndexGrilla"
+                                         style="border: 2px solid green; cursor: pointer;" />
+                                </div>
+                            }
+                            @if (!mostrarIndexCard)
+                            {
+                                <div class="tabs-2">
+                                    <img class="img-2" src="login/img/location-on.svg" @onclick="AlternarIndexCard"
+                                         style="border: 2px solid green; cursor: pointer;" />
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
