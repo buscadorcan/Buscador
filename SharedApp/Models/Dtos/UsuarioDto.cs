@@ -22,7 +22,7 @@ namespace SharedApp.Models.Dtos
     [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
     public string? Email { get; set; } = "";
 
-        [Required(ErrorMessage = "La clave es obligatoria.")]
+        //[Required(ErrorMessage = "La clave es obligatoria.")]
     [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,11}$", ErrorMessage = "La clave debe tener entre 6 y 11 caracteres, con al menos una mayúscula, una minúscula y un número.")]
     public string? Clave { get; set; } = "";
         public string? Estado { get; set; } = "";

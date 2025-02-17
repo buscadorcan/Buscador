@@ -3,165 +3,16 @@
 @using Blazored.LocalStorage
 @using BlazorBootstrap
 @using Microsoft.AspNetCore.Authorization
+@using OfficeOpenXml
 @using SharedApp.Models.Dtos
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
-
-<style>
-    .striped-table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .striped-table tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    .card {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        margin: 20px 0;
-    }
-
-    .card-header {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-footer {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        text-align: right;
-        border-top: 1px solid #ddd;
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-</style>
-<style>
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 34px;
-        height: 20px;
-    }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 20px;
-    }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-    input:checked + .slider {
-        background-color: #4CAF50;
-    }
-
-        input:checked + .slider:before {
-            transform: translateX(14px);
-        }
-
-    /* Contenedor de la tabla */
-    .table {
-        display: table;
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    /* Estilo de la fila */
-    .row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #ddd;
-        padding: 8px 0;
-    }
-
-    /* Contenedor de la lista */
-    .ads-rules-list {
-        display: flex;
-        width: 100%;
-    }
-
-    /* Estilo de celdas con ajuste automático del texto */
-    .cell {
-        flex: 1;
-        text-align: center;
-        padding: 5px 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 100px; /* Ajusta el ancho mínimo para evitar deformaciones */
-        word-wrap: break-word; /* Permite que el texto largo se divida en varias líneas */
-        white-space: normal; /* Permite el salto de línea */
-        text-align: center;
-    }
-
-    /* Celdas de texto que se ajustan en varias líneas */
-    .cell-text {
-        word-break: break-word;
-        max-width: 100%;
-        text-align: center;
-        display: block;
-    }
-
-    /* Asegurar que los switches estén alineados */
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 34px;
-        height: 20px;
-        margin: 0 auto;
-    }
-
-    /* Botones bien alineados */
-    .cell button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 30px;
-    }
-
-    /* Evita que los botones se desplacen cuando el contenido crece */
-    .cell button,
-    .cell img {
-        flex-shrink: 0;
-    }
-
-</style>
-
+@inject IJSRuntime JSRuntime
+@using System.IO
+@using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
+ 
 <PageTitle>Usuarios</PageTitle>
 
     <!-- Card Header -->
@@ -170,191 +21,256 @@
     </div>
 
     <!-- Botón Nuevo -->
-    @if (!isRolRead)
-    {
-        @* <div class="text-end my-3" style="margin-right: 1%;">
-            <Button Type="ButtonType.Link" Color="ButtonColor.Primary" To="/nuevo-usuario">Nuevo Usuario</Button>
-        </div> *@
-        <div class="text-end my-3">
-                <div class="button-container">
-                    <Button Type="ButtonType.Link" class="button-2" To="/nuevo-usuario"><div class="button-3 headingheadline4-h4">Crear nuevo usuario</div></Button>
-                </div>
-        </div>
-    }
-    <!-- Card Body -->
-    <div class="table table-1">
-        <div class="table-heading table-1">
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Nombre</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-3.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Apellido</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-4.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Teléfono</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-5.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Email</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-6.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Rol</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-7.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Razón Social</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-8.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Estado</div>
-                    <div class="frame-1000003808">
-                        <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-9.svg" alt="arrow_downward_alt">
-                    </div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Editar</div>
-                </div>
-            </div>
-            <div class="table-heading-1 table-heading-10">
-                <div class="header-label-1 header-label-4">
-                    <div class="label-heading headingheadline5-h5">Eliminar</div>
-                </div>
-            </div>
+@if (!isRolRead)
+{
+    <div class="text-end my-3 d-flex justify-content-between">
+        <!-- Grupo de botones de exportación -->
+        <div class="d-flex gap-2">
+            <!-- Botón Exportar a Excel -->
+            <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+                <Icon Name="IconName.FileEarmarkArrowDown" />
+                <span class="ms-2 btnExp">Exportar a Excel</span>
+            </Button>
+
+            <!-- Botón Exportar a PDF -->
+            <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+                <Icon Name="IconName.FileEarmarkPdf" />
+                <span class="ms-2 btnExp">Exportar a PDF</span>
+            </Button>
         </div>
 
-        @if (listaUsuarios != null && listaUsuarios.Any())
+        <!-- Botón Crear Nuevo -->
+        <div class="button-container">
+            <Button Type="ButtonType.Link" class="button-2" To="/nuevo-usuario">
+                <div class="button-3 headingheadline4-h4">Crear usuario</div>
+            </Button>
+        </div>
+    </div>
+}
+
+<div class="table table-1">
+    <div class="table-heading table-1">
+        <!-- Encabezados con funcionalidad de ordenamiento -->
+        @foreach (var column in new[]
         {
-            <div class="content content-2">
-                @foreach (var usuario in listaUsuarios)
-                {
-                    <div class="row row-15">
-                        <div class="componente">
-                            <div class="row-1 row-15">
-                                <div class="ads-rules-list">
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Nombre</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Apellido</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Telefono</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Email</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Rol</div></div>
-                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.RazonSocial</div></div>
+        (nameof(UsuarioDto.Nombre), "Nombre"),
+        (nameof(UsuarioDto.Apellido), "Apellido"),
+        (nameof(UsuarioDto.Telefono), "Teléfono"),
+        (nameof(UsuarioDto.Email), "Email"),
+        (nameof(UsuarioDto.Rol), "Rol"),
+        (nameof(UsuarioDto.RazonSocial), "Razón Social"),
+        (nameof(UsuarioDto.Estado), "Estado")
+        })
+        {
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(column.Item1)">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        @column.Item2 @(sortColumn == column.Item1 ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Columnas sin ordenamiento (Editar y Eliminar) -->
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Editar</div>
+            </div>
+        </div>
+        <div class="table-heading-1 table-heading-10">
+            <div class="header-label-1 header-label-4">
+                <div class="label-heading headingheadline5-h5">Eliminar</div>
+            </div>
+        </div>
+    </div>
+
+    @if (listaUsuarios != null && listaUsuarios.Any())
+    {
+        <div class="content content-2">
+            @foreach (var usuario in PaginatedItems)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row-1 row-15">
+                            <div class="ads-rules-list">
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Nombre</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Apellido</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Telefono</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Email</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.Rol</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@usuario.RazonSocial</div></div>
+
+                                <!-- Estado con Check o X -->
                                 <div class="cell cell-1">
-                                    <label class="switch">
-                                        <input type="checkbox" checked="@(usuario.Estado == "A")" disabled>
-                                        <span class="slider round"></span>
-                                    </label>
+                                    @if (usuario.Estado == "A")
+                                    {
+                                        <span class="estado-activo">✔</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="estado-inactivo">✖</span>
+                                    }
                                 </div>
-                                    <div class="cell cell-1">
-                                        <Tooltip Title="Editar registro">
-                                            <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
-                                                    @onclick=@(() => EditarUsuario(usuario))>
-                                                <Icon Name="IconName.PencilSquare" />
-                                            </Button>
-                                        </Tooltip>
-                                    </div>
+
+                                <!-- Botón Editar -->
                                 <div class="cell cell-1">
-                                        <Tooltip Title="Eliminar registro">
-                                            <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
-                                                    Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(usuario.IdUsuario))>
-                                                <Icon Name="IconName.Trash" />
-                                            </Button>
-                                        </Tooltip>
-                                    </div>
+                                    <Tooltip Title="Editar registro">
+                                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
+                                                @onclick=@(() => EditarUsuario(usuario))>
+                                            <Icon Name="IconName.PencilSquare" />
+                                        </Button>
+                                    </Tooltip>
+                                </div>
+
+                                <!-- Botón Eliminar -->
+                                <div class="cell cell-1">
+                                    <Tooltip Title="Eliminar registro">
+                                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
+                                                Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(usuario.IdUsuario))>
+                                            <Icon Name="IconName.Trash" />
+                                        </Button>
+                                    </Tooltip>
                                 </div>
                             </div>
                         </div>
                     </div>
-                }
-            </div>
+                </div>
+            }
+        </div>
+        <!-- Controles de paginación -->
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
+
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
+        </div>
+    }
+    else
+    {
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+    }
+</div>
+
+
+@code {
+    private string sortColumn = nameof(UsuarioDto.Nombre);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string columnName)
+    {
+        if (sortColumn == columnName)
+        {
+            sortAscending = !sortAscending; // Invierte el orden si es la misma columna
         }
         else
         {
-        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+            sortColumn = columnName;
+            sortAscending = true;
         }
-    </div>
-    @*     <div class="">
-        <div class="general table">
-            <Grid TItem="UsuarioDto" class="table table-hover table-bordered table-striped striped-table" DataProvider="UsuariosDataProvider" @ref="grid" Responsive="true">
-                <GridColumn TItem="UsuarioDto" HeaderText="Nombre" PropertyName="Nombre">
-                    @context.Nombre
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Apellido" PropertyName="Apellido">
-                    @context.Apellido
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Teléfono" PropertyName="Telefono">
-                    @context.Telefono
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Email" PropertyName="Email">
-                    @context.Email
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Rol" PropertyName="IdHomologacionRol">
-                    @context.Rol
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Razón Social" PropertyName="idOna">
-                    @context.RazonSocial
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Estado" PropertyName="Estado">
-                    @context.Estado
-                </GridColumn>
-                <GridColumn TItem="UsuarioDto" HeaderText="Opciones">
-                    <!-- Botón Editar -->
-                    <Tooltip Title="Editar registro">
-                        <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" Size="ButtonSize.Small" Disabled="isRolRead"
-                                @onclick=@(() => EditarUsuario(context))>
-                            <Icon Name="IconName.PencilSquare" />
-                        </Button>
-                    </Tooltip>
 
-                    <!-- Botón Eliminar -->
-                    <Tooltip Title="Eliminar registro">
-                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
-                                Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdUsuario))>
-                            <Icon Name="IconName.Trash" />
-                        </Button>
-                    </Tooltip>
-                </GridColumn>
-            </Grid>
-        </div>
-    </div>
- *@
+        // Ordenar la lista
+        listaUsuarios = sortAscending
+            ? listaUsuarios.OrderBy(u => typeof(UsuarioDto).GetProperty(sortColumn)?.GetValue(u, null)).ToList()
+            : listaUsuarios.OrderByDescending(u => typeof(UsuarioDto).GetProperty(sortColumn)?.GetValue(u, null)).ToList();
+    }
+    private async Task ExportarExcel()
+    {
+        if (listaUsuarios == null || !listaUsuarios.Any())
+        {
+            return;
+        }
 
- @if (showModal)
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Usuarios");
+
+        // Agregar encabezados
+        worksheet.Cells[1, 1].Value = "Nombre";
+        worksheet.Cells[1, 2].Value = "Apellido";
+        worksheet.Cells[1, 3].Value = "Teléfono";
+        worksheet.Cells[1, 4].Value = "Email";
+        worksheet.Cells[1, 5].Value = "Rol";
+        worksheet.Cells[1, 6].Value = "Razón Social";
+        worksheet.Cells[1, 7].Value = "Estado";
+
+        int row = 2;
+        foreach (var usuario in listaUsuarios)
+        {
+            worksheet.Cells[row, 1].Value = usuario.Nombre;
+            worksheet.Cells[row, 2].Value = usuario.Apellido;
+            worksheet.Cells[row, 3].Value = usuario.Telefono;
+            worksheet.Cells[row, 4].Value = usuario.Email;
+            worksheet.Cells[row, 5].Value = usuario.Rol;
+            worksheet.Cells[row, 6].Value = usuario.RazonSocial;
+            worksheet.Cells[row, 7].Value = usuario.Estado == "A" ? "Activo" : "Inactivo";
+            row++;
+        }
+
+        worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+        var fileName = "Usuarios_Export.xlsx";
+        var fileBytes = package.GetAsByteArray();
+        var fileBase64 = Convert.ToBase64String(fileBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+    private async Task ExportarPDF()
+    {
+        if (listaUsuarios == null || !listaUsuarios.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(7) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Nombre", font));
+        table.AddCell(new Phrase("Apellido", font));
+        table.AddCell(new Phrase("Teléfono", font));
+        table.AddCell(new Phrase("Email", font));
+        table.AddCell(new Phrase("Rol", font));
+        table.AddCell(new Phrase("Razón Social", font));
+        table.AddCell(new Phrase("Estado", font));
+
+        foreach (var usuario in listaUsuarios)
+        {
+            table.AddCell(usuario.Nombre);
+            table.AddCell(usuario.Apellido);
+            table.AddCell(usuario.Telefono);
+            table.AddCell(usuario.Email);
+            table.AddCell(usuario.Rol);
+            table.AddCell(usuario.RazonSocial);
+            table.AddCell(usuario.Estado == "A" ? "Activo" : "Inactivo");
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Usuarios_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
+    }
+}
+@if (showModal)
 {
     <div class="modal show d-block" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" aria-label="Close"
+                    <h5 class="modal-title inter-regular-normal-comet-14px">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close inter-regular-normal-comet-14px" aria-label="Close"
                             @onclick="CloseModal"></button>
                 </div>
                 <div class="modal-body">
@@ -368,4 +284,3 @@
         </div>
     </div>
 }
-

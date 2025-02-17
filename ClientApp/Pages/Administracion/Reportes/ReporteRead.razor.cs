@@ -69,16 +69,30 @@ namespace ClientApp.Pages.Administracion.Reportes
                     }
 
                     StateHasChanged();
+                    //await JS.InvokeVoidAsync("initMap", new
+                    //{
+                    //    //chartsData = new[]
+                    //    //{
+                    //    //    Chart1Data.Select(d => new { label = d.Label, value = d.Value }),
+                    //    //    Chart2Data.Select(d => new { label = d.Label, value = d.Value }),
+                    //    //    Chart3Data.Select(d => new { label = d.Label, value = d.Value }),
+                    //    //    Chart4Data.Select(d => new { label = d.Fecha, value = d.Organizacion })
+
+                    //    //},
+                    //    mapsData = new
+                    //    {
+                    //        heatmap1 = Heatmap1Data
+                    //    }
+                    //});
+                    // Verificar que hay datos antes de invocar JS
+                    if (Heatmap1Data == null || Heatmap1Data.Count == 0)
+                    {
+                        Console.WriteLine("Error: Heatmap1Data está vacío o es null.");
+                        return;
+                    }
+
                     await JS.InvokeVoidAsync("initMap", new
                     {
-                        //chartsData = new[]
-                        //{
-                        //    Chart1Data.Select(d => new { label = d.Label, value = d.Value }),
-                        //    Chart2Data.Select(d => new { label = d.Label, value = d.Value }),
-                        //    Chart3Data.Select(d => new { label = d.Label, value = d.Value }),
-                        //    Chart4Data.Select(d => new { label = d.Fecha, value = d.Organizacion })
-
-                        //},
                         mapsData = new
                         {
                             heatmap1 = Heatmap1Data

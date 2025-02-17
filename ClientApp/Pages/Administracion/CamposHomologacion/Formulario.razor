@@ -7,35 +7,6 @@
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
 @inject NavigationManager NavigationManager
-<style>
-    .card {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        margin: 20px 0;
-    }
-
-    .card-header {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-footer {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        text-align: right;
-        border-top: 1px solid #ddd;
-    }
-
-</style>
 
 <PageTitle>Formulario de Esquema</PageTitle>
 
@@ -73,14 +44,14 @@
             <div class="row">
                 <div class="col-4">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px">Indexar</label>
-                <Switch @bind-Value="isIndexar" Class="label valign-text-middle inter-regular-normal-comet-16px" Label="Seleccione una opción" />
-                    <div class="mt-3"><b>@(isIndexar ? "SI" : "NO")</b></div>
+                <Switch @bind-Value="isIndexar" Class="label valign-text-middle inter-regular-normal-comet-16px" />
+                <div class="mt-3"><b class="inter-regular-normal-comet-14px">@(isIndexar ? "SI" : "NO")</b></div>
                     <ValidationMessage For="(() => homologacion.Indexar)" />
                 </div>
                 <div class="col-4">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px" >Mostrar</label>
-                <Switch @bind-Value="isMostrar" Class="label valign-text-middle inter-regular-normal-comet-16px" Label="Seleccione una opción" />
-                    <div class="mt-3"><b>@(isMostrar ? "SI" : "NO")</b></div>
+                <Switch @bind-Value="isMostrar" Class="label valign-text-middle inter-regular-normal-comet-16px" />
+                    <div class="mt-3"><b class="inter-regular-normal-comet-14px">@(isMostrar ? "SI" : "NO")</b></div>
                     <ValidationMessage For="(() => homologacion.Indexar)" />
                 </div>
                 @if (isIndexar)
@@ -103,14 +74,14 @@
                 <div class="col-md-4">
                     <label class="label valign-text-middle inter-regular-normal-comet-16px" >Tipo de Dato</label>
                     <div style="margin-top: 2% !important;">
-                        <Dropdown AutoClose="true">
+                    <Dropdown AutoClose="true" Class="inter-regular-normal-comet-14px">
                             <DropdownToggleButton Color="ButtonColor.Secondary">
                                 @homologacion?.MascaraDato
                             </DropdownToggleButton>
-                            <DropdownMenu>
-                                <DropdownItem @onclick="@(() => OnAutoCompleteChanged("TEXTO"))">TEXTO</DropdownItem>
-                                <DropdownItem @onclick="@(() => OnAutoCompleteChanged("FECHA"))">FECHA</DropdownItem>
-                                <DropdownItem @onclick="@(() => OnAutoCompleteChanged("NUMERICO"))">NUMERICO</DropdownItem>
+                        <DropdownMenu>
+                                <DropdownItem Class="inter-regular-normal-comet-14px" @onclick="@(() => OnAutoCompleteChanged("TEXTO"))">TEXTO</DropdownItem>
+                                <DropdownItem Class="inter-regular-normal-comet-14px" @onclick="@(() => OnAutoCompleteChanged("FECHA"))">FECHA</DropdownItem>
+                                <DropdownItem Class="inter-regular-normal-comet-14px" @onclick="@(() => OnAutoCompleteChanged("NUMERICO"))">NUMERICO</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                         <ValidationMessage For="(()=>homologacion.MascaraDato)" />
@@ -133,14 +104,6 @@
     
 </EditForm>
 
-@* <div class="py-2 d-flex justify-content-end gap-2">
-    <Button Color="ButtonColor.Secondary" @onclick="Regresar">
-        Regresar
-    </Button>
-    <Button @ref="saveButton" Color="ButtonColor.Success" @onclick="async () => await GuardarHomologacion()">
-        Guardar
-    </Button>
-</div> *@
 <div class="py-2 d-flex justify-content-end gap-2">
     <a @onclick="Regresar">
         <div class="button">

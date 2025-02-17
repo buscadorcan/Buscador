@@ -1,0 +1,303 @@
+﻿
+.general .main-container {
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 24px;
+    height: 736px;
+    margin-left: 1px;
+    padding: 40px 0px;
+    position: relative;
+    width: 1180px;
+}
+
+.general .flex-col {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    min-height: 866px;
+    width: 1181px;
+}
+
+.general .top {
+    align-items: flex-start;
+    background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+    display: flex;
+    height: 130px;
+    overflow: hidden;
+    width: 1180px;
+}
+
+.general .overlap-group {
+    height: 301px;
+    margin-left: 56px;
+    margin-top: -203px;
+    position: relative;
+    width: 1485px;
+}
+
+.general .vector-1 {
+    height: 301px;
+    left: 311px;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 1174px;
+}
+
+.general .frame {
+    cursor: pointer;
+    height: 62px;
+    left: 0;
+    position: absolute;
+    top: 235px;
+    width: 335px;
+}
+
+.general .title {
+    align-self: stretch;
+    color: var(--neutraldark80);
+    font-weight: 600;
+    line-height: 30px;
+    margin-top: 27px;
+    position: relative;
+    text-align: center;
+}
+
+.general .header {
+    align-items: flex-start;
+    background-color: transparent;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 24px;
+    justify-content: flex-end;
+    position: relative;
+    width: 1155px;
+}
+
+.general .button {
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 4px 4px 12px #02536314;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    height: 36px;
+    justify-content: center;
+    overflow: hidden;
+    padding: 10px 24px;
+    position: relative;
+}
+
+.general .button-1 {
+    color: var(--blue);
+    font-weight: 600;
+    line-height: normal;
+    margin-top: -1.50px;
+    position: relative;
+    width: fit-content;
+}
+
+.headlineheadline2-h2 {
+    font-family: var(--font-family-inter-semibold);
+    font-size: var(--font-size-xxxl);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+
+.general .table {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+
+.general .content {
+    align-items: center;
+    align-self: stretch;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: var(--porcelain);
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 32px;
+    justify-content: center;
+    padding: 0px 24px;
+    position: relative;
+    width: 100%;
+}
+
+.general .row {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 75px;
+    margin-left: -24.00px;
+    margin-right: -24.00px;
+    position: relative;
+    width: 1180px;
+}
+
+.general .componente {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 32px;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+.general .row-1 {
+    align-self: stretch;
+    flex: 0 0 auto;
+    gap: 12px;
+    width: 100%;
+}
+
+.general .row-2 {
+    flex: 0 0 auto;
+    gap: 4px;
+    width: 1156px;
+}
+
+.general .ads-rules-list {
+    align-items: flex-start;
+    align-self: stretch;
+    background-color: var(--neutral-color00);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: var(--athens-gray);
+    display: flex;
+    height: 75px;
+    position: relative;
+    width: 100%;
+}
+
+.general .cell {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    padding: 12px 12px 8px 24px;
+    position: relative;
+/*    width: 244px;
+*/
+
+    display: block;
+    width: 200px; 
+    word-break: break-word;
+}
+
+.general .migration-id {
+    align-self: stretch;
+    color: var(--mako);
+    font-weight: 400;
+    line-height: 20px;
+    position: relative;
+}
+
+.general .landing-page {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    gap: 4px;
+    padding: 12px 12px 8px;
+    position: relative;
+    width: 225px;
+}
+
+.general .status {
+    color: var(--mako);
+    flex: 1;
+    font-weight: 400;
+    line-height: 20px;
+    position: relative;
+}
+
+.general .landing-page-1 {
+    width: 333px;
+}
+
+.general .file-name {
+    color: var(--mako);
+    flex: 1;
+    font-weight: 400;
+    line-height: 20px;
+    position: relative;
+}
+
+.general .landing-page-2 {
+    width: 354px;
+}
+
+.general .error-message {
+    color: var(--mirage);
+    flex: 1;
+    font-weight: 400;
+    line-height: 16px;
+    position: relative;
+}
+
+.general .row-3 {
+    gap: 12px;
+    height: 75px;
+    margin-left: -24.00px;
+    margin-right: -24.00px;
+    width: 1180px;
+}
+
+
+.general .button-container {
+    align-items: flex-start;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+}
+
+.general .button-2 {
+    align-items: center;
+    align-self: stretch;
+    background-color: var(--amber);
+    border-radius: 8px;
+    box-shadow: 4px 4px 12px #02536314;
+    display: flex;
+    gap: 8px;
+    height: auto;
+    justify-content: center;
+    padding: 10px 32px;
+    position: relative;
+    width: 100%;
+}
+
+.general .button-3 {
+    color: var(--black-pearl);
+    font-weight: 600;
+    line-height: normal;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+.sortable-header {
+    cursor: pointer; /* Cambia el cursor a puntero */
+    user-select: none; /* Evita selección accidental de texto */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

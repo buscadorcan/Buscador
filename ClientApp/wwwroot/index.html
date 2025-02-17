@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/custom-styles.css" rel="stylesheet">
-
+    <link href="_content/BlazorBootstrap/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="admin/css/globals.css" rel="stylesheet" />
     <link href="admin/css/styleguide.css" rel="stylesheet" />
     <link href="admin/css/pantalla-inicio.css" rel="stylesheet" />
@@ -27,11 +27,11 @@
     <input type="hidden" id="anPageName" name="page" value="pantalla-inicio">
     <div id="app" class="container-center-horizontal">
 
-            <svg class="loading-progress">
-                <circle r="40%" cx="50%" cy="50%" />
-                <circle r="40%" cx="50%" cy="50%" />
-            </svg>
-            <div class="loading-progress-text"></div>
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
 
     </div>
 
@@ -46,9 +46,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="_content/Blazor.Bootstrap/blazor.bootstrap.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfJMTooTtkGw_hZC3DenLPlEpjq-t_7nY"></script>
     <script src="js/sortable_grid.js"></script>
     <script src="js/leaflet.js"></script>
-    <script src="js/leaflet-heat.js"></script>
+    <!--<script src="js/leaflet-heat.js"></script>-->
     <!-- Leaflet CSS -->
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -67,6 +68,17 @@
 
     <!--Autocompletado de palabras-->
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/exportar-excel-pdf.js"></script>
+    <script id="MathJax-script" async src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.renderMathJax = () => {
+            if (window.MathJax) {
+                MathJax.typeset();
+            }
+        };
+    </script>
 </body>
 
 </html>

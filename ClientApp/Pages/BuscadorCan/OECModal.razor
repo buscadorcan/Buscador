@@ -26,7 +26,18 @@
                     <tr><td class="fw-bold p-3">Acuerdo de reconocimiento</td><td class="p-3">@onaSeleccionado?.OrgReconocimiento</td></tr>
                     <tr><td class="fw-bold p-3">Fecha efectiva de la acreditación</td><td class="p-3">@onaSeleccionado?.OrgFechaEfectivaAcreditacion</td></tr>
                     <tr><td class="fw-bold p-3">Periodo de vigencia</td><td class="p-3">@onaSeleccionado?.OrgPeriodoVigencia</td></tr>
-                    <tr><td class="fw-bold p-3">Fecha de actualización</td><td class="p-3">@onaSeleccionado?.OrgFechaActualizacion</td></tr>
+                    <tr>
+                        <td class="fw-bold p-3">Fecha de actualización</td>
+                        <td class="p-3">
+                            @{
+                                DateTime fecha;
+                                var fechaFormateada = DateTime.TryParse(onaSeleccionado?.OrgFechaActualizacion, out fecha)
+                                ? fecha.ToString("yyyy-MM-dd")
+                                : "Formato inválido";
+                            }
+                            @fechaFormateada
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

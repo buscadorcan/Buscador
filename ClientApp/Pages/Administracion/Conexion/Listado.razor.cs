@@ -1,6 +1,6 @@
 using BlazorBootstrap;
-using ClientApp.Pages.Administracion.Esquemas;
-using ClientApp.Services;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -12,25 +12,79 @@ namespace ClientApp.Pages.Administracion.Conexion
         ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
         private bool showModal; // Controlar la visibilidad de la ventana modal  
         private string modalMessage;
-        private int? selectedIdOna;    
+        private int? selectedIdOna;
         [Inject]
         public Services.ToastService? toastService { get; set; }
         List<ToastMessage> messages = new();
-        private Grid<ONAConexionDto>? grid;
+
         [Inject]
         private IConexionService? iConexionService { get; set; }
         [Inject]
         private IDynamicService? iDynamicService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
         //private List<ONAConexionDto>? listasHevd = null;
         private List<ONAConexionDto> listasHevd = new();
+        private bool isRolAdmin;
 
+        private EventTrackingDto objEventTracking { get; set; }
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
+        private int PageSize = 10; // Cantidad de registros por página
+        private int CurrentPage = 1;
+
+        private IEnumerable<ONAConexionDto> PaginatedItems => listasHevd
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize);
+
+        private int TotalPages => listasHevd.Count > 0 ? (int)Math.Ceiling((double)listasHevd.Count / PageSize) : 1;
+
+        private bool CanGoPrevious => CurrentPage > 1;
+        private bool CanGoNext => CurrentPage < TotalPages;
+
+        private void PreviousPage()
+        {
+            if (CanGoPrevious)
+            {
+                CurrentPage--;
+
+                objEventTracking.NombrePagina = null;
+                objEventTracking.ParametroJson = "";
+
+
+                iBusquedaService.AddEventTrackingAsync(objEventTracking);
+            }
+        }
+
+        private void NextPage()
+        {
+            if (CanGoNext)
+            {
+                CurrentPage++;
+            }
+        }
         protected override async Task OnInitializedAsync()
         {
             if (listasHevd != null && iConexionService != null)
             {
-                listasHevd = await iConexionService.GetConexionsAsync() ?? new List<ONAConexionDto>();
+                var rolRelacionado = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                isRolAdmin = rolRelacionado == "KEY_USER_CAN";
+                if (isRolAdmin)
+                {
+                    listasHevd = await iConexionService.GetConexionsAsync() ?? new List<ONAConexionDto>();
+                }
+                else
+                {
+                    int IdOna = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
+                    listasHevd = await iConexionService.GetOnaConexionByOnaListAsync(IdOna) ?? new List<ONAConexionDto>();
+                }
+            }
+            // Ajusta la paginación si la lista está vacía o cambia
+            if (listasHevd.Count > 0 && CurrentPage > TotalPages)
+            {
+                CurrentPage = TotalPages;
             }
         }
         private async Task<GridDataProviderResult<ONAConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ONAConexionDto> request)
@@ -78,7 +132,6 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                 if (isConnected)
                 {
-                    await grid.RefreshDataAsync();
                     return true; // Devuelve true si la conexión fue exitosa
                 }
             }
@@ -133,7 +186,6 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                     if (migracion)
                     {
-                        await grid.RefreshDataAsync();
                         return true;
                     }
                 }
@@ -169,7 +221,7 @@ namespace ClientApp.Pages.Administracion.Conexion
                 var respuesta = await iConexionService.EliminarConexion(selectedIdOna.Value);
                 if (respuesta.registroCorrecto)
                 {
-                    CloseModal();                    
+                    CloseModal();
                     listasHevd = listasHevd.Where(c => c.IdONA != idOna).ToList();
                     await OnInitializedAsync();
                 }

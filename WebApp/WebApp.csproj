@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="EPPlus" Version="7.6.0" />
 		<PackageReference Include="ExcelDataReader" Version="3.6.0" />
 		<PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
@@ -26,6 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="wwwroot\Files\" />
 		<Folder Include="wwwroot\Icono\" />
 	</ItemGroup>
 

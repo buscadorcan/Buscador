@@ -6,7 +6,11 @@
     {
         <Tab Active="true" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
             <TitleTemplate>
-                <Tooltip Title="">@esquema</Tooltip>
+                <Tooltip Title="" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 9px !important;">
+                    <span style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 9px !important; color: inherit;">
+                        @esquema
+                    </span>
+                </Tooltip>
             </TitleTemplate>
             <Content>
 
@@ -22,10 +26,22 @@
                         {
                             <GridColumn TItem="DataEsquemaDatoBuscar" PropertyName="@item.MostrarWeb">
                                 <HeaderContent>
-                                    <Tooltip Title="@item.TooltipWeb">@item.MostrarWeb</Tooltip>
+                                    <Tooltip Title="@item.TooltipWeb"><span style="font-weight: bold;">@item.MostrarWeb</span></Tooltip>
                                 </HeaderContent>
                                 <ChildContent>
-                                    @context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data
+                                    @{
+                                        var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;
+                                    }
+                                    @if (dato != null && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
+                                    {
+                                        <!-- Renderizamos la fórmula LaTeX -->
+                                        <span class="latex-formula">@((MarkupString)($"\\({dato}\\)"))</span>
+                                    }
+                                    else
+                                    {
+                                        <!-- Renderizamos texto normal -->
+                                        @((MarkupString)dato)
+                                    }
                                 </ChildContent>
                             </GridColumn>
                         }

@@ -12,5 +12,7 @@ namespace ClientApp.Services.IService {
         Task<List<FnPredictWordsDto>> FnPredictWords(string word);
         Task<bool> ValidateWords(List<string> words);
         Task<fnEsquemaCabeceraDto?> FnEsquemaCabeceraAsync(int IdEsquemadata);
+        Task<bool> AddEventTrackingAsync(EventTrackingDto eventTracking);
+        Task<GeocodeResponseDto?> ObtenerCoordenadasAsync(string pais, string ciudad);
     }
 }

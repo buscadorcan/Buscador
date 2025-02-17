@@ -1,30 +1,11 @@
 @using SharedApp.Models.Dtos
+@inject IJSRuntime JSRuntime
+@using OfficeOpenXml
+@using System.IO
+@using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
-@* <div class="card">
-    <div class="card-body">
-        <Grid TItem="HomologacionDto" class="table table-hover table-bordered table-striped" Data="columnas" Responsive="true" FixedHeader="true" Height="450" Id="sortableGrid">
-            <GridColumn TItem="HomologacionDto" HeaderText="Vista Código Homologado" PropertyName="NombreHomologado">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado
-                <input type="hidden" value="@context.IdHomologacion" />
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Mostrar" PropertyName="TooltipWeb">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tipo de Dato" PropertyName="MascaraDato">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Si No Hay Dato" PropertyName="SiNoHayDato">
-                @listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato
-            </GridColumn>
-        </Grid>
-    </div>
-</div> *@
 <style>
     .modal-title {
     align-self: stretch !important;
@@ -37,64 +18,235 @@
     font-family: var(--font-family-inter-semibold) !important;
 }
 </style>
-<div class="table table-1">
-    <div class="table-heading table-1">
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Vista Código Homologado</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10" style="margin-left: 2% !important;">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Tooltip Web</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Mostrar</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Tipo de Dato</div>
-            </div>
-        </div>
-        <div class="table-heading-1 table-heading-10">
-            <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
-            </div>
-        </div>
-    </div>
 
-    @if (columnas != null && columnas.Any())
-    {
-        <div class="content content-2">
-            @foreach (var context in columnas)
-            {
-                <div class="row row-15" style="width: -webkit-fill-available !important;">
-                    <div class="componente">
-                        <div class="row-1 row-15">
-                            <div class="ads-rules-list">
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato</div></div>
+<div class="text-end my-3 d-flex justify-content-between">
+    <!-- Grupo de botones de exportación -->
+    <div class="d-flex gap-2">
+        <!-- Botón Exportar a Excel -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+            <Icon Name="IconName.FileEarmarkArrowDown" />
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+
+        <!-- Botón Exportar a PDF -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Icon Name="IconName.FileEarmarkPdf" />
+            <span class="ms-2 btnExp">Exportar a PDF</span>
+        </Button>
+    </div>
+</div>
+
+<div class="modal-scroll">
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.NombreHomologado))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Vista Código Homologado @(sortColumn == nameof(HomologacionDto.NombreHomologado) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.MostrarWeb))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Texto a Mostrar en la Web @(sortColumn == nameof(HomologacionDto.MostrarWeb) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.TooltipWeb))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Tooltip Web @(sortColumn == nameof(HomologacionDto.TooltipWeb) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Mostrar</div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10 sortable-header" @onclick="() => OrdenarPor(nameof(HomologacionDto.MascaraDato))">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">
+                        Tipo de Dato @(sortColumn == nameof(HomologacionDto.MascaraDato) ? (sortAscending ? "⬆" : "⬇") : "")
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-heading-1 table-heading-10">
+                <div class="header-label-1 header-label-4">
+                    <div class="label-heading headingheadline5-h5">Si No Hay Dato</div>
+                </div>
+            </div>
+        </div>
+
+        @if (columnas != null && columnas.Any())
+        {
+            <div class="content content-2">
+                @foreach (var context in PaginatedItems)
+                {
+                    <div class="row row-15">
+                        <div class="componente">
+                            <div class="row-1 row-15">
+                                <div class="ads-rules-list">
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.NombreHomologado</div>
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MostrarWeb</div>
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.TooltipWeb</div>
+                                    </div>
+                                    <!-- Estado con Check o X -->
+                                    <div class="cell cell-1">
+                                        @if (listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.Mostrar == "S")
+                                        {
+                                            <span class="estado-activo">✔</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="estado-inactivo">✖</span>
+                                        }
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.MascaraDato</div>
+                                    </div>
+                                    <div class="cell cell-1">
+                                        <div class="cell-text cell-1 bodybody-small">@listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion)?.SiNoHayDato</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
-    }
+                }
+            </div>
+
+            <!-- Controles de paginación -->
+            <div class="pagination-container">
+                <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                    ⏪
+                </button>
+
+                <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+                <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                    ⏩
+                </button>
+            </div>
+        }
+        else
+        {
+            <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+        }
+    </div>
 </div>
+
+@code {
+    private string sortColumn = nameof(HomologacionDto.NombreHomologado);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        columnas = sortAscending
+            ? columnas.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+            : columnas.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+    }
+
+    private async Task ExportarExcel()
+    {
+        if (columnas == null || !columnas.Any())
+        {
+            return;
+        }
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Homologaciones");
+
+        // Agregar encabezados
+        worksheet.Cells[1, 1].Value = "Vista Código Homologado";
+        worksheet.Cells[1, 2].Value = "Texto a Mostrar en la Web";
+        worksheet.Cells[1, 3].Value = "Tooltip Web";
+        worksheet.Cells[1, 4].Value = "Mostrar";
+        worksheet.Cells[1, 5].Value = "Tipo de Dato";
+        worksheet.Cells[1, 6].Value = "Si No Hay Dato";
+
+        int row = 2;
+        foreach (var context in columnas)
+        {
+            var homologacion = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion);
+            worksheet.Cells[row, 1].Value = homologacion?.NombreHomologado;
+            worksheet.Cells[row, 2].Value = homologacion?.MostrarWeb;
+            worksheet.Cells[row, 3].Value = homologacion?.TooltipWeb;
+            worksheet.Cells[row, 4].Value = homologacion?.Mostrar;
+            worksheet.Cells[row, 5].Value = homologacion?.MascaraDato;
+            worksheet.Cells[row, 6].Value = homologacion?.SiNoHayDato;
+            row++;
+        }
+
+        worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+        var fileName = "Homologaciones_Export.xlsx";
+        var fileBytes = package.GetAsByteArray();
+        var fileBase64 = Convert.ToBase64String(fileBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+    private async Task ExportarPDF()
+    {
+        if (columnas == null || !columnas.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(6) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Vista Código Homologado", font));
+        table.AddCell(new Phrase("Texto a Mostrar en la Web", font));
+        table.AddCell(new Phrase("Tooltip Web", font));
+        table.AddCell(new Phrase("Mostrar", font));
+        table.AddCell(new Phrase("Tipo de Dato", font));
+        table.AddCell(new Phrase("Si No Hay Dato", font));
+
+        foreach (var context in columnas)
+        {
+            var homologacion = listaVwHomologacion?.FirstOrDefault(c => c.IdHomologacion == context.IdHomologacion);
+            table.AddCell(homologacion?.NombreHomologado ?? "-");
+            table.AddCell(homologacion?.MostrarWeb ?? "-");
+            table.AddCell(homologacion?.TooltipWeb ?? "-");
+            table.AddCell(homologacion?.Mostrar ?? "-");
+            table.AddCell(homologacion?.MascaraDato ?? "-");
+            table.AddCell(homologacion?.SiNoHayDato ?? "-");
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Homologaciones_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
+    }
+}

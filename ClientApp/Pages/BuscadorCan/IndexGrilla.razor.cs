@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 using System.Drawing;
 using Microsoft.JSInterop;
+using ClientApp.Helpers;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -91,7 +92,11 @@ namespace ClientApp.Pages.BuscadorCan
                         {
                             if (item.IdONA.HasValue && !iconUrls.ContainsKey(item.IdONA.Value))
                             {
-                                iconUrls[item.IdONA.Value] = await getIconUrl(item);
+                                // Obtener la URL correcta del ícono desde el backend
+                                var iconUrl = await getIconUrl(item);
+
+                                // Concatenar la URL base con la ruta relativa si es necesario
+                                iconUrls[item.IdONA.Value] = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{iconUrl.TrimStart('/')}";
                             }
                         }
 
@@ -206,12 +211,13 @@ namespace ClientApp.Pages.BuscadorCan
 
                 var homologaciones = await iHomologacionService.GetHomologacionsAsync();
                 var idHomologacion = homologaciones.FirstOrDefault(x => x.CodigoHomologacion == "KEY_ESQ_CERT")?.IdHomologacion;
-
+               
                 if (idHomologacion == null)
                     return null;
 
                 var urlPdf = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idHomologacion)?.Data;
-                
+                Console.WriteLine("urlPDF:" + urlPdf);
+                Console.WriteLine("idHomologacion:" + idHomologacion);
                 //urlPdf = SanitizeUrl(urlPdf);
                 return urlPdf;
             }

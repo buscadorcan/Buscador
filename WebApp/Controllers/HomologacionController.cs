@@ -22,7 +22,7 @@ namespace WebApp.Controllers
     {
         private readonly IHomologacionRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
-        [Authorize]
+       
         [HttpGet("findByParent")]
         public IActionResult FindByParent()
         {

@@ -16,6 +16,7 @@
 
 </head>
 <body>
+    <NavLink href="/acceder" class="btn btn-primary">Ir a Acceder</NavLink>
     <div class="pagina">
         <div class="top">
             <div class="top-2">
@@ -34,14 +35,6 @@
                 <div class="control">
                     <div class="top-filters">
                         <div class="search-container">
-                    @*         <div class="search-bar-2">
-                                <div class="search-input">
-                                    <div class="input-group">
-                                        <input type="text" @bind="searchTerm" class="form-control" placeholder="Buscar..." />
-                                        <button class="btn btn-primary" @onclick="BuscarPalabraRequest">Buscar</button>
-                                    </div>
-                                </div>
-                            </div> *@
                             <div class="search-bar-2">
                                 <div class="search-input">
                                     <div class="input-group">
@@ -80,12 +73,13 @@
                                                     var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.Icono);
                                                     if (deserialized != null && deserialized.ContainsKey("filePath"))
                                                     {
-                                                        item.Icono = deserialized["filePath"];
+                                                        // Concatenar correctamente la URL base con el filePath
+                                                        item.Icono = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{deserialized["filePath"].TrimStart('/')}";
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine($"Valor inválido en item.icono: {item.Icono}");
+                                                    Console.WriteLine($"Valor inválido en item.Icono: {item.Icono}");
                                                 }
                                                 <img class="img-2" src="@item.Icono" />
                                                 <div class="text-wrapper-4">@item.Sigla</div>
@@ -106,13 +100,20 @@
                         </div>
                         <div class="divider-2"></div>
                         <div class="view-mode">
-                            <div class="tabs">
-                                <img class="img-2" src="login/img/format-list-bulleted-5.svg" />
-                            </div>
-                            <div class="tabs-2">
-                                <img class="img-2" src="login/img/location-on.svg" @onclick="AlternarIndexCard"
-                                     style="border: @(mostrarIndexCard ? "2px solid green" : "none"); cursor: pointer;" />
-                            </div>
+                            @if (mostrarIndexCard)
+                            {
+                                <div class="tabs">
+                                    <img class="img-2" src="login/img/format-list-bulleted-5.svg" @onclick="AlternarIndexGrilla"
+                                         style="border: 2px solid green; cursor: pointer;" />
+                                </div>
+                            }
+                            @if (!mostrarIndexCard)
+                            {
+                                <div class="tabs-2">
+                                    <img class="img-2" src="login/img/location-on.svg" @onclick="AlternarIndexCard"
+                                         style="border: 2px solid green; cursor: pointer;" />
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -124,6 +125,13 @@
                     <div class="container-3">
                         <div class="container">
                             <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <button class="btn btn-primary"
+                                            style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;"
+                                            @onclick="LimpiarFiltros">
+                                        🗑 Limpiar
+                                    </button>
+                                </div>
                                 <!-- Generar Selects Dinámicamente -->
                                 @if (listadeOpciones != null)
                                 {
@@ -247,7 +255,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="expanded-user-menu">
+@*                         <div class="expanded-user-menu">
                             <div class="popular-search">
                                 <img class="img" src="login/img/trending-up@2x.png" />
                                 <div class="popular-search-title">Populares en la busqueda</div>
@@ -261,7 +269,7 @@
                                 <div class="chips"><div class="new">Alimentos</div></div>
                                 <div class="chips"><div class="new">Vestimenta</div></div>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                     <div class="data-table-2">
                         <div class="step-container-2">
@@ -304,7 +312,32 @@
                             </div>
                         </div>
                     </div>
-                    <img class="step-container-3" src="login/img/step-container.svg" />
+                    <div class="data-table-2">
+                        <div class="step-container-2">
+                            <div class="step-number-wrapper">
+                                <div class="step-number"><div class="text-wrapper">03</div></div>
+                            </div>
+                            <div class="left-wrapper">
+                                <div class="left-2">
+                                    <div class="razon-social"><div class="step-description">Usuario experto</div></div>
+                                    <div class="div">
+                                        <div class="frame">
+                                            <p class="resultados">
+                                                Si eres un usuario experto y
+                                                necesitas filtrar por norma
+                                                Acreditada, Estado o
+                                                Reconocimiento, despliega y
+                                                selecciona la opción.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                  
+                   @*  <img class="step-container-3" src="login/img/step-container.svg" /> *@
                 </div>
             </div>
         }

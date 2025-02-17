@@ -1,11 +1,12 @@
 ﻿using BlazorBootstrap;
-using Microsoft.AspNetCore.Components;
+using ClientApp.Helpers;
 using ClientApp.Services.IService;
-using Newtonsoft.Json;
-using SharedApp.Models.Dtos;
-using System.Reflection;
-using ClientApp.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Crmf;
+using SharedApp.Models.Dtos;
+using System.Net.Http.Json;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -21,6 +22,8 @@ namespace ClientApp.Pages.BuscadorCan
         public List<VwFiltroDto>? ListaEtiquetasFiltros { get; set; } = new List<VwFiltroDto>();
         [Parameter]
         public bool IsExactSearch { get; set; } = false;
+        [Parameter]
+        public List<(string Pais, string Ciudad)> uniqueLocations { get; set; } = new();
 
         [Inject]
         public IBusquedaService? Servicio { get; set; }
@@ -34,7 +37,8 @@ namespace ClientApp.Pages.BuscadorCan
         public IONAService? iOnaService { get; set; }
         [Inject]
         public IJSRuntime? iJSRuntime { get; set; }
-
+        [Inject]
+        private HttpClient Http { get; set; }
         // Propiedades para la vista
         public List<BuscadorResultadoDataDto>? ResultadoData { get; private set; } = new List<BuscadorResultadoDataDto>();
         public List<VwGrillaDto>? ListaEtiquetasGrilla { get; private set; } = new List<VwGrillaDto>();
@@ -49,7 +53,10 @@ namespace ClientApp.Pages.BuscadorCan
         private OnaDto? OnaDto;
         private bool mostrarMapa = true;
         private IJSObjectReference? _googleMapsModule;
-        private List<(string Pais, string Ciudad)> uniqueLocations = new();
+        private string ApiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk";
+        private GoogleMapCenter mapCenter = new(0, 0);
+        private List<GoogleMapMarker> markers = new();
+        private GoogleMap? mapa;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -78,7 +85,9 @@ namespace ClientApp.Pages.BuscadorCan
                 }
                 Console.WriteLine($"Error en OnInitializedAsync");
                 // Cargar resultados iniciales
+                StateHasChanged();
                 await BuscarPalabraRequest();
+
             }
             catch (Exception ex)
             {
@@ -87,54 +96,18 @@ namespace ClientApp.Pages.BuscadorCan
         }
 
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                try
-                {
-                    _googleMapsModule = await iJSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/google-maps.js");
-
-                    if (ResultadoData != null && ResultadoData.Any())
-                    {
-                        await CargarMapa();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error en OnAfterRenderAsync: {ex.Message}");
-                }
-            }
-        }
-
-        private async Task CargarMapa()
-        {
-            if (_googleMapsModule == null) return;
-
-            // Filtrar ubicaciones únicas obteniendo país y ciudad desde DataEsquemaJson
-            uniqueLocations = ResultadoData
-                .Select(d =>
-                {
-                    var pais = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data;
-                    var ciudad = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 85)?.Data;
-
-                    return new { Pais = pais, Ciudad = ciudad };
-                })
-                .Where(loc => !string.IsNullOrEmpty(loc.Pais) && !string.IsNullOrEmpty(loc.Ciudad))
-                .Select(loc => (loc.Pais!, loc.Ciudad!)) 
-                .Distinct()
-                .ToList();
-
-            // Llamar al método JS para mostrar los marcadores en el mapa
-            await _googleMapsModule.InvokeVoidAsync("initMap", uniqueLocations);
-        }
-
-
-
         public async Task BuscarPalabraRequest()
         {
             await CargarResultados(1, pageSize); // Llamar directamente con la paginación inicial
+            StateHasChanged();
+            await ObtenerCoordenadasYMarcarMapa();
+            if (mapa != null)
+            {
+                await mapa.RefreshAsync();
+            }
+
         }
+
 
         private async Task CargarResultados(int pageNumber, int pageSize)
         {
@@ -168,7 +141,8 @@ namespace ClientApp.Pages.BuscadorCan
                     {
                         if (item.IdONA.HasValue && !iconUrls.ContainsKey(item.IdONA.Value))
                         {
-                            iconUrls[item.IdONA.Value] = await getIconUrl(item);
+                            var iconUrl = await getIconUrl(item);
+                            iconUrls[item.IdONA.Value] = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{iconUrl.TrimStart('/')}";
                         }
                     }
                 }
@@ -183,17 +157,12 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-        private async Task OnPageChange(int pageNumber)
-        {
-            currentPage = pageNumber; // Actualiza la página actual
-            await CargarResultados(pageNumber, pageSize);
-        }
-
         private async void MostrarDetalle(BuscadorResultadoDataDto item)
         {
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", item);
             modal.Size = ModalSize.ExtraLarge;
+            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
@@ -202,6 +171,7 @@ namespace ClientApp.Pages.BuscadorCan
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
             modal.Size = ModalSize.Regular;
+            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
@@ -260,28 +230,6 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-        private string? ObtenerDato(BuscadorResultadoDataDto item, int idHomologacion)
-        {
-            try
-            {
-                var dato = item.DataEsquemaJson?
-                    .FirstOrDefault(f => f.IdHomologacion == idHomologacion)?
-                    .Data;
-
-                if (!string.IsNullOrEmpty(dato))
-                {
-                    // Deserializar el dato si es JSON
-                    return System.Text.Json.JsonSerializer.Deserialize<string>(dato);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deserializando el dato: {ex.Message}");
-            }
-
-            return null;
-        }
-
         private async Task<string> getIconUrl(BuscadorResultadoDataDto item)
         {
             try
@@ -312,10 +260,81 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-        private void ToggleMapa()
+        private async Task ObtenerCoordenadasYMarcarMapa()
         {
-            mostrarMapa = !mostrarMapa; // Cambia el estado
+            markers.Clear(); // Limpiar los marcadores previos
+            var processedLocations = new HashSet<string>();
+
+            uniqueLocations = ResultadoData?
+                .Select(d =>
+                {
+                    var pais = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim();
+                    var ciudad = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 85)?.Data?.Trim();
+                    return (!string.IsNullOrEmpty(pais) && !string.IsNullOrEmpty(ciudad)) ? (pais, ciudad) : default;
+                })
+                .Where(loc => loc != default)
+                .Distinct()
+                .ToList() ?? new List<(string, string)>();
+
+            foreach (var location in uniqueLocations)
+            {
+                var locationKey = $"{location.Pais}-{location.Ciudad}";
+                if (processedLocations.Contains(locationKey)) continue;
+
+                var coordenadas = await ObtenerCoordenadas(location.Pais, location.Ciudad);
+                if (coordenadas != null)
+                {
+                    markers.Add(new GoogleMapMarker
+                    {
+                        Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
+                        Title = $"{location.Ciudad}, {location.Pais}",
+                        PinElement = new PinElement { BorderColor = "red" }
+                    });
+
+                    processedLocations.Add(locationKey);
+                    if (markers.Count == 1)
+                    {
+                        mapCenter = coordenadas;
+                    }
+                }
+            }
+
+            if (mapa != null)
+            {
+                await mapa.RefreshAsync();
+            }
+
+            markers = new List<GoogleMapMarker>(markers);
+            StateHasChanged();
         }
+
+
+        private async Task<GoogleMapCenter?> ObtenerCoordenadas(string pais, string ciudad)
+        {
+            try
+            {
+                var response = await Servicio.ObtenerCoordenadasAsync(pais, ciudad);
+
+                if (response?.Results?.Length > 0)
+                {
+                    var location = response.Results[0].Geometry.Location;
+                    return new GoogleMapCenter(location.Lat, location.Lng);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error obteniendo coordenadas desde el servicio: {ex.Message}");
+            }
+            return null;
+        }
+
+
+
+        // Clases para deserializar la respuesta de la API de Google
+        private class GeocodeResponse { public GeocodeResult[] Results { get; set; } }
+        private class GeocodeResult { public Geometry Geometry { get; set; } }
+        private class Geometry { public Location Location { get; set; } }
+        private class Location { public double Lat { get; set; } public double Lng { get; set; } }
 
 
         public class JsonData

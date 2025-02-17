@@ -1,7 +1,12 @@
 @page "/grupos"
 @layout AdminLayout
+@using OfficeOpenXml
 @using SharedApp.Models.Dtos
-
+@inject IJSRuntime JSRuntime
+@using System.IO
+@using System.Text
+@using iTextSharp.text
+@using iTextSharp.text.pdf
 
 <PageTitle>Homologación</PageTitle>
 
@@ -9,24 +14,41 @@
     <h2 class="title headlineheadline2-h2">Administación de Entidades</h2>
 </div>
 
+<div class="text-end my-3 d-flex justify-content-between">
+    <!-- Grupo de botones de exportación -->
+    <div class="d-flex gap-2">
+        <!-- Botón Exportar a Excel -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+            <Icon Name="IconName.FileEarmarkArrowDown" />
+            <span class="ms-2 btnExp">Exportar a Excel</span>
+        </Button>
+
+        <!-- Botón Exportar a PDF -->
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Icon Name="IconName.FileEarmarkPdf" />
+            <span class="ms-2 btnExp">Exportar a PDF</span>
+        </Button>
+    </div>
+</div>
+
 <div class="tabla-1 tabla-2">
     <div class="table-heading table-1">
-        <div class="table-heading-1 table-heading-11" style="width:50% !important">
+        <div class="table-heading-1 table-heading-11 sortable-header" style="width:50% !important" @onclick="() => OrdenarPor(nameof(HomologacionDto.MostrarWeb))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Texto a Mostrar en la Web</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-1.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Texto a Mostrar en la Web @(sortColumn == nameof(HomologacionDto.MostrarWeb) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
-        <div class="table-heading-1 table-heading-11" style="width:50% !important">
+
+        <div class="table-heading-1 table-heading-11 sortable-header" style="width:50% !important" @onclick="() => OrdenarPor(nameof(HomologacionDto.TooltipWeb))">
             <div class="header-label-1 header-label-4">
-                <div class="label-heading headingheadline5-h5">Tooltip Web</div>
-                <div class="frame-1000003808">
-                    <img class="arrow_downward_alt" src="admin/img/arrow-downward-alt-2.svg" alt="arrow_downward_alt">
+                <div class="label-heading headingheadline5-h5">
+                    Tooltip Web @(sortColumn == nameof(HomologacionDto.TooltipWeb) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </div>
+
         <div class="table-heading-1 table-heading-11" style="width:20% !important">
             <div class="header-label-1 header-label-4">
                 <div class="label-heading headingheadline5-h5">Editar</div>
@@ -37,14 +59,18 @@
     @if (listaHomologacions != null && listaHomologacions.Any())
     {
         <div class="content content-2">
-            @foreach (var homologacion in listaHomologacions)
+            @foreach (var homologacion in PaginatedItems)
             {
                 <div class="row row-15">
                     <div class="componente">
                         <div class="row-1 row-15">
                             <div class="ads-rules-list @(homologacion.MostrarWebOrden == 1 ? "table-primary" : "")">
-                                <div class="cell cell-1" style="width:50% !important"><div class="cell-text cell-1 bodybody-small">@homologacion.MostrarWeb</div></div>
-                                <div class="cell cell-1" style="width:50% !important"><div class="cell-text cell-1 bodybody-small">@homologacion.TooltipWeb</div></div>
+                                <div class="cell cell-1" style="width:50% !important">
+                                    <div class="cell-text cell-1 bodybody-small">@homologacion.MostrarWeb</div>
+                                </div>
+                                <div class="cell cell-1" style="width:50% !important">
+                                    <div class="cell-text cell-1 bodybody-small">@homologacion.TooltipWeb</div>
+                                </div>
                                 <div class="cell cell-1" style="width:20% !important">
                                     <Tooltip Title="Editar registro">
                                         <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{homologacion.IdHomologacion}")" Size="ButtonSize.Small">
@@ -58,36 +84,115 @@
                 </div>
             }
         </div>
+
+        <!-- Controles de paginación -->
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
+
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
+        </div>
     }
     else
     {
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
 </div>
-
-    @* <div class="general table">
-        <Grid @ref="grid" TItem="HomologacionDto" class="table table-hover table-bordered table-striped" DataProvider="HomologacionDataProvider" Responsive="true" Id="sortableGrid">
-            <GridColumn TItem="HomologacionDto" HeaderText="Texto a Mostrar en la Web" PropertyName="MostrarWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                @context.MostrarWeb
-                <input type="hidden" value="@context.IdHomologacion" />
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Tooltip Web" PropertyName="TooltipWeb" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                @context.TooltipWeb
-            </GridColumn>
-            <GridColumn TItem="HomologacionDto" HeaderText="Opciones" ColumnClass="@(x => x.MostrarWebOrden == 1 ? "table-primary" : "")">
-                <Tooltip Title="Editar registro">
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Secondary" Outline="true" To="@($"/editar-grupos/{context.IdHomologacion}")" Size="ButtonSize.Small">
-                        <Icon Name="IconName.PencilSquare" />
-                    </Button>
-                </Tooltip>
-            </GridColumn>
-        </Grid>
-    </div> *@
-
-
 <div class="form-row py-2">
     <Alert Color="AlertColor.Secondary" Dismissable="false">
         <Icon Name="IconName.ExclamationTriangleFill" class="me-2"></Icon>
         <span class="text-white label valign-text-middle inter-regular-normal-comet-16px">Registro para organización lógico [No es filtro]</span>
     </Alert>
 </div>
+
+@code {
+    private string sortColumn = nameof(HomologacionDto.MostrarWeb);
+    private bool sortAscending = true;
+
+    private void OrdenarPor(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        listaHomologacions = sortAscending
+            ? listaHomologacions.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+            : listaHomologacions.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+    }
+
+    private async Task ExportarExcel()
+    {
+        if (listaHomologacions == null || !listaHomologacions.Any())
+        {
+            return;
+        }
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Homologaciones");
+
+        // Agregar encabezados
+        worksheet.Cells[1, 1].Value = "Texto a Mostrar en la Web";
+        worksheet.Cells[1, 2].Value = "Tooltip Web";
+
+        int row = 2;
+        foreach (var homologacion in listaHomologacions)
+        {
+            worksheet.Cells[row, 1].Value = homologacion.MostrarWeb;
+            worksheet.Cells[row, 2].Value = homologacion.TooltipWeb;
+            row++;
+        }
+
+        worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+        var fileName = "Homologaciones_Export.xlsx";
+        var fileBytes = package.GetAsByteArray();
+        var fileBase64 = Convert.ToBase64String(fileBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+    }
+    private async Task ExportarPDF()
+    {
+        if (listaHomologacions == null || !listaHomologacions.Any())
+        {
+            return;
+        }
+
+        using var memoryStream = new MemoryStream();
+        var document = new Document(iTextSharp.text.PageSize.A4);
+        var writer = PdfWriter.GetInstance(document, memoryStream);
+        document.Open();
+
+        var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+        var table = new PdfPTable(2) { WidthPercentage = 100 };
+
+        table.AddCell(new Phrase("Texto a Mostrar en la Web", font));
+        table.AddCell(new Phrase("Tooltip Web", font));
+
+        foreach (var homologacion in listaHomologacions)
+        {
+            table.AddCell(homologacion.MostrarWeb);
+            table.AddCell(homologacion.TooltipWeb);
+        }
+
+        document.Add(table);
+        document.Close();
+
+        var fileName = "Homologaciones_Export.pdf";
+        var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
+    }
+}

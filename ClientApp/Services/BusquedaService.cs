@@ -18,7 +18,7 @@ namespace ClientApp.Services
         public async Task<BuscadorDto> PsBuscarPalabraAsync(string paramJSON, int PageNumber, int RowsPerPage)
         {
             string encodedJson = Uri.EscapeDataString(paramJSON);
-
+            var Url = Inicializar.UrlBaseApi;
             var response = await _httpClient.GetAsync($"{Inicializar.UrlBaseApi}api/buscador/search/phrase?paramJSON={encodedJson}&PageNumber={PageNumber}&RowsPerPage={RowsPerPage}");
             response.EnsureSuccessStatusCode();
 

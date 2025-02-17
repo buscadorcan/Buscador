@@ -10,6 +10,7 @@ namespace ClientApp.Services.IService {
         Task<RespuestaRegistro> EliminarConexion(int idConexion);
         Task<HttpResponseMessage> ImportarExcel(MultipartFormDataContent content);
         Task<ONAConexionDto> GetOnaConexionByOnaAsync(int idOna);
+        Task<List<ONAConexionDto>> GetOnaConexionByOnaListAsync(int idOna);
 
     }
 }

@@ -56,6 +56,16 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context => context.ONAConexion.AsNoTracking().Where(c => c.Estado.Equals("A")).ToList());
         }
+        public List<ONAConexion> GetOnaConexionByOnaListAsync(int idOna)
+        {
+            return ExecuteDbOperation(context =>
+                context.ONAConexion
+                    .AsNoTracking()
+                    .Where(c => c.IdONA == idOna && c.Estado == "A")
+                    .ToList()
+            );
+        }
+
         public bool Update(ONAConexion newRecord)
         {
             return ExecuteDbOperation(context =>
