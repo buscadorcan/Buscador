@@ -61,14 +61,24 @@ namespace WebApp.Controllers
                     return BadRequestResponse("Archivo no válido");
                 }
 
-                // Obtener la ruta base del directorio web
+                // Obtener la ruta física de la carpeta wwwroot/Files en IIS
                 var webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-
-                // Asegurar que la carpeta Files existe
                 var filesPath = Path.Combine(webRootPath, "Files");
+
+                // Verificar si la carpeta existe, si no, la crea
                 if (!Directory.Exists(filesPath))
                 {
                     Directory.CreateDirectory(filesPath);
+
+                    // Asegurar que la carpeta tiene permisos adecuados
+                    var directoryInfo = new DirectoryInfo(filesPath);
+                    var security = directoryInfo.GetAccessControl();
+                    security.SetAccessRule(new System.Security.AccessControl.FileSystemAccessRule(
+                        "IIS_IUSRS",
+                        System.Security.AccessControl.FileSystemRights.FullControl,
+                        System.Security.AccessControl.AccessControlType.Allow));
+
+                    directoryInfo.SetAccessControl(security);
                 }
 
                 var filePath = Path.Combine(filesPath, file.FileName);
@@ -91,12 +101,15 @@ namespace WebApp.Controllers
                     IsSuccess = true
                 });
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { "Permisos insuficientes en la carpeta 'Files'. Contacte al administrador del servidor.", ex.Message } });
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
             }
         }
-
 
         //[Authorize]
         //[HttpPost("upload")]
