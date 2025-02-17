@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.Mappers;
+using WebApp.Models;
 
 namespace WebApp.Extensions
 {
@@ -60,7 +61,9 @@ namespace WebApp.Extensions
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IPasswordGenerationStrategy, RandomPasswordGenerationStrategy>();
             services.AddScoped<IPasswordService, PasswordService>();
-   
+
+            //Thesaurus
+            services.AddScoped<IThesaurusService, ThesaurusService>();
 
             // Proporciona acceso al contexto HTTP actual.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -87,6 +90,9 @@ namespace WebApp.Extensions
             services.AddScoped<ILogMigracionRepository, LogMigracionRepository>();
             services.AddScoped<IReporteRepository, ReporteRepository>();
             services.AddScoped<IpaActualizarFiltroRepository, paActualizarFiltroRepository>();
+
+            //Thesaurus
+            services.AddScoped<IThesaurusRepository, ThesaurusRepository>();
 
             // Registra servicios de trabajo en segundo plano (Worker Services).
             services.AddHostedService<BackgroundWorkerService>();

@@ -130,45 +130,20 @@ namespace WebApp.Controllers
             }
         }
 
-        [HttpPost("addEventTracking")]
-        public IActionResult AddEventTracking([FromBody] EventTrackingDto eventTracking)
+        [HttpPost("validateWords")]
+        public IActionResult ValidateWords([FromBody] List<string> words)
         {
             try
             {
-                if (eventTracking == null)
-                    return BadRequest("El objeto EventTracking no puede ser nulo.");
-
-                _vhRepo.AddEventTracking(eventTracking);
-
-                return Ok(new RespuestasAPI<string>
+                return Ok(new RespuestasAPI<bool>
                 {
-                    Result = "Evento registrado con éxito."
+                    Result = _vhRepo.ValidateWords(words)
                 });
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(AddEventTracking));
+                return HandleException(e, nameof(ValidateWords));
             }
         }
-
-        [HttpGet("geocode")]
-        public async Task<IActionResult> GetCoordinates([FromQuery] string address)
-        {
-            try
-            {
-                var apiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk"; // Reemplaza con tu API Key
-                var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={Uri.EscapeDataString(address)}&key={apiKey}";
-
-                using var httpClient = new HttpClient();
-                var response = await httpClient.GetStringAsync(url);
-
-                return Ok(response);
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(GetCoordinates));
-            }
-        }
-
     }
 }

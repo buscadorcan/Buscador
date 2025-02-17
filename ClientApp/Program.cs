@@ -30,6 +30,7 @@ builder.Services.AddScoped<ILogMigracionService, LogMigracionService>();
 builder.Services.AddScoped<IONAService, ONAsService>();
 builder.Services.AddScoped<IEsquemaService, EsquemaService>();
 builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
+builder.Services.AddScoped<IThesaurusService, ThesaurusService>();
 
 builder.Services.AddScoped<IReporteService, ReporteService>();
 

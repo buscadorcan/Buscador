@@ -10,6 +10,7 @@ namespace ClientApp.Services.IService {
         Task<List<DataHomologacionEsquema>> FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, string VistaFK, int idOna);
         Task<List<DataEsquemaDatoBuscar>> FnEsquemaDatoBuscarAsync(int idEsquemaData, string TextoBuscar);
         Task<List<FnPredictWordsDto>> FnPredictWords(string word);
+        Task<bool> ValidateWords(List<string> words);
         Task<fnEsquemaCabeceraDto?> FnEsquemaCabeceraAsync(int IdEsquemadata);
         Task<bool> AddEventTrackingAsync(EventTrackingDto eventTracking);
         Task<GeocodeResponseDto?> ObtenerCoordenadasAsync(string pais, string ciudad);

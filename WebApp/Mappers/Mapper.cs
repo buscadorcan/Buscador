@@ -76,7 +76,11 @@ namespace WebApp.Mappers
             CreateMap<EsquemaVistaColumna, EsquemaVistaColumnaDto>();
             CreateMap<EsquemaVistaColumnaDto, EsquemaVistaColumna>();
 
-           
+            //Thesaurus
+            CreateMap<Thesaurus, ThesaurusDto>();
+            CreateMap<Expansion, ExpansionDto>();
+            CreateMap<ExpansionDto, Expansion>();
+            CreateMap<Replacement, ReplacementDto>();
         }
     }
 }
