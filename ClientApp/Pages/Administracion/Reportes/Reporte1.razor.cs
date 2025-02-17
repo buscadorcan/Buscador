@@ -68,7 +68,8 @@ namespace ClientApp.Pages.Administracion.Reportes
                     Titulo_vw_AcreditacionOna = (await iReporteService.findByVista("vw_AcreditacionOna"))?.MostrarWeb ?? "";
                     foreach (var item in listaVwAcreditacionOna)
                     {
-                        Heatmap2Data.Add(new MapData { Pais = item.Pais + "-" + item.ONA, Organizacion = item.Organizacion, Esquema = item.ONA }); 
+                        //Heatmap2Data.Add(new MapData { Pais = item.Pais + "-" + item.ONA, Organizacion = item.Organizacion, Esquema = item.ONA }); 
+                        Heatmap2Data.Add(new MapData { Pais = item.Pais, Organizacion = item.Organizacion, Esquema = item.ONA });
                     }
 
                     var listaVwEsquemaPais = await iReporteService.GetVwEsquemaPaisAsync<List<VwEsquemaPaisDto>>("esquema-pais");

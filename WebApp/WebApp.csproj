@@ -27,6 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="wwwroot\Files\" />
 		<Folder Include="wwwroot\Icono\" />
 	</ItemGroup>
 
