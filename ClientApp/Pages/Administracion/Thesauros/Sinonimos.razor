@@ -1,0 +1,223 @@
+﻿@page "/sinonimos"
+@layout AdminLayout
+
+<style>
+    *{
+        font-family: var(--font-family-inter-semibold) !important;
+    }
+    .btn{
+    margin-bottom:0.5em;
+    }
+
+    .margin_title{
+        margin: 1em;
+    }
+
+    .mnjError{
+    margin:1em;
+    color:red;
+    font-size:9px;
+    }
+
+    .mnjRegistroExitoso{
+    margin: 1em;
+        color: #198754;
+    font-size: 14px;
+    }
+
+    .mnjRegistroError{
+        margin: 1em;
+        color: red;
+        font-size: 14px;
+    }
+
+    .li-flex{
+        display:flex !important;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:space-between;
+        align-items:center;
+        padding-top:0;
+        padding-bottom:0;
+    }
+
+    .div_flex{
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+        align-items:center;
+    }
+
+    .ancho_85{
+        width:85%;
+    }
+
+    .ancho_70 {
+        width: 70%;
+    }
+    .ancho_15{
+        width: 15%;
+    }
+
+    .ancho_100 {
+        width: 100%;
+    }
+
+
+    .input_control{
+        padding:0.5em;
+        height:2.5em;
+        border: 1px solid #212529;
+        border-top-left-radius:10px;
+
+    }
+    .btn_control{
+        height:2.5em;
+        background-color:grey;
+        color:white;
+        border: 1px solid #212529;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        margin-bottom:0px !important;
+
+    }
+
+    .margin_botton{
+        margin-bottom:0.5em;
+    }
+
+    .btn_control_guardar{
+        height:2.5em;
+        background-color: #198754;
+        border: 1px solid #212529;
+        color:white;
+        margin-bottom: 0px !important;
+
+    }
+
+    .btn_control_bat {
+        height: 2.5em;
+        background-color: #0d6efd;
+        border: 1px solid #212529;
+        color: white;
+        margin-bottom: 0px !important;
+    }
+</style>
+
+<h1 class="title">Administración de Sinonimos</h1>
+
+@if (thesauro is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <div class="div_flex ancho_100 margin_botton">
+        <div class="ancho_70 div_flex">
+            <input type="text" placeholder="Ingrese el sinonimo a buscar" @bind="sinonimoBuscar" @oninput="MostarTodos"  class="ancho_70 input_control" />
+            <Button class="ancho_30 btn_control" @onclick="() => BuscarSinonimo()">Buscar Sinonimo</Button>
+        </div>
+        <div class="ancho_15 div_flex">
+            <Button class="btn_control_guardar ancho_85" @onclick="() => GuardarThesauro()">Guardar</Button>
+        </div>
+        <div class="ancho_15 div_flex">
+            <Button class="btn_control_bat ancho_85" @onclick="() => EjecutarBat()">Publicar</Button>
+        </div>
+    </div>
+    
+    <div class="accordion" id="accordionThesaurus">
+
+        @foreach (var (expansion, i) in thesauro.Expansions.Select((value, index) => (value, index)))
+        {
+            var collapseId = $"collapse{i}";
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading@i">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId">
+                        Seccion
+                    </button>
+                </h2>
+                <div id="@collapseId" class="accordion-collapse collapse" data-bs-parent="#accordionThesaurus">
+                    <div class="accordion-body">
+                        <button class="btn btn-primary btn-sm mt-2" @onclick="() => AbrirModal(i)">Agregar</button>
+                        <ul class="list-group">
+                            @foreach (var substitute in expansion.Substitutes)
+                            {
+                                <li class="list-group-item li-flex">
+                                    <label>@substitute</label>
+                                    <button class="btn btn-danger btn-sm mt-2" @onclick="() => AbrirModalQuitarSinonimo(i,substitute)">-</button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    
+    if (isMensajeGuardar)
+    {
+        if (isMensajeGuardarExitoso)
+        {
+            <div class="mnjRegistroExitoso">@mensajeGuardar</div>
+        }else {
+            <div class="mnjRegistroError">@mensajeGuardar</div>
+        }
+
+    }
+}
+
+<div class="modal fade @(modalAbierto ? "show d-block" : "d-none")" tabindex="-1" style="background: rgba(0, 0, 0, 0.5);" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Sinonimo</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                @* <input type="text" class="form-control" @bind="nuevoSubstituto" placeholder="Ingrese el sinonimo"> *@
+                <div class="input-group">
+                <input type="text" @bind="nuevoSubstituto" @oninput="OnSearchChanged" class="form-control" list="suggestions" placeholder="Ingrese el sinonimo" />
+                <datalist id="suggestions">
+                    @foreach (var word in ListFnPredictWordsDto)
+                    {
+                        <option value="@word.Word"></option>
+                    }
+                </datalist>
+                </div>
+                @{
+                    if (isMensaje)
+                    {
+                        <div class="mnjError">@mensajeGuardar</div>
+                    }
+                }
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button class="btn btn-primary" @onclick="AgregarSubstituto">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade @(modalQuitarSinonimoAbierto ? "show d-block" : "d-none")" tabindex="-1" style="background: rgba(0, 0, 0, 0.5);" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sinonimo</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <label>¿Desea quitar el sinonimo seleccionado?</label>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="QuitarSubstituto">Si</button>
+                <button class="btn btn-primary" @onclick="CerrarModal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

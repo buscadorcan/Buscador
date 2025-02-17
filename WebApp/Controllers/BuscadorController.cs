@@ -129,5 +129,21 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FnPredictWords));
             }
         }
+
+        [HttpPost("validateWords")]
+        public IActionResult ValidateWords([FromBody] List<string> words)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<bool>
+                {
+                    Result = _vhRepo.ValidateWords(words)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ValidateWords));
+            }
+        }
     }
 }

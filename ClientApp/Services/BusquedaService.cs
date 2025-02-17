@@ -1,7 +1,11 @@
+using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using ClientApp.Helpers;
 using ClientApp.Models;
 using ClientApp.Services.IService;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
 
@@ -110,6 +114,26 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
 
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<FnPredictWordsDto>>>()).Result;
+        }
+
+        public  async Task<bool> ValidateWords(List<string> words)
+        {
+            
+            var content = JsonConvert.SerializeObject(words);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PostAsync($"{Inicializar.UrlBaseApi}api/buscador/validateWords", bodyContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var respuesta = await response.Content.ReadFromJsonAsync<RespuestasAPI<bool>>();
+                return respuesta?.Result ?? false; 
+            }
+            else
+            {
+                return false; 
+            }
+
         }
     }
 }

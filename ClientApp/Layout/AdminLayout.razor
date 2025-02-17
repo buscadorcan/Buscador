@@ -89,6 +89,12 @@
                                         {
                                             switch (item.Href)
                                             {
+                                                case "/sinonimos":
+                                                    <div class="">
+                                                        <img class="bibuilding" src="admin/img/ep-connection.svg">
+                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                    </div>
+                                                    break;
                                                 case "/conexion":
                                                     <div class="conexion">
                                                         <img class="bibuilding" src="admin/img/ep-connection.svg">
@@ -331,6 +337,7 @@
                NavigationManager.Uri.Contains("/migracion-excel") ||
                NavigationManager.Uri.Contains("/nueva-migarcion-excel") ||
                NavigationManager.Uri.Contains("/conexion") ||
+               NavigationManager.Uri.Contains("/sinonimos") ||
                NavigationManager.Uri.Contains("/nuevo-conexion") ||
                NavigationManager.Uri.Contains("/editar-conexion") ||
                NavigationManager.Uri.Contains("/log-migracion") ||

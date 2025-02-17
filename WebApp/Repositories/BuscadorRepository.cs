@@ -179,5 +179,19 @@ namespace WebApp.Repositories
                 return context.Database.SqlQuery<FnPredictWordsDto>($"select * from fnPredictWord({word})").AsNoTracking().OrderBy(c => c.Word).ToList();
             });
         }
+
+        public bool ValidateWords(List<string> words)
+        {
+            if (words == null || words.Count == 0)
+                return false;
+
+            bool valor =  ExecuteDbOperation(context =>
+            {
+                return context.EsquemaFullText.Any(e => words.Contains(e.FullTextData));
+            });
+
+            return valor;
+            
+        }
     }
 }
