@@ -4,6 +4,7 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
+using Microsoft.JSInterop; // Para invocar funciones de JavaScript
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -21,6 +22,8 @@ namespace ClientApp.Pages.BuscadorCan
         public string? Texto { get; set; }
         [Inject]
         private IBusquedaService? servicio { get; set; }
+        [Inject]
+        private IJSRuntime JS { get; set; } // Para llamar scripts JavaScript
         private HomologacionEsquemaDto? homologacionEsquema;
         private List<HomologacionDto>? Columnas;
         private List<DataHomologacionEsquema>? resultados;
@@ -39,6 +42,8 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine(e);
             }
         }
+
+
         private async Task<GridDataProviderResult<DataHomologacionEsquema>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataHomologacionEsquema> request)
         {
             if (resultados is null && servicio != null)
@@ -47,6 +52,11 @@ namespace ClientApp.Pages.BuscadorCan
             }
 
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await JS.InvokeVoidAsync("renderMathJax"); // Llamamos a MathJax después de cada renderizado
         }
     }
 }
