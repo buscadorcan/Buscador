@@ -179,9 +179,34 @@ namespace WebApp.Controllers
         }
 
         /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GetCoordinates: Obtiene coordenadas geográficas (latitud y longitud) de una dirección dada mediante la API de Google Maps.
-         */
+        * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        * WebApp/AddEventTracking: Registra la accion realizada por algun control.
+        */
+        [HttpPost("addEventTracking")]
+        public IActionResult AddEventTracking([FromBody] EventTrackingDto eventTracking)
+        {
+            try
+            {
+                if (eventTracking == null)
+                    return BadRequest("El objeto EventTracking no puede ser nulo.");
+
+                _vhRepo.AddEventTracking(eventTracking);
+
+                return Ok(new RespuestasAPI<string>
+                {
+                    Result = "Evento registrado con éxito."
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(AddEventTracking));
+            }
+        }
+
+        /* 
+        * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        * WebApp/GetCoordinates: Obtiene coordenadas geográficas (latitud y longitud) de una dirección dada mediante la API de Google Maps.
+        */
         [HttpGet("geocode")]
         public async Task<IActionResult> GetCoordinates([FromQuery] string address)
         {

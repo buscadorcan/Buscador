@@ -1,16 +1,17 @@
 ﻿@page "/sinonimos"
 @layout AdminLayout
 
+
 <style>
     *{
-        font-family: var(--font-family-inter-semibold) !important;
+    font-family: var(--font-family-inter-semibold) !important;
     }
     .btn{
     margin-bottom:0.5em;
     }
 
     .margin_title{
-        margin: 1em;
+    margin: 1em;
     }
 
     .mnjError{
@@ -21,89 +22,89 @@
 
     .mnjRegistroExitoso{
     margin: 1em;
-        color: #198754;
+    color: #198754;
     font-size: 14px;
     }
 
     .mnjRegistroError{
-        margin: 1em;
-        color: red;
-        font-size: 14px;
+    margin: 1em;
+    color: red;
+    font-size: 14px;
     }
 
     .li-flex{
-        display:flex !important;
-        flex-direction:row;
-        flex-wrap:wrap;
-        justify-content:space-between;
-        align-items:center;
-        padding-top:0;
-        padding-bottom:0;
+    display:flex !important;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:0;
+    padding-bottom:0;
     }
 
     .div_flex{
-        display:flex;
-        flex-direction:row;
-        flex-wrap:wrap;
-        justify-content:flex-end;
-        align-items:center;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    align-items:center;
     }
 
     .ancho_85{
-        width:85%;
+    width:85%;
     }
 
     .ancho_70 {
-        width: 70%;
+    width: 70%;
     }
     .ancho_15{
-        width: 15%;
+    width: 15%;
     }
 
     .ancho_100 {
-        width: 100%;
+    width: 100%;
     }
 
 
     .input_control{
-        padding:0.5em;
-        height:2.5em;
-        border: 1px solid #212529;
-        border-top-left-radius:10px;
+    padding:0.5em;
+    height:2.5em;
+    border: 1px solid #212529;
+    border-top-left-radius:10px;
 
     }
     .btn_control{
-        height:2.5em;
-        background-color:grey;
-        color:white;
-        border: 1px solid #212529;
-        border-top-right-radius: 10px;
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
-        margin-bottom:0px !important;
+    height:2.5em;
+    background-color:grey;
+    color:white;
+    border: 1px solid #212529;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-bottom:0px !important;
 
     }
 
     .margin_botton{
-        margin-bottom:0.5em;
+    margin-bottom:0.5em;
     }
 
     .btn_control_guardar{
-        height:2.5em;
-        background-color: #198754;
-        border: 1px solid #212529;
-        color:white;
-        margin-bottom: 0px !important;
+    height:2.5em;
+    background-color: #198754;
+    border: 1px solid #212529;
+    color:white;
+    margin-bottom: 0px !important;
 
     }
 
     .btn_control_bat {
-        height: 2.5em;
-        background-color: #0d6efd;
-        border: 1px solid #212529;
-        color: white;
-        margin-bottom: 0px !important;
+    height: 2.5em;
+    background-color: #0d6efd;
+    border: 1px solid #212529;
+    color: white;
+    margin-bottom: 0px !important;
     }
 </style>
 
@@ -120,14 +121,19 @@ else
             <input type="text" placeholder="Ingrese el sinonimo a buscar" @bind="sinonimoBuscar" @oninput="MostarTodos"  class="ancho_70 input_control" />
             <Button class="ancho_30 btn_control" @onclick="() => BuscarSinonimo()">Buscar Sinonimo</Button>
         </div>
-        <div class="ancho_15 div_flex">
-            <Button class="btn_control_guardar ancho_85" @onclick="() => GuardarThesauro()">Guardar</Button>
-        </div>
-        <div class="ancho_15 div_flex">
-            <Button class="btn_control_bat ancho_85" @onclick="() => EjecutarBat()">Publicar</Button>
-        </div>
+        @if (this.usuarioLogin == "CAN" && this.usuarioLogin == "admin")
+        {
+            <div class="ancho_15 div_flex">
+                <Button class="btn_control_guardar ancho_85" @onclick="() => GuardarThesauro()">Guardar</Button>
+            </div>
+            <div class="ancho_15 div_flex">
+                <Button class="btn_control_bat ancho_85" @onclick="() => EjecutarBat()">Publicar</Button>
+            </div>
+        }
+
+
     </div>
-    
+
     <div class="accordion" id="accordionThesaurus">
 
         @foreach (var (expansion, i) in thesauro.Expansions.Select((value, index) => (value, index)))
@@ -142,13 +148,18 @@ else
                 </h2>
                 <div id="@collapseId" class="accordion-collapse collapse" data-bs-parent="#accordionThesaurus">
                     <div class="accordion-body">
-                        <button class="btn btn-primary btn-sm mt-2" @onclick="() => AbrirModal(i)">Agregar</button>
+                        @if (this.usuarioLogin == "CAN" && this.usuarioLogin == "admin") {
+                            <button class="btn btn-primary btn-sm mt-2" @onclick="() => AbrirModal(i)">Agregar</button>
+                        }
                         <ul class="list-group">
                             @foreach (var substitute in expansion.Substitutes)
                             {
                                 <li class="list-group-item li-flex">
                                     <label>@substitute</label>
-                                    <button class="btn btn-danger btn-sm mt-2" @onclick="() => AbrirModalQuitarSinonimo(i,substitute)">-</button>
+                                    @if (this.usuarioLogin == "CAN" && this.usuarioLogin == "admin")
+                                    {
+                                        <button class="btn btn-danger btn-sm mt-2" @onclick="() => AbrirModalQuitarSinonimo(i,substitute)">-</button>
+                                    }
                                 </li>
                             }
                         </ul>

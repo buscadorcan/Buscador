@@ -14,8 +14,12 @@
                     }
                     @if (dato != null && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
                     {
-                    <!-- Renderizamos la fórmula LaTeX -->
-                    <span class="latex-formula">@((MarkupString)($"\\({dato}\\)"))</span>
+                         <!-- Extraemos solo la fórmula -->
+                         string formulaExtraida = ExtraerFormula(dato);
+                        //string formulaExtraida = ExtraerFormula(@"$$2 \times\sqrt{3.70 \times 10^{-9} \times R^2 + 1.76 \times 10^{-7}}$$");
+
+                        <!-- Renderizamos la fórmula LaTeX -->
+                        <span class="latex-formula">@((MarkupString)$"\\( {formulaExtraida} \\)")</span>
                     }
                     else
                     {
