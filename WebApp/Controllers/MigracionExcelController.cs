@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using SharedApp.Models.Dtos;
 using SharedApp.Models;
 using WebApp.Service.IService;
-using System.Security.AccessControl;
 
 namespace WebApp.Controllers
 {
@@ -106,82 +105,63 @@ namespace WebApp.Controllers
             {
                 if (file == null || file.Length == 0)
                 {
-                    return BadRequest(new { message = "Archivo no encontrado" });
+                    return BadRequestResponse("Archivo no encontrado");
                 }
                 if (idOna <= 0)
                 {
-                    return BadRequest(new { message = "idOna no es válido" });
+                    return BadRequestResponse("idOna no es válido");
                 }
 
                 string fileExtension = Path.GetExtension(file.FileName);
                 if (fileExtension != ".xls" && fileExtension != ".xlsx")
                 {
-                    return BadRequest(new { message = "Archivo no válido" });
+                    return BadRequestResponse("Archivo no válido");
                 }
 
-                // 🔹 Obtener la ruta correcta de "wwwroot/Files" dentro del proyecto
+                // 🔹 Obtener la ruta de `wwwroot/Files` correctamente en IIS
                 string wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 string filesPath = Path.Combine(wwwrootPath, "Files");
 
-                // 🔹 Verificar y crear la carpeta con permisos adecuados
-                EnsureDirectoryExistsWithPermissions(filesPath);
+                // 🔹 Asegurar que la carpeta "Files" existe, si no, crearla
+                if (!Directory.Exists(filesPath))
+                {
+                    Directory.CreateDirectory(filesPath);
+                }
 
-                // 🔹 Normalizar el nombre del archivo para evitar errores con espacios
-                string safeFileName = file.FileName.Replace(" ", "_");
-                string filePath = Path.Combine(filesPath, safeFileName);
+                // 🔹 Construir la ruta final del archivo
+                string filePath = Path.Combine(filesPath, file.FileName);
 
-                // 🔹 Guardar el archivo en "Files"
+                // 🔹 Guardar el archivo
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
 
-                // 🔹 Registrar en la base de datos
-                LogMigracion migracion = _iRepo.Create(new LogMigracion
+                // 🔹 Guardar en base de datos
+                LogMigracion migracion = iRepo.Create(new LogMigracion
                 {
                     Estado = "PENDING",
-                    ExcelFileName = safeFileName
+                    ExcelFileName = file.FileName
                 });
 
                 var result = importer.ImportarExcel(filePath, migracion, idOna);
 
-                return Ok(new { isSuccess = true, message = "Archivo subido con éxito." });
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { "Permisos insuficientes en la carpeta 'Files'. Contacte al administrador del servidor.", ex.Message } });
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = true
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
+                return StatusCode(500, new
+                {
+                    statusCode = 500,
+                    isSuccess = false,
+                    errorMessages = new[] { ex.Message }
+                });
             }
         }
-        private void EnsureDirectoryExistsWithPermissions(string path)
-        {
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
 
-                // 🔹 Asignar permisos de escritura a IIS_IUSRS
-                var directoryInfo = new DirectoryInfo(path);
-                var security = directoryInfo.GetAccessControl();
-                security.AddAccessRule(new FileSystemAccessRule(
-                    "IIS_IUSRS",
-                    FileSystemRights.FullControl,
-                    InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-                    PropagationFlags.None,
-                    AccessControlType.Allow));
-
-                security.AddAccessRule(new FileSystemAccessRule(
-                    "IUSR",
-                    FileSystemRights.FullControl,
-                    InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-                    PropagationFlags.None,
-                    AccessControlType.Allow));
-
-                directoryInfo.SetAccessControl(security);
-            }
-        }
         //[Authorize]
         //[HttpPost("upload")]
         //public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
