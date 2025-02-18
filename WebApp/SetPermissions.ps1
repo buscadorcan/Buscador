@@ -7,9 +7,9 @@ if (Test-Path $folderPath) {
     # Otorgar permisos de escritura a "Everyone"
     icacls $folderPath /grant Everyone:F /T
 
-    Write-Output "✅ Permisos aplicados correctamente."
+    Write-Output "Permisos aplicados correctamente."
 } else {
-    Write-Output "⚠️ La carpeta Files no existe. Creándola..."
+    Write-Output "La carpeta Files no existe. Creándola..."
     
     # Crear la carpeta si no existe
     New-Item -Path $folderPath -ItemType Directory
@@ -17,5 +17,5 @@ if (Test-Path $folderPath) {
     # Asignar permisos
     icacls $folderPath /grant Everyone:F /T
 
-    Write-Output "✅ Carpeta creada y permisos aplicados correctamente."
+    Write-Output "Carpeta creada y permisos aplicados correctamente."
 }
