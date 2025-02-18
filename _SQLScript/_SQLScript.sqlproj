@@ -71,5 +71,6 @@
     <Build Include="11_vwLogMigracionExcel.sql" />
     <Build Include="12_EventTracking.sql" />
     <Build Include="13_paAddEventTracking.sql" />
+    <Build Include="00_Diccionario.sql" />
   </ItemGroup>
 </Project>

@@ -1,30 +1,15 @@
-/****** Object:  StoredProcedure [dbo].[paBuscar2k25]    Script Date: 2/17/2025 11:07:12 PM ******/
-SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON
-GO
-/*----------------------------------------------------------------------------------------\
-|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
-|-----------------------------------------------------------------------------------------|
-| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
-\-----------------------------------------------------------------------------------------/
-  [App]				: Buscador Andino											
-	- Date          : 2K24.FEB.25	
-	- Author        : patricio.paccha														
-	- Version	    : 1.0										 
-	- Description   : Función de busqueda (exacta, RANK +  INFLECTIONAL + THESAURUS - stopWord  ) + filtros
-\----------------------------------------------------------------------------------------*/
-
-CREATE   PROCEDURE [dbo].[paBuscar2k25] (	
---| 2K25.FEB.05 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0 
---| Descripción:  Función de busqueda (exacta, RANK +  INFLECTIONAL + THESAURUS - stopWord  ) + filtros
+CREATE OR ALTER  PROCEDURE [dbo].[paBuscar2k25] (	
 --DECLARE  
  @paramJSON			NVARCHAR(MAX) = '{}' 
 ,@PageNumber		INT = 1 
 ,@RowsPerPage		INT = 10 
-,@RowsTotal		INT = 0				 OUTPUT 
+,@RowsTotal			INT = 0				 OUTPUT 
 ,@vwPanelONAjson	NVARCHAR(MAX) = '{}' OUTPUT
 ) AS
+/* Copyright © SIDESOFT | BuscadorAndino | patricio.paccha | 2025.feb.18 
+** paBuscar2k25: Realiza la busqueda (exacta, RANK +  INFLECTIONAL + THESAURUS - stopWord  ) + filtros
+*/
 BEGIN 
 --DECLARE @paramJSON			NVARCHAR(MAX) = 
 --N'{"ExactaBuscar"			:false
@@ -175,7 +160,6 @@ BEGIN
 			--ORDER BY RANK DESC; 
 		END
 	END
-	--
 
 	;WITH EnteBuscadoRank AS
 	(
@@ -195,7 +179,6 @@ BEGIN
 			JOIN	EsquemaData		d(NOLOCK) ON  e.IdEsquemaData  = d.IdEsquemaData
 			JOIN	@organizacion	o ON o.PK = d.VistaFK 
 	)  T	GROUP BY PK
-	 
 
 	IF  (@PageNumber = 1)
 		WITH vwPanelONA AS
@@ -205,11 +188,11 @@ BEGIN
 							,isnull(n.UrlIcono,'')	Icono 
 							,count(e.PK)			NroOrg
 			FROM		@EnteBuscadoUnico	e 	
-			INNER JOIN	EsquemaOrganiza		o(NOLOCK)ON	o.PK				= e.PK
+			INNER JOIN	EsquemaOrganiza		o(NOLOCK)ON	o.PK			= e.PK
 			RIGHT JOIN  ONA					n(NOLOCK)ON o.ONAIdONA		= n.IdONA
 			INNER JOIN  Homologacion		h(NOLOCK)ON h.IdHomologacion= n.IdHomologacionPais
-			and n.Estado= 'A'
-			GROUP BY n.Siglas, h.MostrarWeb, isnull(n.UrlIcono,'')
+			WHERE		n.Estado= 'A'
+			GROUP BY	n.Siglas, h.MostrarWeb, isnull(n.UrlIcono,'')
 		)	SELECT   @RowsTotal		= ( SELECT SUM(NroOrg) FROM vwPanelONA )
 					,@vwPanelONAjson= ( SELECT Sigla, Pais, Icono, NroOrg FROM vwPanelONA FOR JSON AUTO ); 
 
@@ -230,5 +213,5 @@ BEGIN
 	ORDER BY e.RankTotal  --o.VistaFK
 	OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
 	FETCH NEXT @RowsPerPage ROWS ONLY;
-END
+END;
 GO
