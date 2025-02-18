@@ -1,4 +1,6 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -26,7 +28,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
         [Inject]
         public IHomologacionService? HomologacionService { get; set; }
         private List<HomologacionDto>? listaVwHomologacion;
-
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         protected override async Task OnInitializedAsync()
         {
             if (HomologacionService != null)
@@ -117,6 +123,14 @@ namespace ClientApp.Pages.Administracion.Esquemas
         // Confirmar eliminación del registro
         private async Task ConfirmDelete()
         {
+            objEventTracking.NombrePagina = "Administación de Homologación Esquemas";
+            objEventTracking.NombreAccion = "ConfirmDelete";
+            objEventTracking.NombreControl = "ConfirmDelete";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             if (selectedIdEsquema.HasValue && iEsquemaService != null)
             {
                 int idEsquema = selectedIdEsquema.Value;

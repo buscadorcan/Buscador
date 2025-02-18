@@ -78,7 +78,9 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         private bool isRolRead;
         private bool isRolOna;
         private bool isRolAdmin;
-
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         private List<LogMigracionDto> listasHevd = new();
         private int PageSize = 10; // Cantidad de registros por página
         private int CurrentPage = 1;

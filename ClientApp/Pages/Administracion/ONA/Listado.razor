@@ -187,6 +187,12 @@
 
     private async Task ExportarExcel()
     {
+        objEventTracking.NombrePagina = "Administración de ONA";
+        objEventTracking.NombreAccion = "ExportarExcel";
+        objEventTracking.NombreControl = "ExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
         if (listaONAs == null || !listaONAs.Any())
         {
             return;
@@ -230,6 +236,12 @@
 
     private async Task ExportarPDF()
     {
+        objEventTracking.NombrePagina = "Administración de ONA";
+        objEventTracking.NombreAccion = "ExportarPDF";
+        objEventTracking.NombreControl = "ExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
         if (listaONAs == null || !listaONAs.Any())
         {
             return;

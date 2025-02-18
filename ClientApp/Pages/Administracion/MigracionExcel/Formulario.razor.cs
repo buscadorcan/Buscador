@@ -36,6 +36,9 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         public IONAService? iONAservice { get; set; }
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         protected override async Task OnInitializedAsync()
         {
             var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
@@ -83,6 +86,14 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         {
             try
             {
+                objEventTracking.NombrePagina = "Archivo migración";
+                objEventTracking.NombreAccion = "RegistrarMigracionExcel";
+                objEventTracking.NombreControl = "RegistrarMigracionExcel";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                 if (onaSelected != null && onaSelected.IdONA > 0)
                 {
                     if (uploadedFile == null)
@@ -146,7 +157,7 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         }
 
         // Confirmar carga del archivo
-        private async Task ConfirmDelete()
+        private async Task ConfirmCarga()
         {
             if (service != null)
             {

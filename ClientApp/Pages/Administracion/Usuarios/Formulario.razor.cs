@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
 using ClientApp.Helpers;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -26,6 +27,9 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private List<UsuarioDto>? listaUsuarios;
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         protected override async Task OnInitializedAsync()
         {
             if (Id > 0 && iUsuariosService != null)
@@ -182,6 +186,14 @@ namespace ClientApp.Pages.Administracion.Usuarios
         }
         private async Task RegistrarUsuario()
         {
+            objEventTracking.NombrePagina = "Usuario del Sistema";
+            objEventTracking.NombreAccion = "RegistrarUsuario";
+            objEventTracking.NombreControl = "RegistrarUsuario";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             saveButton.ShowLoading("Guardando...");
             //listaUsuarios = await iUsuariosService.GetUsuariosAsync();
             listaRoles = await iUsuariosService.GetRolesAsync();
