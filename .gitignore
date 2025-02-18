@@ -490,3 +490,4 @@ $RECYCLE.BIN/
 /WebApp/Files/20241210 IBM DTA 09 OEC Excel Armonizado.xlsx
 /WebApp/Files
 /.gitignore
+/ClientApp/Helpers/Inicializar.cs
