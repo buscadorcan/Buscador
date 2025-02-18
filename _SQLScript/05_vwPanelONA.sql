@@ -1,22 +1,23 @@
---/*----------------------------------------------------------------------------------------\
---|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
---|-----------------------------------------------------------------------------------------|
---| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
---\-----------------------------------------------------------------------------------------/
---  [App]				: Buscador Andino											
---	- Date          : 2K25.FEB.25	
---	- Author        : patricio.paccha														
---	- Version	    : 1.0										
---	- Description   : Vista para las organicaiones certificadas
---\----------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------\
+|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
+|-----------------------------------------------------------------------------------------|
+| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
+\-----------------------------------------------------------------------------------------/
+  [App]				: Buscador Andino											
+	- Date          : 2K25.FEB.25	
+	- Author        : patricio.paccha														
+	- Version	    : 1.0										
+	- Description   : Vista para las organicaiones certificadas
+\----------------------------------------------------------------------------------------*/
 
---CREATE OR ALTER VIEW [dbo].[vwPanelONA] AS
---SELECT DISTINCT	 o.Siglas				Sigla 
---				,h.MostrarWeb			Pais 
---				,isnull(o.UrlIcono,'')	Icono 
---				,count(e.IdEsquemaData) NroOrg
---FROM  EsquemaOrganiza	e(NOLOCK) 
---RIGHT JOIN ONA			o(NOLOCK) ON e.ONAIdONA		 = o.IdONA
---INNER JOIN Homologacion	h(NOLOCK) ON h.IdHomologacion=o.IdHomologacionPais
---GROUP BY o.Siglas, h.MostrarWeb, isnull(o.UrlIcono,'')
---GO
+CREATE OR ALTER VIEW [dbo].[vwPanelONA] AS
+SELECT DISTINCT	 o.Siglas				Sigla 
+				,h.MostrarWeb			Pais 
+				,isnull(o.UrlIcono,'')	Icono 
+				,count(e.IdEsquemaData) NroOrg
+FROM  EsquemaOrganiza	e(NOLOCK) 
+RIGHT JOIN ONA			o(NOLOCK) ON e.ONAIdONA		 = o.IdONA
+INNER JOIN Homologacion	h(NOLOCK) ON h.IdHomologacion=o.IdHomologacionPais
+WHERE o.Estado='A' AND h.Estado='A' 
+GROUP BY o.Siglas, h.MostrarWeb, isnull(o.UrlIcono,'')
+GO
