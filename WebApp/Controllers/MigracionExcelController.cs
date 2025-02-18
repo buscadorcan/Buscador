@@ -40,64 +40,6 @@ namespace WebApp.Controllers
               }
         }
 
-        [Authorize]
-        [HttpPost("upload")]
-        public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
-        {
-            try
-            {
-                if (file == null || file.Length == 0)
-                {
-                    return BadRequestResponse("Archivo no encontrado");
-                }
-                if (idOna <= 0)
-                {
-                    return BadRequestResponse("idOna no es válido");
-                }
-
-                string fileExtension = Path.GetExtension(file.FileName);
-                if (fileExtension != ".xls" && fileExtension != ".xlsx")
-                {
-                    return BadRequestResponse("Archivo no válido");
-                }
-
-                //SOLUCIÓN: Obtener la ruta del directorio del proyecto sin depender del bin
-                string projectRoot = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
-                string filesPath = Path.Combine(projectRoot, "WebApp", "wwwroot", "Files");
-
-                // Crear la carpeta "Files" si no existe
-                if (!Directory.Exists(filesPath))
-                {
-                    Directory.CreateDirectory(filesPath);
-                }
-
-                var filePath = Path.Combine(filesPath, file.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-
-                LogMigracion migracion = iRepo.Create(new LogMigracion
-                {
-                    Estado = "PENDING",
-                    ExcelFileName = file.FileName
-                });
-
-                var result = importer.ImportarExcel(filePath, migracion, idOna);
-
-                return Ok(new RespuestasAPI<bool>
-                {
-                    IsSuccess = true
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
-            }
-        }
-
-
         //[Authorize]
         //[HttpPost("upload")]
         //public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
@@ -119,9 +61,19 @@ namespace WebApp.Controllers
         //            return BadRequestResponse("Archivo no válido");
         //        }
 
-        //        var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", file.FileName);
+        //        //SOLUCIÓN: Obtener la ruta del directorio del proyecto sin depender del bin
+        //        string projectRoot = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
+        //        string filesPath = Path.Combine(projectRoot, "WebApp", "wwwroot", "Files");
 
-        //        using (var stream = new FileStream(path, FileMode.Create))
+        //        // Crear la carpeta "Files" si no existe
+        //        if (!Directory.Exists(filesPath))
+        //        {
+        //            Directory.CreateDirectory(filesPath);
+        //        }
+
+        //        var filePath = Path.Combine(filesPath, file.FileName);
+
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
         //        {
         //            file.CopyTo(stream);
         //        }
@@ -132,7 +84,7 @@ namespace WebApp.Controllers
         //            ExcelFileName = file.FileName
         //        });
 
-        //        var result = importer.ImportarExcel(path, migracion, idOna);
+        //        var result = importer.ImportarExcel(filePath, migracion, idOna);
 
         //        return Ok(new RespuestasAPI<bool>
         //        {
@@ -142,9 +94,57 @@ namespace WebApp.Controllers
         //    catch (Exception ex)
         //    {
         //        return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
-        //        //return HandleException(e, nameof(ImportarExcel));
         //    }
         //}
+
+
+        [Authorize]
+        [HttpPost("upload")]
+        public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequestResponse("Archivo no encontrado");
+                }
+                if (idOna <= 0)
+                {
+                    return BadRequestResponse("idOna no es válido");
+                }
+
+                string fileExtension = Path.GetExtension(file.FileName);
+                if (fileExtension != ".xls" && fileExtension != ".xlsx")
+                {
+                    return BadRequestResponse("Archivo no válido");
+                }
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", file.FileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                LogMigracion migracion = iRepo.Create(new LogMigracion
+                {
+                    Estado = "PENDING",
+                    ExcelFileName = file.FileName
+                });
+
+                var result = importer.ImportarExcel(path, migracion, idOna);
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = true
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
+                //return HandleException(e, nameof(ImportarExcel));
+            }
+        }
 
     }
 }
