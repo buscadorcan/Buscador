@@ -1,4 +1,6 @@
 ﻿using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +13,9 @@ namespace ClientApp.Pages.Administracion.Thesauros
 {
     public partial class Sinonimos
     {
+        [Inject]
+        public ILocalStorageService LocalStorageService { get; set; }
+
         [Inject]
         public IThesaurusService service { get; set; }
 
@@ -33,10 +38,13 @@ namespace ClientApp.Pages.Administracion.Thesauros
         private string sinonimoQuitar = "";
         private int expansionSeleccionada = -1;
         private string mensajeGuardar = "";
+        private string usuarioLogin = "";
 
         protected override async Task OnInitializedAsync()
         {
+            usuarioLogin = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local);
             await this.ObtenerThesauroAsync();
+
         }
         public async Task ObtenerThesauroAsync() {
             try
