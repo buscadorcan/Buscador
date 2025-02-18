@@ -133,6 +133,14 @@
 
     private async Task ExportarExcel()
     {
+        objEventTracking.NombrePagina = "Administación de Entidades";
+        objEventTracking.NombreAccion = "ExportarExcel";
+        objEventTracking.NombreControl = "ExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listaHomologacions == null || !listaHomologacions.Any())
         {
             return;
@@ -165,6 +173,14 @@
     }
     private async Task ExportarPDF()
     {
+        objEventTracking.NombrePagina = "Administación de Entidades";
+        objEventTracking.NombreAccion = "ExportarPDF";
+        objEventTracking.NombreControl = "ExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listaHomologacions == null || !listaHomologacions.Any())
         {
             return;

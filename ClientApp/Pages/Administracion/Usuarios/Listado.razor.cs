@@ -33,6 +33,9 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private int? selectedIdUsuario;    // Almacena el ID del usuario seleccionado
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         private int PageSize = 10; // Cantidad de registros por página
         private int CurrentPage = 1;
 
@@ -162,6 +165,13 @@ namespace ClientApp.Pages.Administracion.Usuarios
         // Confirmar eliminación del registro
         private async Task ConfirmDelete()
         {
+            objEventTracking.NombrePagina = "Administración de Usuarios";
+            objEventTracking.NombreAccion = "ConfirmDelete";
+            objEventTracking.NombreControl = "ConfirmDelete";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
             if (selectedIdUsuario.HasValue && iUsuariosService != null)
             {
                 var result = await iUsuariosService.DeleteUsuarioAsync(selectedIdUsuario.Value);

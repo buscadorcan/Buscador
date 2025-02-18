@@ -1,4 +1,6 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -26,6 +28,11 @@ namespace ClientApp.Pages.Administracion.Conexion
 
         [Inject]
         public Services.ToastService? ToastService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
 
         private List<OnaDto>? listaOrganizaciones = default;
         private string? homologacionName;
@@ -51,6 +58,14 @@ namespace ClientApp.Pages.Administracion.Conexion
         }
         private async Task RegistrarConexion()
         {
+            objEventTracking.NombrePagina = "Conexión al origen de datos";
+            objEventTracking.NombreAccion = "RegistrarConexion";
+            objEventTracking.NombreControl = "RegistrarConexion";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             saveButton.ShowLoading("Guardando...");
 
             if (service != null)

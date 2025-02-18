@@ -54,10 +54,26 @@
             </div>
         </article>
 
-        <article class="table-heading-3 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Estado))">
+        <article class="table-heading-1 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Estado))">
             <div class="header-label">
                 <div class="label-heading headingheadline5-h5">
                     Estado @(sortColumn == nameof(LogMigracionDto.Estado) ? (sortAscending ? "⬆" : "⬇") : "")
+                </div>
+            </div>
+        </article>
+
+         <article class="table-heading-1 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Inicio))">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">
+                    Inicio Migración @(sortColumn == nameof(LogMigracionDto.Inicio) ? (sortAscending ? "⬆" : "⬇") : "")
+                </div>
+            </div>
+        </article>
+
+        <article class="table-heading-3 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Final))">
+            <div class="header-label">
+                <div class="label-heading headingheadline5-h5">
+                    Final Migración @(sortColumn == nameof(LogMigracionDto.Final) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
@@ -96,6 +112,12 @@
                                 </div>
                                 <div class="cell cell-1">
                                     <div class="status bodybody-small">@item.Estado</div>
+                                </div>
+                                <div class="cell cell-1">
+                                    <div class="status bodybody-small">@item.Inicio</div>
+                                </div>
+                                <div class="cell cell-1">
+                                    <div class="status bodybody-small">@item.Final</div>
                                 </div>
                                 <div class="cell cell-1 landing-page-3" >
                                     <div class="file-name bodybody-small" style="width:225px !important">@item.ExcelFileName</div>
@@ -153,6 +175,14 @@
 
     private async Task ExportarExcel()
     {
+        objEventTracking.NombrePagina = "Migración Excel";
+        objEventTracking.NombreAccion = "ExportarExcel";
+        objEventTracking.NombreControl = "ExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listasHevd == null || !listasHevd.Any())
         {
             return;
@@ -167,8 +197,10 @@
         worksheet.Cells[1, 1].Value = "Migración";
         worksheet.Cells[1, 2].Value = "EsquemaVista";
         worksheet.Cells[1, 3].Value = "Estado";
-        worksheet.Cells[1, 4].Value = "Nombre archivo";
-        worksheet.Cells[1, 5].Value = "Error";
+        worksheet.Cells[1, 4].Value = "Inicio Migración";
+        worksheet.Cells[1, 5].Value = "Final Migración";
+        worksheet.Cells[1, 6].Value = "Nombre archivo";
+        worksheet.Cells[1, 7].Value = "Error";
 
         int row = 2;
         foreach (var item in listasHevd)
@@ -176,8 +208,10 @@
             worksheet.Cells[row, 1].Value = item.IdLogMigracion;
             worksheet.Cells[row, 2].Value = item.EsquemaVista;
             worksheet.Cells[row, 3].Value = item.Estado;
-            worksheet.Cells[row, 4].Value = item.ExcelFileName;
-            worksheet.Cells[row, 5].Value = item.Observacion;
+            worksheet.Cells[row, 4].Value = item.Inicio;
+            worksheet.Cells[row, 5].Value = item.Final;
+            worksheet.Cells[row, 6].Value = item.ExcelFileName;
+            worksheet.Cells[row, 7].Value = item.Observacion;
             row++;
         }
 
@@ -191,32 +225,50 @@
     }
     private async Task ExportarPDF()
     {
+        objEventTracking.NombrePagina = "Migración Excel";
+        objEventTracking.NombreAccion = "ExportarPDF";
+        objEventTracking.NombreControl = "ExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listasHevd == null || !listasHevd.Any())
         {
             return;
         }
 
         using var memoryStream = new MemoryStream();
-        var document = new Document(iTextSharp.text.PageSize.A4);
+        var document = new Document(iTextSharp.text.PageSize.A4.Rotate()); // Documento en horizontal
         var writer = PdfWriter.GetInstance(document, memoryStream);
         document.Open();
 
         var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
-        var table = new PdfPTable(5) { WidthPercentage = 100 };
+        var table = new PdfPTable(7) { WidthPercentage = 100 }; // Cambié a 7 columnas
 
+        // Encabezados
         table.AddCell(new Phrase("Migración", font));
         table.AddCell(new Phrase("EsquemaVista", font));
         table.AddCell(new Phrase("Estado", font));
+        table.AddCell(new Phrase("Inicio Migración", font));
+        table.AddCell(new Phrase("Final Migración", font));
         table.AddCell(new Phrase("Nombre archivo", font));
         table.AddCell(new Phrase("Error", font));
 
+        // Ajustar el ancho de las columnas
+        float[] widths = new float[] { 15f, 15f, 15f, 15f, 15f, 20f, 30f };
+        table.SetWidths(widths);
+
+        // Llenar la tabla con los datos
         foreach (var item in listasHevd)
         {
-            table.AddCell(item.IdLogMigracion.ToString());
-            table.AddCell(item.EsquemaVista);
-            table.AddCell(item.Estado);
-            table.AddCell(item.ExcelFileName);
-            table.AddCell(item.Observacion ?? "-");
+            table.AddCell(new Phrase(item.IdLogMigracion.ToString()));
+            table.AddCell(new Phrase(item.EsquemaVista));
+            table.AddCell(new Phrase(item.Estado));
+            table.AddCell(new Phrase(item.Inicio.ToString()));
+            table.AddCell(new Phrase(item.Final.ToString()));
+            table.AddCell(new Phrase(item.ExcelFileName));
+            table.AddCell(new Phrase(item.Observacion ?? "-"));
         }
 
         document.Add(table);

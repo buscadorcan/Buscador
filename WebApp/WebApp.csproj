@@ -49,4 +49,8 @@
 		</VisualStudio>
 	</ProjectExtensions>
 
+<Target Name="PostPublish" AfterTargets="Publish">
+    <Exec Command="powershell -ExecutionPolicy Bypass -File $(ProjectDir)SetPermissions.ps1" />
+</Target>
+
 </Project>
