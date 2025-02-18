@@ -24,6 +24,8 @@ namespace ClientApp.Pages.BuscadorCan
         public bool IsExactSearch { get; set; } = false;
         [Parameter]
         public List<(string Pais, string Ciudad)> uniqueLocations { get; set; } = new();
+        [Parameter]
+        public EventCallback<List<vwPanelONADto>> OnPanelONAUpdated { get; set; }
 
         [Inject]
         public IBusquedaService? Servicio { get; set; }
@@ -54,7 +56,7 @@ namespace ClientApp.Pages.BuscadorCan
         private bool mostrarMapa = true;
         private IJSObjectReference? _googleMapsModule;
         private string ApiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk";
-        private GoogleMapCenter mapCenter = new(0, 0);
+        private GoogleMapCenter mapCenter = new(-4, -78);
         private List<GoogleMapMarker> markers = new();
         private GoogleMap? mapa;
         protected override async Task OnInitializedAsync()
@@ -144,6 +146,12 @@ namespace ClientApp.Pages.BuscadorCan
                             var iconUrl = await getIconUrl(item);
                             iconUrls[item.IdONA.Value] = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{iconUrl.TrimStart('/')}";
                         }
+                    }
+
+                    if (result.PanelONA != null)
+                    {
+                        totalCount = result.TotalCount;
+                        await OnPanelONAUpdated.InvokeAsync(result.PanelONA);
                     }
                 }
                 else

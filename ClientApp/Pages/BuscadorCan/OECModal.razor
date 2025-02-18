@@ -33,7 +33,7 @@
                                 DateTime fecha;
                                 var fechaFormateada = DateTime.TryParse(onaSeleccionado?.OrgFechaActualizacion, out fecha)
                                 ? fecha.ToString("yyyy-MM-dd")
-                                : "Formato inválido";
+                                : "--";
                             }
                             @fechaFormateada
                         </td>

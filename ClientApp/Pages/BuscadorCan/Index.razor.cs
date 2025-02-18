@@ -36,6 +36,8 @@ namespace ClientApp.Pages.BuscadorCan
         private bool mostrarPublicidad = true;
         private bool esModoGrilla = true;
         private bool mostrarBuscador = false;
+        private bool isCleaning = false;
+
         protected override async Task OnInitializedAsync()
         {
             try
@@ -260,15 +262,18 @@ namespace ClientApp.Pages.BuscadorCan
             TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
             StateHasChanged();
         }
-
         async Task LimpiarFiltros()
         {
             try
             {
-                // 1. Recorrer cada filtro seleccionado y deseleccionarlo
-                foreach (var filtro in selectedValues.ToList())  // Convertimos a lista para evitar modificación en el `foreach`
+                if (isCleaning) return; // Evita múltiples clics simultáneos
+                isCleaning = true;
+                StateHasChanged(); // Forzar actualización de la UI
+
+                // 1️⃣ Recorrer cada filtro seleccionado y deseleccionarlo
+                foreach (var filtro in selectedValues.ToList())
                 {
-                    foreach (var valor in filtro.Seleccion.ToList())  // Convertimos a lista para evitar modificación durante la iteración
+                    foreach (var valor in filtro.Seleccion.ToList())
                     {
                         int comboIndex = listaEtiquetasFiltros.FindIndex(f => f.CodigoHomologacion == filtro.CodigoHomologacion);
                         if (comboIndex >= 0)
@@ -278,16 +283,15 @@ namespace ClientApp.Pages.BuscadorCan
                     }
                 }
 
-                // 2. Limpiar listas de filtros y opciones
+                // 2️⃣ Limpiar listas de filtros y opciones
                 selectedValues.Clear();
                 listadeOpciones.Clear();
                 listaEtiquetasFiltros.Clear();
 
-                // 3. Volver a cargar los filtros desde el backend
+                // 3️⃣ Volver a cargar los filtros desde el backend
                 if (iCatalogosService != null)
                 {
                     listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
-
                     if (listaEtiquetasFiltros != null)
                     {
                         foreach (var opciones in listaEtiquetasFiltros)
@@ -297,12 +301,17 @@ namespace ClientApp.Pages.BuscadorCan
                     }
                 }
 
-                // 4. Forzar la actualización de la UI
+                // 4️⃣ Forzar la actualización de la UI
                 StateHasChanged();
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error al limpiar los filtros: {e.Message}");
+            }
+            finally
+            {
+                isCleaning = false; // Habilitar el botón nuevamente al finalizar
+                StateHasChanged();
             }
         }
 
