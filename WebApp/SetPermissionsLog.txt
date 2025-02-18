@@ -1,0 +1,156 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20250218041440
+Username: SIDESOFT\Administrator
+RunAs User: SIDESOFT\Administrator
+Configuration Name: 
+Machine: SIDESOFT (Microsoft Windows NT 10.0.17763.0)
+Host Application: powershell -ExecutionPolicy Bypass -NoProfile -WindowStyle Hidden -File C:\Buscador\WebApp\SetPermissions.ps1
+Process ID: 18944
+PSVersion: 5.1.17763.6766
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.17763.6766
+BuildVersion: 10.0.17763.6766
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Buscador\WebApp\SetPermissionsLog.txt
+Ejecutando como usuario: Administrator
+Iniciando configuraciÃ³n de permisos en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Verificando si la carpeta Files existe despuÃ©s de la espera...
+âš ï¸ La carpeta Files NO EXISTE despuÃ©s de la espera. CreÃ¡ndola...
+
+
+    Directory: C:\inetpub\wwwroot\Webapp\wwwroot
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        2/18/2025   4:14 AM                Files
+Verificando permisos actuales...
+Asignando permisos 'Everyone: FullControl' en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Permisos aplicados correctamente con Set-Acl.
+Aplicando permisos con icacls...
+
+Permisos aplicados correctamente con icacls.
+Finalizando configuraciÃ³n de permisos...
+**********************
+Windows PowerShell transcript end
+End time: 20250218041450
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20250218042301
+Username: SIDESOFT\Administrator
+RunAs User: SIDESOFT\Administrator
+Configuration Name: 
+Machine: SIDESOFT (Microsoft Windows NT 10.0.17763.0)
+Host Application: powershell -ExecutionPolicy Bypass -NoProfile -WindowStyle Hidden -File C:\Buscador\WebApp\SetPermissions.ps1
+Process ID: 15416
+PSVersion: 5.1.17763.6766
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.17763.6766
+BuildVersion: 10.0.17763.6766
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Buscador\WebApp\SetPermissionsLog.txt
+Ejecutando como usuario: Administrator
+Iniciando configuraciÃ³n de permisos en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Verificando si la carpeta Files existe despuÃ©s de la espera...
+âš ï¸ La carpeta Files NO EXISTE despuÃ©s de la espera. CreÃ¡ndola...
+
+
+    Directory: C:\inetpub\wwwroot\Webapp\wwwroot
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        2/18/2025   4:23 AM                Files
+Verificando permisos actuales...
+Asignando permisos 'Everyone: FullControl' en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Permisos aplicados correctamente con Set-Acl.
+Aplicando permisos con icacls...
+
+Permisos aplicados correctamente con icacls.
+Finalizando configuraciÃ³n de permisos...
+**********************
+Windows PowerShell transcript end
+End time: 20250218042312
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20250218042751
+Username: SIDESOFT\Administrator
+RunAs User: SIDESOFT\Administrator
+Configuration Name: 
+Machine: SIDESOFT (Microsoft Windows NT 10.0.17763.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File C:\Buscador\WebApp\SetPermissions.ps1
+Process ID: 15688
+PSVersion: 5.1.17763.6766
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.17763.6766
+BuildVersion: 10.0.17763.6766
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Buscador\WebApp\SetPermissionsLog.txt
+Ejecutando como usuario: Administrator
+Iniciando configuraciÃ³n de permisos en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Verificando si la carpeta Files existe despuÃ©s de la espera...
+âœ… La carpeta Files ya existe despuÃ©s de la espera.
+Verificando permisos actuales...
+Asignando permisos 'Everyone: FullControl' en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Permisos aplicados correctamente con Set-Acl.
+Aplicando permisos con icacls...
+processed file: C:\inetpub\wwwroot\Webapp\wwwroot\Files
+processed file: C:\inetpub\wwwroot\Webapp\wwwroot\Files\1.svg
+Successfully processed 2 files; Failed processing 0 files
+Permisos aplicados correctamente con icacls.
+Finalizando configuraciÃ³n de permisos...
+**********************
+Windows PowerShell transcript end
+End time: 20250218042801
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20250218043403
+Username: SIDESOFT\Administrator
+RunAs User: SIDESOFT\Administrator
+Configuration Name: 
+Machine: SIDESOFT (Microsoft Windows NT 10.0.17763.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File C:\Buscador\WebApp\SetPermissions.ps1
+Process ID: 18472
+PSVersion: 5.1.17763.6766
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.17763.6766
+BuildVersion: 10.0.17763.6766
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Buscador\WebApp\SetPermissionsLog.txt
+Ejecutando como usuario: Administrator
+Iniciando configuraciÃ³n de permisos en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Verificando si la carpeta Files existe despuÃ©s de la espera...
+âœ… La carpeta Files ya existe despuÃ©s de la espera.
+Verificando permisos actuales...
+Asignando permisos 'Everyone: FullControl' en C:\inetpub\wwwroot\Webapp\wwwroot\Files...
+Permisos aplicados correctamente con Set-Acl.
+Aplicando permisos con icacls...
+processed file: C:\inetpub\wwwroot\Webapp\wwwroot\Files
+processed file: C:\inetpub\wwwroot\Webapp\wwwroot\Files\1.svg
+Successfully processed 2 files; Failed processing 0 files
+Permisos aplicados correctamente con icacls.
+Finalizando configuraciÃ³n de permisos...
+**********************
+Windows PowerShell transcript end
+End time: 20250218043413
+**********************
