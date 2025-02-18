@@ -359,9 +359,9 @@
         // Excluir ciertos menús según el rol
         var excludedHrefs = rol switch
         {
-            "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG" },
+            "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_EST", "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG" },
             "KEY_USER_CAN" => new[] { "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ" },
-            "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ" },
+            "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_REP_EST", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ" },
             "KEY_USER_READ" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA" },
             _ => Array.Empty<string>()
         };
