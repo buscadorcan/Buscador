@@ -9,7 +9,7 @@ namespace ClientApp.Pages.Autenticacion
     {
         private Button saveButton = default!;
         private UsuarioRecuperacionDto usuarioRecuperacion = new UsuarioRecuperacionDto();
-        public string? alertMessage { get; set; }
+        List<ToastMessage> messages = new List<ToastMessage>();
         [Inject]
         public IServiceAutenticacion? servicioAutenticacion { get; set; }
         [Inject]
@@ -29,7 +29,7 @@ namespace ClientApp.Pages.Autenticacion
                     }
                     else
                     {
-                        alertMessage = string.Join(";", result.ErrorMessages);
+                        messages.Add(CreateToastMessage(ToastType.Danger, $"{string.Join(";", result.ErrorMessages)}"));
                     }
                     saveButton.HideLoading();
                 }
@@ -40,5 +40,12 @@ namespace ClientApp.Pages.Autenticacion
             }
             await Task.CompletedTask;
         }
+        private ToastMessage CreateToastMessage(ToastType toastType, string message)
+        => new ToastMessage
+            {
+                Type = toastType,
+                Title = "ONA",
+                Message = message,
+            };
     }
 }

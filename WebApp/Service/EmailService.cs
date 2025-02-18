@@ -12,7 +12,7 @@ namespace WebApp.Service
         private readonly ISmtpClientFactory _smtpClientFactory = smtpClientFactory;
         private readonly IConfiguration _configuration = configuration;
         private readonly ILogger<EmailService> _logger = logger;
-        public async Task EnviarCorreoAsync(string destinatario, string asunto, string cuerpo)
+        public async Task<bool> EnviarCorreoAsync(string destinatario, string asunto, string cuerpo)
         {
             var smtpClient = _smtpClientFactory.CreateSmtpClient();
 
@@ -30,10 +30,12 @@ namespace WebApp.Service
             {
                 await smtpClient.SendMailAsync(mailMessage);
                 _logger.LogInformation("Correo enviado a {0}", destinatario);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error enviando correo a {0}", destinatario);
+                return false;
             }
         }
     }

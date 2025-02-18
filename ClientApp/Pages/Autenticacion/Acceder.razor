@@ -1,6 +1,7 @@
 ﻿@page "/acceder"
 
 <PageTitle>Acceder</PageTitle>
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
 
 <!-- Referenciando los CSS directamente -->
 <link rel="stylesheet" type="text/css" href="/login/css/login-2.css" />
@@ -16,7 +17,6 @@
             </div>
             <EditForm Model="usuarioAutenticacion" OnValidSubmit="AccesoUsuario">
                 <DataAnnotationsValidator />
-                <ValidationSummary />
 
                 <div class="login-1">
                     <img class="frame" src="/login/img/frame-1.svg" alt="Frame" />
