@@ -8,7 +8,7 @@ namespace WebApp.Repositories
 {
   public abstract class BaseRepository
   {
-    private readonly ILogger _logger;
+    public readonly ILogger _logger;
     private readonly ISqlServerDbContextFactory _sqlServerDbContextFactory;
     protected BaseRepository(ISqlServerDbContextFactory sqlServerDbContextFactory, ILogger logger)
     {

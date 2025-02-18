@@ -90,9 +90,13 @@ namespace WebApp.Extensions
             services.AddScoped<ILogMigracionRepository, LogMigracionRepository>();
             services.AddScoped<IReporteRepository, ReporteRepository>();
             services.AddScoped<IpaActualizarFiltroRepository, paActualizarFiltroRepository>();
+            services.AddScoped<IEventTrackingRepository, EventTrackingRepository>();
 
             //Thesaurus
             services.AddScoped<IThesaurusRepository, ThesaurusRepository>();
+
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+            services.AddScoped<IRecoverUserService, RecoverUserService>();
 
             // Registra servicios de trabajo en segundo plano (Worker Services).
             services.AddHostedService<BackgroundWorkerService>();
