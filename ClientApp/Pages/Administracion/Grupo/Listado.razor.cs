@@ -1,4 +1,5 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
 using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -16,6 +17,11 @@ namespace ClientApp.Pages.Administracion.Grupo
         [Inject]
         private IHomologacionService? iHomologacionService { get; set; }
         public event Action? DataLoaded;
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
         //[Inject]
         //protected IJSRuntime? JSRuntime { get; set; }
         private int PageSize = 10; // Cantidad de registros por página

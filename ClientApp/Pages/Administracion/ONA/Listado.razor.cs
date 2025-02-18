@@ -27,6 +27,9 @@ namespace ClientApp.Pages.Administracion.ONA
         public NavigationManager? navigationManager { get; set; }
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         private bool isRolAdmin;
 
         // Método para cargar la lista de ONAs
@@ -115,6 +118,14 @@ namespace ClientApp.Pages.Administracion.ONA
         // Confirmar eliminación del registro
         private async Task ConfirmDelete()
         {
+            objEventTracking.NombrePagina = "Administración de ONA";
+            objEventTracking.NombreAccion = "ConfirmDelete";
+            objEventTracking.NombreControl = "ConfirmDelete";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             if (selectedIdONA.HasValue && iONAservice != null)
             {
                 var result = await iONAservice.DeleteONAAsync(selectedIdONA.Value);

@@ -27,7 +27,7 @@
 <Toasts class="p-3" Messages="messages" Placement="@toastsPlacement" />
 
     <div class="general title">
-        <h2 class="title headlineheadline2-h2">Validación de Campos</h2>
+    <h2 class="title headlineheadline2-h2">Conexiones Existentes</h2>
     </div>
 
 <div class="text-end my-3 d-flex justify-content-between">
@@ -215,6 +215,14 @@
 
     private async Task ExportarExcel()
     {
+        objEventTracking.NombrePagina = "Conexiones Existentes";
+        objEventTracking.NombreAccion = "ExportarExcel";
+        objEventTracking.NombreControl = "ExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listasHevd == null || !listasHevd.Any())
         {
             return;
@@ -257,6 +265,14 @@
     }
     private async Task ExportarPDF()
     {
+        objEventTracking.NombrePagina = "Conexiones Existentes";
+        objEventTracking.NombreAccion = "ExportarPDF";
+        objEventTracking.NombreControl = "ExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listasHevd == null || !listasHevd.Any())
         {
             return;

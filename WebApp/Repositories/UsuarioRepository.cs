@@ -9,22 +9,17 @@ namespace WebApp.Repositories
     public class UsuarioRepository : BaseRepository, IUsuarioRepository
     {
         private readonly IJwtService _jwtService;
-        private readonly IEmailService _emailService;
         private readonly IHashService _hashService;
-        private readonly IPasswordService _passwordService;
         public UsuarioRepository (
             IJwtService jwtService,
             IEmailService emailService,
             IHashService hashService,
-            IPasswordService passwordService,
             ILogger<UsuarioRepository> logger,
             ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
             _jwtService = jwtService;
-            _emailService = emailService;
             _hashService = hashService;
-            _passwordService = passwordService;
         }
         public Usuario? FindById(int idUsuario)
         {
@@ -85,6 +80,12 @@ namespace WebApp.Repositories
 
                 return query.ToList();
             });
+        }
+
+        /// Finds a user by their email address.
+        public Usuario? FindByEmail(string email) {
+            return ExecuteDbOperation(context => 
+                context.Usuario.AsNoTracking().FirstOrDefault(u => u.Email != null && u.Email.ToLower() == email.ToLower()));
         }
 
         public bool IsUniqueUser(string email)
@@ -149,128 +150,6 @@ namespace WebApp.Repositories
 
                 context.Usuario.Update(_exits);
                 return context.SaveChanges() > 0; // Si se guardaron cambios, retornará true
-            });
-        }
-        public UsuarioAutenticacionRespuestaDto Login(UsuarioAutenticacionDto usuarioAutenticacionDto)
-        {
-
-            return ExecuteDbOperation(context =>
-            {
-                // Generar el hash de la contraseña
-                var passwordEncriptado = _hashService.GenerateHash(usuarioAutenticacionDto.Clave);
-
-                // Verificar que el email no sea nulo
-                if (usuarioAutenticacionDto.Email == null)
-                {
-                    return new UsuarioAutenticacionRespuestaDto();
-                }
-
-                //Buscar el usuario en la base de datos
-                //var usuario = context.Usuario.AsNoTracking().FirstOrDefault(u =>
-                //    u.Email != null &&
-                //    u.Email.ToLower() == usuarioAutenticacionDto.Email.ToLower() &&
-                //    u.Clave == passwordEncriptado);
-
-                var resultado = (from u in context.Usuario
-                                 join o in context.ONAConexion on u.IdONA equals o.IdONA
-                                 where u.Email != null &&
-                                       u.Email.ToLower() == usuarioAutenticacionDto.Email.ToLower() &&
-                                       u.Clave == passwordEncriptado
-                                 select new
-                                 {
-                                     Usuario = u,
-                                     BaseDatos = o.BaseDatos,
-                                     OrigenDatos = o.OrigenDatos,
-                                     Migrar = o.Migrar,
-                                     EstadoMigracion = o.Estado
-                                 }).FirstOrDefault();
-
-                // Si no se encuentra el usuario, retornar un objeto vacío
-                if (resultado == null)
-                {
-                    return new UsuarioAutenticacionRespuestaDto();
-                }
-
-                // Crear el token JWT
-                var token = _jwtService.GenerateJwtToken(resultado.Usuario.IdUsuario);
-
-                // Crear el objeto UsuarioDto
-                var usuarioDto = new UsuarioDto
-                {
-                    IdUsuario = resultado.Usuario.IdUsuario,
-                    Email = resultado.Usuario.Email,
-                    Nombre = resultado.Usuario.Nombre,
-                    Apellido = resultado.Usuario.Apellido,
-                    Telefono = resultado.Usuario.Telefono,
-                    IdHomologacionRol = resultado.Usuario.IdHomologacionRol,
-                    IdONA = resultado.Usuario.IdONA,
-                    BaseDatos = resultado.BaseDatos, // Asignar BaseDatos desde resultado
-                    OrigenDatos = resultado.OrigenDatos,
-                    Migrar = resultado.Migrar,
-                    EstadoMigracion = resultado.EstadoMigracion
-                };
-
-                // Obtener el rol del usuario desde la vista VwRol usando IdHomologacionRol
-                var rol = context.VwRol.AsNoTracking().FirstOrDefault(r =>
-                    r.IdHomologacionRol == resultado.Usuario.IdHomologacionRol);
-
-                // Agregar el rol a la respuesta
-                var rolDto = rol != null ? new VwRolDto
-                {
-                    IdHomologacionRol = rol.IdHomologacionRol,
-                    Rol = rol.Rol,
-                    CodigoHomologacion = rol.CodigoHomologacion
-                } : null;
-
-                // Obtener homologación grupo desde la base de datos
-                var homologacionGrupo = context.VwHomologacionGrupo
-                    .AsNoTracking()
-                    .Where(c => c.CodigoHomologacion == "KEY_MENU").FirstOrDefault();
-
-                // Mapear los elementos obtenidos a la lista de DTOs
-                var homologacionGrupoDto = homologacionGrupo != null ? new VwHomologacionGrupoDto
-                {
-                    MostrarWeb = homologacionGrupo.MostrarWeb,
-                    TooltipWeb = homologacionGrupo.TooltipWeb,
-                    CodigoHomologacion = homologacionGrupo.CodigoHomologacion
-                } : null;
-
-                // Retornar la respuesta con el token y el usuario
-                return new UsuarioAutenticacionRespuestaDto
-                {
-                    Token = token,
-                    Usuario = usuarioDto,
-                    Rol = rolDto,
-                    HomologacionGrupo = homologacionGrupoDto
-                };
-            });
-        }
-
-
-        public async Task<bool> RecoverAsync(UsuarioRecuperacionDto usuarioRecuperacionDto)
-        {
-            return await ExecuteDbOperation(async context =>
-            {
-                var usuario = context.Usuario.AsNoTracking().FirstOrDefault(u =>
-                    u.Email != null &&
-                    usuarioRecuperacionDto.Email != null &&
-                    u.Email.ToLower() == usuarioRecuperacionDto.Email.ToLower());
-
-                if (usuario == null)
-                {
-                    return false;
-                }
-
-                string clave = _passwordService.GenerateTemporaryPassword(8);
-                usuario.Clave = _hashService.GenerateHash(clave);
-
-                context.Usuario.Update(usuario);
-                var result = context.SaveChanges() >= 0;
-                Console.WriteLine($"Envío de Clave Temporal Su nueva clave temporal es: {clave}");
-
-                await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Envío de Clave Temporal", $"Su nueva clave temporal es: {clave}");
-
-                return result;
             });
         }
     }

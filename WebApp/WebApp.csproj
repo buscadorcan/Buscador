@@ -36,6 +36,9 @@
 	<ItemGroup>
 		<Folder Include="wwwroot\Icono\" />
 	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\Files\" />
+	</ItemGroup>
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -49,8 +52,14 @@
 		</VisualStudio>
 	</ProjectExtensions>
 
-<Target Name="PostPublish" AfterTargets="Publish">
-    <Exec Command="powershell -ExecutionPolicy Bypass -File $(ProjectDir)SetPermissions.ps1" />
-</Target>
+	<PropertyGroup>
+		<EnableMSDeployAppOffline>true</EnableMSDeployAppOffline>
+	</PropertyGroup>
+
+	<Target Name="PostPublish" AfterTargets="Publish">
+		<Exec Command="powershell -ExecutionPolicy Bypass -NoProfile -WindowStyle Hidden -Command &quot;Start-Process -FilePath 'powershell.exe' -ArgumentList '-ExecutionPolicy Bypass -File C:\Buscador\WebApp\SetPermissions.ps1' -Verb RunAs&quot;" />
+	</Target>
+
+
 
 </Project>

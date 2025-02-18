@@ -5,6 +5,8 @@ using SharedApp.Models.Dtos;
 using SharedApp.Models;
 using WebApp.Models;
 using AutoMapper;
+using WebApp.Service.IService;
+using System.Net;
 
 namespace WebApp.Controllers
 {
@@ -17,25 +19,38 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class UsuariosController(
     IUsuarioRepository iRepo,
-    IMapper mapper
+    IMapper mapper,
+    IAuthenticateService iService,
+    IRecoverUserService iServiceRecover
   ) : BaseController
   {
     private readonly IUsuarioRepository _iRepo = iRepo;
+    private readonly IAuthenticateService _iService = iService;
+    private readonly IRecoverUserService _iServiceRecover = iServiceRecover;
     private readonly IMapper _mapper = mapper;
+    /// <summary>
+    /// Authenticates a user based on the provided credentials.
+    /// </summary>
+    /// <param name="usuarioAutenticacionDto">The user authentication data transfer object containing the username and password.</param>
+    /// <returns>
+    /// An <see cref="IActionResult"/> containing the authentication result.
+    /// If the authentication is successful, returns an <see cref="OkObjectResult"/> with the user authentication response data.
+    /// If the authentication fails, returns a <see cref="BadRequestObjectResult"/> with an error message.
+    /// In case of an exception, returns an appropriate error response.
+    /// </returns>
     [HttpPost("login")]
     public IActionResult Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
     {
       try
       {
-        var result = _iRepo.Login(usuarioAutenticacionDto);
+        var result = _iService.Authenticate(usuarioAutenticacionDto);
 
-        if (result.Usuario == null || string.IsNullOrEmpty(result.Token))
-        {
-          return BadRequestResponse("El nombre de usuario o password son incorrectos");
+        if (!result.IsSuccess) {
+          return BadRequestResponse(result.ErrorMessage);
         }
 
         return Ok(new RespuestasAPI<UsuarioAutenticacionRespuestaDto> {
-          Result = result
+          Result = result.Value
         });
       }
       catch (Exception e)
@@ -48,14 +63,15 @@ namespace WebApp.Controllers
     {
       try
       {
-        var respuestaRecuperacion = await _iRepo.RecoverAsync(usuarioRecuperacionDto);
+        var result = await _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
 
-        if (!respuestaRecuperacion)
-        {
-          return BadRequestResponse("El nombre de usuario es incorrecto");
+        if (!result.IsSuccess) {
+          return BadRequestResponse(result.ErrorMessage);
         }
 
-        return Ok(new RespuestasAPI<bool> { });
+        return Ok(new RespuestasAPI<bool> {
+          Result = result.Value
+        });
       }
       catch (Exception e)
       {

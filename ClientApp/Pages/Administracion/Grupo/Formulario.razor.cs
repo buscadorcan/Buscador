@@ -1,4 +1,7 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -18,6 +21,12 @@ namespace ClientApp.Pages.Administracion.Grupo
         public int? Id { get; set; }
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
+
         private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
 
         protected override async Task OnInitializedAsync()
@@ -46,6 +55,14 @@ namespace ClientApp.Pages.Administracion.Grupo
         }
         private async Task GuardarHomologacion()
         {
+            objEventTracking.NombrePagina = "Administación de Entidades";
+            objEventTracking.NombreAccion = "GuardarHomologacion";
+            objEventTracking.NombreControl = "GuardarHomologacion";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             saveButton.ShowLoading("Guardando...");
 
             if (iHomologacionService != null)

@@ -66,7 +66,15 @@ namespace WebApp.Repositories
                 .OrderBy(c => c.MostrarWebOrden)
                 .ToList());
         }
-
+        /// <inheritdoc />
+        public VwHomologacionGrupo? FindVwHGByCode(string codigoHomologacion)
+        {
+          return ExecuteDbOperation(context =>
+              context.VwHomologacionGrupo
+                .AsNoTracking()
+                .Where(c => c.CodigoHomologacion == codigoHomologacion)
+                .FirstOrDefault());
+        }
         /// <inheritdoc />
         public List<vwFiltroDetalle> ObtenerFiltroDetalles(string codigo)
         {
@@ -76,9 +84,6 @@ namespace WebApp.Repositories
                .Where(c => c.CodigoHomologacion == codigo)
                .ToList());
         }
-
-
-
         /// <inheritdoc />
         public List<VwRol> ObtenerVwRol()
         {
@@ -87,6 +92,14 @@ namespace WebApp.Repositories
                 .AsNoTracking()
                 .OrderBy(c => c.Rol)
                 .ToList());
+        }
+        /// <inheritdoc />
+        public VwRol FindVwRolByHId(int idHomologacionRol)
+        {
+            return ExecuteDbOperation(context =>
+              context.VwRol
+                .AsNoTracking()
+                .FirstOrDefault(c => c.IdHomologacionRol == idHomologacionRol));
         }
         /// <inheritdoc />
         public List<VwHomologacionGrupo> ObtenerVwHomologacionGrupo()

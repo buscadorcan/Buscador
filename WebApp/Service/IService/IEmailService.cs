@@ -3,6 +3,6 @@ namespace WebApp.Service.IService
 {
     public interface IEmailService
     {
-        Task EnviarCorreoAsync(string destinatario, string asunto, string cuerpo);
+        Task<bool> EnviarCorreoAsync(string destinatario, string asunto, string cuerpo);
     }
 }

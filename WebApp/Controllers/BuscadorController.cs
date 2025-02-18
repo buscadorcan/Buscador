@@ -145,5 +145,24 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ValidateWords));
             }
         }
+
+        [HttpGet("geocode")]
+        public async Task<IActionResult> GetCoordinates([FromQuery] string address)
+        {
+            try
+            {
+                var apiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk"; // Reemplaza con tu API Key
+                var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={Uri.EscapeDataString(address)}&key={apiKey}";
+
+                using var httpClient = new HttpClient();
+                var response = await httpClient.GetStringAsync(url);
+
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetCoordinates));
+            }
+        }
     }
 }

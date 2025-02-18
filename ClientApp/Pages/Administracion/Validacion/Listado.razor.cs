@@ -35,6 +35,10 @@ namespace ClientApp.Pages.Administracion.Validacion
         public NavigationManager? navigationManager { get; set; }
         [Inject]
         private IConexionService? iConexionService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
+
         private Button saveButton = default!;
         private Button validateButton = default!;
         
@@ -391,6 +395,14 @@ namespace ClientApp.Pages.Administracion.Validacion
         {
             try
             {
+                objEventTracking.NombrePagina = "Validación de Campos";
+                objEventTracking.NombreAccion = "ValidarDatos";
+                objEventTracking.NombreControl = "ValidarDatos";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                 validateButton.ShowLoading("Validando...");
 
                 int IdOna = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);

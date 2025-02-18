@@ -1,4 +1,6 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -23,6 +25,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         public int? IdPadre { get; set; }
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             filtros = await iCatalogoService.GetFiltrosAsync();
@@ -39,6 +46,14 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
         private async Task GuardarHomologacion()
         {
+            objEventTracking.NombrePagina = "Actualizar / Registrar";
+            objEventTracking.NombreAccion = "GuardarHomologacion";
+            objEventTracking.NombreControl = "GuardarHomologacion";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             saveButton.ShowLoading("Guardando...");
 
             var result = await iHomologacionService.RegistrarOActualizar(homologacion);

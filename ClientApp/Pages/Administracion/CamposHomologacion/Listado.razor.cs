@@ -1,4 +1,6 @@
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Pages.Administracion.Esquemas;
 using ClientApp.Services;
 using ClientApp.Services.IService;
@@ -29,6 +31,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
 
         [Inject]
         protected IJSRuntime? JSRuntime { get; set; }
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
@@ -118,6 +125,14 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         // Confirmar eliminación del registro
         private async Task ConfirmDelete()
         {
+            objEventTracking.NombrePagina = "Administración de campos de Homologación";
+            objEventTracking.NombreAccion = "ConfirmDelete";
+            objEventTracking.NombreControl = "ConfirmDelete";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             if (selectedIdHomologacion.HasValue && iHomologacionService != null)
             {
                 var result = await iHomologacionService.DeleteHomologacionAsync(selectedIdHomologacion.Value);
