@@ -16,6 +16,50 @@
 
 <div class="chart-container">
     <div class="row">
+        <!-- Gráfico 1: Organismo Registrado -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_OrganismoRegistrado</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'OrganismoRegistrado')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart1" class="chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfico 2: Organización por Esquema -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_OrganizacionEsquema</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'OrganizacionEsquema')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart2" class="chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfico 3: Organismo por Actividad -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_OrganismoActividad</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'OrganismoActividad')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart3" class="chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* <div class="chart-container">
+    <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_OrganismoRegistrado</h5>
             <div class="chart-wrapper">
@@ -50,7 +94,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 
 <script>
     window.exportChartToExcel = async (chartId, fileName) => {

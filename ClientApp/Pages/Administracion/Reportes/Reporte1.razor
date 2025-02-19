@@ -19,6 +19,179 @@
         <!-- Gráfico 1: Acreditación Esquema -->
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="chart-wrapper">
+                <div class="title-wrapper d-flex justify-content-between align-items-center">
+                    <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_AcreditacionEsquema</h5>
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'AcreditacionEsquema')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+                <canvas id="chart1" class="chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfico 2: Estado Esquema -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper d-flex justify-content-between align-items-center">
+                    <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_EstadoEsquema</h5>
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'EstadoEsquema')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+                <canvas id="chart2" class="chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfico 3: Crecimiento OEC Fecha (centrado y ocupando el ancho completo) -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 mb-4">
+            <div class="chart-wrapper" style="margin-left: 30% !important;">
+                <div class="title-wrapper d-flex justify-content-between align-items-center">
+                    <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_OecFecha</h5>
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'OecFecha')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+                <canvas id="chart3" class="chart" style="width: 100%;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Primera fila de mapas (mapa 1 y mapa 2) -->
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper d-flex justify-content-between align-items-center">
+                    <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_OecPais</h5>
+                    <button class="export-btn-icon" onclick="exportChartToExcel('heatmap1', 'OecPais')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+                <div id="heatmap1" class="heatmap"></div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper d-flex justify-content-between align-items-center">
+                    <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_AcreditacionOna</h5>
+                    <button class="export-btn-icon" onclick="exportChartToExcel('heatmap2', 'AcreditacionOna')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+                <div id="heatmap2" class="heatmap"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Segunda fila: Un solo mapa centrado -->
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper d-flex justify-content-between align-items-center">
+                    <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_EsquemaPais</h5>
+                    <button class="export-btn-icon" onclick="exportChartToExcel('heatmap3', 'EsquemaPais')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+                <div id="heatmap3" class="heatmap"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* <div class="chart-container">
+    <div class="row">
+        <!-- Gráfico 1: Acreditación Esquema -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper text-center">
+                    <h5 class="bodybody-small" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_AcreditacionEsquema</h5>
+                </div>
+                <canvas id="chart1" class="chart"></canvas>
+                <div class="button-container text-center">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'AcreditacionEsquema')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico 2: Estado Esquema -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper text-center">
+                    <h5 class="bodybody-small" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_EstadoEsquema</h5>
+                </div>
+                <canvas id="chart2" class="chart"></canvas>
+                <div class="button-container text-center">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'EstadoEsquema')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfico 3: Crecimiento OEC Fecha (centrado y ocupando el ancho completo) -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 mb-4">
+            <div class="chart-wrapper" style="margin-left: 30% !important;">
+                <div class="title-wrapper text-center">
+                    <h5 class="bodybody-small" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_OecFecha</h5>
+                </div>
+                <canvas id="chart3" class="chart" style="width: 100%;"></canvas>
+                <div class="button-container text-center">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'OecFecha')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Primera fila de mapas (mapa 1 y mapa 2) -->
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper text-center">
+                    <h5 class="bodybody-small" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_OecPais</h5>
+                </div>
+                <div id="heatmap1" class="heatmap"></div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper text-center">
+                    <h5 class="bodybody-small" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_AcreditacionOna</h5>
+                </div>
+                <div id="heatmap2" class="heatmap"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Segunda fila: Un solo mapa centrado -->
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
+                <div class="title-wrapper text-center">
+                    <h5 class="bodybody-small" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_EsquemaPais</h5>
+                </div>
+                <div id="heatmap3" class="heatmap"></div>
+            </div>
+        </div>
+    </div>
+</div>
+ *@
+
+@* <div class="chart-container">
+    <div class="row">
+        <!-- Gráfico 1: Acreditación Esquema -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="chart-wrapper">
                 <div class="title-wrapper">
                     <h5 class="bodybody-small" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_AcreditacionEsquema</h5>
                 </div>
@@ -96,7 +269,7 @@
         </div>
     </div>
 </div>
-
+ *@
 <script>
 
     window.exportChartToExcel = async (chartId, fileName) => {

@@ -16,10 +16,64 @@
 
 <div class="chart-container">
     <div class="row">
+        <!-- Gráfico 1: Búsqueda por Fecha -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_BusquedaFecha</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'BusquedaFecha')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart1" class="chart" style="margin-top: 20% !important"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfico 2: Búsqueda por Filtro -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_BusquedaFiltro</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'BusquedaFiltro')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart2" class="chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Gráfico 3: Actualización ONA -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_ActualizacionONA</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'ActualizacionONA')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart3" class="chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Mapa 1: Búsqueda por Ubicación (sin botón de exportación) -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_BusquedaUbicacion</h5>
+            </div>
+            <div id="heatmap1" class="heatmap"></div>
+        </div>
+    </div>
+</div>
+
+
+@* <div class="chart-container">
+    <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
             <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_BusquedaFecha</h5>
             <div class="chart-wrapper">
-                <canvas id="chart1" class="chart"></canvas>
+                <canvas id="chart1" class="chart" style="margin-top: 20% !important" ""></canvas>
                 <div class="button-container">
                     <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'BusquedaFecha')" title="Exportar a Excel">
                         <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
@@ -58,7 +112,7 @@
         </div>
     </div>
 </div>
-
+ *@
 <script>
     window.exportChartToExcel = async (chartId, fileName) => {
         const canvas = document.getElementById(chartId);
