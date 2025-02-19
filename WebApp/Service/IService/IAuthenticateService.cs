@@ -8,11 +8,12 @@ namespace WebApp.Service.IService
     public interface IAuthenticateService
     {
         /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * Copyright ï¿½ SIDESOFT | BuscadorAndino | 2025.Feb.18
          * WebApp/Authenticate: Autentica a un usuario basado en las credenciales proporcionadas.
-         * Devuelve un objeto con los detalles de autenticación del usuario si es exitoso,
-         * o un mensaje de error si las credenciales son inválidas.
+         * Devuelve un objeto con los detalles de autenticaciï¿½n del usuario si es exitoso,
+         * o un mensaje de error si las credenciales son invï¿½lidas.
          */
-        Result<UsuarioAutenticacionRespuestaDto> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
+        Task<Result<AuthenticateResponseDto>> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
+        Result<UsuarioAutenticacionRespuestaDto> ValidateCode(AuthValidationDto authValidationDto);
     }
 }

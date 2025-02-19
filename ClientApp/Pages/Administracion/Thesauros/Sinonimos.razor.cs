@@ -42,7 +42,8 @@ namespace ClientApp.Pages.Administracion.Thesauros
 
         protected override async Task OnInitializedAsync()
         {
-            usuarioLogin = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local);
+            usuarioLogin = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+           
             await this.ObtenerThesauroAsync();
 
         }
@@ -129,7 +130,6 @@ namespace ClientApp.Pages.Administracion.Thesauros
         {
             if (!ExisteSinonimo(nuevoSubstituto))
             {
-
                 var temp = this.thesauro.Expansions[expansionSeleccionada];
                 bool ExisteBD = await this.ValidateWords(temp.Substitutes);
 
@@ -354,6 +354,11 @@ namespace ClientApp.Pages.Administracion.Thesauros
 
         private async Task<bool>  ValidateWords(List<string> request)
         {
+            if (request.Count == 0)
+            {
+                return true;
+            }
+
             return await iBusquedaService.ValidateWords(request); ;
         }
 

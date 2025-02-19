@@ -1,5 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SharedApp.Models.Dtos;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -15,13 +17,7 @@ namespace WebApp.Repositories
         {
             
         }
-        /// <summary>
-        /// Executes a stored procedure to add event tracking data to the database.
-        /// </summary>
-        /// <param name="data">The data transfer object containing event tracking information.</param>
-        /// <returns>
-        /// <c>true</c> if the operation was successful; otherwise, <c>false</c>.
-        /// </returns>
+        /// <inheritdoc />
         public bool Create(paAddEventTrackingDto data)
         {
             return ExecuteDbOperation(context =>
@@ -41,6 +37,19 @@ namespace WebApp.Repositories
                     _logger.LogError(ex, "Error executing stored procedure paAddEventTracking");
                     return false;
                 }
+            });
+        }
+
+        /// <inheritdoc />
+        public string GetCodeByUser(string nombreUsuario, string tipoUsuario, string nombrePagina)
+        {
+            return ExecuteDbOperation(context => {
+                var result = context.EventTracking.AsNoTracking()
+                    .Where(u => u.NombreUsuario == nombreUsuario && u.TipoUsuario == tipoUsuario && u.NombrePagina == nombrePagina)
+                    .OrderByDescending(o => o.FechaCreacion)
+                    .FirstOrDefault();
+
+                return result != null ? JsonConvert.DeserializeObject<JObject>(result.ParametroJson)?["Code"]?.ToString() : null;
             });
         }
     }

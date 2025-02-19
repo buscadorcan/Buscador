@@ -1,22 +1,27 @@
 ﻿using System.Diagnostics;
+using System.ServiceProcess;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using Org.BouncyCastle.Asn1.X509;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebApp.Repositories
 {
     public class ThesaurusRepository(IConfiguration configuration, IWebHostEnvironment env) : IThesaurusRepository
     {
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];
-        private readonly string _rutaArchivoBat = configuration["Thesaurus:RutaArchivoBat"];
+        private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
         private readonly IWebHostEnvironment _env = env;
+
+
         public Thesaurus ObtenerThesaurus()
         {
             var rutaProyecto = Directory.GetCurrentDirectory();
-            string rutaArchivo = Path.Combine(rutaProyecto, "Files", _rutaArchivo);
+            string rutaArchivo = Path.Combine(rutaProyecto, _rutaArchivo);
             if (!File.Exists(rutaArchivo))
             {
                 return new Thesaurus();
@@ -40,7 +45,14 @@ namespace WebApp.Repositories
                 // Deserializar el XML limpio: Luis ricoa
                 XmlSerializer serializer = new XmlSerializer(typeof(Thesaurus));
                 using StringReader reader = new StringReader(xmlLimpio);
-                return (Thesaurus)serializer.Deserialize(reader) ?? new Thesaurus();
+
+                var archivo = (Thesaurus)serializer.Deserialize(reader);
+                archivo.rutaArchivo = rutaArchivo;
+
+
+                return archivo ?? new Thesaurus();
+
+               
             }
             catch (Exception ex)
             {
@@ -50,10 +62,11 @@ namespace WebApp.Repositories
 
         public void GuardarThesaurus(Thesaurus thesaurus)
         {
+            string rutaArchivo = "";
             try
             {
                 var rutaProyecto = Directory.GetCurrentDirectory();
-                string rutaArchivo = Path.Combine(rutaProyecto, "Files", _rutaArchivo);
+                rutaArchivo = Path.Combine(rutaProyecto, _rutaArchivo);
                 if (!File.Exists(rutaArchivo))
                 {
                     throw new Exception("El archivo XML no existe.");
@@ -84,7 +97,7 @@ namespace WebApp.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al guardar el archivo XML: {ex.Message}");
+                throw new Exception($"Error al guardar el archivo XML: {ex.Message} ruta:"+ rutaArchivo);
             }
         }
 
@@ -93,40 +106,46 @@ namespace WebApp.Repositories
             try
             {
                 var rutaProyecto = Directory.GetCurrentDirectory();
-                string rutaArchivo = Path.Combine(rutaProyecto, "Files", _rutaArchivoBat);
-                if (string.IsNullOrEmpty(rutaArchivo))
-                {
-                    throw new Exception("La ruta del archivo .bat no está configurada en appsettings.json");
-                }
+                string rutaArchivo = Path.Combine(rutaProyecto, _rutaArchivo);
+                string rutaArchiDestino = _rutaArchivoDestino;
 
-                var proceso = new ProcessStartInfo
-                {
-                    FileName = rutaArchivo,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
 
-                using (var process = new Process { StartInfo = proceso })
-                {
-                    process.Start();
-                    string resultado = process.StandardOutput.ReadToEnd();
-                    string errores = process.StandardError.ReadToEnd();
-                    process.WaitForExit();
+                File.Copy(rutaArchivo, rutaArchiDestino, true);
+                ResetSQLServer();
 
-                    if (!string.IsNullOrEmpty(errores))
-                    {
-                        throw new Exception($"Error al ejecutar el archivo BAT: {errores}");
-                    }
 
-                    Console.WriteLine("Resultado de la ejecución:");
-                    Console.WriteLine(resultado);
-                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error ejecutando el archivo .bat: {ex.Message}");
+            }
+        }
+
+        private void ResetSQLServer()
+        {
+            string serviceName = "MSSQLSERVER"; // Nombre del servicio SQL Server
+            ServiceController service = new ServiceController(serviceName);
+
+            try
+            {
+                Console.WriteLine($"Estado actual del servicio: {service.Status}");
+
+                if (service.Status != ServiceControllerStatus.Stopped)
+                {
+                    Console.WriteLine("Deteniendo el servicio...");
+                    service.Stop();
+                    service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
+                    Console.WriteLine("Servicio detenido.");
+                }
+
+                Console.WriteLine("Iniciando el servicio...");
+                service.Start();
+                service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
+                Console.WriteLine("Servicio iniciado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
     }

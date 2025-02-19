@@ -14,11 +14,15 @@ namespace WebApp.Service
         private readonly IJwtService _jwtService;
         private readonly ICatalogosRepository _catalogosRepository;
         private readonly IEventTrackingRepository _eventTrackingRepository;
+        private readonly IEmailService _emailService;
+        private readonly IRandomStringGeneratorService _randomGeneratorService;
         public AuthenticateService(
             IUsuarioRepository usuarioRepository,
             IONAConexionRepository onaConexionRepository,
             ICatalogosRepository catalogosRepository,
             IEventTrackingRepository eventTrackingRepository,
+            IRandomStringGeneratorService randomGeneratorService,
+            IEmailService emailService,
             IHashService hashService,
             IJwtService jwtService)
         {
@@ -26,27 +30,70 @@ namespace WebApp.Service
             _onaConexionRepository = onaConexionRepository;
             _catalogosRepository = catalogosRepository;
             _eventTrackingRepository = eventTrackingRepository;
+            _randomGeneratorService = randomGeneratorService;
+            _emailService = emailService;
             _hashService = hashService;
             _jwtService = jwtService;
         }
         /// <inheritdoc />
-        public Result<UsuarioAutenticacionRespuestaDto> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto)
+        public async Task<Result<AuthenticateResponseDto>> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
             try {
                 var result = Authenticate(usuarioAutenticacionDto.Email, usuarioAutenticacionDto.Clave);
 
                 if (!result.IsSuccess) {
                     GenerateEventTracking(dto: usuarioAutenticacionDto);
-                    return Result<UsuarioAutenticacionRespuestaDto>.Failure(result.ErrorMessage);
+                    return Result<AuthenticateResponseDto>.Failure(result.ErrorMessage);
                 }
 
                 var usuario = result.Value;
-                var ona = _onaConexionRepository.FindById(usuario.IdONA);
                 var rol = GetRol(usuario.IdHomologacionRol);
+
+                string code = _randomGeneratorService.GenerateTemporaryCode(6);
+                var htmlBody = GenerateVerificationCodeEmailBody(code);
+                var isSend = await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
+
+                if (!isSend)
+                {
+                    return Result<AuthenticateResponseDto>.Failure("Error al enviar clave temporal");
+                }
+
+                GenerateEventTracking(usuario: usuario, rol: rol, code: code);
+                return Result<AuthenticateResponseDto>.Success(new AuthenticateResponseDto
+                {
+                    IdUsuario = usuario.IdUsuario,
+                    IdHomologacionRol = usuario.IdHomologacionRol
+                });
+            } catch (Exception ex) {
+                GenerateEventTracking(dto: usuarioAutenticacionDto);
+                throw ex;
+            }
+        }
+        public Result<UsuarioAutenticacionRespuestaDto> ValidateCode(AuthValidationDto authValidationDto)
+        {
+            try {
+                if (authValidationDto.IdUsuario == 0)
+                {
+                    GenerateEventTracking(dto: authValidationDto);
+                    return Result<UsuarioAutenticacionRespuestaDto>.Failure("Usuario Incorrecto");
+                }
+
+                var usuario = _usuarioRepository.FindById(authValidationDto.IdUsuario);
+                var rol = GetRol(usuario.IdHomologacionRol);
+
+                var code = _eventTrackingRepository.GetCodeByUser(usuario.Nombre, rol.CodigoHomologacion, "Access");
+                Console.WriteLine(code);
+                if (string.IsNullOrEmpty(code) || !authValidationDto.Codigo.Equals(code))
+                {
+                    GenerateEventTracking(dto: authValidationDto);
+                    return Result<UsuarioAutenticacionRespuestaDto>.Failure("Código Incorrecto");
+                }
+
+                var ona = _onaConexionRepository.FindById(usuario.IdONA);
                 var homologacionGrupo = GetVwHomologacionGrupo();
                 var token = GenerateToken(usuario.IdUsuario);
 
-                GenerateEventTracking(usuario: usuario, rol: rol);
+                GenerateEventTracking(dto: authValidationDto, usuario: usuario, rol: rol);
                 return Result<UsuarioAutenticacionRespuestaDto>.Success(new UsuarioAutenticacionRespuestaDto
                 {
                     Token = token,
@@ -67,8 +114,9 @@ namespace WebApp.Service
                     Rol = rol,
                     HomologacionGrupo = homologacionGrupo
                 });
-            } catch (Exception ex) {
-                GenerateEventTracking(dto: usuarioAutenticacionDto);
+            }
+            catch (Exception ex) {
+                GenerateEventTracking(dto: authValidationDto);
                 throw ex;
             }
         }
@@ -107,8 +155,6 @@ namespace WebApp.Service
             }
 
             var claveHash = _hashService.GenerateHash(clave.Trim());
-
-            Console.WriteLine($"{usuario.Clave} / {claveHash} / {clave}");
 
             if (!usuario.Clave.Equals(claveHash))
             {
@@ -171,25 +217,13 @@ namespace WebApp.Service
                 : null;
         }
 
-        /// <summary>
-        /// Generates an event tracking entry when a user attempts to log in.
-        /// </summary>
-        /// <param name="dto">
-        /// An instance of <see cref="UsuarioAutenticacionDto"/> containing user authentication details.
-        /// Used when logging in with authentication DTO instead of a user entity.
-        /// </param>
-        /// <param name="usuario">
-        /// An instance of <see cref="Usuario"/> representing the user entity.
-        /// Used when logging in with a user object instead of an authentication DTO.
-        /// </param>
-        /// <param name="rol">
-        /// An instance of <see cref="VwRolDto"/> representing the user's role.
-        /// Used to define the user type in event tracking.
-        /// </param>
-        /// <param name="success">
-        /// A boolean flag indicating whether the login attempt was successful. Defaults to <c>true</c>.
-        /// </param>
-        private void GenerateEventTracking(UsuarioAutenticacionDto? dto = null, Usuario? usuario = null, VwRolDto? rol = null, bool success = true)
+        private void GenerateEventTracking(
+            UsuarioAutenticacionDto? dto = null,
+            Usuario? usuario = null,
+            VwRolDto? rol = null,
+            string? code = null,
+            bool success = true
+        )
         {
             var eventTrackingDto = new paAddEventTrackingDto
             {
@@ -201,11 +235,114 @@ namespace WebApp.Service
                 ParametroJson = JsonConvert.SerializeObject(usuario == null ? dto : new
                 {
                     Email = usuario?.Email ?? dto.Email,
+                    Success = success,
+                    Code = code
+                })
+            };
+
+            _eventTrackingRepository.Create(eventTrackingDto);
+        }
+
+        private void GenerateEventTracking(
+            AuthValidationDto? dto = null,
+            Usuario? usuario = null,
+            VwRolDto? rol = null,
+            bool success = true
+        )
+        {
+            var eventTrackingDto = new paAddEventTrackingDto
+            {
+                TipoUsuario = rol?.CodigoHomologacion ?? "",
+                NombreUsuario = usuario?.Nombre ?? $"{dto.IdUsuario}",
+                NombrePagina = "Access",
+                NombreControl = "btnValidar",
+                NombreAccion = "ValidarCodigo()",
+                ParametroJson = JsonConvert.SerializeObject(usuario == null ? dto : new
+                {
+                    Id = usuario?.IdUsuario ?? dto.IdUsuario,
                     Success = success
                 })
             };
 
             _eventTrackingRepository.Create(eventTrackingDto);
+        }
+
+        /// <summary>
+        /// Generates an HTML email body for sending a verification code to the user.
+        /// </summary>
+        /// <param name="codigo">The verification code to be sent in the email.</param>
+        /// <returns>A string containing the HTML body of the email with the verification code inserted.</returns>
+        public string GenerateVerificationCodeEmailBody(string codigo)
+        {
+            string htmlBody = @"
+            <!DOCTYPE html>
+            <html lang='es'>
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Código de Verificación</title>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        background-color: #f9f9f9;
+                        color: #333;
+                        padding: 20px;
+                    }}
+                    .container {{
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background-color: #fff;
+                        padding: 30px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    }}
+                    h2 {{
+                        color: #007bff;
+                        text-align: center;
+                    }}
+                    p {{
+                        font-size: 16px;
+                        line-height: 1.5;
+                    }}
+                    .code {{
+                        display: inline-block;
+                        background-color: #f8f9fa;
+                        border: 1px solid #ddd;
+                        padding: 10px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #007bff;
+                        border-radius: 5px;
+                    }}
+                    .footer {{
+                        font-size: 14px;
+                        text-align: center;
+                        margin-top: 20px;
+                        color: #888;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <h2>Código de Verificación</h2>
+                    <p>Estimado/a <strong>usuario</strong>,</p>
+                    <p>Hemos recibido una solicitud para verificar su cuenta. A continuación, le proporcionamos su código de verificación:</p>
+                    
+                    <p><span class='code'>{0}</span></p>
+                    
+                    <p>Este código es válido por un tiempo limitado. Por favor, ingréselo en la página de verificación.</p>
+                    
+                    <p>Si no ha solicitado este código de verificación, por favor contacte a nuestro soporte inmediatamente.</p>
+                    
+                    <div class='footer'>
+                        <p>Gracias por confiar en nosotros. Si tiene alguna duda, no dude en comunicarse con nuestro equipo de soporte.</p>
+                        <p>&copy; 2025 Su Empresa | Todos los derechos reservados</p>
+                    </div>
+                </div>
+            </body>
+            </html>";
+
+            return string.Format(htmlBody, codigo);
         }
     }
 }

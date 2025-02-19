@@ -34,11 +34,36 @@ namespace WebApp.Controllers
      * WebApp/Login: Autentica a un usuario en el sistema y devuelve sus credenciales.
      */
     [HttpPost("login")]
-    public IActionResult Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
+    public async Task<IActionResult> Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
     {
       try
       {
-        var result = _iService.Authenticate(usuarioAutenticacionDto);
+        var result = await _iService.Authenticate(usuarioAutenticacionDto);
+
+        if (!result.IsSuccess) {
+          return BadRequestResponse(result.ErrorMessage);
+        }
+
+        return Ok(new RespuestasAPI<AuthenticateResponseDto> {
+          Result = result.Value
+        });
+      }
+      catch (Exception e)
+      {
+        return HandleException(e, nameof(Login));
+      }
+    }
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/validar: Valida el codigo enviado luego de la autenticación.
+     */
+    [HttpPost("validar")]
+    public IActionResult Validar([FromBody] AuthValidationDto authValidationDto)
+    {
+      try
+      {
+        var result = _iService.ValidateCode(authValidationDto);
 
         if (!result.IsSuccess) {
           return BadRequestResponse(result.ErrorMessage);

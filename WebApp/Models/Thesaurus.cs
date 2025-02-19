@@ -14,6 +14,7 @@ namespace WebApp.Models
 
         [XmlElement("replacement")]
         public List<Replacement> Replacements { get; set; } = new();
+        public string rutaArchivo { get; set; }
     }
 
     public class Expansion

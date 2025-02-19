@@ -70,11 +70,12 @@ app.UseStaticFiles();
 /// <summary>
 /// Habilita Swagger y la interfaz de usuario Swagger UI cuando el entorno sea de desarrollo.
 /// </summary>
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
   app.UseSwagger();
   app.UseSwaggerUI();
 }
+
 
 /// <summary>
 /// Habilita el middleware de autenticación de la aplicación.
