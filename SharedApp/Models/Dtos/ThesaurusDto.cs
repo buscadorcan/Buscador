@@ -15,7 +15,6 @@ namespace SharedApp.Models.Dtos
 
 
         public List<ReplacementDto> Replacements { get; set; } = new();
-        public string rutaArchivo { get; set; }
     }
 
     public class ExpansionDto

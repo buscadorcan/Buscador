@@ -34,5 +34,10 @@ namespace WebApp.Service.IService
          */
         string EjecutarArchivoBat();
 
+        /* 
+        * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        * WebApp/ResetSQLServer: actualiza el servidor de sqlserver
+        */
+        string ResetSQLServer();
     }
 }

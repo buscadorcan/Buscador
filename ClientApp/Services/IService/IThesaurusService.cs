@@ -8,5 +8,6 @@ namespace ClientApp.Services.IService
         Task<ThesaurusDto> GetThesaurusAsync(string endpoint);
         Task<RespuestaRegistro> UpdateExpansionAsync(string endpoint, List<ExpansionDto> expansions);
         Task<string> EjecutarBatAsync(string endpoint);
+        Task<string> ResetSqlServerAsync(string endpoint);
     }
 }

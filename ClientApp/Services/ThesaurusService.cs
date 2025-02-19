@@ -69,5 +69,19 @@ namespace ClientApp.Services
 
             return default;
         }
+
+        public async Task<string> ResetSqlServerAsync(string endpoint)
+        {
+            var response = await _httpClient.GetAsync($"{_urlBaseApi}{endpoint}");
+            response.EnsureSuccessStatusCode();
+            var respuesta = await response.Content.ReadFromJsonAsync<RespuestasAPI<string>>();
+
+            if (respuesta != null && respuesta.IsSuccess && respuesta.Result != null)
+            {
+                return respuesta.Result;
+            }
+
+            return default;
+        }
     }
 }

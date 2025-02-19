@@ -87,5 +87,20 @@ namespace WebApp.Service
 
         }
 
+        public string ResetSQLServer()
+        {
+            try
+            {
+                _thesaurusRepository.ResetSQLServer();
+                return "ok";
+
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
+
     }
 }

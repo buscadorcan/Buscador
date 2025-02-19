@@ -47,8 +47,7 @@ namespace WebApp.Repositories
                 using StringReader reader = new StringReader(xmlLimpio);
 
                 var archivo = (Thesaurus)serializer.Deserialize(reader);
-                archivo.rutaArchivo = rutaArchivo;
-
+               
 
                 return archivo ?? new Thesaurus();
 
@@ -121,7 +120,7 @@ namespace WebApp.Repositories
             }
         }
 
-        private void ResetSQLServer()
+        public void ResetSQLServer()
         {
             string serviceName = "MSSQLSERVER"; // Nombre del servicio SQL Server
             ServiceController service = new ServiceController(serviceName);
