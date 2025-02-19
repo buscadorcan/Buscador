@@ -59,8 +59,7 @@ namespace WebApp.Extensions
             // Registra servicios relacionados con hash y generación de contraseñas.
             services.AddScoped<IHashStrategy, Md5HashStrategy>();
             services.AddScoped<IHashService, HashService>();
-            services.AddScoped<IPasswordGenerationStrategy, RandomPasswordGenerationStrategy>();
-            services.AddScoped<IPasswordService, PasswordService>();
+            services.AddScoped<IRandomStringGeneratorService, RandomStringGeneratorService>();
 
             //Thesaurus
             services.AddScoped<IThesaurusService, ThesaurusService>();
