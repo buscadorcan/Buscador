@@ -105,6 +105,11 @@
     border: 1px solid #212529;
     color: white;
     margin-bottom: 0px !important;
+
+    }
+
+    .paddign_10{
+        padding:10px !important;
     }
 </style>
 
@@ -121,7 +126,7 @@ else
             <input type="text" placeholder="Ingrese el sinonimo a buscar" @bind="sinonimoBuscar" @oninput="MostarTodos"  class="ancho_70 input_control" />
             <Button class="ancho_30 btn_control" @onclick="() => BuscarSinonimo()">Buscar Sinonimo</Button>
         </div>
-        @if (this.usuarioLogin == "CAN" && this.usuarioLogin == "admin")
+        @if (this.usuarioLogin == "KEY_USER_CAN")
         {
             <div class="ancho_15 div_flex">
                 <Button class="btn_control_guardar ancho_85" @onclick="() => GuardarThesauro()">Guardar</Button>
@@ -148,15 +153,15 @@ else
                 </h2>
                 <div id="@collapseId" class="accordion-collapse collapse" data-bs-parent="#accordionThesaurus">
                     <div class="accordion-body">
-                        @if (this.usuarioLogin == "CAN" && this.usuarioLogin == "admin") {
+                        @if (this.usuarioLogin == "KEY_USER_CAN") {
                             <button class="btn btn-primary btn-sm mt-2" @onclick="() => AbrirModal(i)">Agregar</button>
                         }
                         <ul class="list-group">
                             @foreach (var substitute in expansion.Substitutes)
                             {
-                                <li class="list-group-item li-flex">
+                                <li class="list-group-item li-flex paddign_10">
                                     <label>@substitute</label>
-                                    @if (this.usuarioLogin == "CAN" && this.usuarioLogin == "admin")
+                                    @if (this.usuarioLogin == "KEY_USER_CAN")
                                     {
                                         <button class="btn btn-danger btn-sm mt-2" @onclick="() => AbrirModalQuitarSinonimo(i,substitute)">-</button>
                                     }
