@@ -30,6 +30,21 @@
                                     <div class="frame-1000002371">
                                         <div class="albertonovacerocom bodybody-small">@nombreRol</div>
                                     </div>
+                                    <div style="width:100%;
+                                                align-items: center;
+                                                display: flex;
+                                                flex-direction: column;
+                                                position: relative;
+                                                ">
+                                        <Button Class="btn" style="width:100%; 
+                                                font-family: var(--font-family-inter-semibold);
+                                                font-size: var(--font-size-m);
+                                                font-style: normal;
+                                                font-weight: 600;
+                                                letter-spacing: 0;"
+                                                @onclick="() => SalirSesion()"        
+                                        >Salir</Button>
+                                    </div>
                                 </div>
                             </div>
                             <img class="expand_more" src="admin/img/expand-more@2x.png" alt="expand_more">
@@ -171,7 +186,7 @@
                             </span>
                         </NavLink>
                         @* <div class="ayuda-1 valign-text-middle headingheadline5-h5">
-                            
+
                         </div> *@
                     </div>
                 </div>
@@ -193,7 +208,7 @@
         }
         else
         {
-           
+
             <div class="general flex-col">
                 <div class="general top">
                     <div class="general overlap-group">
@@ -202,9 +217,9 @@
                     </div>
                 </div>
                 @if (NavigationManager.Uri.Contains("/reportecan") ||
-                   NavigationManager.Uri.Contains("/reporteona") ||
-                   NavigationManager.Uri.Contains("/reporteread") ||
-                   NavigationManager.Uri.Contains("/reporte1"))
+                  NavigationManager.Uri.Contains("/reporteona") ||
+                  NavigationManager.Uri.Contains("/reporteread") ||
+                  NavigationManager.Uri.Contains("/reporte1"))
                 {
                     <link href="css/admin-report.css" rel="stylesheet">
 
@@ -213,7 +228,7 @@
                     </div>
                 }
 
-               @if (NavigationManager.Uri.Contains("/usuario") ||
+                @if (NavigationManager.Uri.Contains("/usuario") ||
                NavigationManager.Uri.Contains("/nuevo-usuario") ||
                NavigationManager.Uri.Contains("/editar-usuario") ||
                NavigationManager.Uri.Contains("/esquemas") ||
@@ -236,7 +251,7 @@
                NavigationManager.Uri.Contains("/log-migracion") ||
                NavigationManager.Uri.Contains("/page-nodisponible") ||
                NavigationManager.Uri.Contains("/validacion"))   
-               {
+                {
                     <link href="css/admin.css" rel="stylesheet">
                     <link href="css/pagination.css" rel="stylesheet">
                     <link href="css/modal-footer.css" rel="stylesheet">
@@ -250,7 +265,7 @@
                         @Body
                     </div>
                 }
-               
+
             </div>
 
         }
@@ -396,6 +411,18 @@
         await OnNavItemsChanged.InvokeAsync(navItemsList); // 🔹 Enviar valores a AdminLayout.razor
 
         return navItemsList;
+    }
+
+
+    private void SalirSesion() { 
+        try
+        {
+
+        }
+        catch
+        {
+            throw;
+        }
     }
 }
 
