@@ -253,11 +253,12 @@
     // };
     window.initHeatMaps = (mapsData) => {
 
-    const createHeatMap = (elementId, data) => {
+        const createHeatMap = (elementId, data) => {
             if (typeof L === 'undefined') {
                 console.error("Leaflet.js no está cargado correctamente.");
                 return;
             }
+
             // Función para normalizar nombres de países (elimina acentos y convierte en minúsculas)
             const normalizeCountry = (name) => {
                 return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -360,28 +361,40 @@
                 "samoa": [-13.76, -172.10]
             };
 
-            const map = L.map(elementId).setView([20, 0], 2);
+            const map = L.map(elementId);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
+            let bounds = [];  // Almacena las coordenadas de los marcadores
+
             data.forEach(item => {
                 // Normalizar el nombre del país
                 const normalizedCountry = normalizeCountry(item.pais);
-                const coords = countryCoordinates[normalizedCountry] || [0, 0];
+                const coords = countryCoordinates[normalizedCountry];
 
-                const marker = L.circleMarker(coords, {
-                    radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
-                    color: 'red',
-                    fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
-                    fillOpacity: 0.7,
-                    weight: 1
-                }).bindPopup(
-                    `<strong>País:</strong> ${item.pais}<br>
+                if (coords) {
+                    const marker = L.circleMarker(coords, {
+                        radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+                        color: 'red',
+                        fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+                        fillOpacity: 0.7,
+                        weight: 1
+                    }).bindPopup(
+                        `<strong>País:</strong> ${item.pais}<br>
                      <strong>Calificados:</strong> ${item.organizacion}`
-                ).addTo(map);
+                    ).addTo(map);
+
+                    bounds.push(coords); // Agregar coordenadas al array de límites
+                }
             });
+
+            if (bounds.length > 0) {
+                map.fitBounds(bounds); // Ajustar el mapa a los marcadores
+            } else {
+                map.setView([20, 0], 2); // Vista predeterminada si no hay datos
+            }
         };
 
     createHeatMap('heatmap1', mapsData.heatmap1);

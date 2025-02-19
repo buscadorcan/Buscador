@@ -253,14 +253,15 @@
     };
 
     window.initHeatMaps = (mapsData, selectedCity = null) => {
-    const createHeatMap = (elementId, data) => {
+
+        const createHeatMap = (elementId, data) => {
             if (typeof L === 'undefined') {
                 console.error("Leaflet.js no está cargado correctamente.");
                 return;
             }
 
-            // Inicializa el mapa con una vista centrada en Sudamérica
-            const map = L.map(elementId).setView([-15, -60], 4);
+            // Inicializa el mapa
+            const map = L.map(elementId);
 
             // Capa base del mapa
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -345,18 +346,13 @@
                 "Maturín, Venezuela": [9.7500, -63.1767]
             };
 
-            // Filtra los datos si se selecciona una ciudad específica
-            const filteredData = selectedCity
-                ? data.filter(item => item.ciudad.toLowerCase() === selectedCity.toLowerCase())
-                : data;
-
-            // Almacena los puntos de calor
+            // Almacena los puntos de calor y los límites del mapa
             let heatMapData = [];
+            let bounds = [];
 
-            filteredData.forEach(item => {
+            data.forEach(item => {
                 const key = `${item.ciudad}, ${item.pais}`;
                 if (coordenadasPredefinidas[key]) {
-                    // Genera el tamaño y color del marcador basado en el número de búsquedas
                     const intensidad = Math.random() * 1.5; // Intensidad aleatoria
                     heatMapData.push([...coordenadasPredefinidas[key], intensidad]);
 
@@ -368,16 +364,22 @@
                         weight: 1
                     }).bindPopup(
                         `<strong>Ciudad:</strong> ${item.ciudad}<br>
-                         <strong>País:</strong> ${item.pais}<br>
-                         <strong>Búsquedas:</strong> ${item.organizacion}`
+                     <strong>País:</strong> ${item.pais}<br>
+                     <strong>Búsquedas:</strong> ${item.organizacion}`
                     ).addTo(map);
 
-                    // Centrar el mapa en la primera ciudad encontrada
-                    map.setView(coordenadasPredefinidas[key], 5);
+                    bounds.push(coordenadasPredefinidas[key]); // Agregar coordenadas a los límites
                 } else {
                     console.warn(`No hay coordenadas predefinidas para ${item.ciudad}, ${item.pais}`);
                 }
             });
+
+            // Ajustar el mapa para que abarque todos los puntos
+            if (bounds.length > 0) {
+                map.fitBounds(bounds);
+            } else {
+                map.setView([-15, -60], 4); // Vista predeterminada si no hay datos
+            }
 
             // Agregar la capa de calor
             if (heatMapData.length > 0) {
@@ -389,7 +391,10 @@
             }
         };
 
-        createHeatMap('heatmap1', mapsData.heatmap1);
+
+
+    createHeatMap('heatmap1', mapsData.heatmap1);
+
     };
 
     
