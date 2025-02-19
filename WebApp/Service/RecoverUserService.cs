@@ -14,20 +14,20 @@ namespace WebApp.Service
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IEventTrackingRepository _eventTrackingRepository;
         private readonly ICatalogosRepository _catalogosRepository;
-        private readonly IPasswordService _passwordService;
+        private readonly IRandomStringGeneratorService _randomGeneratorService;
         private readonly IEmailService _emailService;
 
         public RecoverUserService(
             IUsuarioRepository usuarioRepository,
             IEventTrackingRepository eventTrackingRepository,
             ICatalogosRepository catalogosRepository,
-            IPasswordService passwordService,
+            IRandomStringGeneratorService randomGeneratorService,
             IEmailService emailService)
         {
             _usuarioRepository = usuarioRepository;
             _eventTrackingRepository = eventTrackingRepository;
             _catalogosRepository = catalogosRepository;
-            _passwordService = passwordService;
+            _randomGeneratorService = randomGeneratorService;
             _emailService = emailService;
         }
 
@@ -47,7 +47,7 @@ namespace WebApp.Service
                 var rol = _catalogosRepository.FindVwRolByHId(result.Value.IdHomologacionRol);
                 GenerateEventTracking(usuario: result.Value, rol: rol);
 
-                string clave = _passwordService.GenerateTemporaryPassword(8);
+                string clave = _randomGeneratorService.GenerateTemporaryPassword(8);
                 result.Value.Clave = clave;
                 var isSave = _usuarioRepository.Update(result.Value);
 

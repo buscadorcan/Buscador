@@ -121,5 +121,25 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(AgregarSubExpansion));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ResetSQLServer: actualiza el servidor de sqlserver.
+         */
+        [HttpGet("reset/sqlserver")]
+        public IActionResult ResetSQLServer()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<string>
+                {
+                    Result = _thesaurusService.ResetSQLServer()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(AgregarSubExpansion));
+            }
+        }
     }
 }

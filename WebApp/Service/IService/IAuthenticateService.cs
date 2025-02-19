@@ -7,19 +7,13 @@ namespace WebApp.Service.IService
     /// </summary>
     public interface IAuthenticateService
     {
-        /// <summary>
-        /// Authenticates a user based on the provided credentials.
-        /// </summary>
-        /// <param name="usuarioAutenticacionDto">The user authentication data transfer object containing the username and password.</param>
-        /// <returns>
-        /// A <see cref="UsuarioAutenticacionRespuestaDto"/> containing the authentication result.
-        /// If the authentication is successful, returns a response with the user's authentication details (e.g., token, user information).
-        /// If the authentication fails, returns a response indicating the failure (e.g., invalid credentials).
-        /// In case of an exception, returns an appropriate error response.
-        /// </returns>
-        /// <exception cref="Exception">
-        /// Thrown if any error occurs during the authentication process, such as invalid credentials, missing user data, or database errors.
-        /// </exception>
-        Result<UsuarioAutenticacionRespuestaDto> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
+        /* 
+         * Copyright � SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Authenticate: Autentica a un usuario basado en las credenciales proporcionadas.
+         * Devuelve un objeto con los detalles de autenticaci�n del usuario si es exitoso,
+         * o un mensaje de error si las credenciales son inv�lidas.
+         */
+        Task<Result<AuthenticateResponseDto>> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
+        Result<UsuarioAutenticacionRespuestaDto> ValidateCode(AuthValidationDto authValidationDto);
     }
 }

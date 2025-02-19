@@ -42,7 +42,8 @@ namespace ClientApp.Pages.Administracion.Thesauros
 
         protected override async Task OnInitializedAsync()
         {
-            usuarioLogin = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local);
+            usuarioLogin = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+           
             await this.ObtenerThesauroAsync();
 
         }
@@ -62,15 +63,6 @@ namespace ClientApp.Pages.Administracion.Thesauros
                             Expansions = new List<ExpansionDto>(result.Expansions),
                             Replacements = new List<ReplacementDto>(result.Replacements)
                         };
-
-                        /*
-                            public int DiacriticsSensitive { get; set; }
-                            public List<ExpansionDto> Expansions { get; set; } = new();
-                            public List<ReplacementDto> Replacements { get; set; } = new();
-                        */
-                        
-                        
-                        
                     }
                 }
             }
@@ -92,11 +84,13 @@ namespace ClientApp.Pages.Administracion.Thesauros
                         this.isMensajeGuardar = true;
                         this.isMensajeGuardarExitoso = true;
                         this.mensajeGuardar = "Se realizó la ejecución del archivo bat";
+                        await Task.Delay(5000);
                     }
                     else {
                         this.isMensajeGuardar = true;
                         this.isMensajeGuardarExitoso = false;
                         this.mensajeGuardar = "ocurrió un error en la ejecución del bat";
+                        await Task.Delay(5000);
                     }
                 }
             }
@@ -105,7 +99,34 @@ namespace ClientApp.Pages.Administracion.Thesauros
                 Console.WriteLine($"Error al obtener el thesaurus: {ex.Message}");
             }
         }
-
+        public async Task ResetearqSqlServer()
+        {
+            try
+            {
+                if (service != null)
+                {
+                    var result = await service.EjecutarBatAsync("reset/sqlserver");
+                    if (result == "ok")
+                    {
+                        this.isMensajeGuardar = true;
+                        this.isMensajeGuardarExitoso = true;
+                        this.mensajeGuardar = "Se realizó el reseteo del servidor";
+                        await Task.Delay(5000);
+                    }
+                    else
+                    {
+                        this.isMensajeGuardar = true;
+                        this.isMensajeGuardarExitoso = false;
+                        this.mensajeGuardar = "ocurrió un error en el reseteo del servidor";
+                        await Task.Delay(5000);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener el thesaurus: {ex.Message}");
+            }
+        }
         private void AbrirModal(int index)
         {
             expansionSeleccionada = index;
@@ -129,7 +150,6 @@ namespace ClientApp.Pages.Administracion.Thesauros
         {
             if (!ExisteSinonimo(nuevoSubstituto))
             {
-
                 var temp = this.thesauro.Expansions[expansionSeleccionada];
                 bool ExisteBD = await this.ValidateWords(temp.Substitutes);
 
@@ -185,7 +205,7 @@ namespace ClientApp.Pages.Administracion.Thesauros
 
                 StateHasChanged();
 
-                await Task.Delay(3000);
+                await Task.Delay(5000);
 
                 this.isMensajeGuardar = false;
                 this.isMensajeGuardarExitoso = false;
@@ -255,7 +275,7 @@ namespace ClientApp.Pages.Administracion.Thesauros
                 }
                 StateHasChanged();
 
-                await Task.Delay(3000);
+                await Task.Delay(5000);
 
                 this.isMensajeGuardar = false;
                 this.isMensajeGuardarExitoso = false;
@@ -354,6 +374,11 @@ namespace ClientApp.Pages.Administracion.Thesauros
 
         private async Task<bool>  ValidateWords(List<string> request)
         {
+            if (request.Count == 0)
+            {
+                return true;
+            }
+
             return await iBusquedaService.ValidateWords(request); ;
         }
 

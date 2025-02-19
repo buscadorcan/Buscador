@@ -25,13 +25,24 @@ namespace ClientApp.Services
             _localStorage = localStorage;
             _estadoProveedorAutenticacion = estadoProveedorAutenticacion;
         }
-        public async Task<RespuestasAPI<UsuarioAutenticacionRespuestaDto>> Acceder(UsuarioAutenticacionDto usuarioAutenticacionDto)
+
+        /// <inheritdoc />
+        public async Task<RespuestasAPI<AuthenticateResponseDto>> Autenticar(UsuarioAutenticacionDto usuarioAutenticacionDto) {
+            var content = JsonConvert.SerializeObject(usuarioAutenticacionDto);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _cliente.PostAsync($"{Inicializar.UrlBaseApi}api/usuarios/login", bodyContent);
+            var contentTemp = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<RespuestasAPI<AuthenticateResponseDto>>(contentTemp);
+        }
+
+        /// <inheritdoc />
+        public async Task<RespuestasAPI<UsuarioAutenticacionRespuestaDto>> Acceder(AuthValidationDto authValidationDto)
         {
             try
             {
-                var content = JsonConvert.SerializeObject(usuarioAutenticacionDto);
+                var content = JsonConvert.SerializeObject(authValidationDto);
                 var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-                var url = Inicializar.UrlBaseApi + "api/usuarios/login";
+                var url = Inicializar.UrlBaseApi + "api/usuarios/validar";
                 var response = await _cliente.PostAsync(url, bodyContent);
                 var contentTemp = await response.Content.ReadAsStringAsync();
                 var respuesta = JsonConvert.DeserializeObject<RespuestasAPI<UsuarioAutenticacionRespuestaDto>>(contentTemp);
@@ -68,6 +79,8 @@ namespace ClientApp.Services
             }
           
         }
+
+        /// <inheritdoc />
         public async Task<RespuestasAPI<T>?> Recuperar<T>(UsuarioRecuperacionDto usuarioRecuperacionDto) {
             var content = JsonConvert.SerializeObject(usuarioRecuperacionDto);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -76,6 +89,7 @@ namespace ClientApp.Services
             return JsonConvert.DeserializeObject<RespuestasAPI<T>>(contentTemp);
         }
 
+        /// <inheritdoc />
         public async Task Salir()
         {
             await _localStorage.RemoveItemAsync(Inicializar.Token_Local);
