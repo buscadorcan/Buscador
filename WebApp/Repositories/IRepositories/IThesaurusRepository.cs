@@ -22,5 +22,10 @@ namespace WebApp.Repositories.IRepositories
          */
         void EjecutarArchivoBat();
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ResetSQLServer: actualiza el servidor de sqlserver*/
+        void ResetSQLServer();
+
     }
 }
