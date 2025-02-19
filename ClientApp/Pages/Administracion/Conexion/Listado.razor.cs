@@ -52,7 +52,7 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                 objEventTracking.NombrePagina = null;
                 objEventTracking.ParametroJson = "";
-
+                objEventTracking.UbicacionJson = "";
 
                 iBusquedaService.AddEventTrackingAsync(objEventTracking);
             }
@@ -114,7 +114,8 @@ namespace ClientApp.Pages.Administracion.Conexion
             objEventTracking.NombreControl = "OnTestconexionClick";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
             objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
-
+            objEventTracking.ParametroJson = "";
+            objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
             if (iDynamicService != null && listasHevd != null)
@@ -152,7 +153,8 @@ namespace ClientApp.Pages.Administracion.Conexion
             objEventTracking.NombreControl = "OnMigrarClick";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
             objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
-
+            objEventTracking.ParametroJson = "";
+            objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
             if (iDynamicService != null && listasHevd != null)
@@ -236,7 +238,8 @@ namespace ClientApp.Pages.Administracion.Conexion
             objEventTracking.NombreControl = "ConfirmDelete";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
             objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
-
+            objEventTracking.ParametroJson = "";
+            objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
             if (selectedIdOna.HasValue && iConexionService != null)

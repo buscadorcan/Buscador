@@ -28,16 +28,11 @@ namespace WebApp.Controllers
     private readonly IAuthenticateService _iService = iService;
     private readonly IRecoverUserService _iServiceRecover = iServiceRecover;
     private readonly IMapper _mapper = mapper;
-    /// <summary>
-    /// Authenticates a user based on the provided credentials.
-    /// </summary>
-    /// <param name="usuarioAutenticacionDto">The user authentication data transfer object containing the username and password.</param>
-    /// <returns>
-    /// An <see cref="IActionResult"/> containing the authentication result.
-    /// If the authentication is successful, returns an <see cref="OkObjectResult"/> with the user authentication response data.
-    /// If the authentication fails, returns a <see cref="BadRequestObjectResult"/> with an error message.
-    /// In case of an exception, returns an appropriate error response.
-    /// </returns>
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/Login: Autentica a un usuario en el sistema y devuelve sus credenciales.
+     */
     [HttpPost("login")]
     public IActionResult Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
     {
@@ -58,6 +53,11 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(Login));
       }
     }
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/RecoverAsync: Permite la recuperación de contraseña de un usuario.
+     */
     [HttpPost("recuperar")]
     public async Task<IActionResult> RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
     {
@@ -78,7 +78,11 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(RecoverAsync));
       }
     }
-    //[Authorize]
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/Create: Registra un nuevo usuario en el sistema.
+     */
     [HttpPost("registro")]
     public IActionResult Create([FromBody] UsuarioDto dto)
     {
@@ -99,7 +103,11 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(Create));
       }
     }
-    //[Authorize]
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/FindAll: Obtiene la lista de todos los usuarios registrados en el sistema.
+     */
     [HttpGet]
     public IActionResult FindAll()
     {
@@ -114,7 +122,12 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(FindAll));
       }
     }
-    //[Authorize]
+
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/FindById: Obtiene la información de un usuario específico según su ID.
+     */
     [HttpGet("{idUsuario:int}", Name = "FindById")]
     public IActionResult FindById(int idUsuario)
     {
@@ -137,7 +150,11 @@ namespace WebApp.Controllers
       }
     }
 
-    //[Authorize]
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/Update: Actualiza la información de un usuario en el sistema.
+     */
     [HttpPut("{idUsuario:int}", Name = "Update")]
     public IActionResult Update(int idUsuario, [FromBody] UsuarioDto dto)
     {
@@ -155,6 +172,11 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(Update));
       }
     }
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/Deactivate: Desactiva un usuario estableciendo su estado como "X".
+     */
     [Authorize]
     [HttpDelete("{idUsuario:int}", Name = "Deactivate")]
     public IActionResult Deactivate(int idUsuario)
@@ -180,6 +202,10 @@ namespace WebApp.Controllers
       }
     }
 
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/ValidarEmail: Verifica si un correo electrónico ya está registrado en el sistema.
+     */
     [HttpGet("validar-email")]
     public IActionResult ValidarEmail([FromQuery] string email)
     {

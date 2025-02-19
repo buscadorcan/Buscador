@@ -22,6 +22,11 @@ namespace WebApp.Controllers
   {
     private readonly ILogMigracionRepository _iRepo = iRepo;
     private readonly IMapper _mapper = mapper;
+    
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/FindAll: Obtiene todos los registros del log de migración.
+     */
     [Authorize]
     [HttpGet]
     public IActionResult FindAll()

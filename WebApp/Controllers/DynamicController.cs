@@ -21,6 +21,11 @@ namespace WebApp.Controllers
     {
       _vhRepo = vhRepo;
     }
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/GetProperties: Obtiene las propiedades de las columnas de una vista específica para un ONA determinado.
+     */
     [Authorize]
     [HttpGet("columns/{idOna}/{viewName}", Name = "getProperties")]
     public IActionResult GetProperties(int idOna, string viewName)
@@ -35,7 +40,11 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(GetProperties));
       }
     }
-    
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/GetValueColumna: Obtiene el valor de una columna específica dentro de una vista para un ONA determinado.
+     */
     [Authorize]
     [HttpGet("columns/{idOna}/{valueColumn}/{viewName}", Name = "GetValueColumna")]
     public IActionResult GetValueColumna(int idONA, string valueColumn, string viewName)    
@@ -51,6 +60,10 @@ namespace WebApp.Controllers
         }
     }
 
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/GetViewNames: Obtiene los nombres de las vistas asociadas a un ONA específico.
+     */
     [Authorize]
     [HttpGet("{idOna}", Name = "getViewNames")]
     public IActionResult GetViewNames(int idOna)
@@ -66,20 +79,10 @@ namespace WebApp.Controllers
       }
     }
 
-        //[Authorize]
-        //[HttpGet("validacion/{idOna}/{idEsquemaVista}", Name = "GetListaValidacionEsquema")]
-        //public IActionResult GetListaValidacionEsquema(int idOna, int idEsquemaVista)
-        //{
-        //    try
-        //    {
-        //        var result = _vhRepo.GetListaValidacionEsquema(idOna, idEsquemaVista);
-        //        return Ok(new RespuestasAPI<List<EsquemaVistaDto>> { Result = result });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return HandleException(e, nameof(GetListaValidacionEsquema));
-        //    }
-        //}
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/GetListaValidacionEsquema: Obtiene la lista de validaciones para un esquema específico dentro de un ONA.
+         */
         [Authorize]
         [HttpGet("validacion/{idOna}/{idEsquema}", Name = "GetListaValidacionEsquema")]
         public IActionResult GetListaValidacionEsquema(int idOna, int idEsquema)
@@ -95,6 +98,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/TestConnection: Prueba la conexión a la base de datos de un ONA determinado.
+         */
         [Authorize]
         [HttpGet("test/{idOna:int}")]
         public IActionResult TestConnection(int idOna)
@@ -123,6 +130,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/MigrarConexion: Migra la conexión de un ONA específico de forma asíncrona.
+         */
         [Authorize]
         [HttpPost("migrar/{idOna:int}")]
         public async Task<IActionResult> MigrarConexion(int idOna)

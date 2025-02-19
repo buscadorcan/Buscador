@@ -23,6 +23,11 @@ namespace WebApp.Controllers
     {
         private readonly IEsquemaRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindAll: Obtiene todos los registros del esquema.
+         */
         [Authorize]
         [HttpGet]
         public IActionResult FindAll()
@@ -39,6 +44,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FindAll));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindById: Busca un registro en el esquema por su ID.
+         */
         [Authorize]
         [HttpGet("{id:int}")]
         public IActionResult FindById(int Id)
@@ -62,6 +72,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FindById));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Update: Actualiza un registro en el esquema.
+         */
         [Authorize]
         [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] EsquemaDto dto)
@@ -81,6 +96,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Update));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Create: Crea un nuevo registro en el esquema.
+         */
         [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] EsquemaDto dto)
@@ -99,6 +119,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Create));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Deactive: Desactiva un registro en el esquema cambiando su estado a "X".
+         */
         [Authorize]
         [HttpDelete("{id:int}")]
         public IActionResult Deactive(int id)
@@ -124,31 +149,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Deactive));
             }
         }
-        //[Authorize]
-        //[HttpDelete("validacion/{id:int}")]
-        //public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(int id)
-        //{
-        //    try
-        //    {
-        //        var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(id);
 
-        //        if (record == null)
-        //        {
-        //            return NotFoundResponse("Reguistro no encontrado");
-        //        }
-
-        //        record.Estado = "X";
-
-        //        return Ok(new RespuestasAPI<bool>
-        //        {
-        //            IsSuccess = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(id)
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return HandleException(e, nameof(Deactive));
-        //    }
-        //}
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/EliminarEsquemaVistaColumnaByIdEquemaVistaAsync: Elimina un esquema de vista columna basado en su ID de esquema y ONA.
+         */
         [Authorize]
         [HttpDelete("validacion")]
         public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync([FromBody] EsquemaVistaValidacionDto esquemaRegistro)
@@ -179,25 +184,10 @@ namespace WebApp.Controllers
             }
         }
 
-        //[Authorize]
-        //[HttpPut("validacion/{id:int}")]
-        //public IActionResult UpdateEsquemaValidacion(int id, [FromBody] EsquemaVistaValidacionDto dto)
-        //{
-        //    try
-        //    {
-        //        dto.IdEsquemaVista = id;
-        //        var record = _mapper.Map<EsquemaVista>(dto);
-
-        //        return Ok(new RespuestasAPI<bool>
-        //        {
-        //            IsSuccess = _iRepo.UpdateEsquemaValidacion(record)
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return HandleException(e, nameof(UpdateEsquemaValidacion));
-        //    }
-        //}
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/UpdateEsquemaValidacion: Actualiza una validación de esquema.
+         */
         [Authorize]
         [Route("validacion/actualizar")]
         [HttpPut]
@@ -218,7 +208,10 @@ namespace WebApp.Controllers
             }
         }
 
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/CreateEsquemaValidacion: Crea una nueva validación de esquema.
+         */
         [Authorize]
         [Route("validacion")]
         [HttpPost]
@@ -238,25 +231,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(CreateEsquemaValidacion));
             }
         }
-        //[Authorize]
-        //[Route("vista/columna")]
-        //[HttpPost]
-        //public IActionResult GuardarListaEsquemaVistaColumna([FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna)
-        //{
-        //    try
-        //    {
-        //        var record = _mapper.Map<List<EsquemaVistaColumna>>(listaEsquemaVistaColumna);
 
-        //        return Ok(new RespuestasAPI<bool>
-        //        {
-        //            IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record)
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return HandleException(e, nameof(GuardarListaEsquemaVistaColumna));
-        //    }
-        //}
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/GuardarListaEsquemaVistaColumna: Guarda una lista de columnas en un esquema de vista.
+         */
         [Authorize]
         [Route("vista/columna")]
         [HttpPost]
@@ -281,7 +260,10 @@ namespace WebApp.Controllers
             }
         }
 
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/GetListaEsquemaByOna: Obtiene la lista de esquemas asociados a un ONA específico.
+         */
         [Authorize]
         [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
         public IActionResult GetListaEsquemaByOna(int idOna)

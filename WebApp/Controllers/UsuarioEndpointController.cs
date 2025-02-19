@@ -24,6 +24,11 @@ namespace WebApp.Controllers
     private readonly IUsuarioEndpointRepository _iRepo = iRepo;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<UsuarioEndpointController> _logger = logger;
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/Create: Crea un nuevo registro de usuario con permisos de endpoint.
+     */
     [Authorize]
     [HttpPost]
     public IActionResult Create([FromBody] UsuarioEndpointPermisoRegistroDto data)
@@ -39,6 +44,11 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(Create));
       }
     }
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/FindAll: Obtiene todos los registros de usuarios con sus permisos de endpoint.
+     */
     [Authorize]
     [HttpGet]
     public IActionResult FindAll()
@@ -54,6 +64,11 @@ namespace WebApp.Controllers
         return HandleException(e, nameof(FindAll));
       }
     }
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/FindByEndpointId: Obtiene información del usuario asociado a un endpoint específico.
+     */
     [Authorize]
     [HttpGet("{endpointId:int}", Name = "FindByEndpointId")]
     public IActionResult FindByEndpointId(int endpointId)

@@ -24,6 +24,11 @@ namespace WebApp.Controllers
   {
         private readonly IMigracionExcelRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindAll: Obtiene todos los registros de migración de archivos Excel.
+         */
         [Authorize]
         [HttpGet]
         public IActionResult FindAll()
@@ -40,63 +45,10 @@ namespace WebApp.Controllers
               }
         }
 
-        //[Authorize]
-        //[HttpPost("upload")]
-        //public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
-        //{
-        //    try
-        //    {
-        //        if (file == null || file.Length == 0)
-        //        {
-        //            return BadRequestResponse("Archivo no encontrado");
-        //        }
-        //        if (idOna <= 0)
-        //        {
-        //            return BadRequestResponse("idOna no es válido");
-        //        }
-
-        //        string fileExtension = Path.GetExtension(file.FileName);
-        //        if (fileExtension != ".xls" && fileExtension != ".xlsx")
-        //        {
-        //            return BadRequestResponse("Archivo no válido");
-        //        }
-
-        //        //SOLUCIÓN: Obtener la ruta del directorio del proyecto sin depender del bin
-        //        string projectRoot = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
-        //        string filesPath = Path.Combine(projectRoot, "WebApp", "wwwroot", "Files");
-
-        //        // Crear la carpeta "Files" si no existe
-        //        if (!Directory.Exists(filesPath))
-        //        {
-        //            Directory.CreateDirectory(filesPath);
-        //        }
-
-        //        var filePath = Path.Combine(filesPath, file.FileName);
-
-        //        using (var stream = new FileStream(filePath, FileMode.Create))
-        //        {
-        //            file.CopyTo(stream);
-        //        }
-
-        //        LogMigracion migracion = iRepo.Create(new LogMigracion
-        //        {
-        //            Estado = "PENDING",
-        //            ExcelFileName = file.FileName
-        //        });
-
-        //        var result = importer.ImportarExcel(filePath, migracion, idOna);
-
-        //        return Ok(new RespuestasAPI<bool>
-        //        {
-        //            IsSuccess = true
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
-        //    }
-        //}
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ImportarExcel: Importa un archivo Excel y lo almacena en el servidor, luego inicia el proceso de migración de datos.
+         */
         [Authorize]
         [HttpPost("upload")]
         public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
@@ -161,56 +113,6 @@ namespace WebApp.Controllers
                 });
             }
         }
-
-       
-
-        //[Authorize]
-        //[HttpPost("upload")]
-        //public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
-        //{
-        //    try
-        //    {
-        //        if (file == null || file.Length == 0)
-        //        {
-        //            return BadRequestResponse("Archivo no encontrado");
-        //        }
-        //        if (idOna <= 0)
-        //        {
-        //            return BadRequestResponse("idOna no es válido");
-        //        }
-
-        //        string fileExtension = Path.GetExtension(file.FileName);
-        //        if (fileExtension != ".xls" && fileExtension != ".xlsx")
-        //        {
-        //            return BadRequestResponse("Archivo no válido");
-        //        }
-
-        //        var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", file.FileName);
-
-        //        using (var stream = new FileStream(path, FileMode.Create))
-        //        {
-        //            file.CopyTo(stream);
-        //        }
-
-        //        LogMigracion migracion = iRepo.Create(new LogMigracion
-        //        {
-        //            Estado = "PENDING",
-        //            ExcelFileName = file.FileName
-        //        });
-
-        //        var result = importer.ImportarExcel(path, migracion, idOna);
-
-        //        return Ok(new RespuestasAPI<bool>
-        //        {
-        //            IsSuccess = true
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new { statusCode = 500, isSuccess = false, errorMessages = new[] { ex.Message } });
-        //        //return HandleException(e, nameof(ImportarExcel));
-        //    }
-        //}
 
     }
 }

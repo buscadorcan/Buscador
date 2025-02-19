@@ -19,6 +19,11 @@ namespace WebApp.Controllers
     {
         private readonly IONAConexionRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindAll: Obtiene todas las conexiones ONA registradas.
+         */
         [Authorize]
         [HttpGet]
         public IActionResult FindAll()
@@ -35,6 +40,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FindAll));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/GetOnaConexionByOnaListAsync: Obtiene la lista de conexiones ONA asociadas a un ONA específico.
+         */
         [Authorize]
         [HttpGet("ListaOna/{idOna:int}")]
         public IActionResult GetOnaConexionByOnaListAsync(int idOna)
@@ -50,8 +60,12 @@ namespace WebApp.Controllers
             {
                 return HandleException(e, nameof(GetOnaConexionByOnaListAsync));
             }
-        }     
+        }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindById: Obtiene una conexión ONA específica por su ID.
+         */
         [Authorize]
         [HttpGet("{id:int}")]
         public IActionResult FindById(int Id)
@@ -75,6 +89,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FindById));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Update: Actualiza los datos de una conexión ONA existente.
+         */
         [Authorize]
         [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] ONAConexionDto dto)
@@ -94,6 +113,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Update));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Create: Crea una nueva conexión ONA en el sistema.
+         */
         [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] ONAConexionDto dto)
@@ -112,6 +136,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Create));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Deactive: Desactiva una conexión ONA estableciendo su estado en "X".
+         */
         [Authorize]
         [HttpDelete("{id:int}")]
         public IActionResult Deactive(int id)
@@ -138,57 +167,5 @@ namespace WebApp.Controllers
             }
         }
 
-
-        //[Authorize]
-        //[HttpGet("test/{idOna:int}")]
-        //public IActionResult TestConexionByOna(int idOna)
-        //{
-        //    try
-        //    {
-        //        var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
-        //        bool conexion = _iRepo.TestConnection(result);
-        //        if (conexion) 
-        //        { 
-        //            return Ok(conexion); 
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("No se que esta pasando");
-        //        }
-        //        return Ok(conexion);
-
-                         
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return HandleException(e, nameof(GetOnaConexionByOna));
-        //    }
-        //}
-
-        //[Authorize]
-        //[HttpGet("migrar/{idOna:int}")]
-        //public IActionResult MigrarConexionByOna(int idOna)
-        //{
-        //    try
-        //    {
-        //        var result = _iRepo.GetOnaConexionByOnaAsync(idOna);
-        //        bool conexion = _iRepo.TestConnection(result);
-        //        if (conexion)
-        //        {
-        //            return Ok(conexion);
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("No se que esta pasando");
-        //        }
-        //        return Ok(conexion);
-
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return HandleException(e, nameof(GetOnaConexionByOna));
-        //    }
-        //}
     }
 }

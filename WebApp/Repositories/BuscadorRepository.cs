@@ -193,5 +193,28 @@ namespace WebApp.Repositories
             return valor;
             
         }
+
+        public void AddEventTracking(EventTrackingDto eventTracking)
+        {
+            _ = ExecuteDbOperation<int>(context =>
+            {
+                var tipoUsuario = new SqlParameter("@TipoUsuario", SqlDbType.NVarChar, 25) { Value = eventTracking.TipoUsuario };
+                var nombreUsuario = new SqlParameter("@NombreUsuario", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreUsuario };
+                var nombrePagina = new SqlParameter("@NombrePagina", SqlDbType.NVarChar, 100) { Value = eventTracking.NombrePagina };
+                var nombreControl = new SqlParameter("@NombreControl", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreControl };
+                var nombreAccion = new SqlParameter("@NombreAccion", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreAccion };
+                var ubicacionJson = new SqlParameter("@UbicacionJson", SqlDbType.NVarChar, -1) { Value = eventTracking.UbicacionJson };
+                var parametroJson = new SqlParameter("@ParametroJson", SqlDbType.NVarChar, -1)
+                {
+                    Value = string.IsNullOrEmpty(eventTracking.ParametroJson) ? (object)DBNull.Value : eventTracking.ParametroJson
+                };
+
+                return context.Database.ExecuteSqlRaw(
+                    "EXEC paAddEventTracking @TipoUsuario, @NombreUsuario, @NombrePagina, @NombreControl, @NombreAccion, @UbicacionJson, @ParametroJson",
+                    new[] { tipoUsuario, nombreUsuario, nombrePagina, nombreControl, nombreAccion, ubicacionJson, parametroJson }
+                );
+            });
+
+        }
     }
 }
