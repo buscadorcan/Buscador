@@ -9,14 +9,10 @@ namespace WebApp.Controllers
     /// </summary>
     public class BaseController : ControllerBase
     {
-        /// <summary>
-        /// Maneja excepciones no controladas y devuelve una respuesta de error con estado 500 (Internal Server Error).
-        /// </summary>
-        /// <param name="e">La excepción capturada.</param>
-        /// <param name="methodName">El nombre del método donde ocurrió la excepción.</param>
-        /// <returns>
-        /// Un objeto <see cref="IActionResult"/> con el código de estado 500 y un mensaje de error estándar.
-        /// </returns>
+         /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/HandleException: Maneja excepciones no controladas y devuelve una respuesta de error con estado 500 (Internal Server Error).
+         */
         protected IActionResult HandleException(Exception e, string methodName)
         {
           try
@@ -38,13 +34,10 @@ namespace WebApp.Controllers
           });
         }
 
-        /// <summary>
-        /// Devuelve una respuesta de solicitud incorrecta con estado 400 (Bad Request).
-        /// </summary>
-        /// <param name="message">El mensaje de error que se enviará al cliente.</param>
-        /// <returns>
-        /// Un objeto <see cref="IActionResult"/> con el código de estado 400 y un mensaje de error.
-        /// </returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/BadRequestResponse: Devuelve una respuesta de solicitud incorrecta con estado 400 (Bad Request).
+         */
         protected IActionResult BadRequestResponse(string message)
         {
             return BadRequest(new RespuestasAPI<object>
@@ -56,13 +49,10 @@ namespace WebApp.Controllers
             });
         }
 
-        /// <summary>
-        /// Devuelve una respuesta de recurso no encontrado con estado 404 (Not Found).
-        /// </summary>
-        /// <param name="message">El mensaje de error que se enviará al cliente.</param>
-        /// <returns>
-        /// Un objeto <see cref="IActionResult"/> con el código de estado 404 y un mensaje de error.
-        /// </returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/NotFoundResponse: Devuelve una respuesta de recurso no encontrado con estado 404 (Not Found).
+         */
         protected IActionResult NotFoundResponse(string message)
         {
             return NotFound(new RespuestasAPI<object>
