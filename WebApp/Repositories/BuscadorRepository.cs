@@ -198,7 +198,7 @@ namespace WebApp.Repositories
         {
             _ = ExecuteDbOperation<int>(context =>
             {
-                var tipoUsuario = new SqlParameter("@TipoUsuario", SqlDbType.NVarChar, 10) { Value = eventTracking.TipoUsuario };
+                var tipoUsuario = new SqlParameter("@TipoUsuario", SqlDbType.NVarChar, 25) { Value = eventTracking.TipoUsuario };
                 var nombreUsuario = new SqlParameter("@NombreUsuario", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreUsuario };
                 var nombrePagina = new SqlParameter("@NombrePagina", SqlDbType.NVarChar, 100) { Value = eventTracking.NombrePagina };
                 var nombreControl = new SqlParameter("@NombreControl", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreControl };
