@@ -24,61 +24,29 @@ namespace WebApp.WorkerService
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            //while (!stoppingToken.IsCancellationRequested)
-            //{
-            //    var delay = new TimeSpan();
-            //    var currentTime = DateTime.Now;
-            //    var startProcessTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, _startGetDataHora, _startGetDataMin, 0);
+        {}
 
-            //    switch (pais)
-            //    {                           // Calcular el tiempo de inicio proceso
-            //        case Country.Ninguno:
-            //            delay = startProcessTime > currentTime
-            //                                        ? startProcessTime - currentTime
-            //                                        : startProcessTime.AddDays(1) - currentTime;
-            //            pais = Country.Colombia;
-            //            msgNextWorker(delay);
-            //            await Task.Delay(delay, stoppingToken);
-            //            break;
-            //        case Country.Colombia:
-            //            delay += await GetDataProcessCountry();
-            //            pais = Country.Ecuador;
-            //            msgNextWorker(delay);
-            //            await Task.Delay(delay, stoppingToken);
-            //            break;
-            //        case Country.Ecuador:
-            //            delay += await GetDataProcessCountry();
-            //            pais = Country.Peru;
-            //            msgNextWorker(delay);
-            //            await Task.Delay(delay, stoppingToken);
-            //            break;
-            //        case Country.Peru:
-            //            delay += await GetDataProcessCountry();
-            //            pais = Country.Bolivia;
-            //            msgNextWorker(delay);
-            //            await Task.Delay(delay, stoppingToken);
-            //            break;
-            //        case Country.Bolivia:
-            //            delay += await GetDataProcessCountry();
-            //            pais = Country.Ninguno;
-            //            break;
-            //    }
-            //}
-        }
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/msgNextWorker: Registra en el log el tiempo estimado para la próxima ejecución del proceso.
+         */
         private void msgNextWorker(TimeSpan delay)
         {
             string nextTime = DateTime.Now.Add(delay).ToString("dddd, dd-mm-yy hh:mm:ss tt");
             _logger.LogInformation($"\n\n ⚡ {pais.ToString().ToUpper()} : Worker running at {nextTime}");
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/GetDataProcessCountry: Ejecuta el proceso de obtención de datos para un país específico, 
+         * registrando la ejecución en un archivo y aplicando un retraso antes de finalizar.
+         */
         private async Task<TimeSpan> GetDataProcessCountry()
         {
             var contenido = $" 🧬 {pais} >> GetDataProcess[ Start: {DateTime.Now:HH:mm:ss} ]";
             _logger.LogInformation($"\n\n {contenido}");
             countProceso++;
-            await File.WriteAllTextAsync($"{_configLogPath}{countProceso}GetDataProcess{pais}.sqlite", ""); //, contenido
+            await File.WriteAllTextAsync($"{_configLogPath}{countProceso}GetDataProcess{pais}.sqlite", ""); 
             await Task.Delay(1000 * countProceso);
 
             return DateTime.Now.AddMinutes(_delayProcessMin) - DateTime.Now;
