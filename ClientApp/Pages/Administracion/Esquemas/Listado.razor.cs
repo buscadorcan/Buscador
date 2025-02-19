@@ -128,7 +128,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
             objEventTracking.NombreControl = "ConfirmDelete";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
             objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
-
+            objEventTracking.ParametroJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
             if (selectedIdEsquema.HasValue && iEsquemaService != null)
