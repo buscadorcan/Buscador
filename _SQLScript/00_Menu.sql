@@ -1,7 +1,7 @@
 USE CAN;
 
-DROP TABLE IF EXISTS RolMenu;
 DROP TABLE IF EXISTS MenuRol;
+GO
 CREATE TABLE [dbo].[MenuRol](
 	 IdMenuRol      INT IDENTITY(1,1) NOT NULL
     ,IdHRol	        INT DEFAULT(NULL) 
