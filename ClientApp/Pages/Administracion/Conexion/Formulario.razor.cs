@@ -9,6 +9,11 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Conexion
 {
+    /// <summary>
+    /// Page: Formulario Conexion
+    /// Concepto: Formulario que permite registrar o editar las conexiones hacia otros servidores.
+    /// Tipo: EXCEL, MSSQLSERVER, MYSQL, POSTGREST, SQLLITE
+    /// </summary>
     public partial class Formulario
     {
         private Button saveButton = default!;

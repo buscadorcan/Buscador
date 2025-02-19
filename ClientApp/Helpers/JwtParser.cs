@@ -5,6 +5,11 @@ namespace ClientApp.Helpers
 {
     public class JwtParser
     {
+        /// <summary>
+        /// Clase .cs que se usa para formatear margenes y no haya problemas al momento de ejecutar las sentencias del buscador
+        /// </summary>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var claims = new List<Claim>();
@@ -27,4 +32,5 @@ namespace ClientApp.Helpers
             return Convert.FromBase64String(base64);
         }
     }
+    
 }
