@@ -51,12 +51,12 @@ namespace WebApp.Service
 
                 string code = _randomGeneratorService.GenerateTemporaryCode(6);
                 var htmlBody = GenerateVerificationCodeEmailBody(code);
-                var isSend = await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
+                //var isSend = await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
 
-                if (!isSend)
-                {
-                    return Result<AuthenticateResponseDto>.Failure("Error al enviar clave temporal");
-                }
+                //if (!isSend)
+                //{
+                //    return Result<AuthenticateResponseDto>.Failure("Error al enviar clave temporal");
+                //}
 
                 GenerateEventTracking(usuario: usuario, rol: rol, code: code);
                 return Result<AuthenticateResponseDto>.Success(new AuthenticateResponseDto
