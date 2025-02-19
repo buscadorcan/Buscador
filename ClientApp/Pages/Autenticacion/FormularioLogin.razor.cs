@@ -50,7 +50,7 @@ namespace ClientApp.Pages.Autenticacion
         /// <summary>
         /// Tiempo (en minutos) antes de que los intentos fallidos se reinicien.
         /// </summary>
-        private int Minutes = 1;
+        private int Minutes = 20;
 
         /// <summary>
         /// Contador de intentos fallidos de autenticación.
