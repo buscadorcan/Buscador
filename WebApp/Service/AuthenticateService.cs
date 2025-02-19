@@ -81,13 +81,13 @@ namespace WebApp.Service
                 var usuario = _usuarioRepository.FindById(authValidationDto.IdUsuario);
                 var rol = GetRol(usuario.IdHomologacionRol);
 
-                var code = _eventTrackingRepository.GetCodeByUser(usuario.Nombre, rol.CodigoHomologacion, "Access");
-                Console.WriteLine(code);
-                if (string.IsNullOrEmpty(code) || !authValidationDto.Codigo.Equals(code))
-                {
-                    GenerateEventTracking(dto: authValidationDto);
-                    return Result<UsuarioAutenticacionRespuestaDto>.Failure("Código Incorrecto");
-                }
+                //var code = _eventTrackingRepository.GetCodeByUser(usuario.Nombre, rol.CodigoHomologacion, "Access");
+                //Console.WriteLine(code);
+                //if (string.IsNullOrEmpty(code) || !authValidationDto.Codigo.Equals(code))
+                //{
+                //    GenerateEventTracking(dto: authValidationDto);
+                //    return Result<UsuarioAutenticacionRespuestaDto>.Failure("Código Incorrecto");
+                //}
 
                 var ona = _onaConexionRepository.FindById(usuario.IdONA);
                 var homologacionGrupo = GetVwHomologacionGrupo();
