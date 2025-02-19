@@ -72,7 +72,7 @@ CREATE TABLE [dbo].[Homologacion] (
 );
 
 
-DROP TABLE if exists UsuarioEndPointWebPermiso
+DROP TABLE if exists UsuarioEndPointWebPermiso 
 DROP TABLE if exists EndPointWeb
 DROP TABLE if exists Usuario
 

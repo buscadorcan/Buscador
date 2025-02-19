@@ -72,5 +72,7 @@
     <Build Include="12_EventTracking.sql" />
     <Build Include="13_paAddEventTracking.sql" />
     <Build Include="00_Diccionario.sql" />
+    <Build Include="00_SetDiccionario.sql" />
+    <Build Include="00_Menu.sql" />
   </ItemGroup>
 </Project>
