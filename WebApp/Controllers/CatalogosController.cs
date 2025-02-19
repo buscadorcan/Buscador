@@ -24,10 +24,10 @@ namespace WebApp.Controllers
         private readonly ICatalogosRepository _vhRepo = vhRepo;
         private readonly IMapper _mapper = mapper;
 
-        /// <summary>
-        /// Obtiene el esquema de la grilla.
-        /// </summary>
-        /// <returns>Una lista con el esquema de la grilla.</returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerVwGrilla: Obtiene el esquema de la grilla.
+         */
         [HttpGet("grid/schema")]
         public IActionResult ObtenerVwGrilla()
         {
@@ -49,10 +49,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene el esquema de los filtros.
-        /// </summary>
-        /// <returns>Una lista con el esquema de los filtros.</returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerVwFiltro: Obtiene el esquema de los filtros.
+         */
         [HttpGet("filters/schema")]
         public IActionResult ObtenerVwFiltro()
         {
@@ -69,11 +69,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene los detalles de un filtro específico.
-        /// </summary>
-        /// <param name="id">ID del filtro.</param>
-        /// <returns>Una lista con los detalles del filtro.</returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerFiltroDetalles: Obtiene los detalles de un filtro específico.
+         */
         [HttpGet("filters/data/{codigo}")]
         public IActionResult ObtenerFiltroDetalles(string codigo)
         {
@@ -91,10 +90,10 @@ namespace WebApp.Controllers
         }
 
 
-        /// <summary>
-        /// Obtiene el esquema de las dimensiones.
-        /// </summary>
-        /// <returns>Una lista con el esquema de las dimensiones.</returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerVwDimension: Obtiene el esquema de las dimensiones.
+         */
         [HttpGet("dimensions/schema")]
         public IActionResult ObtenerVwDimension()
         {
@@ -111,11 +110,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene el esquema de los grupos. Requiere autorización.
-        /// </summary>
-        /// <returns>Una lista con el esquema de los grupos.</returns>
-        /// 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerGrupos: Obtiene el esquema de los grupos. Requiere autorización.
+         */
         [HttpGet("grupos")]
         public IActionResult ObtenerGrupos()
         {
@@ -132,11 +130,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene el esquema de roles. Requiere autorización.
-        /// </summary>
-        /// <returns>Una lista con el esquema de roles.</returns>
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerVwRol: Obtiene el esquema de roles. Requiere autorización.
+         */
         [HttpGet("roles")]
         public IActionResult ObtenerVwRol()
         {
@@ -154,12 +151,10 @@ namespace WebApp.Controllers
         }
 
 
-        /// <summary>
-        /// Obtiene el esquema de roles. Requiere autorización.
-        /// </summary>
-        /// <returns>Una lista con el esquema de roles.</returns>
-
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerOna: Obtiene el esquema de ONAs. Requiere autorización.
+         */
         [HttpGet("onas")]
         public IActionResult ObtenerOna()
         {
@@ -176,11 +171,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene los datos para el menu. Requiere autorización.
-        /// </summary>
-        /// <returns>Una lista con el esquema de menus.</returns>
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerVwMenu: Obtiene los datos para el menú. Requiere autorización.
+         */
         [HttpGet("menu")]
         public IActionResult ObtenerVwMenu()
         {
@@ -197,10 +191,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene el esquema de roles. Requiere autorización.
-        /// </summary>
-        /// <returns>Una lista con el esquema de roles.</returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerPanelOna: Obtiene el esquema de roles del panel ONA. Requiere autorización.
+         */
         [HttpGet("panel")]
         public IActionResult ObtenerPanelOna()
         {
@@ -217,10 +211,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>System.Exception: 'A null value was encountered in the database operation'
-        /// Obtiene el esquema de roles. Requiere autorización.
-        /// </summary>
-        /// <returns>Una lista con el esquema de roles.</returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerEsquemaOrganiza: Obtiene el esquema organizacional.
+         */
         [HttpGet("EsquemaOrganiza")]
         public IActionResult ObtenerEsquemaOrganiza()
         {
@@ -237,10 +231,10 @@ namespace WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene el esquema de roles. Requiere autorización.
-        /// </summary>
-        /// <returns>Una lista con el esquema de roles.</returns>
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerVwOna: Obtiene los datos de ONAs.
+         */
         [HttpGet("vwona")]
         public IActionResult ObtenerVwOna()
         {

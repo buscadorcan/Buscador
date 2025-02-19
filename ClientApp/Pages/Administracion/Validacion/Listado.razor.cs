@@ -400,7 +400,7 @@ namespace ClientApp.Pages.Administracion.Validacion
                 objEventTracking.NombreControl = "ValidarDatos";
                 objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
                 objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
-
+                objEventTracking.ParametroJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
                 validateButton.ShowLoading("Validando...");

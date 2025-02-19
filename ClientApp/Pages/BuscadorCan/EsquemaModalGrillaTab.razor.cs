@@ -54,6 +54,21 @@ namespace ClientApp.Pages.BuscadorCan
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
         }
 
+        private string ExtraerFormula(string input)
+        {
+            // Busca la parte dentro de $$ ... $$ y extrae solo la fórmula
+            int start = input.IndexOf("$$") + 2;
+            int end = input.LastIndexOf("$$");
+
+            if (start >= 2 && end > start)
+            {
+                return input.Substring(start, end - start).Trim();
+            }
+
+            return input; // Si no encuentra, devuelve el mismo dato
+        }
+
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await JS.InvokeVoidAsync("renderMathJax"); // Llamamos a MathJax después de cada renderizado

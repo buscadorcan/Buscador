@@ -21,6 +21,10 @@ namespace WebApp.Controllers
         private readonly IONARepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindAll: Obtiene todos los registros de ONAs.
+         */
         [HttpGet]
         public IActionResult FindAll()
         {
@@ -37,6 +41,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/GetListByONAsAsync: Obtiene la lista de ONAs asociados a un ONA específico.
+         */
         [Authorize]
         [HttpGet("Lista/{idOna:int}")]
         public IActionResult GetListByONAsAsync(int idOna)
@@ -53,6 +61,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GetListByONAsAsync));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindAllPais: Obtiene la lista de países disponibles en el sistema.
+         */
         [Authorize]
         [HttpGet("paises")]
         public IActionResult FindAllPais()
@@ -70,7 +83,10 @@ namespace WebApp.Controllers
             }
         }
 
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/FindById: Obtiene un ONA específico por su ID.
+         */
         [HttpGet("{id:int}")]
         public IActionResult FindById(int Id)
         {
@@ -93,6 +109,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(FindById));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Update: Actualiza los datos de un ONA existente.
+         */
         [Authorize]
         [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] OnaDto dto)
@@ -112,6 +133,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Update));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Create: Crea un nuevo ONA en el sistema.
+         */
         [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] OnaDto dto)
@@ -131,6 +157,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/Deactive: Desactiva un ONA estableciendo su estado en "X".
+         */
         [Authorize]
         [HttpDelete("{id:int}")]
         public IActionResult Deactive(int id)

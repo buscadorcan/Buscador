@@ -14,7 +14,10 @@ namespace WebApp.Controllers
             _environment = environment;
         }
 
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/UploadIcon: Sube y guarda un icono asociado a un ONA.
+         */
         [HttpPost("UploadIcon")]
         public async Task<IActionResult> UploadIcon([FromForm] IFormFile file, [FromForm] int idONA)
         {

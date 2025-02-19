@@ -20,7 +20,10 @@ namespace WebApp.Controllers
         private readonly IReporteRepository _vhRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
-        //titulo
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/findByVista: Obtiene la homologación por código de homologación.
+         */
         [Authorize]
         [HttpGet("findByVista/{codigoHomologacion}")]
         public IActionResult findByVista(string codigoHomologacion)
@@ -51,8 +54,10 @@ namespace WebApp.Controllers
             }
         }
 
-        //usuario
-
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerAcreditacionOna: Obtiene la acreditación de ONAs.
+         */
         [Authorize]
         [HttpGet("acreditacion-ona")]
         public IActionResult ObtenerAcreditacionOna()
@@ -70,6 +75,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerAcreditacionEsquema: Obtiene la acreditación de esquemas.
+         */
         [Authorize]
         [HttpGet("acreditacion-esquema")]
         public IActionResult ObtenerAcreditacionEsquema()
@@ -87,6 +96,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerEstadoEsquema: Obtiene el estado de los esquemas.
+         */
         [Authorize]
         [HttpGet("estado-esquema")]
         public IActionResult ObtenerEstadoEsquema()
@@ -104,6 +117,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerOecPais: Obtiene información sobre OECs por país.
+         */
         [Authorize]
         [HttpGet("oec-pais")]
         public IActionResult ObtenerOecPais()
@@ -121,6 +138,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerEsquemaPais: Obtiene información de esquemas por país.
+         */
         [Authorize]
         [HttpGet("esquema-pais")]
         public IActionResult ObtenerEsquemaPais()
@@ -138,6 +159,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerOecFecha: Obtiene información de OECs filtrados por fecha.
+         */
         [Authorize]
         [HttpGet("oec-fecha")]
         public IActionResult ObtenerOecFecha()
@@ -155,7 +180,10 @@ namespace WebApp.Controllers
             }
         }
 
-        //read
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerProfesionalCalificado: Obtiene información sobre profesionales calificados en el sistema.
+         */
         [Authorize]
         [HttpGet("profesional-calificado")]
         public IActionResult ObtenerProfesionalCalificado()
@@ -172,6 +200,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerProfesionalCalificado));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerProfesionalOna: Obtiene información sobre profesionales en ONAs.
+         */
         [Authorize]
         [HttpGet("profesional-ona")]
         public IActionResult ObtenerProfesionalOna()
@@ -188,6 +221,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerProfesionalOna));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerProfesionalEsquema: Obtiene información de profesionales por esquema.
+         */
         [Authorize]
         [HttpGet("profesional-esquema")]
         public IActionResult ObtenerProfesionalEsquema()
@@ -204,6 +242,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerProfesionalEsquema));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerProfesionalFecha: Obtiene información de profesionales filtrados por fecha.
+         */
         [Authorize]
         [HttpGet("profesional-fecha")]
         public IActionResult ObtenerProfesionalFecha()
@@ -220,6 +263,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerProfesionalFecha));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerCalificaUbicacion: Obtiene información de calificaciones por ubicación.
+         */
         [Authorize]
         [HttpGet("califica-ubicacion")]
         public IActionResult ObtenerCalificaUbicacion()
@@ -237,7 +285,10 @@ namespace WebApp.Controllers
             }
         }
 
-        //can
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerBusquedaFecha: Obtiene información de búsquedas filtradas por fecha.
+         */
         [Authorize]
         [HttpGet("busqueda-fecha")]
         public IActionResult ObtenerBusquedaFecha()
@@ -254,6 +305,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerBusquedaFecha));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerBusquedaFiltro: Obtiene información de búsquedas aplicando filtros específicos.
+         */
         [Authorize]
         [HttpGet("busqueda-filtro")]
         public IActionResult ObtenerBusquedaFiltro()
@@ -270,6 +326,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerBusquedaFiltro));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerBusquedaUbicacion: Obtiene información sobre búsquedas realizadas por ubicación.
+         */
         [Authorize]
         [HttpGet("busqueda-ubicacion")]
         public IActionResult ObtenerBusquedaUbicacion()
@@ -286,6 +347,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerBusquedaUbicacion));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerActualizacionONA: Obtiene información sobre la actualización de ONAs.
+         */
         [Authorize]
         [HttpGet("actualizacion-ona")]
         public IActionResult ObtenerActualizacionONA()
@@ -303,7 +369,11 @@ namespace WebApp.Controllers
             }
         }
 
-        //ona
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerOrganismoRegistrado: Obtiene información sobre organismos registrados.
+         */
         [Authorize]
         [HttpGet("organismo-registrado")]
         public IActionResult ObtenerOrganismoRegistrado()
@@ -320,6 +390,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerOrganismoRegistrado));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerOrganizacionEsquema: Obtiene información sobre la relación entre organizaciones y esquemas.
+         */
         [Authorize]
         [HttpGet("organizacion-esquema")]
         public IActionResult ObtenerOrganizacionEsquema()
@@ -336,6 +411,11 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerOrganizacionEsquema));
             }
         }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerOrganismoActividad: Obtiene información sobre organismos y sus actividades.
+         */
         [Authorize]
         [HttpGet("organismo-actividad")]
         public IActionResult ObtenerOrganismoActividad()
@@ -352,5 +432,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerOrganismoActividad));
             }
         }
+
+
     }
 }

@@ -19,28 +19,23 @@ namespace WebApp.Controllers
         /// </returns>
         protected IActionResult HandleException(Exception e, string methodName)
         {
-            try
-            {
-                var logger = (ILogger<BaseController>?)HttpContext.RequestServices.GetService(typeof(ILogger<BaseController>));
-                if (logger != null)
-                {
-                    logger.LogError(e, $"Error en {methodName}");
-                }
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new RespuestasAPI<object>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    IsSuccess = false,
-                    ErrorMessages = new List<string> { "Error en el servidor" },
-                    Result = new { }
-                });
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+          try
+          {
+              var logger = (ILogger<BaseController>?)HttpContext.RequestServices.GetService(typeof(ILogger<BaseController>));
+              if (logger != null)
+              {
+                  logger.LogError(e, $"Error en {methodName}");
+              }
+          }
+          catch (Exception) {}
            
+          return StatusCode(StatusCodes.Status500InternalServerError, new RespuestasAPI<object>
+          {
+            StatusCode = HttpStatusCode.InternalServerError,
+            IsSuccess = false,
+            ErrorMessages = new List<string> { "Error en el servidor" },
+            Result = new { }
+          });
         }
 
         /// <summary>

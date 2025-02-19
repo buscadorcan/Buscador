@@ -21,7 +21,10 @@ namespace WebApp.Controllers
         private readonly IMapper _mapper = mapper;
 
 
-        //[Authorize]
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ObtenerThesaurus: Obtiene el thesaurus actual con sus expansiones y sinónimos.
+         */
         [HttpGet("obtener/thesaurus")]
         public IActionResult ObtenerThesaurus()
         {
@@ -38,7 +41,10 @@ namespace WebApp.Controllers
             }
         }
 
-        //[Authorize]
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/AgregarExpansion: Agrega una nueva expansión de sinónimos al thesaurus.
+         */
         [HttpPost("agregar/expansion")]
         public IActionResult AgregarExpansion([FromBody] List<string> sinonimos)
         {
@@ -55,7 +61,10 @@ namespace WebApp.Controllers
             }
         }
 
-        //[Authorize]
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ActualizarExpansion: Actualiza una expansión existente en el thesaurus.
+         */
         [HttpPost("actualizar/expansion")]
         public IActionResult ActualizarExpansion([FromBody] List<ExpansionDto> expansions)
         {
@@ -73,7 +82,10 @@ namespace WebApp.Controllers
             }
         }
 
-        //[Authorize]
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/AgregarSubExpansion: Agrega un nuevo sub-sinónimo a una expansión existente en el thesaurus.
+         */
         [HttpGet("agregar/expansion/{expansionExistente}/sub/{nuevoSub}")]
         public IActionResult AgregarSubExpansion([FromRoute] string expansionExistente, string nuevoSub)
         {
@@ -90,6 +102,10 @@ namespace WebApp.Controllers
             }
         }
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/EjecutarBat: Ejecuta un archivo BAT en el servidor para procesar el thesaurus.
+         */
         [HttpGet("ejecutar/bat")]
         public IActionResult EjecutarBat()
         {
