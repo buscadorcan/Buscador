@@ -67,7 +67,7 @@ FROM        Menu_ m
 CROSS JOIN  Rol_  r
 order by    r.IdHomologacionRol;
 
-
+GO
 CREATE or ALTER  VIEW [dbo].[vwMenu] AS 
 	SELECT	 --hm.IdHomologacion		IdHomologacionMenu
 		 	 hm.MostrarWebOrden		MostrarWebOrden
