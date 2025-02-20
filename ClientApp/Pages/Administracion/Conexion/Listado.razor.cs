@@ -7,11 +7,7 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Conexion
 {
-    /// <summary>
-    /// Page: Listado Formulario Conexion
-    /// Concepto: Listado de conexiones externas del programa para editar o registar.
-    /// Tipo: EXCEL, MSSQLSERVER, MYSQL, POSTGREST, SQLLITE
-    /// </summary>
+
     public partial class Listado
     {
         ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
@@ -30,7 +26,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IBusquedaService iBusquedaService { get; set; }
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
-        //private List<ONAConexionDto>? listasHevd = null;
+
         private List<ONAConexionDto> listasHevd = new();
         private bool isRolAdmin;
 
@@ -49,6 +45,9 @@ namespace ClientApp.Pages.Administracion.Conexion
         private bool CanGoPrevious => CurrentPage > 1;
         private bool CanGoNext => CurrentPage < TotalPages;
 
+        /// <summary>
+        /// PreviousPage: Previo de las paginas del listado.
+        /// </summary>
         private void PreviousPage()
         {
             if (CanGoPrevious)
@@ -63,6 +62,9 @@ namespace ClientApp.Pages.Administracion.Conexion
             }
         }
 
+        /// <summary>
+        /// NextPage: Proximas paginas del listado.
+        /// </summary>
         private void NextPage()
         {
             if (CanGoNext)
@@ -70,6 +72,10 @@ namespace ClientApp.Pages.Administracion.Conexion
                 CurrentPage++;
             }
         }
+
+        /// <summary>
+        /// OnInitializedAsync: Iniciado del listado, carga del rol relacionado y de conexiones.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             if (listasHevd != null && iConexionService != null)
@@ -92,26 +98,12 @@ namespace ClientApp.Pages.Administracion.Conexion
                 CurrentPage = TotalPages;
             }
         }
-        private async Task<GridDataProviderResult<ONAConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ONAConexionDto> request)
-        {
-            if (listasHevd == null && iConexionService != null)
-            {
-                listasHevd = await iConexionService.GetConexionsAsync();
-            }
-            return await Task.FromResult(request.ApplyTo(listasHevd ?? []));
-        }
-        private async Task OnDeleteClick(int IdONA)
-        {
-            if (iConexionService != null && listasHevd != null)
-            {
-                var respuesta = await iConexionService.EliminarConexion(IdONA);
-                if (respuesta.registroCorrecto)
-                {
-                    listasHevd = listasHevd.Where(c => c.IdONA != IdONA).ToList();
-                    await OnInitializedAsync();
-                }
-            }
-        }
+
+        /// <summary>
+        /// OnTestconexionClick: Test de la conexión externa, comprobando si la conexion esta en linea.
+        /// </summary>
+        /// <param name="conexion">
+        /// <returns cref="Task"> devuelve un valor true o false dependiendo de la conexion</returns>
         private async Task<bool> OnTestconexionClick(int conexion)
         {
             objEventTracking.NombrePagina = "Conexiones Existentes";
@@ -151,6 +143,12 @@ namespace ClientApp.Pages.Administracion.Conexion
             }
             return false; // Devuelve false si algo falla
         }
+
+        /// <summary>
+        /// OnMigrarClick: Migrar los datos de la ONA desde el servidor externo.
+        /// </summary>
+        /// <param name="conexion">
+        /// <returns cref="Task"> devuelve un valor true o false dependiendo de la migracion</returns>
         private async Task<bool> OnMigrarClick(int conexion)
         {
             objEventTracking.NombrePagina = "Conexiones Existentes";
@@ -222,20 +220,27 @@ namespace ClientApp.Pages.Administracion.Conexion
             return false;
         }
 
+        /// <summary>
+        /// OpenDeleteModal: Abre el modal.
+        /// </summary>
         private void OpenDeleteModal(int idOna)
         {
             selectedIdOna = idOna;
             showModal = true;
         }
 
-        // Cierra el modal
+        /// <summary>
+        /// CloseModal: Cerrar el modal.
+        /// </summary>
         private void CloseModal()
         {
             selectedIdOna = null;
             showModal = false;
         }
 
-        // Confirmar eliminación del registro
+        /// <summary>
+        /// ConfirmDelete: Elimina la conexion externa de la organizacion.
+        /// </summary>
         private async Task ConfirmDelete()
         {
             objEventTracking.NombrePagina = "Conexiones Existentes";

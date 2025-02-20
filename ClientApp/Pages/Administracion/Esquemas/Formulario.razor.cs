@@ -49,33 +49,10 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private List<HomologacionDto>? listaVwHomologacion;
         private IEnumerable<HomologacionDto>? lista = new List<HomologacionDto>();
 
-        //private int PageSize = 10; // Cantidad de registros por página
-        //private int CurrentPage = 1;
 
-        //private IEnumerable<HomologacionDto> PaginatedItems => lista
-        //    .Skip((CurrentPage - 1) * PageSize)
-        //    .Take(PageSize);
-
-        //private int TotalPages => listaVwHomologacion.Count > 0 ? (int)Math.Ceiling((double)listaVwHomologacion.Count / PageSize) : 1;
-
-        //private bool CanGoPrevious => CurrentPage > 1;
-        //private bool CanGoNext => CurrentPage < TotalPages;
-
-        //private void PreviousPage()
-        //{
-        //    if (CanGoPrevious)
-        //    {
-        //        CurrentPage--;
-        //    }
-        //}
-
-        //private void NextPage()
-        //{
-        //    if (CanGoNext)
-        //    {
-        //        CurrentPage++;
-        //    }
-        //}
+        /// <summary>
+        /// OnInitializedAsync: Inicializa la pagina cargando la lista de homologaciones.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             if (Esquema != null)
@@ -110,11 +87,18 @@ namespace ClientApp.Pages.Administracion.Esquemas
             DataLoaded?.Invoke();
         }
 
+        /// <summary>
+        /// UpdateEditContext: Actualiza el esquema.
+        /// </summary>
+        /// <param name="newModel">
         private void UpdateEditContext(EsquemaDto newModel)
         {
             editContext = new EditContext(newModel);
         }
 
+        /// <summary>
+        /// GuardarEsquema: Guarda el esquema.
+        /// </summary>
         private async Task GuardarEsquema()
         {
             objEventTracking.NombrePagina = "Esquema Homologado";
@@ -157,12 +141,21 @@ namespace ClientApp.Pages.Administracion.Esquemas
             }
             saveButton.HideLoading();
         }
+
+        /// <summary>
+        /// EliminarElemento: Guarda el esquema.
+        /// </summary>
+        /// <param name="elemento"></param>
         private void EliminarElemento(int elemento)
         {
             lista = lista?.Where(c => c.IdHomologacion != elemento).ToList();
         }
 
         [JSInvokable]
+
+        /// <summary>
+        /// OnDragEnd: Llma al javascript para poder grabar al mover la fila del esquema.
+        /// </summary>
         public async Task OnDragEnd(string[] sortedIds)
         {
             var tempList = new List<HomologacionDto>();
@@ -178,6 +171,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
             lista = tempList;
             await Task.CompletedTask;
         }
+
+        /// <summary>
+        /// VwHomologacionDataProvider: Llama al javascript para poder grabar al mover la fila del esquema.
+        /// </summary>
+        /// <param name="request"> Devuelve la lista de devoluciones</param>
         private async Task<AutoCompleteDataProviderResult<HomologacionDto>> VwHomologacionDataProvider(AutoCompleteDataProviderRequest<HomologacionDto> request)
         {
             // Si la lista aún no está cargada, obtén los datos.
@@ -211,6 +209,10 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 TotalCount = resultados.Count
             };
         }
+
+        /// <summary>
+        /// OnAutoCompleteChanged: Propiedad que autocompleta la busqueda por palabra.
+        /// </summary>
         private void OnAutoCompleteChanged(HomologacionDto vwHomologacionSelected)
         {
             if (vwHomologacionSelected != null)

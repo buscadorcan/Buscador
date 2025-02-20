@@ -22,6 +22,9 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private bool CanGoPrevious => CurrentPage > 1;
         private bool CanGoNext => CurrentPage < TotalPages;
 
+        /// <summary>
+        /// PreviousPage: Navegar los registros anteriores
+        /// </summary>
         private void PreviousPage()
         {
             if (CanGoPrevious)
@@ -30,6 +33,9 @@ namespace ClientApp.Pages.Administracion.Esquemas
             }
         }
 
+        /// <summary>
+        /// NextPage: Navegar los registros posteriores
+        /// </summary>
         private void NextPage()
         {
             if (CanGoNext)
@@ -37,9 +43,13 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 CurrentPage++;
             }
         }
+
+        /// <summary>
+        /// OnInitializedAsync: Ajusta la paginación si la lista está vacía o cambia
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
-            // Ajusta la paginación si la lista está vacía o cambia
+            
             if (columnas.Count > 0 && CurrentPage > TotalPages)
             {
                 CurrentPage = TotalPages;

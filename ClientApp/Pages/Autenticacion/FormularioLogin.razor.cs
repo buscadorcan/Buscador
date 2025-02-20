@@ -157,7 +157,7 @@ namespace ClientApp.Pages.Autenticacion
         {
             Counter = 0;
             LastUpdated = DateTime.UtcNow;
-
+            
             await JSRuntime.InvokeVoidAsync("localStorage.setItem", "counter", Counter.ToString());
             await JSRuntime.InvokeVoidAsync("localStorage.setItem", "lastUpdated", LastUpdated.ToString());
         }

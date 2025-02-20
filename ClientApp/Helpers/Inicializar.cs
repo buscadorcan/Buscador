@@ -3,11 +3,24 @@
     public static class Inicializar
     {
         /// <summary>
-        /// Clase que contiene las constantes del sistema:
-        /// UrlBaseApi: Url base de las apis del backend
-        /// Token_Local: Token de seguridad de JWT
-        /// Las demas constantes son de usuario y titulos del menu.
+        /// Clase que contiene las constantes del sistema
         /// </summary>
+        /// <param name="UrlBaseApi">
+        /// <param name="Token_Local">
+        /// <param name="Datos_Usuario_Nombre_Local">
+        /// <param name="Datos_Usuario_Apellido_Local">
+        /// <param name="Datos_Usuario_Local">
+        /// <param name="Datos_Usuario_Rol_Local">
+        /// <param name="Datos_Usuario_IdOna_Local">
+        /// <param name="Datos_Usuario_Codigo_Rol_Local">
+        /// <param name="Datos_Usuario_Nombre_Rol_Local">
+        /// <param name="Datos_Usuario_OrigenDatos_Local">
+        /// <param name="Datos_Usuario_BaseDatos_Local">
+        /// <param name="Datos_Usuario_EstadoMigracion_Local">
+        /// <param name="Datos_Usuario_Migrar_Local">
+        /// <param name="Datos_Menu_Titulo_Local">
+
+
         //public const string UrlBaseApi = "https://localhost:7116/"; 
         //public const string UrlBaseApi = "https://localhost:7154/";
         public const string UrlBaseApi = "http://216.172.100.184/Webapp/";

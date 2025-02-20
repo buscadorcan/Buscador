@@ -10,10 +10,6 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
-    /// <summary>
-    /// Page: Listado de campos de homologacion
-    /// Concepto: Formulario que lista los registros de las homologaciones y que permite editar o agregar un nuevo registro.
-    /// </summary>
     public partial class Listado
     {
         private HomologacionDto? homologacionSelected;
@@ -41,9 +37,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// OnInitializedAsync: Propiedad que inicializa la clase de listado de campos de homologacion.
         /// </summary>
+        /// <returns>Devuelve la lista de homologacion al iniciar la aplicacion</returns>
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
@@ -60,9 +56,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// HomologacionDataProvider: Propiedad que obtiene los registros de campos de homologacion.
         /// </summary>
+        /// <returns>Devuelve la lista de Homologaciones </returns>
         private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {
             if (homologacionSelected != null)
@@ -78,7 +74,6 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// OnAutoCompleteChangedHandler: manejador de eventos en Blazor que responde a un cambio en un elemento del formulario.
         /// </summary>
         private async Task OnAutoCompleteChangedHandler(ChangeEventArgs e)
@@ -103,7 +98,6 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// OnDragEnd: Propiedad que usa el javascript para poder grabar automaticamente al mover un elemento de la lista.
         /// </summary>
 
@@ -121,12 +115,8 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             }
             await Task.CompletedTask;
         }
-        private string getNameDefault() {
-            return homologacionSelected?.MostrarWeb ?? "Seleccione Grupo de Homologación";
-        }
 
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// OpenDeleteModal: Propiedad que abre el modal.
         /// </summary>
 
@@ -137,7 +127,6 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// CloseModal: Propiedad que cierra el modal.
         /// </summary>
         private void CloseModal()
@@ -147,7 +136,6 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// ConfirmDelete: Propiedad que elimina el registro de campos de homologacion.
         /// </summary>
         private async Task ConfirmDelete()
@@ -180,7 +168,6 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Listado de campos de homologacion
         /// LoadHomologacion: Propiedad que obtiene la lista de campos de homologacion.
         /// </summary>
         private async Task LoadHomologacion() 

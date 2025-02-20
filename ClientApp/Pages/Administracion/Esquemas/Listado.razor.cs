@@ -33,6 +33,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
         private EventTrackingDto objEventTracking { get; set; } = new();
+
+
+        /// <summary>
+        /// OnInitializedAsync: Propiedad que inicializa el listado de esquemas.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             if (HomologacionService != null)
@@ -47,6 +52,12 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 }
             };
         }
+
+        /// <summary>
+        /// EsquemasDataProvider: Propiedad que inicializa el listado de esquemas.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Lista de esquemas</returns>
         private async Task<GridDataProviderResult<EsquemaDto>> EsquemasDataProvider(GridDataProviderRequest<EsquemaDto> request)
         {
             if (iEsquemaService != null)
@@ -58,6 +69,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
 
             return await Task.FromResult(request.ApplyTo(listaEsquemas ?? []));
         }
+
+        /// <summary>
+        /// OnDragEnd: Propiedad graba la posicion de la fila que se mueva.
+        /// </summary>
+        /// <param name="sortedIds"> lista de ids </param>
         [JSInvokable]
         public async Task OnDragEnd(string[] sortedIds)
         {
@@ -82,17 +98,12 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 await Task.CompletedTask;
             }
         }
-        private async Task OnDeleteClick(int IdEsquema)
-        {
-            if (iEsquemaService != null && listaEsquemas != null && grid != null)
-            {
-                var respuesta = await iEsquemaService.DeleteEsquemaAsync(IdEsquema);
-                if (respuesta) {
-                    listaEsquemas = listaEsquemas.Where(c => c.IdEsquema != IdEsquema);
-                    await grid.RefreshDataAsync();
-                }
-            }
-        }
+
+        /// <summary>
+        /// showModal: Propiedad que muestra el modal del esquema.
+        /// </summary>
+        /// <param name="IdEsquema"></param>
+
         private async void showModal(int IdEsquema)
         {
             if (listaEsquemas != null)
@@ -107,20 +118,28 @@ namespace ClientApp.Pages.Administracion.Esquemas
             }
         }
 
+        /// <summary>
+        /// OpenDeleteModal: Propiedad que oculta o elimina el modal del esquema.
+        /// </summary>
+        /// <param name="IdEsquema"></param>
         private void OpenDeleteModal(int idOna)
         {
             selectedIdEsquema = idOna;
             deleteshowModal = true;
         }
 
-        // Cierra el modal
+        /// <summary>
+        /// CloseModal: Propiedad que cierra el modal del esquema.
+        /// </summary>
         private void CloseModal()
         {
             selectedIdEsquema = null;
             deleteshowModal = false;
         }
 
-        // Confirmar eliminación del registro
+        /// <summary>
+        /// ConfirmDelete: Propiedad que cierra el modal del esquema.
+        /// </summary>
         private async Task ConfirmDelete()
         {
             objEventTracking.NombrePagina = "Administación de Homologación Esquemas";
@@ -148,6 +167,10 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 }
             }
         }
+
+        /// <summary>
+        /// LoadEsquemas: Propiedad que carga las lista de esquemas.
+        /// </summary>
         private async Task LoadEsquemas()
         {
             if (iEsquemaService != null)
