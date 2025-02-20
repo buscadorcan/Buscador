@@ -1,5 +1,8 @@
 namespace ClientApp.Models
 {
+    /// <summary>
+    /// Modelo de datos para el resultado de la busqueda general.
+    /// </summary>
     public class ResultDataHomologacionEsquema
     {
         public List<DataHomologacionEsquema>? Data { get; set; }

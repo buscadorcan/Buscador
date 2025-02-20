@@ -7,6 +7,11 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Conexion
 {
+    /// <summary>
+    /// Page: Listado Formulario Conexion
+    /// Concepto: Listado de conexiones externas del programa para editar o registar.
+    /// Tipo: EXCEL, MSSQLSERVER, MYSQL, POSTGREST, SQLLITE
+    /// </summary>
     public partial class Listado
     {
         ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;

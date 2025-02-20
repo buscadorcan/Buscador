@@ -7,6 +7,10 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
+    /// <summary>
+    /// Page: Formulario de Esquema
+    /// Concepto: Formulario que registra un nuevo campo de homologacion o lo edita.
+    /// </summary>
     public partial class Formulario
     {
         private Button saveButton = default!;
@@ -30,6 +34,10 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         private EventTrackingDto objEventTracking { get; set; } = new();
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+        /// <summary>
+        /// Page: Formulario campos de homologacion
+        /// Concepto: Metodo que inicializa la clase campos de homologacion.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             filtros = await iCatalogoService.GetFiltrosAsync();
@@ -44,6 +52,10 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
                 homologacion.SiNoHayDato = "";
             }
         }
+        /// <summary>
+        /// Page: Formulario campos de homologacion
+        /// GuardarHomologacion: Metodo que registra / actualiza los campos de homologacion.
+        /// </summary>
         private async Task GuardarHomologacion()
         {
             objEventTracking.NombrePagina = "Actualizar / Registrar";
@@ -71,10 +83,18 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             saveButton.HideLoading();
         }
 
+        /// <summary>
+        /// Page: Formulario campos de homologacion
+        /// OnAutoCompleteChanged: Metodo que hace el autocomplete en el cambio del campo.
+        /// </summary>
         private void OnAutoCompleteChanged(string mascaraDato) {
             homologacion.MascaraDato = mascaraDato;
         }
 
+        /// <summary>
+        /// Page: Formulario campos de homologacion
+        /// ActualizarFiltro: Actualiza el filtro de los campos de homologacion.
+        /// </summary>
         private void ActualizarFiltro(ChangeEventArgs e)
         {
             // Obtener el valor seleccionado
@@ -92,12 +112,20 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             }
         }
 
+        /// <summary>
+        /// Page: Formulario campos de homologacion
+        /// isIndexar: Propiedad booleana que hace la indexacion del campo vinculada al Switch
+        /// </summary>
         private bool isIndexar // Propiedad booleana vinculada al Switch
         {
             get => homologacion.Indexar == "S"; // Convertir "S" a true
             set => homologacion.Indexar = value ? "S" : "N"; // Convertir true a "S"
         }
 
+        /// <summary>
+        /// Page: Formulario campos de homologacion
+        /// isMostrar: Propiedad booleana que registra el campo mostrar vinculada al Switch
+        /// </summary>
         private bool isMostrar // Propiedad booleana vinculada al Switch
         {
             get => homologacion.Mostrar == "S"; // Convertir "S" a true

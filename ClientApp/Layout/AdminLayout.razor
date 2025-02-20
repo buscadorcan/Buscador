@@ -7,6 +7,12 @@
 @inject NavigationManager NavigationManager
 @using ClientApp.Services.IService
 
+@*
+/// <summary>
+/// Pagina que se utiliza para poder formar el layout del sistema, es la plantilla general donde se cargaran todas las paginas
+/// </summary>
+
+*@
 
 <Toasts class="p-3"
         Messages="ToastService.Messages"
@@ -476,5 +482,6 @@
             throw;
         }
     }
+
 }
 

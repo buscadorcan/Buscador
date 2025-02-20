@@ -10,6 +10,10 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
+    /// <summary>
+    /// Page: Listado de campos de homologacion
+    /// Concepto: Formulario que lista los registros de las homologaciones y que permite editar o agregar un nuevo registro.
+    /// </summary>
     public partial class Listado
     {
         private HomologacionDto? homologacionSelected;
@@ -36,6 +40,10 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         private EventTrackingDto objEventTracking { get; set; } = new();
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// OnInitializedAsync: Propiedad que inicializa la clase de listado de campos de homologacion.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
@@ -50,6 +58,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
                 };
             }
         }
+
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// HomologacionDataProvider: Propiedad que obtiene los registros de campos de homologacion.
+        /// </summary>
         private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {
             if (homologacionSelected != null)
@@ -63,13 +76,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
 
             return await Task.FromResult(request.ApplyTo(listaHomologacions ?? []));
         }
-        //private async Task OnDeleteClick(int IdHomologacion)
-        //{
-        //    var respuesta = await iHomologacionService.EliminarHomologacion(IdHomologacion);
-        //    if (respuesta.registroCorrecto) {
-        //        await grid.RefreshDataAsync();
-        //    }
-        //}
+
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// OnAutoCompleteChangedHandler: manejador de eventos en Blazor que responde a un cambio en un elemento del formulario.
+        /// </summary>
         private async Task OnAutoCompleteChangedHandler(ChangeEventArgs e)
         {
             // Obtén el ID seleccionado desde el <select>
@@ -91,6 +102,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             }
         }
 
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// OnDragEnd: Propiedad que usa el javascript para poder grabar automaticamente al mover un elemento de la lista.
+        /// </summary>
+
         [JSInvokable]
         public async Task OnDragEnd(string[] sortedIds)
         {
@@ -108,21 +124,32 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         private string getNameDefault() {
             return homologacionSelected?.MostrarWeb ?? "Seleccione Grupo de Homologación";
         }
-        // Abre el modal
+
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// OpenDeleteModal: Propiedad que abre el modal.
+        /// </summary>
+
         private void OpenDeleteModal(int idHomologacion)
         {
             selectedIdHomologacion = idHomologacion;
             showModal = true;
         }
 
-        // Cierra el modal
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// CloseModal: Propiedad que cierra el modal.
+        /// </summary>
         private void CloseModal()
         {
             selectedIdHomologacion = null;
             showModal = false;
         }
 
-        // Confirmar eliminación del registro
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// ConfirmDelete: Propiedad que elimina el registro de campos de homologacion.
+        /// </summary>
         private async Task ConfirmDelete()
         {
             objEventTracking.NombrePagina = "Administración de campos de Homologación";
@@ -151,6 +178,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             }
 
         }
+
+        /// <summary>
+        /// Page: Listado de campos de homologacion
+        /// LoadHomologacion: Propiedad que obtiene la lista de campos de homologacion.
+        /// </summary>
         private async Task LoadHomologacion() 
         {
             if (iHomologacionService != null)
