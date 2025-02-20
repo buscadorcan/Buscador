@@ -479,14 +479,12 @@ namespace ClientApp.Pages.Administracion.Validacion
                                 await CambiarSeleccionEsquema(esquemaSelected);
                             }
                             validateButton.HideLoading();
-                            saveButton.HideLoading();
                             validateButton.HideLoading();
                         }
                         else
                         {
                             toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
                             navigationManager?.NavigateTo("/validacion");
-                            saveButton.HideLoading();
                             validateButton.HideLoading();
                         }
                     }
@@ -551,21 +549,18 @@ namespace ClientApp.Pages.Administracion.Validacion
                                 {
                                     await CambiarSeleccionEsquema(esquemaSelected);
                                 }
-                                saveButton.HideLoading();
                                 validateButton.HideLoading();
                             }
                             else
                             {
                                 toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
                                 navigationManager?.NavigateTo("/validacion");
-                                saveButton.HideLoading();
                                 validateButton.HideLoading();
                             }
                         }
                         else
                         {
                             navigationManager?.NavigateTo("/validacion");
-                            saveButton.HideLoading();
                             validateButton.HideLoading();
                         }
 
@@ -632,17 +627,15 @@ namespace ClientApp.Pages.Administracion.Validacion
                     //            navigationManager?.NavigateTo("/validacion");
                     //        }
                     //        if (esquemaSelected != null)
-                    //{
-                    //    await CambiarSeleccionEsquema(esquemaSelected);
-                    //}
-                    //        saveButton.HideLoading();
+                    //        {
+                    //            await CambiarSeleccionEsquema(esquemaSelected);
+                    //        }
                     //        validateButton.HideLoading();
                     //    }
                     //    else
                     //    {
                     //        toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
                     //        navigationManager?.NavigateTo("/validacion");
-                    //        saveButton.HideLoading();
                     //        validateButton.HideLoading();
                     //    }
                     //}
@@ -697,36 +690,31 @@ namespace ClientApp.Pages.Administracion.Validacion
                     //                toastService?.CreateToastMessage(ToastType.Warning, $"No se pudo guardar las siguientes filas, no existen en la base de datos, no coinciden o tienen espacios en blanco: {string.Join(", ", filasNoCoinciden)}");
                     //                navigationManager?.NavigateTo("/validacion");
                     //            }
-                    //if (esquemaSelected != null)
-                    //{
-                    //    await CambiarSeleccionEsquema(esquemaSelected);
-                    //}
-                    //            saveButton.HideLoading();
+                    //            if (esquemaSelected != null)
+                    //            {
+                    //                await CambiarSeleccionEsquema(esquemaSelected);
+                    //            }
                     //            validateButton.HideLoading();
                     //        }
                     //        else
                     //        {
                     //            toastService?.CreateToastMessage(ToastType.Danger, "No se pudo guardar");
                     //            navigationManager?.NavigateTo("/validacion");
-                    //            saveButton.HideLoading();
                     //            validateButton.HideLoading();
                     //        }
                     //    }
                     //    else
                     //    {
                     //        navigationManager?.NavigateTo("/validacion");
-                    //        saveButton.HideLoading();
                     //        validateButton.HideLoading();
                     //    }
                     //}
                     navigationManager?.NavigateTo("/validacion");
-                    saveButton.HideLoading();
                     validateButton.HideLoading();
                 }
             }
             catch (Exception ex)
             {
-                saveButton.HideLoading();
                 validateButton.HideLoading();
             }
             

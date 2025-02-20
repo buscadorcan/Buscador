@@ -116,7 +116,7 @@ namespace WebApp.Repositories
             return ExecuteDbOperation(context =>
                 context.VwMenu
                 .AsNoTracking()
-                .OrderBy(c => c.IdHomologacionMenu)
+                //.OrderBy(c => c.IdHomologacionMenu)
                 .ToList());
         }
 

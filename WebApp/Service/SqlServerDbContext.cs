@@ -118,6 +118,8 @@ namespace WebApp.Service
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<VwMenu>().HasNoKey().ToView("vwMenu");
+
             //usuario
             modelBuilder.Entity<VwAcreditacionOna>().HasNoKey().ToView("vw_AcreditacionOna");
             modelBuilder.Entity<VwAcreditacionEsquema>().HasNoKey().ToView("vw_AcreditacionEsquema");

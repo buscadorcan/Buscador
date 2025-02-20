@@ -369,23 +369,24 @@
 
     private async Task<IEnumerable<NavItem>> GetNavItemsAsync()
     {
+        // Obtener los elementos del menú desde la API o servicio.
         var menuItems = await _Icatalogo.GetMenusAsync();
+
+        // Obtener el título del menú y el rol del usuario desde localStorage.
         TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
         var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
-        // Excluir ciertos menús según el rol
-        var excludedHrefs = rol switch
-        {
-            "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_EST", "KEY_MENU_REP_ONA","KEY_MENU_FREE", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG" },
-            "KEY_USER_CAN" => new[] { "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ" },
-            "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_REP_EST", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ" },
-            "KEY_USER_READ" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_FREE" },
-            _ => Array.Empty<string>()
-        };
+        // Filtrar elementos del menú donde el rol del usuario esté en CodigoHomologacionRol.
+        var filteredMenuItems = menuItems
+            .Where(menu =>
+                !string.IsNullOrEmpty(menu.CodigoHomologacionRol) && // Evitar valores nulos o vacíos
+                menu.CodigoHomologacionRol.Split(',')
+                    .Select(r => r.Trim()) // Eliminar espacios en blanco
+                    .Contains(rol)) // Comparar con el rol actual
+            .OrderBy(menu => menu.MostrarWebOrden) // Ordenar por MostrarWebOrden
+            .ToList();
 
-        var filteredMenuItems = menuItems.Where(menu => !excludedHrefs.Contains(menu.CodigoHomologacion));
-
-        // Convertir en NavItem
+        // Convertir los elementos filtrados en objetos NavItem
         var navItemsList = filteredMenuItems.Select(menu =>
         {
             BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
@@ -403,17 +404,66 @@
 
             return new NavItem
                 {
-                    Id = menu.IdHomologacionMenu.ToString(),
+                    Id = "", //menu.IdHomologacionMenu.ToString(),
                     Text = menu.MostrarWeb,
                     Href = menu.href,
                     IconName = iconName
                 };
-        }).ToList(); 
+        }).ToList();
 
-        await OnNavItemsChanged.InvokeAsync(navItemsList); // 🔹 Enviar valores a AdminLayout.razor
+        // 🔹 Enviar la lista de navegación actualizada a AdminLayout.razor
+        await OnNavItemsChanged.InvokeAsync(navItemsList);
 
         return navItemsList;
     }
+
+    // private async Task<IEnumerable<NavItem>> GetNavItemsAsync()
+    // {
+    //     var menuItems = await _Icatalogo.GetMenusAsync();
+    //     TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
+    //     var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+
+    //     // Excluir ciertos menús según el rol
+    //     var excludedHrefs = rol switch
+    //     {
+    //         "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_EST", "KEY_MENU_REP_ONA","KEY_MENU_FREE", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG" },
+    //         "KEY_USER_CAN" => new[] { "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ" },
+    //         "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_REP_EST", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ" },
+    //         "KEY_USER_READ" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_FREE" },
+    //         _ => Array.Empty<string>()
+    //     };
+
+    //     var filteredMenuItems = menuItems.Where(menu => !excludedHrefs.Contains(menu.CodigoHomologacion));
+
+    //     // Convertir en NavItem
+    //     var navItemsList = filteredMenuItems.Select(menu =>
+    //     {
+    //         BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
+    //         {
+    //             "KEY_MENU_ONA" => BlazorBootstrap.IconName.PersonFill,
+    //             "KEY_MENU_CON" => BlazorBootstrap.IconName.Link,
+    //             "KEY_MENU_USU" => BlazorBootstrap.IconName.PeopleFill,
+    //             "KEY_MENU_GRU" => BlazorBootstrap.IconName.Diagram2Fill,
+    //             "KEY_MENU_CAM" => BlazorBootstrap.IconName.Columns,
+    //             "KEY_MENU_ESQ" => BlazorBootstrap.IconName.Diagram3Fill,
+    //             "KEY_MENU_VAL" => BlazorBootstrap.IconName.CheckCircleFill,
+    //             "KEY_MENU_SEP" => BlazorBootstrap.IconName.Dash,
+    //             _ => BlazorBootstrap.IconName.QuestionCircleFill
+    //         };
+
+    //         return new NavItem
+    //             {
+    //                 Id = menu.IdHomologacionMenu.ToString(),
+    //                 Text = menu.MostrarWeb,
+    //                 Href = menu.href,
+    //                 IconName = iconName
+    //             };
+    //     }).ToList(); 
+
+    //     await OnNavItemsChanged.InvokeAsync(navItemsList); // 🔹 Enviar valores a AdminLayout.razor
+
+    //     return navItemsList;
+    // }
 
 
     private void SalirSesion() { 
