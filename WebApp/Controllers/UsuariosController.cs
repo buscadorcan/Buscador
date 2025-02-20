@@ -84,11 +84,11 @@ namespace WebApp.Controllers
      * WebApp/RecoverAsync: Permite la recuperación de contraseña de un usuario.
      */
     [HttpPost("recuperar")]
-    public async Task<IActionResult> RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
+    public IActionResult RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
     {
       try
       {
-        var result = await _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
+        var result = _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
 
         if (!result.IsSuccess) {
           return BadRequestResponse(result.ErrorMessage);

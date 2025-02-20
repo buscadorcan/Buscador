@@ -1,5 +1,6 @@
 ﻿using BlazorBootstrap;
 using SharedApp.Models.Dtos;
+using Microsoft.AspNetCore.Components;
 
 namespace ClientApp.Pages.Autenticacion
 {
@@ -9,6 +10,10 @@ namespace ClientApp.Pages.Autenticacion
     /// </summary>
     public partial class Acceder
     {
+        /// <summary>
+        /// Administrador de navegación inyectado.
+        /// </summary>
+        [Inject] NavigationManager? _navigationManager { get; set; }
         /// <summary>
         /// Lista de mensajes emergentes que se mostrarán en la interfaz de usuario.
         /// </summary>
@@ -42,6 +47,13 @@ namespace ClientApp.Pages.Autenticacion
         private void HandleStepChange(AuthenticateResponseDto? _authenticateResponseDto)
         {
             authenticateResponseDto = _authenticateResponseDto;
+        }
+        /// <summary>
+        /// Método que maneja la navegación hacia una ruta específica cuando se hace clic en un componente.
+        /// </summary>
+        private void GoToSearchPage()
+        {
+            _navigationManager.NavigateTo("/");
         }
     }
 }

@@ -11,9 +11,9 @@
 <div class="container-center-horizontal">
     <div class="login-2 screen">
         <div class="login">
-            <div class="component-10">
-                <img class="arrow_back" src="/login/img/arrow-back.svg" alt="arrow_back" />
-                <div class="back">Atrás</div>
+            <div class="component-10" @onclick="GoToSearchPage" style="cursor:pointer;">
+                <img class="arrow_back" src="/login/img/search-1.svg" alt="search-1" />
+                <div class="back">Buscador</div>
             </div>
 
             @if (authenticateResponseDto == null) {
@@ -21,7 +21,9 @@
             } else {
                 <FormularioValidacion 
                     OnCreateToastMessage="CreateToastMessage" 
-                    IdUsuario="@authenticateResponseDto?.IdUsuario" />
+                    IdUsuario="@authenticateResponseDto?.IdUsuario"
+                    OnStepChanged="HandleStepChange"
+                />
             }
             
         </div>

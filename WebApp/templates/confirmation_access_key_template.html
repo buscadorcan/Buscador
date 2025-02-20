@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Recepción de Clave de Acceso al Sistema</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 20px;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }}
+        h2 {{
+            color: #007bff;
+            text-align: center;
+        }}
+        p {{
+            font-size: 16px;
+            line-height: 1.5;
+        }}
+        .code {{
+            display: inline-block;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            border-radius: 5px;
+        }}
+        .footer {{
+            font-size: 14px;
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Confirmación de Recepción de Clave de Acceso al Sistema</h2>
+        <p>Estimado/a <strong>{0}</strong>,</p>
+        <p>Hemos recibido correctamente tu solicitud de acceso al sistema <strong>[Nombre del Sistema]</strong>. Como parte del proceso de activación, te informamos que se ha generado y asignado una clave de acceso temporal para tu cuenta.</p>
+
+        <h3>Detalles de tu acceso:</h3>
+        <p><strong>Usuario:</strong> {1}</p>
+        <p><strong>Clave de Acceso Temporal:</strong> <span class="code">{2}</span></p>
+
+        <h3>Importante:</h3>
+        <p>Esta clave es de uso exclusivo y personal. Te recomendamos cambiarla al ingresar por primera vez al sistema para garantizar la seguridad de tu cuenta.</p>
+
+        <p>Si encuentras algún inconveniente durante el proceso de activación o acceso, no dudes en contactarnos a través de <strong>[correo de soporte]</strong> o al teléfono <strong>[número de soporte]</strong>.</p>
+
+        <p>Para acceder al sistema, ingresa a <a href="http://216.172.100.184:8045/acceder">http://216.172.100.184:8045/acceder</a> y sigue las instrucciones proporcionadas.</p>
+
+        <p>Agradecemos tu confianza en nuestros servicios y estamos a tu disposición para cualquier consulta o asistencia que necesites.</p>
+
+        <div class="footer">
+            <p>Saludos cordiales,</p>
+            <p><strong>[Tu Nombre o Nombre del Equipo]</strong><br />
+               [Tu Cargo o Departamento]<br />
+               [Nombre de la Empresa o Institución]<br />
+               [Contacto de Soporte]</p>
+            <p>&copy; 2025 [Nombre de la Empresa] | Todos los derechos reservados</p>
+        </div>
+    </div>
+</body>
+</html>

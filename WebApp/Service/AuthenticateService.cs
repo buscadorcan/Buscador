@@ -51,12 +51,17 @@ namespace WebApp.Service
 
                 string code = _randomGeneratorService.GenerateTemporaryCode(6);
                 var htmlBody = GenerateVerificationCodeEmailBody(code);
-                //var isSend = await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
-
-                //if (!isSend)
-                //{
-                //    return Result<AuthenticateResponseDto>.Failure("Error al enviar clave temporal");
-                //}
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al enviar correo: {ex.Message}");
+                    }
+                });
 
                 GenerateEventTracking(usuario: usuario, rol: rol, code: code);
                 return Result<AuthenticateResponseDto>.Success(new AuthenticateResponseDto
@@ -81,13 +86,13 @@ namespace WebApp.Service
                 var usuario = _usuarioRepository.FindById(authValidationDto.IdUsuario);
                 var rol = GetRol(usuario.IdHomologacionRol);
 
-                //var code = _eventTrackingRepository.GetCodeByUser(usuario.Nombre, rol.CodigoHomologacion, "Access");
-                //Console.WriteLine(code);
-                //if (string.IsNullOrEmpty(code) || !authValidationDto.Codigo.Equals(code))
-                //{
-                //    GenerateEventTracking(dto: authValidationDto);
-                //    return Result<UsuarioAutenticacionRespuestaDto>.Failure("Código Incorrecto");
-                //}
+                var code = _eventTrackingRepository.GetCodeByUser(usuario.Nombre, rol.CodigoHomologacion, "Access");
+                Console.WriteLine(code);
+                if (string.IsNullOrEmpty(code) || !authValidationDto.Codigo.Equals(code))
+                {
+                   GenerateEventTracking(dto: authValidationDto);
+                   return Result<UsuarioAutenticacionRespuestaDto>.Failure("Código Incorrecto");
+                }
 
                 var ona = _onaConexionRepository.FindById(usuario.IdONA);
                 var homologacionGrupo = GetVwHomologacionGrupo();
@@ -274,75 +279,17 @@ namespace WebApp.Service
         /// <returns>A string containing the HTML body of the email with the verification code inserted.</returns>
         public string GenerateVerificationCodeEmailBody(string codigo)
         {
-            string htmlBody = @"
-            <!DOCTYPE html>
-            <html lang='es'>
-            <head>
-                <meta charset='UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>Código de Verificación</title>
-                <style>
-                    body {{
-                        font-family: Arial, sans-serif;
-                        background-color: #f9f9f9;
-                        color: #333;
-                        padding: 20px;
-                    }}
-                    .container {{
-                        max-width: 600px;
-                        margin: 0 auto;
-                        background-color: #fff;
-                        padding: 30px;
-                        border-radius: 8px;
-                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    }}
-                    h2 {{
-                        color: #007bff;
-                        text-align: center;
-                    }}
-                    p {{
-                        font-size: 16px;
-                        line-height: 1.5;
-                    }}
-                    .code {{
-                        display: inline-block;
-                        background-color: #f8f9fa;
-                        border: 1px solid #ddd;
-                        padding: 10px;
-                        font-size: 18px;
-                        font-weight: bold;
-                        color: #007bff;
-                        border-radius: 5px;
-                    }}
-                    .footer {{
-                        font-size: 14px;
-                        text-align: center;
-                        margin-top: 20px;
-                        color: #888;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div class='container'>
-                    <h2>Código de Verificación</h2>
-                    <p>Estimado/a <strong>usuario</strong>,</p>
-                    <p>Hemos recibido una solicitud para verificar su cuenta. A continuación, le proporcionamos su código de verificación:</p>
-                    
-                    <p><span class='code'>{0}</span></p>
-                    
-                    <p>Este código es válido por un tiempo limitado. Por favor, ingréselo en la página de verificación.</p>
-                    
-                    <p>Si no ha solicitado este código de verificación, por favor contacte a nuestro soporte inmediatamente.</p>
-                    
-                    <div class='footer'>
-                        <p>Gracias por confiar en nosotros. Si tiene alguna duda, no dude en comunicarse con nuestro equipo de soporte.</p>
-                        <p>&copy; 2025 Su Empresa | Todos los derechos reservados</p>
-                    </div>
-                </div>
-            </body>
-            </html>";
+            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "templates", "verification_code_template.html");
 
-            return string.Format(htmlBody, codigo);
+            if (File.Exists(templatePath))
+            {
+                string htmlBody = File.ReadAllText(templatePath);
+                return string.Format(htmlBody, codigo);
+            }
+            else
+            {
+                throw new FileNotFoundException("La plantilla de correo no se encuentra en la ubicación especificada.");
+            }
         }
     }
 }

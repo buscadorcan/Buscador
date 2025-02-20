@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperación de Clave de Acceso al Sistema</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 20px;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }}
+        h2 {{
+            color: #007bff;
+            text-align: center;
+        }}
+        p {{
+            font-size: 16px;
+            line-height: 1.5;
+        }}
+        .code {{
+            display: inline-block;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            border-radius: 5px;
+        }}
+        .footer {{
+            font-size: 14px;
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Recuperación de Clave de Acceso al Sistema</h2>
+        <p>Estimado/a <strong>{0}</strong>,</p>
+        <p>Hemos procesado tu solicitud de recuperación de clave de acceso para el sistema <strong>[Nombre del Sistema]</strong>. A continuación, te proporcionamos los detalles necesarios para restablecer tu acceso:</p>
+        
+        <h3>Detalles de tu cuenta:</h3>
+        <p><strong>Usuario:</strong> {1}</p>
+        <p><strong>Clave Temporal:</strong> <span class="code">{2}</span></p>
+        
+        <h3>Instrucciones:</h3>
+        <p>Ingresa al sistema a través de <a href="http://216.172.100.184:8045/acceder">http://216.172.100.184:8045/acceder</a>.</p>
+        <p>Utiliza la clave temporal proporcionada para acceder.</p>
+        <p>Una vez dentro, te recomendamos cambiar tu clave por una nueva para garantizar la seguridad de tu cuenta.</p>
+        
+        <h3>Importante:</h3>
+        <ul>
+            <li>Esta clave temporal es de uso exclusivo y personal. No la compartas con terceros.</li>
+            <li>Si no has solicitado la recuperación de tu clave o encuentras algún inconveniente, por favor contáctanos inmediatamente a través de <a href="mailto:[correo de soporte] ">[correo de soporte] </a> o al teléfono [número de soporte].</li>
+        </ul>
+        
+        <p>Estamos a tu disposición para brindarte la asistencia que necesites.</p>
+        
+        <div class="footer">
+            <p>Saludos cordiales,</p>
+            <p><strong>[Tu Nombre o Nombre del Equipo]</strong><br>[Tu Cargo o Departamento]<br>[Nombre de la Empresa o Institución]</p>
+            <p><strong>Contacto de Soporte:</strong> <a href="mailto:[Contacto de Soporte]">[Contacto de Soporte]</a></p>
+            <p><small>Este es un mensaje automático, por favor no respondas a este correo.</small></p>
+        </div>
+    </div>
+</body>
+</html>

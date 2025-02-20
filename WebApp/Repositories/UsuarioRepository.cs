@@ -10,6 +10,7 @@ namespace WebApp.Repositories
     {
         private readonly IJwtService _jwtService;
         private readonly IHashService _hashService;
+        private readonly IEmailService _emailService;
         public UsuarioRepository (
             IJwtService jwtService,
             IEmailService emailService,
@@ -20,6 +21,7 @@ namespace WebApp.Repositories
         {
             _jwtService = jwtService;
             _hashService = hashService;
+            _emailService = emailService;
         }
         public Usuario? FindById(int idUsuario)
         {
@@ -95,15 +97,47 @@ namespace WebApp.Repositories
         }
         public bool Create(Usuario usuario)
         {
-            usuario.Clave = _hashService.GenerateHash(usuario.Clave);
+            var clave = usuario.Clave;
+            usuario.Clave = _hashService.GenerateHash(clave);
             usuario.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             usuario.IdUserModifica = usuario.IdUserCreacion;
             usuario.Estado = "A";
             return ExecuteDbOperation(context =>
             {
                 context.Usuario.Add(usuario);
-                return context.SaveChanges() >= 0;
+                if ( context.SaveChanges() >= 0 )
+                {
+                    SendConfirmationEmail(usuario, clave);
+                    return true;
+                }
+                return false;
             });
+        }
+        public void SendConfirmationEmail(Usuario usuario, string clave)
+        {
+            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "templates", "confirmation_access_key_template.html");
+
+            if (File.Exists(templatePath))
+            {
+                string htmlBody = File.ReadAllText(templatePath);
+                htmlBody = string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
+
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al enviar correo: {ex.Message}");
+                    }
+                });
+            }
+            else
+            {
+                throw new FileNotFoundException("La plantilla de correo no se encuentra en la ubicación especificada.");
+            }
         }
         //public bool Update(Usuario usuario)
         //{
