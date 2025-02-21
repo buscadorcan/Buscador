@@ -30,7 +30,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         private List<ONAConexionDto> listasHevd = new();
         private bool isRolAdmin;
 
-        private EventTrackingDto objEventTracking { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
         private int PageSize = 10; // Cantidad de registros por página
@@ -106,42 +106,51 @@ namespace ClientApp.Pages.Administracion.Conexion
         /// <returns cref="Task"> devuelve un valor true o false dependiendo de la conexion</returns>
         private async Task<bool> OnTestconexionClick(int conexion)
         {
-            objEventTracking.NombrePagina = "Conexiones Existentes";
-            objEventTracking.NombreAccion = "OnTestconexionClick";
-            objEventTracking.NombreControl = "OnTestconexionClick";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
-            objEventTracking.ParametroJson = "{}";
-            objEventTracking.UbicacionJson = "";
-            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
-
-            if (iDynamicService != null && listasHevd != null)
+            try
             {
-                // Llamar al método del servicio para probar la conexión
-                bool isConnected = await iDynamicService.TestConnectionAsync(conexion);
-                var toastMessage = new ToastMessage
-                {
-                    Type = isConnected ? ToastType.Success : ToastType.Danger,
-                    Title = "Mensaje de confirmación",
-                    HelpText = $"{DateTime.Now}",
-                    Message = isConnected ? "Conexión satisfactoria" : "Conexión fallida",
-                };
+                objEventTracking.NombrePagina = "Conexiones Existentes";
+                objEventTracking.NombreAccion = "OnTestconexionClick";
+                objEventTracking.NombreControl = "OnTestconexionClick";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
-                messages.Add(toastMessage);
-
-                // Configurar el cierre automático después de 5 segundos
-                _ = Task.Delay(5000).ContinueWith(_ =>
+                if (iDynamicService != null && listasHevd != null)
                 {
-                    messages.Remove(toastMessage);
-                    InvokeAsync(StateHasChanged); // Actualizar la UI
-                });
+                    // Llamar al método del servicio para probar la conexión
+                    bool isConnected = await iDynamicService.TestConnectionAsync(conexion);
+                    var toastMessage = new ToastMessage
+                    {
+                        Type = isConnected ? ToastType.Success : ToastType.Danger,
+                        Title = "Mensaje de confirmación",
+                        HelpText = $"{DateTime.Now}",
+                        Message = isConnected ? "Conexión satisfactoria" : "Conexión fallida",
+                    };
 
-                if (isConnected)
-                {
-                    return true; // Devuelve true si la conexión fue exitosa
+                    messages.Add(toastMessage);
+                    StateHasChanged();
+                    // Configurar el cierre automático después de 5 segundos
+                    _ = Task.Delay(5000).ContinueWith(_ =>
+                    {
+                        messages.Remove(toastMessage);
+                        InvokeAsync(StateHasChanged); // Actualizar la UI
+                    });
+
+                    if (isConnected)
+                    {
+                        return true; // Devuelve true si la conexión fue exitosa
+                    }
                 }
+                return false; // Devuelve false si algo falla
             }
-            return false; // Devuelve false si algo falla
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+           
         }
 
         /// <summary>
@@ -197,7 +206,7 @@ namespace ClientApp.Pages.Administracion.Conexion
                     };
 
                     messages.Add(toastMessage);
-
+                    StateHasChanged();
                     // Ocultar mensaje después de 5 segundos
                     _ = Task.Delay(5000).ContinueWith(_ =>
                     {
