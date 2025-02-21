@@ -7,14 +7,19 @@ namespace WebApp.Service
     public class ThesaurusService(IThesaurusRepository thesaurusRepository) : IThesaurusService
     {
         private readonly IThesaurusRepository _thesaurusRepository = thesaurusRepository;
-        
 
 
+        ///<summary>
+        ///ObtenerThesaurus: Obtiene el objeto del archivo thesaurus
+        ///</summary>
         public Thesaurus ObtenerThesaurus()
         {
             return _thesaurusRepository.ObtenerThesaurus();
         }
 
+        ///<summary>
+        ///AgregarExpansion: Agrega una nueva expansion al objeto
+        ///</summary>
         public string AgregarExpansion(List<string> sinonimos)
         {
             try
@@ -31,6 +36,10 @@ namespace WebApp.Service
             } 
             
         }
+
+        ///<summary>
+        ///AgregarSubAExpansion: Agrega un nuevo sinonimo
+        ///</summary>
         public string AgregarSubAExpansion(string expansionExistente, string nuevoSub)
         {
             try
@@ -52,6 +61,10 @@ namespace WebApp.Service
                 throw new Exception($"Error al agregar sub a la expansión: {ex.Message}");
             }
         }
+
+        ///<summary>
+        ///ActualizarExpansion: Actualiza la lista de expansiones del thesaurus
+        ///</summary>
         public string ActualizarExpansion(List<Expansion> expansions)
         {
             try
@@ -73,6 +86,9 @@ namespace WebApp.Service
 
         }
 
+        ///<summary>
+        ///EjecutarArchivoBat: realiza el reemplazo del archivo thesaurus en la carpeta de sqlserver
+        ///</summary>
         public string EjecutarArchivoBat() {
             try
             {
@@ -87,12 +103,15 @@ namespace WebApp.Service
 
         }
 
+        ///<summary>
+        ///ResetSQLServer: reinicia el servicio de sqlserver
+        ///</summary>
         public string ResetSQLServer()
         {
             try
             {
-                _thesaurusRepository.ResetSQLServer();
-                return "ok";
+                var mensaje = _thesaurusRepository.ResetSQLServer();
+                return mensaje;
 
             }
             catch
