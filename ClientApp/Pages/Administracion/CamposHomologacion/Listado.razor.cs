@@ -12,34 +12,49 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
     public partial class Listado
     {
+        // Elemento seleccionado en la lista de homologaciones
         private HomologacionDto? homologacionSelected;
+        // Componente de la grilla para mostrar los datos
         private Grid<HomologacionDto>? grid;
+        // Lista de homologaciones obtenidas
         private List<HomologacionDto>? listaHomologacions = new List<HomologacionDto>();
+        // Servicio inyectado para acceder a los catálogos
         [Inject]
         private ICatalogosService? iCatalogosService { get; set; }
+        // Servicio inyectado para gestionar homologaciones
         [Inject]
         private IHomologacionService? iHomologacionService { get; set; }
+        // Lista de visualización de homologaciones
         private List<HomologacionDto>? listaVwHomologacion;
+        // Evento que se activa cuando los datos se han cargado
         public event Action? DataLoaded;
-
+        // ID de la homologación seleccionada para operaciones
         private int? selectedIdHomologacion;    // Almacena el ID de la homologación seleccionado
+        // Control de visibilidad del modal
         private bool showModal; // Controlar la visibilidad de la ventana modal  
+        // Bandera para determinar si se está agregando un nuevo elemento
         private bool IsAdd;
+        // Mensaje del modal
         private string modalMessage;
+        // Servicio de notificaciones Toast
         [Inject]
         public Services.ToastService? toastService { get; set; }
-
+        // Servicio de interoperabilidad con JavaScript
         [Inject]
         protected IJSRuntime? JSRuntime { get; set; }
+        // Servicio de búsqueda
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
+        // Objeto para el seguimiento de eventos
         private EventTrackingDto objEventTracking { get; set; } = new();
+        // Servicio de almacenamiento local en el navegador
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+
         /// <summary>
-        /// OnInitializedAsync: Propiedad que inicializa la clase de listado de campos de homologacion.
+        /// Método asincrónico que inicializa la lista de campos de homologación.
         /// </summary>
-        /// <returns>Devuelve la lista de homologacion al iniciar la aplicacion</returns>
+        /// <returns>Devuelve la lista de homologaciones al iniciar la aplicación.</returns>
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
@@ -56,9 +71,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// HomologacionDataProvider: Propiedad que obtiene los registros de campos de homologacion.
+        /// Método que obtiene la lista de homologaciones y aplica los criterios de filtrado.
         /// </summary>
-        /// <returns>Devuelve la lista de Homologaciones </returns>
+        /// <returns>Lista de homologaciones aplicando los filtros.</returns>
         private async Task<GridDataProviderResult<HomologacionDto>> HomologacionDataProvider(GridDataProviderRequest<HomologacionDto> request)
         {
             if (homologacionSelected != null)
@@ -74,8 +89,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// OnAutoCompleteChangedHandler: manejador de eventos en Blazor que responde a un cambio en un elemento del formulario.
+        /// Método que maneja el cambio de selección en un elemento de autocompletado.
         /// </summary>
+        /// <param name="e">Evento de cambio.</param>
         private async Task OnAutoCompleteChangedHandler(ChangeEventArgs e)
         {
             // Obtén el ID seleccionado desde el <select>
@@ -98,8 +114,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// OnDragEnd: Propiedad que usa el javascript para poder grabar automaticamente al mover un elemento de la lista.
+        /// Método invocable desde JavaScript para actualizar el orden de los elementos en la lista al arrastrar.
         /// </summary>
+        /// <param name="sortedIds">Lista de identificadores ordenados.</param>
 
         [JSInvokable]
         public async Task OnDragEnd(string[] sortedIds)
@@ -117,8 +134,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// OpenDeleteModal: Propiedad que abre el modal.
+        /// Método que abre el modal de confirmación de eliminación.
         /// </summary>
+        /// <param name="idHomologacion">ID de la homologación a eliminar.</param>
 
         private void OpenDeleteModal(int idHomologacion)
         {
@@ -127,7 +145,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// CloseModal: Propiedad que cierra el modal.
+        /// Método que cierra el modal de confirmación de eliminación.
         /// </summary>
         private void CloseModal()
         {
@@ -136,7 +154,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// ConfirmDelete: Propiedad que elimina el registro de campos de homologacion.
+        /// Método que confirma la eliminación de una homologación.
         /// </summary>
         private async Task ConfirmDelete()
         {
@@ -168,7 +186,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// LoadHomologacion: Propiedad que obtiene la lista de campos de homologacion.
+        /// Método que carga la lista de homologaciones.
         /// </summary>
         private async Task LoadHomologacion() 
         {

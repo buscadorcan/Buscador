@@ -157,7 +157,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         /// OnMigrarClick: Migrar los datos de la ONA desde el servidor externo.
         /// </summary>
         /// <param name="conexion">
-        /// <returns cref="Task"> devuelve un valor true o false dependiendo de la migracion</returns>
+        /// <returns> devuelve un valor true o false dependiendo de la migracion</returns>
         private async Task<bool> OnMigrarClick(int conexion)
         {
             objEventTracking.NombrePagina = "Conexiones Existentes";

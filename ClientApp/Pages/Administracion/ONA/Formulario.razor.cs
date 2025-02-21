@@ -8,30 +8,68 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.ONA
 {
+    /// <summary>
+    /// Componente de formulario para la gestión de ONAs (Organismos Nacionales de Acreditación).
+    /// Permite registrar y actualizar ONAs, así como la gestión de carga de archivos y países asociados.
+    /// </summary>
     public partial class Formulario
     {
+        // Botón de guardar con animación de carga
         private Button saveButton = default!;
+        // Objeto que almacena la información del ONA a registrar o actualizar
         private OnaDto onas = new OnaDto();
+        // Lista de países disponibles
         private List<VwPaisDto> paises = new(); // Lista para almacenar países
+        // ID del país seleccionado
         private int? paisSeleccionado; // ID del país seleccionado
+        /// <summary>
+        /// Servicio de gestión de ONAs.
+        /// </summary>
         [Inject]
         public IONAService? iONAsService { get; set; }
+        /// <summary>
+        /// Servicio de utilidades para la gestión de archivos e iconos.
+        /// </summary>
         [Inject]
         public IUtilitiesService? iUtilService { get; set; }
+        /// <summary>
+        /// Servicio de navegación.
+        /// </summary>
 
         [Inject]
         public NavigationManager? navigationManager { get; set; }
+
+        /// <summary>
+        /// ID del ONA a editar, nulo si se está creando uno nuevo.
+        /// </summary>
         [Parameter]
         public int? Id { get; set; }
+        /// <summary>
+        /// Servicio de notificaciones Toast.
+        /// </summary>
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        /// <summary>
+        /// Servicio de búsqueda y registro de eventos.
+        /// </summary>
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
+        // Objeto para el seguimiento de eventos
         private EventTrackingDto objEventTracking { get; set; } = new();
+        /// <summary>
+        /// Servicio de almacenamiento local en el navegador.
+        /// </summary>
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
 
+        // Archivo cargado por el usuario
         private IBrowserFile? uploadedFile;
+
+        /// <summary>
+        /// Método para manejar la carga de archivos y validar formatos permitidos (.png y .svg).
+        /// </summary>
+        /// <param name="e">Evento que contiene la información del archivo subido.</param>
+        /// <param name="idOna">ID del ONA al que se asociará el archivo.</param>
         private async Task OnInputFileChange(InputFileChangeEventArgs e, int idOna)
         {
             try
@@ -66,7 +104,9 @@ namespace ClientApp.Pages.Administracion.ONA
             }
         }
 
-
+        /// <summary>
+        /// Método asincrónico que inicializa el formulario cargando la lista de países y el ONA si se está editando.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             paises = await iONAsService.GetPaisesAsync();
@@ -76,6 +116,10 @@ namespace ClientApp.Pages.Administracion.ONA
                 onas = await iONAsService.GetONAsAsync(Id.Value);
             }
         }
+
+        /// <summary>
+        /// Método que registra o actualiza la información de un ONA en la base de datos.
+        /// </summary>
         private async Task RegistrarONA()
         {
             objEventTracking.NombrePagina = "Información Principal ONA";
@@ -106,12 +150,19 @@ namespace ClientApp.Pages.Administracion.ONA
             saveButton.HideLoading();
         }
 
+        /// <summary>
+        /// Método que actualiza el país seleccionado para el ONA.
+        /// </summary>
+        /// <param name="e">Evento de cambio en la selección del país.</param>
         private void ActualizarPais(ChangeEventArgs e)
         {
             // Obtener el ID seleccionado
             onas.IdHomologacionPais = int.TryParse(e.Value?.ToString(), out var valor) ? valor : null;
 
         }
+        /// <summary>
+        /// Método que redirige a la lista de ONAs sin guardar cambios.
+        /// </summary>
         private void Regresar()
         {
             navigationManager?.NavigateTo("/onas");
