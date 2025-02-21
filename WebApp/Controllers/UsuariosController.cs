@@ -34,11 +34,11 @@ namespace WebApp.Controllers
      * WebApp/Login: Autentica a un usuario en el sistema y devuelve sus credenciales.
      */
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
+    public IActionResult Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
     {
       try
       {
-        var result = await _iService.Authenticate(usuarioAutenticacionDto);
+        var result = _iService.Authenticate(usuarioAutenticacionDto);
 
         if (!result.IsSuccess) {
           return BadRequestResponse(result.ErrorMessage);
@@ -242,8 +242,33 @@ namespace WebApp.Controllers
         catch (Exception e)
         {
             return HandleException(e, nameof(ValidarEmail));
+        }   
+    }
+
+    /* 
+     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+     * WebApp/ValidarEmail: Cambia las claves de un usuario en especifico.
+    */
+    [Authorize]
+    [HttpPost("cambiar_clave")]
+    public IActionResult CambiarClave([FromBody] UsuarioCambiarClaveDto usuario)
+    {
+      try
+      {
+        var result = _iRepo.ChangePasswd(usuario.Clave, usuario.ClaveNueva);
+
+        if (!result.IsSuccess) {
+          return BadRequestResponse(result.ErrorMessage, false);
         }
-        
+
+        return Ok(new RespuestasAPI<bool> {
+          Result = result.Value
+        });
+      }
+      catch (Exception e)
+      {
+        return HandleException(e, nameof(Login));
+      }
     }
   }
 }

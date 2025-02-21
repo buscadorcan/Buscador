@@ -79,7 +79,7 @@ namespace ClientApp.Services {
 
             try
             {
-                // Si el IdUsuario es mayor a 0, realizamos un PUT (actualización)
+                // Si el IdUsuario es mayor a 0, realizamos un PUT (actualizaciï¿½n)
                 if (registro.IdUsuario > 0)
                 {
                     int idUsuario = registro.IdUsuario;
@@ -102,17 +102,17 @@ namespace ClientApp.Services {
                 }
                 else
                 {
-                    // Si la respuesta no fue exitosa, retornamos el resultado de la deserialización
+                    // Si la respuesta no fue exitosa, retornamos el resultado de la deserializaciï¿½n
                     return resultado ?? new RespuestaRegistro { registroCorrecto = false, mensajeError = "Error desconocido." };
                 }
             }
             catch (Exception ex)
             {
-                // En caso de una excepción, se maneja el error
+                // En caso de una excepciï¿½n, se maneja el error
                 return new RespuestaRegistro
                 {
                     registroCorrecto = false,
-                    mensajeError = $"Excepción durante la solicitud: {ex.Message}"
+                    mensajeError = $"ExcepciÃ³n durante la solicitud: {ex.Message}"
                 };
             }
         }
@@ -130,6 +130,26 @@ namespace ClientApp.Services {
         {
             var response = await _httpClient.GetAsync($"{url}/validar-email?email={email}");
             return await response.Content.ReadFromJsonAsync<bool>();
+        }
+
+        public async Task<RespuestasAPI<bool>> ActualizarClave(UsuarioCambiarClaveDto usuarioCambiarClave)
+        {
+            var content = JsonConvert.SerializeObject(usuarioCambiarClave);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{url}/cambiar_clave", bodyContent);
+            var contentTemp = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode || contentTemp != null)
+            {
+                return JsonConvert.DeserializeObject<RespuestasAPI<bool>>(contentTemp);
+            }
+            else
+            {
+                return new RespuestasAPI<bool>{
+                    IsSuccess = false,
+                    ErrorMessages = new List<string>() { $"Error: {response.StatusCode}" }
+                };
+            }
         }
     }
 }

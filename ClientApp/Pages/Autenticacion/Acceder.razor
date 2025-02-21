@@ -16,16 +16,26 @@
                 <div class="back">Buscador</div>
             </div>
 
-            @if (authenticateResponseDto == null) {
-                <FormularioLogin OnCreateToastMessage="CreateToastMessage" OnStepChanged="HandleStepChange" />
+            @if (opcion == 1) {
+                @if (authenticateResponseDto == null) {
+                    <FormularioLogin
+                        OnCreateToastMessage="CreateToastMessage"
+                        OnStepChanged="HandleStepChange"
+                        OnOptionChange="HandleOptionChange"
+                    />
+                } else {
+                    <FormularioValidacion 
+                        OnCreateToastMessage="CreateToastMessage" 
+                        IdUsuario="@authenticateResponseDto?.IdUsuario"
+                        OnStepChanged="HandleStepChange"
+                    />
+                }
             } else {
-                <FormularioValidacion 
-                    OnCreateToastMessage="CreateToastMessage" 
-                    IdUsuario="@authenticateResponseDto?.IdUsuario"
-                    OnStepChanged="HandleStepChange"
+                <FormularioRecuperar
+                    OnCreateToastMessage="CreateToastMessage"
+                    OnOptionChange="HandleOptionChange"
                 />
             }
-            
         </div>
         <img class="login470px" src="/login/img/login470px.png" alt="login470px" />
     </div>

@@ -13,7 +13,7 @@ namespace WebApp.Service.IService
          * Devuelve un objeto con los detalles de autenticaci�n del usuario si es exitoso,
          * o un mensaje de error si las credenciales son inv�lidas.
          */
-        Task<Result<AuthenticateResponseDto>> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
+        Result<AuthenticateResponseDto> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
         Result<UsuarioAutenticacionRespuestaDto> ValidateCode(AuthValidationDto authValidationDto);
     }
 }

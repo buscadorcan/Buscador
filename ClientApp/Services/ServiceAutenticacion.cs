@@ -66,7 +66,7 @@ namespace ClientApp.Services
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Migrar_Local, result?.Usuario?.Migrar);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Menu_Titulo_Local, result?.HomologacionGrupo?.TooltipWeb);
                         ((AuthStateProvider)_estadoProveedorAutenticacion).NotificarUsuarioLogueado(result?.Token ?? "");
-                        _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result?.Token);
+                        _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result?.Token);
                     }
                 }
 

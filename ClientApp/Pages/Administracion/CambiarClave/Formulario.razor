@@ -1,0 +1,47 @@
+@page "/cambiar_clave"
+@layout AdminLayout
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+
+<PageTitle>Usuario</PageTitle>
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
+
+<EditForm Model="usuario" OnValidSubmit="OnCambiarClave" class="pt-4">
+    <DataAnnotationsValidator />
+
+    <!-- Título -->
+    <h1 class="title headlineheadline2-h2">Cambiar Contraseña</h1>
+
+    <div class="card-body px-lg-5 pt-4">
+
+        <!-- Clave Actual-->
+        <div class="row py-2">
+            <div class="col-md-6">
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Clave Actual</label>
+                <div class="col">
+                    <InputText @bind-Value="usuario.Clave" type="password" placeholder="Clave actual..." class="form-control inter-regular-normal-comet-14px" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => usuario.Clave)" />
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nueva Clave -->
+        <div class="row py-2">
+            <div class="col-md-6">
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Clave Nueva</label>
+                <div class="col">
+                    <InputText @bind-Value="usuario.ClaveNueva" type="password" placeholder="Clave Nueva..." class="form-control inter-regular-normal-comet-14px" style="margin-top: 2% !important;" />
+                    <ValidationMessage For="(() => usuario.ClaveNueva)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-2 d-flex justify-content-start gap-2">
+        <div class="save-button-container">
+            <Button @ref="saveButton" Type="ButtonType.Submit" class="button-2 label valign-text-middle inter-regular-normal-comet-14px">
+                <div class="button-3 headingheadline4-h4">Cambiar</div>
+            </Button>
+        </div>
+    </div>
+</EditForm>

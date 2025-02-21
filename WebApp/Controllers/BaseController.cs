@@ -51,6 +51,21 @@ namespace WebApp.Controllers
 
         /* 
          * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/BadRequestResponse: Devuelve una respuesta de solicitud incorrecta con estado 400 (Bad Request).
+         */
+        protected IActionResult BadRequestResponse(string message, object result)
+        {
+            return BadRequest(new RespuestasAPI<object>
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                IsSuccess = false,
+                ErrorMessages = new List<string> { message },
+                Result = result
+            });
+        }
+
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
          * WebApp/NotFoundResponse: Devuelve una respuesta de recurso no encontrado con estado 404 (Not Found).
          */
         protected IActionResult NotFoundResponse(string message)

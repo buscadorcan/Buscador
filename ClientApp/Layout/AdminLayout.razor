@@ -27,7 +27,7 @@
         <div class="menu-adminitrador-can">
             <div class="menu">
                 <div class="menu-1 menu-4">
-                    <div class="user_button">
+                    <div class="user_button" style="flex-direction: column;">
                         <img class="avatar" src="admin/img/avatar.svg" alt="avatar">
                         <div class="frame-78">
                             <div class="frame-10000023">
@@ -96,6 +96,10 @@
 
                                             }
                                         }
+                                        <div class="ona">
+                                            <img class="bibuilding" src="admin/img/frame-5.svg">
+                                            <NavLink href="/cambiar_clave" class="place valign-text-middle headingheadline5-h5">Cambiar Clave</NavLink>
+                                        </div>
                                     }
                                     else
                                     {
@@ -258,7 +262,8 @@
                NavigationManager.Uri.Contains("/editar-conexion") ||
                NavigationManager.Uri.Contains("/log-migracion") ||
                NavigationManager.Uri.Contains("/page-nodisponible") ||
-               NavigationManager.Uri.Contains("/validacion"))   
+               NavigationManager.Uri.Contains("/validacion") || 
+               NavigationManager.Uri.Contains("/cambiar_clave"))   
                 {
                     <link href="css/admin.css" rel="stylesheet">
                     <link href="css/pagination.css" rel="stylesheet">

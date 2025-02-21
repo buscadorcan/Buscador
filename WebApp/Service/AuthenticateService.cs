@@ -36,7 +36,7 @@ namespace WebApp.Service
             _jwtService = jwtService;
         }
         /// <inheritdoc />
-        public async Task<Result<AuthenticateResponseDto>> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto)
+        public Result<AuthenticateResponseDto> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
             try {
                 var result = Authenticate(usuarioAutenticacionDto.Email, usuarioAutenticacionDto.Clave);

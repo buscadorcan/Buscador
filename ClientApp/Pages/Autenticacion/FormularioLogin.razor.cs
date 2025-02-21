@@ -38,6 +38,11 @@ namespace ClientApp.Pages.Autenticacion
         [Parameter] public EventCallback<AuthenticateResponseDto> OnStepChanged { get; set; }
 
         /// <summary>
+        /// Intercambiar formulartio entre login / recuperar
+        /// </summary>
+        [Parameter] public EventCallback<int> OnOptionChange { get; set; }
+
+        /// <summary>
         /// Botón de guardar con funcionalidad de carga visual.
         /// </summary>
         private Button saveButton = default!;
@@ -81,6 +86,9 @@ namespace ClientApp.Pages.Autenticacion
             }
 
             await Task.CompletedTask;
+        }
+        private async Task Recovery() {
+            await OnOptionChange.InvokeAsync(2);
         }
     }
 }
