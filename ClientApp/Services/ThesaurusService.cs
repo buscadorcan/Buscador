@@ -19,11 +19,17 @@ namespace ClientApp.Services
         private readonly HttpClient _httpClient;
         private readonly string _urlBaseApi;
 
+
+        
         public ThesaurusService(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _urlBaseApi = $"{Inicializar.UrlBaseApi}api/thesaurus/";
         }
+
+        ///<summary>
+        ///GetThesaurusAsync: Obtiene el archivo thesauros en formato json
+        ///</summary>
         public async Task<ThesaurusDto> GetThesaurusAsync(string endpoint)
         {
             var response = await _httpClient.GetAsync($"{_urlBaseApi}{endpoint}");
@@ -38,6 +44,9 @@ namespace ClientApp.Services
             return default;
         }
 
+        ///<summary>
+        ///UpdateExpansionAsync: Actualiza la lista de expansion del archivo thesauros
+        ///</summary>
         public async Task<RespuestaRegistro> UpdateExpansionAsync(string endpoint, List<ExpansionDto> expansions)
         {
             var content = JsonConvert.SerializeObject(expansions);
@@ -56,6 +65,9 @@ namespace ClientApp.Services
             }
         }
 
+        ///<summary>
+        ///EjecutarBatAsync: realiza la accióm de reemplazo del archivo thesaurus en la carpeta de sqlserver
+        ///</summary>
         public async Task<string> EjecutarBatAsync(string endpoint)
         {
             var response = await _httpClient.GetAsync($"{_urlBaseApi}{endpoint}");
@@ -70,6 +82,9 @@ namespace ClientApp.Services
             return default;
         }
 
+        ///<summary>
+        ///ResetSqlServerAsync: ejecuta la acción de reinicio del servicio de sqlserver
+        ///</summary>
         public async Task<string> ResetSqlServerAsync(string endpoint)
         {
             var response = await _httpClient.GetAsync($"{_urlBaseApi}{endpoint}");

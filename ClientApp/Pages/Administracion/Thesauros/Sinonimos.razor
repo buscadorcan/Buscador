@@ -57,6 +57,10 @@
     .ancho_70 {
     width: 70%;
     }
+
+    .ancho_40 {
+        width: 40%;
+    }
     .ancho_15{
     width: 15%;
     }
@@ -122,21 +126,23 @@
 else
 {
     <div class="div_flex ancho_100 margin_botton">
-        <div class="ancho_70 div_flex">
+        <div class="ancho_40 div_flex">
             <input type="text" placeholder="Ingrese el sinonimo a buscar" @bind="sinonimoBuscar" @oninput="MostarTodos"  class="ancho_70 input_control" />
             <Button class="ancho_30 btn_control" @onclick="() => BuscarSinonimo()">Buscar Sinonimo</Button>
         </div>
         @if (this.usuarioLogin == "KEY_USER_CAN")
         {
             <div class="ancho_15 div_flex">
-                <Button class="btn_control_guardar ancho_85" @onclick="() => GuardarThesauro()">Guardar</Button>
+                <Button class="btn_control_guardar ancho_100" @onclick="() => GuardarThesauro()">Guardar</Button>
             </div>
             <div class="ancho_15 div_flex">
-                <Button class="btn_control_bat ancho_85" @onclick="() => EjecutarBat()">Publicar</Button>
+                <Button class="btn_control_bat ancho_100" @onclick="() => NuevaSeccion()">Nueva Sección</Button>
             </div>
-
             <div class="ancho_15 div_flex">
-                <Button class="btn_control_bat ancho_85" @onclick="() => ResetearqSqlServer()">Resetear Base de datos</Button>
+                <Button class="btn_control_bat ancho_100" @onclick="() => EjecutarBat()">Publicar</Button>
+            </div>
+            <div class="ancho_15 div_flex">
+                <Button class="btn_control_bat ancho_100" @onclick="() => ResetearqSqlServer()">Resetear Base de datos</Button>
             </div>
         }
 
