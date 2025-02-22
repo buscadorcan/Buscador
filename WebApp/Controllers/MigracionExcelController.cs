@@ -1,3 +1,5 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/MigacionExcelController: Controlador para funcionalidad de migración excel
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using AutoMapper;
@@ -25,30 +27,39 @@ namespace WebApp.Controllers
         private readonly IMigracionExcelRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindAll: Obtiene todos los registros de migración de archivos Excel.
-         */
+        /// <summary>
+        /// FindAll
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de MigracionExcelDto representando los registros de migración.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet]
         public IActionResult FindAll()
         {
-              try
-              {
-                return Ok(new RespuestasAPI<List<MigracionExcelDto>> {
-                  Result = _iRepo.FindAll().Select(item => _mapper.Map<MigracionExcelDto>(item)).ToList()
+            try
+            {
+                return Ok(new RespuestasAPI<List<MigracionExcelDto>>
+                {
+                    Result = _iRepo.FindAll().Select(item => _mapper.Map<MigracionExcelDto>(item)).ToList()
                 });
-              }
-              catch (Exception e)
-              {
+            }
+            catch (Exception e)
+            {
                 return HandleException(e, nameof(FindAll));
-              }
+            }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ImportarExcel: Importa un archivo Excel y lo almacena en el servidor, luego inicia el proceso de migración de datos.
-         */
+        /// <summary>
+        /// ImportarExcel
+        /// </summary>
+        /// <param name="file">Archivo Excel a importar.</param>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA) al que se asocia la importación.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la importación fue exitosa.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpPost("upload")]
         public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
@@ -70,26 +81,26 @@ namespace WebApp.Controllers
                     return BadRequestResponse("Archivo no válido");
                 }
 
-                // 🔹 Obtener la ruta de `wwwroot/Files` correctamente en IIS
+                // Obtener la ruta de `wwwroot/Files` correctamente en IIS
                 string wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 string filesPath = Path.Combine(wwwrootPath, "Files");
 
-                // 🔹 Asegurar que la carpeta "Files" existe, si no, crearla
+                // Asegurar que la carpeta "Files" existe, si no, crearla
                 if (!Directory.Exists(filesPath))
                 {
                     Directory.CreateDirectory(filesPath);
                 }
 
-                // 🔹 Construir la ruta final del archivo
+                // Construir la ruta final del archivo
                 string filePath = Path.Combine(filesPath, file.FileName);
 
-                // 🔹 Guardar el archivo
+                // Guardar el archivo
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
 
-                // 🔹 Guardar en base de datos
+                // Guardar en base de datos
                 LogMigracion migracion = iRepo.Create(new LogMigracion
                 {
                     Estado = "PENDING",

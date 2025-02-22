@@ -123,12 +123,16 @@
                     </Button>
                 </div>
 
-                <!-- Botón Agregar Registro -->
-                <div class="button-container ms-auto">
-                    <Button Type="ButtonType.Link" class="button-2" To="@($"/nuevo-campos-homologacion/{homologacionSelected?.IdHomologacion}")">
-                        <div class="button-3 headingheadline4-h4">Agregar Registro</div>
-                    </Button>
-                </div>
+                @if (IsAdd)
+                {
+                    <!-- Botón Agregar Registro -->
+                    <div class="button-container ms-auto">
+                        <Button Type="ButtonType.Link" class="button-2" To="@($"/nuevo-campos-homologacion/{homologacionSelected?.IdHomologacion}")">
+                            <div class="button-3 headingheadline4-h4">Agregar Registro</div>
+                        </Button>
+                    </div>
+                }
+                
             </div>
         }
     </div>

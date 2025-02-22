@@ -1,3 +1,5 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/CatalogosController: Controlador para catalogos
 using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
@@ -24,10 +26,13 @@ namespace WebApp.Controllers
         private readonly ICatalogosRepository _vhRepo = vhRepo;
         private readonly IMapper _mapper = mapper;
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerVwGrilla: Obtiene el esquema de la grilla.
-         */
+        /// <summary>
+        /// ObtenerVwGrilla
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwGrillaDto que representa la estructura de la grilla.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("grid/schema")]
         public IActionResult ObtenerVwGrilla()
         {
@@ -44,15 +49,17 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                //return HandleException(e, nameof(ObtenerVwGrilla));
                 return StatusCode(500, new { mensaje = "Error interno", detalle = e.Message });
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerVwFiltro: Obtiene el esquema de los filtros.
-         */
+        /// <summary>
+        /// ObtenerVwFiltro
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwFiltroDto que representa la estructura de los filtros.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("filters/schema")]
         public IActionResult ObtenerVwFiltro()
         {
@@ -69,10 +76,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerFiltroDetalles: Obtiene los detalles de un filtro específico.
-         */
+        /// <summary>
+        /// ObtenerFiltroDetalles
+        /// </summary>
+        /// <param name="codigo">Código del filtro para obtener sus detalles.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de vwFiltroDetalleDto que representa los detalles del filtro.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("filters/data/{codigo}")]
         public IActionResult ObtenerFiltroDetalles(string codigo)
         {
@@ -89,11 +100,13 @@ namespace WebApp.Controllers
             }
         }
 
-
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerVwDimension: Obtiene el esquema de las dimensiones.
-         */
+        /// <summary>
+        /// ObtenerVwDimension
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwDimensionDto que representa la estructura de las dimensiones.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("dimensions/schema")]
         public IActionResult ObtenerVwDimension()
         {
@@ -110,10 +123,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerGrupos: Obtiene el esquema de los grupos. Requiere autorización.
-         */
+        /// <summary>
+        /// ObtenerGrupos
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwHomologacionGrupoDto que representa los grupos en la aplicación.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("grupos")]
         public IActionResult ObtenerGrupos()
         {
@@ -130,10 +146,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerVwRol: Obtiene el esquema de roles. Requiere autorización.
-         */
+
+        /// <summary>
+        /// ObtenerVwRol
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwRolDto que representa los roles.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("roles")]
         public IActionResult ObtenerVwRol()
         {
@@ -150,11 +170,13 @@ namespace WebApp.Controllers
             }
         }
 
-
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerOna: Obtiene el esquema de ONAs. Requiere autorización.
-         */
+        /// <summary>
+        /// ObtenerOna
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de OnaDto que representa los ONAs.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("onas")]
         public IActionResult ObtenerOna()
         {
@@ -171,10 +193,15 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerVwMenu: Obtiene los datos para el menú. Requiere autorización.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/ObtenerVwMenu: Obtiene los datos para el menú. Requiere autorización.
+        /// Este método devuelve la estructura de datos utilizada para representar los elementos del menú de la aplicación.
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwMenuDto que representa los elementos del menú.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("menu")]
         public IActionResult ObtenerVwMenu()
         {
@@ -187,14 +214,17 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(ObtenerVwRol));
+                return HandleException(e, nameof(ObtenerVwMenu));
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerPanelOna: Obtiene el esquema de roles del panel ONA. Requiere autorización.
-         */
+        /// <summary>
+        /// ObtenerPanelOna
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de vwPanelONA que representa la configuración del panel ONA.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("panel")]
         public IActionResult ObtenerPanelOna()
         {
@@ -211,10 +241,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerEsquemaOrganiza: Obtiene el esquema organizacional.
-         */
+        /// <summary>
+        /// ObtenerEsquemaOrganiza
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de vwEsquemaOrganiza que representa la estructura organizacional.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("EsquemaOrganiza")]
         public IActionResult ObtenerEsquemaOrganiza()
         {
@@ -231,10 +264,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerVwOna: Obtiene los datos de ONAs.
-         */
+        /// <summary>
+        /// ObtenerVwOna
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de vwONADto que representa los ONAs registrados.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("vwona")]
         public IActionResult ObtenerVwOna()
         {
@@ -247,9 +283,10 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(ObtenerPanelOna));
+                return HandleException(e, nameof(ObtenerVwOna));
             }
         }
+
 
     }
 }

@@ -1,3 +1,5 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/DynamicController: Controlador para formularios de aplicativo
 using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
@@ -22,67 +24,89 @@ namespace WebApp.Controllers
       _vhRepo = vhRepo;
     }
 
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/GetProperties: Obtiene las propiedades de las columnas de una vista específica para un ONA determinado.
-     */
-    [Authorize]
-    [HttpGet("columns/{idOna}/{viewName}", Name = "getProperties")]
-    public IActionResult GetProperties(int idOna, string viewName)
-    {
-      try
-      {
-        var result = _vhRepo.GetProperties(idOna, viewName);
-        return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(GetProperties));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/GetValueColumna: Obtiene el valor de una columna específica dentro de una vista para un ONA determinado.
-     */
-    [Authorize]
-    [HttpGet("columns/{idOna}/{valueColumn}/{viewName}", Name = "GetValueColumna")]
-    public IActionResult GetValueColumna(int idONA, string valueColumn, string viewName)    
-    {
-        try
+        /// <summary>
+        /// GetProperties
+        /// </summary>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA).</param>
+        /// <param name="viewName">Nombre de la vista para la cual se desean obtener las propiedades de las columnas.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de PropiedadesTablaDto que representa las propiedades de las columnas.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
+        [Authorize]
+        [HttpGet("columns/{idOna}/{viewName}", Name = "getProperties")]
+        public IActionResult GetProperties(int idOna, string viewName)
         {
-            var result = _vhRepo.GetValueColumna(idONA, valueColumn, viewName);
-            return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
+            try
+            {
+                var result = _vhRepo.GetProperties(idOna, viewName);
+                return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetProperties));
+            }
         }
-        catch (Exception e)
+
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/GetValueColumna: Obtiene el valor de una columna específica dentro de una vista para un ONA determinado.
+        /// Este método permite recuperar el valor de una columna específica en una vista dada dentro del contexto de un ONA.
+        /// </summary>
+        /// <param name="idONA">Identificador del Organismo Nacional de Acreditación (ONA).</param>
+        /// <param name="valueColumn">Nombre de la columna cuyo valor se desea obtener.</param>
+        /// <param name="viewName">Nombre de la vista de la cual se extraerá el valor de la columna.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de PropiedadesTablaDto que representa los valores obtenidos.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
+        [Authorize]
+        [HttpGet("columns/{idOna}/{valueColumn}/{viewName}", Name = "GetValueColumna")]
+        public IActionResult GetValueColumna(int idONA, string valueColumn, string viewName)
         {
-            return HandleException(e, nameof(GetValueColumna));
+            try
+            {
+                var result = _vhRepo.GetValueColumna(idONA, valueColumn, viewName);
+                return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetValueColumna));
+            }
         }
-    }
 
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/GetViewNames: Obtiene los nombres de las vistas asociadas a un ONA específico.
-     */
-    [Authorize]
-    [HttpGet("{idOna}", Name = "getViewNames")]
-    public IActionResult GetViewNames(int idOna)
-    {
-      try
-      {
-        var result = _vhRepo.GetViewNames(idOna);
-        return Ok(new RespuestasAPI<List<string>> { Result = result });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(GetViewNames));
-      }
-    }
+        /// <summary>
+        /// GetViewNames
+        /// </summary>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA).</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de nombres de vistas en formato de cadena.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
+        [Authorize]
+        [HttpGet("{idOna}", Name = "getViewNames")]
+        public IActionResult GetViewNames(int idOna)
+        {
+            try
+            {
+                var result = _vhRepo.GetViewNames(idOna);
+                return Ok(new RespuestasAPI<List<string>> { Result = result });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetViewNames));
+            }
+        }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GetListaValidacionEsquema: Obtiene la lista de validaciones para un esquema específico dentro de un ONA.
-         */
+        /// <summary>
+        /// GetListaValidacionEsquema
+        /// </summary>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA).</param>
+        /// <param name="idEsquema">Identificador del esquema para el cual se desean obtener las validaciones.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de EsquemaVistaDto que representa las validaciones disponibles.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet("validacion/{idOna}/{idEsquema}", Name = "GetListaValidacionEsquema")]
         public IActionResult GetListaValidacionEsquema(int idOna, int idEsquema)
@@ -98,24 +122,26 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/TestConnection: Prueba la conexión a la base de datos de un ONA determinado.
-         */
+        /// <summary>
+        /// TestConnection
+        /// </summary>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA).</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la conexión se estableció correctamente o no.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet("test/{idOna:int}")]
         public IActionResult TestConnection(int idOna)
         {
             try
             {
-                // Obtener la conexión desde el repositorio
                 var conexion = _vhRepo.GetConexion(idOna);
                 if (conexion == null)
                 {
                     return NotFound(new { Message = "Conexión no encontrada." });
                 }
 
-                // Probar la conexión
                 var isConnected = _vhRepo.TestDatabaseConnection(conexion);
 
                 return Ok(new
@@ -130,10 +156,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/MigrarConexion: Migra la conexión de un ONA específico de forma asíncrona.
-         */
+        /// <summary>
+        /// MigrarConexion
+        /// </summary>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA) cuya conexión será migrada.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la migración de la conexión se realizó con éxito o no.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpPost("migrar/{idOna:int}")]
         public async Task<IActionResult> MigrarConexion(int idOna)
@@ -145,7 +175,7 @@ namespace WebApp.Controllers
                 return Ok(new
                 {
                     IsSuccess = resultado,
-                    Message = resultado ? "Conexión establecida correctamente." : "No se pudo establecer la conexión."
+                    Message = resultado ? "Conexión migrada correctamente." : "No se pudo migrar la conexión."
                 });
             }
             catch (Exception ex)
@@ -153,5 +183,7 @@ namespace WebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Success = false, Message = ex.Message });
             }
         }
+
+
     }
 }

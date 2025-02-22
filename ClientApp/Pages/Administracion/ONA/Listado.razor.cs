@@ -83,23 +83,7 @@ namespace ClientApp.Pages.Administracion.ONA
                 CurrentPage++;
             }
         }
-        // Proveedor de datos para el grid
-        private async Task<GridDataProviderResult<OnaDto>> ONAsDataProvider(GridDataProviderRequest<OnaDto> request)
-        {
-            try
-            {
-                if (listaONAs is null && iONAservice != null)
-                {
-                    await LoadONAs(); // Carga los datos si aún no están cargados
-                }
-
-                return await Task.FromResult(request.ApplyTo(listaONAs ?? new List<OnaDto>()));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        
 
         // Abre el modal
         private void OpenDeleteModal(int idONA)

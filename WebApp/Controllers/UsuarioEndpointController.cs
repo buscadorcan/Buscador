@@ -1,4 +1,6 @@
-﻿using WebApp.Repositories.IRepositories;
+﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/UsuarioEndpointController: Controlador para funcionalidad en usuarios
+using WebApp.Repositories.IRepositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
@@ -25,71 +27,84 @@ namespace WebApp.Controllers
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<UsuarioEndpointController> _logger = logger;
 
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/Create: Crea un nuevo registro de usuario con permisos de endpoint.
-     */
-    [Authorize]
-    [HttpPost]
-    public IActionResult Create([FromBody] UsuarioEndpointPermisoRegistroDto data)
-    {
-      try
-      {
-        return Ok(new RespuestasAPI<bool> {
-          IsSuccess = _iRepo.Create(_mapper.Map<UsuarioEndpoint>(data))
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(Create));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/FindAll: Obtiene todos los registros de usuarios con sus permisos de endpoint.
-     */
-    [Authorize]
-    [HttpGet]
-    public IActionResult FindAll()
-    {
-      try
-      {
-        return Ok(new RespuestasAPI<List<UsuarioEndpointPermisoDto>>{
-          Result = _mapper.Map<List<UsuarioEndpointPermisoDto>>(_iRepo.FindAll())
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(FindAll));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/FindByEndpointId: Obtiene información del usuario asociado a un endpoint específico.
-     */
-    [Authorize]
-    [HttpGet("{endpointId:int}", Name = "FindByEndpointId")]
-    public IActionResult FindByEndpointId(int endpointId)
-    {
-      try
-      {
-        var itemUsuario = _iRepo.FindByEndpointId(endpointId);
-
-        if (itemUsuario == null)
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="data">Objeto que contiene la información del usuario y sus permisos.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la operación de creación fue exitosa.
+        /// </returns>
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create([FromBody] UsuarioEndpointPermisoRegistroDto data)
         {
-          return NotFoundResponse("Registro no encontrado");
+            try
+            {
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.Create(_mapper.Map<UsuarioEndpoint>(data))
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Create));
+            }
         }
 
-        return Ok(new RespuestasAPI<UsuarioDto> {
-          Result = _mapper.Map<UsuarioDto>(itemUsuario)
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(FindByEndpointId));
-      }
+        /// <summary>
+        /// FindAll
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de usuarios y sus respectivos permisos de endpoint.
+        /// </returns>
+        [Authorize]
+        [HttpGet]
+        public IActionResult FindAll()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<UsuarioEndpointPermisoDto>>
+                {
+                    Result = _mapper.Map<List<UsuarioEndpointPermisoDto>>(_iRepo.FindAll())
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindAll));
+            }
+        }
+
+        /// <summary>
+        /// FindByEndpointId
+        /// </summary>
+        /// <param name="endpointId">Identificador único del endpoint a consultar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la información del usuario asociado al endpoint indicado.
+        /// En caso de que no exista un usuario asociado, se devuelve un mensaje de error.
+        /// </returns>
+        [Authorize]
+        [HttpGet("{endpointId:int}", Name = "FindByEndpointId")]
+        public IActionResult FindByEndpointId(int endpointId)
+        {
+            try
+            {
+                var itemUsuario = _iRepo.FindByEndpointId(endpointId);
+
+                if (itemUsuario == null)
+                {
+                    return NotFoundResponse("Registro no encontrado");
+                }
+
+                return Ok(new RespuestasAPI<UsuarioDto>
+                {
+                    Result = _mapper.Map<UsuarioDto>(itemUsuario)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindByEndpointId));
+            }
+        }
+
     }
-  }
 }

@@ -1,3 +1,5 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/EsquemaController: Controlador para formularios de esquemas en aplicativo
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using AutoMapper;
@@ -24,10 +26,13 @@ namespace WebApp.Controllers
         private readonly IEsquemaRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindAll: Obtiene todos los registros del esquema.
-         */
+        /// <summary>
+        /// FindAll
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de EsquemaDto que representa todos los registros disponibles.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet]
         public IActionResult FindAll()
@@ -45,21 +50,25 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindById: Busca un registro en el esquema por su ID.
-         */
+        /// <summary>
+        /// FindById
+        /// </summary>
+        /// <param name="id">Identificador del registro a buscar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con un EsquemaDto correspondiente al registro encontrado.
+        /// En caso de que el registro no exista, devuelve un mensaje de error adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet("{id:int}")]
-        public IActionResult FindById(int Id)
+        public IActionResult FindById(int id)
         {
             try
             {
-                var record = _iRepo.FindById(Id);
+                var record = _iRepo.FindById(id);
 
                 if (record == null)
                 {
-                    return NotFoundResponse("Reguistro no encontrado");
+                    return NotFoundResponse("Registro no encontrado");
                 }
 
                 return Ok(new RespuestasAPI<EsquemaDto>
@@ -73,10 +82,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Update: Actualiza un registro en el esquema.
-         */
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="id">Identificador del registro a actualizar.</param>
+        /// <param name="dto">Objeto EsquemaDto con la información actualizada.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] EsquemaDto dto)
@@ -97,10 +110,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Create: Crea un nuevo registro en el esquema.
-         */
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="dto">Objeto EsquemaDto con la información del nuevo registro.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la creación fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] EsquemaDto dto)
@@ -120,10 +136,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Deactive: Desactiva un registro en el esquema cambiando su estado a "X".
-         */
+        /// <summary>
+        /// Deactive
+        /// </summary>
+        /// <param name="id">Identificador del registro a desactivar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpDelete("{id:int}")]
         public IActionResult Deactive(int id)
@@ -134,7 +153,7 @@ namespace WebApp.Controllers
 
                 if (record == null)
                 {
-                    return NotFoundResponse("Reguistro no encontrado");
+                    return NotFoundResponse("Registro no encontrado");
                 }
 
                 record.Estado = "X";
@@ -150,17 +169,19 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/EliminarEsquemaVistaColumnaByIdEquemaVistaAsync: Elimina un esquema de vista columna basado en su ID de esquema y ONA.
-         */
+        /// <summary>
+        /// EliminarEsquemaVistaColumnaByIdEquemaVistaAsync
+        /// </summary>
+        /// <param name="esquemaRegistro">Objeto EsquemaVistaValidacionDto con la información del esquema a eliminar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la eliminación fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpDelete("validacion")]
         public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync([FromBody] EsquemaVistaValidacionDto esquemaRegistro)
         {
             try
             {
-                // Buscar el registro basado en idOna e idEsquema del objeto recibido
                 var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(esquemaRegistro.IdOna, esquemaRegistro.IdEsquema);
 
                 if (record == null)
@@ -168,7 +189,6 @@ namespace WebApp.Controllers
                     return NotFoundResponse("Registro no encontrado");
                 }
 
-                // Actualizar el estado del registro a 'X'
                 record.Estado = "X";
 
                 var isDeleted = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(record.IdEsquemaVista);
@@ -184,10 +204,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/UpdateEsquemaValidacion: Actualiza una validación de esquema.
-         */
+        /// <summary>
+        /// UpdateEsquemaValidacion
+        /// </summary>
+        /// <param name="dto">Objeto EsquemaVistaValidacionDto con la información actualizada.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
+        /// </returns>
         [Authorize]
         [Route("validacion/actualizar")]
         [HttpPut]
@@ -208,10 +231,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/CreateEsquemaValidacion: Crea una nueva validación de esquema.
-         */
+        /// <summary>
+        /// CreateEsquemaValidacion
+        /// </summary>
+        /// <param name="dto">Objeto EsquemaVistaValidacionDto con la información de la validación a crear.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la creación fue exitosa.
+        /// </returns>
         [Authorize]
         [Route("validacion")]
         [HttpPost]
@@ -232,23 +258,28 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GuardarListaEsquemaVistaColumna: Guarda una lista de columnas en un esquema de vista.
-         */
+        /// <summary>
+        /// GuardarListaEsquemaVistaColumna
+        /// </summary>
+        /// <param name="listaEsquemaVistaColumna">Lista de objetos EsquemaVistaColumnaDto que representan las columnas a guardar.</param>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA) al que pertenece el esquema.</param>
+        /// <param name="idEsquema">Identificador del esquema donde se almacenarán las columnas.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la operación de guardado fue exitosa.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [Route("vista/columna")]
         [HttpPost]
         public IActionResult GuardarListaEsquemaVistaColumna(
-        [FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna,
-        [FromQuery] int idOna,
-        [FromQuery] int idEsquema)
+            [FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna,
+            [FromQuery] int idOna,
+            [FromQuery] int idEsquema)
         {
             try
             {
                 var record = _mapper.Map<List<EsquemaVistaColumna>>(listaEsquemaVistaColumna);
 
-                // Puedes usar idOna y idEsquema en tu lógica según sea necesario
                 return Ok(new RespuestasAPI<bool>
                 {
                     IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record, idOna, idEsquema)
@@ -260,10 +291,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GetListaEsquemaByOna: Obtiene la lista de esquemas asociados a un ONA específico.
-         */
+        /// <summary>
+        /// GetListaEsquemaByOna
+        /// </summary>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA).</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de esquemas asociados al ONA especificado.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
         public IActionResult GetListaEsquemaByOna(int idOna)

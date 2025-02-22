@@ -3,10 +3,11 @@ namespace WebApp.Service.IService
   
   public interface ISqlServerDbContextFactory
   {
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/CreateDbContext: Crea y devuelve una nueva instancia de SqlServerDbContext para la gestión de la base de datos en SQL Server.
-         */
+        /// <summary>
+        /// Crea y devuelve una nueva instancia de <see cref="SqlServerDbContext"/> 
+        /// para la gestión de la base de datos en SQL Server.
+        /// </summary>
+        /// <returns>Devuelve una instancia de <see cref="SqlServerDbContext"/> lista para ser utilizada.</returns>
         SqlServerDbContext CreateDbContext();
   }
 }

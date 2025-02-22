@@ -4,28 +4,28 @@ namespace WebApp.Repositories.IRepositories
 {
     public interface IThesaurusRepository
     {
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerThesaurus: Obtiene la información completa del thesaurus almacenado en la base de datos.
-         */
+        /// <summary>
+        /// Obtiene la información completa del thesaurus almacenado en la base de datos.
+        /// </summary>
+        /// <returns>Devuelve un objeto de tipo <see cref="Thesaurus"/> que contiene la información del thesaurus.</returns>
         Thesaurus ObtenerThesaurus();
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GuardarThesaurus: Guarda o actualiza el thesaurus en la base de datos.
-         */
+        /// <summary>
+        /// Guarda o actualiza el thesaurus en la base de datos.
+        /// </summary>
+        /// <param name="thesaurus">El objeto <see cref="Thesaurus"/> que se almacenará o actualizará en la base de datos.</param>
         void GuardarThesaurus(Thesaurus thesaurus);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/EjecutarArchivoBat: Ejecuta un archivo .bat en el servidor para automatizar procesos relacionados con el thesaurus.
-         */
+        /// <summary>
+        /// Ejecuta un archivo .bat en el servidor para automatizar procesos relacionados con el thesaurus.
+        /// </summary>
         void EjecutarArchivoBat();
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ResetSQLServer: actualiza el servidor de sqlserver*/
+        /// <summary>
+        /// Reinicia el servidor de SQL Server y actualiza su estado.
+        /// </summary>
         void ResetSQLServer();
+
 
     }
 }

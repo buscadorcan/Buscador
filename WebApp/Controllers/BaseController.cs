@@ -1,18 +1,22 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/BaseController: Controlador para Base
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
 using System.Net;
 
 namespace WebApp.Controllers
 {
-    /// <summary>
-    /// Clase base para los controladores. Proporciona métodos comunes para manejar respuestas HTTP y excepciones.
-    /// </summary>
     public class BaseController : ControllerBase
     {
-         /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/HandleException: Maneja excepciones no controladas y devuelve una respuesta de error con estado 500 (Internal Server Error).
-         */
+        /// <summary>
+        /// HandleException
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="methodName"></param>
+        /// <returns>StatusCode</returns>
+        /// <returns>IsSuccess</returns>
+        /// <returns>ErrorMessages</returns>
+        /// <returns>Result</returns>
         protected IActionResult HandleException(Exception e, string methodName)
         {
           try
@@ -34,10 +38,14 @@ namespace WebApp.Controllers
           });
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/BadRequestResponse: Devuelve una respuesta de solicitud incorrecta con estado 400 (Bad Request).
-         */
+        /// <summary>
+        /// BadRequestResponse
+        /// </summary>
+        /// <param name="message">Mensaje de error a incluir en la respuesta.</param>
+        /// <returns>StatusCode</returns>
+        /// <returns>IsSuccess</returns>
+        /// <returns>ErrorMessages</returns>
+        /// <returns>Result</returns>
         protected IActionResult BadRequestResponse(string message)
         {
             return BadRequest(new RespuestasAPI<object>
@@ -49,10 +57,14 @@ namespace WebApp.Controllers
             });
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/NotFoundResponse: Devuelve una respuesta de recurso no encontrado con estado 404 (Not Found).
-         */
+        /// <summary>
+        /// NotFoundResponse
+        /// </summary>
+        /// <param name="message">Mensaje de error a incluir en la respuesta.</param>
+        /// <returns>StatusCode</returns>
+        /// <returns>IsSuccess</returns>
+        /// <returns>ErrorMessages</returns>
+        /// <returns>Result</returns>
         protected IActionResult NotFoundResponse(string message)
         {
             return NotFound(new RespuestasAPI<object>
@@ -63,5 +75,6 @@ namespace WebApp.Controllers
                 Result = new { }
             });
         }
+
     }
 }

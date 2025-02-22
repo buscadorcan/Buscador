@@ -4,10 +4,14 @@ namespace WebApp.Service.IService
 {
     public interface IRecoverUserService
     {
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/RecoverPassword: Recupera la contraseña de un usuario generando una contraseña temporal y enviándola por correo electrónico.
-         */
+        /// <summary>
+        /// Recupera la contraseña de un usuario generando una nueva contraseña temporal 
+        /// y enviándola al correo electrónico asociado.
+        /// </summary>
+        /// <param name="usuarioRecuperacionDto">Objeto que contiene la información del usuario 
+        /// para la recuperación de contraseña.</param>
+        /// <returns>Devuelve un objeto <see cref="Result{bool}"/> indicando si la operación fue exitosa o no.</returns>
         Task<Result<bool>> RecoverPassword(UsuarioRecuperacionDto usuarioRecuperacionDto);
+
     }
 }

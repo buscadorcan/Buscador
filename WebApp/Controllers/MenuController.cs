@@ -1,5 +1,5 @@
 ﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-/// WebApp/ONAsController: Controlador para funcionalidad de Onas
+/// WebApp/MenuController: Controlador para menú
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,23 +11,23 @@ using WebApp.Repositories.IRepositories;
 
 namespace WebApp.Controllers
 {
-    [Route("api/ona")]
+    [Route("api/menu")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class ONAsController(IONARepository iRepo, IMapper mapper) : BaseController
+    public class MenuController(IMenuRepository iRepo, IMapper mapper) : BaseController
     {
-        private readonly IONARepository _iRepo = iRepo;
+        private readonly IMenuRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
         /// FindAll
         /// </summary>
         /// <returns>
-        /// Devuelve un objeto IActionResult con una lista de OnaDto representando los ONAs registrados.
+        /// Devuelve un objeto IActionResult con una lista de MenuDto representando los registros del menú.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [HttpGet]
@@ -35,9 +35,9 @@ namespace WebApp.Controllers
         {
             try
             {
-                return Ok(new RespuestasAPI<List<OnaDto>>
+                return Ok(new RespuestasAPI<List<MenuRolDto>>
                 {
-                    Result = _iRepo.FindAll().Select(item => _mapper.Map<OnaDto>(item)).ToList()
+                    Result = _iRepo.FindAll().Select(item => _mapper.Map<MenuRolDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -47,77 +47,27 @@ namespace WebApp.Controllers
         }
 
         /// <summary>
-        /// GetListByONAsAsync
-        /// </summary>
-        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA).</param>
-        /// <returns>
-        /// Devuelve un objeto IActionResult con una lista de OnaDto representando las asociaciones encontradas.
-        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
-        /// </returns>
-        [Authorize]
-        [HttpGet("Lista/{idOna:int}")]
-        public IActionResult GetListByONAsAsync(int idOna)
-        {
-            try
-            {
-                return Ok(new RespuestasAPI<List<OnaDto>>
-                {
-                    Result = _iRepo.GetListByONAsAsync(idOna).Select(item => _mapper.Map<OnaDto>(item)).ToList()
-                });
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(GetListByONAsAsync));
-            }
-        }
-
-        /// <summary>
-        /// FindAllPais
-        /// </summary>
-        /// <returns>
-        /// Devuelve un objeto IActionResult con una lista de VwPaisDto representando los países disponibles.
-        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
-        /// </returns>
-        [Authorize]
-        [HttpGet("paises")]
-        public IActionResult FindAllPais()
-        {
-            try
-            {
-                return Ok(new RespuestasAPI<List<VwPaisDto>>
-                {
-                    Result = _iRepo.FindAllPaises().Select(item => _mapper.Map<VwPaisDto>(item)).ToList()
-                });
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(FindAllPais));
-            }
-        }
-
-        /// <summary>
         /// FindById
         /// </summary>
-        /// <param name="id">Identificador único del ONA.</param>
+        /// <param name="idHRol">Identificador del rol asociado al menú.</param>
+        /// <param name="idHMenu">Identificador del menú.</param>
         /// <returns>
-        /// Devuelve un objeto IActionResult con un OnaDto correspondiente al registro encontrado.
+        /// Devuelve un objeto IActionResult con un MenuDto correspondiente al registro encontrado.
         /// En caso de que el registro no exista, devuelve un mensaje de error adecuado.
         /// </returns>
-        [HttpGet("{id:int}")]
-        public IActionResult FindById(int id)
+        [HttpGet("{idHRol:int}/{idHMenu:int}")]
+        public IActionResult FindById(int idHRol, int idHMenu)
         {
             try
             {
-                var record = _iRepo.FindById(id);
-
+                var record = _iRepo.FindDataById(idHRol, idHMenu);
                 if (record == null)
                 {
                     return NotFoundResponse("Registro no encontrado");
                 }
-
-                return Ok(new RespuestasAPI<OnaDto>
+                return Ok(new RespuestasAPI<MenuRolDto>
                 {
-                    Result = _mapper.Map<OnaDto>(record)
+                    Result = _mapper.Map<MenuRolDto>(record)
                 });
             }
             catch (Exception e)
@@ -129,23 +79,30 @@ namespace WebApp.Controllers
         /// <summary>
         /// Update
         /// </summary>
-        /// <param name="id">Identificador único del ONA a actualizar.</param>
-        /// <param name="dto">Objeto OnaDto con la información actualizada.</param>
+        /// <param name="idHRol">Identificador del rol asociado al menú.</param>
+        /// <param name="idHMenu">Identificador del menú a actualizar.</param>
+        /// <param name="dto">Objeto MenuDto con la información actualizada.</param>
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
         /// </returns>
         [Authorize]
-        [HttpPut("{id:int}")]
-        public IActionResult Update(int id, [FromBody] OnaDto dto)
+        [HttpPut("{idHRol:int}/{idHMenu:int}")]
+        public IActionResult Update(int idHRol, int idHMenu, [FromBody] MenuRolDto dto)
         {
             try
             {
-                dto.IdONA = id;
-                var homologacion = _mapper.Map<ONA>(dto);
+                MenuRol menuRol = new MenuRol
+                {
+                    IdMenuRol = dto.IdMenuRol,
+                    IdHRol = dto.IdHRol,
+                    IdHMenu = dto.IdHMenu,
+                    Estado = dto.Estado,
+                    FechaCreacion = dto.FechaCreacion
+                };
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(homologacion)
+                    IsSuccess = _iRepo.Update(menuRol)
                 });
             }
             catch (Exception e)
@@ -157,18 +114,17 @@ namespace WebApp.Controllers
         /// <summary>
         /// Create
         /// </summary>
-        /// <param name="dto">Objeto OnaDto con la información del nuevo ONA.</param>
+        /// <param name="dto">Objeto MenuDto con la información del nuevo registro del menú.</param>
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la creación fue exitosa.
         /// </returns>
         [Authorize]
         [HttpPost]
-        public IActionResult Create([FromBody] OnaDto dto)
+        public IActionResult Create([FromBody] MenuRolDto dto)
         {
             try
             {
-                var record = _mapper.Map<ONA>(dto);
-
+                var record = _mapper.Map<MenuRol>(dto);
                 return Ok(new RespuestasAPI<bool>
                 {
                     IsSuccess = _iRepo.Create(record)
@@ -183,25 +139,23 @@ namespace WebApp.Controllers
         /// <summary>
         /// Deactive
         /// </summary>
-        /// <param name="id">Identificador único del ONA a desactivar.</param>
+        /// <param name="idHRol">Identificador del rol asociado al menú.</param>
+        /// <param name="idHMenu">Identificador del menú a desactivar.</param>
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
         /// </returns>
         [Authorize]
-        [HttpDelete("{id:int}")]
-        public IActionResult Deactive(int id)
+        [HttpDelete("{idHRol:int}/{idHMenu:int}")]
+        public IActionResult Deactive(int idHRol, int idHMenu)
         {
             try
             {
-                var record = _iRepo.FindById(id);
-
+                var record = _iRepo.FindById(idHRol, idHMenu);
+                record.Estado = record.Estado == "A" ? "X" : "A";
                 if (record == null)
                 {
                     return NotFoundResponse("Registro no encontrado");
                 }
-
-                record.Estado = "X";
-
                 return Ok(new RespuestasAPI<bool>
                 {
                     IsSuccess = _iRepo.Update(record)
@@ -212,6 +166,28 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Deactive));
             }
         }
-
+        /// <summary>
+        /// Deactive
+        /// </summary>
+        /// <param name="idHomologacionRol">Identificador del rol en homologación.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con un MenuPaginaDto correspondiente al registro encontrado.
+        /// En caso de que el registro no exista, devuelve un mensaje de error adecuado.
+        /// </returns>
+        [HttpGet("{idHomologacionRol:int}", Name = "menus")]
+        public IActionResult ObtenerMenusPendingConfig(int idHomologacionRol)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<MenuPaginaDto>>
+                {
+                    Result = _iRepo.ObtenerMenusPendingConfig(idHomologacionRol).Select(item => _mapper.Map<MenuPaginaDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerMenusPendingConfig));
+            }
+        }
     }
 }

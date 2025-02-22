@@ -1,3 +1,5 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/LogMigracionController: Controlador para log de migración
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using AutoMapper;
@@ -22,12 +24,15 @@ namespace WebApp.Controllers
   {
     private readonly ILogMigracionRepository _iRepo = iRepo;
     private readonly IMapper _mapper = mapper;
-    
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/FindAll: Obtiene todos los registros del log de migración.
-     */
-    [Authorize]
+
+        /// <summary>
+        /// FindAll
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de LogMigracionDto representando los registros del log de migración.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
+        [Authorize]
     [HttpGet]
     public IActionResult FindAll()
     {

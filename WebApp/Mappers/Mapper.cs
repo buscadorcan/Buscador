@@ -64,6 +64,16 @@ namespace WebApp.Mappers
             CreateMap<ONA, OnaDto>();
             CreateMap<OnaDto, ONA>();
 
+            CreateMap<Menus, MenuRolDto>();
+            CreateMap<MenuRolDto, Menus>();
+
+            CreateMap<MenuRolDto, MenuRol>();
+            CreateMap<MenuRol, MenuRolDto>();
+
+
+            CreateMap<MenuPaginaDto, MenuPagina>();
+            CreateMap<MenuPagina, MenuPaginaDto>();
+
             //CreateMap<MigracionExcel, MigracionExcelDto>();
             //CreateMap<MigracionExcelDto, MigracionExcel>();
 

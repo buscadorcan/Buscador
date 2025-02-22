@@ -1,3 +1,5 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/ONAConexionController: Controlador para funcionalidad de Ona conexión
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using AutoMapper;
@@ -20,10 +22,13 @@ namespace WebApp.Controllers
         private readonly IONAConexionRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindAll: Obtiene todas las conexiones ONA registradas.
-         */
+        /// <summary>
+        /// FindAll
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de ONAConexionDto representando las conexiones registradas.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet]
         public IActionResult FindAll()
@@ -41,10 +46,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GetOnaConexionByOnaListAsync: Obtiene la lista de conexiones ONA asociadas a un ONA específico.
-         */
+        /// <summary>
+        /// GetOnaConexionByOnaListAsync
+        /// </summary>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación (ONA).</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de ONAConexionDto representando las conexiones encontradas.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet("ListaOna/{idOna:int}")]
         public IActionResult GetOnaConexionByOnaListAsync(int idOna)
@@ -62,21 +71,25 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindById: Obtiene una conexión ONA específica por su ID.
-         */
+        /// <summary>
+        /// FindById
+        /// </summary>
+        /// <param name="id">Identificador único de la conexión ONA.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con un ONAConexionDto correspondiente al registro encontrado.
+        /// En caso de que el registro no exista, devuelve un mensaje de error adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet("{id:int}")]
-        public IActionResult FindById(int Id)
+        public IActionResult FindById(int id)
         {
             try
             {
-                var record = _iRepo.FindById(Id);
+                var record = _iRepo.FindById(id);
 
                 if (record == null)
                 {
-                    return NotFoundResponse("Reguistro no encontrado");
+                    return NotFoundResponse("Registro no encontrado");
                 }
 
                 return Ok(new RespuestasAPI<ONAConexionDto>
@@ -90,10 +103,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Update: Actualiza los datos de una conexión ONA existente.
-         */
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="id">Identificador único de la conexión ONA a actualizar.</param>
+        /// <param name="dto">Objeto ONAConexionDto con la información actualizada.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] ONAConexionDto dto)
@@ -114,10 +131,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Create: Crea una nueva conexión ONA en el sistema.
-         */
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="dto">Objeto ONAConexionDto con la información de la nueva conexión ONA.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la creación fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] ONAConexionDto dto)
@@ -137,10 +157,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Deactive: Desactiva una conexión ONA estableciendo su estado en "X".
-         */
+        /// <summary>
+        /// Deactive
+        /// </summary>
+        /// <param name="id">Identificador único de la conexión ONA a desactivar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpDelete("{id:int}")]
         public IActionResult Deactive(int id)
@@ -151,7 +174,7 @@ namespace WebApp.Controllers
 
                 if (record == null)
                 {
-                    return NotFoundResponse("Reguistro no encontrado");
+                    return NotFoundResponse("Registro no encontrado");
                 }
 
                 record.Estado = "X";
@@ -166,6 +189,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(Deactive));
             }
         }
+
 
     }
 }

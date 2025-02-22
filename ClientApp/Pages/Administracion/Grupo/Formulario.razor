@@ -16,24 +16,10 @@
         margin: 20px 0;
     }
 
-    .card-header {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
-
     .card-body {
         padding: 15px;
     }
 
-    .card-footer {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        text-align: right;
-        border-top: 1px solid #ddd;
-    }
 
 </style>
 
@@ -78,6 +64,7 @@
         <Button @ref="saveButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await GuardarHomologacion()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
     </div>
 </div>
+
 @code {
     private void Regresar()
     {

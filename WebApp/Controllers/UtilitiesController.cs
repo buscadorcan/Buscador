@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/UtilitiesController: Controlador para utilities
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers
@@ -14,10 +15,15 @@ namespace WebApp.Controllers
             _environment = environment;
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/UploadIcon: Sube y guarda un icono asociado a un ONA.
-         */
+        /// <summary>
+        /// UploadIcon
+        /// </summary>
+        /// <param name="file">Archivo de imagen a subir. Solo se permiten formatos .png y .svg.</param>
+        /// <param name="idONA">Identificador del ONA al que se asociará el icono.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la ruta relativa del archivo almacenado en el servidor.
+        /// En caso de error, devuelve un mensaje de error específico.
+        /// </returns>
         [HttpPost("UploadIcon")]
         public async Task<IActionResult> UploadIcon([FromForm] IFormFile file, [FromForm] int idONA)
         {

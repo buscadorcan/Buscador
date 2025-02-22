@@ -4,40 +4,45 @@ namespace WebApp.Service.IService
 {
     public interface IThesaurusService
     {
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerThesaurus: Obtiene el thesaurus con sus términos y expansiones asociadas.
-         */
+        /// <summary>
+        /// Obtiene el thesaurus con sus términos y expansiones asociadas.
+        /// </summary>
+        /// <returns>Devuelve un objeto <see cref="Thesaurus"/> con la información completa del thesaurus.</returns>
         Thesaurus ObtenerThesaurus();
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/AgregarExpansion: Agrega una nueva expansión de sinónimos al thesaurus.
-         */
+        /// <summary>
+        /// Agrega una nueva expansión de sinónimos al thesaurus.
+        /// </summary>
+        /// <param name="sinonimos">Lista de sinónimos que se desean agregar como una nueva expansión.</param>
+        /// <returns>Devuelve un mensaje indicando el resultado de la operación.</returns>
         string AgregarExpansion(List<string> sinonimos);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/AgregarSubAExpansion: Agrega un nuevo sub-elemento a una expansión existente en el thesaurus.
-         */
+        /// <summary>
+        /// Agrega un nuevo sub-elemento a una expansión existente en el thesaurus.
+        /// </summary>
+        /// <param name="expansionExistente">El término de expansión al que se desea agregar un sub-elemento.</param>
+        /// <param name="nuevoSub">El nuevo sub-elemento a agregar en la expansión.</param>
+        /// <returns>Devuelve un mensaje indicando el resultado de la operación.</returns>
         string AgregarSubAExpansion(string expansionExistente, string nuevoSub);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ActualizarExpansion: Actualiza una lista de expansiones en el thesaurus con nuevos términos.
-         */
+        /// <summary>
+        /// Actualiza una lista de expansiones en el thesaurus con nuevos términos.
+        /// </summary>
+        /// <param name="expansions">Lista de objetos <see cref="Expansion"/> que contienen las nuevas expansiones a actualizar.</param>
+        /// <returns>Devuelve un mensaje indicando el resultado de la operación.</returns>
         string ActualizarExpansion(List<Expansion> expansions);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/EjecutarArchivoBat: Ejecuta un archivo BAT en el servidor para procesar actualizaciones o configuraciones específicas.
-         */
+        /// <summary>
+        /// Ejecuta un archivo BAT en el servidor para procesar actualizaciones o configuraciones específicas.
+        /// </summary>
+        /// <returns>Devuelve un mensaje con el resultado de la ejecución del archivo BAT.</returns>
         string EjecutarArchivoBat();
 
-        /* 
-        * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-        * WebApp/ResetSQLServer: actualiza el servidor de sqlserver
-        */
+        /// <summary>
+        /// Actualiza el servidor de SQL Server ejecutando los procesos de reinicio o actualización configurados.
+        /// </summary>
+        /// <returns>Devuelve un mensaje indicando el resultado de la operación.</returns>
         string ResetSQLServer();
+
     }
 }

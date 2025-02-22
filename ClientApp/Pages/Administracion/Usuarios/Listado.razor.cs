@@ -180,12 +180,14 @@ namespace ClientApp.Pages.Administracion.Usuarios
                 {
                     CloseModal(); // Cierra el modal
                     toastService?.CreateToastMessage(ToastType.Success, "Registro eliminado exitosamente.");
+                    iNavigationManager?.NavigateTo("/usuarios");
                     await LoadUsuarios(); // Actualiza la lista
                     //await grid?.RefreshDataAsync(); //resfresca la grilla
                 }
                 else
                 {
                     toastService?.CreateToastMessage(ToastType.Danger, "Error al eliminar el registro.");
+                    iNavigationManager?.NavigateTo("/usuarios");
                 }
             }
 

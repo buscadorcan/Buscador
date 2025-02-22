@@ -1,3 +1,5 @@
+/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/HomologacionController: Controlador para funcionalidades de Homologación
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using AutoMapper;
@@ -23,10 +25,13 @@ namespace WebApp.Controllers
         private readonly IHomologacionRepository _iRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindByParent: Obtiene la lista de homologaciones basadas en un identificador de padre.
-         */
+        /// <summary>
+        /// FindByParent
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de HomologacionDto que representa las homologaciones encontradas.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
         [HttpGet("findByParent")]
         public IActionResult FindByParent()
         {
@@ -43,10 +48,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindById: Obtiene una homologación específica por su ID.
-         */
+        /// <summary>
+        /// FindById
+        /// </summary>
+        /// <param name="id">Identificador único de la homologación a buscar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con un HomologacionDto correspondiente al registro encontrado.
+        /// En caso de que el registro no exista, devuelve un mensaje de error adecuado.
+        /// </returns>
         [Authorize]
         [HttpGet("{id:int}")]
         public IActionResult FindById(int id)
@@ -57,7 +66,7 @@ namespace WebApp.Controllers
 
                 if (record == null)
                 {
-                    return NotFoundResponse("Reguistro no encontrado");
+                    return NotFoundResponse("Registro no encontrado");
                 }
 
                 return Ok(new RespuestasAPI<HomologacionDto>
@@ -71,10 +80,14 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Update: Actualiza los datos de una homologación existente.
-         */
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="id">Identificador único de la homologación a actualizar.</param>
+        /// <param name="dto">Objeto HomologacionDto con la información actualizada.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] HomologacionDto dto)
@@ -83,7 +96,7 @@ namespace WebApp.Controllers
             {
                 dto.IdHomologacion = id;
                 dto.Estado = "A";
-                
+
                 return Ok(new RespuestasAPI<bool>
                 {
                     IsSuccess = _iRepo.Update(_mapper.Map<Homologacion>(dto))
@@ -95,10 +108,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Create: Crea una nueva homologación en el sistema.
-         */
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="dto">Objeto HomologacionDto con la información de la nueva homologación.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la creación fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] HomologacionDto dto)
@@ -116,10 +132,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Deactive: Desactiva una homologación estableciendo su estado en "X".
-         */
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="id">Identificador único de la homologación a desactivar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
+        /// </returns>
         [Authorize]
         [HttpDelete("{id:int}")]
         public IActionResult Deactive(int id)
@@ -130,7 +149,7 @@ namespace WebApp.Controllers
 
                 if (record == null)
                 {
-                    return NotFoundResponse("Reguistro no encontrado");
+                    return NotFoundResponse("Registro no encontrado");
                 }
 
                 record.Estado = "X";
@@ -146,31 +165,37 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindByCodigoHomologacion: Obtiene homologaciones filtradas por código de homologación.
-         */
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="codigoHomologacion">Código de homologación por el cual se filtrarán los registros.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwHomologacionDto que representan las homologaciones encontradas.
+        /// </returns>
         [Authorize]
         [HttpGet("findByCodigoHomologacion/{codigoHomologacion}")]
-        public IActionResult FinfindByCodigoHomologaciondByParent(string codigoHomologacion)
+        public IActionResult FindByCodigoHomologacion(string codigoHomologacion)
         {
             try
             {
                 return Ok(new RespuestasAPI<List<VwHomologacionDto>>
                 {
-                    Result = _iRepo.ObtenerVwHomologacionPorCodigo(codigoHomologacion).Select(item => _mapper.Map<VwHomologacionDto>(item)).ToList()
+                    Result = _iRepo.ObtenerVwHomologacionPorCodigo(codigoHomologacion)
+                        .Select(item => _mapper.Map<VwHomologacionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(FinfindByCodigoHomologaciondByParent));
+                return HandleException(e, nameof(FindByCodigoHomologacion));
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindByAll: Obtiene todas las homologaciones registradas en el sistema.
-         */
+        /// <summary>
+        /// FindByAll
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de HomologacionDto representando todas las homologaciones.
+        /// </returns>
         [Authorize]
         [HttpGet("FindByAll")]
         public IActionResult FindByAll()
@@ -184,8 +209,9 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(FindByParent));
+                return HandleException(e, nameof(FindByAll));
             }
         }
+
     }
 }

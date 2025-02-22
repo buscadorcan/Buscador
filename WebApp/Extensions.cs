@@ -69,6 +69,7 @@ namespace WebApp.Extensions
 
             // Registra repositorios para acceso a datos.
             services.AddScoped<IONARepository, ONARepository>();
+            services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<IImportador, ImportadorService>();

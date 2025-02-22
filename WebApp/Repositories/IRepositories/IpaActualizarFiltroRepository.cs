@@ -2,10 +2,11 @@
 {
     public interface IpaActualizarFiltroRepository
     {
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ActualizarFiltroAsync: Actualiza de forma asíncrona los filtros almacenados en la base de datos.
-         */
+        /// <summary>
+        /// Actualiza de forma asíncrona los filtros almacenados en la base de datos.
+        /// </summary>
+        /// <returns>Devuelve un <see cref="Task{Boolean}"/> que indica si la operación fue exitosa.</returns>
         Task<bool> ActualizarFiltroAsync();
+
     }
 }

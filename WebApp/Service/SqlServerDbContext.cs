@@ -33,6 +33,7 @@ namespace WebApp.Service
 
         /// <summary>Tabla de homologación para transformar datos entre sistemas.</summary>
         public DbSet<Homologacion> Homologacion { get; set; }
+        public DbSet<MenuRol> MenuRol { get; set; }
 
         /// <summary>Tabla de logs que registra el proceso de migración.</summary>
         public DbSet<LogMigracion> LogMigracion { get; set; }
@@ -48,6 +49,7 @@ namespace WebApp.Service
 
         /// <summary>Tabla principal que representa las conexiones ONA.</summary>
         public DbSet<ONA> ONA { get; set; }
+        public DbSet<Menus> Menus { get; set; }
 
         /// <summary>Tabla que almacena las configuraciones de conexiones ONA.</summary>
         public DbSet<ONAConexion> ONAConexion { get; set; }

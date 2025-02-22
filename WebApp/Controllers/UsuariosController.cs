@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/UsuariosController: Controlador para funcionalidad en Usuarios
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models.Dtos;
@@ -29,221 +31,267 @@ namespace WebApp.Controllers
     private readonly IRecoverUserService _iServiceRecover = iServiceRecover;
     private readonly IMapper _mapper = mapper;
 
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/Login: Autentica a un usuario en el sistema y devuelve sus credenciales.
-     */
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
-    {
-      try
-      {
-        var result = await _iService.Authenticate(usuarioAutenticacionDto);
-
-        if (!result.IsSuccess) {
-          return BadRequestResponse(result.ErrorMessage);
-        }
-
-        return Ok(new RespuestasAPI<AuthenticateResponseDto> {
-          Result = result.Value
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(Login));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/validar: Valida el codigo enviado luego de la autenticación.
-     */
-    [HttpPost("validar")]
-    public IActionResult Validar([FromBody] AuthValidationDto authValidationDto)
-    {
-      try
-      {
-        var result = _iService.ValidateCode(authValidationDto);
-
-        if (!result.IsSuccess) {
-          return BadRequestResponse(result.ErrorMessage);
-        }
-
-        return Ok(new RespuestasAPI<UsuarioAutenticacionRespuestaDto> {
-          Result = result.Value
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(Login));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/RecoverAsync: Permite la recuperación de contraseña de un usuario.
-     */
-    [HttpPost("recuperar")]
-    public async Task<IActionResult> RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
-    {
-      try
-      {
-        var result = await _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
-
-        if (!result.IsSuccess) {
-          return BadRequestResponse(result.ErrorMessage);
-        }
-
-        return Ok(new RespuestasAPI<bool> {
-          Result = result.Value
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(RecoverAsync));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/Create: Registra un nuevo usuario en el sistema.
-     */
-    [HttpPost("registro")]
-    public IActionResult Create([FromBody] UsuarioDto dto)
-    {
-      try
-      {
-        bool validarEmailUnico = _iRepo.IsUniqueUser(dto.Email ?? "");
-        if (!validarEmailUnico)
+        /// <summary>
+        /// WebApp/Login: Autentica a un usuario en el sistema y devuelve sus credenciales.
+        /// Este método permite autenticar a un usuario en el sistema mediante sus credenciales de acceso.
+        /// </summary>
+        /// <param name="usuarioAutenticacionDto">Objeto que contiene el correo electrónico y la contraseña del usuario.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la respuesta de autenticación que incluye el token de acceso si es exitoso.
+        /// En caso de credenciales inválidas, devuelve un mensaje de error.
+        /// </returns>
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
-          return BadRequestResponse("El nombre de usuario ya existe");
+            try
+            {
+                var result = await _iService.Authenticate(usuarioAutenticacionDto);
+
+                if (!result.IsSuccess)
+                {
+                    return BadRequestResponse(result.ErrorMessage);
+                }
+
+                return Ok(new RespuestasAPI<AuthenticateResponseDto>
+                {
+                    Result = result.Value
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Login));
+            }
         }
 
-        return Ok(new RespuestasAPI<bool> {
-          IsSuccess = _iRepo.Create(_mapper.Map<Usuario>(dto))
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(Create));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/FindAll: Obtiene la lista de todos los usuarios registrados en el sistema.
-     */
-    [HttpGet]
-    public IActionResult FindAll()
-    {
-      try
-      {
-        return Ok(new RespuestasAPI<List<UsuarioDto>> {
-          Result = _mapper.Map<List<UsuarioDto>>(_iRepo.FindAll())
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(FindAll));
-      }
-    }
-
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/FindById: Obtiene la información de un usuario específico según su ID.
-     */
-    [HttpGet("{idUsuario:int}", Name = "FindById")]
-    public IActionResult FindById(int idUsuario)
-    {
-      try
-      {
-        var itemUsuario = _iRepo.FindById(idUsuario);
-
-        if (itemUsuario == null)
+        /// <summary>
+        /// WebApp/validar: Valida el código enviado luego de la autenticación.
+        /// Este método permite validar el código de autenticación de múltiples factores (MFA) enviado al usuario.
+        /// </summary>
+        /// <param name="authValidationDto">Objeto que contiene el código de validación y la información del usuario.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la información de autenticación del usuario si la validación es exitosa.
+        /// En caso de código inválido, devuelve un mensaje de error.
+        /// </returns>
+        [HttpPost("validar")]
+        public IActionResult Validar([FromBody] AuthValidationDto authValidationDto)
         {
-          return NotFoundResponse("Usuario no encontrado");
+            try
+            {
+                var result = _iService.ValidateCode(authValidationDto);
+
+                if (!result.IsSuccess)
+                {
+                    return BadRequestResponse(result.ErrorMessage);
+                }
+
+                return Ok(new RespuestasAPI<UsuarioAutenticacionRespuestaDto>
+                {
+                    Result = result.Value
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Validar));
+            }
         }
 
-        return Ok(new RespuestasAPI<UsuarioDto> {
-          Result = _mapper.Map<UsuarioDto>(itemUsuario)
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(FindById));
-      }
-    }
-
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/Update: Actualiza la información de un usuario en el sistema.
-     */
-    [HttpPut("{idUsuario:int}", Name = "Update")]
-    public IActionResult Update(int idUsuario, [FromBody] UsuarioDto dto)
-    {
-      try
-      {
-        dto.IdUsuario = idUsuario;
-        var usuario = _mapper.Map<Usuario>(dto);
-
-        return Ok(new RespuestasAPI<bool> {
-          IsSuccess = _iRepo.Update(usuario)
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(Update));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/Deactivate: Desactiva un usuario estableciendo su estado como "X".
-     */
-    [Authorize]
-    [HttpDelete("{idUsuario:int}", Name = "Deactivate")]
-    public IActionResult Deactivate(int idUsuario)
-    {
-      try
-      {
-        var usuario = _iRepo.FindById(idUsuario);
-
-        if (usuario == null)
+        /// <summary>
+        /// WebApp/RecoverAsync: Permite la recuperación de contraseña de un usuario.
+        /// Este método envía un enlace o código de recuperación de contraseña al correo del usuario para permitir el restablecimiento.
+        /// </summary>
+        /// <param name="usuarioRecuperacionDto">Objeto que contiene el correo electrónico del usuario que desea recuperar la contraseña.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la solicitud de recuperación fue exitosa.
+        /// </returns>
+        [HttpPost("recuperar")]
+        public async Task<IActionResult> RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
         {
-          return NotFoundResponse("Id de Usuario incorrecto");
+            try
+            {
+                var result = await _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
+
+                if (!result.IsSuccess)
+                {
+                    return BadRequestResponse(result.ErrorMessage);
+                }
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    Result = result.Value
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(RecoverAsync));
+            }
         }
 
-        usuario.Estado = "X";
-
-        return Ok(new RespuestasAPI<bool> {
-          IsSuccess = _iRepo.Update(usuario)
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(Deactivate));
-      }
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/ValidarEmail: Verifica si un correo electrónico ya está registrado en el sistema.
-     */
-    [HttpGet("validar-email")]
-    public IActionResult ValidarEmail([FromQuery] string email)
-    {
-        try
+        /// <summary>
+        /// WebApp/Create: Registra un nuevo usuario en el sistema.
+        /// Este método permite crear una nueva cuenta de usuario con sus datos de registro.
+        /// </summary>
+        /// <param name="dto">Objeto que contiene la información del nuevo usuario, incluyendo su correo y contraseña.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la creación del usuario fue exitosa.
+        /// Si el correo ya está registrado, devuelve un mensaje de error.
+        /// </returns>
+        [HttpPost("registro")]
+        public IActionResult Create([FromBody] UsuarioDto dto)
         {
-            bool isUnique = _iRepo.IsUniqueUser(email);
-            return Ok(isUnique);
+            try
+            {
+                bool validarEmailUnico = _iRepo.IsUniqueUser(dto.Email ?? "");
+                if (!validarEmailUnico)
+                {
+                    return BadRequestResponse("El nombre de usuario ya existe");
+                }
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.Create(_mapper.Map<Usuario>(dto))
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Create));
+            }
         }
-        catch (Exception e)
+
+        /// <summary>
+        /// WebApp/FindAll: Obtiene la lista de todos los usuarios registrados en el sistema.
+        /// Este método permite recuperar la lista completa de usuarios con su información básica.
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de usuarios registrados en el sistema.
+        /// </returns>
+        [HttpGet]
+        public IActionResult FindAll()
         {
-            return HandleException(e, nameof(ValidarEmail));
+            try
+            {
+                return Ok(new RespuestasAPI<List<UsuarioDto>>
+                {
+                    Result = _mapper.Map<List<UsuarioDto>>(_iRepo.FindAll())
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindAll));
+            }
         }
-        
+
+        /// <summary>
+        /// FindById
+        /// </summary>
+        /// <param name="idUsuario">ID único del usuario a buscar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la información del usuario solicitado.
+        /// Si el usuario no existe, devuelve un mensaje de error.
+        /// </returns>
+        [HttpGet("{idUsuario:int}", Name = "FindById")]
+        public IActionResult FindById(int idUsuario)
+        {
+            try
+            {
+                var itemUsuario = _iRepo.FindById(idUsuario);
+
+                if (itemUsuario == null)
+                {
+                    return NotFoundResponse("Usuario no encontrado");
+                }
+
+                return Ok(new RespuestasAPI<UsuarioDto>
+                {
+                    Result = _mapper.Map<UsuarioDto>(itemUsuario)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(FindById));
+            }
+        }
+
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="idUsuario">ID único del usuario a actualizar.</param>
+        /// <param name="dto">Objeto con los nuevos datos del usuario.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
+        /// </returns>
+        [HttpPut("{idUsuario:int}", Name = "Update")]
+        public IActionResult Update(int idUsuario, [FromBody] UsuarioDto dto)
+        {
+            try
+            {
+                dto.IdUsuario = idUsuario;
+                var usuario = _mapper.Map<Usuario>(dto);
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.Update(usuario)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Update));
+            }
+        }
+
+        /// <summary>
+        /// Deactivate
+        /// </summary>
+        /// <param name="idUsuario">ID único del usuario a desactivar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la desactivación fue exitosa.
+        /// Si el usuario no existe, devuelve un mensaje de error.
+        /// </returns>
+        [Authorize]
+        [HttpDelete("{idUsuario:int}", Name = "Deactivate")]
+        public IActionResult Deactivate(int idUsuario)
+        {
+            try
+            {
+                var usuario = _iRepo.FindById(idUsuario);
+
+                if (usuario == null)
+                {
+                    return NotFoundResponse("Id de Usuario incorrecto");
+                }
+
+                usuario.Estado = "X";
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    IsSuccess = _iRepo.Update(usuario)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Deactivate));
+            }
+        }
+
+        /// <summary>
+        /// ValidarEmail
+        /// </summary>
+        /// <param name="email">Correo electrónico a validar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con un valor booleano indicando si el correo es único en el sistema.
+        /// </returns>
+        [HttpGet("validar-email")]
+        public IActionResult ValidarEmail([FromQuery] string email)
+        {
+            try
+            {
+                bool isUnique = _iRepo.IsUniqueUser(email);
+                return Ok(isUnique);
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ValidarEmail));
+            }
+        }
+
     }
-  }
 }

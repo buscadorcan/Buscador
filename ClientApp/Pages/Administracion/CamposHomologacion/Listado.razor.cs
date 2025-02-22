@@ -83,6 +83,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         /// </summary>
         private async Task OnAutoCompleteChangedHandler(ChangeEventArgs e)
         {
+            
             // Obtén el ID seleccionado desde el <select>
             var selectedId = Convert.ToInt32(e.Value);
 
@@ -93,7 +94,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             if (selectedHomologacion != null)
             {
                 homologacionSelected = selectedHomologacion;
-
+                IsAdd = homologacionSelected.CodigoHomologacion == "KEY_DIM_ESQUEMA";
                 // Refresca la grilla si es necesario
                 if (grid != null)
                 {

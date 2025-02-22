@@ -1,0 +1,99 @@
+@page "/nuevo-config-menu"
+@page "/editar-config-menu/{IdHRol:int}/{IdHMenu:int}"
+@layout AdminLayout
+@using Microsoft.AspNetCore.Authorization
+@using ClientApp.Services.IService
+@using SharedApp.Models.Dtos
+@using System.Text;
+@using System.IO;
+
+<meta charset="UTF-8">
+<style>
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .small-input {
+        width: 50%;
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+    }
+</style>
+
+
+<PageTitle>Formulario de Configuración de Menú</PageTitle>
+
+<EditForm Model="configuracionMenu" OnValidSubmit="RegistrarConfiguracionMenu" class="pt-4">
+    <DataAnnotationsValidator />
+
+    <div class="card border">
+        <!-- Título -->
+        <h1 class="title headlineheadline2-h2 text-center">Configuración para Menú</h1>
+
+        <div class="card-body px-lg-5 pt-4">
+            <!-- Campo Rol -->
+             <div class="form-row py-2 text-center">
+            <label class="label valign-text-middle inter-regular-normal-comet-16px">Rol</label>
+            <div class="col d-flex justify-content-center">
+                <select id="rolSelect" class="form-control inter-regular-normal-comet-14px small-input text-center"
+                        @onchange="async (e) => await CargarMenus(e)">
+                    <option value="" selected disabled>Seleccione un rol</option>
+                    @if (roles != null)
+                    {
+                        @foreach (var rol in roles)
+                        {
+                            <option value="@rol.IdHomologacionRol">@rol.Rol</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+            <!-- Campo Menú -->
+            <div class="form-row py-2 text-center">
+                <label class="label valign-text-middle inter-regular-normal-comet-16px">Menú</label>
+                <div class="col d-flex justify-content-center">
+                    <select class="form-control inter-regular-normal-comet-14px small-input text-center"
+                            @bind="configuracionMenu.IdHMenu">
+                        <option value="" selected disabled>Seleccione un menú</option>
+                        @if (menus != null)
+                        {
+                            @foreach (var menu in menus)
+                            {
+                                <option value="@menu.IdHomologacion">@menu.MostrarWeb</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+<div class="py-2 d-flex justify-content-end gap-2">
+    <a @onclick="Regresar">
+        <div class="button">
+            <img class="icons" src="admin/img/icons.svg" alt="Icons">
+            <div class="button-1 headingheadline4-h4">Regresar</div>
+        </div>
+    </a>
+    <div class="save-button-container">
+        <Button @ref="saveButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await RegistrarConfiguracionMenu()">
+            <div class="button-3 headingheadline4-h4">Guardar</div>
+        </Button>
+    </div>
+</div>
+
+
+

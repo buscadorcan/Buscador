@@ -5,46 +5,52 @@ namespace WebApp.Repositories.IRepositories
 {
     public interface IONAConexionRepository
     {
-        /* 
- * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
- * WebApp/Update: Actualiza un registro de ONAConexion en la base de datos.
- */
+        /// <summary>
+        /// Actualiza un registro de <see cref="ONAConexion"/> en la base de datos.
+        /// </summary>
+        /// <param name="data">Objeto <see cref="ONAConexion"/> con los datos actualizados.</param>
+        /// <returns>Devuelve <c>true</c> si la actualización fue exitosa, de lo contrario <c>false</c>.</returns>
         bool Update(ONAConexion data);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/Create: Crea un nuevo registro de ONAConexion en la base de datos.
-         */
+        /// <summary>
+        /// Crea un nuevo registro de <see cref="ONAConexion"/> en la base de datos.
+        /// </summary>
+        /// <param name="data">Objeto <see cref="ONAConexion"/> con los datos a insertar.</param>
+        /// <returns>Devuelve <c>true</c> si la operación fue exitosa, de lo contrario <c>false</c>.</returns>
         bool Create(ONAConexion data);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindById: Busca un registro de ONAConexion en la base de datos por su identificador único.
-         */
+        /// <summary>
+        /// Busca un registro de <see cref="ONAConexion"/> en la base de datos por su identificador único.
+        /// </summary>
+        /// <param name="Id">Identificador único del registro.</param>
+        /// <returns>Devuelve un objeto <see cref="ONAConexion"/> si se encuentra, de lo contrario <c>null</c>.</returns>
         ONAConexion? FindById(int Id);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindByIdONA: Busca un registro de ONAConexion en la base de datos por el identificador de ONA.
-         */
+        /// <summary>
+        /// Busca un registro de <see cref="ONAConexion"/> en la base de datos por el identificador de ONA.
+        /// </summary>
+        /// <param name="IdONA">Identificador del ONA asociado.</param>
+        /// <returns>Devuelve un objeto <see cref="ONAConexion"/> si se encuentra, de lo contrario <c>null</c>.</returns>
         ONAConexion? FindByIdONA(int IdONA);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindByIdONAAsync: Busca de forma asíncrona un registro de ONAConexion en la base de datos por el identificador de ONA.
-         */
+        /// <summary>
+        /// Busca de forma asíncrona un registro de <see cref="ONAConexion"/> en la base de datos por el identificador de ONA.
+        /// </summary>
+        /// <param name="IdONA">Identificador del ONA asociado.</param>
+        /// <returns>Devuelve un <see cref="Task{ONAConexion}"/> con el objeto encontrado o <c>null</c> si no existe.</returns>
         Task<ONAConexion?> FindByIdONAAsync(int IdONA);
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FindAll: Obtiene la lista completa de registros de ONAConexion almacenados en la base de datos.
-         */
+        /// <summary>
+        /// Obtiene la lista completa de registros de <see cref="ONAConexion"/> almacenados en la base de datos.
+        /// </summary>
+        /// <returns>Devuelve una lista de objetos <see cref="ONAConexion"/>.</returns>
         List<ONAConexion> FindAll();
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GetOnaConexionByOnaListAsync: Obtiene de forma asíncrona una lista de conexiones de ONA por su identificador.
-         */
+        /// <summary>
+        /// Obtiene de forma asíncrona una lista de conexiones de <see cref="ONAConexion"/> por su identificador de ONA.
+        /// </summary>
+        /// <param name="IdONA">Identificador del ONA.</param>
+        /// <returns>Devuelve una lista de objetos <see cref="ONAConexion"/> relacionados con el ONA especificado.</returns>
         List<ONAConexion> GetOnaConexionByOnaListAsync(int IdONA);
 
     }

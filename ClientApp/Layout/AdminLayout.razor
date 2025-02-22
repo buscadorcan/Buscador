@@ -110,70 +110,79 @@
                                     {
                                         @foreach (var item in navItems)
                                         {
-                                            switch (item.Href)
+                                            if (item.Href != "/onas" && item.Href != "/usuarios" && item.Href != "/reporte1")
                                             {
-                                                case "/sinonimos":
-                                                    <div class="">
-                                                        <img class="bibuilding" src="admin/img/ep-connection.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/conexion":
-                                                    <div class="conexion">
-                                                        <img class="bibuilding" src="admin/img/ep-connection.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/grupos":
-                                                    <div class="grupos">
-                                                        <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/campos-homologacion":
-                                                    <div class="campos">
-                                                        <img class="bibuilding" src="admin/img/bi-card-checklist.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/esquemas":
-                                                    <div class="esquemas">
-                                                        <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/validacion":
-                                                    <div class="campos">
-                                                        <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/migracion-excel":
-                                                    <div class="excel">
-                                                        <img class="bibuilding" src="admin/img/bi-file-earmark-excel.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/reportecan":
-                                                    <div class="estadisticas">
-                                                        <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/reporteona":
-                                                    <div class="estadisticas">
-                                                        <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/reporteread":
-                                                    <div class="estadisticas">
-                                                        <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                            }
+                                                switch (item.Href)
+                                                {
+                                                    case "/sinonimos":
+                                                        <div class="campos">
+                                                            <img class="bibuilding" src="admin/img/ep-connection.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/conexion":
+                                                        <div class="conexion">
+                                                            <img class="bibuilding" src="admin/img/ep-connection.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/grupos":
+                                                        <div class="grupos">
+                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/campos-homologacion":
+                                                        <div class="campos">
+                                                            <img class="bibuilding" src="admin/img/bi-card-checklist.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/esquemas":
+                                                        <div class="esquemas">
+                                                            <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/validacion":
+                                                        <div class="campos">
+                                                            <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/migracion-excel":
+                                                        <div class="excel">
+                                                            <img class="bibuilding" src="admin/img/bi-file-earmark-excel.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/reportecan":
+                                                        <div class="estadisticas">
+                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/reporteona":
+                                                        <div class="estadisticas">
+                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    case "/reporteread":
+                                                        <div class="estadisticas">
+                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                    default:
+                                                        <div class="campos">
+                                                            <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
+                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
+                                                        </div>
+                                                        break;
+                                                }
 
+                                            }
                                         }
                                     }
                                     else
@@ -205,7 +214,6 @@
 
         @if (NavigationManager.Uri.Contains("/administracion"))
         {
-            @* ClasePage = "pantalla-inicio screen"; *@
             <div class="banner">
                 <div class="top">
                     <img class="logo" src="admin/img/logo.svg" alt="logo">
@@ -224,7 +232,8 @@
                         <img class="general frame" src="admin/img/frame-1.svg" alt="Frame">
                     </div>
                 </div>
-                @if (NavigationManager.Uri.Contains("/reportecan") ||
+                
+                  @if (NavigationManager.Uri.Contains("/reportecan") ||
                   NavigationManager.Uri.Contains("/reporteona") ||
                   NavigationManager.Uri.Contains("/reporteread") ||
                   NavigationManager.Uri.Contains("/reporte1"))
@@ -235,30 +244,7 @@
                         @Body
                     </div>
                 }
-
-                @if (NavigationManager.Uri.Contains("/usuario") ||
-               NavigationManager.Uri.Contains("/nuevo-usuario") ||
-               NavigationManager.Uri.Contains("/editar-usuario") ||
-               NavigationManager.Uri.Contains("/esquemas") ||
-               NavigationManager.Uri.Contains("/nuevo-esquema") ||
-               NavigationManager.Uri.Contains("/editar-esquema") ||
-               NavigationManager.Uri.Contains("/onas") ||
-               NavigationManager.Uri.Contains("/nuevo-ona") ||
-               NavigationManager.Uri.Contains("/editar-ona") ||
-               NavigationManager.Uri.Contains("/grupos") ||
-               NavigationManager.Uri.Contains("/editar-grupos") ||
-               NavigationManager.Uri.Contains("/campos-homologacion") ||
-               NavigationManager.Uri.Contains("/editar-campos-homologacion") ||
-               NavigationManager.Uri.Contains("/nuevo-campos-homologacion") ||
-               NavigationManager.Uri.Contains("/migracion-excel") ||
-               NavigationManager.Uri.Contains("/nueva-migarcion-excel") ||
-               NavigationManager.Uri.Contains("/conexion") ||
-               NavigationManager.Uri.Contains("/sinonimos") ||
-               NavigationManager.Uri.Contains("/nuevo-conexion") ||
-               NavigationManager.Uri.Contains("/editar-conexion") ||
-               NavigationManager.Uri.Contains("/log-migracion") ||
-               NavigationManager.Uri.Contains("/page-nodisponible") ||
-               NavigationManager.Uri.Contains("/validacion"))   
+                else
                 {
                     <link href="css/admin.css" rel="stylesheet">
                     <link href="css/pagination.css" rel="stylesheet">

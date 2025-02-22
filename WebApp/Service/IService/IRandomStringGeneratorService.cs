@@ -3,17 +3,18 @@ namespace WebApp.Service.IService
     public interface IRandomStringGeneratorService
     {
         /// <summary>
-        /// Generates a temporary password using a random selection of characters.
+        /// Genera una contraseña temporal aleatoria utilizando una combinación de caracteres alfanuméricos.
         /// </summary>
-        /// <param name="length">The length of the generated password.</param>
-        /// <returns>A randomly generated temporary password.</returns>
+        /// <param name="length">Longitud de la contraseña generada.</param>
+        /// <returns>Devuelve una cadena de caracteres que representa la contraseña generada.</returns>
         string GenerateTemporaryPassword(int length);
 
         /// <summary>
-        /// Generates a temporary code using a random selection of digits.
+        /// Genera un código temporal aleatorio compuesto únicamente de dígitos.
         /// </summary>
-        /// <param name="length">The length of the generated code.</param>
-        /// <returns>A randomly generated temporary code.</returns>
+        /// <param name="length">Longitud del código generado.</param>
+        /// <returns>Devuelve una cadena de caracteres numéricos que representa el código generado.</returns>
         string GenerateTemporaryCode(int length);
+
     }
 }

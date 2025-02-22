@@ -1,4 +1,6 @@
-﻿using WebApp.Repositories.IRepositories;
+﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/BuscadorController: Controlador para formulario del buscador
+using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
@@ -15,10 +17,13 @@ namespace WebApp.Controllers
     {
         private readonly IBuscadorRepository _vhRepo = vhRepo;
 
-        /* 
-        * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-        * WebApp/PsBuscarPalabra: Realiza una búsqueda de palabras clave en la base de datos y devuelve los resultados paginados.
-        */
+        /// <summary>
+        /// PsBuscarPalabra
+        /// </summary>
+        /// <param name="paramJSON"></param>
+        /// <param name="PageNumber"></param>
+        /// <param name="RowsPerPage"></param>
+        /// <returns></returns>
         [HttpGet("search/phrase")]
         public IActionResult PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
         {
@@ -35,10 +40,13 @@ namespace WebApp.Controllers
             }
         }
 
-         /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FnHomologacionEsquemaTodo: Obtiene todos los esquemas homologados en función de una vista y un identificador de ONA.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/FnHomologacionEsquemaTodo: Obtiene todos los esquemas homologados en función de una vista y un identificador de ONA.
+        /// </summary>
+        /// <param name="VistaFk">Nombre de la vista en la base de datos.</param>
+        /// <param name="idOna">Identificador del Organismo Nacional de Acreditación.</param>
+        /// <returns>Lista de esquemas homologados.</returns>
         [HttpGet("homologacionEsquemaTodo")]
         public IActionResult FnHomologacionEsquemaTodo(string VistaFk, int idOna)
         {
@@ -55,10 +63,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FnHomologacionEsquema: Recupera la información de un esquema homologado específico a partir de su identificador.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/FnHomologacionEsquema: Recupera la información de un esquema homologado específico a partir de su identificador.
+        /// </summary>
+        /// <param name="idEsquema">Identificador único del esquema.</param>
+        /// <returns>Información del esquema homologado.</returns>
         [HttpGet("homologacionEsquema/{idEsquema}")]
         public IActionResult FnHomologacionEsquema(int idEsquema)
         {
@@ -75,10 +85,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FnEsquemaCabecera: Obtiene la cabecera de un esquema a partir de su identificador.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/FnEsquemaCabecera: Obtiene la cabecera de un esquema a partir de su identificador.
+        /// </summary>
+        /// <param name="IdEsquemadata">Identificador del esquema.</param>
+        /// <returns>Información de la cabecera del esquema.</returns>
         [HttpGet("fnesquemacabecera/{IdEsquemadata}")]
         public IActionResult FnEsquemaCabecera(int IdEsquemadata)
         {
@@ -96,10 +108,14 @@ namespace WebApp.Controllers
         }
 
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FnHomologacionEsquemaDato: Obtiene los datos de homologación de un esquema en función de su identificador, vista y ONA.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/FnHomologacionEsquemaDato: Obtiene los datos de homologación de un esquema en función de su identificador, vista y ONA.
+        /// </summary>
+        /// <param name="idEsquema">Identificador del esquema.</param>
+        /// <param name="VistaFK">Vista relacionada en la base de datos.</param>
+        /// <param name="idOna">Identificador del ONA.</param>
+        /// <returns>Lista de datos homologados del esquema.</returns>
         [HttpGet("homologacionEsquemaDato/{idEsquema}/{idOna}")]
         public IActionResult FnHomologacionEsquemaDato(int idEsquema,string VistaFK, int idOna)
         {
@@ -116,10 +132,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FnEsquemaDato: Realiza una búsqueda de datos dentro de un esquema específico según el texto ingresado.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/FnEsquemaDato: Realiza una búsqueda de datos dentro de un esquema específico según el texto ingresado.
+        /// </summary>
+        /// <param name="idEsquemaData">Identificador del esquema de datos.</param>
+        /// <param name="TextoBuscar">Texto a buscar dentro del esquema.</param>
+        /// <returns>Lista de datos coincidentes.</returns>
         [HttpGet("EsquemaDatoBuscado")]
         public IActionResult FnEsquemaDato(int idEsquemaData, string TextoBuscar)
         {
@@ -138,10 +157,12 @@ namespace WebApp.Controllers
         }
 
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/FnPredictWords: Predice palabras basadas en el inicio de una palabra ingresada.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/FnPredictWords: Predice palabras basadas en el inicio de una palabra ingresada.
+        /// </summary>
+        /// <param name="word">Texto de entrada para predicción.</param>
+        /// <returns>Lista de palabras sugeridas.</returns>
         [HttpGet("predictWords")]
         public IActionResult FnPredictWords(string word)
         {
@@ -158,10 +179,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ValidateWords: Valida una lista de palabras ingresadas por el usuario.
-         */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/ValidateWords: Valida una lista de palabras ingresadas por el usuario.
+        /// </summary>
+        /// <param name="words">Lista de palabras a validar.</param>
+        /// <returns>Resultado de validación (true o false).</returns>
         [HttpPost("validateWords")]
         public IActionResult ValidateWords([FromBody] List<string> words)
         {
@@ -178,10 +201,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-        * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-        * WebApp/AddEventTracking: Registra la accion realizada por algun control.
-        */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/AddEventTracking: Registra la acción realizada por un control.
+        /// </summary>
+        /// <param name="eventTracking">Objeto con los detalles del evento a registrar.</param>
+        /// <returns>Mensaje de confirmación.</returns>
         [HttpPost("addEventTracking")]
         public IActionResult AddEventTracking([FromBody] EventTrackingDto eventTracking)
         {
@@ -203,10 +228,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-        * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-        * WebApp/GetCoordinates: Obtiene coordenadas geográficas (latitud y longitud) de una dirección dada mediante la API de Google Maps.
-        */
+        /// <summary>
+        /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+        /// WebApp/GetCoordinates: Obtiene coordenadas geográficas (latitud y longitud) de una dirección dada mediante la API de Google Maps.
+        /// </summary>
+        /// <param name="address">Dirección a geolocalizar.</param>
+        /// <returns>Coordenadas geográficas en formato JSON.</returns>
         [HttpGet("geocode")]
         public async Task<IActionResult> GetCoordinates([FromQuery] string address)
         {

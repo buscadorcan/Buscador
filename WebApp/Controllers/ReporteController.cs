@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/ReporteController: Controlador para funcionalidad en reportes
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +22,14 @@ namespace WebApp.Controllers
         private readonly IReporteRepository _vhRepo = iRepo;
         private readonly IMapper _mapper = mapper;
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/findByVista: Obtiene la homologación por código de homologación.
-         */
+        /// <summary>
+        /// findByVista
+        /// </summary>
+        /// <param name="codigoHomologacion">Código de homologación a buscar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la homologación correspondiente al código proporcionado.
+        /// En caso de que no exista, devuelve un objeto vacío.
+        /// </returns>
         [Authorize]
         [HttpGet("findByVista/{codigoHomologacion}")]
         public IActionResult findByVista(string codigoHomologacion)
@@ -40,7 +46,6 @@ namespace WebApp.Controllers
                     });
                 }
 
-                // Mapear el objeto a VwHomologacionDto
                 var homologacionDto = _mapper.Map<VwHomologacionDto>(homologacion);
 
                 return Ok(new RespuestasAPI<VwHomologacionDto>
@@ -54,10 +59,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerAcreditacionOna: Obtiene la acreditación de ONAs.
-         */
+        /// <summary>
+        /// ObtenerAcreditacionOna
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de acreditaciones de ONAs disponibles.
+        /// </returns>
         [Authorize]
         [HttpGet("acreditacion-ona")]
         public IActionResult ObtenerAcreditacionOna()
@@ -75,10 +82,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerAcreditacionEsquema: Obtiene la acreditación de esquemas.
-         */
+        /// <summary>
+        /// ObtenerAcreditacionEsquema
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de esquemas acreditados.
+        /// </returns>
         [Authorize]
         [HttpGet("acreditacion-esquema")]
         public IActionResult ObtenerAcreditacionEsquema()
@@ -96,10 +105,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerEstadoEsquema: Obtiene el estado de los esquemas.
-         */
+        /// <summary>
+        /// ObtenerEstadoEsquema
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de estados de los esquemas.
+        /// </returns>
         [Authorize]
         [HttpGet("estado-esquema")]
         public IActionResult ObtenerEstadoEsquema()
@@ -117,10 +128,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerOecPais: Obtiene información sobre OECs por país.
-         */
+        /// <summary>
+        /// ObtenerOecPais
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de OECs asociados a cada país.
+        /// </returns>
         [Authorize]
         [HttpGet("oec-pais")]
         public IActionResult ObtenerOecPais()
@@ -138,10 +151,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerEsquemaPais: Obtiene información de esquemas por país.
-         */
+        /// <summary>
+        /// ObtenerEsquemaPais
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de esquemas disponibles en cada país.
+        /// </returns>
         [Authorize]
         [HttpGet("esquema-pais")]
         public IActionResult ObtenerEsquemaPais()
@@ -159,10 +174,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerOecFecha: Obtiene información de OECs filtrados por fecha.
-         */
+        /// <summary>
+        /// ObtenerOecFecha
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de OECs filtrados por fecha.
+        /// </returns>
         [Authorize]
         [HttpGet("oec-fecha")]
         public IActionResult ObtenerOecFecha()
@@ -180,10 +197,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerProfesionalCalificado: Obtiene información sobre profesionales calificados en el sistema.
-         */
+
+        /// <summary>
+        /// ObtenerProfesionalCalificado
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de profesionales calificados.
+        /// </returns>
         [Authorize]
         [HttpGet("profesional-calificado")]
         public IActionResult ObtenerProfesionalCalificado()
@@ -201,10 +221,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerProfesionalOna: Obtiene información sobre profesionales en ONAs.
-         */
+        /// <summary>
+        /// ObtenerProfesionalOna
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de profesionales en ONAs.
+        /// </returns>
         [Authorize]
         [HttpGet("profesional-ona")]
         public IActionResult ObtenerProfesionalOna()
@@ -222,10 +244,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerProfesionalEsquema: Obtiene información de profesionales por esquema.
-         */
+        /// <summary>
+        /// ObtenerProfesionalEsquema
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de profesionales organizados por esquema.
+        /// </returns>
         [Authorize]
         [HttpGet("profesional-esquema")]
         public IActionResult ObtenerProfesionalEsquema()
@@ -243,10 +267,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerProfesionalFecha: Obtiene información de profesionales filtrados por fecha.
-         */
+        /// <summary>
+        /// ObtenerProfesionalFecha
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de profesionales filtrados por fecha.
+        /// </returns>
         [Authorize]
         [HttpGet("profesional-fecha")]
         public IActionResult ObtenerProfesionalFecha()
@@ -264,10 +290,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerCalificaUbicacion: Obtiene información de calificaciones por ubicación.
-         */
+        /// <summary>
+        /// ObtenerCalificaUbicacion
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de calificaciones organizadas por ubicación.
+        /// </returns>
         [Authorize]
         [HttpGet("califica-ubicacion")]
         public IActionResult ObtenerCalificaUbicacion()
@@ -285,10 +313,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerBusquedaFecha: Obtiene información de búsquedas filtradas por fecha.
-         */
+        /// <summary>
+        /// ObtenerBusquedaFecha
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de búsquedas filtradas por fecha.
+        /// </returns>
         [Authorize]
         [HttpGet("busqueda-fecha")]
         public IActionResult ObtenerBusquedaFecha()
@@ -306,10 +336,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerBusquedaFiltro: Obtiene información de búsquedas aplicando filtros específicos.
-         */
+        /// <summary>
+        /// ObtenerBusquedaFiltro
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de búsquedas filtradas según los criterios aplicados.
+        /// </returns>
         [Authorize]
         [HttpGet("busqueda-filtro")]
         public IActionResult ObtenerBusquedaFiltro()
@@ -327,10 +359,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerBusquedaUbicacion: Obtiene información sobre búsquedas realizadas por ubicación.
-         */
+        /// <summary>
+        /// ObtenerBusquedaUbicacion
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de búsquedas organizadas por ubicación.
+        /// </returns>
         [Authorize]
         [HttpGet("busqueda-ubicacion")]
         public IActionResult ObtenerBusquedaUbicacion()
@@ -348,10 +382,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerActualizacionONA: Obtiene información sobre la actualización de ONAs.
-         */
+        /// <summary>
+        /// ObtenerActualizacionONA
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de actualizaciones registradas en los ONAs.
+        /// </returns>
         [Authorize]
         [HttpGet("actualizacion-ona")]
         public IActionResult ObtenerActualizacionONA()
@@ -369,11 +405,12 @@ namespace WebApp.Controllers
             }
         }
 
-
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerOrganismoRegistrado: Obtiene información sobre organismos registrados.
-         */
+        /// <summary>
+        /// ObtenerOrganismoRegistrado
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de organismos registrados.
+        /// </returns>
         [Authorize]
         [HttpGet("organismo-registrado")]
         public IActionResult ObtenerOrganismoRegistrado()
@@ -391,10 +428,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerOrganizacionEsquema: Obtiene información sobre la relación entre organizaciones y esquemas.
-         */
+        /// <summary>
+        /// ObtenerOrganizacionEsquema
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de organizaciones y sus esquemas asociados.
+        /// </returns>
         [Authorize]
         [HttpGet("organizacion-esquema")]
         public IActionResult ObtenerOrganizacionEsquema()
@@ -412,10 +451,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerOrganismoActividad: Obtiene información sobre organismos y sus actividades.
-         */
+        /// <summary>
+        /// ObtenerOrganismoActividad
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con la lista de organismos y las actividades que realizan.
+        /// </returns>
         [Authorize]
         [HttpGet("organismo-actividad")]
         public IActionResult ObtenerOrganismoActividad()
@@ -432,6 +473,7 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(ObtenerOrganismoActividad));
             }
         }
+
 
 
     }

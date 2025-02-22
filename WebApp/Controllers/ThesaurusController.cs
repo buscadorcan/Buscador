@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+/// WebApp/ThesaurusController: Controlador para funcionalidad en Thesaurus
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models.Dtos;
 using SharedApp.Models;
@@ -21,10 +23,12 @@ namespace WebApp.Controllers
         private readonly IMapper _mapper = mapper;
 
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ObtenerThesaurus: Obtiene el thesaurus actual con sus expansiones y sinónimos.
-         */
+        /// <summary>
+        /// ObtenerThesaurus
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con el contenido del thesaurus actual.
+        /// </returns>
         [HttpGet("obtener/thesaurus")]
         public IActionResult ObtenerThesaurus()
         {
@@ -41,10 +45,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/AgregarExpansion: Agrega una nueva expansión de sinónimos al thesaurus.
-         */
+        /// <summary>
+        /// AgregarExpansion
+        /// </summary>
+        /// <param name="sinonimos">Lista de sinónimos a agregar como una nueva expansión.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
+        /// </returns>
         [HttpPost("agregar/expansion")]
         public IActionResult AgregarExpansion([FromBody] List<string> sinonimos)
         {
@@ -61,10 +68,13 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ActualizarExpansion: Actualiza una expansión existente en el thesaurus.
-         */
+        /// <summary>
+        /// ActualizarExpansion.
+        /// </summary>
+        /// <param name="expansions">Lista de expansiones a actualizar.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
+        /// </returns>
         [HttpPost("actualizar/expansion")]
         public IActionResult ActualizarExpansion([FromBody] List<ExpansionDto> expansions)
         {
@@ -78,14 +88,18 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(AgregarExpansion));
+                return HandleException(e, nameof(ActualizarExpansion));
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/AgregarSubExpansion: Agrega un nuevo sub-sinónimo a una expansión existente en el thesaurus.
-         */
+        /// <summary>
+        /// AgregarSubExpansion
+        /// </summary>
+        /// <param name="expansionExistente">Nombre de la expansión a la que se añadirá el sub-sinónimo.</param>
+        /// <param name="nuevoSub">Término que se añadirá como sub-sinónimo.</param>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
+        /// </returns>
         [HttpGet("agregar/expansion/{expansionExistente}/sub/{nuevoSub}")]
         public IActionResult AgregarSubExpansion([FromRoute] string expansionExistente, string nuevoSub)
         {
@@ -102,10 +116,12 @@ namespace WebApp.Controllers
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/EjecutarBat: Ejecuta un archivo BAT en el servidor para procesar el thesaurus.
-         */
+        /// <summary>
+        /// EjecutarBat
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la ejecución del archivo BAT fue exitosa.
+        /// </returns>
         [HttpGet("ejecutar/bat")]
         public IActionResult EjecutarBat()
         {
@@ -118,14 +134,16 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(AgregarSubExpansion));
+                return HandleException(e, nameof(EjecutarBat));
             }
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/ResetSQLServer: actualiza el servidor de sqlserver.
-         */
+        /// <summary>
+        /// ResetSQLServer
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult indicando si la actualización de SQL Server fue exitosa.
+        /// </returns>
         [HttpGet("reset/sqlserver")]
         public IActionResult ResetSQLServer()
         {
@@ -138,8 +156,9 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return HandleException(e, nameof(AgregarSubExpansion));
+                return HandleException(e, nameof(ResetSQLServer));
             }
         }
+
     }
 }

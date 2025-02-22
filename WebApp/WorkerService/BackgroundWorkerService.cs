@@ -26,21 +26,21 @@ namespace WebApp.WorkerService
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {}
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/msgNextWorker: Registra en el log el tiempo estimado para la próxima ejecución del proceso.
-         */
+        /// <summary>
+        /// Registra en el log el tiempo estimado para la próxima ejecución del proceso.
+        /// </summary>
+        /// <param name="delay">Tiempo de espera antes de la próxima ejecución.</param>
         private void msgNextWorker(TimeSpan delay)
         {
             string nextTime = DateTime.Now.Add(delay).ToString("dddd, dd-mm-yy hh:mm:ss tt");
             _logger.LogInformation($"\n\n ⚡ {pais.ToString().ToUpper()} : Worker running at {nextTime}");
         }
 
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-         * WebApp/GetDataProcessCountry: Ejecuta el proceso de obtención de datos para un país específico, 
-         * registrando la ejecución en un archivo y aplicando un retraso antes de finalizar.
-         */
+        /// <summary>
+        /// Ejecuta el proceso de obtención de datos para un país específico, 
+        /// registrando la ejecución en un archivo y aplicando un retraso antes de finalizar.
+        /// </summary>
+        /// <returns>Devuelve un <see cref="TimeSpan"/> con el tiempo restante hasta la próxima ejecución.</returns>
         private async Task<TimeSpan> GetDataProcessCountry()
         {
             var contenido = $" 🧬 {pais} >> GetDataProcess[ Start: {DateTime.Now:HH:mm:ss} ]";
