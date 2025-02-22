@@ -7,11 +7,7 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Conexion
 {
-    /// <summary>
-    /// Page: Listado Formulario Conexion
-    /// Concepto: Listado de conexiones externas del programa para editar o registar.
-    /// Tipo: EXCEL, MSSQLSERVER, MYSQL, POSTGREST, SQLLITE
-    /// </summary>
+
     public partial class Listado
     {
         ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
@@ -30,11 +26,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         private IBusquedaService iBusquedaService { get; set; }
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
-        //private List<ONAConexionDto>? listasHevd = null;
+
         private List<ONAConexionDto> listasHevd = new();
         private bool isRolAdmin;
 
-        private EventTrackingDto objEventTracking { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
         private int PageSize = 10; // Cantidad de registros por página
@@ -49,6 +45,9 @@ namespace ClientApp.Pages.Administracion.Conexion
         private bool CanGoPrevious => CurrentPage > 1;
         private bool CanGoNext => CurrentPage < TotalPages;
 
+        /// <summary>
+        /// PreviousPage: Previo de las paginas del listado.
+        /// </summary>
         private void PreviousPage()
         {
             if (CanGoPrevious)
@@ -63,6 +62,9 @@ namespace ClientApp.Pages.Administracion.Conexion
             }
         }
 
+        /// <summary>
+        /// NextPage: Proximas paginas del listado.
+        /// </summary>
         private void NextPage()
         {
             if (CanGoNext)
@@ -70,6 +72,10 @@ namespace ClientApp.Pages.Administracion.Conexion
                 CurrentPage++;
             }
         }
+
+        /// <summary>
+        /// OnInitializedAsync: Iniciado del listado, carga del rol relacionado y de conexiones.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             if (listasHevd != null && iConexionService != null)
@@ -92,65 +98,66 @@ namespace ClientApp.Pages.Administracion.Conexion
                 CurrentPage = TotalPages;
             }
         }
-        private async Task<GridDataProviderResult<ONAConexionDto>> ConexionDtoDataProvider(GridDataProviderRequest<ONAConexionDto> request)
-        {
-            if (listasHevd == null && iConexionService != null)
-            {
-                listasHevd = await iConexionService.GetConexionsAsync();
-            }
-            return await Task.FromResult(request.ApplyTo(listasHevd ?? []));
-        }
-        private async Task OnDeleteClick(int IdONA)
-        {
-            if (iConexionService != null && listasHevd != null)
-            {
-                var respuesta = await iConexionService.EliminarConexion(IdONA);
-                if (respuesta.registroCorrecto)
-                {
-                    listasHevd = listasHevd.Where(c => c.IdONA != IdONA).ToList();
-                    await OnInitializedAsync();
-                }
-            }
-        }
+
+        /// <summary>
+        /// OnTestconexionClick: Test de la conexión externa, comprobando si la conexion esta en linea.
+        /// </summary>
+        /// <param name="conexion">
+        /// <returns cref="Task"> devuelve un valor true o false dependiendo de la conexion</returns>
         private async Task<bool> OnTestconexionClick(int conexion)
         {
-            objEventTracking.NombrePagina = "Conexiones Existentes";
-            objEventTracking.NombreAccion = "OnTestconexionClick";
-            objEventTracking.NombreControl = "OnTestconexionClick";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
-            objEventTracking.ParametroJson = "{}";
-            objEventTracking.UbicacionJson = "";
-            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
-
-            if (iDynamicService != null && listasHevd != null)
+            try
             {
-                // Llamar al método del servicio para probar la conexión
-                bool isConnected = await iDynamicService.TestConnectionAsync(conexion);
-                var toastMessage = new ToastMessage
-                {
-                    Type = isConnected ? ToastType.Success : ToastType.Danger,
-                    Title = "Mensaje de confirmación",
-                    HelpText = $"{DateTime.Now}",
-                    Message = isConnected ? "Conexión satisfactoria" : "Conexión fallida",
-                };
+                objEventTracking.NombrePagina = "Conexiones Existentes";
+                objEventTracking.NombreAccion = "OnTestconexionClick";
+                objEventTracking.NombreControl = "OnTestconexionClick";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
-                messages.Add(toastMessage);
-
-                // Configurar el cierre automático después de 5 segundos
-                _ = Task.Delay(5000).ContinueWith(_ =>
+                if (iDynamicService != null && listasHevd != null)
                 {
-                    messages.Remove(toastMessage);
-                    InvokeAsync(StateHasChanged); // Actualizar la UI
-                });
+                    // Llamar al método del servicio para probar la conexión
+                    bool isConnected = await iDynamicService.TestConnectionAsync(conexion);
+                    var toastMessage = new ToastMessage
+                    {
+                        Type = isConnected ? ToastType.Success : ToastType.Danger,
+                        Title = "Mensaje de confirmación",
+                        HelpText = $"{DateTime.Now}",
+                        Message = isConnected ? "Conexión satisfactoria" : "Conexión fallida",
+                    };
 
-                if (isConnected)
-                {
-                    return true; // Devuelve true si la conexión fue exitosa
+                    messages.Add(toastMessage);
+                    StateHasChanged();
+                    // Configurar el cierre automático después de 5 segundos
+                    _ = Task.Delay(5000).ContinueWith(_ =>
+                    {
+                        messages.Remove(toastMessage);
+                        InvokeAsync(StateHasChanged); // Actualizar la UI
+                    });
+
+                    if (isConnected)
+                    {
+                        return true; // Devuelve true si la conexión fue exitosa
+                    }
                 }
+                return false; // Devuelve false si algo falla
             }
-            return false; // Devuelve false si algo falla
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+           
         }
+
+        /// <summary>
+        /// OnMigrarClick: Migrar los datos de la ONA desde el servidor externo.
+        /// </summary>
+        /// <param name="conexion">
+        /// <returns> devuelve un valor true o false dependiendo de la migracion</returns>
         private async Task<bool> OnMigrarClick(int conexion)
         {
             objEventTracking.NombrePagina = "Conexiones Existentes";
@@ -199,7 +206,7 @@ namespace ClientApp.Pages.Administracion.Conexion
                     };
 
                     messages.Add(toastMessage);
-
+                    StateHasChanged();
                     // Ocultar mensaje después de 5 segundos
                     _ = Task.Delay(5000).ContinueWith(_ =>
                     {
@@ -222,20 +229,27 @@ namespace ClientApp.Pages.Administracion.Conexion
             return false;
         }
 
+        /// <summary>
+        /// OpenDeleteModal: Abre el modal.
+        /// </summary>
         private void OpenDeleteModal(int idOna)
         {
             selectedIdOna = idOna;
             showModal = true;
         }
 
-        // Cierra el modal
+        /// <summary>
+        /// CloseModal: Cerrar el modal.
+        /// </summary>
         private void CloseModal()
         {
             selectedIdOna = null;
             showModal = false;
         }
 
-        // Confirmar eliminación del registro
+        /// <summary>
+        /// ConfirmDelete: Elimina la conexion externa de la organizacion.
+        /// </summary>
         private async Task ConfirmDelete()
         {
             objEventTracking.NombrePagina = "Conexiones Existentes";

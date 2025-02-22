@@ -6,12 +6,6 @@
 @inject NavigationManager NavigationManager
 @using ClientApp.Services.IService  
 
-@*
-/// <summary>
-/// Sub pagina o vista parcial que se encarga de colocar el menu dentro del layout.
-/// </summary>
-
-*@
 @code {
     Sidebar2 sidebar;
     private IEnumerable<NavItem>? navItems;
@@ -24,8 +18,12 @@
 
     private string TituloMenu;
 
-    [Parameter] public EventCallback<List<NavItem>> OnNavItemsChanged { get; set; } // ?? Nuevo parámetro
+    [Parameter] public EventCallback<List<NavItem>> OnNavItemsChanged { get; set; } // ?? Nuevo parï¿½metro
 
+    /// <summary>
+    /// Sidebar2DataProvider Sub pagina o vista parcial que se encarga de colocar el menu dentro del layout.
+    /// </summary>
+    /// <param name="request">
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
     {
         if (navItems is null)
@@ -35,13 +33,17 @@
         return await Task.FromResult(request.ApplyTo(navItems));
     }
 
+    /// <summary>
+    /// Sidebar2DataProvider Sub pagina o vista parcial que se encarga de colocar el menu dentro del layout.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> Devuelve los navItemsList del menu de navegacion </returns>
     private async Task<IEnumerable<NavItem>> GetNavItemsAsync()
     {
         var menuItems = await _Icatalogo.GetMenusAsync();
         TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
         var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
-        // Excluir ciertos menús según el rol
+        // Excluir ciertos menï¿½s segï¿½n el rol
         var excludedHrefs = rol switch
         {
             "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG" },

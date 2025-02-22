@@ -13,7 +13,9 @@ namespace WebApp.Service
             {
                 Port = int.Parse(_configuration["EmailSettings:Port"] ?? "0"),
                 Credentials = new NetworkCredential(_configuration["EmailSettings:Username"], _configuration["EmailSettings:Password"]),
-                EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSsl"] ?? "true")
+                EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSsl"] ?? "true"),
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network
             };
         }
     }

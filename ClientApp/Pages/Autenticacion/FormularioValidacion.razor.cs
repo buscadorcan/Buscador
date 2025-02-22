@@ -43,6 +43,10 @@ namespace ClientApp.Pages.Autenticacion
         /// Identificador del usuario a validar.
         /// </summary>
         [Parameter] public int? IdUsuario { get; set; }
+        /// <summary>
+        /// Evento que se dispara cuando cambia el estado del paso de autenticación.
+        /// </summary>
+        [Parameter] public EventCallback<AuthenticateResponseDto> OnStepChanged { get; set; }
 
         /// <summary>
         /// Método que realiza la validación del código de autenticación ingresado por el usuario.
@@ -86,6 +90,9 @@ namespace ClientApp.Pages.Autenticacion
             }
             
             await Task.CompletedTask;
+        }
+        private async Task GoLoginPage() {
+            await OnStepChanged.InvokeAsync(null);
         }
     }
 }

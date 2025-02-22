@@ -17,7 +17,9 @@ namespace WebApp.Repositories
         private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
         private readonly IWebHostEnvironment _env = env;
 
-
+        ///<summary>
+        ///ObtenerThesaurus: Obtiene la información completa del thesaurus almacenado en la base de datos.
+        ///</summary>
         public Thesaurus ObtenerThesaurus()
         {
             var rutaProyecto = Directory.GetCurrentDirectory();
@@ -59,6 +61,9 @@ namespace WebApp.Repositories
             }
         }
 
+        ///<summary>
+        ///GuardarThesaurus: Guarda o actualiza el thesaurus en la base de datos.
+        ///</summary>
         public void GuardarThesaurus(Thesaurus thesaurus)
         {
             string rutaArchivo = "";
@@ -100,6 +105,9 @@ namespace WebApp.Repositories
             }
         }
 
+        ///<summary>
+        ///EjecutarArchivoBat: Ejecuta un archivo .bat en el servidor para automatizar procesos relacionados con el thesaurus.
+        ///</summary>
         public void EjecutarArchivoBat() {
 
             try
@@ -120,32 +128,39 @@ namespace WebApp.Repositories
             }
         }
 
-        public void ResetSQLServer()
+        ///<summary>
+        ///ResetSQLServer: actualiza el servidor de sqlserver
+        ///</summary>
+        public string ResetSQLServer()
         {
             string serviceName = "MSSQLSERVER"; // Nombre del servicio SQL Server
             ServiceController service = new ServiceController(serviceName);
-
+            string mensaje = "";
             try
             {
-                Console.WriteLine($"Estado actual del servicio: {service.Status}");
+                mensaje = mensaje + $"Estado actual del servicio: {service.Status}" + "\n";
+                
 
                 if (service.Status != ServiceControllerStatus.Stopped)
                 {
-                    Console.WriteLine("Deteniendo el servicio...");
+                    mensaje = mensaje + "Deteniendo el servicio..." + "\n";
                     service.Stop();
                     service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
-                    Console.WriteLine("Servicio detenido.");
+                    mensaje = mensaje + "Servicio detenido." + "\n";
                 }
+                mensaje= mensaje + "Iniciando el servicio..." + "\n";
 
-                Console.WriteLine("Iniciando el servicio...");
                 service.Start();
                 service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
-                Console.WriteLine("Servicio iniciado correctamente.");
+
+                mensaje = mensaje + "Servicio iniciado correctamente.." + "\n";
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                mensaje = mensaje + $"Error: {ex.Message}";
             }
+
+            return mensaje;
         }
     }
 }

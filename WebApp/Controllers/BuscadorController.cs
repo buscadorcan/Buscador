@@ -4,6 +4,8 @@ using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
+using MySqlX.XDevAPI;
+using System.Text.Json;
 
 namespace WebApp.Controllers
 {
@@ -13,10 +15,11 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
     public class BuscadorController(IBuscadorRepository vhRepo) : BaseController
     {
         private readonly IBuscadorRepository _vhRepo = vhRepo;
-
+        
         /// <summary>
         /// PsBuscarPalabra
         /// </summary>
@@ -24,7 +27,7 @@ namespace WebApp.Controllers
         /// <param name="PageNumber"></param>
         /// <param name="RowsPerPage"></param>
         /// <returns></returns>
-        [HttpGet("search/phrase")]
+       [HttpGet("search/phrase")]
         public IActionResult PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
         {
             try
@@ -212,6 +215,19 @@ namespace WebApp.Controllers
         {
             try
             {
+                // Obtener la IP del cliente
+                var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+                // Obtener datos del país
+                var ipInfo = GetIpLocationInfo(ipAddress);
+
+                eventTracking.UbicacionJson = JsonSerializer.Serialize(new
+                {
+                    IpAddress = ipAddress,
+                    Country = ipInfo.Result?.Country,
+                    City = ipInfo.Result?.City,
+                    Isp = ipInfo.Result?.Isp
+                });
+
                 if (eventTracking == null)
                     return BadRequest("El objeto EventTracking no puede ser nulo.");
 
@@ -252,5 +268,25 @@ namespace WebApp.Controllers
                 return HandleException(e, nameof(GetCoordinates));
             }
         }
+
+        private async Task<IpLocationDto> GetIpLocationInfo(string ipAddress)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ipAddress) || ipAddress == "::1") // Verifica si es localhost
+                    return new IpLocationDto { Country = "Local", City = "Local", Isp = "Local" };
+
+                using var httpClient = new HttpClient();
+                var url = $"http://ip-api.com/json/{ipAddress}"; // API gratuita de geolocalización
+                var response = await httpClient.GetStringAsync(url);
+
+                return JsonSerializer.Deserialize<IpLocationDto>(response);
+            }
+            catch
+            {
+                return new IpLocationDto { Country = "Desconocido", City = "Desconocido", Isp = "Desconocido" };
+            }
+        }
+
     }
 }

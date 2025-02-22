@@ -43,8 +43,8 @@ namespace WebApp.Service
             {
                 SecurityToken securityToken;
                 var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
-
                 var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+
                 if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
                 {
                     return userId;

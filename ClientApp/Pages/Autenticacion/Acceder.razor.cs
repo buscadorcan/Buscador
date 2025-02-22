@@ -1,5 +1,6 @@
 ﻿using BlazorBootstrap;
 using SharedApp.Models.Dtos;
+using Microsoft.AspNetCore.Components;
 
 namespace ClientApp.Pages.Autenticacion
 {
@@ -10,6 +11,11 @@ namespace ClientApp.Pages.Autenticacion
     public partial class Acceder
     {
         /// <summary>
+        /// Administrador de navegación inyectado.
+        /// </summary>
+        [Inject] NavigationManager? _navigationManager { get; set; }
+
+        /// <summary>
         /// Lista de mensajes emergentes que se mostrarán en la interfaz de usuario.
         /// </summary>
         private List<ToastMessage> messages = new List<ToastMessage>();
@@ -19,6 +25,11 @@ namespace ClientApp.Pages.Autenticacion
         /// Puede ser nulo hasta que el usuario se autentique correctamente.
         /// </summary>
         private AuthenticateResponseDto? authenticateResponseDto = default;
+
+        /// <summary>
+        /// Objeto que almacena la opcióon de formulario usando en la autenticación.
+        /// </summary>
+        private int opcion = 1;
 
         /// <summary>
         /// Crea y agrega un mensaje emergente (toast) a la lista de mensajes.
@@ -42,6 +53,23 @@ namespace ClientApp.Pages.Autenticacion
         private void HandleStepChange(AuthenticateResponseDto? _authenticateResponseDto)
         {
             authenticateResponseDto = _authenticateResponseDto;
+        }
+
+        /// <summary>
+        /// Método que maneja la navegación hacia una ruta específica cuando se hace clic en un componente.
+        /// </summary>
+        private void GoToSearchPage()
+        {
+            _navigationManager.NavigateTo("/");
+        }
+
+        /// <summary>
+        /// Cambia de formulario entre login / recuperar clave
+        /// </summary>
+        /// <param name="_opcion">opción seleccionada</param>
+        private void HandleOptionChange(int _opcion)
+        {
+            opcion = _opcion;
         }
     }
 }

@@ -11,34 +11,95 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.MigracionExcel
 {
+    /// <summary>
+    /// Componente de formulario para la migración de archivos Excel.
+    /// Permite la carga y gestión de archivos de migración, seleccionando un ONA asociado.
+    /// </summary>
     public partial class Formulario
     {
+        /// <summary>
+        /// Botón de guardar con animación de carga.
+        /// </summary>
         private Button saveButton = default!;
+        /// <summary>
+        /// ID de la migración (nulo si es una nueva migración).
+        /// </summary>
         [Parameter]
         public int? Id { get; set; }
+        /// <summary>
+        /// Servicio de migración de archivos Excel.
+        /// </summary>
         [Inject]
         private IMigracionExcelService? service { get; set; }
+        /// <summary>
+        /// Servicio de navegación para redirigir a otras páginas.
+        /// </summary>
         [Inject]
         public NavigationManager? navigationManager { get; set; }
-        private MigracionExcelDto migracion = new MigracionExcelDto();
-        private EditContext? editContext = new EditContext(new MigracionExcelDto());
-        private IBrowserFile? uploadedFile;
-        private List<OnaDto>? listaONAs;
-        private OnaDto? onaSelected;
-        private EsquemaDto? esquemaSelected;
-        private int? selectedIdUsuario;
-        private string modalMessage;
-        private bool showModal; // Controlar la visibilidad de la ventana modal  
 
+        /// <summary>
+        /// Objeto que almacena la información de la migración a registrar.
+        /// </summary>
+        private MigracionExcelDto migracion = new MigracionExcelDto();
+        /// <summary>
+        /// Contexto de edición para la validación del formulario.
+        /// </summary>
+        private EditContext? editContext = new EditContext(new MigracionExcelDto());
+        /// <summary>
+        /// Archivo seleccionado para la carga.
+        /// </summary>
+        private IBrowserFile? uploadedFile;
+        /// <summary>
+        /// Lista de ONAs disponibles para selección.
+        /// </summary>
+        private List<OnaDto>? listaONAs;
+        /// <summary>
+        /// ONA seleccionado por el usuario.
+        /// </summary>
+        private OnaDto? onaSelected;
+        /// <summary>
+        /// Esquema seleccionado (puede ser opcional).
+        /// </summary>
+        private EsquemaDto? esquemaSelected;
+        /// <summary>
+        /// ID del usuario seleccionado.
+        /// </summary>
+        private int? selectedIdUsuario;
+        /// <summary>
+        /// Mensaje mostrado en el modal.
+        /// </summary>
+        private string modalMessage;
+        /// <summary>
+        /// Controla la visibilidad de la ventana modal.
+        /// </summary>
+        private bool showModal; // Controlar la visibilidad de la ventana modal  
+        /// <summary>
+        /// Servicio de almacenamiento local en el navegador.
+        /// </summary>
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+        /// <summary>
+        /// Servicio para la gestión de ONAs.
+        /// </summary>
         [Inject]
         public IONAService? iONAservice { get; set; }
+        /// <summary>
+        /// Servicio de notificaciones Toast.
+        /// </summary>
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        /// <summary>
+        /// Servicio de búsqueda y registro de eventos.
+        /// </summary>
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
+        // Objeto para el seguimiento de eventos
         private EventTrackingDto objEventTracking { get; set; } = new();
+
+        /// <summary>
+        /// Método asincrónico que se ejecuta al inicializar el componente.
+        /// Carga la lista de ONAs disponibles y verifica permisos de usuario.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
@@ -57,6 +118,11 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
                 listaONAs = listaONAs.Where(onas => onas.IdONA == onaPais).ToList();
             }
         }
+
+        /// <summary>
+        /// Método para cambiar la selección del ONA.
+        /// </summary>
+        /// <param name="_onaSelected">ONA seleccionado.</param>
         private async Task CambiarSeleccionOna(OnaDto _onaSelected)
         {
             if (esquemaSelected != null)
@@ -70,6 +136,10 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             showDropdown = false;
             StateHasChanged();
         }
+
+        /// <summary>
+        /// Carga la lista de ONAs disponibles.
+        /// </summary>
         private async Task LoadONAs()
         {
             if (iONAservice != null)
@@ -77,11 +147,20 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
                 listaONAs = await iONAservice.GetONAsAsync();
             }
         }
+
+        /// <summary>
+        /// Maneja la carga de un archivo en el formulario.
+        /// </summary>
+        /// <param name="e">Evento de cambio de archivo.</param>
         private async Task OnInputFileChange(InputFileChangeEventArgs e)
         {
             uploadedFile = e.File;
             Console.WriteLine("OnInputFileChange method called");
         }
+
+        /// <summary>
+        /// Registra la migración de un archivo Excel al sistema.
+        /// </summary>
         private async Task RegistrarMigracionExcel()
         {
             try
@@ -145,19 +224,27 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             }
             
         }
+
+        /// <summary>
+        /// Abre el modal de confirmación.
+        /// </summary>
         private async Task OpenDeleteModal()
         {
             showModal = true;
         }
 
-        // Cierra el modal
+        /// <summary>
+        /// Cierra el modal de confirmación.
+        /// </summary>
         private void CloseModal()
         {
             selectedIdUsuario = null;
             showModal = false;
         }
 
-        // Confirmar carga del archivo
+        /// <summary>
+        /// Confirma la carga del archivo y ejecuta la migración.
+        /// </summary>
         private async Task ConfirmCarga()
         {
             if (service != null)

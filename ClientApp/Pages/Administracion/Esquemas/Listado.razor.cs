@@ -10,29 +10,53 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.Administracion.Esquemas
 {
+    /// <summary>
+    /// Página de listado de esquemas de homologación.
+    /// Permite la gestión de esquemas, incluyendo la visualización, ordenamiento y eliminación.
+    /// </summary>
     public partial class Listado
     {
+        // Modal para la visualización de detalles
         private Modal modal = default!;
+        // Grilla para mostrar la lista de esquemas
         private Grid<EsquemaDto>? grid;
+        // Evento que se dispara cuando los datos han sido cargados
         public event Action? DataLoaded;
-        private bool deleteshowModal; 
+        // Control de visibilidad del modal de eliminación
+        private bool deleteshowModal;
+        // Mensaje del modal
         private string modalMessage;
+        // ID del esquema seleccionado para eliminación
         private int? selectedIdEsquema;
+        // Servicio de notificaciones Toast
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        // Lista de esquemas disponibles
         private IEnumerable<EsquemaDto>? listaEsquemas;
+        // Servicio de esquemas inyectado
         [Inject]
         private IEsquemaService? iEsquemaService { get; set; }
+        // Servicio de interoperabilidad con JavaScript
         [Inject]
         protected IJSRuntime? JSRuntime { get; set; }
+        // Servicio de homologaciones inyectado
         [Inject]
         public IHomologacionService? HomologacionService { get; set; }
+        // Servicio de homologaciones inyectado
         private List<HomologacionDto>? listaVwHomologacion;
+        // Servicio de búsqueda inyectado
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
+        // Servicio de almacenamiento local
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+        // Objeto para el seguimiento de eventos
         private EventTrackingDto objEventTracking { get; set; } = new();
+
+
+        /// <summary>
+        /// Método asincrónico que inicializa la lista de esquemas y la configuración de JavaScript.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             if (HomologacionService != null)
@@ -47,6 +71,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 }
             };
         }
+
+        /// <summary>
+        /// Método que obtiene la lista de esquemas y aplica la paginación.
+        /// </summary>
+        /// <returns>Lista de esquemas.</returns>
         private async Task<GridDataProviderResult<EsquemaDto>> EsquemasDataProvider(GridDataProviderRequest<EsquemaDto> request)
         {
             if (iEsquemaService != null)
@@ -58,6 +87,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
 
             return await Task.FromResult(request.ApplyTo(listaEsquemas ?? []));
         }
+
+        /// <summary>
+        /// Método invocable desde JavaScript para actualizar el orden de los esquemas.
+        /// </summary>
+        /// <param name="sortedIds">Lista ordenada de IDs de esquemas.</param>
         [JSInvokable]
         public async Task OnDragEnd(string[] sortedIds)
         {
@@ -82,17 +116,12 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 await Task.CompletedTask;
             }
         }
-        private async Task OnDeleteClick(int IdEsquema)
-        {
-            if (iEsquemaService != null && listaEsquemas != null && grid != null)
-            {
-                var respuesta = await iEsquemaService.DeleteEsquemaAsync(IdEsquema);
-                if (respuesta) {
-                    listaEsquemas = listaEsquemas.Where(c => c.IdEsquema != IdEsquema);
-                    await grid.RefreshDataAsync();
-                }
-            }
-        }
+
+        /// <summary>
+        /// Método que muestra el modal con detalles del esquema seleccionado.
+        /// </summary>
+        /// <param name="IdEsquema">ID del esquema seleccionado.</param>
+
         private async void showModal(int IdEsquema)
         {
             if (listaEsquemas != null)
@@ -107,20 +136,28 @@ namespace ClientApp.Pages.Administracion.Esquemas
             }
         }
 
+        /// <summary>
+        /// Método que abre el modal de confirmación de eliminación.
+        /// </summary>
+        /// <param name="IdEsquema">ID del esquema a eliminar.</param>
         private void OpenDeleteModal(int idOna)
         {
             selectedIdEsquema = idOna;
             deleteshowModal = true;
         }
 
-        // Cierra el modal
+        /// <summary>
+        /// Método que cierra el modal de eliminación.
+        /// </summary>
         private void CloseModal()
         {
             selectedIdEsquema = null;
             deleteshowModal = false;
         }
 
-        // Confirmar eliminación del registro
+        /// <summary>
+        /// Método que confirma la eliminación de un esquema.
+        /// </summary>
         private async Task ConfirmDelete()
         {
             objEventTracking.NombrePagina = "Administación de Homologación Esquemas";
@@ -148,6 +185,10 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 }
             }
         }
+
+        /// <summary>
+        /// Método que carga la lista de esquemas desde la base de datos.
+        /// </summary>
         private async Task LoadEsquemas()
         {
             if (iEsquemaService != null)

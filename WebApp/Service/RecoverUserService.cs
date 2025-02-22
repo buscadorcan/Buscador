@@ -32,7 +32,7 @@ namespace WebApp.Service
         }
 
         /// <inheritdoc />
-        public async Task<Result<bool>> RecoverPassword(UsuarioRecuperacionDto usuarioRecuperacionDto)
+        public Result<bool> RecoverPassword(UsuarioRecuperacionDto usuarioRecuperacionDto)
         {
             try
             {
@@ -53,15 +53,20 @@ namespace WebApp.Service
 
                 if (isSave)
                 {
-                    var htmlBody = GenerateTemporaryKeyEmailBody(clave);
-                    var isSend = await _emailService.EnviarCorreoAsync(result.Value.Email ?? "", "Nueva Clave Temporal", htmlBody);
-
-                    if (isSend)
+                    var htmlBody = GenerateTemporaryKeyEmailBody(result.Value, clave);
+                    _ = Task.Run(async () =>
                     {
-                        return Result<bool>.Success(true);
-                    }
+                        try
+                        {
+                            await _emailService.EnviarCorreoAsync(result.Value.Email ?? "", "Recuperación de Clave de Acceso al Sistema", htmlBody);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error al enviar correo: {ex.Message}");
+                        }
+                    });
 
-                    return Result<bool>.Failure("Error al enviar clave temporal");
+                    return Result<bool>.Success(true);
                 }
 
                 return Result<bool>.Failure("Error al generar clave temporal");
@@ -124,83 +129,29 @@ namespace WebApp.Service
         }
 
         /// <summary>
-        /// Generates the HTML body for the temporary password email.
+        /// Genera el cuerpo del correo electrónico para la recuperación de una clave temporal de acceso.
         /// </summary>
-        /// <param name="clave">The temporary password to include in the email.</param>
+        /// <param name="usuario">El objeto <see cref="Usuario"/> que contiene los detalles del usuario (nombre y correo electrónico) que solicitaron la recuperación de clave.</param>
+        /// <param name="clave">La clave temporal que se proporcionará al usuario para acceder al sistema.</param>
         /// <returns>
-        /// A string containing the HTML body of the email.
+        /// Devuelve el cuerpo del correo electrónico como una cadena de texto en formato HTML, con la clave temporal y los datos del usuario insertados en la plantilla.
         /// </returns>
-        public string GenerateTemporaryKeyEmailBody(string clave)
+        /// <exception cref="FileNotFoundException">
+        /// Lanza una excepción si la plantilla de correo HTML no se encuentra en la ubicación especificada en el directorio de plantillas.
+        /// </exception>
+        public string GenerateTemporaryKeyEmailBody(Usuario usuario, string clave)
         {
-            string htmlBody = @"
-            <!DOCTYPE html>
-            <html lang='es'>
-            <head>
-                <meta charset='UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>Clave Temporal</title>
-                <style>
-                    body {{
-                        font-family: Arial, sans-serif;
-                        background-color: #f9f9f9;
-                        color: #333;
-                        padding: 20px;
-                    }}
-                    .container {{
-                        max-width: 600px;
-                        margin: 0 auto;
-                        background-color: #fff;
-                        padding: 30px;
-                        border-radius: 8px;
-                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    }}
-                    h2 {{
-                        color: #007bff;
-                        text-align: center;
-                    }}
-                    p {{
-                        font-size: 16px;
-                        line-height: 1.5;
-                    }}
-                    .code {{
-                        display: inline-block;
-                        background-color: #f8f9fa;
-                        border: 1px solid #ddd;
-                        padding: 10px;
-                        font-size: 18px;
-                        font-weight: bold;
-                        color: #007bff;
-                        border-radius: 5px;
-                    }}
-                    .footer {{
-                        font-size: 14px;
-                        text-align: center;
-                        margin-top: 20px;
-                        color: #888;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div class='container'>
-                    <h2>Su Nueva Clave Temporal</h2>
-                    <p>Estimado/a <strong>usuario</strong>,</p>
-                    <p>Hemos recibido una solicitud para restablecer su clave. A continuación, le proporcionamos su nueva clave temporal:</p>
-                    
-                    <p><span class='code'>{0}</span></p>
-                    
-                    <p>Recuerde que esta clave es válida por un tiempo limitado. Por su seguridad, le recomendamos cambiarla lo antes posible.</p>
-                    
-                    <p>Si no ha solicitado un cambio de clave, por favor contacte a nuestro soporte inmediatamente.</p>
-                    
-                    <div class='footer'>
-                        <p>Gracias por confiar en nosotros. Si tiene alguna duda, no dude en comunicarse con nuestro equipo de soporte.</p>
-                        <p>&copy; 2025 Su Empresa | Todos los derechos reservados</p>
-                    </div>
-                </div>
-            </body>
-            </html>";
+            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "templates", "temporary_key_template.html");
 
-            return string.Format(htmlBody, clave);
+            if (File.Exists(templatePath))
+            {
+                string htmlBody = File.ReadAllText(templatePath);
+                return string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
+            }
+            else
+            {
+                throw new FileNotFoundException("La plantilla de correo no se encuentra en la ubicación especificada.");
+            }
         }
     }
 }

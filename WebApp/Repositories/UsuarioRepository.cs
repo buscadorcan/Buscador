@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Service.IService;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
+using Newtonsoft.Json;
 
 namespace WebApp.Repositories
 {
@@ -10,16 +11,21 @@ namespace WebApp.Repositories
     {
         private readonly IJwtService _jwtService;
         private readonly IHashService _hashService;
+        private readonly IEmailService _emailService;
+        private readonly IEventTrackingRepository _eventTrackingRepository;
         public UsuarioRepository (
             IJwtService jwtService,
             IEmailService emailService,
             IHashService hashService,
             ILogger<UsuarioRepository> logger,
-            ISqlServerDbContextFactory sqlServerDbContextFactory
+            ISqlServerDbContextFactory sqlServerDbContextFactory,
+            IEventTrackingRepository eventTrackingRepository
         ) : base(sqlServerDbContextFactory, logger)
         {
             _jwtService = jwtService;
             _hashService = hashService;
+            _emailService = emailService;
+            _eventTrackingRepository = eventTrackingRepository;
         }
         public Usuario? FindById(int idUsuario)
         {
@@ -95,15 +101,47 @@ namespace WebApp.Repositories
         }
         public bool Create(Usuario usuario)
         {
-            usuario.Clave = _hashService.GenerateHash(usuario.Clave);
+            var clave = usuario.Clave;
+            usuario.Clave = _hashService.GenerateHash(clave);
             usuario.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             usuario.IdUserModifica = usuario.IdUserCreacion;
             usuario.Estado = "A";
             return ExecuteDbOperation(context =>
             {
                 context.Usuario.Add(usuario);
-                return context.SaveChanges() >= 0;
+                if ( context.SaveChanges() >= 0 )
+                {
+                    SendConfirmationEmail(usuario, clave);
+                    return true;
+                }
+                return false;
             });
+        }
+        public void SendConfirmationEmail(Usuario usuario, string clave)
+        {
+            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "templates", "confirmation_access_key_template.html");
+
+            if (File.Exists(templatePath))
+            {
+                string htmlBody = File.ReadAllText(templatePath);
+                htmlBody = string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
+
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al enviar correo: {ex.Message}");
+                    }
+                });
+            }
+            else
+            {
+                throw new FileNotFoundException("La plantilla de correo no se encuentra en la ubicación especificada.");
+            }
         }
         //public bool Update(Usuario usuario)
         //{
@@ -150,6 +188,55 @@ namespace WebApp.Repositories
 
                 context.Usuario.Update(_exits);
                 return context.SaveChanges() > 0; // Si se guardaron cambios, retornará true
+            });
+        }
+
+        public Result<bool> ChangePasswd(string clave, string claveNueva)
+        {
+            var actual = _hashService.GenerateHash(clave);
+            var nueva = _hashService.GenerateHash(claveNueva);
+            var idUsuario = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "0");
+
+            var eventTrackingDto = new paAddEventTrackingDto
+            {
+                NombrePagina = "cambiar_clave",
+                NombreControl = "btnCambiar",
+                NombreAccion = "OnCambiarClave()",
+                ParametroJson = JsonConvert.SerializeObject(new
+                {
+                    IdUsuario = idUsuario,
+                    Clave = clave,
+                    ClaveNueva = claveNueva
+                })
+            };
+
+            return ExecuteDbOperation(context => {
+                var usuario = context.Usuario.AsNoTracking().Where((c) => c.IdUsuario == idUsuario).FirstOrDefault();
+
+                if (usuario == null)
+                {
+                    _eventTrackingRepository.Create(eventTrackingDto);
+                    return Result<bool>.Failure("Usuario no encontrado");
+                }
+
+                var rol = context.VwRol.AsNoTracking().FirstOrDefault(c => c.IdHomologacionRol == usuario.IdHomologacionRol);
+                eventTrackingDto.TipoUsuario = rol.CodigoHomologacion;
+                eventTrackingDto.NombreUsuario = usuario.Nombre;
+                _eventTrackingRepository.Create(eventTrackingDto);
+
+                if (usuario.Clave != actual)
+                {
+                    return Result<bool>.Failure("Clave incorrecta");
+                }
+
+                usuario.Clave = nueva;
+                context.Usuario.Update(usuario);
+                if (context.SaveChanges() > 0)
+                {
+                    return Result<bool>.Success(true);
+                }
+
+                return Result<bool>.Failure("Error al cambiar la clave. Intente de Nuevo");
             });
         }
     }

@@ -24,7 +24,7 @@ namespace WebApp.Repositories.IRepositories
         /// <summary>
         /// Reinicia el servidor de SQL Server y actualiza su estado.
         /// </summary>
-        void ResetSQLServer();
+        string ResetSQLServer();
 
 
     }

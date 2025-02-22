@@ -8,39 +8,56 @@ using SharedApp.Models.Dtos;
 namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
     /// <summary>
-    /// Page: Formulario de Esquema
-    /// Concepto: Formulario que registra un nuevo campo de homologacion o lo edita.
+    /// Componente de formulario para la gestión de homologaciones.
+    /// Permite registrar y actualizar campos de homologación en la plataforma.
     /// </summary>
     public partial class Formulario
     {
+        // Botón de guardar con animación de carga
         private Button saveButton = default!;
+        // Objeto que almacena los datos de la homologación a registrar/actualizar
         private HomologacionDto homologacion = new HomologacionDto();
+        // Objeto que almacena la homologación padre del grupo
         private HomologacionDto homologacionGrupo = new HomologacionDto();
+        // Lista de filtros disponibles para la homologación
         private List<VwFiltroDto> filtros = new();
+        // Servicio de homologación inyectado
         [Inject]
         public IHomologacionService? iHomologacionService { get; set; }
+        // Servicio de catálogos inyectado
         [Inject]
         public ICatalogosService? iCatalogoService { get; set; }
+        // Administrador de navegación inyectado
         [Inject]
         public NavigationManager? navigationManager { get; set; }
+        // ID de la homologación (puede ser nulo si se está creando una nueva)
         [Parameter]
         public int? Id { get; set; }
+        // ID del grupo padre de la homologación (puede ser nulo)
         [Parameter]
         public int? IdPadre { get; set; }
+        // Servicio de notificaciones Toast inyectado
         [Inject]
         public Services.ToastService? toastService { get; set; }
+        // Servicio de búsqueda inyectado
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
+        // Objeto para el seguimiento de eventos
         private EventTrackingDto objEventTracking { get; set; } = new();
+        // Servicio de almacenamiento local en el navegador
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
+
+
         /// <summary>
-        /// Page: Formulario campos de homologacion
-        /// Concepto: Metodo que inicializa la clase campos de homologacion.
+        /// Método asincrónico que inicializa el formulario de homologación.
+        /// Carga los filtros disponibles y los datos de la homologación si se está editando.
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
+            // Obtener los filtros de la base de datos
             filtros = await iCatalogoService.GetFiltrosAsync();
+            // Obtener la homologación padre (grupo)
             homologacionGrupo = await iHomologacionService.GetHomologacionAsync((int) IdPadre);
             if (Id > 0) {
                 homologacion = await iHomologacionService.GetHomologacionAsync(Id.Value);
@@ -52,9 +69,10 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
                 homologacion.SiNoHayDato = "";
             }
         }
+
+
         /// <summary>
-        /// Page: Formulario campos de homologacion
-        /// GuardarHomologacion: Metodo que registra / actualiza los campos de homologacion.
+        /// Método que guarda o actualiza una homologación en la base de datos.
         /// </summary>
         private async Task GuardarHomologacion()
         {
@@ -64,7 +82,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
             objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
             objEventTracking.ParametroJson = "{}";
-            objEventTracking.UbicacionJson = "";
+            objEventTracking.UbicacionJson = "{}";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
             saveButton.ShowLoading("Guardando...");
@@ -84,17 +102,17 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Formulario campos de homologacion
-        /// OnAutoCompleteChanged: Metodo que hace el autocomplete en el cambio del campo.
+        /// Método que actualiza el valor de la máscara de datos cuando el usuario cambia la selección.
         /// </summary>
+        /// <param name="mascaraDato">Valor seleccionado en el campo de máscara.</param>
         private void OnAutoCompleteChanged(string mascaraDato) {
             homologacion.MascaraDato = mascaraDato;
         }
 
         /// <summary>
-        /// Page: Formulario campos de homologacion
-        /// ActualizarFiltro: Actualiza el filtro de los campos de homologacion.
+        /// Método que actualiza el filtro seleccionado en la homologación.
         /// </summary>
+        /// <param name="e">Evento de cambio en la selección.</param>
         private void ActualizarFiltro(ChangeEventArgs e)
         {
             // Obtener el valor seleccionado
@@ -113,8 +131,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Formulario campos de homologacion
-        /// isIndexar: Propiedad booleana que hace la indexacion del campo vinculada al Switch
+        /// Propiedad booleana vinculada al Switch para la indexación del campo.
         /// </summary>
         private bool isIndexar // Propiedad booleana vinculada al Switch
         {
@@ -123,10 +140,9 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         }
 
         /// <summary>
-        /// Page: Formulario campos de homologacion
-        /// isMostrar: Propiedad booleana que registra el campo mostrar vinculada al Switch
+        /// Propiedad booleana vinculada al Switch para la visibilidad del campo.
         /// </summary>
-        private bool isMostrar // Propiedad booleana vinculada al Switch
+        private bool isMostrar 
         {
             get => homologacion.Mostrar == "S"; // Convertir "S" a true
             set => homologacion.Mostrar = value ? "S" : "N"; // Convertir true a "S"

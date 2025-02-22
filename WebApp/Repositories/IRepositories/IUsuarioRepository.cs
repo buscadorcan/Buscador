@@ -47,5 +47,11 @@ namespace WebApp.Repositories.IRepositories
         ICollection<UsuarioDto> FindAll();
 
 
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ChangePasswd: Cambia de clave de acceso del usuario.
+         */
+        Result<bool> ChangePasswd(string clave, string claveNueva);
+
     }
 }

@@ -47,6 +47,10 @@ namespace ClientApp.Pages.Administracion.Thesauros
             await this.ObtenerThesauroAsync();
 
         }
+
+        ///<summary>
+        ///ObtenerThesauroAsync: obtiene el objeto del archivo thesaurus
+        ///</summary>
         public async Task ObtenerThesauroAsync() {
             try
             {
@@ -72,6 +76,18 @@ namespace ClientApp.Pages.Administracion.Thesauros
             }
         }
 
+        ///<summary>
+        ///NuevaSeccion:evento para crear una nueva sección
+        ///</summary>
+        public void NuevaSeccion() {
+
+            this.thesauro.Expansions.Add(new ExpansionDto());
+            this.thesauroPadre.Expansions.Add(new ExpansionDto());
+        }
+
+        ///<summary>
+        ///EjecutarBat:evento para ejecutar la acción de copiar el archivo thesauros en la carpeta de sqlserver
+        ///</summary>
         public async Task EjecutarBat()
         {
             try
@@ -99,6 +115,10 @@ namespace ClientApp.Pages.Administracion.Thesauros
                 Console.WriteLine($"Error al obtener el thesaurus: {ex.Message}");
             }
         }
+
+        ///<summary>
+        ///ResetearqSqlServer:evento para reiniciar el servicio de sqlserver
+        ///</summary>
         public async Task ResetearqSqlServer()
         {
             try
@@ -127,6 +147,10 @@ namespace ClientApp.Pages.Administracion.Thesauros
                 Console.WriteLine($"Error al obtener el thesaurus: {ex.Message}");
             }
         }
+
+        ///<summary>
+        ///AbrirModal:evento para visualizar el modal de registro de un sinonimo
+        ///</summary>
         private void AbrirModal(int index)
         {
             expansionSeleccionada = index;
@@ -134,18 +158,28 @@ namespace ClientApp.Pages.Administracion.Thesauros
             modalAbierto = true;
         }
 
+
+        ///<summary>
+        ///AbrirModalQuitarSinonimo:evento para visualizar el modal de la eliminación de un sinonimo
+        ///</summary>
         private void AbrirModalQuitarSinonimo(int seccion, string sinonimo) {
             this.modalQuitarSinonimoAbierto = true;
             expansionSeleccionada = seccion;
             sinonimoQuitar = sinonimo;
         }
 
+        ///<summary>
+        ///CerrarModal:evento cerrar un modal
+        ///</summary>
         private void CerrarModal()
         {
             modalAbierto = false;
             modalQuitarSinonimoAbierto = false;
         }
 
+        ///<summary>
+        ///AgregarSubstituto: evento para agregar un nuevo sustituto
+        ///</summary>
         private async void AgregarSubstituto()
         {
             if (!ExisteSinonimo(nuevoSubstituto))
@@ -186,6 +220,9 @@ namespace ClientApp.Pages.Administracion.Thesauros
             StateHasChanged();
         }
 
+        ///<summary>
+        ///QuitarSubstituto: evento para quitar un sustituto
+        ///</summary>
         private async void QuitarSubstituto()
         {
             this.thesauro.Expansions[expansionSeleccionada].Substitutes.Remove(sinonimoQuitar);
@@ -218,6 +255,9 @@ namespace ClientApp.Pages.Administracion.Thesauros
            
         }
 
+        ///<summary>
+        ///ExisteSinonimo: evento para verificar si existe un nuevo sustituto
+        ///</summary>
         private bool ExisteSinonimo(string valor)
         {
             foreach (var item in this.thesauro.Expansions)
@@ -232,6 +272,9 @@ namespace ClientApp.Pages.Administracion.Thesauros
             return false;
         }
 
+        //<summary>
+        ///GuardarThesauro: evento para guardar el archivo thesaurus
+        ///</summary>
         private async void GuardarThesauro() {
             try
             {
@@ -289,6 +332,9 @@ namespace ClientApp.Pages.Administracion.Thesauros
             }
         }
 
+        //<summary>
+        ///MostarTodos: evento para mostrar la lista de todas las secciones del archivo thesauros
+        ///</summary>
         private void MostarTodos(ChangeEventArgs e) {
             if (e.Value.Equals(""))
             {
@@ -297,6 +343,9 @@ namespace ClientApp.Pages.Administracion.Thesauros
             
         }
 
+        //<summary>
+        ///BuscarSinonimo: evento para mostrar la lista de los sinonimos buscados 
+        ///</summary>
         private void BuscarSinonimo() {
             try
             {
@@ -329,6 +378,10 @@ namespace ClientApp.Pages.Administracion.Thesauros
             }
         }
 
+
+        //<summary>
+        ///OnSearchChanged: evento para buscar un sinonimo
+        ///</summary>
         private async Task OnSearchChanged(ChangeEventArgs e)
         {
             nuevoSubstituto = e.Value?.ToString();
@@ -354,6 +407,10 @@ namespace ClientApp.Pages.Administracion.Thesauros
             }
         }
 
+
+        //<summary>
+        ///FnPredictWordsDtoDataProvider: evento para mostrar los sinonimos existen en una caja para filtro
+        ///</summary>
         private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
         {
             if (request.Filter == null || string.IsNullOrWhiteSpace(request.Filter.Value))
@@ -372,6 +429,10 @@ namespace ClientApp.Pages.Administracion.Thesauros
             return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = [], TotalCount = 0 };
         }
 
+
+        //<summary>
+        ///ValidateWords: evento para validar la lista de sinonimos de una sección existentes en la base de datos
+        ///</summary>
         private async Task<bool>  ValidateWords(List<string> request)
         {
             if (request.Count == 0)

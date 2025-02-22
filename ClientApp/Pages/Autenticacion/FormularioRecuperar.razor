@@ -1,4 +1,4 @@
-<EditForm Model="authValidationDto" OnValidSubmit="ValidarCodigo">
+﻿<EditForm Model="usuarioRecuperacion" OnValidSubmit="RecuperarClave">
     <DataAnnotationsValidator />
 
     <div class="login-1">
@@ -8,9 +8,9 @@
             <!-- Campos de Entrada -->
             <div class="frame-8">
                 <div class="input">
-                    <div class="label valign-text-middle bodyregular-600">Ingrear Código</div>
-                    <InputText @bind-Value="authValidationDto.Codigo" style="color: black;" class="frame-1098 frame-1098 input-form input-2 valid your-text-here valign-text-middle bodyregular" />
-                    <ValidationMessage For="(() => authValidationDto.Codigo)" />
+                    <div class="label valign-text-middle bodyregular-600">Recuperar Clave</div>
+                    <InputText @bind-Value="usuarioRecuperacion.Email" style="color: black;" class="frame-1098 frame-1098 input-form input-2 valid your-text-here valign-text-middle bodyregular" />
+                    <ValidationMessage For="(() => usuarioRecuperacion.Email)" />
                 </div>
             </div>
 
@@ -18,7 +18,7 @@
             <div class="frame-1000004179">
                 <div class="frame-8">
                     <Button @ref="saveButton" Type="ButtonType.Submit" class="button label valign-text-middle inter-regular-normal-comet-14px">
-                        <div class="button-1 headlineheadline5-h5">Verificar</div>
+                        <div class="button-1 headlineheadline5-h5">Recuperar Contraseña</div>
                     </Button>
                 </div>
 

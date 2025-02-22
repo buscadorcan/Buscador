@@ -11,19 +11,31 @@
 <div class="container-center-horizontal">
     <div class="login-2 screen">
         <div class="login">
-            <div class="component-10">
-                <img class="arrow_back" src="/login/img/arrow-back.svg" alt="arrow_back" />
-                <div class="back">Atrás</div>
+            <div class="component-10" @onclick="GoToSearchPage" style="cursor:pointer;">
+                <img class="arrow_back" src="/login/img/search-1.svg" alt="search-1" />
+                <div class="back">Buscador</div>
             </div>
 
-            @if (authenticateResponseDto == null) {
-                <FormularioLogin OnCreateToastMessage="CreateToastMessage" OnStepChanged="HandleStepChange" />
+            @if (opcion == 1) {
+                @if (authenticateResponseDto == null) {
+                    <FormularioLogin
+                        OnCreateToastMessage="CreateToastMessage"
+                        OnStepChanged="HandleStepChange"
+                        OnOptionChange="HandleOptionChange"
+                    />
+                } else {
+                    <FormularioValidacion 
+                        OnCreateToastMessage="CreateToastMessage" 
+                        IdUsuario="@authenticateResponseDto?.IdUsuario"
+                        OnStepChanged="HandleStepChange"
+                    />
+                }
             } else {
-                <FormularioValidacion 
-                    OnCreateToastMessage="CreateToastMessage" 
-                    IdUsuario="@authenticateResponseDto?.IdUsuario" />
+                <FormularioRecuperar
+                    OnCreateToastMessage="CreateToastMessage"
+                    OnOptionChange="HandleOptionChange"
+                />
             }
-            
         </div>
         <img class="login470px" src="/login/img/login470px.png" alt="login470px" />
     </div>

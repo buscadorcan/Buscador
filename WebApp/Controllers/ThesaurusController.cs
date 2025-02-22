@@ -29,6 +29,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult con el contenido del thesaurus actual.
         /// </returns>
+        ///</summary>
         [HttpGet("obtener/thesaurus")]
         public IActionResult ObtenerThesaurus()
         {
@@ -122,6 +123,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la ejecución del archivo BAT fue exitosa.
         /// </returns>
+        ///</summary>
         [HttpGet("ejecutar/bat")]
         public IActionResult EjecutarBat()
         {
@@ -144,6 +146,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la actualización de SQL Server fue exitosa.
         /// </returns>
+        ///</summary>
         [HttpGet("reset/sqlserver")]
         public IActionResult ResetSQLServer()
         {

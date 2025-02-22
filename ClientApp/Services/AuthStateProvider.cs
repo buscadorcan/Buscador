@@ -24,7 +24,7 @@ namespace ClientApp.Services
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
-            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
         }
 

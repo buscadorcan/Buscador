@@ -10,10 +10,9 @@ namespace WebApp.Service.IService
         /// <param name="usuarioAutenticacionDto">Objeto <see cref="UsuarioAutenticacionDto"/> que contiene el nombre de usuario y contraseña.</param>
         /// <returns>
         /// Devuelve un objeto <see cref="Task{TResult}"/> donde T es <see cref="Result{AuthenticateResponseDto}"/>.
-        /// Si la autenticación es exitosa, el resultado contiene los detalles de autenticación del usuario.
+        Result<AuthenticateResponseDto> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
         /// En caso contrario, devuelve un mensaje de error.
         /// </returns>
-        Task<Result<AuthenticateResponseDto>> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto);
 
         /// <summary>
         /// Valida un código de autenticación recibido tras el inicio de sesión.
