@@ -13,19 +13,22 @@ namespace WebApp.Repositories
         private readonly IHashService _hashService;
         private readonly IEmailService _emailService;
         private readonly IEventTrackingRepository _eventTrackingRepository;
+        private readonly IConfiguration _configuration;
         public UsuarioRepository (
             IJwtService jwtService,
             IEmailService emailService,
             IHashService hashService,
             ILogger<UsuarioRepository> logger,
             ISqlServerDbContextFactory sqlServerDbContextFactory,
-            IEventTrackingRepository eventTrackingRepository
+            IEventTrackingRepository eventTrackingRepository,
+            IConfiguration configuration
         ) : base(sqlServerDbContextFactory, logger)
         {
             _jwtService = jwtService;
             _hashService = hashService;
             _emailService = emailService;
             _eventTrackingRepository = eventTrackingRepository;
+            _configuration = configuration;
         }
         public Usuario? FindById(int idUsuario)
         {
@@ -119,17 +122,17 @@ namespace WebApp.Repositories
         }
         public void SendConfirmationEmail(Usuario usuario, string clave)
         {
-            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "templates", "confirmation_access_key_template.html");
+            string templatePath = _configuration["EmailTemplates:Confirmation"] ?? "";
 
             if (File.Exists(templatePath))
             {
                 string htmlBody = File.ReadAllText(templatePath);
-                htmlBody = string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
 
                 _ = Task.Run(async () =>
                 {
                     try
                     {
+                        htmlBody = string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
                         await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
                     }
                     catch (Exception ex)

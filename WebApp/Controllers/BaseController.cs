@@ -33,7 +33,7 @@ namespace WebApp.Controllers
           {
             StatusCode = HttpStatusCode.InternalServerError,
             IsSuccess = false,
-            ErrorMessages = new List<string> { "Error en el servidor" },
+            ErrorMessages = new List<string> { "Error en el servidor", e.Message, e.StackTrace },
             Result = new { }
           });
         }

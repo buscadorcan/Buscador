@@ -16,19 +16,22 @@ namespace WebApp.Service
         private readonly ICatalogosRepository _catalogosRepository;
         private readonly IRandomStringGeneratorService _randomGeneratorService;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public RecoverUserService(
             IUsuarioRepository usuarioRepository,
             IEventTrackingRepository eventTrackingRepository,
             ICatalogosRepository catalogosRepository,
             IRandomStringGeneratorService randomGeneratorService,
-            IEmailService emailService)
+            IEmailService emailService,
+            IConfiguration configuration)
         {
             _usuarioRepository = usuarioRepository;
             _eventTrackingRepository = eventTrackingRepository;
             _catalogosRepository = catalogosRepository;
             _randomGeneratorService = randomGeneratorService;
             _emailService = emailService;
+            _configuration = configuration;
         }
 
         /// <inheritdoc />
@@ -141,7 +144,7 @@ namespace WebApp.Service
         /// </exception>
         public string GenerateTemporaryKeyEmailBody(Usuario usuario, string clave)
         {
-            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "templates", "temporary_key_template.html");
+            string templatePath = _configuration["EmailTemplates:Temporary"] ?? "";
 
             if (File.Exists(templatePath))
             {

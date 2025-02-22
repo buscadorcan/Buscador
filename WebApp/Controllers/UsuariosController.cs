@@ -99,32 +99,32 @@ namespace WebApp.Controllers
         /// WebApp/RecoverAsync: Permite la recuperación de contraseña de un usuario.
         /// Este método envía un enlace o código de recuperación de contraseña al correo del usuario para permitir el restablecimiento.
         /// </summary>
-        /// <param name="usuarioRecuperacionDto">Objeto que contiene el correo electrónico del usuario que desea recuperar la contraseña.</param>
+        /// <param name = "usuarioRecuperacionDto" > Objeto que contiene el correo electrónico del usuario que desea recuperar la contraseña.</param>
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la solicitud de recuperación fue exitosa.
         /// </returns>
-        //[HttpPost("recuperar")]
-        //public async Task<IActionResult> RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
-        //{
-        //    try
-        //    {
-        //        var result = _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
+        [HttpPost("recuperar")]
+        public IActionResult RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
+        {
+            try
+            {
+                var result = _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
 
-        //        if (!result.IsSuccess)
-        //        {
-        //            return BadRequestResponse(result.ErrorMessage);
-        //        }
+                if (!result.IsSuccess)
+                {
+                    return BadRequestResponse(result.ErrorMessage);
+                }
 
-        //        return Ok(new RespuestasAPI<bool>
-        //        {
-        //            Result = result.Value
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return HandleException(e, nameof(RecoverAsync));
-        //    }
-        //}
+                return Ok(new RespuestasAPI<bool>
+                {
+                    Result = result.Value
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(RecoverAsync));
+            }
+        }
 
         /// <summary>
         /// WebApp/Create: Registra un nuevo usuario en el sistema.

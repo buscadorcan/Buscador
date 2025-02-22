@@ -21,7 +21,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
 		<PackageReference Include="MySqlConnector" Version="2.4.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Npgsql" Version="9.0.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
@@ -32,7 +31,9 @@
 		<Folder Include="wwwroot\Icono\" />
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="wwwroot\Files\" />
+	  <None Include="wwwroot\Files\confirmation_access_key_template.html" />
+	  <None Include="wwwroot\Files\temporary_key_template.html" />
+	  <None Include="wwwroot\Files\verification_code_template.html" />
 	</ItemGroup>
 
 	<PropertyGroup>

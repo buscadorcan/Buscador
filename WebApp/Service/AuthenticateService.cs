@@ -1,3 +1,6 @@
+using System.Configuration;
+using System.Net.Mail;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
@@ -16,6 +19,7 @@ namespace WebApp.Service
         private readonly IEventTrackingRepository _eventTrackingRepository;
         private readonly IEmailService _emailService;
         private readonly IRandomStringGeneratorService _randomGeneratorService;
+        private readonly IConfiguration _configuration;
         public AuthenticateService(
             IUsuarioRepository usuarioRepository,
             IONAConexionRepository onaConexionRepository,
@@ -24,7 +28,8 @@ namespace WebApp.Service
             IRandomStringGeneratorService randomGeneratorService,
             IEmailService emailService,
             IHashService hashService,
-            IJwtService jwtService)
+            IJwtService jwtService,
+            IConfiguration configuration)
         {
             _usuarioRepository = usuarioRepository;
             _onaConexionRepository = onaConexionRepository;
@@ -34,6 +39,7 @@ namespace WebApp.Service
             _emailService = emailService;
             _hashService = hashService;
             _jwtService = jwtService;
+            _configuration = configuration;
         }
         /// <inheritdoc />
         public Result<AuthenticateResponseDto> Authenticate(UsuarioAutenticacionDto usuarioAutenticacionDto)
@@ -50,11 +56,11 @@ namespace WebApp.Service
                 var rol = GetRol(usuario.IdHomologacionRol);
 
                 string code = _randomGeneratorService.GenerateTemporaryCode(6);
-                var htmlBody = GenerateVerificationCodeEmailBody(code);
                 _ = Task.Run(async () =>
                 {
                     try
                     {
+                        var htmlBody = GenerateVerificationCodeEmailBody(code);
                         await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
                     }
                     catch (Exception ex)
@@ -279,7 +285,7 @@ namespace WebApp.Service
         /// <returns>A string containing the HTML body of the email with the verification code inserted.</returns>
         public string GenerateVerificationCodeEmailBody(string codigo)
         {
-            string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "templates", "verification_code_template.html");
+            string templatePath = _configuration["EmailTemplates:Verification"] ?? "";
 
             if (File.Exists(templatePath))
             {
