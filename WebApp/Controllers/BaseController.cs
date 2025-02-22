@@ -65,15 +65,6 @@ namespace WebApp.Controllers
         /// <returns>IsSuccess</returns>
         /// <returns>ErrorMessages</returns>
         /// <returns>Result</returns>
-                StatusCode = HttpStatusCode.BadRequest,
-                IsSuccess = false,
-                ErrorMessages = new List<string> { message },
-                Result = result
-            });
-        }
-
-        /* 
-         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
         protected IActionResult NotFoundResponse(string message)
         {
             return NotFound(new RespuestasAPI<object>

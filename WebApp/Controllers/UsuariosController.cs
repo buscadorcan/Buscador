@@ -103,28 +103,28 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la solicitud de recuperación fue exitosa.
         /// </returns>
-        [HttpPost("recuperar")]
-        public async Task<IActionResult> RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
-        {
-            try
-            {
-        var result = _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
+        //[HttpPost("recuperar")]
+        //public async Task<IActionResult> RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
+        //{
+        //    try
+        //    {
+        //        var result = _iServiceRecover.RecoverPassword(usuarioRecuperacionDto);
 
-                if (!result.IsSuccess)
-                {
-                    return BadRequestResponse(result.ErrorMessage);
-                }
+        //        if (!result.IsSuccess)
+        //        {
+        //            return BadRequestResponse(result.ErrorMessage);
+        //        }
 
-                return Ok(new RespuestasAPI<bool>
-                {
-                    Result = result.Value
-                });
-            }
-            catch (Exception e)
-            {
-                return HandleException(e, nameof(RecoverAsync));
-            }
-        }
+        //        return Ok(new RespuestasAPI<bool>
+        //        {
+        //            Result = result.Value
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return HandleException(e, nameof(RecoverAsync));
+        //    }
+        //}
 
         /// <summary>
         /// WebApp/Create: Registra un nuevo usuario en el sistema.
@@ -306,7 +306,7 @@ namespace WebApp.Controllers
         var result = _iRepo.ChangePasswd(usuario.Clave, usuario.ClaveNueva);
 
         if (!result.IsSuccess) {
-          return BadRequestResponse(result.ErrorMessage, false);
+          return BadRequestResponse(result.ErrorMessage);
         }
 
         return Ok(new RespuestasAPI<bool> {
