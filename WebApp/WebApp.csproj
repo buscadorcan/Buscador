@@ -49,6 +49,7 @@
 
 	<PropertyGroup>
 		<EnableMSDeployAppOffline>true</EnableMSDeployAppOffline>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<Target Name="PostPublish" AfterTargets="Publish">
