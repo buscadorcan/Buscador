@@ -11,6 +11,6 @@ namespace WebApp.Service.IService
         /// <param name="usuarioRecuperacionDto">Objeto que contiene la información del usuario 
         /// para la recuperación de contraseña.</param>
         /// <returns>Devuelve un objeto <see cref="Result{bool}"/> indicando si la operación fue exitosa o no.</returns>
-
+        Result<bool> RecoverPassword(UsuarioRecuperacionDto usuarioRecuperacionDto);
     }
 }
