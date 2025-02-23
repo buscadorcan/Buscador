@@ -491,3 +491,6 @@ $RECYCLE.BIN/
 /.gitignore
 /docs
 /_site
+/docfx.json
+/index.md
+/toc.yml
