@@ -29,6 +29,8 @@ namespace ClientApp.Pages.Administracion.Thesauros
 
         private bool modalAbierto = false;
         private bool modalQuitarSinonimoAbierto = false;
+        private bool modalQuitarSeccion = false;
+
         private bool isMensaje = false;
         private bool isMensajeGuardar = false;
         private bool isMensajeGuardarExitoso = false;
@@ -43,7 +45,6 @@ namespace ClientApp.Pages.Administracion.Thesauros
         protected override async Task OnInitializedAsync()
         {
             usuarioLogin = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
-           
             await this.ObtenerThesauroAsync();
 
         }
@@ -85,6 +86,14 @@ namespace ClientApp.Pages.Administracion.Thesauros
             this.thesauroPadre.Expansions.Add(new ExpansionDto());
         }
 
+        ///<summary>
+        ///NuevaSeccion:evento para crear una nueva sección
+        ///</summary>
+        public void QuitarSeccion()
+        {
+            this.thesauro.Expansions.RemoveAt(this.expansionSeleccionada);
+            CerrarModal();
+        }
         ///<summary>
         ///EjecutarBat:evento para ejecutar la acción de copiar el archivo thesauros en la carpeta de sqlserver
         ///</summary>
@@ -169,12 +178,23 @@ namespace ClientApp.Pages.Administracion.Thesauros
         }
 
         ///<summary>
+        ///AbrirModalQuitarSeccion:evento para visualizar el modal de la eliminación de una sección
+        ///</summary>
+        private void AbrirModalQuitarSeccion(int seccion)
+        {
+            this.modalQuitarSeccion = true;
+            this.modalQuitarSinonimoAbierto = true;
+            expansionSeleccionada = seccion;
+        }
+
+        ///<summary>
         ///CerrarModal:evento cerrar un modal
         ///</summary>
         private void CerrarModal()
         {
             modalAbierto = false;
             modalQuitarSinonimoAbierto = false;
+            modalQuitarSeccion = false;
         }
 
         ///<summary>
@@ -182,9 +202,24 @@ namespace ClientApp.Pages.Administracion.Thesauros
         ///</summary>
         private async void AgregarSubstituto()
         {
+            this.isMensaje = false;
+            this.mensajeGuardar = "";
             if (!ExisteSinonimo(nuevoSubstituto))
             {
-                var temp = this.thesauro.Expansions[expansionSeleccionada];
+                var temp = new ExpansionDto();
+
+                if (this.thesauro.Expansions[expansionSeleccionada].Substitutes.Count > 0)
+                {
+                    foreach (var item in this.thesauro.Expansions[expansionSeleccionada].Substitutes)
+                    {
+                        temp.Substitutes.Add(item);
+                    }
+
+                }
+               
+
+                if (temp.Substitutes.Count == 0){temp.Substitutes.Add(nuevoSubstituto);}
+
                 bool ExisteBD = await this.ValidateWords(temp.Substitutes);
 
                 if (ExisteBD)

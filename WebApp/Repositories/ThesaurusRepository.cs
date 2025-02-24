@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using Org.BouncyCastle.Asn1.X509;
+using Org.BouncyCastle.Tls;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -15,6 +16,9 @@ namespace WebApp.Repositories
     {
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];
         private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
+        private readonly string _nombreArchivoBat = configuration["Thesaurus:RutaArchivoBat"];
+        private readonly string _nombreExec = configuration["Thesaurus:RutapsexecPath"];
+        //nombreServicioSqlServer
         private readonly IWebHostEnvironment _env = env;
 
         ///<summary>
@@ -133,31 +137,39 @@ namespace WebApp.Repositories
         ///</summary>
         public string ResetSQLServer()
         {
-            string serviceName = "MSSQLSERVER"; // Nombre del servicio SQL Server
-            ServiceController service = new ServiceController(serviceName);
             string mensaje = "";
+            string serverName = "216.172.100.184:1097"; // Nombre o IP del servidor SQL Server
+            string user = "administrator"; // Usuario con privilegios
+            string password = "S!desoft@dm!n2025"; // Contraseña del usuario
+
             try
             {
-                mensaje = mensaje + $"Estado actual del servicio: {service.Status}" + "\n";
-                
-
-                if (service.Status != ServiceControllerStatus.Stopped)
+                ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    mensaje = mensaje + "Deteniendo el servicio..." + "\n";
-                    service.Stop();
-                    service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
-                    mensaje = mensaje + "Servicio detenido." + "\n";
+                    FileName = _nombreExec,
+                    Arguments = $@"\\{serverName} -u {user} -p {password} -s cmd /c {_nombreArchivoBat}",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (Process process = new Process { StartInfo = psi })
+                {
+                    process.Start();
+                    mensaje = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        mensaje += "\nError: " + error;
+                    }
                 }
-                mensaje= mensaje + "Iniciando el servicio..." + "\n";
-
-                service.Start();
-                service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
-
-                mensaje = mensaje + "Servicio iniciado correctamente.." + "\n";
             }
             catch (Exception ex)
             {
-                mensaje = mensaje + $"Error: {ex.Message}";
+                mensaje = $"Error: {ex.Message}";
             }
 
             return mensaje;

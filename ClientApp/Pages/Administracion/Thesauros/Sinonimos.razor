@@ -50,6 +50,24 @@
     align-items:center;
     }
 
+    .div_flex_secction {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .div_flex_buttom{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap:0.5em;
+        
+    }
+
     .ancho_85{
     width:85%;
     }
@@ -61,8 +79,20 @@
     .ancho_40 {
         width: 40%;
     }
+
+    .ancho_20 {
+        width: 20%;
+    }
     .ancho_15{
     width: 15%;
+    }
+
+    .ancho_10 {
+        width: 10%;
+    }
+
+    .ancho_4 {
+        width: 4%;
     }
 
     .ancho_100 {
@@ -72,7 +102,7 @@
 
     .input_control{
     padding:0.5em;
-    height:2.5em;
+    height:2.7em;
     border: 1px solid #212529;
     border-top-left-radius:10px;
 
@@ -115,6 +145,15 @@
     .paddign_10{
         padding:10px !important;
     }
+
+    .margin_b_10 {
+        margin-bottom: 10px !important;
+    }
+
+    .accordion-button{
+        width:95% !important;
+
+    }
 </style>
 
 <h1 class="title">Administración de Sinonimos</h1>
@@ -126,24 +165,29 @@
 else
 {
     <div class="div_flex ancho_100 margin_botton">
-        <div class="ancho_40 div_flex">
+        <div class="div_flex ancho_100 margin_b_10">
             <input type="text" placeholder="Ingrese el sinonimo a buscar" @bind="sinonimoBuscar" @oninput="MostarTodos"  class="ancho_70 input_control" />
             <Button class="ancho_30 btn_control" @onclick="() => BuscarSinonimo()">Buscar Sinonimo</Button>
         </div>
         @if (this.usuarioLogin == "KEY_USER_CAN")
         {
-            <div class="ancho_15 div_flex">
-                <Button class="btn_control_guardar ancho_100" @onclick="() => GuardarThesauro()">Guardar</Button>
+            <div class="div_flex_buttom ancho_100">
+                <div class="ancho_20">
+                    <Button class="btn_control_guardar ancho_100" @onclick="() => GuardarThesauro()">Guardar</Button>
+                </div>
+                <div class="ancho_20">
+                    <Button class="btn_control_bat ancho_100" @onclick="() => NuevaSeccion()">Nueva Sección</Button>
+                </div>
+                <div class="ancho_20">
+                    <Button class="btn_control_bat ancho_100" @onclick="() => EjecutarBat()">Publicar</Button>
+                </div>
+                <!--
+                <div class="ancho_20">
+                    <Button class="btn_control_bat ancho_100" @onclick="() => ResetearqSqlServer()">Resetear Base de datos</Button>
+                </div>
+                -->
             </div>
-            <div class="ancho_15 div_flex">
-                <Button class="btn_control_bat ancho_100" @onclick="() => NuevaSeccion()">Nueva Sección</Button>
-            </div>
-            <div class="ancho_15 div_flex">
-                <Button class="btn_control_bat ancho_100" @onclick="() => EjecutarBat()">Publicar</Button>
-            </div>
-            <div class="ancho_15 div_flex">
-                <Button class="btn_control_bat ancho_100" @onclick="() => ResetearqSqlServer()">Resetear Base de datos</Button>
-            </div>
+            
         }
 
 
@@ -156,11 +200,16 @@ else
             var collapseId = $"collapse{i}";
 
             <div class="accordion-item">
-                <h2 class="accordion-header" id="heading@i">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId">
-                        Seccion
-                    </button>
-                </h2>
+                    <h2 class="accordion-header div_flex_secction" id="heading@i">
+                        @if (this.usuarioLogin == "KEY_USER_CAN")
+                        {
+                        <button class="btn btn-danger btn-sm mt-0 ancho_4" @onclick="()=> AbrirModalQuitarSeccion(i)">-</button>
+                        }
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId">
+                            Seccion
+                        </button>
+
+                    </h2>
                 <div id="@collapseId" class="accordion-collapse collapse" data-bs-parent="#accordionThesaurus">
                     <div class="accordion-body">
                         @if (this.usuarioLogin == "KEY_USER_CAN") {
@@ -242,6 +291,24 @@ else
             
             <div class="modal-footer">
                 <button class="btn btn-secondary" @onclick="QuitarSubstituto">Si</button>
+                <button class="btn btn-primary" @onclick="CerrarModal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade @(modalQuitarSeccion ? "show d-block" : "d-none")" tabindex="-1" style="background: rgba(0, 0, 0, 0.5);" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sinonimo</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <label>¿Desea quitar la sección seleccionada?</label>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="QuitarSeccion">Si</button>
                 <button class="btn btn-primary" @onclick="CerrarModal">No</button>
             </div>
         </div>
