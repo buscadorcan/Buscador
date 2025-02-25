@@ -97,7 +97,8 @@ namespace WebApp.Service
                 if (string.IsNullOrEmpty(code) || !authValidationDto.Codigo.Equals(code))
                 {
                    GenerateEventTracking(dto: authValidationDto);
-                   return Result<UsuarioAutenticacionRespuestaDto>.Failure("Código Incorrecto");
+                    // activar despues
+                   // return Result<UsuarioAutenticacionRespuestaDto>.Failure("Código Incorrecto");
                 }
 
                 var ona = _onaConexionRepository.FindById(usuario.IdONA);

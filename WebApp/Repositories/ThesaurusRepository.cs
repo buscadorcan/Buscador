@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.ServiceProcess;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
@@ -16,8 +17,7 @@ namespace WebApp.Repositories
     {
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];
         private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
-        private readonly string _nombreArchivoBat = configuration["Thesaurus:RutaArchivoBat"];
-        private readonly string _nombreExec = configuration["Thesaurus:RutapsexecPath"];
+        private readonly string _IpSqlServer = configuration["Thesaurus:IpServidorSqlServer"];
         //nombreServicioSqlServer
         private readonly IWebHostEnvironment _env = env;
 
@@ -137,17 +137,16 @@ namespace WebApp.Repositories
         ///</summary>
         public string ResetSQLServer()
         {
-            string mensaje = "";
-            string serverName = "216.172.100.184:1097"; // Nombre o IP del servidor SQL Server
-            string user = "administrator"; // Usuario con privilegios
-            string password = "S!desoft@dm!n2025"; // Contraseña del usuario
+            string serviceName = _IpSqlServer; // Nombre del servicio SQL Server
+            StringBuilder outputBuilder = new StringBuilder();
+            StringBuilder errorBuilder = new StringBuilder();
 
             try
             {
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    FileName = _nombreExec,
-                    Arguments = $@"\\{serverName} -u {user} -p {password} -s cmd /c {_nombreArchivoBat}",
+                    FileName = "cmd.exe",
+                    Arguments = "/c net stop SQLSERVERAGENT && net start SQLSERVERAGENT",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
@@ -156,23 +155,27 @@ namespace WebApp.Repositories
 
                 using (Process process = new Process { StartInfo = psi })
                 {
-                    process.Start();
-                    mensaje = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
-                    process.WaitForExit();
+                    process.OutputDataReceived += (sender, e) => { if (e.Data != null) outputBuilder.AppendLine(e.Data); };
+                    process.ErrorDataReceived += (sender, e) => { if (e.Data != null) errorBuilder.AppendLine(e.Data); };
 
-                    if (!string.IsNullOrEmpty(error))
-                    {
-                        mensaje += "\nError: " + error;
-                    }
+                    process.Start();
+                    process.BeginOutputReadLine();  // Leer salida en segundo plano
+                    process.BeginErrorReadLine();   // Leer errores en segundo plano
+
+                    process.WaitForExit(60000); // Espera hasta 60 segundos
                 }
+
+                if (errorBuilder.Length > 0)
+                {
+                    return $"Error: {errorBuilder}";
+                }
+
+                return $"Resultado: {outputBuilder}";
             }
             catch (Exception ex)
             {
-                mensaje = $"Error: {ex.Message}";
+                return $"Excepción: {ex.Message}";
             }
-
-            return mensaje;
         }
     }
 }
