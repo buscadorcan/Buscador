@@ -38,6 +38,16 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
 
         protected override async Task OnInitializedAsync()
         {
+            objEventTracking.NombrePagina = "/menu-config-lista";
+            objEventTracking.NombreAccion = "OnInitializedAsync";
+            objEventTracking.NombreControl = "menu-config-lista";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
+                                              await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             await LoadMenus();
             listaMenusOriginal = new List<MenuRolDto>(listaMenus);
         }
@@ -94,12 +104,12 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
         //Modificación: No recargar toda la lista después de eliminar un elemento
         private async Task ConfirmDelete(MenuRolDto menu)
         {
-            objEventTracking.NombrePagina = "Administración de Menú";
+            objEventTracking.NombrePagina = "/menu-config-lista";
             objEventTracking.NombreAccion = "ConfirmDelete";
-            objEventTracking.NombreControl = "ConfirmDelete";
+            objEventTracking.NombreControl = "btnEliminar";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
                                               await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -150,8 +160,8 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
         //    objEventTracking.NombrePagina = "Administración de Menú";
         //    objEventTracking.NombreAccion = "ConfirmDelete";
         //    objEventTracking.NombreControl = "ConfirmDelete";
-        //    objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        //    objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        //    objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        //    objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         //    objEventTracking.ParametroJson = "{}";
         //    objEventTracking.UbicacionJson = "";
         //    await iBusquedaService.AddEventTrackingAsync(objEventTracking);

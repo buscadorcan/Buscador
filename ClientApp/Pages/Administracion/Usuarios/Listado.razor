@@ -27,13 +27,13 @@
         <!-- Grupo de botones de exportación -->
         <div class="d-flex gap-2">
             <!-- Botón Exportar a Excel -->
-            <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+            <Button id="btnExportarExcel" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
                 <Icon Name="IconName.FileEarmarkArrowDown" />
                 <span class="ms-2 btnExp">Exportar a Excel</span>
             </Button>
 
             <!-- Botón Exportar a PDF -->
-            <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+            <Button id="btnExportarPDF" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
                 <Icon Name="IconName.FileEarmarkPdf" />
                 <span class="ms-2 btnExp">Exportar a PDF</span>
             </Button>
@@ -125,7 +125,7 @@
                                 <!-- Botón Eliminar -->
                                 <div class="cell cell-1">
                                     <Tooltip Title="Eliminar registro">
-                                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
+                                        <Button id="btnEliminar" @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Disabled="isRolRead"
                                                 Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(usuario.IdUsuario))>
                                             <Icon Name="IconName.Trash" />
                                         </Button>
@@ -180,11 +180,11 @@
     }
     private async Task ExportarExcel()
     {
-        objEventTracking.NombrePagina = "Administración de Usuarios";
+        objEventTracking.NombrePagina = "/usuarios";
         objEventTracking.NombreAccion = "ExportarExcel";
-        objEventTracking.NombreControl = "ExportarExcel";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -231,11 +231,11 @@
     }
     private async Task ExportarPDF()
     {
-        objEventTracking.NombrePagina = "Administración de Usuarios";
+        objEventTracking.NombrePagina = "/usuarios";
         objEventTracking.NombreAccion = "ExportarPDF";
-        objEventTracking.NombreControl = "ExportarPDF";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);

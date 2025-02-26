@@ -78,7 +78,27 @@ namespace ClientApp.Pages.Administracion.Conexion
 
             if (Id > 0 && service != null)
             {
+                objEventTracking.NombrePagina = "/editar-conexion";
+                objEventTracking.NombreAccion = "OnInitializedAsync";
+                objEventTracking.NombreControl = "editar-conexion";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                 conexion = await service.GetConexionAsync(Id.GetValueOrDefault());
+            }
+            else
+            {
+                objEventTracking.NombrePagina = "/nuevo-conexion";
+                objEventTracking.NombreAccion = "OnInitializedAsync";
+                objEventTracking.NombreControl = "nuevo-conexion";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
             }
             
            
@@ -89,11 +109,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         /// </summary>
         private async Task RegistrarConexion()
         {
-            objEventTracking.NombrePagina = "Conexión al origen de datos";
+            objEventTracking.NombrePagina = "/nuevo-conexion";
             objEventTracking.NombreAccion = "RegistrarConexion";
-            objEventTracking.NombreControl = "RegistrarConexion";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnGuardar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

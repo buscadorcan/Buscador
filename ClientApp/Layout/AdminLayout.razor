@@ -6,7 +6,6 @@
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
 @using ClientApp.Services.IService
-
 @*
 /// <summary>
 /// Pagina que se utiliza para poder formar el layout del sistema, es la plantilla general donde se cargaran todas las paginas
@@ -72,34 +71,16 @@
                                     {
                                         @foreach (var item in navItems)
                                         {
-                                            switch (item.Href)
+                                            if (item.CodigoHomologacion == "KEY_MENU_ONA" ||
+                                            item.CodigoHomologacion == "KEY_MENU_USU" ||
+                                            item.CodigoHomologacion == "KEY_MENU_REP_EST")
                                             {
-                                                case "/onas":
-                                                    <div class="ona">
-                                                        <img class="bibuilding" src="admin/img/bi-building.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-
-                                                    break;
-                                                case "/usuarios":
-                                                    <div class="usuarios">
-                                                        <img class="bibuilding" src="admin/img/solar-user-linear.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-                                                case "/reporte1":
-                                                    <div class="estadisticas">
-                                                        <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                        <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                    </div>
-                                                    break;
-
+                                                <div class="campos">
+                                                    <img class="bibuilding" src="@item.Icono" alt="Icono" />
+                                                    <NavLink href="@item.NavItem.Href" class="place valign-text-middle headingheadline5-h5">@item.NavItem.Text</NavLink>
+                                                </div>
                                             }
                                         }
-                                        <div class="ona">
-                                            <img class="bibuilding" src="admin/img/frame-5.svg">
-                                            <NavLink href="/cambiar_clave" class="place valign-text-middle headingheadline5-h5">Cambiar Clave</NavLink>
-                                        </div>
                                     }
                                     else
                                     {
@@ -114,79 +95,15 @@
                                     {
                                         @foreach (var item in navItems)
                                         {
-                                            if (item.Href != "/onas" && item.Href != "/usuarios" && item.Href != "/reporte1")
+                                            if (item.CodigoHomologacion != "KEY_MENU_ONA" && item.CodigoHomologacion != "KEY_MENU_USU" && item.CodigoHomologacion != "KEY_MENU_REP_EST")
                                             {
-                                                switch (item.Href)
-                                                {
-                                                    case "/sinonimos":
-                                                        <div class="campos">
-                                                            <img class="bibuilding" src="admin/img/ep-connection.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/conexion":
-                                                        <div class="conexion">
-                                                            <img class="bibuilding" src="admin/img/ep-connection.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/grupos":
-                                                        <div class="grupos">
-                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/campos-homologacion":
-                                                        <div class="campos">
-                                                            <img class="bibuilding" src="admin/img/bi-card-checklist.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/esquemas":
-                                                        <div class="esquemas">
-                                                            <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/validacion":
-                                                        <div class="campos">
-                                                            <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/migracion-excel":
-                                                        <div class="excel">
-                                                            <img class="bibuilding" src="admin/img/bi-file-earmark-excel.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/reportecan":
-                                                        <div class="estadisticas">
-                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/reporteona":
-                                                        <div class="estadisticas">
-                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    case "/reporteread":
-                                                        <div class="estadisticas">
-                                                            <img class="bibuilding" src="admin/img/frame-1000004265.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                    default:
-                                                        <div class="campos">
-                                                            <img class="bibuilding" src="admin/img/material-symbols-light-ballot-outline.svg">
-                                                            <NavLink href="@item.Href" class="place valign-text-middle headingheadline5-h5">@item.Text</NavLink>
-                                                        </div>
-                                                        break;
-                                                }
-
-                                            }
+                                                <div class="campos">
+                                                    <img class="bibuilding" src="@item.Icono" alt="Icono" />
+                                                    <NavLink href="@item.NavItem.Href" class="place valign-text-middle headingheadline5-h5">
+                                                        @item.NavItem.Text
+                                                    </NavLink>
+                                                </div>
+                                            }   
                                         }
                                     }
                                     else
@@ -289,6 +206,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        
         codigoRol = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
         if (codigoRol == "KEY_USER_CAN")
@@ -312,6 +230,7 @@
         apellidos = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
 
         // if (navItems is null || navItems.Count == 0)
+
         navItems = await GetNavItemsAsync();
 
         await Task.Delay(2000);
@@ -330,7 +249,6 @@
 
 @code {
     Sidebar2 sidebar;
-    private IEnumerable<NavItem>? navItems = new List<NavItem>();
 
     [Inject]
     private ICatalogosService? _Icatalogo { get; set; }
@@ -340,51 +258,67 @@
 
     private string TituloMenu;
     private string ClasePage;
+    private string PathIconMenu;
 
-    [Parameter] public EventCallback<List<NavItem>> OnNavItemsChanged { get; set; } // 🔹 Nuevo parámetro
+    [Parameter] public EventCallback<List<NavItem>> OnNavItemsChanged { get; set; } 
+
+    // private IEnumerable<NavItem>? navItems = new List<NavItem>();
+    private IEnumerable<CustomNavItem>? navItems = new List<CustomNavItem>();
+
 
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
     {
+        // if (navItems is null)
+        //     navItems = await GetNavItemsAsync();
+
+        // await Task.Delay(2000);
+        // return await Task.FromResult(request.ApplyTo(navItems));
         if (navItems is null)
             navItems = await GetNavItemsAsync();
 
         await Task.Delay(2000);
-        return await Task.FromResult(request.ApplyTo(navItems));
+        // Si el método ApplyTo espera una lista de NavItem, se extrae la propiedad NavItem de cada CustomNavItem:
+        var navItemsBase = navItems.Select(c => c.NavItem).ToList();
+        return await Task.FromResult(request.ApplyTo(navItemsBase));
     }
     public class CustomNavItem
     {
         public NavItem NavItem { get; set; }
         public string CodigoHomologacion { get; set; }
+        public string Icono { get; set; }
 
-        public CustomNavItem(NavItem navItem, string codigoHomologacion)
+        public CustomNavItem(NavItem navItem, string codigoHomologacion, string icono)
         {
             NavItem = navItem;
             CodigoHomologacion = codigoHomologacion;
+            Icono = icono;
         }
     }
-
-    private async Task<IEnumerable<NavItem>> GetNavItemsAsync()
+    private async Task<IEnumerable<CustomNavItem>> GetNavItemsAsync()
     {
+        // Se obtiene la ruta base del icono desde LocalStorage o se usa un valor por defecto.
+        PathIconMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_PathIconAppSetting) ?? "admin/img/";
         // Obtener los elementos del menú desde la API o servicio.
         var menuItems = await _Icatalogo.GetMenusAsync();
 
-        // Obtener el título del menú y el rol del usuario desde localStorage.
+        // Obtener el título del menú y el rol del usuario desde LocalStorage.
         TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
         var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
         // Filtrar elementos del menú donde el rol del usuario esté en CodigoHomologacionRol.
         var filteredMenuItems = menuItems
             .Where(menu =>
-                !string.IsNullOrEmpty(menu.CodigoHomologacionRol) && // Evitar valores nulos o vacíos
+                !string.IsNullOrEmpty(menu.CodigoHomologacionRol) &&
                 menu.CodigoHomologacionRol.Split(',')
-                    .Select(r => r.Trim()) // Eliminar espacios en blanco
-                    .Contains(rol)) // Comparar con el rol actual
-            .OrderBy(menu => menu.MostrarWebOrden) // Ordenar por MostrarWebOrden
+                    .Select(r => r.Trim())
+                    .Contains(rol))
+            .OrderBy(menu => menu.MostrarWebOrden)
             .ToList();
 
-        // Convertir los elementos filtrados en objetos NavItem
-        var navItemsList = filteredMenuItems.Select(menu =>
+        // Convertir los elementos filtrados en objetos CustomNavItem
+        var customNavItems = filteredMenuItems.Select(menu =>
         {
+            // Mapear a un valor del enum IconName de BlazorBootstrap.
             BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
             {
                 "KEY_MENU_ONA" => BlazorBootstrap.IconName.PersonFill,
@@ -398,40 +332,50 @@
                 _ => BlazorBootstrap.IconName.QuestionCircleFill
             };
 
-            return new NavItem
+            // Crear el objeto NavItem (del ensamblado BlazorBootstrap)
+            var navItem = new NavItem
                 {
-                    Id = "", //menu.IdHomologacionMenu.ToString(),
+                    Id = "", // O menu.IdHomologacionMenu.ToString() si lo necesitas
                     Text = menu.MostrarWeb,
                     Href = menu.href,
                     IconName = iconName
                 };
+
+            // Concatenar la ruta base con el nombre del archivo para obtener la ruta completa del icono.
+            // fullIconPath hace referencia a Icono de vista vwMenu
+            string fullIconPath = $"{PathIconMenu}{menu.Icono}";
+            // Retornar el CustomNavItem con el NavItem original, el código de homologación y la ruta completa del icono.
+            return new CustomNavItem(navItem, menu.CodigoHomologacion, fullIconPath);
         }).ToList();
 
-        // 🔹 Enviar la lista de navegación actualizada a AdminLayout.razor
-        await OnNavItemsChanged.InvokeAsync(navItemsList);
+        // Si necesitas enviar la lista de navegación a otro componente (por ejemplo, AdminLayout),
+        // puedes enviar la lista de NavItem extraída de los CustomNavItem.
+        await OnNavItemsChanged.InvokeAsync(customNavItems.Select(c => c.NavItem).ToList());
 
-        return navItemsList;
+        return customNavItems;
     }
 
     // private async Task<IEnumerable<NavItem>> GetNavItemsAsync()
     // {
+    //     PathIconMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_PathIconAppSetting)  ?? "admin/img/"; 
+    //     // Obtener los elementos del menú desde la API o servicio.
     //     var menuItems = await _Icatalogo.GetMenusAsync();
+
+    //     // Obtener el título del menú y el rol del usuario desde localStorage.
     //     TituloMenu = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Menu_Titulo_Local);
     //     var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
-    //     // Excluir ciertos menús según el rol
-    //     var excludedHrefs = rol switch
-    //     {
-    //         "KEY_USER" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_EST", "KEY_MENU_REP_ONA","KEY_MENU_FREE", "KEY_MENU_REP_READ", "KEY_MENU_ONA", "KEY_MENU_CON", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ", "KEY_MENU_VAL", "KEY_MENU_MIG_EXCEL", "KEY_MENU_MIG_LOG" },
-    //         "KEY_USER_CAN" => new[] { "KEY_MENU_REP_ONA", "KEY_MENU_REP_READ" },
-    //         "KEY_USER_ONA" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_READ", "KEY_MENU_REP_EST", "KEY_MENU_ONA", "KEY_MENU_USU", "KEY_MENU_GRU", "KEY_MENU_CAM", "KEY_MENU_ESQ" },
-    //         "KEY_USER_READ" => new[] { "KEY_MENU_REP_CAN", "KEY_MENU_REP_ONA", "KEY_MENU_FREE" },
-    //         _ => Array.Empty<string>()
-    //     };
+    //     // Filtrar elementos del menú donde el rol del usuario esté en CodigoHomologacionRol.
+    //     var filteredMenuItems = menuItems
+    //         .Where(menu =>
+    //             !string.IsNullOrEmpty(menu.CodigoHomologacionRol) && // Evitar valores nulos o vacíos
+    //             menu.CodigoHomologacionRol.Split(',')
+    //                 .Select(r => r.Trim()) // Eliminar espacios en blanco
+    //                 .Contains(rol)) // Comparar con el rol actual
+    //         .OrderBy(menu => menu.MostrarWebOrden) // Ordenar por MostrarWebOrden
+    //         .ToList();
 
-    //     var filteredMenuItems = menuItems.Where(menu => !excludedHrefs.Contains(menu.CodigoHomologacion));
-
-    //     // Convertir en NavItem
+    //     // Convertir los elementos filtrados en objetos NavItem
     //     var navItemsList = filteredMenuItems.Select(menu =>
     //     {
     //         BlazorBootstrap.IconName iconName = menu.CodigoHomologacion switch
@@ -449,14 +393,15 @@
 
     //         return new NavItem
     //             {
-    //                 Id = menu.IdHomologacionMenu.ToString(),
+    //                 Id = "", //menu.IdHomologacionMenu.ToString(),
     //                 Text = menu.MostrarWeb,
     //                 Href = menu.href,
-    //                 IconName = iconName
+    //                 IconName = iconName,
     //             };
-    //     }).ToList(); 
+    //     }).ToList();
 
-    //     await OnNavItemsChanged.InvokeAsync(navItemsList); // 🔹 Enviar valores a AdminLayout.razor
+    //     // 🔹 Enviar la lista de navegación actualizada a AdminLayout.razor
+    //     await OnNavItemsChanged.InvokeAsync(navItemsList);
 
     //     return navItemsList;
     // }

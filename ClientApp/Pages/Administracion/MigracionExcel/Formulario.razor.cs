@@ -102,6 +102,15 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
+            objEventTracking.NombrePagina = "/nueva-migarcion-excel";
+            objEventTracking.NombreAccion = "OnInitializedAsync";
+            objEventTracking.NombreControl = "nueva-migarcion-excel";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             var onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
             var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             bool accessRol = rol == "KEY_USER_CAN";
@@ -165,11 +174,11 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         {
             try
             {
-                objEventTracking.NombrePagina = "Archivo migración";
+                objEventTracking.NombrePagina = "/nueva-migarcion-excel";
                 objEventTracking.NombreAccion = "RegistrarMigracionExcel";
-                objEventTracking.NombreControl = "RegistrarMigracionExcel";
-                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+                objEventTracking.NombreControl = "btnGuardar";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -228,7 +237,7 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         /// <summary>
         /// Abre el modal de confirmación.
         /// </summary>
-        private async Task OpenDeleteModal()
+        private async Task OpenMigracionModal()
         {
             showModal = true;
         }

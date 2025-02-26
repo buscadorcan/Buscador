@@ -65,15 +65,18 @@ namespace ClientApp.Pages.Administracion.Usuarios
         }
         protected override async Task OnInitializedAsync()
         {
+            objEventTracking.NombrePagina = "/usuarios";
+            objEventTracking.NombreAccion = "OnInitializedAsync";
+            objEventTracking.NombreControl = "usuarios";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local); objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
 
-            rolCargo = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
             onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
             listaUsuarios = await iUsuariosService.GetUsuariosAsync();
-
-            //listaRoles = await iUsuariosService.GetRolesAsync();
             listaOna = await iUsuariosService.GetOnaAsync();
 
-            //var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == rolCargo);
             var rolRelacionado = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             var onaRelacionado = listaOna.FirstOrDefault(ona => ona.IdONA == onaPais);
  
@@ -88,14 +91,12 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private async void EditarUsuario(UsuarioDto usuario)
         {
 
-            rolCargo = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
             onaPais = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_IdOna_Local);
             listaUsuarios = await iUsuariosService.GetUsuariosAsync();
 
             listaRoles = await iUsuariosService.GetRolesAsync();
             listaOna = await iUsuariosService.GetOnaAsync();
 
-            //var rolRelacionado = listaRoles.FirstOrDefault(rol => rol.IdHomologacionRol == rolCargo);
             var rolRelacionado = await LocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             var onaRelacionado = listaOna.FirstOrDefault(ona => ona.IdONA == onaPais);
             var Homolog = listaUsuarios.FirstOrDefault(usu => usu.IdUsuario == usuario.IdUsuario);
@@ -165,11 +166,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
         // Confirmar eliminación del registro
         private async Task ConfirmDelete()
         {
-            objEventTracking.NombrePagina = "Administración de Usuarios";
+            objEventTracking.NombrePagina = "/usuarios";
             objEventTracking.NombreAccion = "ConfirmDelete";
-            objEventTracking.NombreControl = "ConfirmDelete";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnEliminar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

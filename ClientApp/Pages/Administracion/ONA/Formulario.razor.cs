@@ -113,7 +113,27 @@ namespace ClientApp.Pages.Administracion.ONA
 
             if (Id > 0 && iONAsService != null)
             {
+                objEventTracking.NombrePagina = "/editar-ona";
+                objEventTracking.NombreAccion = "OnInitializedAsync";
+                objEventTracking.NombreControl = "editar-ona";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                 onas = await iONAsService.GetONAsAsync(Id.Value);
+            }
+            else
+            {
+                objEventTracking.NombrePagina = "/nuevo-ona";
+                objEventTracking.NombreAccion = "OnInitializedAsync";
+                objEventTracking.NombreControl = "nuevo-ona";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
             }
         }
 
@@ -122,11 +142,11 @@ namespace ClientApp.Pages.Administracion.ONA
         /// </summary>
         private async Task RegistrarONA()
         {
-            objEventTracking.NombrePagina = "Información Principal ONA";
+            objEventTracking.NombrePagina = "/nuevo-ona";
             objEventTracking.NombreAccion = "RegistrarONA";
-            objEventTracking.NombreControl = "RegistrarONA";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnGuardar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

@@ -1,4 +1,6 @@
-﻿using ClientApp.Services.IService;
+﻿using Blazored.LocalStorage;
+using ClientApp.Helpers;
+using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
@@ -21,9 +23,27 @@ namespace ClientApp.Pages.Administracion.Reportes
         public string Titulo_vw_OrganizacionEsquema { get; set; } = "";
         public string Titulo_vw_OrganismoActividad { get; set; } = "";
 
+
+        [Inject]
+        ILocalStorageService iLocalStorageService { get; set; }
+        /// <summary>
+        /// Servicio de búsqueda y registro de eventos.
+        /// </summary>
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         // Método ejecutado después de renderizar el componente
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            objEventTracking.NombrePagina = "/reporteona";
+            objEventTracking.NombreAccion = "OnAfterRenderAsync";
+            objEventTracking.NombreControl = "reporteona";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             if (firstRender)
             {
                 try

@@ -60,8 +60,27 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             // Obtener la homologación padre (grupo)
             homologacionGrupo = await iHomologacionService.GetHomologacionAsync((int) IdPadre);
             if (Id > 0) {
+                objEventTracking.NombrePagina = "/editar-campos-homologacion";
+                objEventTracking.NombreAccion = "OnInitializedAsync";
+                objEventTracking.NombreControl = "editar-campos-homologacion";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                 homologacion = await iHomologacionService.GetHomologacionAsync(Id.Value);
             } else {
+
+                objEventTracking.NombrePagina = "/nuevo-campos-homologacion";
+                objEventTracking.NombreAccion = "OnInitializedAsync";
+                objEventTracking.NombreControl = "nuevo-campos-homologacion";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                 homologacion.IdHomologacionGrupo = IdPadre;
                 homologacion.InfoExtraJson = "{}";
                 homologacion.MascaraDato = "TEXTO";
@@ -76,11 +95,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         /// </summary>
         private async Task GuardarHomologacion()
         {
-            objEventTracking.NombrePagina = "Actualizar / Registrar";
+            objEventTracking.NombrePagina = "/nuevo-campos-homologacion";
             objEventTracking.NombreAccion = "GuardarHomologacion";
-            objEventTracking.NombreControl = "GuardarHomologacion";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnGuardar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "{}";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

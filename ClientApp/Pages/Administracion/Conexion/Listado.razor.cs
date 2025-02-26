@@ -54,7 +54,7 @@ namespace ClientApp.Pages.Administracion.Conexion
             {
                 CurrentPage--;
 
-                objEventTracking.NombrePagina = null;
+                objEventTracking.NombrePagina = "/conexion";
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
 
@@ -78,6 +78,15 @@ namespace ClientApp.Pages.Administracion.Conexion
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
+            objEventTracking.NombrePagina = "/conexion";
+            objEventTracking.NombreAccion = "OnInitializedAsync";
+            objEventTracking.NombreControl = "conexion";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             if (listasHevd != null && iConexionService != null)
             {
                 var rolRelacionado = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
@@ -108,11 +117,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             try
             {
-                objEventTracking.NombrePagina = "Conexiones Existentes";
+                objEventTracking.NombrePagina = "/conexion";
                 objEventTracking.NombreAccion = "OnTestconexionClick";
                 objEventTracking.NombreControl = "OnTestconexionClick";
-                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -160,11 +169,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         /// <returns> devuelve un valor true o false dependiendo de la migracion</returns>
         private async Task<bool> OnMigrarClick(int conexion)
         {
-            objEventTracking.NombrePagina = "Conexiones Existentes";
+            objEventTracking.NombrePagina = "/conexion";
             objEventTracking.NombreAccion = "OnMigrarClick";
             objEventTracking.NombreControl = "OnMigrarClick";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -252,11 +261,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         /// </summary>
         private async Task ConfirmDelete()
         {
-            objEventTracking.NombrePagina = "Conexiones Existentes";
+            objEventTracking.NombrePagina = "/conexion";
             objEventTracking.NombreAccion = "ConfirmDelete";
-            objEventTracking.NombreControl = "ConfirmDelete";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnEliminar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

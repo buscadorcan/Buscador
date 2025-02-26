@@ -70,6 +70,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
+
             if (Esquema != null)
                 editContext = new EditContext(Esquema);
 
@@ -78,6 +79,15 @@ namespace ClientApp.Pages.Administracion.Esquemas
 
             if (Id > 0 && EsquemaService != null && EsquemaService != null)
             {
+                objEventTracking.NombrePagina = "/nuevo-esquema";
+                objEventTracking.NombreAccion = "OnInitializedAsync";
+                objEventTracking.NombreControl = "editar-esquema";
+                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.ParametroJson = "{}";
+                objEventTracking.UbicacionJson = "";
+                await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                 Esquema = await EsquemaService.GetEsquemaAsync(Id.Value);
                 if (Esquema != null)
                 {
@@ -116,11 +126,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
         /// </summary>
         private async Task GuardarEsquema()
         {
-            objEventTracking.NombrePagina = "Esquema Homologado";
+            objEventTracking.NombrePagina = "/editar-esquema";
             objEventTracking.NombreAccion = "GuardarEsquema";
-            objEventTracking.NombreControl = "GuardarEsquema";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnGuardar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

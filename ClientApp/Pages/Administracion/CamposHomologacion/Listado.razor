@@ -6,12 +6,6 @@
 @using System.Text
 @using iTextSharp.text
 @using iTextSharp.text.pdf
-@*
-    /// <summary>
-    /// Page: Listado de campos de homologacion
-    /// Concepto: Formulario que lista los registros de las homologaciones y que permite editar o agregar un nuevo registro.
-    /// </summary>
-*@
 
 <style>
     .striped-table tbody tr:nth-child(odd) {
@@ -111,13 +105,13 @@
                 <!-- Grupo de botones para exportar -->
                 <div class="d-flex gap-2">
                     <!-- Botón Exportar a Excel -->
-                    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+                    <Button id="btnExportarExcel" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
                         <Icon Name="IconName.FileEarmarkArrowDown" />
                         <span class="ms-2 btnExp">Exportar a Excel</span>
                     </Button>
 
                     <!-- Botón Exportar a PDF -->
-                    <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+                    <Button id="btnExportarPDF" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
                         <Icon Name="IconName.FileEarmarkPdf" />
                         <span class="ms-2 btnExp">Exportar a PDF</span>
                     </Button>
@@ -181,7 +175,7 @@
 
             <!-- Botón Eliminar -->
             <Tooltip Title="Eliminar registro">
-                <Button Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdHomologacion))>
+                <Button id="btnEliminar" Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(context.IdHomologacion))>
                     <Icon Name="IconName.Trash3" />
                 </Button>
             </Tooltip>
@@ -193,11 +187,11 @@
 @code {
     private async Task ExportarExcel()
     {
-        objEventTracking.NombrePagina = "Administración de campos de Homologación";
+        objEventTracking.NombrePagina = "/campos-homologacion";
         objEventTracking.NombreAccion = "ExportarExcel";
-        objEventTracking.NombreControl = "ExportarExcel";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -240,11 +234,11 @@
     }
     private async Task ExportarPDF()
     {
-        objEventTracking.NombrePagina = "Administración de campos de Homologación";
+        objEventTracking.NombrePagina = "/campos-homologacion";
         objEventTracking.NombreAccion = "ExportarPDF";
-        objEventTracking.NombreControl = "ExportarPDF";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);

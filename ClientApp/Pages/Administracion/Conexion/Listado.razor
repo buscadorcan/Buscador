@@ -42,13 +42,13 @@
     <!-- Grupo de botones de exportación -->
     <div class="d-flex gap-2">
         <!-- Botón Exportar a Excel -->
-        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+        <Button id="btnExportarExcel" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
             <Icon Name="IconName.FileEarmarkArrowDown" />
             <span class="ms-2 btnExp">Exportar a Excel</span>
         </Button>
 
         <!-- Botón Exportar a PDF -->
-        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+        <Button id="btnExportarPDF" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
             <Icon Name="IconName.FileEarmarkPdf" />
             <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>
@@ -223,11 +223,11 @@
 
     private async Task ExportarExcel()
     {
-        objEventTracking.NombrePagina = "Conexiones Existentes";
+        objEventTracking.NombrePagina = "/conexion";
         objEventTracking.NombreAccion = "ExportarExcel";
-        objEventTracking.NombreControl = "ExportarExcel";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -274,11 +274,11 @@
     }
     private async Task ExportarPDF()
     {
-        objEventTracking.NombrePagina = "Conexiones Existentes";
+        objEventTracking.NombrePagina = "/conexion";
         objEventTracking.NombreAccion = "ExportarPDF";
-        objEventTracking.NombreControl = "ExportarPDF";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -333,7 +333,7 @@
                     <p class="label valign-text-middle inter-regular-normal-comet-14px">¿Está seguro que desea eliminar este registro?</p>
                 </div>
                 <div class="modal-footer">
-                    <Button Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
+                    <Button id="btnEliminar" Color="ButtonColor.Danger" @onclick=@(() => ConfirmDelete())>Eliminar</Button>
                     <Button Color="ButtonColor.Secondary" @onclick=@(() => CloseModal())>Cancelar</Button>
                 </div>
             </div>
