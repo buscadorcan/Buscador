@@ -61,7 +61,7 @@ namespace ClientApp.Pages.Autenticacion
                     authValidationDto.IdUsuario = IdUsuario ?? 0;
                     var result = await servicioAutenticacion.Acceder(authValidationDto);
                     
-                    if (true)
+                    if (result.IsSuccess)
                     {
                         var urlAbsoluta = new Uri(navigationManager?.Uri ?? "");
                         var parametrosQuery = HttpUtility.ParseQueryString(urlAbsoluta.Query);

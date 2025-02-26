@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using System.ServiceProcess;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using Org.BouncyCastle.Asn1.X509;
+using Org.BouncyCastle.Tls;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
@@ -15,6 +17,8 @@ namespace WebApp.Repositories
     {
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];
         private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
+        private readonly string _IpSqlServer = configuration["Thesaurus:IpServidorSqlServer"];
+        //nombreServicioSqlServer
         private readonly IWebHostEnvironment _env = env;
 
         ///<summary>
@@ -133,34 +137,45 @@ namespace WebApp.Repositories
         ///</summary>
         public string ResetSQLServer()
         {
-            string serviceName = "MSSQLSERVER"; // Nombre del servicio SQL Server
-            ServiceController service = new ServiceController(serviceName);
-            string mensaje = "";
+            string serviceName = _IpSqlServer; // Nombre del servicio SQL Server
+            StringBuilder outputBuilder = new StringBuilder();
+            StringBuilder errorBuilder = new StringBuilder();
+
             try
             {
-                mensaje = mensaje + $"Estado actual del servicio: {service.Status}" + "\n";
-                
-
-                if (service.Status != ServiceControllerStatus.Stopped)
+                ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    mensaje = mensaje + "Deteniendo el servicio..." + "\n";
-                    service.Stop();
-                    service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
-                    mensaje = mensaje + "Servicio detenido." + "\n";
+                    FileName = "cmd.exe",
+                    Arguments = "/c net stop SQLSERVERAGENT && net start SQLSERVERAGENT",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (Process process = new Process { StartInfo = psi })
+                {
+                    process.OutputDataReceived += (sender, e) => { if (e.Data != null) outputBuilder.AppendLine(e.Data); };
+                    process.ErrorDataReceived += (sender, e) => { if (e.Data != null) errorBuilder.AppendLine(e.Data); };
+
+                    process.Start();
+                    process.BeginOutputReadLine();  // Leer salida en segundo plano
+                    process.BeginErrorReadLine();   // Leer errores en segundo plano
+
+                    process.WaitForExit(60000); // Espera hasta 60 segundos
                 }
-                mensaje= mensaje + "Iniciando el servicio..." + "\n";
 
-                service.Start();
-                service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
+                if (errorBuilder.Length > 0)
+                {
+                    return $"Error: {errorBuilder}";
+                }
 
-                mensaje = mensaje + "Servicio iniciado correctamente.." + "\n";
+                return $"Resultado: {outputBuilder}";
             }
             catch (Exception ex)
             {
-                mensaje = mensaje + $"Error: {ex.Message}";
+                return $"Excepción: {ex.Message}";
             }
-
-            return mensaje;
         }
     }
 }

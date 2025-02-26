@@ -494,3 +494,5 @@ $RECYCLE.BIN/
 /docfx.json
 /index.md
 /toc.yml
+/ClientApp/Helpers/Inicializar.cs
+/WebApp/SetPermissionsLog.txt
