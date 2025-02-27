@@ -18,6 +18,7 @@ namespace WebApp.Repositories
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];
         private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
         private readonly string _IpSqlServer = configuration["Thesaurus:IpServidorSqlServer"];
+        private readonly string _rutaComando = configuration["Thesaurus:RutaArchivoComando"];
         //nombreServicioSqlServer
         private readonly IWebHostEnvironment _env = env;
 
@@ -137,40 +138,21 @@ namespace WebApp.Repositories
         ///</summary>
         public string ResetSQLServer()
         {
-            string serviceName = _IpSqlServer; // Nombre del servicio SQL Server
-            StringBuilder outputBuilder = new StringBuilder();
-            StringBuilder errorBuilder = new StringBuilder();
+            string rutaComando = _rutaComando;
 
             try
             {
-                ProcessStartInfo psi = new ProcessStartInfo
+                if (!File.Exists(rutaComando))
                 {
-                    FileName = "cmd.exe",
-                    Arguments = "/c net stop SQLSERVERAGENT && net start SQLSERVERAGENT",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
+                    return "No existe el archivo de reinicio de servidor de sqlserver";
 
-                using (Process process = new Process { StartInfo = psi })
-                {
-                    process.OutputDataReceived += (sender, e) => { if (e.Data != null) outputBuilder.AppendLine(e.Data); };
-                    process.ErrorDataReceived += (sender, e) => { if (e.Data != null) errorBuilder.AppendLine(e.Data); };
-
-                    process.Start();
-                    process.BeginOutputReadLine();  // Leer salida en segundo plano
-                    process.BeginErrorReadLine();   // Leer errores en segundo plano
-
-                    process.WaitForExit(60000); // Espera hasta 60 segundos
                 }
-
-                if (errorBuilder.Length > 0)
+                using (FileStream fs = new FileStream(_rutaComando, FileMode.Create, FileAccess.Write, FileShare.Read))
+                using (StreamWriter writer = new StreamWriter(fs))
                 {
-                    return $"Error: {errorBuilder}";
+                    writer.WriteLine("reiniciar");
                 }
-
-                return $"Resultado: {outputBuilder}";
+                return "Se realizó el proceso de reinicio (tiempo de espera 3 segundos)";
             }
             catch (Exception ex)
             {
