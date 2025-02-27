@@ -1,8 +1,8 @@
 
 --CREATE OR ALTER		 PROCEDURE [paAddEventTracking]
---     @TipoUsuario	  NVARCHAR(25)   
+--     @CodigoHomologacionRol	  NVARCHAR(25)   
+--    ,@CodigoHomologacionMenu    NVARCHAR(100)  
 --    ,@NombreUsuario   NVARCHAR(100)  
---    ,@NombrePagina    NVARCHAR(100)  
 --    ,@NombreControl   NVARCHAR(100)  
 --    ,@NombreAccion    NVARCHAR(100)  
 --    ,@UbicacionJson   NVARCHAR(MAX)
@@ -14,9 +14,9 @@
 --    IF	ISJSON(@ParametroJson) <> 1
 --		SELECT @ErrorTracking  = @ParametroJson, @ParametroJson = '{0}'
 
---	INSERT INTO [EventTracking] (TipoUsuario, NombreUsuario, NombrePagina, NombreControl, NombreAccion, UbicacionJson, ParametroJson, ErrorTracking)
---    VALUES (@TipoUsuario, @NombreUsuario, @NombrePagina, @NombreControl, @NombreAccion, @UbicacionJson, @ParametroJson, @ErrorTracking);
+--	INSERT INTO [EventTracking] (CodigoHomologacionRol, CodigoHomologacionMenu, NombreUsuario,  NombreControl, NombreAccion, UbicacionJson, ParametroJson, ErrorTracking)
+--    VALUES (@CodigoHomologacionRol, @CodigoHomologacionMenu, @NombreUsuario,  @NombreControl, @NombreAccion, @UbicacionJson, @ParametroJson, @ErrorTracking);
 --END;
---GO
+--GO 
 
 

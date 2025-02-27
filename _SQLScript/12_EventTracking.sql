@@ -3,9 +3,9 @@
 
 --CREATE TABLE [dbo].[EventTracking](
 --	 IdEventTracking	INT IDENTITY(1,1) NOT NULL
---	,TipoUsuario		NVARCHAR(25) NOT NULL DEFAULT('') 
+--	,CodigoHomologacionRol	NVARCHAR(50)  NOT NULL DEFAULT('') 
+--	,CodigoHomologacionMenu NVARCHAR(50)  NOT NULL DEFAULT('')
 --	,NombreUsuario		NVARCHAR(100) NOT NULL DEFAULT('') 
---	,NombrePagina		NVARCHAR(100) NOT NULL DEFAULT('')
 --	,NombreControl		NVARCHAR(100) NOT NULL DEFAULT('')
 --	,NombreAccion		NVARCHAR(100) NOT NULL DEFAULT('')
 --	,UbicacionJson		NVARCHAR(max) NOT NULL DEFAULT('{}')
