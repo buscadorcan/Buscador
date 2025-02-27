@@ -7,6 +7,9 @@ using ClientApp.Services;
 using ClientApp.Services.IService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+// Registramos la configuración en DI para poder inyectarla en servicios:
+builder.Services.AddSingleton(builder.Configuration);
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 

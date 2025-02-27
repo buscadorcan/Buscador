@@ -71,13 +71,13 @@
                 <!-- Grupo de botones de exportación -->
                 <div class="d-flex gap-2">
                     <!-- Botón Exportar a Excel -->
-                    <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+                    <Button id="btnExportarExcel" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
                         <Icon Name="IconName.FileEarmarkArrowDown" />
                         <span class="ms-2 btnExp">Exportar a Excel</span>
                     </Button>
 
                     <!-- Botón Exportar a PDF -->
-                    <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+                    <Button id="btnExportarPDF" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
                         <Icon Name="IconName.FileEarmarkPdf" />
                         <span class="ms-2 btnExp">Exportar a PDF</span>
                     </Button>
@@ -85,7 +85,7 @@
 
                 <!-- Botón Validar Registro -->
                 <div class="button-container">
-                    <Button @ref="validateButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await ValidarDatos()">
+                    <Button id="btnGuardar" @ref="validateButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await ValidarDatos()">
                         <div class="button-3 headingheadline4-h4">Grabar Homologación</div>
                     </Button>
                 </div>
@@ -158,6 +158,15 @@
 @code {
     private async Task ExportarExcel()
     {
+        objEventTracking.NombrePagina = "/validacion";
+        objEventTracking.NombreAccion = "ExportarExcel";
+        objEventTracking.NombreControl = "btnExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+        objEventTracking.ParametroJson = "{}";
+        objEventTracking.UbicacionJson = "";
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listasHevd == null || !listasHevd.Any())
         {
             return;

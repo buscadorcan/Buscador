@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
 using ClientApp.Helpers;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -29,16 +30,30 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
 
         [Inject]
         public IUsuariosService? iUsuariosService { get; set; }
-        
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
         protected override async Task OnInitializedAsync()
         {
+            objEventTracking.NombrePagina = "/nuevo-config-menu";
+            objEventTracking.NombreAccion = "OnInitializedAsync";
+            objEventTracking.NombreControl = "nuevo-config-menu";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
+                                              await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             if (iUsuariosService != null)
             {
                 roles = await iUsuariosService.GetRolesAsync();
             }
+
+            //var rol = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
+            var rol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             
-            var rol = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Rol_Local);
-            var rolCombox = roles.FirstOrDefault(role => role.IdHomologacionRol == rol);
+            var rolCombox = roles.FirstOrDefault(role => role.CodigoHomologacion == rol);
             isRol16 = rolCombox.CodigoHomologacion == "KEY_USER_ONA";
 
             if (roles != null && roles.Any())
@@ -81,6 +96,16 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
 
         private async Task RegistrarConfiguracionMenu()
         {
+            objEventTracking.NombrePagina = "/editar-config-menu";
+            objEventTracking.NombreAccion = "RegistrarConfiguracionMenu";
+            objEventTracking.NombreControl = "btnGuardar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
+                                              await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             saveButton.ShowLoading("Guardando...");
             if (configuracionMenu.IdHRol <= 0)
             {

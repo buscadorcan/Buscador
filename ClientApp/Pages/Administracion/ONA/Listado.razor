@@ -24,7 +24,7 @@
         </Button>
 
         <!-- Botón Exportar a PDF -->
-        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+        <Button id="btnExportarPDF" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
             <Icon Name="IconName.FileEarmarkPdf" />
             <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>
@@ -134,7 +134,7 @@
                                 </div>
                                 <div class="cell cell-1">
                                     <Tooltip Title="Eliminar registro">
-                                        <Button @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(ona.IdONA))>
+                                        <Button id="btnEliminar" @ref="saveButton" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" Size="ButtonSize.Small" @onclick=@(() => OpenDeleteModal(ona.IdONA))>
                                             <Icon Name="IconName.Trash" />
                                         </Button>
                                     </Tooltip>
@@ -187,11 +187,11 @@
 
     private async Task ExportarExcel()
     {
-        objEventTracking.NombrePagina = "Administración de ONA";
+        objEventTracking.NombrePagina = "/onas";
         objEventTracking.NombreAccion = "ExportarExcel";
-        objEventTracking.NombreControl = "ExportarExcel";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
         if (listaONAs == null || !listaONAs.Any())
         {
@@ -236,11 +236,11 @@
 
     private async Task ExportarPDF()
     {
-        objEventTracking.NombrePagina = "Administración de ONA";
+        objEventTracking.NombrePagina = "/onas";
         objEventTracking.NombreAccion = "ExportarPDF";
-        objEventTracking.NombreControl = "ExportarPDF";
-        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+        objEventTracking.NombreControl = "btnExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
 
         if (listaONAs == null || !listaONAs.Any())
         {

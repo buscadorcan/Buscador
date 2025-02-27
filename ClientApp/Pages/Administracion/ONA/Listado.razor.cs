@@ -172,11 +172,11 @@ namespace ClientApp.Pages.Administracion.ONA
         /// </summary>
         private async Task ConfirmDelete()
         {
-            objEventTracking.NombrePagina = "Administración de ONA";
+            objEventTracking.NombrePagina = "/onas";
             objEventTracking.NombreAccion = "ConfirmDelete";
-            objEventTracking.NombreControl = "ConfirmDelete";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnEliminar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -205,6 +205,15 @@ namespace ClientApp.Pages.Administracion.ONA
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
+            objEventTracking.NombrePagina = "/onas";
+            objEventTracking.NombreAccion = "OnInitializedAsync";
+            objEventTracking.NombreControl = "onas";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             await LoadONAs(); // Carga la lista al iniciar el componente
         }
 

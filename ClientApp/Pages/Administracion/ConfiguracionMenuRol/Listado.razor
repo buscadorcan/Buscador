@@ -134,7 +134,7 @@
                                 </div>
                                 <div class="cell cell-1" style="width:20% !important">
                                     <label class="switch">
-                                        <input type="checkbox" checked="@((menu.Estado == "A"))" @onclick="@(() => ConfirmDelete(menu))" />
+                                        <input id="btnEliminar" type="checkbox" checked="@((menu.Estado == "A"))" @onclick="@(() => ConfirmDelete(menu))" />
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
@@ -210,6 +210,15 @@
 
     private async Task ExportarExcel()
     {
+        objEventTracking.NombrePagina = "/menu-config-lista";
+        objEventTracking.NombreAccion = "ExportarExcel";
+        objEventTracking.NombreControl = "btnExportarExcel";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+        objEventTracking.ParametroJson = "{}";
+        objEventTracking.UbicacionJson = "";
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listaMenus == null || !listaMenus.Any()) return;
 
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -237,6 +246,15 @@
 
     private async Task ExportarPDF()
     {
+        objEventTracking.NombrePagina = "/menu-config-lista";
+        objEventTracking.NombreAccion = "ExportarPDF";
+        objEventTracking.NombreControl = "btnExportarPDF";
+        objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+        objEventTracking.ParametroJson = "{}";
+        objEventTracking.UbicacionJson = "";
+        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
         if (listaMenus == null || !listaMenus.Any()) return;
 
         using var memoryStream = new MemoryStream();

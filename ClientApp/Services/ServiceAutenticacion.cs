@@ -2,6 +2,7 @@
 using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
@@ -16,14 +17,17 @@ namespace ClientApp.Services
         private readonly HttpClient _cliente;
         private readonly ILocalStorageService _localStorage;
         private readonly AuthenticationStateProvider _estadoProveedorAutenticacion;
+        private readonly IConfiguration _configuration;
 
         public ServiceAutenticacion(HttpClient cliente, 
             ILocalStorageService localStorage,
-            AuthenticationStateProvider estadoProveedorAutenticacion)
+            AuthenticationStateProvider estadoProveedorAutenticacion,
+            IConfiguration configuration)
         {
             _cliente = cliente;
             _localStorage = localStorage;
             _estadoProveedorAutenticacion = estadoProveedorAutenticacion;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         /// <inheritdoc />
@@ -40,12 +44,16 @@ namespace ClientApp.Services
         {
             try
             {
+                string pathIcon = _configuration.GetValue<string>("ApiSettings:PathIcon") ?? "";
+                await _localStorage.SetItemAsync(Inicializar.Datos_Menu_PathIconAppSetting, pathIcon);
+
                 var content = JsonConvert.SerializeObject(authValidationDto);
                 var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
                 var url = Inicializar.UrlBaseApi + "api/usuarios/validar";
                 var response = await _cliente.PostAsync(url, bodyContent);
                 var contentTemp = await response.Content.ReadAsStringAsync();
                 var respuesta = JsonConvert.DeserializeObject<RespuestasAPI<UsuarioAutenticacionRespuestaDto>>(contentTemp);
+
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,7 +64,7 @@ namespace ClientApp.Services
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Nombre_Local, result?.Usuario?.Nombre);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Apellido_Local, result?.Usuario?.Apellido);
-                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);
+                        //await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_IdOna_Local, result?.Usuario?.IdONA);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Codigo_Rol_Local, result?.Rol?.CodigoHomologacion);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Nombre_Rol_Local, result?.Rol?.Rol);

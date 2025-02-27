@@ -23,13 +23,13 @@
     <!-- Grupo de botones de exportación -->
     <div class="d-flex gap-2">
         <!-- Botón Exportar a Excel -->
-        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+        <Button id="btnExportarExcel" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
             <Icon Name="IconName.FileEarmarkArrowDown" />
             <span class="ms-2 btnExp">Exportar a Excel</span>
         </Button>
 
         <!-- Botón Exportar a PDF -->
-        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+        <Button id="btnExportarPDF" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
             <Icon Name="IconName.FileEarmarkPdf" />
             <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>

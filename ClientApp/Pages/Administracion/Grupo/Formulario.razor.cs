@@ -63,6 +63,15 @@ namespace ClientApp.Pages.Administracion.Grupo
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
+            objEventTracking.NombrePagina = "/editar-grupos";
+            objEventTracking.NombreAccion = "editar-grupos";
+            objEventTracking.NombreControl = "OnInitializedAsync";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
             if (Id > 0 && iHomologacionService != null) {
                 homologacion = await iHomologacionService.GetHomologacionAsync(Id.Value);
             } else {
@@ -96,11 +105,11 @@ namespace ClientApp.Pages.Administracion.Grupo
         /// </summary>
         private async Task GuardarHomologacion()
         {
-            objEventTracking.NombrePagina = "Administación de Entidades";
+            objEventTracking.NombrePagina = "/editar-grupos";
             objEventTracking.NombreAccion = "GuardarHomologacion";
-            objEventTracking.NombreControl = "GuardarHomologacion";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' + iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Rol_Local);
+            objEventTracking.NombreControl = "btnGuardar";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
