@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 using SharedApp.Data;
 using SharedApp.Models.Dtos;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace ClientApp.Pages.Administracion.Thesauros
@@ -34,6 +35,7 @@ namespace ClientApp.Pages.Administracion.Thesauros
         private bool isMensaje = false;
         private bool isMensajeGuardar = false;
         private bool isMensajeGuardarExitoso = false;
+        private bool isPublicacionDesabilitada = true;
 
         private string sinonimoBuscar = "";
         private string nuevoSubstituto = "";
@@ -118,6 +120,9 @@ namespace ClientApp.Pages.Administracion.Thesauros
                         await Task.Delay(5000);
                     }
                 }
+
+                this.isPublicacionDesabilitada = true;
+                StateHasChanged();
             }
             catch (Exception ex)
             {
@@ -340,13 +345,16 @@ namespace ClientApp.Pages.Administracion.Thesauros
                         this.isMensajeGuardar = true;
                         this.isMensajeGuardarExitoso = true;
                         this.mensajeGuardar = "Los datos se guardaron correctamente";
+                        this.isPublicacionDesabilitada = false;
+                        StateHasChanged();
 
                     }
                     else {
                         this.isMensajeGuardar = true;
                         this.isMensajeGuardarExitoso = false;
                         this.mensajeGuardar = "Error al guardar los datos";
-
+                        this.isPublicacionDesabilitada = false;
+                        StateHasChanged();
 
 
                     }

@@ -496,3 +496,4 @@ $RECYCLE.BIN/
 /toc.yml
 /ClientApp/Helpers/Inicializar.cs
 /WebApp/SetPermissionsLog.txt
+/WebApp/wwwroot/Files/comando.txt

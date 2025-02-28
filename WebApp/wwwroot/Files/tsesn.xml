@@ -1,0 +1,31 @@
+<XML ID="Microsoft Search Thesaurus">
+<thesaurus xmlns="x-schema:tsSchema.xml">
+  <diacritics_sensitive>0</diacritics_sensitive>
+  <expansion>
+    <sub>Agua</sub>
+    <sub>water</sub>
+  </expansion>
+  <expansion>
+    <sub>Cacao </sub>
+    <sub>CHOCOLATE</sub>
+  </expansion>
+  <expansion>
+    <sub>AMONIACO</sub>
+  </expansion>
+  <expansion>
+    <sub>Café </sub>
+  </expansion>
+  <expansion>
+    <sub>chancho</sub>
+    <sub>CERDO</sub>
+    <sub>Zinc</sub>
+    <sub>chamchon</sub>
+  </expansion>
+  <expansion />
+  <replacement>
+    <pat>NT5</pat>
+    <pat>W2K</pat>
+    <sub>Windows 2000</sub>
+  </replacement>
+</thesaurus>
+</XML>
