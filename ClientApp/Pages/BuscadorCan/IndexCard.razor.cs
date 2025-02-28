@@ -294,6 +294,7 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     markers.Add(new GoogleMapMarker
                     {
+                        
                         Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
                         Title = $"{location.Ciudad}, {location.Pais}",
                         PinElement = new PinElement { BorderColor = "red" }
