@@ -1,9 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Tls;
 using WebApp.Models;
@@ -15,13 +18,9 @@ namespace WebApp.Repositories
 {
     public class ThesaurusRepository(IConfiguration configuration, IWebHostEnvironment env) : IThesaurusRepository
     {
+        private readonly string  _connectionString = configuration.GetConnectionString("Mssql-CanDb");
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];
         private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
-        private readonly string _IpSqlServer = configuration["Thesaurus:IpServidorSqlServer"];
-        private readonly string _rutaComando = configuration["Thesaurus:RutaArchivoComando"];
-        //nombreServicioSqlServer
-        private readonly IWebHostEnvironment _env = env;
-
         ///<summary>
         ///ObtenerThesaurus: Obtiene la información completa del thesaurus almacenado en la base de datos.
         ///</summary>
@@ -138,25 +137,23 @@ namespace WebApp.Repositories
         ///</summary>
         public string ResetSQLServer()
         {
-            string rutaComando = _rutaComando;
-
             try
             {
-                if (!File.Exists(rutaComando))
+                using (var connection = new SqlConnection(_connectionString))
                 {
-                    return "No existe el archivo de reinicio de servidor de sqlserver";
+                    connection.Open();
+                    var result = connection.Execute(
+                        "[dbo].[paReiniciarSQLServer]", // Nombre del SP
+                        commandType: CommandType.StoredProcedure // Tipo de comando
+                    );
 
+                    // Si el procedimiento almacenado devuelve algo, puedes manejarlo aquí
+                    return "ok";
                 }
-                using (FileStream fs = new FileStream(_rutaComando, FileMode.Create, FileAccess.Write, FileShare.Read))
-                using (StreamWriter writer = new StreamWriter(fs))
-                {
-                    writer.WriteLine("reiniciar");
-                }
-                return "Se realizó el proceso de reinicio (tiempo de espera 3 segundos)";
             }
             catch (Exception ex)
             {
-                return $"Excepción: {ex.Message}";
+                return $"Error al ejecutar el procedimiento almacenado: {ex.Message}";
             }
         }
     }
