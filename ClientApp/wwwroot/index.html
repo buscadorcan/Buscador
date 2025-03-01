@@ -72,13 +72,13 @@
     <script src="js/exportar-excel-pdf.js"></script>
     <script type="text/javascript" async
             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
     <script>
         window.renderMathJax = function () {
             if (window.MathJax) {
+                console.log("✅ MathJax está disponible. Procesando fórmulas...");
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             } else {
-                console.error("MathJax no está disponible.");
+                console.warn("⚠️ MathJax NO está disponible.");
             }
         };
     </script>
