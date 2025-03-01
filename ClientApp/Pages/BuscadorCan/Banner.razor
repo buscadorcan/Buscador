@@ -1,0 +1,59 @@
+@inject IJSRuntime JS
+
+<link href="/css/buscador-can/banner.css" rel="stylesheet">
+
+@if (!isMobile)
+{
+    <div class="panel-banner">
+        <div class="panel-banner-logo1">
+            <img src="/images/logo1bg.png" alt="Logo"/>
+        </div>
+        <div class="panel-banner-text">
+            <div>BUSCADORES ANDINOS DE LA CALIDAD</div>
+            <div class="panel-banner-text-span">Conecta YA</div>
+        </div>
+        <div class="panel-banner-logo2">
+            <img src="/images/logo2bg.png" alt="Logo"/>
+        </div>
+    </div>
+}
+else
+{
+    <div class="panel-banner">
+        <div class="panel-banner-logo2">
+            <img src="/images/logo2bg.png" alt="Logo"/>
+        </div>
+        <div class="panel-banner-row">
+            <div class="panel-banner-logo1">
+                <img src="/images/logo1mbg.png" alt="Logo"/>
+            </div>
+            <div class="panel-banner-text">
+                <div>BUSCADORES ANDINOS DE LA CALIDAD</div>
+                <div class="panel-banner-text-span">Conecta YA</div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool isMobile;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try {
+                await JS.InvokeVoidAsync("initDetectMobile", DotNetObjectReference.Create(this));
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+
+    [JSInvokable]
+    public void UpdateIsMobile(bool isMobileStatus)
+    {
+        isMobile = isMobileStatus;
+        StateHasChanged();
+    }
+}

@@ -348,15 +348,15 @@ form.search-form {
 .user-info {
     display: flex;
     align-items: center;
-    font-size: 16px; /* Aumenta el tamaño de la fuente general */
-    justify-content: flex-end; /* Mueve la información del usuario completamente a la derecha */
+    font-size: 16px; /* Aumenta el tamaï¿½o de la fuente general */
+    justify-content: flex-end; /* Mueve la informaciï¿½n del usuario completamente a la derecha */
     flex-grow: 1; /* Asegura que ocupe todo el espacio disponible */
     cursor: pointer; /* Indica que se puede hacer clic */
 }
 
     .user-info i {
         margin-right: 10px;
-        font-size: 30px; /* Aumenta el tamaño del icono */
+        font-size: 30px; /* Aumenta el tamaï¿½o del icono */
     }
 
     .user-info div {
@@ -366,34 +366,34 @@ form.search-form {
     }
 
     .user-info span {
-        display: block; /* Fuerza a cada span a estar en su propia línea */
+        display: block; /* Fuerza a cada span a estar en su propia lï¿½nea */
         margin-left: 5px;
     }
 
     .user-info .email {
-        font-size: 14px; /* Ajusta el tamaño de la fuente del correo */
+        font-size: 14px; /* Ajusta el tamaï¿½o de la fuente del correo */
         margin-top: 5px; /* Separa el correo del nombre */
     }
 
 .btn-sm {
-    margin-left: 10px; /* Asegura que el botón de salir no quede pegado a la información del usuario */
+    margin-left: 10px; /* Asegura que el botï¿½n de salir no quede pegado a la informaciï¿½n del usuario */
 }
 
-/* Submenú */
+/* Submenï¿½ */
 .submenu {
     position: absolute;
     background-color: #ffffff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
-    display: none; /* Oculta el submenú por defecto */
-    right: 20px; /* Alinea el submenú a la derecha del contenedor */
-    top: 60px; /* Coloca el submenú debajo de la barra superior */
+    display: none; /* Oculta el submenï¿½ por defecto */
+    right: 20px; /* Alinea el submenï¿½ a la derecha del contenedor */
+    top: 60px; /* Coloca el submenï¿½ debajo de la barra superior */
     border-radius: 5px;
     z-index: 10;
 }
 
     .submenu.show {
-        display: block; /* Muestra el submenú cuando se agrega la clase "show" */
+        display: block; /* Muestra el submenï¿½ cuando se agrega la clase "show" */
     }
 
     .submenu a {
@@ -445,14 +445,14 @@ form.search-form {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7); /* Fondo más oscuro para mejor visibilidad */
+    background: rgba(0, 0, 0, 0.7); /* Fondo mï¿½s oscuro para mejor visibilidad */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
     font-size: 1.2rem;
-    z-index: 10000; /* Asegura que está por encima de todo */
+    z-index: 10000; /* Asegura que estï¿½ por encima de todo */
 }
 
 .spinner-border {
