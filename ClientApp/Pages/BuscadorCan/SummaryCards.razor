@@ -1,0 +1,30 @@
+@using Newtonsoft.Json;
+
+<link href="/css/buscador-can/summary-card.css" rel="stylesheet">
+
+<div class="panel-summary-card">
+    @foreach (var item in PanelONA)
+    {
+        var icono = string.Empty;
+
+        if (!string.IsNullOrWhiteSpace(item.Icono) && item.Icono.TrimStart().StartsWith("{"))
+        {
+            var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.Icono);
+            if (deserialized?.ContainsKey("filePath") == true)
+            {
+                icono = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{deserialized["filePath"].TrimStart('/')}";
+            }
+        }
+        <div class="panel-summary-card-ona">
+            @if (@item.Pais != "Total") {
+                <div class="panel-summary-card-ona-icon">
+                    <img src="@icono" alt="@item.Sigla" />
+                    <div style="margin-left: 4% !important;">@item.Sigla</div>
+                </div>
+            }
+            <div class="pais @item.Pais">@item.Pais</div>
+            <div class="nro-org @item.Pais">@item.NroOrg</div>
+        </div>
+        <div class="divider" />
+    }
+</div>
