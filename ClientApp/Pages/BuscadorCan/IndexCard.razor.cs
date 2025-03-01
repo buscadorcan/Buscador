@@ -1,170 +1,113 @@
 ﻿using BlazorBootstrap;
-using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
-using Org.BouncyCastle.Crmf;
 using SharedApp.Models.Dtos;
-using System.Net.Http.Json;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class IndexCard
+    /// <summary>
+    /// Componente parcial para la página de búsqueda de CAN.
+    /// </summary>
+    public partial class IndexCard : ComponentBase
     {
-        [Parameter]
-        public BuscarRequest? BuscarRequest { get; set; } = new BuscarRequest();
+        /// <summary>
+        /// Servicio para obtener catálogos.
+        /// </summary>
+        [Inject] public ICatalogosService? iCatalogosService { get; set; }
 
-        [Parameter]
-        public List<FiltrosBusquedaSeleccion>? SelectedValues { get; set; } = new List<FiltrosBusquedaSeleccion>();
+        /// <summary>
+        /// Servicio de JavaScript.
+        /// </summary>
+        [Inject] public IJSRuntime? iJSRuntime { get; set; }
 
-        [Parameter]
-        public List<VwFiltroDto>? ListaEtiquetasFiltros { get; set; } = new List<VwFiltroDto>();
-        [Parameter]
-        public bool IsExactSearch { get; set; } = false;
-        [Parameter]
-        public List<(string Pais, string Ciudad)> uniqueLocations { get; set; } = new();
-        [Parameter]
-        public EventCallback<List<vwPanelONADto>> OnPanelONAUpdated { get; set; }
+        /// <summary>
+        /// Servicio de búsqueda.
+        /// </summary>
+        [Inject] public IBusquedaService? Servicio { get; set; }
 
-        [Inject]
-        public IBusquedaService? Servicio { get; set; }
+        /// <summary>
+        /// Servicio de homologación.
+        /// </summary>
+        [Inject] public IHomologacionService? HomologacionService { get; set; }
 
-        [Inject]
-        public ICatalogosService? CatalogosService { get; set; }
+        /// <summary>
+        /// Gets or sets the list data dto.
+        /// </summary>
+        private List<BuscadorResultadoDataDto>? _listDataDto;
 
-        [Inject]
-        public IHomologacionService? HomologacionService { get; set; }
-        [Inject]
-        public IONAService? iOnaService { get; set; }
-        [Inject]
-        public IJSRuntime? iJSRuntime { get; set; }
-        [Inject]
-        private HttpClient Http { get; set; }
-        // Propiedades para la vista
-        public List<BuscadorResultadoDataDto>? ResultadoData { get; private set; } = new List<BuscadorResultadoDataDto>();
-        public List<VwGrillaDto>? ListaEtiquetasGrilla { get; private set; } = new List<VwGrillaDto>();
+        /// <summary>
+        /// Gets or sets the list data dto.
+        /// </summary>
+        [Parameter] public List<BuscadorResultadoDataDto>? ListDataDto
+        {
+            get => _listDataDto;
+            set
+            {
+                if (!Enumerable.SequenceEqual(_listDataDto ?? new(), value ?? new()))
+                {
+                    _listDataDto = value;
+                    _ = ObtenerCoordenadasYMarcarMapa();
+                }
+            }
+        }
 
-        public bool ModoBuscar { get; set; }
-        private int currentPage = 1; // Página actual
-        private int totalCount = 0; // Total de registros
-        private int pageSize = 10; // Tamaño de página
-        public string SearchTerm { get; set; } = ""; // Texto ingresado en el input del buscador
+        /// <summary>
+        /// Gets or sets the list url data dto.
+        /// </summary>
+        [Parameter] public Dictionary<int, string>? iconUrls { get; set; }
+
+        /// <summary>
+        /// Listado de coordenadas del resultado de la búsquedda.
+        /// </summary>
+        [Parameter] public List<(string Pais, string Ciudad)> uniqueLocations { get; set; } = new();
+
+        /// <summary>
+        /// Listado de etiquetas de la grilla.
+        /// </summary>
+        [Parameter] public List<VwGrillaDto>? listaEtiquetasGrilla { get; set; }
+
+        /// <summary>
+        /// Componente modal.
+        /// </summary>
         private Modal modal = default!;
-        private Dictionary<int, string> iconUrls = new();
-        private OnaDto? OnaDto;
-        private bool mostrarMapa = true;
+        
+        /// <summary>
+        /// google maps module
+        /// </summary>
         private IJSObjectReference? _googleMapsModule;
+
+        /// <summary>
+        /// key google maps
+        /// </summary>
         private string ApiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk";
+
+        /// <summary>
+        /// google maps point center
+        /// </summary>
         private GoogleMapCenter mapCenter = new(-4, -78);
+        /// <summary>
+        /// google maps markers
+        /// </summary>
         private List<GoogleMapMarker> markers = new();
+
+        /// <summary>
+        /// google maps
+        /// </summary>
         private GoogleMap? mapa;
+
+        /// <summary>
+        /// Inicializar vaklores
+        /// </summary>
+        /// <returns></returns>
         protected override async Task OnInitializedAsync()
         {
-            try
-            {
-                // Cargar etiquetas
-                if (CatalogosService != null)
-                {
-
-                    var ordenPersonalizado = new Dictionary<int, int>
-                    {
-                        { 84, 1 },
-                        { 78, 2 },
-                        { 82, 3 }, // Eliminado el duplicado
-                        { 83, 4 },
-                        { 90, 5 },
-                        { 93, 6 },
-                        { 81, 7 },
-                        { 92, 8 },
-                        { 91, 9 }
-                    };
-
-                    ListaEtiquetasGrilla = (await CatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema"))
-                                 ?.OrderBy(x => ordenPersonalizado.ContainsKey(x.IdHomologacion) ? ordenPersonalizado[x.IdHomologacion] : int.MaxValue)
-                                 .ToList()
-                                 ?? new List<VwGrillaDto>();
-                }
-                Console.WriteLine($"Error en OnInitializedAsync");
-                // Cargar resultados iniciales
-                StateHasChanged();
-                await BuscarPalabraRequest();
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error en OnInitializedAsync: {ex.Message}");
-            }
-        }
-
-
-        public async Task BuscarPalabraRequest()
-        {
-            await CargarResultados(1, pageSize); // Llamar directamente con la paginación inicial
-            StateHasChanged();
             await ObtenerCoordenadasYMarcarMapa();
-            if (mapa != null)
-            {
-                await mapa.RefreshAsync();
-            }
-
         }
 
-
-        private async Task CargarResultados(int pageNumber, int pageSize)
-        {
-            try
-            {
-                if (Servicio == null) return;
-
-                // Construcción de filtros
-                var filtros = new
-                {
-                    ExactaBuscar = IsExactSearch,
-                    TextoBuscar = SearchTerm,
-                    FiltroPais = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
-                    FiltroOna = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
-                    FiltroNorma = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_NOR")?.Seleccion ?? new List<string>(),
-                    FiltroEsquema = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ESQ")?.Seleccion ?? new List<string>(),
-                    FiltroEstado = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_EST")?.Seleccion ?? new List<string>(),
-                    FiltroRecomocimiento = SelectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
-                };
-
-                // Llamada al servicio con paginación
-                var result = await Servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), pageNumber, pageSize);
-
-                if (result?.Data != null)
-                {
-                    ResultadoData = result.Data;
-                    totalCount = result.TotalCount; // Guardar el total de registros para la paginación
-
-                    // Prepara las URLs de los íconos para cada ONA
-                    foreach (var item in ResultadoData)
-                    {
-                        if (item.IdONA.HasValue && !iconUrls.ContainsKey(item.IdONA.Value))
-                        {
-                            var iconUrl = await getIconUrl(item);
-                            iconUrls[item.IdONA.Value] = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{iconUrl.TrimStart('/')}";
-                        }
-                    }
-
-                    if (result.PanelONA != null)
-                    {
-                        totalCount = result.TotalCount;
-                        await OnPanelONAUpdated.InvokeAsync(result.PanelONA);
-                    }
-                }
-                else
-                {
-                    ResultadoData = new List<BuscadorResultadoDataDto>();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error en CargarResultados: {ex.Message}");
-            }
-        }
-
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async void MostrarDetalle(BuscadorResultadoDataDto item)
         {
             var parameters = new Dictionary<string, object>();
@@ -173,7 +116,10 @@ namespace ClientApp.Pages.BuscadorCan
             modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
-
+        
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async void showModalOna(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
@@ -183,6 +129,10 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
+        /// <param name="resultData"></param>
         private async void showModalOEC(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
@@ -192,6 +142,9 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<OECModal>(title: "Información del OEC", parameters: parameters);
         }
 
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async void showModalESQ(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
@@ -200,6 +153,10 @@ namespace ClientApp.Pages.BuscadorCan
             modal.Size = ModalSize.ExtraLarge;
             await modal.ShowAsync<IndvEsquemaModal>(title: "Información Esquema", parameters: parameters);
         }
+
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async Task AbrirPdf(BuscadorResultadoDataDto item)
         {
             // Obtener la URL del certificado
@@ -215,6 +172,9 @@ namespace ClientApp.Pages.BuscadorCan
             await iJSRuntime.InvokeVoidAsync("abrirVentanaPDF", pdfUrl);
         }
 
+        /// <summary>
+        /// Método para obtener la URL del certificado.
+        /// </summary>
         private async Task<string?> GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
         {
             try
@@ -238,42 +198,15 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-        private async Task<string> getIconUrl(BuscadorResultadoDataDto item)
-        {
-            try
-            {
-                var idOna = item.IdONA;
-
-                OnaDto = await iOnaService?.GetONAsAsync(idOna ?? 0);
-
-                if (!string.IsNullOrEmpty(OnaDto.UrlIcono))
-                {
-                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(OnaDto.UrlIcono);
-
-                    if (deserialized != null && deserialized.ContainsKey("filePath"))
-                    {
-                        // Si el JSON tiene "filePath", lo retornamos
-                        return deserialized["filePath"];
-                    }
-                }
-
-                // Retorna un ícono predeterminado si no hay URL válida
-                return "https://via.placeholder.com/16";
-            }
-            catch (Exception ex)
-            {
-                // Maneja el error y retorna un ícono predeterminado
-                Console.WriteLine(ex.Message);
-                return "https://via.placeholder.com/16";
-            }
-        }
-
+        /// <summary>
+        /// Método para obtener las coordenadas y marcar el mapa.
+        /// </summary>
         private async Task ObtenerCoordenadasYMarcarMapa()
         {
-            markers.Clear(); // Limpiar los marcadores previos
+            markers.Clear();
             var processedLocations = new HashSet<string>();
 
-            uniqueLocations = ResultadoData?
+            uniqueLocations = ListDataDto?
                 .Select(d =>
                 {
                     var pais = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim();
@@ -314,10 +247,11 @@ namespace ClientApp.Pages.BuscadorCan
             }
 
             markers = new List<GoogleMapMarker>(markers);
-            StateHasChanged();
         }
 
-
+        /// <summary>
+        /// Método para obtener las coordenadas de un lugar.
+        /// </summary>
         private async Task<GoogleMapCenter?> ObtenerCoordenadas(string pais, string ciudad)
         {
             try
@@ -337,19 +271,24 @@ namespace ClientApp.Pages.BuscadorCan
             return null;
         }
 
-
-
-        // Clases para deserializar la respuesta de la API de Google
+        /// <summary>
+        /// Clase para deserializar la respuesta de la API de Google Maps.
+        /// </summary>
         private class GeocodeResponse { public GeocodeResult[] Results { get; set; } }
+
+        /// <summary>
+        /// Clase para deserializar la ubicación de la respuesta de la API de Google Maps.
+        /// </summary>
         private class GeocodeResult { public Geometry Geometry { get; set; } }
+
+        /// <summary>
+        /// Clase para deserializar la geometría de la respuesta de la API de Google Maps.
+        /// </summary>
         private class Geometry { public Location Location { get; set; } }
+
+        /// <summary>
+        /// Clase para deserializar la ubicación de la respuesta de la API de Google Maps.
+        /// </summary>
         private class Location { public double Lat { get; set; } public double Lng { get; set; } }
-
-
-        public class JsonData
-        {
-            public int IdHomologacion { get; set; }
-            public string Data { get; set; } = string.Empty;
-        }
     }
 }

@@ -1,0 +1,31 @@
+<link href="/css/buscador-can/input-search.css" rel="stylesheet">
+
+<div class="panel-search">
+    <div class="panel-input">
+        <div class="panel-input-text">
+            <i class="fas fa-search" />
+            <input
+                type="text"
+                class="form-control input-text"
+                placeholder="¿Qué certificación necesitas?"
+                @bind="searchText"
+                @oninput="HandleChangeTextSearch"
+                list="suggestions"
+            />
+            <datalist id="suggestions">
+                @foreach (var word in ListFnPredictWordsDto)
+                {
+                    <option value="@word.Word"></option>
+                }
+            </datalist>
+        </div>
+        <button type="button" @onclick="onClickFilter">
+            <i class="fas fa-search" />
+            <span>Buscar</span>
+        </button>
+    </div>
+    <div class="panel-input-checkbox">
+        <input class="form-check-input" type="checkbox" @bind="isExactSearch" />
+        <span>Búsqueda exacta</span>
+    </div>
+</div>
