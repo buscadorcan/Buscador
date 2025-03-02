@@ -122,6 +122,7 @@ namespace ClientApp.Pages.Administracion.Thesauros
                 }
 
                 this.isPublicacionDesabilitada = true;
+                StateHasChanged();
             }
             catch (Exception ex)
             {
@@ -345,6 +346,7 @@ namespace ClientApp.Pages.Administracion.Thesauros
                         this.isMensajeGuardarExitoso = true;
                         this.mensajeGuardar = "Los datos se guardaron correctamente";
                         this.isPublicacionDesabilitada = false;
+                        StateHasChanged();
 
                     }
                     else {
@@ -352,7 +354,7 @@ namespace ClientApp.Pages.Administracion.Thesauros
                         this.isMensajeGuardarExitoso = false;
                         this.mensajeGuardar = "Error al guardar los datos";
                         this.isPublicacionDesabilitada = false;
-
+                        StateHasChanged();
 
 
                     }

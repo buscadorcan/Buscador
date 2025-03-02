@@ -1,49 +1,24 @@
-<EditForm Model="usuarioAutenticacion" OnValidSubmit="AccesoUsuario">
+<EditForm Model="usuarioAutenticacion" OnValidSubmit="AccesoUsuario" class="panel-edit-form">
     <DataAnnotationsValidator />
 
-    <div class="login-1">
-        <img class="frame" src="/login/img/frame-1.svg" alt="Frame" />
-        <div class="frame-885">
-            <div class="frame-882">
-                <h1 class="title headlineheadline1-h1">Iniciar Sesión</h1>
-                <p class="inicia-sesin-para-acceder-a-tu-cuenta">Inicia sesión para acceder a tu cuenta</p>
-            </div>
-
-            <!-- Campos de Entrada -->
-            <div class="frame-8">
-                <div class="input">
-                    <div class="label valign-text-middle bodyregular-600">Tu Correo Electrónico</div>
-                    <InputText @bind-Value="usuarioAutenticacion.Email" style="color: black;" placeholder="julio@gmail.com" class="frame-1098 frame-1098 input-form input-2 valid your-text-here valign-text-middle bodyregular" />
-                    <ValidationMessage For="(() => usuarioAutenticacion.Email)" />
-                </div>
-                <div class="input-form input-2">
-                    <div class="label-text bodyregular-600">Contraseña</div>
-                    <InputText @bind-Value="usuarioAutenticacion.Clave" style="color: black;" type="password" placeholder="Password" class="frame-1098 frame-1098 input-form input-2 valid your-text-here valign-text-middle bodyregular" />
-                    <ValidationMessage For="(() => usuarioAutenticacion.Clave)" />
-                </div>
-            </div>
-
-            <!-- Botones -->
-            <div class="frame-1000004179">
-                <div class="frame-8">
-                    <Button @ref="saveButton" Type="ButtonType.Submit" class="button label valign-text-middle inter-regular-normal-comet-14px">
-                        <div class="button-1 headlineheadline5-h5">Iniciar Sesión</div>
-                    </Button>
-                </div>
-                <div class="recuperar-contrasea bodysmall">
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Link" @onclick="Recovery" Style="
-                        font-size: var(--font-size-m) !important;
-                        color: var(--catalina-blue) !important;
-                        cursor: pointer !important;
-                        font-weight: 400 !important;
-                        line-height: 17px !important;
-                        position: relative !important;
-                        white-space: nowrap !important;
-                        width: fit-content !important;">
-                        Recuperar contraseña
-                    </Button>
-                </div>
-            </div>
-        </div>
+    <div class="title">Iniciar Sesión</div>
+    <div class="description">Inicia sesión para acceder a tu cuenta</div>
+    <div class="input-component">
+        <div class="input-label">Tu Correo Electrónico</div>
+        <InputText @bind-Value="usuarioAutenticacion.Email" placeholder="julio@gmail.com" class="input-text"/>
+        <ValidationMessage For="(() => usuarioAutenticacion.Email)" />
     </div>
+    <div class="input-component">
+        <div class="input-label">Contraseña</div>
+        <InputText @bind-Value="usuarioAutenticacion.Clave" type="password" placeholder="Password" class="input-text"/>
+        <ValidationMessage For="(() => usuarioAutenticacion.Clave)" />
+    </div>
+
+
+    <Button class="input-button" @ref="saveButton" Type="ButtonType.Submit" style="margin-top: 10px;">
+        <div class="input-button-label">Iniciar Sesión</div>
+    </Button>
+    <Button Type="ButtonType.Link" Color="ButtonColor.Link" @onclick="Recovery">
+        <div class="input-button-link-label">Recuperar contraseña</div>
+    </Button>
 </EditForm>

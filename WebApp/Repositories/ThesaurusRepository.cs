@@ -21,10 +21,6 @@ namespace WebApp.Repositories
         private readonly string  _connectionString = configuration.GetConnectionString("Mssql-CanDb");
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];
         private readonly string _rutaArchivoDestino = configuration["Thesaurus:RutaFdata"];
-        private readonly string _IpSqlServer = configuration["Thesaurus:IpServidorSqlServer"];
-        //nombreServicioSqlServer
-        private readonly IWebHostEnvironment _env = env;
-
         ///<summary>
         ///ObtenerThesaurus: Obtiene la información completa del thesaurus almacenado en la base de datos.
         ///</summary>

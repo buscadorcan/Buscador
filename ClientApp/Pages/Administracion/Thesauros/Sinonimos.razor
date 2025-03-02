@@ -149,6 +149,9 @@
     .margin_b_10 {
         margin-bottom: 10px !important;
     }
+    .margin_t_10 {
+        margin-top: 10px !important;
+    }
 
     .accordion-button{
         width:95% !important;
@@ -165,10 +168,7 @@
 else
 {
     <div class="div_flex ancho_100 margin_botton">
-        <div class="div_flex ancho_100 margin_b_10">
-            <input type="text" placeholder="Ingrese el sinonimo a buscar" @bind="sinonimoBuscar" @oninput="MostarTodos"  class="ancho_70 input_control" />
-            <Button class="ancho_30 btn_control" @onclick="() => BuscarSinonimo()">Buscar Sinonimo</Button>
-        </div>
+       
         @if (this.usuarioLogin == "KEY_USER_CAN")
         {
             <div class="div_flex_buttom ancho_100">
@@ -179,7 +179,7 @@ else
                     <Button class="btn_control_bat ancho_100" @onclick="() => NuevaSeccion()">Nueva Sección</Button>
                 </div>
                 <div class="ancho_20">
-                    <Button class="btn_control_bat ancho_100" @onclick="() => EjecutarBat()" disabled="isPublicacionDesabilitada">Publicar</Button>
+                    <Button class="btn_control_bat ancho_100" @onclick="() => EjecutarBat()" disabled="@isPublicacionDesabilitada">Publicar</Button>
                 </div>
                 <!--
                 <div class="ancho_20">
@@ -189,7 +189,10 @@ else
             </div>
             
         }
-
+        <div class="div_flex ancho_100 margin_b_10 margin_t_10">
+            <input type="text" placeholder="Ingrese el sinonimo a buscar" @bind="sinonimoBuscar" @oninput="MostarTodos" class="ancho_70 input_control" />
+            <Button class="ancho_30 btn_control" @onclick="() => BuscarSinonimo()">Buscar Sinonimo</Button>
+        </div>
 
     </div>
 

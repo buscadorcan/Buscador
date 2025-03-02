@@ -87,7 +87,7 @@ namespace WebApp.Service.IService
                 
                 
                 //Eliminados los registros anteriores
-                _repositoryDLO.DeleteOldRecords(idOna);
+                //_repositoryDLO.DeleteOldRecords(idOna);
 
 
                 foreach (var vista in viewRegistradas)
@@ -99,7 +99,7 @@ namespace WebApp.Service.IService
                        
                         foreach (var column in viewColumns)
                         {
-                            columnAp = await ValidarColumnaEnVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, column.ColumnaEsquema, idOna);
+                            columnAp = await ValidarColumnaEnVistaAsync(connectionString, conexion.OrigenDatos, vista.VistaOrigen, column.ColumnaVista, idOna);
                             if (columnAp)
                             {
                                 columnasValidas.Add(column); // Agregar columna válida a la lista
@@ -338,80 +338,92 @@ namespace WebApp.Service.IService
                 using var connection = createConnection(connectionString);
                 connection.Open();
 
-                // Construir el SELECT dinámico
-                var columnasQuery = string.Join(", ", columnas.Select(c =>
-                    origenDatos.ToUpper() == "MYSQL" || origenDatos.ToUpper() == "POSTGRES"
-                    ? $"`{c.ColumnaEsquema}`"
-                    : $"[{c.ColumnaEsquema}]"));
-
-                var query = $"SELECT {columnasQuery} FROM {vista} ";
-
-                // Ejecutar la consulta
-                var filas = (await connection.QueryAsync(query)).ToList();
-
-                if (!filas.Any())
+                // Obtener el total de filas de la vista
+                int totalFilas = await connection.ExecuteScalarAsync<int>($"SELECT COUNT(*) FROM {vista}");
+                if (totalFilas == 0)
                 {
                     Console.WriteLine($"La vista '{vista}' no contiene datos.");
                     return false;
                 }
 
-                // Procesar cada fila
-                foreach (var fila in filas)
+                int tamanoLote = 100; // Tamaño del lote de filas a procesar
+                int totalPaginas = (int)Math.Ceiling(totalFilas / (double)tamanoLote);
+
+                // Construir el SELECT dinámico para las columnas
+                var columnasQuery = string.Join(", ", columnas.Select(c =>
+                    origenDatos.ToUpper() == "MYSQL" || origenDatos.ToUpper() == "POSTGRES"
+                    ? $"`{c.ColumnaVista}`"
+                    : $"[{c.ColumnaVista}]"));
+
+                // Procesar datos en lotes de 100 filas
+                for (int pagina = 0; pagina < totalPaginas; pagina++)
                 {
-                    // Construir el JSON con IdHomologacion y Data
-                    var dataEsquemaJson = columnas
-                        .Select(col =>
+                    int offset = pagina * tamanoLote;
+
+                    string query = origenDatos.ToUpper() == "MYSQL" || origenDatos.ToUpper() == "POSTGRES"
+                        ? $"SELECT {columnasQuery} FROM {vista} LIMIT {tamanoLote} OFFSET {offset}"
+                        : $"SELECT {columnasQuery} FROM {vista} ORDER BY (SELECT NULL) OFFSET {offset} ROWS FETCH NEXT {tamanoLote} ROWS ONLY";
+
+                    var filas = (await connection.QueryAsync(query)).ToList();
+
+                    if (!filas.Any()) continue;
+
+                    // Procesar cada fila
+                    foreach (var fila in filas)
+                    {
+                        var dataEsquemaJson = columnas
+                            .Select(col =>
+                            {
+                                var diccionarioFila = (IDictionary<string, object>)fila;
+                                return new
+                                {
+                                    IdHomologacion = col.ColumnaEsquemaIdH,
+                                    Data = diccionarioFila.ContainsKey(col.ColumnaVista)
+                                        ? diccionarioFila[col.ColumnaVista]?.ToString()
+                                        : null
+                                };
+                            })
+                            .ToList();
+
+                        var json = JsonConvert.SerializeObject(dataEsquemaJson);
+
+                        // Insertar en la tabla EsquemaData
+                        var esquemaData = new EsquemaData
+                        {
+                            IdEsquemaVista = idEsquemaVista,
+                            DataEsquemaJson = json,
+                            DataFecha = DateTime.Now
+                        };
+
+                        _repositoryDLO.Create(esquemaData);
+                        var idEsquemaData = esquemaData.IdEsquemaData;
+
+                        // Obtener la lista de homologaciones indexadas
+                        var homologacion = _repositoryH.FindByAll()
+                            .Where(x => x.Indexar == "S" && x.IdHomologacionGrupo == 1)
+                            .Select(x => x.IdHomologacion)
+                            .ToHashSet(); // HashSet para búsquedas rápidas
+
+                        // Filtrar las columnas que tienen un IdHomologacion en la lista de homologaciones indexadas
+                        var columnasFiltradas = columnas
+                            .Where(col => homologacion.Contains(col.ColumnaEsquemaIdH))
+                            .ToList();
+
+                        // Insertar en la tabla EsquemaFullText
+                        foreach (var col in columnasFiltradas)
                         {
                             var diccionarioFila = (IDictionary<string, object>)fila;
-                            return new
+
+                            var esquemaFullText = new EsquemaFullText
                             {
+                                IdEsquemaData = idEsquemaData,
                                 IdHomologacion = col.ColumnaEsquemaIdH,
-                                Data = diccionarioFila.ContainsKey(col.ColumnaEsquema)
-                                    ? diccionarioFila[col.ColumnaEsquema]?.ToString()
+                                FullTextData = diccionarioFila.ContainsKey(col.ColumnaVista)
+                                    ? diccionarioFila[col.ColumnaVista]?.ToString()
                                     : null
                             };
-                        })
-                        .ToList();
-
-                    var json = JsonConvert.SerializeObject(dataEsquemaJson);                  
-
-                    // Insertar en la tabla EsquemaData
-                    var esquemaData = new EsquemaData
-                    {
-                        IdEsquemaVista = idEsquemaVista,
-                        DataEsquemaJson = json,
-                        DataFecha = DateTime.Now
-                    };
-
-                    _repositoryDLO.Create(esquemaData);
-                    var idEsquemaData = esquemaData.IdEsquemaData;
-
-                    // Obtener la lista de homologaciones indexadas
-                    var homologacion = _repositoryH.FindByAll()
-                        .Where(x => x.Indexar == "S" && x.IdHomologacionGrupo == 1) //El valor 1 para pruebas
-                        .Select(x => x.IdHomologacion)
-                        .ToHashSet(); // Usar HashSet para búsquedas rápidas
-
-                    // Filtrar las columnas que tienen un IdHomologacion en la lista de homologaciones indexadas
-                    var columnasFiltradas = columnas
-                        .Where(col => homologacion.Contains(col.ColumnaEsquemaIdH))
-                        .ToList();
-
-                    // Insertar en la tabla EsquemaFullText
-                    foreach (var col in columnasFiltradas)
-                    {
-                        // Usar el diccionario previamente construido
-                        var diccionarioFila = (IDictionary<string, object>)fila;
-
-                        var esquemaFullText = new EsquemaFullText
-                        {
-                            IdEsquemaData = idEsquemaData,
-                            IdHomologacion = col.ColumnaEsquemaIdH,
-                            FullTextData = diccionarioFila.ContainsKey(col.ColumnaEsquema)
-                                ? diccionarioFila[col.ColumnaEsquema]?.ToString()
-                                : null // En caso de que no exista la columna en la fila
-                        };
-                        _repositoryOFT.Create(esquemaFullText);
+                            _repositoryOFT.Create(esquemaFullText);
+                        }
                     }
                 }
 
@@ -429,6 +441,7 @@ namespace WebApp.Service.IService
                 return false;
             }
         }
+
         public bool TestDatabaseConnectionAsync(string connectionString, string origenDatos)
         {
             try

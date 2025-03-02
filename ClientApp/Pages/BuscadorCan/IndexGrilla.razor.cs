@@ -1,155 +1,61 @@
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using ClientApp.Services.IService;
-using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
-using System.Drawing;
 using Microsoft.JSInterop;
-using ClientApp.Helpers;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class IndexGrilla
+    /// <summary>
+    /// Componente parcial para la página de búsqueda de CAN.
+    /// </summary>
+    public partial class IndexGrilla : ComponentBase
     {
-        [Parameter]
-        public BuscarRequest? buscarRequest { get; set; }
-        [Parameter]
-        public List<FiltrosBusquedaSeleccion>? selectedValues { get; set; }
+        /// <summary>
+        /// Servicio de homologación.
+        /// </summary>
+        [Inject] public IHomologacionService? iHomologacionService { get; set; }
 
-        [Parameter]
-        public List<VwFiltroDto>? listaEtiquetasFiltros { get; set; }
-        [Parameter]
-        public EventCallback<List<vwPanelONADto>> OnPanelONAUpdated { get; set; }
-        [Inject]
-        public IBusquedaService? servicio { get; set; }
-        [Inject]
-        public ICatalogosService? iCatalogosService { get; set; }
-        [Inject]
-        public IHomologacionService? iHomologacionService { get; set; }
-        [Inject]
-        public IONAService? iOnaService { get; set; }
-        [Inject]
-        public IJSRuntime? iJSRuntime { get; set; }
+        /// <summary>
+        /// Servicio de JavaScript.
+        /// </summary>
+        [Inject] public IJSRuntime? iJSRuntime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list data dto.
+        /// </summary>
+        [Parameter] public List<BuscadorResultadoDataDto>? ListDataDto { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list url data dto.
+        /// </summary>
+        [Parameter] public Dictionary<int, string>? iconUrls { get; set; }
+
+        /// <summary>
+        /// Listado de etiquetas de la grilla.
+        /// </summary>
+        [Parameter] public List<VwGrillaDto>? listaEtiquetasGrilla { get; set; }
+        
+        /// <summary>
+        /// COmponente modal.
+        /// </summary>
         private Modal modal = default!;
-        private bool isDialogOpen = false; // Control de estado del diálogo
-        private string? PdfUrl; // URL del PDF
-        private OnaDto? OnaDto;
-        public Grid<BuscadorResultadoDataDto>? grid;
-        private List<VwGrillaDto>? listaEtiquetasGrilla;
-        private int totalCount = 0;
-        public bool ModoBuscar { get; set; }
-        private bool isLoading = true;
-        private Dictionary<int, string> iconUrls = new();
-        protected override async Task OnInitializedAsync()
-        {
-            try
-            {
-                if (iCatalogosService != null)
-                {
-                    listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
-                    Console.WriteLine($"Filtros enviados");
-                }
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            finally
-            {
-                isLoading = false; // Marca que los datos están listos
-            }
-        }
+        /// <summary>
+        /// open or close dialog
+        /// </summary>
+        private bool isDialogOpen = false;
 
-        private async Task<List<BuscadorResultadoDataDto>> BuscarEsquemas(int PageNumber, int PageSize)
-        {
-            var listBuscadorResultadoDataDto = new List<BuscadorResultadoDataDto>();
+        /// <summary>
+        /// url pdf
+        /// </summary>
+        private string? PdfUrl;
+        // private bool isLoading = true;
 
-            try
-            {
-                if (servicio != null)
-                {
-                    var filtros = new
-                    {
-                        ExactaBuscar = ModoBuscar,
-                        TextoBuscar = buscarRequest?.TextoBuscar ?? "",
-                        FiltroPais = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
-                        FiltroOna = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
-                        FiltroNorma = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_NOR")?.Seleccion ?? new List<string>(),
-                        FiltroEsquema = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ESQ")?.Seleccion ?? new List<string>(),
-                        FiltroEstado = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_EST")?.Seleccion ?? new List<string>(),
-                        FiltroRecomocimiento = selectedValues?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
-                    };
-
-                    var result = await servicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), PageNumber, PageSize);
-
-                    if (!(result.Data is null))
-                    {
-                        listBuscadorResultadoDataDto = result.Data;
-
-                        // Prepara las URLs de los íconos
-                        foreach (var item in listBuscadorResultadoDataDto)
-                        {
-                            if (item.IdONA.HasValue && !iconUrls.ContainsKey(item.IdONA.Value))
-                            {
-                                // Obtener la URL correcta del ícono desde el backend
-                                var iconUrl = await getIconUrl(item);
-
-                                // Concatenar la URL base con la ruta relativa si es necesario
-                                iconUrls[item.IdONA.Value] = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{iconUrl.TrimStart('/')}";
-                            }
-                        }
-
-                        await grid.RefreshDataAsync();
-                    }
-
-                    if (PageNumber == 1 && result.PanelONA != null)
-                    {
-                        totalCount = result.TotalCount;
-                        await OnPanelONAUpdated.InvokeAsync(result.PanelONA);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error en BuscarEsquemas: {e.Message}");
-            }
-
-            return listBuscadorResultadoDataDto;
-        }
-
-        private async Task<GridDataProviderResult<BuscadorResultadoDataDto>> ResultadoBusquedaDataProvider(GridDataProviderRequest<BuscadorResultadoDataDto> request)
-        {
-            try
-            {
-                var data = await BuscarEsquemas(request.PageNumber, request.PageSize);
-                Console.WriteLine("No se encontraron resultados en BuscarEsquemas.");
-
-                
-
-                if (data == null || !data.Any())
-                {
-                    Console.WriteLine("No se encontraron resultados en BuscarEsquemas.");
-                }
-
-                if (grid != null)
-                {
-                    await grid.RefreshDataAsync();
-                }
-
-                return new GridDataProviderResult<BuscadorResultadoDataDto>
-                {
-                    Data = data,
-                    TotalCount = totalCount
-                };
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            
-        }
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
+        /// <param name="resultData"></param>
         private async void showModal(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
@@ -159,6 +65,9 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
 
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async void showModalOna(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
@@ -168,6 +77,9 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async void showModalOEC(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
@@ -177,6 +89,9 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<OECModal>(title: "Información del OEC", parameters: parameters);
         }
 
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async void showModalESQ(BuscadorResultadoDataDto resultData)
         {
             var parameters = new Dictionary<string, object>();
@@ -186,7 +101,9 @@ namespace ClientApp.Pages.BuscadorCan
             await modal.ShowAsync<IndvEsquemaModal>(title: "Información Esquema", parameters: parameters);
         }
 
-
+        /// <summary>
+        /// Método para mostrar el resultados en ventana modal
+        /// </summary>
         private async Task ShowPdfDialog(BuscadorResultadoDataDto resultData)
         {
             // Obtener la URL del certificado
@@ -202,6 +119,9 @@ namespace ClientApp.Pages.BuscadorCan
             await iJSRuntime.InvokeVoidAsync("abrirVentanaPDF", pdfUrl);
         }
 
+        /// <summary>
+        /// Método para obtener la URL del certificado.
+        /// </summary>
         private async Task<string?> GetPdfUrlFromEsquema(BuscadorResultadoDataDto resultData)
         {
             try
@@ -225,43 +145,6 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 throw new Exception("Error al obtener la URL del certificado", ex);
             }
-        }
-
-        private async Task<string> getIconUrl(BuscadorResultadoDataDto resultData)
-        {
-            try
-            {
-                var idOna = resultData.IdONA;
-
-                OnaDto = await iOnaService?.GetONAsAsync(idOna ?? 0);
-
-                if (!string.IsNullOrEmpty(OnaDto.UrlIcono))
-                {
-                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(OnaDto.UrlIcono);
-
-                    if (deserialized != null && deserialized.ContainsKey("filePath"))
-                    {
-                        // Si el JSON tiene "filePath", lo retornamos
-                        return deserialized["filePath"];
-                    }
-                }
-
-                // Retorna un ícono predeterminado si no hay URL válida
-                return "https://via.placeholder.com/16";
-            }
-            catch (Exception ex)
-            {
-                // Maneja el error y retorna un ícono predeterminado
-                Console.WriteLine(ex.Message);
-                return "https://via.placeholder.com/16";
-            }
-        }
-
-        // Clase para deserializar
-        public class JsonData
-        {
-            public int IdHomologacion { get; set; }
-            public string Data { get; set; }
         }
     }
 }
