@@ -3,17 +3,52 @@
 <PageTitle>Acceder</PageTitle>
 <Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
 
-<!-- Referenciando los CSS directamente -->
-<link rel="stylesheet" type="text/css" href="/login/css/login-2.css" />
-<link rel="stylesheet" type="text/css" href="/login/css/styleguide.css" />
-<link rel="stylesheet" type="text/css" href="/login/css/globals.css" />
+<link rel="stylesheet" type="text/css" href="/css/autenticacion/acceder.css" />
 
-<div class="container-center-horizontal">
+<div class="panel-acceder">
+    <div class="panel-acceder-content">
+        <div class="panel-acceder-back">
+            <img src="/login/img/search-1.svg" alt="search-1" />
+            <div>Buscador</div>
+        </div>
+        <div class="panel-acceder-content-form">
+            <div class="card">
+                <div class="card-body">
+                    <img src="/images/logo1l.svg" alt="Frame" />
+                    @if (opcion == 1) {
+                        @if (authenticateResponseDto == null) {
+                            <FormularioLogin
+                                OnCreateToastMessage="CreateToastMessage"
+                                OnStepChanged="HandleStepChange"
+                                OnOptionChange="HandleOptionChange"
+                            />
+                        } else {
+                            <FormularioValidacion 
+                                OnCreateToastMessage="CreateToastMessage" 
+                                IdUsuario="@authenticateResponseDto?.IdUsuario"
+                                OnStepChanged="HandleStepChange"
+                            />
+                        }
+                    } else {
+                        <FormularioRecuperar
+                            OnCreateToastMessage="CreateToastMessage"
+                            OnOptionChange="HandleOptionChange"
+                        />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-acceder-content-img">
+        <img src="/images/login470px.png" alt="login470px" />
+    </div>
+</div>
+
+@* <div class="container-center-horizontal">
     <div class="login-2 screen">
         <div class="login">
             <div class="component-10" @onclick="GoToSearchPage" style="cursor:pointer;">
-                <img class="arrow_back" src="/login/img/search-1.svg" alt="search-1" />
-                <div class="back">Buscador</div>
+                
             </div>
 
             @if (opcion == 1) {
@@ -37,54 +72,6 @@
                 />
             }
         </div>
-        <img class="login470px" src="/login/img/login470px.png" alt="login470px" />
-    </div>
-</div>
-
-
-
-
-@* @page "/acceder"
-
-<PageTitle>Acceder</PageTitle>
-
-<div class="py-4">
-    <div class=" row form-group ">
-        <div class="col-6 offset-3 ">
-            <div class="card border">
-                <div class="card-body px-lg-5 pt-4">
-                    <h3 class="col-12 text-success text-center py-2">
-                        <strong>Acceder</strong>
-                    </h3>
-
-                    <EditForm Model="usuarioAutenticacion" OnValidSubmit="AccesoUsuario">
-                        <DataAnnotationsValidator />
-
-                        @if(!string.IsNullOrEmpty(@alertMessage)) {
-                            <Alert Color="AlertColor.Danger" Dismissable="false"> <Icon Name="IconName.ExclamationTriangleFill" class="me-2"></Icon>@alertMessage </Alert>
-                        }
-
-                        <div class="form-row py-2">
-                            <InputText @bind-Value="usuarioAutenticacion.Email" id="email" placeholder="Nombre usuario..." class="form-control mb-2" />
-                            <ValidationMessage For="(()=>usuarioAutenticacion.Email)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-row py-2">
-                            <InputText @bind-Value="usuarioAutenticacion.Clave" type="password" placeholder="Password..." id="clave" class="form-control mb-2" style="height: auto;padding: .375rem .75rem;" />
-                            <ValidationMessage For="(()=>usuarioAutenticacion.Clave)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-row d-grid gap-2">
-                            <Button @ref="saveButton" Type="ButtonType.Submit" Color="ButtonColor.Success">
-                                Acceder
-                            </Button>
-                            <div class="d-md-flex justify-content-md-end mt-2">
-                                <Button Type="ButtonType.Link" Color="ButtonColor.Link" To="recuperar"> Recuperar Clave </Button>
-                            </div>
-                        </div>
-                    </EditForm>
-                </div>
-            </div>
-        </div>
+        <img src="/images/login470px.png" alt="login470px" class="login470px" />
     </div>
 </div> *@

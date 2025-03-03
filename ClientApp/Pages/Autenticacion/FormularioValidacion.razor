@@ -1,41 +1,24 @@
-<EditForm Model="authValidationDto" OnValidSubmit="ValidarCodigo">
+<EditForm Model="inputCodedto" OnValidSubmit="ValidarCodigo" class="panel-edit-form" style="margin-top: 20px;;">
     <DataAnnotationsValidator />
 
-    <div class="login-1">
-        <img class="frame" src="/login/img/frame-1.svg" alt="Frame" />
-        <div class="frame-885">
+    <div class="description">Ingresa el código de verificación</div>
 
-            <!-- Campos de Entrada -->
-            <div class="frame-8">
-                <div class="input">
-                    <div class="label valign-text-middle bodyregular-600">Ingrear Código</div>
-                    <InputText @bind-Value="authValidationDto.Codigo" style="color: black;" class="frame-1098 frame-1098 input-form input-2 valid your-text-here valign-text-middle bodyregular" />
-                    <ValidationMessage For="(() => authValidationDto.Codigo)" />
-                </div>
-            </div>
-
-            <!-- Botones -->
-            <div class="frame-1000004179">
-                <div class="frame-8">
-                    <Button @ref="saveButton" Type="ButtonType.Submit" class="button label valign-text-middle inter-regular-normal-comet-14px">
-                        <div class="button-1 headlineheadline5-h5">Verificar</div>
-                    </Button>
-                </div>
-
-                <div class="recuperar-contrasea bodysmall">
-                    <Button Type="ButtonType.Link" Color="ButtonColor.Link" @onclick="GoLoginPage" Style="
-                        font-size: var(--font-size-m) !important;
-                        color: var(--catalina-blue) !important;
-                        cursor: pointer !important;
-                        font-weight: 400 !important;
-                        line-height: 17px !important;
-                        position: relative !important;
-                        white-space: nowrap !important;
-                        width: fit-content !important;">
-                        Login
-                    </Button>
-                </div>
-            </div>
-        </div>
+    <div class="input-component-code">
+        <input @bind="inputCodedto.Codigo1" maxlength="1" @ref="input1" @oninput="() => MoveNext(input2)" />
+        <input @bind="inputCodedto.Codigo2" maxlength="1" @ref="input2" @oninput="() => MoveNext(input3)" />
+        <input @bind="inputCodedto.Codigo3" maxlength="1" @ref="input3" @oninput="() => MoveNext(input4)" />
+        <input @bind="inputCodedto.Codigo4" maxlength="1" @ref="input4" @oninput="() => MoveNext(input5)" />
+        <input @bind="inputCodedto.Codigo5" maxlength="1" @ref="input5" @oninput="() => MoveNext(input6)" />
+        <input @bind="inputCodedto.Codigo6" maxlength="1" @ref="input6" />
     </div>
+
+    <Button @ref="saveButton" Type="ButtonType.Submit" class="input-button">
+        <div class="input-button-label">Verificar</div>
+    </Button>
+
+    <Button Type="ButtonType.Link" Color="ButtonColor.Link" @onclick="GoLoginPage">
+        <div class="input-button-link-label">Login</div>
+    </Button>
+
+    <div style="font-size: 14px; font-weight: 600; color: #27A14A; text-align: center; margin-top: 20px;">Te enviamos un código a tu correo</div>
 </EditForm>

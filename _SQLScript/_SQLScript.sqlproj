@@ -75,5 +75,6 @@
     <Build Include="00_Diccionario.sql" />
     <Build Include="00_SetDiccionario.sql" />
     <Build Include="00_Menu.sql" />
+    <Build Include="15_vwEventTracking.sql" />
   </ItemGroup>
 </Project>

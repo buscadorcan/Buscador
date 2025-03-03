@@ -1,335 +1,301 @@
-﻿using BlazorBootstrap;
+﻿using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
-using SharedApp.Data;
+using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class Index
+    /// <summary>
+    /// Componente parcial para la página de búsqueda de CAN.
+    /// </summary>
+    public partial class Index : ComponentBase
     {
-        [Inject]
-        public ICatalogosService? iCatalogosService { get; set; }
-        [Inject]
-        public IBusquedaService? iBusquedaService { get; set; }
+        /// <summary>
+        /// Servicio para obtener catálogos.
+        /// </summary>
+        [Inject] public ICatalogosService? iCatalogosService { get; set; }
 
-        private IndexGrilla? childComponentRef;
-        private IndexCard? cardComponentRef;
-        private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
-        private List<vwPanelONADto>? listaDatosPanel = new List<vwPanelONADto>();
-        private List<List<vwFiltroDetalleDto>?> listadeOpciones = new List<List<vwFiltroDetalleDto>?>();
-        private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
-        private int TotalEmpresa = 0;
-        private BuscarRequest buscarRequest = new BuscarRequest();
-        private bool modoBuscar = false;
-        private List<Item> ListTypeSearch = new TypeSearch().ListTypeSearch;
-        private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
-        private FnPredictWordsDto? selectedWord;
-        private List<Seleccion> Selecciones = new();
-        private List<int> SelectedIds = new List<int>();
-        private bool mostrarFiltrosAvanzados = false;
+        /// <summary>
+        /// servicio de busqueda
+        /// </summary>
+        [Inject] public IBusquedaService? iservicio { get; set; }
+
+        /// <summary>
+        /// servicio de busqueda
+        /// </summary>
+        [Inject] public IONAService? iOnaService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total items.
+        /// </summary>
+        private int TotalItems = 0;
+
+        /// <summary>
+        /// Gets or sets the total pages.
+        /// </summary>
+        private int TotalPages = 0;
+
+        /// <summary>
+        /// Gets or sets the display pages.
+        /// </summary>
+        private int DisplayPages = 5;
+
+        /// <summary>
+        /// Gets or sets the active page number.
+        /// </summary>
+        private int ActivePageNumber = 1;
+
+        /// <summary>
+        /// Lista de valores seleccionados
+        /// </summary>
+        private List<FiltrosBusquedaSeleccion> selectedFilter = new List<FiltrosBusquedaSeleccion>();
+
+        /// <summary>
+        /// Lista de urls devuerltos por el servicio
+        /// </summary>
+        private Dictionary<int, string> iconUrls = new();
+
+        /// <summary>
+        /// Variable para almacenar la información de la ONA.
+        /// </summary>
+        private OnaDto? OnaDto;
+
+        /// <summary>
+        /// Lista de resultados de la búsqueda.
+        /// </summary>
+        private List<BuscadorResultadoDataDto> listBuscadorResultadoDataDto = new List<BuscadorResultadoDataDto>();
+
+        /// <summary>
+        /// Método para mostrar el resultados
+        /// </summary>
+        private bool isGridVisible = true;
+
+        /// <summary>
+        /// Texto de busqueda
+        /// </summary>
+        private string searchText = string.Empty;
+
+        /// <summary>
+        /// Variable para indicar si la busqueda es exacta
+        /// </summary>
         private bool isExactSearch = false;
-        private bool mostrarIndexCard = false; // Para alternar entre tarjeta de índice y grilla
-        private string searchTerm = string.Empty;
-        private string textoFiltrosAvanzados = "Filtros Avanzados";
-        //private bool mostrarBuscador = false;
-        private bool mostrarPublicidad = true;
-        private bool esModoGrilla = true;
-        private bool mostrarBuscador = false;
-        private bool isCleaning = false;
 
+        /// <summary>
+        /// Gets or sets informations ONA.
+        /// </summary>
+        private List<vwPanelONADto>? PanelONA = new List<vwPanelONADto>();
+
+        /// <summary>
+        /// Listado de etiquetas de la grilla.
+        /// </summary>
+        private List<VwGrillaDto>? listaEtiquetasGrilla;
+
+        /// <summary>
+        /// Listado de etiquetas de la grilla.
+        /// </summary>
+        private List<VwGrillaDto>? listaEtiquetasCards;
+
+        /// <summary>
+        /// Método de inicialización del componente.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 if (iCatalogosService != null)
                 {
-                    listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
-
-                    if (listaEtiquetasFiltros != null)
+                    listaEtiquetasGrilla = await iCatalogosService.GetHomologacionAsync<List<VwGrillaDto>>("grid/schema");
+                    var ordenPersonalizado = new Dictionary<int, int>
                     {
-                        foreach (var opciones in listaEtiquetasFiltros)
-                        {
-                            listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<vwFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
-                            Console.WriteLine($"Lectura del codigo");
-                        }
+                        { 84, 1 },
+                        { 78, 2 },
+                        { 82, 3 }, // Eliminado el duplicado
+                        { 83, 4 },
+                        { 90, 5 },
+                        { 93, 6 },
+                        { 81, 7 },
+                        { 92, 8 },
+                        { 91, 9 }
+                    };
 
-                    }
-                    listaDatosPanel = new List<vwPanelONADto>();
-                    TotalEmpresa = 0;
-                    listaDatosPanel = await iCatalogosService.GetPanelOnaAsync();
-                    TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
+                    listaEtiquetasCards = listaEtiquetasGrilla
+                                 ?.OrderBy(x => ordenPersonalizado.ContainsKey(x.IdHomologacion) ? ordenPersonalizado[x.IdHomologacion] : int.MaxValue)
+                                 .ToList();
                 }
-
-
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-
             }
-            StateHasChanged();
         }
 
-        private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
+        private void HandlePanelONAChange (List<vwPanelONADto> newPanelONA)
         {
-            bool seleccionado = bool.Parse(isChecked.ToString());
-            // Obtén el CódigoHomologacion de listaEtiquetasFiltros
-            var codigoHomologacion = listaEtiquetasFiltros?[comboIndex]?.CodigoHomologacion;
-
-            if (string.IsNullOrWhiteSpace(codigoHomologacion))
-            {
-                Console.WriteLine($"No se encontró CódigoHomologacion para comboIndex {comboIndex}");
-                return;
-            }
-
-            // Busca el filtro correspondiente en selectedValues
-            var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
-
-            if (filtro == null)
-            {
-                // Si no existe el filtro, lo creamos
-                filtro = new FiltrosBusquedaSeleccion
-                {
-                    CodigoHomologacion = codigoHomologacion,
-                    Seleccion = new List<string>()
-                };
-                selectedValues.Add(filtro);
-            }
-
-            if (seleccionado)
-            {
-                // Agregar valor seleccionado
-                if (!filtro.Seleccion.Contains(valor))
-                {
-                    filtro.Seleccion.Add(valor);
-                }
-            }
-            else
-            {
-                // Quitar valor deseleccionado
-                filtro.Seleccion.Remove(valor);
-
-                // Si ya no hay selecciones, eliminamos el filtro
-                if (!filtro.Seleccion.Any())
-                {
-                    selectedValues.Remove(filtro);
-                }
-            }
-
-            Console.WriteLine($"Seleccionado: {string.Join(", ", filtro.Seleccion)} para {codigoHomologacion}");
+            var nroOrg = newPanelONA.Sum(x => x.NroOrg);
+            newPanelONA.Insert(0, new vwPanelONADto { NroOrg = nroOrg, Pais = "Total" });
+            PanelONA = newPanelONA;
         }
-        private async Task BuscarPalabraRequest()
+
+        /// <summary>
+        /// Método para manejar el cambio de filtros.
+        /// </summary>
+        private void HandleFilterChange(List<FiltrosBusquedaSeleccion> newFilter)
         {
-            try
-            {
-                buscarRequest.TextoBuscar = searchTerm; // Asignar el término de búsqueda
-                mostrarBuscador = true; // Habilitar la visualización de resultados
-
-                if (esModoGrilla && childComponentRef != null) // Modo grilla
-                {
-                    childComponentRef.ModoBuscar = isExactSearch;
-                    childComponentRef.selectedValues = selectedValues;
-                    await childComponentRef.grid.ResetPageNumber();
-                }
-                else if (!esModoGrilla && cardComponentRef != null) // Modo tarjeta
-                {
-                    cardComponentRef.SearchTerm = searchTerm;
-                    cardComponentRef.IsExactSearch = isExactSearch;
-                    cardComponentRef.SelectedValues = selectedValues;
-                    await cardComponentRef.BuscarPalabraRequest();
-                }
-
-                mostrarPublicidad = false; // Ocultar publicidad después de la búsqueda
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error en BuscarPalabraRequest: {ex.Message}");
-            }
-
-            StateHasChanged(); // Forzar actualización de la UI
+            selectedFilter = newFilter;
         }
 
-
-        private async Task<AutoCompleteDataProviderResult<FnPredictWordsDto>> FnPredictWordsDtoDataProvider(AutoCompleteDataProviderRequest<FnPredictWordsDto> request)
+        /// <summary>
+        /// Servicio de catálogos inyectado.
+        /// </summary>
+        /// <param name="_searchText"></param>
+        /// <param name="_isExactSearch"></param>
+        /// <returns></returns>
+        private async Task onClickSearch(string _searchText, bool _isExactSearch)
         {
-            if (request.Filter == null || string.IsNullOrWhiteSpace(request.Filter.Value))
-            {
-                return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = [], TotalCount = 0 };
-            }
-
-            buscarRequest.TextoBuscar = request.Filter.Value;
-
-            if (iBusquedaService != null)
-            {
-                var words = await iBusquedaService.FnPredictWords(request.Filter.Value);
-                return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = words, TotalCount = words.Count() };
-            }
-
-            return new AutoCompleteDataProviderResult<FnPredictWordsDto> { Data = [], TotalCount = 0 };
+            searchText = _searchText;
+            isExactSearch = _isExactSearch;
+            ActivePageNumber = 1;
+            await BuscarEsquemas(_searchText, _isExactSearch);
         }
 
-        private void AlternarFiltrosAvanzados()
+        /// <summary>
+        /// Método para manejar el cambio de página.
+        /// </summary>
+        private async Task ActivePageNumberChanged(int pageNumber)
         {
-            mostrarFiltrosAvanzados = !mostrarFiltrosAvanzados;
-            mostrarPublicidad = false;
-            // Cambiar el texto según el estado
-            textoFiltrosAvanzados = mostrarFiltrosAvanzados
-                ? "Ocultar Filtros Avanzados"
-                : "Filtros Avanzados";
+            ActivePageNumber = pageNumber;
+            await BuscarEsquemas(searchText, isExactSearch);
         }
 
-        private async Task AlternarIndexCard()
+        /// <summary>
+        /// Método para manejar el cambio de cantidad de items por páginas a mostrar.
+        /// </summary>
+        private async Task DisplayPagesChanged(int displayPages)
         {
-            mostrarIndexCard = true;
-            esModoGrilla = false;
-
-            // Esperar a que la UI se actualice y el componente se renderice
-            await InvokeAsync(StateHasChanged);
-            await Task.Delay(50); // Pequeño retraso para dar tiempo a Blazor a asignar la referencia
-
-            if (cardComponentRef != null) // Ahora `cardComponentRef` debería estar disponible
-            {
-                    cardComponentRef.SearchTerm = searchTerm;
-                    cardComponentRef.IsExactSearch = isExactSearch;
-                    cardComponentRef.SelectedValues = selectedValues;
-                    await cardComponentRef.BuscarPalabraRequest();
-            }
-            else
-            {
-                Console.WriteLine("cardComponentRef aún no está inicializado.");
-            }
+            ActivePageNumber = 1;
+            DisplayPages = displayPages;
+            await BuscarEsquemas(searchText, isExactSearch);
         }
 
-
-        private async Task AlternarIndexGrilla()
+        /// <summary>
+        /// Método para manejar el cambio de visibilidad de la grilla.
+        /// </summary>
+        private async Task isGridVisibleChanged(bool isVisible)
         {
-            mostrarIndexCard = false;
-            esModoGrilla = true;
-
-            if (childComponentRef != null) // Asegurar que el componente existe
-            {
-                // Si ya hay datos cargados, no se vuelve a buscar
-                if (childComponentRef.grid != null)
-                {
-                    childComponentRef.ModoBuscar = isExactSearch;
-                    childComponentRef.selectedValues = selectedValues;
-                    await childComponentRef.grid.ResetPageNumber();
-                }
-            }
-            StateHasChanged();
-        }
-        private class Seleccion
-        {
-            public int ComboIndex { get; set; }
-            public string Texto { get; set; }
-        }
-        public class Opcion
-        {
-            public string MostrarWeb { get; set; }
+            isGridVisible = isVisible;
         }
 
-        private async Task OnSearchChanged(ChangeEventArgs e)
-        {
-            searchTerm = e.Value?.ToString();
-
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                // Crear un FilterItem con los parámetros requeridos
-                var filterItem = new FilterItem(
-                    propertyName: "Word",                  // Nombre de la propiedad a filtrar
-                    value: searchTerm,                     // Valor de búsqueda
-                    @operator: FilterOperator.Contains,    // Operador de comparación
-                    stringComparison: StringComparison.OrdinalIgnoreCase // Tipo de comparación
-                );
-
-                // Crear la solicitud de autocompletado con el filtro
-                var request = new AutoCompleteDataProviderRequest<FnPredictWordsDto>
-                {
-                    Filter = filterItem
-                };
-
-                var result = await FnPredictWordsDtoDataProvider(request);
-                ListFnPredictWordsDto = result.Data.ToList();
-            }
-        }
-
-        private void ActualizarPanelONA(List<vwPanelONADto> panelOnaData)
-        {
-            listaDatosPanel = new List<vwPanelONADto>();
-            TotalEmpresa = 0;
-            listaDatosPanel = panelOnaData;
-            TotalEmpresa = listaDatosPanel.Sum(x => x.NroOrg);
-            StateHasChanged();
-        }
-        async Task LimpiarFiltros()
+        /// <summary>
+        /// Método para realizar la busqueda correspondiente
+        /// </summary>
+        private async Task<List<BuscadorResultadoDataDto>> BuscarEsquemas(string searchText, bool isExactSearch)
         {
             try
             {
-                if (isCleaning) return; // Evita múltiples clics simultáneos
-                isCleaning = true;
-                StateHasChanged(); // Forzar actualización de la UI
-
-                // 1️⃣ Recorrer cada filtro seleccionado y deseleccionarlo
-                foreach (var filtro in selectedValues.ToList())
+                if (iservicio != null)
                 {
-                    foreach (var valor in filtro.Seleccion.ToList())
+                    var filtros = new
                     {
-                        int comboIndex = listaEtiquetasFiltros.FindIndex(f => f.CodigoHomologacion == filtro.CodigoHomologacion);
-                        if (comboIndex >= 0)
+                        ExactaBuscar = isExactSearch,
+                        TextoBuscar = searchText ?? "",
+                        FiltroPais = selectedFilter?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_PAI")?.Seleccion ?? new List<string>(),
+                        FiltroOna = selectedFilter?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ONA")?.Seleccion ?? new List<string>(),
+                        FiltroNorma = selectedFilter?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_NOR")?.Seleccion ?? new List<string>(),
+                        FiltroEsquema = selectedFilter?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_ESQ")?.Seleccion ?? new List<string>(),
+                        FiltroEstado = selectedFilter?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_EST")?.Seleccion ?? new List<string>(),
+                        FiltroRecomocimiento = selectedFilter?.FirstOrDefault(c => c.CodigoHomologacion == "KEY_FIL_REC")?.Seleccion ?? new List<string>()
+                    };
+
+                    var result = await iservicio.PsBuscarPalabraAsync(JsonConvert.SerializeObject(filtros), ActivePageNumber, DisplayPages);
+
+                    if (!(result.Data is null))
+                    {
+                        listBuscadorResultadoDataDto = result.Data;
+
+                        // Prepara las URLs de los íconos
+                        foreach (var item in listBuscadorResultadoDataDto)
                         {
-                            CambiarSeleccion(valor, comboIndex, false); // Desmarcar
+                            if (item.IdONA.HasValue && !iconUrls.ContainsKey(item.IdONA.Value))
+                            {
+                                // Obtener la URL correcta del ícono desde el backend
+                                var iconUrl = await getIconUrl(item);
+
+                                // Concatenar la URL base con la ruta relativa si es necesario
+                                iconUrls[item.IdONA.Value] = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{iconUrl.TrimStart('/')}";
+                            }
                         }
                     }
-                }
 
-                // 2️⃣ Limpiar listas de filtros y opciones
-                selectedValues.Clear();
-                listadeOpciones.Clear();
-                listaEtiquetasFiltros.Clear();
-
-                // 3️⃣ Volver a cargar los filtros desde el backend
-                if (iCatalogosService != null)
-                {
-                    listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
-                    if (listaEtiquetasFiltros != null)
+                    if (ActivePageNumber == 1 && result.PanelONA != null)
                     {
-                        foreach (var opciones in listaEtiquetasFiltros)
-                        {
-                            listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<vwFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
-                        }
+                        TotalItems = result.TotalCount;
+                        TotalPages = (int)Math.Ceiling((double)TotalItems / DisplayPages);
+                        HandlePanelONAChange(result.PanelONA);
                     }
                 }
-
-                // 4️⃣ Forzar la actualización de la UI
-                StateHasChanged();
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error al limpiar los filtros: {e.Message}");
+                Console.WriteLine($"Error en BuscarEsquemas: {e.Message}");
             }
-            finally
-            {
-                isCleaning = false; // Habilitar el botón nuevamente al finalizar
-                StateHasChanged();
-            }
+
+            return listBuscadorResultadoDataDto;
         }
 
+        /// <summary>
+        /// Método obtener el icono correspondiente a la ONA.
+        /// </summary>
+        private async Task<string> getIconUrl(BuscadorResultadoDataDto resultData)
+        {
+            try
+            {
+                var idOna = resultData.IdONA;
+                OnaDto = await iOnaService?.GetONAsAsync(idOna ?? 0);
 
+                if (!string.IsNullOrEmpty(OnaDto.UrlIcono))
+                {
+                    var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(OnaDto.UrlIcono);
+
+                    if (deserialized != null && deserialized.ContainsKey("filePath"))
+                    {
+                        return deserialized["filePath"];
+                    }
+                }
+
+                return "https://via.placeholder.com/16";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                return "https://via.placeholder.com/16";
+            }
+        }
     }
 
+    /// <summary>
+    /// Clase para manejar los filtros de búsqueda seleccionados.
+    /// </summary>
     public class FiltrosBusquedaSeleccion
     {
-        public string CodigoHomologacion { get; set; } = string.Empty; // Identificador único
-        public List<string> Seleccion { get; set; } = new List<string>(); // Valores seleccionados
+        /// <summary>
+        /// Código de homologación del filtro.
+        /// </summary>
+        public string CodigoHomologacion { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Lista de valores seleccionados.
+        /// </summary>
+        public List<string> Seleccion { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Inicializador de la clase.
+        /// </summary>
         public FiltrosBusquedaSeleccion()
         {
             Seleccion = new List<string>();
         }
 
     }
-
-
-
 }

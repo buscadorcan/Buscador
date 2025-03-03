@@ -1,0 +1,56 @@
+@using BlazorBootstrap
+
+<link href="/css/buscador-can/input-paginations.css" rel="stylesheet">
+
+<div class="panel-input-paginations">
+    <div class="panel-input-paginations-pages">
+        <Pagination
+            ActivePageNumber="@ActivePageNumber"
+            TotalPages="@TotalPages"
+            DisplayPages="5"
+            FirstLinkIcon="IconName.ChevronDoubleLeft"
+            PreviousLinkIcon="IconName.ChevronLeft"
+            NextLinkIcon="IconName.ChevronRight"
+            LastLinkIcon="IconName.ChevronDoubleRight"
+            PageChanged="OnPageChangedAsync"
+        />
+    </div>
+    <div class="panel-input-paginations-items">
+        <div class="col form-check-label" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 12px !important;">
+            <div>
+                <button class="btn btn-secondary dropdown-toggle custom-bg"
+                        style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; color: #1773FC; font-size: 14px; border-color: #DFE1EB;"
+                        type="button"
+                        id="dropdownMenuButton-pg-001"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    @DisplayPages
+                </button>
+                <ul class="dropdown-menu p-2" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;" aria-labelledby="dropdownMenuButton-pg-001">
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        var value = (i + 1) * 5;
+                        <li @onclick="() => HandleDisplayPagesChange(value)">
+                            <div class="form-check" style="display: flex; align-items: center;">
+                                <label class="form-check-label" style="margin: 0; color: #1773FC; font-size: 14px;">
+                                    @value
+                                </label>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <label for="select-pg-001" class="form-label text-small" style="color: #1E2024; font-weight: 400; font-size: 14px;" title="Items por página">
+            Items por página
+        </label>
+    </div>
+    <div class="panel-input-paginations-info">
+        <div>@((ActivePageNumber - 1) * DisplayPages + 1)</div>
+        <div>-</div>
+        <div>@Math.Min(ActivePageNumber * DisplayPages, TotalItems)</div>
+        <div>de</div>
+        <div>@TotalItems</div>
+        <div>resultados</div>
+    </div>
+</div>

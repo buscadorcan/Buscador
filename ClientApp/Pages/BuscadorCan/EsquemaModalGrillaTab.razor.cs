@@ -51,6 +51,8 @@ namespace ClientApp.Pages.BuscadorCan
                 resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaFK, idONA ?? 0);
             }
 
+            await JS.InvokeVoidAsync("renderMathJax");
+
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
         }
 
@@ -71,7 +73,11 @@ namespace ClientApp.Pages.BuscadorCan
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await JS.InvokeVoidAsync("renderMathJax"); // Llamamos a MathJax después de cada renderizado
+            if (firstRender)
+            {
+                // Forzamos MathJax solo después del primer render
+                await JS.InvokeVoidAsync("renderMathJax");
+            }
         }
     }
 }
