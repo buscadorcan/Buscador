@@ -158,11 +158,11 @@
 @code {
     private async Task ExportarExcel()
     {
-        objEventTracking.NombrePagina = "/validacion";
+        objEventTracking.CodigoHomologacionMenu = "/validacion";
         objEventTracking.NombreAccion = "ExportarExcel";
         objEventTracking.NombreControl = "btnExportarExcel";
         objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+        objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);

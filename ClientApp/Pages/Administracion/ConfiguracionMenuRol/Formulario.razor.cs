@@ -35,12 +35,12 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
         private EventTrackingDto objEventTracking { get; set; } = new();
         protected override async Task OnInitializedAsync()
         {
-            objEventTracking.NombrePagina = "/nuevo-config-menu";
+            objEventTracking.CodigoHomologacionMenu = "/nuevo-config-menu";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "nuevo-config-menu";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
                                               await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -84,6 +84,11 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
                 if (iMenuService != null)
                 {
                     menus = await iMenuService.GetMenusPendingConfigAsync(idRol);
+                    // Si hay menús, asignar el primero por defecto
+                    if (menus.Any())
+                    {
+                        configuracionMenu.IdHMenu = menus.First().IdHomologacion;
+                    }
                 }
             }
             else
@@ -96,12 +101,12 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
 
         private async Task RegistrarConfiguracionMenu()
         {
-            objEventTracking.NombrePagina = "/editar-config-menu";
+            objEventTracking.CodigoHomologacionMenu = "/nuevo-config-menu";
             objEventTracking.NombreAccion = "RegistrarConfiguracionMenu";
             objEventTracking.NombreControl = "btnGuardar";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
                                               await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

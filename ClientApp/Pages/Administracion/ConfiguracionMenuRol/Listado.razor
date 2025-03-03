@@ -210,11 +210,11 @@
 
     private async Task ExportarExcel()
     {
-        objEventTracking.NombrePagina = "/menu-config-lista";
+        objEventTracking.CodigoHomologacionMenu = "/menu-config-lista";
         objEventTracking.NombreAccion = "ExportarExcel";
         objEventTracking.NombreControl = "btnExportarExcel";
         objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+        objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -246,11 +246,11 @@
 
     private async Task ExportarPDF()
     {
-        objEventTracking.NombrePagina = "/menu-config-lista";
+        objEventTracking.CodigoHomologacionMenu = "/menu-config-lista";
         objEventTracking.NombreAccion = "ExportarPDF";
         objEventTracking.NombreControl = "btnExportarPDF";
         objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-        objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+        objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
         objEventTracking.ParametroJson = "{}";
         objEventTracking.UbicacionJson = "";
         await iBusquedaService.AddEventTrackingAsync(objEventTracking);

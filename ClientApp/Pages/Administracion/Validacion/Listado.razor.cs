@@ -63,11 +63,11 @@ namespace ClientApp.Pages.Administracion.Validacion
         private ONAConexionDto? currentConexion = null;
         protected override async Task OnInitializedAsync()
         {
-            objEventTracking.NombrePagina = "/validacion";
+            objEventTracking.CodigoHomologacionMenu = "/validacion";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "validacion";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -404,11 +404,11 @@ namespace ClientApp.Pages.Administracion.Validacion
         {
             try
             {
-                objEventTracking.NombrePagina = "/validacion";
+                objEventTracking.CodigoHomologacionMenu = "/validacion";
                 objEventTracking.NombreAccion = "ValidarDatos";
                 objEventTracking.NombreControl = "btnGuardar";
                 objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);

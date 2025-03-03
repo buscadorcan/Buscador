@@ -57,11 +57,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         /// <returns>Devuelve la lista de homologaciones al iniciar la aplicación.</returns>
         protected override async Task OnInitializedAsync()
         {
-            objEventTracking.NombrePagina = "/campos-homologacion";
+            objEventTracking.CodigoHomologacionMenu = "/campos-homologacion";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "campos-homologacion";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -168,11 +168,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         /// </summary>
         private async Task ConfirmDelete()
         {
-            objEventTracking.NombrePagina = "/campos-homologacion";
+            objEventTracking.CodigoHomologacionMenu = "/campos-homologacion";
             objEventTracking.NombreAccion = "ConfirmDelete";
             objEventTracking.NombreControl = "btnEliminar";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

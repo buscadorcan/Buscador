@@ -116,9 +116,9 @@ namespace WebApp.Service
         {
             var eventTrackingDto = new paAddEventTrackingDto
             {
-                TipoUsuario = rol?.CodigoHomologacion ?? "",
+                CodigoHomologacionRol = rol?.CodigoHomologacion ?? "",
                 NombreUsuario = usuario?.Nombre ?? dto?.Email,
-                NombrePagina = "RecoverPassword",
+                CodigoHomologacionMenu = "RecoverPassword",
                 NombreControl = "btnRecover",
                 NombreAccion = "recuperar()",
                 ParametroJson = JsonConvert.SerializeObject(usuario == null ? dto : new

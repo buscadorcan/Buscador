@@ -1,47 +1,90 @@
-@page "/migracion-excel"
+﻿@page "/bitacora"
 @layout AdminLayout
+@using OfficeOpenXml
 @using SharedApp.Models.Dtos
 @inject IJSRuntime JSRuntime
-@using OfficeOpenXml
 @using System.IO
 @using System.Text
 @using iTextSharp.text
 @using iTextSharp.text.pdf
 
-<PageTitle>Migraciones desde Excel</PageTitle>
 
-<h1 class="title headlineheadline2-h2">Migración Excel</h1>
+<PageTitle>Bitácora</PageTitle>
 
-<header class="header">
-    <div class="button" style="background-color: var(--amber) !important;">
-        <img class="add-24px" src="admin/img/add-24px.svg" alt="add-24px">
-        <NavLink class="button-1 headingheadline5-h5" href="/nueva-migarcion-excel" style="color:black">Importar Excel</NavLink>
+<h1 class="title headlineheadline2-h2">Bitácora</h1>
+
+<!-- Primera fila: Selección de ONA, Fechas y Botones de Acción -->
+<div class="row py-2 align-items-end">
+    <!-- Combo Box ONA -->
+    <div class="col-md-3">
+        <label class="label valign-text-middle inter-regular-normal-comet-16px">Vista</label>
+        <select id="onaSelect" class="form-control inter-regular-normal-comet-14px" @bind="selectedOna">
+            <option value="" selected disabled>Seleccionar Vista</option>
+            @if (listaONAs != null)
+            {
+                @foreach (var opcion in listaONAs)
+                {
+                    <option value="@opcion.IdONA">@opcion.Siglas</option>
+                }
+            }
+        </select>
     </div>
-</header>
 
+    <!-- Calendario Fecha Inicio -->
+    <div class="col-md-2">
+        <label class="label valign-text-middle inter-regular-normal-comet-16px">Fecha Inicio</label>
+        <input type="date" class="form-control inter-regular-normal-comet-14px"
+               @bind="fechaInicio" @bind:event="onchange">
+    </div>
+
+    <!-- Calendario Fecha Fin -->
+    <div class="col-md-2">
+        <label class="label valign-text-middle inter-regular-normal-comet-16px">Fecha Fin</label>
+        <input type="date" class="form-control inter-regular-normal-comet-14px"
+               @bind="fechaFin" @bind:event="onchange">
+    </div>
+
+    <!-- Contenedor para alinear los botones a la derecha -->
+    <div class="col-md-5 d-flex justify-content-end">
+        <!-- Botón Buscar -->
+        <Button id="btnBuscar" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2"
+                @onclick="async () => await BuscarDatos()">
+            <Icon Name="IconName.Search" />
+            <span class="ms-2 btnExp">Buscar</span>
+        </Button>
+
+        <!-- Botón Eliminar -->
+        <Button id="btnEliminar" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true"
+                @onclick="async () => await EliminarRegistro()">
+            <Icon Name="IconName.Trash" />
+            <span class="ms-2 btnExp">Eliminar</span>
+        </Button>
+    </div>
+</div>
+
+<!-- Segunda fila: Botones de exportación -->
 <div class="text-end my-3 d-flex justify-content-between">
-    <!-- Grupo de botones de exportación -->
-    <div class="d-flex gap-2">
+    <div class="d-flex">
         <!-- Botón Exportar a Excel -->
-        <Button id="btnExportarExcel" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="ExportarExcel">
+        <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" class="me-2" @onclick="ExportarExcel">
             <Icon Name="IconName.FileEarmarkArrowDown" />
             <span class="ms-2 btnExp">Exportar a Excel</span>
         </Button>
 
         <!-- Botón Exportar a PDF -->
-        <Button id="btnExportarPDF" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="ExportarPDF">
+        <Button Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" class="me-2" @onclick="ExportarPDF">
             <Icon Name="IconName.FileEarmarkPdf" />
             <span class="ms-2 btnExp">Exportar a PDF</span>
         </Button>
     </div>
 </div>
 
- <div class="table" style="margin-top: 1% !important;">
-    <div class="table-heading">
+<div class="table table-1">
+    <div class="table-heading table-1">
         <article class="table-heading-1 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.IdLogMigracion))">
             <div class="header-label-1">
                 <div class="label-heading headingheadline5-h5">
-                    Migración @(sortColumn == nameof(LogMigracionDto.IdLogMigracion) ? (sortAscending ? "⬆" : "⬇") : "")
+                    Cod. Homologación Rol @(sortColumn == nameof(LogMigracionDto.IdLogMigracion) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
@@ -49,7 +92,7 @@
         <article class="table-heading-2 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.EsquemaVista))">
             <div class="header-label">
                 <div class="label-heading headingheadline5-h5">
-                    EsquemaVista @(sortColumn == nameof(LogMigracionDto.EsquemaVista) ? (sortAscending ? "⬆" : "⬇") : "")
+                    Cod. Homologación Menú @(sortColumn == nameof(LogMigracionDto.EsquemaVista) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
@@ -57,15 +100,15 @@
         <article class="table-heading-1 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Estado))">
             <div class="header-label">
                 <div class="label-heading headingheadline5-h5">
-                    Estado @(sortColumn == nameof(LogMigracionDto.Estado) ? (sortAscending ? "⬆" : "⬇") : "")
+                    Nombre Usuario @(sortColumn == nameof(LogMigracionDto.Estado) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
 
-         <article class="table-heading-1 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Inicio))">
+        <article class="table-heading-1 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Inicio))">
             <div class="header-label">
                 <div class="label-heading headingheadline5-h5">
-                    Inicio Migración @(sortColumn == nameof(LogMigracionDto.Inicio) ? (sortAscending ? "⬆" : "⬇") : "")
+                    Nombre Control @(sortColumn == nameof(LogMigracionDto.Inicio) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
@@ -73,7 +116,7 @@
         <article class="table-heading-3 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Final))">
             <div class="header-label">
                 <div class="label-heading headingheadline5-h5">
-                    Final Migración @(sortColumn == nameof(LogMigracionDto.Final) ? (sortAscending ? "⬆" : "⬇") : "")
+                    Nombre Acción @(sortColumn == nameof(LogMigracionDto.Final) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
@@ -81,7 +124,7 @@
         <article class="table-heading-4 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.ExcelFileName))">
             <div class="header-label">
                 <div class="label-heading headingheadline5-h5">
-                    Nombre archivo @(sortColumn == nameof(LogMigracionDto.ExcelFileName) ? (sortAscending ? "⬆" : "⬇") : "")
+                    Ubicación Json @(sortColumn == nameof(LogMigracionDto.ExcelFileName) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
@@ -89,7 +132,7 @@
         <article class="table-heading-5 table-heading-5 sortable-header" @onclick="() => OrdenarPor(nameof(LogMigracionDto.Observacion))">
             <div class="header-label">
                 <div class="label-heading headingheadline5-h5">
-                    Error @(sortColumn == nameof(LogMigracionDto.Observacion) ? (sortAscending ? "⬆" : "⬇") : "")
+                    Parametro Json @(sortColumn == nameof(LogMigracionDto.Observacion) ? (sortAscending ? "⬆" : "⬇") : "")
                 </div>
             </div>
         </article>
@@ -119,7 +162,7 @@
                                 <div class="cell cell-1">
                                     <div class="status bodybody-small">@item.Final</div>
                                 </div>
-                                <div class="cell cell-1 landing-page-3" >
+                                <div class="cell cell-1 landing-page-3">
                                     <div class="file-name bodybody-small" style="width:225px !important">@item.ExcelFileName</div>
                                 </div>
                                 <div class="cell cell-1 landing-page-3">

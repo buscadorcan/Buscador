@@ -99,12 +99,12 @@ namespace ClientApp.Pages.Administracion.Grupo
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
-            objEventTracking.NombrePagina = "/grupos";
+            objEventTracking.CodigoHomologacionMenu = "/grupos";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "grupos";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
                                               await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

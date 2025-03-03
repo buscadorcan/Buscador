@@ -198,9 +198,9 @@ namespace WebApp.Repositories
         {
             _ = ExecuteDbOperation<int>(context =>
             {
-                var tipoUsuario = new SqlParameter("@TipoUsuario", SqlDbType.NVarChar, 25) { Value = eventTracking.TipoUsuario };
+                var codigoHomologacionRol = new SqlParameter("@CodigoHomologacionRol", SqlDbType.NVarChar, 25) { Value = eventTracking.CodigoHomologacionRol };
                 var nombreUsuario = new SqlParameter("@NombreUsuario", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreUsuario };
-                var nombrePagina = new SqlParameter("@NombrePagina", SqlDbType.NVarChar, 100) { Value = eventTracking.NombrePagina };
+                var codigoHomologacionMenu = new SqlParameter("@CodigoHomologacionMenu", SqlDbType.NVarChar, 100) { Value = eventTracking.CodigoHomologacionMenu };
                 var nombreControl = new SqlParameter("@NombreControl", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreControl };
                 var nombreAccion = new SqlParameter("@NombreAccion", SqlDbType.NVarChar, 100) { Value = eventTracking.NombreAccion };
                 var ubicacionJson = new SqlParameter("@UbicacionJson", SqlDbType.NVarChar, -1) { Value = eventTracking.UbicacionJson };
@@ -210,8 +210,8 @@ namespace WebApp.Repositories
                 };
 
                 return context.Database.ExecuteSqlRaw(
-                    "EXEC paAddEventTracking @TipoUsuario, @NombreUsuario, @NombrePagina, @NombreControl, @NombreAccion, @UbicacionJson, @ParametroJson",
-                    new[] { tipoUsuario, nombreUsuario, nombrePagina, nombreControl, nombreAccion, ubicacionJson, parametroJson }
+                    "EXEC paAddEventTracking @CodigoHomologacionRol, @NombreUsuario, @CodigoHomologacionMenu, @NombreControl, @NombreAccion, @UbicacionJson, @ParametroJson",
+                    new[] { codigoHomologacionRol, nombreUsuario, codigoHomologacionMenu, nombreControl, nombreAccion, ubicacionJson, parametroJson }
                 );
             });
 

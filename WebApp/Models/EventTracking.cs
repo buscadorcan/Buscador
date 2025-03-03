@@ -9,13 +9,13 @@ namespace WebApp.Models
         public int IdEventTracking { get; set; }
 
         [Required]
-        public string TipoUsuario { get; set; } = string.Empty;
+        public string CodigoHomologacionRol { get; set; } = string.Empty;
 
         [Required]
         public string NombreUsuario { get; set; } = string.Empty;
 
         [Required]
-        public string NombrePagina { get; set; } = string.Empty;
+        public string CodigoHomologacionMenu { get; set; } = string.Empty;
 
         [Required]
         public string NombreControl { get; set; } = string.Empty;

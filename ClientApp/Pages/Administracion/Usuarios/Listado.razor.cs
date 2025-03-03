@@ -65,10 +65,10 @@ namespace ClientApp.Pages.Administracion.Usuarios
         }
         protected override async Task OnInitializedAsync()
         {
-            objEventTracking.NombrePagina = "/usuarios";
+            objEventTracking.CodigoHomologacionMenu = "/usuarios";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "usuarios";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local); objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local); objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -166,11 +166,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
         // Confirmar eliminación del registro
         private async Task ConfirmDelete()
         {
-            objEventTracking.NombrePagina = "/usuarios";
+            objEventTracking.CodigoHomologacionMenu = "/usuarios";
             objEventTracking.NombreAccion = "ConfirmDelete";
             objEventTracking.NombreControl = "btnEliminar";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

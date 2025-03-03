@@ -35,11 +35,11 @@ namespace ClientApp.Pages.Administracion.Reportes
         // Método ejecutado después de renderizar el componente
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            objEventTracking.NombrePagina = "/reporteona";
+            objEventTracking.CodigoHomologacionMenu = "/reporteona";
             objEventTracking.NombreAccion = "OnAfterRenderAsync";
             objEventTracking.NombreControl = "reporteona";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

@@ -79,11 +79,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
 
             if (Id > 0 && EsquemaService != null && EsquemaService != null)
             {
-                objEventTracking.NombrePagina = "/nuevo-esquema";
+                objEventTracking.CodigoHomologacionMenu = "/nuevo-esquema";
                 objEventTracking.NombreAccion = "OnInitializedAsync";
                 objEventTracking.NombreControl = "editar-esquema";
                 objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -126,11 +126,11 @@ namespace ClientApp.Pages.Administracion.Esquemas
         /// </summary>
         private async Task GuardarEsquema()
         {
-            objEventTracking.NombrePagina = "/editar-esquema";
+            objEventTracking.CodigoHomologacionMenu = "/editar-esquema";
             objEventTracking.NombreAccion = "GuardarEsquema";
             objEventTracking.NombreControl = "btnGuardar";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

@@ -102,11 +102,11 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
-            objEventTracking.NombrePagina = "/nueva-migarcion-excel";
+            objEventTracking.CodigoHomologacionMenu = "/nueva-migarcion-excel";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "nueva-migarcion-excel";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -174,11 +174,11 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         {
             try
             {
-                objEventTracking.NombrePagina = "/nueva-migarcion-excel";
+                objEventTracking.CodigoHomologacionMenu = "/nueva-migarcion-excel";
                 objEventTracking.NombreAccion = "RegistrarMigracionExcel";
                 objEventTracking.NombreControl = "btnGuardar";
                 objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);

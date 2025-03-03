@@ -9,9 +9,9 @@ namespace SharedApp.Models.Dtos
 {
     public class EventTrackingDto
     {
-            public string TipoUsuario { get; set; }
+            public string CodigoHomologacionRol { get; set; }
             public string NombreUsuario { get; set; }
-            public string NombrePagina { get; set; }
+            public string CodigoHomologacionMenu { get; set; }
             public string NombreControl { get; set; }
             public string NombreAccion { get; set; }
             public string UbicacionJson { get; set; }

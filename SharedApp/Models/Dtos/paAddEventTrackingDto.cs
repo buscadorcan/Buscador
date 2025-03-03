@@ -2,11 +2,11 @@
 {
     public class paAddEventTrackingDto
     {
-        public string TipoUsuario { get; set; } = string.Empty;
+        public string CodigoHomologacionRol { get; set; } = string.Empty;
 
         public string NombreUsuario { get; set; } = string.Empty;
 
-        public string NombrePagina { get; set; } = string.Empty;
+        public string CodigoHomologacionMenu { get; set; } = string.Empty;
 
         public string NombreControl { get; set; } = string.Empty;
 

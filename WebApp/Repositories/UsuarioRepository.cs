@@ -202,7 +202,7 @@ namespace WebApp.Repositories
 
             var eventTrackingDto = new paAddEventTrackingDto
             {
-                NombrePagina = "cambiar_clave",
+                CodigoHomologacionMenu = "cambiar_clave",
                 NombreControl = "btnCambiar",
                 NombreAccion = "OnCambiarClave()",
                 ParametroJson = JsonConvert.SerializeObject(new
@@ -223,7 +223,7 @@ namespace WebApp.Repositories
                 }
 
                 var rol = context.VwRol.AsNoTracking().FirstOrDefault(c => c.IdHomologacionRol == usuario.IdHomologacionRol);
-                eventTrackingDto.TipoUsuario = rol.CodigoHomologacion;
+                eventTrackingDto.CodigoHomologacionRol = rol.CodigoHomologacion;
                 eventTrackingDto.NombreUsuario = usuario.Nombre;
                 _eventTrackingRepository.Create(eventTrackingDto);
 
