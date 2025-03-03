@@ -1,0 +1,27 @@
+.panel-index-grilla {
+    margin: 1% !important;
+    flex: 1;
+    min-height: 0;
+}
+
+.panel-index-grilla .grid-header {
+    color: #1E2024;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.panel-index-grilla .grid-header button {
+    border: none;
+}
+
+.panel-index-grilla .grid-row-img-ona {
+    width: 40px;
+    height: 40px;
+}
+
+.panel-index-grilla .grid-row-text {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+}
