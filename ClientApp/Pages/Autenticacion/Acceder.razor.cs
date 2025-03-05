@@ -8,7 +8,7 @@ namespace ClientApp.Pages.Autenticacion
     /// Componente parcial para la página de autenticación.
     /// Gestiona mensajes emergentes (toasts) y maneja la autenticación del usuario.
     /// </summary>
-    public partial class Acceder
+    public partial class Acceder : ComponentBase
     {
         /// <summary>
         /// Administrador de navegación inyectado.

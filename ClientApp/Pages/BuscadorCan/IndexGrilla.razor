@@ -13,7 +13,6 @@
         <Grid
             TItem="BuscadorResultadoDataDto"
             class="table table-hover table-bordered table-striped"
-            style="font-family: 'Inter-Medium', Helvetica, sans-serif !important;"
             Data="ListDataDto"
             Responsive="true"
             FixedHeader="true"
@@ -45,19 +44,20 @@
                         </Tooltip>
                     </HeaderContent>
                     <ChildContent>
+                        <div style="display: flex; align-items: start; justify-content: start;">
                         @{
                             var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data;
                         }
 
                         @if (etiqueta.IdHomologacion == 81)
                         {
-                            <Button @onclick="() => showModalOEC(context)" Color="ButtonColor.Link" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important; text-align: left !important; justify-content: flex-start !important;">
+                            <Button @onclick="() => showModalOEC(context)" Color="ButtonColor.Link" style="text-align: left;">
                                 <span class="grid-row-text">@(string.IsNullOrWhiteSpace(dato.Trim()) ? "ModalPrueba" : dato)</span>
                             </Button>
                         }
                         else if (etiqueta.IdHomologacion == 91)
                         {
-                            <Button @onclick="() => showModalESQ(context)" Color="ButtonColor.Link" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important; text-align: left !important; justify-content: flex-start !important;">
+                            <Button @onclick="() => showModalESQ(context)" Color="ButtonColor.Link" style="text-align: left;">
                                 <span class="grid-row-text">@(string.IsNullOrWhiteSpace(dato.Trim()) ? "ModalPrueba" : dato)</span>
                             </Button>
                         }
@@ -80,6 +80,7 @@
                                 @(string.IsNullOrWhiteSpace(dato) ? "--" : dato)
                             </span>
                         }
+                        </div>
                     </ChildContent>
                 </GridColumn>
             }

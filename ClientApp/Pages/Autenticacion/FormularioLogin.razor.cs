@@ -10,7 +10,7 @@ namespace ClientApp.Pages.Autenticacion
     /// Componente de formulario de inicio de sesión en Blazor.
     /// Maneja la autenticación del usuario, el almacenamiento en localStorage y la gestión de intentos fallidos.
     /// </summary>
-    public partial class FormularioLogin
+    public partial class FormularioLogin : ComponentBase
     {
         /// <summary>
         /// Servicio de autenticación inyectado para validar las credenciales del usuario.
