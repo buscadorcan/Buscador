@@ -4,10 +4,10 @@
 <Tabs EnableFadeEffect="true">
     @if (Columnas != null && Columnas.Any())
     {
-        <Tab Active="true" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
+        <Tab Active="true" style="font-size: 11px !important;">
             <TitleTemplate>
-                <Tooltip Title="" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 9px !important;">
-                    <span style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 9px !important; color: inherit;">
+                <Tooltip Title="" style="font-size: 9px !important;">
+                    <span style="font-size: 9px !important; color: inherit;">
                         @esquema
                     </span>
                 </Tooltip>
@@ -21,7 +21,7 @@
                           Responsive="true"
                           FixedHeader="true"
                           Height="350"
-                          Style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;">
+                          Style="font-size: 10px !important;">
                         @foreach (var item in Columnas)
                         {
                             <GridColumn TItem="DataEsquemaDatoBuscar" PropertyName="@item.MostrarWeb">

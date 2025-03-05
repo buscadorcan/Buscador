@@ -8,7 +8,7 @@ namespace ClientApp.Pages.Autenticacion
     /// <summary>
     /// Componente Blazor para la validación de códigos de autenticación.
     /// </summary>
-    public partial class FormularioRecuperar
+    public partial class FormularioRecuperar : ComponentBase
     {
         /// <summary>
         /// Botón de guardado que maneja la visualización de la carga.
@@ -16,21 +16,14 @@ namespace ClientApp.Pages.Autenticacion
         private Button saveButton = default!;
         
         /// <summary>
-        /// DTO utilizado para la validación.
-        /// </summary>
-        private UsuarioRecuperacionDto usuarioRecuperacion = new UsuarioRecuperacionDto();
-        
-        /// <summary>
         /// Servicio de autenticación inyectado.
         /// </summary>
-        [Inject]
-        public IServiceAutenticacion? servicioAutenticacion { get; set; }
+        [Inject] public IServiceAutenticacion servicioAutenticacion { get; set; } = default!;
         
         /// <summary>
         /// Administrador de navegación inyectado.
         /// </summary>
-        [Inject]
-        public NavigationManager? navigationManager { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; } = default!;
         
         /// <summary>
         /// Evento para mostrar mensajes emergentes en la interfaz de usuario.
@@ -41,6 +34,11 @@ namespace ClientApp.Pages.Autenticacion
         /// Intercambiar formulartio entre login / recuperar
         /// </summary>
         [Parameter] public EventCallback<int> OnOptionChange { get; set; }
+
+        /// <summary>
+        /// DTO utilizado para la validación.
+        /// </summary>
+        private UsuarioRecuperacionDto usuarioRecuperacion = new UsuarioRecuperacionDto();
 
         /// <summary>
         /// Método que realiza la validación del email de autenticación ingresado por el usuario.
@@ -72,6 +70,10 @@ namespace ClientApp.Pages.Autenticacion
             
             await Task.CompletedTask;
         }
+        
+        /// <summary>
+        /// Método que redirige al usuario a la página de inicio de sesión.
+        /// </summary>
         private async Task GoLoginPage() {
             await OnOptionChange.InvokeAsync(1);
         }

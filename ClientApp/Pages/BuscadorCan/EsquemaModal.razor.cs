@@ -1,19 +1,38 @@
 using BlazorBootstrap;
-using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class EsquemaModal
+    /// <summary>
+    /// Componente parcial para el modal de esquema.
+    /// </summary>
+    public partial class EsquemaModal : ComponentBase
     {
+        /// <summary>
+        /// paneles de esquemas.
+        /// </summary>
         Tabs tabs = default!;
-        [Parameter]
-        public BuscadorResultadoDataDto? resultData { get; set; }
-        [Inject]
-        private IBusquedaService? servicio { get; set; }
+
+        /// <summary>
+        /// Servicio de búsqueda.
+        /// </summary>
+        [Inject] private IBusquedaService? servicio { get; set; }
+
+        /// <summary>
+        /// Resultado de datos de búsqueda.
+        /// </summary>
+        [Parameter] public BuscadorResultadoDataDto? resultData { get; set; } = default!;
+
+        /// <summary>
+        /// Lista de esquemas.
+        /// </summary>
         private List<HomologacionEsquemaDto>? listaEsquemas = new List<HomologacionEsquemaDto>();
+
+        /// <summary>
+        /// Método de inicialización de datos.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             try

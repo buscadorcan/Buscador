@@ -5,7 +5,7 @@
         @foreach (var esquema in listaEsquemas)
         {
 
-            <Tab Active="isFirstTab" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
+            <Tab Active="isFirstTab" style="font-size: 11px !important;">
                 <TitleTemplate>
                     <Tooltip Title="@esquema.TooltipWeb">@esquema.MostrarWeb</Tooltip>
                 </TitleTemplate>
@@ -24,7 +24,7 @@
     }
     else
     {
-        <div class="alert alert-warning" style="font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 11px !important;">
+        <div class="alert alert-warning" style="font-size: 11px !important;">
             No se encontraron esquemas o los datos no estan cargados correctamente.
         </div>
     }
