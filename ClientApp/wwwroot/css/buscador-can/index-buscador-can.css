@@ -28,6 +28,27 @@
         margin-top: 10px !important;
     }
 
+    .panel-input-filters-line {
+        width: 70% !important;
+    }
+}
+
+@media (min-width: 700px) and (max-width: 1024px) and (orientation: landscape) {
+    .panel-buscador-can {
+        height: auto !important;
+    }
+
+    .panel-index-grilla {
+        flex: none !important;
+        height: auto !important;
+        min-height: 300px !important;
+    }
+
+    .panel-input-paginations {
+        position: relative !important;
+        margin-top: 10px !important;
+    }
+
     .panel-search {
         width: 50% !important;
     }
