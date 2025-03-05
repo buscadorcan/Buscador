@@ -38,6 +38,7 @@
 	  <None Include="wwwroot\Files\temporary_key_template.html" />
 	  <None Include="wwwroot\Files\tsesn.xml" />
 	  <None Include="wwwroot\Files\verification_code_template.html" />
+	  <None Include="wwwroot\Files\tokens\Google.Apis.Auth.OAuth2.Responses.TokenResponse-buscadorcan%40gmail.com" />
 	</ItemGroup>
 
 	<PropertyGroup>

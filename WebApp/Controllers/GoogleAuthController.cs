@@ -25,11 +25,6 @@ namespace WebApp.Controllers
         private readonly ILogger<GoogleAuthController> _logger;
 
         /// <summary>
-        /// Ruta del directorio de tokens.
-        /// </summary>
-        private readonly string tokenDirectoryPath;
-
-        /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="GoogleAuthController"/>.
         /// </summary>
         /// <param name="configuration">Configuración de la aplicación.</param>
@@ -38,7 +33,6 @@ namespace WebApp.Controllers
         {
             _configuration = configuration;
             _logger = logger;
-            tokenDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "tokens");
         }
 
         /// <summary>
@@ -48,10 +42,10 @@ namespace WebApp.Controllers
         public IActionResult Authorize()
         {
             // Verificar si la carpeta existe
-            if (Directory.Exists(tokenDirectoryPath))
+            if (Directory.Exists(_configuration["GoogleOAuth:Tokens"]))
             {
                 // Si la carpeta existe, obtenemos los archivos dentro de ella
-                var tokenFiles = Directory.GetFiles(tokenDirectoryPath);
+                var tokenFiles = Directory.GetFiles(_configuration["GoogleOAuth:Tokens"]);
 
                 if (tokenFiles.Length > 0)
                 {
@@ -62,7 +56,7 @@ namespace WebApp.Controllers
             else
             {
                 // Si la carpeta no existe, creamos la carpeta
-                Directory.CreateDirectory(tokenDirectoryPath);
+                Directory.CreateDirectory(_configuration["GoogleOAuth:Tokens"]);
             }
 
             try
@@ -82,7 +76,7 @@ namespace WebApp.Controllers
                 {
                     ClientSecrets = clientSecrets,
                     Scopes = new[] { "https://www.googleapis.com/auth/gmail.send" },
-                    DataStore = new FileDataStore(tokenDirectoryPath, true)
+                    DataStore = new FileDataStore(_configuration["GoogleOAuth:Tokens"], true)
                 });
 
                 // Generar la URL de autorización
@@ -127,7 +121,7 @@ namespace WebApp.Controllers
                 {
                     ClientSecrets = clientSecrets,
                     Scopes = new[] { "https://www.googleapis.com/auth/gmail.compose" },
-                    DataStore = new FileDataStore(tokenDirectoryPath, true)
+                    DataStore = new FileDataStore(_configuration["GoogleOAuth:Tokens"], true)
                 });
 
                 // Intercambiar el código de autorización por el token de acceso
