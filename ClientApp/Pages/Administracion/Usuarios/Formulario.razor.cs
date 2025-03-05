@@ -35,11 +35,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
         {
             if (Id > 0 && iUsuariosService != null)
             {
-                objEventTracking.NombrePagina = "/editar-usuario";
+                objEventTracking.CodigoHomologacionMenu = "/editar-usuario";
                 objEventTracking.NombreAccion = "OnInitializedAsync";
                 objEventTracking.NombreControl = "editar-usuario";
                 objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -114,11 +114,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
             }
             else
             {
-                objEventTracking.NombrePagina = "/nuevo-usuario";
+                objEventTracking.CodigoHomologacionMenu = "/nuevo-usuario";
                 objEventTracking.NombreAccion = "OnInitializedAsync";
                 objEventTracking.NombreControl = "nuevo-usuario";
                 objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-                objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
                 await iBusquedaService.AddEventTrackingAsync(objEventTracking);
@@ -211,11 +211,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
         }
         private async Task RegistrarUsuario()
         {
-            objEventTracking.NombrePagina = "/editar-usuario";
+            objEventTracking.CodigoHomologacionMenu = "/editar-usuario";
             objEventTracking.NombreAccion = "RegistrarUsuario";
             objEventTracking.NombreControl = "btnGuardar";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

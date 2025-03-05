@@ -101,11 +101,11 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
 
         protected override async Task OnInitializedAsync()
         {
-            objEventTracking.NombrePagina = "/migracion-excel";
+            objEventTracking.CodigoHomologacionMenu = "/migracion-excel";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "migracion-excel";
             objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
-            objEventTracking.TipoUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);

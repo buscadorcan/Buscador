@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.Mappers;
-using WebApp.Models;
 
 namespace WebApp.Extensions
 {
@@ -49,7 +48,7 @@ namespace WebApp.Extensions
         public static void ConfigureServices(this IServiceCollection services)
         {
             // Registra servicios relacionados con correos electrónicos.
-            services.AddScoped<ISmtpClientFactory, SmtpClientFactory>();
+            services.AddScoped<IGmailClientFactory, GmailClientFactory>();
             services.AddScoped<IEmailService, EmailService>();
 
             // Registra servicios relacionados con JWT (autenticación basada en tokens).

@@ -1,4 +1,5 @@
 using SharedApp.Models.Dtos;
+using WebApp.Models;
 
 namespace WebApp.Repositories.IRepositories
 {
@@ -15,10 +16,17 @@ namespace WebApp.Repositories.IRepositories
         /// Obtiene un código asociado a un usuario en función de su nombre, tipo y página de acceso.
         /// </summary>
         /// <param name="nombreUsuario">Nombre del usuario para el cual se busca el código.</param>
-        /// <param name="tipoUsuario">Tipo de usuario asociado.</param>
-        /// <param name="nombrePagina">Nombre de la página de acceso.</param>
+        /// <param name="CodigoHomologacionRol">Tipo de usuario asociado.</param>
+        /// <param name="CodigoHomologacionMenu">Nombre de la página de acceso.</param>
         /// <returns>Devuelve una cadena de texto con el código correspondiente al usuario.</returns>
-        string GetCodeByUser(string nombreUsuario, string tipoUsuario, string nombrePagina);
+        string GetCodeByUser(string nombreUsuario, string CodigoHomologacionRol, string CodigoHomologacionMenu);
 
+        /// <summary>
+        /// Busca los datos de un menú específico asociado a un rol en la base de datos.
+        /// </summary>
+        /// <param name="idHRol">Identificador del rol.</param>
+        /// <param name="idHMenu">Identificador del menú.</param>
+        /// <returns>Devuelve un objeto <see cref="Menus"/> si se encuentra, de lo contrario <c>null</c>.</returns>
+        Menus? FindDataById(int idHRol, int idHMenu);
     }
 }

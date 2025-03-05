@@ -6,6 +6,9 @@ using System.Net;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    /// Controlador base para la aplicación.
+    /// </summary>
     public class BaseController : ControllerBase
     {
         /// <summary>

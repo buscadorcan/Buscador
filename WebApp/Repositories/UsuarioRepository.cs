@@ -133,7 +133,7 @@ namespace WebApp.Repositories
                     try
                     {
                         htmlBody = string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
-                        await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
+                        await _emailService.SendEmailAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
                     }
                     catch (Exception ex)
                     {
@@ -202,7 +202,7 @@ namespace WebApp.Repositories
 
             var eventTrackingDto = new paAddEventTrackingDto
             {
-                NombrePagina = "cambiar_clave",
+                CodigoHomologacionMenu = "cambiar_clave",
                 NombreControl = "btnCambiar",
                 NombreAccion = "OnCambiarClave()",
                 ParametroJson = JsonConvert.SerializeObject(new
@@ -223,7 +223,7 @@ namespace WebApp.Repositories
                 }
 
                 var rol = context.VwRol.AsNoTracking().FirstOrDefault(c => c.IdHomologacionRol == usuario.IdHomologacionRol);
-                eventTrackingDto.TipoUsuario = rol.CodigoHomologacion;
+                eventTrackingDto.CodigoHomologacionRol = rol.CodigoHomologacion;
                 eventTrackingDto.NombreUsuario = usuario.Nombre;
                 _eventTrackingRepository.Create(eventTrackingDto);
 

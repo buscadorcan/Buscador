@@ -1,5 +1,4 @@
 @page "/nuevo-config-menu"
-@page "/editar-config-menu/{IdHRol:int}/{IdHMenu:int}"
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization
 @using ClientApp.Services.IService
@@ -64,7 +63,7 @@
                 <label class="label valign-text-middle inter-regular-normal-comet-16px">Menú</label>
                 <div class="col d-flex justify-content-center">
                     <select class="form-control inter-regular-normal-comet-14px small-input text-center"
-                            @bind="configuracionMenu.IdHMenu">
+                            @bind="configuracionMenu.IdHMenu" @bind:event="onchange">
                         <option value="" selected disabled>Seleccione un menú</option>
                         @if (menus != null)
                         {

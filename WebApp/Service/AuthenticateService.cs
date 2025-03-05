@@ -61,7 +61,7 @@ namespace WebApp.Service
                     try
                     {
                         var htmlBody = GenerateVerificationCodeEmailBody(code);
-                        await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
+                        await _emailService.SendEmailAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
                     }
                     catch (Exception ex)
                     {
@@ -239,9 +239,9 @@ namespace WebApp.Service
         {
             var eventTrackingDto = new paAddEventTrackingDto
             {
-                TipoUsuario = rol?.CodigoHomologacion ?? "",
+                CodigoHomologacionRol = rol?.CodigoHomologacion ?? "",
                 NombreUsuario = usuario?.Nombre ?? dto.Email,
-                NombrePagina = "Access",
+                CodigoHomologacionMenu = "Access",
                 NombreControl = "btnLogin",
                 NombreAccion = "acceder()",
                 ParametroJson = JsonConvert.SerializeObject(usuario == null ? dto : new
@@ -264,9 +264,9 @@ namespace WebApp.Service
         {
             var eventTrackingDto = new paAddEventTrackingDto
             {
-                TipoUsuario = rol?.CodigoHomologacion ?? "",
+                CodigoHomologacionRol = rol?.CodigoHomologacion ?? "",
                 NombreUsuario = usuario?.Nombre ?? $"{dto.IdUsuario}",
-                NombrePagina = "Access",
+                CodigoHomologacionMenu = "Access",
                 NombreControl = "btnValidar",
                 NombreAccion = "ValidarCodigo()",
                 ParametroJson = JsonConvert.SerializeObject(usuario == null ? dto : new
