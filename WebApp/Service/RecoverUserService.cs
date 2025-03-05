@@ -1,3 +1,4 @@
+using System.Text;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
@@ -61,7 +62,7 @@ namespace WebApp.Service
                     {
                         try
                         {
-                            await _emailService.EnviarCorreoAsync(result.Value.Email ?? "", "Recuperación de Clave de Acceso al Sistema", htmlBody);
+                            await _emailService.SendEmailAsync(result.Value.Email ?? "", "Recuperación de Clave de Acceso al Sistema", htmlBody);
                         }
                         catch (Exception ex)
                         {
@@ -148,7 +149,7 @@ namespace WebApp.Service
 
             if (File.Exists(templatePath))
             {
-                string htmlBody = File.ReadAllText(templatePath);
+                string htmlBody = File.ReadAllText(templatePath, Encoding.UTF8);
                 return string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
             }
             else

@@ -61,7 +61,7 @@ namespace WebApp.Service
                     try
                     {
                         var htmlBody = GenerateVerificationCodeEmailBody(code);
-                        await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
+                        await _emailService.SendEmailAsync(usuario.Email ?? "", "Código de Verificación", htmlBody);
                     }
                     catch (Exception ex)
                     {

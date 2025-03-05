@@ -133,7 +133,7 @@ namespace WebApp.Repositories
                     try
                     {
                         htmlBody = string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
-                        await _emailService.EnviarCorreoAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
+                        await _emailService.SendEmailAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
                     }
                     catch (Exception ex)
                     {

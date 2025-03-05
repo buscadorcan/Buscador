@@ -1,42 +1,93 @@
-using System.Net.Mail;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Gmail.v1.Data;
+using MimeKit;
 using WebApp.Service.IService;
 
 namespace WebApp.Service
 {
-    public class EmailService(
-        ISmtpClientFactory smtpClientFactory,
-        IConfiguration configuration,
-        ILogger<EmailService> logger
-    ) : IEmailService
+    /// <summary>
+    /// Implementación de <see cref="IEmailService"/> que envía correos electrónicos a través de Gmail API.
+    /// </summary>
+    public class EmailService : IEmailService
     {
-        private readonly ISmtpClientFactory _smtpClientFactory = smtpClientFactory;
-        private readonly IConfiguration _configuration = configuration;
-        private readonly ILogger<EmailService> _logger = logger;
-        public async Task<bool> EnviarCorreoAsync(string destinatario, string asunto, string cuerpo)
+        /// <summary>
+        /// Factoría para crear instancias de <see cref="GmailService"/>.
+        /// </summary>
+        private readonly IGmailClientFactory _gmailClientFactory;
+
+        /// <summary>
+        /// Configuración de la aplicación.
+        /// </summary>
+        private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Logger.
+        /// </summary>
+        private readonly ILogger<EmailService> _logger;
+
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="EmailService"/>.
+        /// </summary>
+        /// <param name="gmailClientFactory">Factoría para crear instancias de <see cref="GmailService"/>.</param>
+        /// <param name="configuration">Configuración de la aplicación.</param>
+        /// <param name="logger">Logger.</param>
+        public EmailService(IGmailClientFactory gmailClientFactory, IConfiguration configuration, ILogger<EmailService> logger)
         {
-            var smtpClient = _smtpClientFactory.CreateSmtpClient();
+            _gmailClientFactory = gmailClientFactory;
+            _configuration = configuration;
+            _logger = logger;
+        }
 
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(_configuration["EmailSettings:From"] ?? ""),
-                Subject = asunto,
-                Body = cuerpo,
-                IsBodyHtml = true,
-            };
-
-            mailMessage.To.Add(destinatario);
-
+        /// <inheritdoc />
+        public async Task<bool> SendEmailAsync(string to, string subject, string body)
+        {
             try
             {
-                await smtpClient.SendMailAsync(mailMessage);
-                _logger.LogInformation("Correo enviado a {0}", destinatario);
-                return true;
+                // Crear servicio de Gmail usando la factoría
+                var gmailService = await _gmailClientFactory.CreateGmailServiceAsync();
+
+                // Construir el mensaje MIME
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(_configuration["GoogleOAuth:AppName"], _configuration["GoogleOAuth:Username"] ?? throw new InvalidOperationException("Username is required")));
+                message.To.Add(new MailboxAddress(to, to));
+                message.Subject = subject;
+                var textPart = new TextPart("html")
+                {
+                    Text = body,
+                    ContentTransferEncoding = ContentEncoding.Base64  // Asegurando que el mensaje se codifique correctamente en base64
+                };
+
+                message.Body = textPart;
+
+                // Convertir MIME a base64 para enviar por Gmail API
+                var rawMessage = Base64UrlEncode(message.ToString());
+
+                // Enviar el mensaje usando Gmail API
+                var gmailMessage = new Message
+                {
+                    Raw = rawMessage
+                };
+
+                await gmailService.Users.Messages.Send(gmailMessage, "me").ExecuteAsync();
+                return true; // Éxito
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error enviando correo a {0}", destinatario);
-                return false;
+                _logger.LogError(ex, "Error al enviar el correo a {Email}", to);
+                return false; // Fallo
             }
+        }
+
+        /// <summary>
+        /// Codifica un mensaje MIME en base64 para enviar por Gmail API.
+        /// </summary>
+        /// <param name="input">Mensaje MIME.</param>
+        /// <returns>Mensaje MIME codificado en base64.</returns>
+        private static string Base64UrlEncode(string input)
+        {
+            var bytes = System.Text.Encoding.UTF8.GetBytes(input);
+            var base64 = Convert.ToBase64String(bytes);
+            return base64.Replace('+', '-').Replace('/', '_').TrimEnd('=');
         }
     }
 }
