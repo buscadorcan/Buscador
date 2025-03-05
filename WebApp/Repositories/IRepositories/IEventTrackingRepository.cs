@@ -3,6 +3,9 @@ using WebApp.Models;
 
 namespace WebApp.Repositories.IRepositories
 {
+    /// <summary>
+    /// Interfaz que define las operaciones necesarias para el seguimiento de eventos en la aplicación.
+    /// </summary>
     public interface IEventTrackingRepository
     {
         /// <summary>

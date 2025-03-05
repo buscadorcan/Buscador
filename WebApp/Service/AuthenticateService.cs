@@ -1,6 +1,3 @@
-using System.Configuration;
-using System.Net.Mail;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
@@ -9,6 +6,9 @@ using WebApp.Service.IService;
 
 namespace WebApp.Service
 {
+    /// <summary>
+    /// Provides methods for authenticating users and generating JWT tokens.
+    /// </summary>
     public class AuthenticateService : IAuthenticateService
     {
         private readonly IUsuarioRepository _usuarioRepository;
@@ -20,6 +20,19 @@ namespace WebApp.Service
         private readonly IEmailService _emailService;
         private readonly IRandomStringGeneratorService _randomGeneratorService;
         private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticateService"/> class.
+        /// </summary>
+        /// <param name="usuarioRepository">An implementation of the <see cref="IUsuarioRepository"/> interface.</param>
+        /// <param name="onaConexionRepository">An implementation of the <see cref="IONAConexionRepository"/> interface.</param>
+        /// <param name="catalogosRepository">An implementation of the <see cref="ICatalogosRepository"/> interface.</param>
+        /// <param name="eventTrackingRepository">An implementation of the <see cref="IEventTrackingRepository"/> interface.</param>
+        /// <param name="randomGeneratorService">An implementation of the <see cref="IRandomStringGeneratorService"/> interface.</param>
+        /// <param name="emailService">An implementation of the <see cref="IEmailService"/> interface.</param>
+        /// <param name="hashService">An implementation of the <see cref="IHashService"/> interface.</param>
+        /// <param name="jwtService">An implementation of the <see cref="IJwtService"/> interface.</param>
+        /// <param name="configuration">An implementation of the <see cref="IConfiguration"/> interface.</param>
         public AuthenticateService(
             IUsuarioRepository usuarioRepository,
             IONAConexionRepository onaConexionRepository,
@@ -80,6 +93,8 @@ namespace WebApp.Service
                 throw ex;
             }
         }
+
+        /// <inheritdoc />
         public Result<UsuarioAutenticacionRespuestaDto> ValidateCode(AuthValidationDto authValidationDto)
         {
             try {
@@ -229,6 +244,14 @@ namespace WebApp.Service
                 : null;
         }
 
+        /// <summary>
+        /// Generates an event tracking record for the specified user authentication attempt.
+        /// </summary>
+        /// <param name="dto">The data transfer object (DTO) containing the user authentication details.</param>
+        /// <param name="usuario">The <see cref="Usuario"/> object representing the authenticated user.</param>
+        /// <param name="rol">The data transfer object (DTO) representing the user's role.</param>
+        /// <param name="code">The verification code sent to the user.</param>
+        /// <param name="success">A boolean value indicating whether the authentication attempt was successful.</param>
         private void GenerateEventTracking(
             UsuarioAutenticacionDto? dto = null,
             Usuario? usuario = null,
