@@ -13,7 +13,7 @@
                         var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;
                     }
                     @if (dato != null && dato.Contains("$$") && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
-                    {
+                    {                       
                         string formulaExtraida = ExtraerFormula(dato);
                         <span class="latex-formula">@((MarkupString)$"\\( {formulaExtraida} \\)")</span>
                     } 

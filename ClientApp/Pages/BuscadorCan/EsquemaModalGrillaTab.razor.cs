@@ -1,4 +1,4 @@
-using BlazorBootstrap;
+﻿using BlazorBootstrap;
 using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
@@ -58,7 +58,7 @@ namespace ClientApp.Pages.BuscadorCan
 
         private string ExtraerFormula(string input)
         {
-            // Busca la parte dentro de $$ ... $$ y extrae solo la f�rmula
+            // Busca la parte dentro de $$ ... $$ y extrae solo la fórmula
             int start = input.IndexOf("$$") + 2;
             int end = input.LastIndexOf("$$");
 
@@ -75,9 +75,17 @@ namespace ClientApp.Pages.BuscadorCan
         {
             if (firstRender)
             {
-                // Forzamos MathJax solo despu�s del primer render
-                await JS.InvokeVoidAsync("renderMathJax");
+                try
+                {
+                    Console.WriteLine("📌 Llamando a renderMathJax desde Blazor...");
+                    await JS.InvokeVoidAsync("setTimeout", "window.renderMathJax()", 1000);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"❌ Error al ejecutar renderMathJax: {e.Message}");
+                }
             }
         }
+
     }
 }

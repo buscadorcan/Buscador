@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.SqlTypes;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
@@ -72,45 +73,85 @@ namespace WebApp.Repositories
     }
         public bool DeleteOldRecords(int idONA)
         {
-            return ExecuteDbOperation(context => {
-                // Obtener los IdEsquemaVista asociados al idONA
-                var esquemaVistas = context.EsquemaVista.Where(ev => ev.IdONA == idONA).ToList();
-                List<int> idEsquemaVistaList = esquemaVistas.Select(ev => ev.IdEsquemaVista).ToList();
-
-                if (!idEsquemaVistaList.Any())
+            try
+            {
+                return ExecuteDbOperation(context =>
                 {
-                    Console.WriteLine($"No se encontraron registros en EsquemaVista para IdONA: {idONA}");
-                    return false;
-                }
+                    // Obtener los IdEsquemaVista asociados al idONA
+                    var esquemaVistas = context.EsquemaVista
+                        .Where(ev => ev.IdONA == idONA)
+                        .ToList();
 
-                // Obtener los IdEsquemaData asociados a los IdEsquemaVista
-                var esquemaDataRecords = context.EsquemaData.Where(ed => idEsquemaVistaList.Contains(ed.IdEsquemaVista)).ToList();
-                List<int> idEsquemaDataList = esquemaDataRecords.Select(ed => ed.IdEsquemaData).ToList();
+                    if (esquemaVistas == null || !esquemaVistas.Any())
+                    {
+                        Console.WriteLine($"No se encontraron registros en EsquemaVista para IdONA: {idONA}");
+                        return false;
+                    }
 
-                if (idEsquemaDataList.Any())
-                {
-                    // Eliminar registros de EsquemaFullText asociados a EsquemaData
-                    var esquemaFullTextRecords = context.EsquemaFullText.Where(ef => idEsquemaDataList.Contains(ef.IdEsquemaData)).ToList();
-                    context.EsquemaFullText.RemoveRange(esquemaFullTextRecords);
-                    context.SaveChanges();
-                }
+                    List<int> idEsquemaVistaList = esquemaVistas
+                        .Where(ev => ev.IdEsquemaVista != null) // Evitar posibles valores NULL
+                        .Select(ev => ev.IdEsquemaVista)
+                        .ToList();
 
-                if (esquemaDataRecords.Any())
-                {
-                    // Eliminar registros de EsquemaData
-                    context.EsquemaData.RemoveRange(esquemaDataRecords);
-                    context.SaveChanges();
-                }
+                    // Obtener los IdEsquemaData asociados a los IdEsquemaVista
+                    var esquemaDataRecords = context.EsquemaData
+                        .Where(ed => idEsquemaVistaList.Contains(ed.IdEsquemaVista))
+                        .ToList();
 
-                Console.WriteLine($"Registros eliminados correctamente para IdONA: {idONA}");
-                var data = new LogMigracion
-                {
-                    IdONA = idONA,
-                    Observacion = "Se eliminaron los datos satisfactoriamente "
-                };
-                return true;
-            });
+                    if (esquemaDataRecords == null || !esquemaDataRecords.Any())
+                    {
+                        Console.WriteLine($"No se encontraron registros en EsquemaData para los IdEsquemaVista asociados a IdONA: {idONA}");
+                        return false;
+                    }
+
+                    List<int> idEsquemaDataList = esquemaDataRecords
+                        .Where(ed => ed.IdEsquemaData != null) // Evitar valores NULL
+                        .Select(ed => ed.IdEsquemaData)
+                        .ToList();
+
+                    if (idEsquemaDataList.Any())
+                    {
+                        // Eliminar registros de EsquemaFullText asociados a EsquemaData
+                        var esquemaFullTextRecords = context.EsquemaFullText
+                            .Where(ef => idEsquemaDataList.Contains(ef.IdEsquemaData))
+                            .ToList();
+
+                        if (esquemaFullTextRecords != null && esquemaFullTextRecords.Any())
+                        {
+                            context.EsquemaFullText.RemoveRange(esquemaFullTextRecords);
+                            context.SaveChanges();
+                        }
+                    }
+
+                    // Eliminar registros de EsquemaData si existen
+                    if (esquemaDataRecords.Any())
+                    {
+                        context.EsquemaData.RemoveRange(esquemaDataRecords);
+                        context.SaveChanges();
+                    }
+
+                    Console.WriteLine($"Registros eliminados correctamente para IdONA: {idONA}");
+                    var data = new LogMigracion
+                    {
+                        IdONA = idONA,
+                        Observacion = "Se eliminaron los datos satisfactoriamente "
+                    };
+
+                    return true;
+                });
+            }
+            catch (SqlNullValueException ex)
+            {
+                Console.WriteLine($"Error: Se encontró un valor NULL en la operación de base de datos. {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error general: {ex.Message}");
+                return false;
+            }
         }
+
 
         public bool DeleteDataAntigua(int idONA)
         {

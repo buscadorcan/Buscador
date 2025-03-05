@@ -73,19 +73,24 @@
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="js/site.js"></script>
     <script src="js/exportar-excel-pdf.js"></script>
-    <script src="asset/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <script>
         window.renderMathJax = function () {
-            if (window.MathJax) {
-                console.log("✅ MathJax está disponible. Procesando fórmulas...");
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            if (window.MathJax && window.MathJax.typeset) {
+                console.log("✅ MathJax cargado. Procesando fórmulas...");
+                MathJax.typeset();
             } else {
-                console.warn("⚠️ MathJax NO está disponible.");
+                console.warn("⚠️ MathJax NO está disponible. Intentando de nuevo...");
+                setTimeout(window.renderMathJax, 1000);
             }
         };
-    </script>
 
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("📌 DOM completamente cargado, ejecutando MathJax...");
+            window.renderMathJax();
+        });
+    </script>
 
 
 
