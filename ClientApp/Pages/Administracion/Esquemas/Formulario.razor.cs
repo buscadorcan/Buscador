@@ -16,6 +16,9 @@ namespace ClientApp.Pages.Administracion.Esquemas
     /// </summary>
     public partial class Formulario
     {
+        [Inject]
+        public IEmailService? IEnviarCorreo { get; set; }
+
         // Contexto de edición para validación de formularios
         private EditContext? editContext;
         // Botón con animación de carga
@@ -146,6 +149,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
                     var result = await EsquemaService.RegistrarEsquemaActualizar(Esquema);
                     if (result.registroCorrecto)
                     {
+                        await this.EnviarCorreoAsync(objEventTracking.NombreUsuario);
                         if (lista != null)
                         {
                             foreach (var n in lista)
@@ -165,6 +169,12 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 }
             }
             saveButton.HideLoading();
+        }
+
+
+        private async Task EnviarCorreoAsync(string? nombreUsuario)
+        {
+            await this.IEnviarCorreo.Enviar(new EmailDto() { usuario = nombreUsuario, Opcion = 3 }, "enviar");
         }
 
         /// <summary>

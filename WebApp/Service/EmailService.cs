@@ -89,5 +89,48 @@ namespace WebApp.Service
             var base64 = Convert.ToBase64String(bytes);
             return base64.Replace('+', '-').Replace('/', '_').TrimEnd('=');
         }
+    
+        public async Task<bool> EnviarCorreoAlerta(EmailDto email)
+        {
+            string html = "";
+            try
+            {
+                if (email.Opcion == 1) { html = _configuration["EmailTemplates:create_user"] ?? ""; }
+                else if (email.Opcion == 2) { html = _configuration["EmailTemplates:migration"] ?? ""; }
+                else if (email.Opcion == 3) { html = _configuration["EmailTemplates:create_update_esquema"] ?? ""; }
+                else if (email.Opcion == 4) { html = _configuration["EmailTemplates:update_columns_esquema"] ?? ""; }
+
+                if (File.Exists(html))
+                {
+                    string htmlBody = File.ReadAllText(html);
+                    var user = _usuarioRepository.ObtenerUsuario(email.usuario);
+                    string Destinatarios = user.Email + ",";
+                    if (user.CodigoHomologacion.Contains("KEY_USER_ONA"))
+                    {
+                        var usersOna = _usuarioRepository.ObtenerUsuarios(user.IdOna);
+                        if (usersOna.Count > 0)
+                        {
+                            foreach (var usuario in usersOna)
+                            {
+                                Destinatarios += usuario.Email + ",";
+                            }
+                        }
+
+                    }
+                    htmlBody = string.Format(htmlBody, email.usuario);
+                    return await SendEmailAsync(Destinatarios ?? "", "Creación de Usuario", htmlBody);
+                }
+                else
+                {
+                    throw new FileNotFoundException("La plantilla de correo no se encuentra en la ubicaci�n especificada.");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
     }
 }

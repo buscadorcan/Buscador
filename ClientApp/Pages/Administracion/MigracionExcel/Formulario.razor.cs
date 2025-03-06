@@ -17,6 +17,10 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
     /// </summary>
     public partial class Formulario
     {
+
+        [Inject]
+        public IEmailService? IEnviarCorreo { get; set; }
+
         /// <summary>
         /// Botón de guardar con animación de carga.
         /// </summary>
@@ -203,6 +207,7 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
                     if (service != null)
                     {
                         var response = await service.ImportarExcel(content, onaSelected.IdONA);
+                        await this.EnviarCorreoAsync(objEventTracking.NombreUsuario);
                         if (response.IsSuccessStatusCode)
                         {
                             var result = await response.Content.ReadAsStringAsync();
@@ -232,6 +237,12 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
                 navigationManager?.NavigateTo("/migracion-excel");
             }
             
+        }
+
+
+        private async Task EnviarCorreoAsync(string? nombreUsuario)
+        {
+            await this.IEnviarCorreo.Enviar(new EmailDto() { usuario = nombreUsuario, Opcion = 2 }, "enviar");
         }
 
         /// <summary>

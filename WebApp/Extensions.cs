@@ -94,6 +94,8 @@ namespace WebApp.Extensions
             //Thesaurus
             services.AddScoped<IThesaurusRepository, ThesaurusRepository>();
 
+            services.AddScoped<IUsuarioEmailRepository, UsuarioEmailRepository>();
+
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IRecoverUserService, RecoverUserService>();
 

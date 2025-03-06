@@ -16,7 +16,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebApp.Repositories
 {
-    public class ThesaurusRepository(IConfiguration configuration, IWebHostEnvironment env) : IThesaurusRepository
+    public class ThesaurusRepository(IConfiguration configuration) : IThesaurusRepository
     {
         private readonly string  _connectionString = configuration.GetConnectionString("Mssql-CanDb");
         private readonly string _rutaArchivo = configuration["Thesaurus:RutaGuardado"];

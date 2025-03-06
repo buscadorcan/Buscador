@@ -4,16 +4,25 @@ using WebApp.Service.IService;
 using SharedApp.Models.Dtos;
 using WebApp.Models;
 using Newtonsoft.Json;
+using AutoMapper;
+using WebApp.Mappers;
+using System.Configuration;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using Dapper;
+using ZstdSharp;
 
 namespace WebApp.Repositories
 {
     public class UsuarioRepository : BaseRepository, IUsuarioRepository
     {
         private readonly IJwtService _jwtService;
+        
         private readonly IHashService _hashService;
         private readonly IEmailService _emailService;
         private readonly IEventTrackingRepository _eventTrackingRepository;
         private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
         public UsuarioRepository (
             IJwtService jwtService,
             IEmailService emailService,
@@ -29,6 +38,7 @@ namespace WebApp.Repositories
             _emailService = emailService;
             _eventTrackingRepository = eventTrackingRepository;
             _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("Mssql-CanDb");
         }
         public Usuario? FindById(int idUsuario)
         {
