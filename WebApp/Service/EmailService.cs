@@ -89,5 +89,6 @@ namespace WebApp.Service
             var base64 = Convert.ToBase64String(bytes);
             return base64.Replace('+', '-').Replace('/', '_').TrimEnd('=');
         }
+
     }
 }
