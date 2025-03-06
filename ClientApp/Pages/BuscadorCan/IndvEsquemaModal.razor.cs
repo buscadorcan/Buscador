@@ -2,6 +2,7 @@
 using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using SharedApp.Models.Dtos;
 
@@ -16,6 +17,7 @@ namespace ClientApp.Pages.BuscadorCan
 
         [Inject]
         private IBusquedaService? servicio { get; set; }
+        private IJSRuntime JS { get; set; } // Para llamar scripts JavaScript
         private HomologacionEsquemaDto? homologacionEsquema;
         private fnEsquemaCabeceraDto? EsquemaCabecera;
         private List<HomologacionDto>? Columnas;
@@ -62,6 +64,37 @@ namespace ClientApp.Pages.BuscadorCan
                 throw ex;
             }
           
+        }
+
+        private string ExtraerFormula(string input)
+        {
+            // Busca la parte dentro de $$ ... $$ y extrae solo la fórmula
+            int start = input.IndexOf("$$") + 2;
+            int end = input.LastIndexOf("$$");
+
+            if (start >= 2 && end > start)
+            {
+                return input.Substring(start, end - start).Trim();
+            }
+
+            return input; // Si no encuentra, devuelve el mismo dato
+        }
+
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                try
+                {
+                    Console.WriteLine("📌 Llamando a renderMathJax desde Blazor...");
+                    await JS.InvokeVoidAsync("setTimeout", "window.renderMathJax()", 1000);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"❌ Error al ejecutar renderMathJax: {e.Message}");
+                }
+            }
         }
     }
 }
