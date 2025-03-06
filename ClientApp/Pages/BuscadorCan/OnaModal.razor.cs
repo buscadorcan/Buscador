@@ -5,17 +5,39 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class OnaModal
+    /// <summary>
+    /// Componente parcial para el modal de ONA.
+    /// </summary>
+    public partial class OnaModal : ComponentBase
     {
-        [Parameter]
-        public BuscadorResultadoDataDto ResultData { get; set; } = default!;
+        /// <summary>
+        /// Servicio de catálogos.
+        /// </summary>
+        [Inject] private ICatalogosService iCatalogoService { get; set; } = default!;
+
+        /// <summary>
+        /// Resultado de datos de búsqueda.
+        /// </summary>
+        [Parameter] public BuscadorResultadoDataDto ResultData { get; set; } = default!;
+
+        /// <summary>
+        /// ONA seleccionado.
+        /// </summary>
         private vwONADto? onaSeleccionado;
+
+        /// <summary>
+        /// Indicador de carga.
+        /// </summary>
         private bool loading = true;
 
-        [Inject]
-        private ICatalogosService iCatalogoService { get; set; } = default!;
-
+        /// <summary>
+        /// Url base de la API.
+        /// </summary>
         private string url = Inicializar.UrlBaseApi;
+
+        /// <summary>
+        /// Método de inicialización de datos.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             try

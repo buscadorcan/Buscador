@@ -4,21 +4,38 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class OECModal
+    /// <summary>
+    /// Componente parcial para el modal de OEC.
+    /// </summary>
+    public partial class OECModal : ComponentBase
     {
-        [Parameter]
-        public BuscadorResultadoDataDto ResultData { get; set; } = default!;
+        /// <summary>
+        /// Servicio de catálogos.
+        /// </summary>
+        [Inject] private ICatalogosService iCatalogoService { get; set; } = default!;
+
+        /// <summary>
+        /// Resultado de la búsqueda.
+        /// </summary>
+        [Parameter] public BuscadorResultadoDataDto ResultData { get; set; } = default!;
+
+        /// <summary>
+        /// OEC seleccionado.
+        /// </summary>
         private vwEsquemaOrganizaDto? onaSeleccionado;
+
+        /// <summary>
+        /// Indicador de carga.
+        /// </summary>
         private bool loading = true;
 
-        [Inject]
-        private ICatalogosService iCatalogoService { get; set; } = default!;
-
+        /// <summary>
+        /// Método inicialización de datos
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                //var listaOnas = await iCatalogoService.GetvwOnaAsync();
                 var listaOnas = await iCatalogoService.GetvwEsquemaOrganizaAsync();
                 onaSeleccionado = listaOnas.FirstOrDefault(ona => ona.IdEsquemaData == ResultData.IdEsquemaData);
 

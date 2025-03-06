@@ -17,26 +17,14 @@ namespace ClientApp.Pages.Autenticacion
         private Button saveButton = default!;
         
         /// <summary>
-        /// DTO utilizado para la validación de autenticación.
-        /// </summary>
-        private AuthValidationDto authValidationDto = new AuthValidationDto();
-
-        /// <summary>
-        /// DTO utilizado para la entrada de códigos.
-        /// </summary>
-        private InputCodeDto inputCodedto = new InputCodeDto();
-        
-        /// <summary>
         /// Servicio de autenticación inyectado.
         /// </summary>
-        [Inject]
-        public IServiceAutenticacion? servicioAutenticacion { get; set; }
+        [Inject] public IServiceAutenticacion servicioAutenticacion { get; set; } = default!;
         
         /// <summary>
         /// Administrador de navegación inyectado.
         /// </summary>
-        [Inject]
-        public NavigationManager? navigationManager { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; } = default!;
         
         /// <summary>
         /// Evento para mostrar mensajes emergentes en la interfaz de usuario.
@@ -51,6 +39,16 @@ namespace ClientApp.Pages.Autenticacion
         /// Evento que se dispara cuando cambia el estado del paso de autenticación.
         /// </summary>
         [Parameter] public EventCallback<AuthenticateResponseDto> OnStepChanged { get; set; }
+
+        /// <summary>
+        /// DTO utilizado para la validación de autenticación.
+        /// </summary>
+        private AuthValidationDto authValidationDto = new AuthValidationDto();
+
+        /// <summary>
+        /// DTO utilizado para la entrada de códigos.
+        /// </summary>
+        private InputCodeDto inputCodedto = new InputCodeDto();
 
         /// <summary>
         /// Referencia a los elementos de entrada de códigos.

@@ -49,14 +49,19 @@ namespace WebApp.Repositories
         /// <inheritdoc />
         public string GetCodeByUser(string nombreUsuario, string codigoHomologacionRol, string codigoHomologacionMenu)
         {
-            return ExecuteDbOperation(context => {
-                var result = context.EventTracking.AsNoTracking()
-                    .Where(u => u.NombreUsuario == nombreUsuario && u.CodigoHomologacionRol == codigoHomologacionRol && u.CodigoHomologacionMenu == codigoHomologacionMenu)
-                    .OrderByDescending(o => o.FechaCreacion)
-                    .FirstOrDefault();
+            try {
+                return ExecuteDbOperation(context => {
+                    var result = context.EventTracking.AsNoTracking()
+                        .Where(u => u.NombreUsuario == nombreUsuario && u.CodigoHomologacionRol == codigoHomologacionRol && u.CodigoHomologacionMenu == codigoHomologacionMenu)
+                        .OrderByDescending(o => o.FechaCreacion)
+                        .FirstOrDefault();
 
-                return result != null ? JsonConvert.DeserializeObject<JObject>(result.ParametroJson)?["Code"]?.ToString() : null;
-            });
+                    return result != null ? JsonConvert.DeserializeObject<JObject>(result.ParametroJson)?["Code"]?.ToString() : null;
+                });
+            } catch(Exception ex) {
+                _logger.LogError(ex, "Error executing query EventTracking");
+                return string.Empty;
+            }
         }
     }
 }

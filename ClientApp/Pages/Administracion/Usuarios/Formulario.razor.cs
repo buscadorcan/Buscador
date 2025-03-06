@@ -18,6 +18,9 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private bool isRol16; // Variable para controlar la visibilidad del botón
 
         [Inject]
+        public IEmailService? IEnviarCorreo {  get; set; }
+
+        [Inject]
         public IUsuariosService? iUsuariosService { get; set; }
         [Inject]
         public NavigationManager? navigationManager { get; set; }
@@ -254,8 +257,11 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
                 if (result.registroCorrecto)
                 {
+
                     toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                    await this.EnviarCorreoAsync(objEventTracking.NombreUsuario);
                     navigationManager?.NavigateTo("/usuarios");
+
                 }
                 else
                 {
@@ -266,6 +272,12 @@ namespace ClientApp.Pages.Administracion.Usuarios
 
             saveButton.HideLoading();
         }
+
+        private async Task EnviarCorreoAsync(string? nombreUsuario)
+        {
+           await this.IEnviarCorreo.Enviar(new EmailDto() { usuario= nombreUsuario,Opcion=1 }, "enviar");
+        }
+
         private async Task OnAutoCompleteChanged(string rol, int idRol)
         {
             usuario.Rol = rol;

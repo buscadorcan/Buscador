@@ -3,13 +3,24 @@ using Microsoft.AspNetCore.Components;
 
 namespace ClientApp.Pages.Autenticacion
 {
-    public partial class Salir
+    /// <summary>
+    /// Clase Salir
+    /// </summary>
+    public partial class Salir : ComponentBase
     {
-        [Inject]
-        public IServiceAutenticacion? servicioAutenticacion { get; set; }
-        [Inject]
-        public NavigationManager? navigationManager { get; set; }
+        /// <summary>
+        /// Servicio de autenticación
+        /// </summary>
+        [Inject] public IServiceAutenticacion servicioAutenticacion { get; set; } = default!;
 
+        /// <summary>
+        /// Navegación
+        /// </summary>
+        [Inject] public NavigationManager navigationManager { get; set; } = default!;
+
+        /// <summary>
+        /// Método OnInitializedAsync
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             if (servicioAutenticacion != null)

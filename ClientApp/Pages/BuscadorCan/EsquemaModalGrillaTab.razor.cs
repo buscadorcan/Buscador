@@ -8,25 +8,64 @@ using Microsoft.JSInterop; // Para invocar funciones de JavaScript
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class EsquemaModalGrillaTab
+    /// <summary>
+    /// Componente parcial para el modal de grilla de esquema.
+    /// </summary>
+    public partial class EsquemaModalGrillaTab : ComponentBase
     {
-        [Parameter]
-        public int IdEsquema { get; set; }
-        [Parameter]
-        public int? idONA { get; set; }
-        [Parameter]
-        public string? VistaFK { get; set; }
-        [Parameter]
-        public string? VistaPK { get; set; }
-        [Parameter]
-        public string? Texto { get; set; }
-        [Inject]
-        private IBusquedaService? servicio { get; set; }
-        [Inject]
-        private IJSRuntime JS { get; set; } // Para llamar scripts JavaScript
+        /// <summary>
+        /// Servicio de búsqueda.
+        /// </summary>
+        [Inject] private IBusquedaService? servicio { get; set; }
+
+        /// <summary>
+        /// Servicio de JavaScript.
+        /// </summary>
+        [Inject] private IJSRuntime JS { get; set; } = default!;
+
+        /// <summary>
+        /// Identificador de esquema.
+        /// </summary>
+        [Parameter] public int IdEsquema { get; set; }
+
+        /// <summary>
+        /// Identificador de ONA.
+        /// </summary>
+        [Parameter] public int? idONA { get; set; }
+
+        /// <summary>
+        /// Identificador de vista secundario
+        /// </summary>
+        [Parameter] public string? VistaFK { get; set; }
+
+        /// <summary>
+        /// Identificador de vista primario
+        /// </summary>
+        [Parameter] public string? VistaPK { get; set; }
+
+        /// <summary>
+        /// Texto de búsqueda.
+        /// </summary>
+        [Parameter] public string? Texto { get; set; }
+        
+        /// <summary>
+        /// Homologación de esquema.
+        /// </summary>
         private HomologacionEsquemaDto? homologacionEsquema;
+
+        /// <summary>
+        /// Columnas de la grilla.
+        /// </summary>
         private List<HomologacionDto>? Columnas;
+
+        /// <summary>
+        /// Resultados de esquemas.
+        /// </summary>
         private List<DataHomologacionEsquema>? resultados;
+
+        /// <summary>
+        /// Método de inicialización de datos.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             try
@@ -43,7 +82,11 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-
+        /// <summary>
+        /// Método para obtener los datos de la grilla.
+        /// </summary>
+        /// <param name="request">Solicitud de datos.</param>
+        /// <returns>Resultado de la solicitud.</returns>
         private async Task<GridDataProviderResult<DataHomologacionEsquema>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataHomologacionEsquema> request)
         {
             if (resultados is null && servicio != null)
@@ -56,6 +99,11 @@ namespace ClientApp.Pages.BuscadorCan
             return await Task.FromResult(request.ApplyTo(resultados ?? []));
         }
 
+        /// <summary>
+        /// Método para extraer la fórmula de un texto.
+        /// </summary>
+        /// <param name="input">Texto de entrada.</param>
+        /// <returns>Fórmula extraída.</returns>
         private string ExtraerFormula(string input)
         {
             // Busca la parte dentro de $$ ... $$ y extrae solo la fórmula
@@ -70,7 +118,10 @@ namespace ClientApp.Pages.BuscadorCan
             return input; // Si no encuentra, devuelve el mismo dato
         }
 
-
+        /// <summary>
+        /// Método para ejecutar despues del renderizado.
+        /// </summary>
+        /// <param name="firstRender">Indicador de primer renderizado.</param>
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)

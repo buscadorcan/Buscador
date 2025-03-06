@@ -113,7 +113,7 @@ namespace ClientApp.Pages.BuscadorCan
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", item);
             modal.Size = ModalSize.ExtraLarge;
-            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
+            modal.Style = "font-size: 10px !important;";
             await modal.ShowAsync<EsquemaModal>(title: "Información Detallada", parameters: parameters);
         }
         
@@ -125,7 +125,7 @@ namespace ClientApp.Pages.BuscadorCan
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
             modal.Size = ModalSize.Regular;
-            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
+            modal.Style = "font-size: 10px !important;";
             await modal.ShowAsync<OnaModal>(title: "Información Organizacion", parameters: parameters);
         }
 
@@ -137,7 +137,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
-            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
+            modal.Style = "font-size: 10px !important;";
             modal.Size = ModalSize.Regular;
             await modal.ShowAsync<OECModal>(title: "Información del OEC", parameters: parameters);
         }
@@ -149,7 +149,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             var parameters = new Dictionary<string, object>();
             parameters.Add("resultData", resultData);
-            modal.Style = "font-family: 'Inter-Medium', Helvetica, sans-serif !important; font-size: 10px !important;";
+            modal.Style = "font-size: 10px !important;";
             modal.Size = ModalSize.ExtraLarge;
             await modal.ShowAsync<IndvEsquemaModal>(title: "Información Esquema", parameters: parameters);
         }

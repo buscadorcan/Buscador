@@ -18,18 +18,12 @@ namespace WebApp.Service
         private readonly IConfiguration _configuration;
 
         /// <summary>
-        /// Ruta del directorio de tokens.
-        /// </summary>
-        private readonly string _tokenDirectoryPath;
-
-        /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="GmailClientFactory"/>.
         /// </summary>
         /// <param name="configuration">Configuración de la aplicación.</param>
         public GmailClientFactory(IConfiguration configuration)
         {
             _configuration = configuration;
-            _tokenDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "tokens");
         }
 
         /// <inheritdoc />
@@ -53,12 +47,12 @@ namespace WebApp.Service
         /// <returns>Token de acceso.</returns>
         private async Task<string> GetAccessTokenAsync()
         {
-            if (!Directory.Exists(_tokenDirectoryPath))
+            if (!Directory.Exists(_configuration["GoogleOAuth:Tokens"]))
             {
                 throw new InvalidOperationException("El directorio del token no existe. Autenticación requerida.");
             }
 
-            var tokenFiles = Directory.GetFiles(_tokenDirectoryPath);
+            var tokenFiles = Directory.GetFiles(_configuration["GoogleOAuth:Tokens"]);
             if (tokenFiles.Length == 0)
             {
                 throw new InvalidOperationException("No se encontraron archivos de token. Autenticación requerida.");

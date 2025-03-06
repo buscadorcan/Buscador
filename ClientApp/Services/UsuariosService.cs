@@ -12,10 +12,13 @@ namespace ClientApp.Services {
     public class UsuariosService : IUsuariosService
     {
         private readonly HttpClient _httpClient;
+        
         private string url = $"{Inicializar.UrlBaseApi}api/usuarios";
        // private string url2 = $"{Inicializar.UrlBaseApi}api/usuarios";
         private string url3 = $"{Inicializar.UrlBaseApi}api/catalogos/roles";
         private string url4 = $"{Inicializar.UrlBaseApi}api/catalogos/onas";
+
+        
 
         public UsuariosService(HttpClient httpClient)
         {
@@ -89,6 +92,7 @@ namespace ClientApp.Services {
                 {
                     // Si el IdUsuario es 0 o menor, realizamos un POST (registro)
                     response = await _httpClient.PostAsync($"{url}/registro", bodyContent);
+
                 }
 
                 // Lee el contenido de la respuesta

@@ -1,4 +1,6 @@
 
+using SharedApp.Models.Dtos;
+
 namespace WebApp.Service.IService
 {
     /// <summary>
@@ -15,5 +17,10 @@ namespace WebApp.Service.IService
         /// <returns>Devuelve <see langword="true"/> si el correo electrÃ³nico se enviÃ³ correctamente; de lo contrario, <see langword="false"/>.</returns>
         Task<bool> SendEmailAsync(string to, string subject, string body);
 
+
+        /// <summary>
+        /// Envía un correo electrónico de forma asíncrona según una opción respectiva
+        /// </summary>
+        Task<bool> EnviarCorreoAlerta(EmailDto email);
     }
 }

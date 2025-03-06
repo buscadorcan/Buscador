@@ -7,7 +7,7 @@
 
 <div class="panel-acceder">
     <div class="panel-acceder-content">
-        <div class="panel-acceder-back">
+        <div class="panel-acceder-back" @onclick="GoToSearchPage" style="cursor:pointer;">
             <img src="/login/img/search-1.svg" alt="search-1" />
             <div>Buscador</div>
         </div>
@@ -43,35 +43,3 @@
         <img src="/images/login470px.png" alt="login470px" />
     </div>
 </div>
-
-@* <div class="container-center-horizontal">
-    <div class="login-2 screen">
-        <div class="login">
-            <div class="component-10" @onclick="GoToSearchPage" style="cursor:pointer;">
-                
-            </div>
-
-            @if (opcion == 1) {
-                @if (authenticateResponseDto == null) {
-                    <FormularioLogin
-                        OnCreateToastMessage="CreateToastMessage"
-                        OnStepChanged="HandleStepChange"
-                        OnOptionChange="HandleOptionChange"
-                    />
-                } else {
-                    <FormularioValidacion 
-                        OnCreateToastMessage="CreateToastMessage" 
-                        IdUsuario="@authenticateResponseDto?.IdUsuario"
-                        OnStepChanged="HandleStepChange"
-                    />
-                }
-            } else {
-                <FormularioRecuperar
-                    OnCreateToastMessage="CreateToastMessage"
-                    OnOptionChange="HandleOptionChange"
-                />
-            }
-        </div>
-        <img src="/images/login470px.png" alt="login470px" class="login470px" />
-    </div>
-</div> *@
