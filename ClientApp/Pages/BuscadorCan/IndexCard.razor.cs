@@ -1,6 +1,7 @@
 ﻿using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
 
@@ -211,6 +212,7 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     var pais = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim();
                     var ciudad = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 85)?.Data?.Trim();
+                    
                     return (!string.IsNullOrEmpty(pais) && !string.IsNullOrEmpty(ciudad)) ? (pais, ciudad) : default;
                 })
                 .Where(loc => loc != default)
@@ -231,6 +233,12 @@ namespace ClientApp.Pages.BuscadorCan
                         Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
                         Title = $"{location.Ciudad}, {location.Pais}",
                         PinElement = new PinElement { BorderColor = "red" }
+
+                        //PinElement = new PinElement
+                        //{
+                        //    Glyph = $"<img src='{ObtenerIconoParaUbicacion(1)}' width='32' height='32' />",
+                        //    BorderColor = "transparent" // Para evitar bordes no deseados en el marcador
+                        //}
                     });
 
                     processedLocations.Add(locationKey);
@@ -290,5 +298,19 @@ namespace ClientApp.Pages.BuscadorCan
         /// Clase para deserializar la ubicación de la respuesta de la API de Google Maps.
         /// </summary>
         private class Location { public double Lat { get; set; } public double Lng { get; set; } }
+
+        private string ObtenerIconoParaUbicacion(int idOna)
+        {
+            if (idOna == 1)
+                return "/images/Ecuador.svg"; // Reemplaza con la ruta correcta de la imagen
+                
+            else if (idOna == 2)
+                return "/images/Colombia.svg";
+            else if (idOna == 3)
+                return "/images/Peru.svg"; // Un ícono por defecto si no coincide con ningún país específico
+            else
+                return "/images/Bolivia.png";
+        }
+
     }
 }
