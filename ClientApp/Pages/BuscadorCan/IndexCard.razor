@@ -76,16 +76,16 @@
                                                                     var dato = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data;
                                                                 }
 
-                                                                <p class="text-muted small" style="font-size: 11px !important;">
+                                                                    <p class="text-muted small text-start" style="font-size: 11px;">
                                                                     @if (etiqueta.IdHomologacion == 81)
                                                                     {
-                                                                        <Button @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px !important;">
+                                                                        <Button @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px; text-align: left !important;">
                                                                             @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
                                                                         </Button>
                                                                     }
                                                                     else if (etiqueta.IdHomologacion == 91)
                                                                     {
-                                                                        <Button @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px !important;">
+                                                                        <Button @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px; text-align: left !important;">
                                                                             @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
                                                                         </Button>
                                                                     }
