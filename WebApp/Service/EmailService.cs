@@ -1,6 +1,11 @@
 using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
 using MimeKit;
+using SharedApp.Models.Dtos;
+using System.Net.Mail;
+using System.Runtime.CompilerServices;
+using WebApp.Models;
+using WebApp.Repositories.IRepositories;
 using WebApp.Service.IService;
 
 namespace WebApp.Service
@@ -31,11 +36,18 @@ namespace WebApp.Service
         /// <param name="gmailClientFactory">Factoría para crear instancias de <see cref="GmailService"/>.</param>
         /// <param name="configuration">Configuración de la aplicación.</param>
         /// <param name="logger">Logger.</param>
-        public EmailService(IGmailClientFactory gmailClientFactory, IConfiguration configuration, ILogger<EmailService> logger)
+
+        private readonly IUsuarioEmailRepository _usuarioRepository;
+
+        public EmailService(IGmailClientFactory gmailClientFactory, 
+                            IConfiguration configuration, 
+                            ILogger<EmailService> logger,
+                            IUsuarioEmailRepository usuarioRepository)
         {
             _gmailClientFactory = gmailClientFactory;
             _configuration = configuration;
             _logger = logger;
+            _usuarioRepository = usuarioRepository;
         }
 
         /// <inheritdoc />
@@ -49,7 +61,54 @@ namespace WebApp.Service
                 // Construir el mensaje MIME
                 var message = new MimeMessage();
                 message.From.Add(new MailboxAddress(_configuration["GoogleOAuth:AppName"], _configuration["GoogleOAuth:Username"] ?? throw new InvalidOperationException("Username is required")));
+                
+
                 message.To.Add(new MailboxAddress(to, to));
+                message.Subject = subject;
+                var textPart = new TextPart("html")
+                {
+                    Text = body,
+                    ContentTransferEncoding = ContentEncoding.Base64  // Asegurando que el mensaje se codifique correctamente en base64
+                };
+
+                message.Body = textPart;
+
+                // Convertir MIME a base64 para enviar por Gmail API
+                var rawMessage = Base64UrlEncode(message.ToString());
+
+                // Enviar el mensaje usando Gmail API
+                var gmailMessage = new Message
+                {
+                    Raw = rawMessage
+                };
+
+                await gmailService.Users.Messages.Send(gmailMessage, "me").ExecuteAsync();
+                return true; // Éxito
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al enviar el correo a {Email}", to);
+                return false; // Fallo
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> SendManyEmailAsync(string to, string subject, string body)
+        {
+            try
+            {
+                // Crear servicio de Gmail usando la factoría
+                var gmailService = await _gmailClientFactory.CreateGmailServiceAsync();
+
+                // Construir el mensaje MIME
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(_configuration["GoogleOAuth:AppName"], _configuration["GoogleOAuth:Username"] ?? throw new InvalidOperationException("Username is required")));
+
+                var listaReceptores = to.Split(',');
+                foreach (string direccion in listaReceptores)
+                {
+                    message.To.Add(new MailboxAddress(direccion.Trim(), direccion.Trim()));
+                }
                 message.Subject = subject;
                 var textPart = new TextPart("html")
                 {
@@ -118,7 +177,7 @@ namespace WebApp.Service
 
                     }
                     htmlBody = string.Format(htmlBody, email.usuario);
-                    return await SendEmailAsync(Destinatarios ?? "", "Creación de Usuario", htmlBody);
+                    return await SendManyEmailAsync(Destinatarios ?? "", "Creación de Usuario", htmlBody);
                 }
                 else
                 {
@@ -132,5 +191,7 @@ namespace WebApp.Service
             }
             
         }
+
+
     }
 }
