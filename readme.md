@@ -1,4 +1,4 @@
-# Estructura del Proyecto (ClientApp)
+# ClientApp
 
 ## 🔹 Componentes principales
 - **`App.razor`** → Componente raíz de la aplicación Blazor.
