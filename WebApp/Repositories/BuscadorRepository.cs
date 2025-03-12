@@ -105,13 +105,30 @@ namespace WebApp.Repositories
         {
             return ExecuteDbOperation(context =>
             {
-                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDato({idEsquema},{VistaFK}, {idOna})").AsNoTracking().ToList();
+                var lstTem = context.Database.SqlQuery<FnHomologacionEsquemaData>($"select * from fnEsquemaDato({idEsquema},{VistaFK}, {idOna})")
+                                              .AsNoTracking()
+                                              .ToList();
 
-                return lstTem.Select(c => new FnHomologacionEsquemaDataDto()
+                return lstTem.Select(c =>
                 {
-                    IdEsquemaData = c.IdEsquemaData,
-                    IdEsquema = c.IdEsquema,
-                    DataEsquemaJson = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]")
+                    List<ColumnaEsquema> dataEsquema = new List<ColumnaEsquema>();
+
+                    try
+                    {
+                        dataEsquema = JsonConvert.DeserializeObject<List<ColumnaEsquema>>(c.DataEsquemaJson ?? "[]");
+                    }
+                    catch (JsonReaderException ex)
+                    {
+                        Console.WriteLine($"Error al deserializar JSON: {ex.Message}");
+                        Console.WriteLine($"JSON inválido: {c.DataEsquemaJson}");
+                    }
+
+                    return new FnHomologacionEsquemaDataDto()
+                    {
+                        IdEsquemaData = c.IdEsquemaData,
+                        IdEsquema = c.IdEsquema,
+                        DataEsquemaJson = dataEsquema
+                    };
                 }).ToList();
             });
         }

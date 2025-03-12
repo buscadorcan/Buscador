@@ -181,28 +181,29 @@ namespace ClientApp.Pages.Administracion.Conexion
             if (iDynamicService != null && listasHevd != null)
             {
                 IsLoading = true;
-                ProgressValue = 45;
+                ProgressValue = 0;
                 StateHasChanged();
 
                 try
                 {
-                    // Iniciar un temporizador que aumente progresivamente hasta el 50%
+                    // Iniciar un temporizador que aumente progresivamente hasta el 90%
                     var progressTask = Task.Run(async () =>
                     {
-                        while (ProgressValue < 50)
+                        while (ProgressValue < 90)
                         {
                             await Task.Delay(500); // Espera 500ms antes de aumentar
                             ProgressValue += 5; // Aumenta en 5% cada 500ms
+                            StateHasChanged();
                         }
                     });
 
-                    // Ejecutar la migración en paralelo mientras se actualiza la barra de progreso
+                    // Ejecutar la migración en paralelo
                     bool migracion = await iDynamicService.MigrarConexionAsync(conexion);
 
-                    // Esperar a que la barra de progreso llegue a 50% antes de completarla
+                    // Esperar a que la barra de progreso llegue a 90%
                     await progressTask;
 
-                    // Completar la barra de progreso
+                    // Completar la barra de progreso al 100%
                     ProgressValue = 100;
                     StateHasChanged();
 
@@ -216,17 +217,15 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                     messages.Add(toastMessage);
                     StateHasChanged();
-                    // Ocultar mensaje después de 5 segundos
-                    _ = Task.Delay(5000).ContinueWith(_ =>
-                    {
-                        messages.Remove(toastMessage);
-                        InvokeAsync(StateHasChanged);
-                    });
 
-                    if (migracion)
-                    {
-                        return true;
-                    }
+                    // Mantener el mensaje visible por más tiempo (7 segundos)
+                    await Task.Delay(7000);
+
+                    // Remover mensaje después de la espera
+                    messages.Remove(toastMessage);
+                    InvokeAsync(StateHasChanged);
+
+                    return migracion;
                 }
                 finally
                 {
@@ -237,6 +236,7 @@ namespace ClientApp.Pages.Administracion.Conexion
             }
             return false;
         }
+
 
         /// <summary>
         /// OpenDeleteModal: Abre el modal.

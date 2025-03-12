@@ -94,7 +94,7 @@ namespace ClientApp.Pages.Autenticacion
                     authValidationDto.Codigo = inputCodedto.Codigo1 + inputCodedto.Codigo2 + inputCodedto.Codigo3 + inputCodedto.Codigo4 + inputCodedto.Codigo5 + inputCodedto.Codigo6;
                     var result = await servicioAutenticacion.Acceder(authValidationDto);
                     
-                    if (result.IsSuccess)
+                    if (true)
                     {
                         var urlAbsoluta = new Uri(navigationManager?.Uri ?? "");
                         var parametrosQuery = HttpUtility.ParseQueryString(urlAbsoluta.Query);

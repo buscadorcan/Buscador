@@ -21,7 +21,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> EnviarCorreoRol([FromBody] EmailDto email) {
             try
             {
-                var result = await _emailService.EnviarCorreoAlerta(email);
+                var result = await _emailService.SendEmailAsync("", "", "");
                 return Ok(new RespuestasAPI<bool>() { Result = result });
             }
             catch (Exception e)

@@ -50,6 +50,8 @@ namespace WebApp.Extensions
             // Registra servicios relacionados con correos electrónicos.
             services.AddScoped<IGmailClientFactory, GmailClientFactory>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUsuarioEmailRepository, UsuarioEmailRepository>();
+
 
             // Registra servicios relacionados con JWT (autenticación basada en tokens).
             services.AddScoped<IJwtFactory, JwtFactory>();
