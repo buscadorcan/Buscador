@@ -1,4 +1,5 @@
 ﻿using BlazorBootstrap;
+using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Constraints;
@@ -16,6 +17,11 @@ namespace ClientApp.Pages.BuscadorCan
         /// Servicio para obtener catálogos.
         /// </summary>
         [Inject] public ICatalogosService? iCatalogosService { get; set; }
+
+        /// <summary>
+        /// Servicio para obtener la ruta de onas.
+        /// </summary>
+        [Inject] public IONAService? iONAService { get; set; }
 
         /// <summary>
         /// Servicio de JavaScript.
@@ -212,7 +218,7 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     var pais = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim();
                     var ciudad = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 85)?.Data?.Trim();
-                    
+
                     return (!string.IsNullOrEmpty(pais) && !string.IsNullOrEmpty(ciudad)) ? (pais, ciudad) : default;
                 })
                 .Where(loc => loc != default)
@@ -227,18 +233,15 @@ namespace ClientApp.Pages.BuscadorCan
                 var coordenadas = await ObtenerCoordenadas(location.Pais, location.Ciudad);
                 if (coordenadas != null)
                 {
+                    // Obtener el ícono del ONA para esta ubicación
+                    string? iconoRuta = await ObtenerIconoONA(location.Pais, location.Ciudad);
+
+                    // Agregar marcador con icono personalizado
                     markers.Add(new GoogleMapMarker
                     {
-                        
                         Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
                         Title = $"{location.Ciudad}, {location.Pais}",
-                        PinElement = new PinElement { BorderColor = "red" }
-
-                        //PinElement = new PinElement
-                        //{
-                        //    Glyph = $"<img src='{ObtenerIconoParaUbicacion(1)}' width='32' height='32' />",
-                        //    BorderColor = "transparent" // Para evitar bordes no deseados en el marcador
-                        //}
+                        Content = $"<img src='{iconoRuta}' width='32' height='32' style='border-radius:50%;' />"
                     });
 
                     processedLocations.Add(locationKey);
@@ -256,6 +259,7 @@ namespace ClientApp.Pages.BuscadorCan
 
             markers = new List<GoogleMapMarker>(markers);
         }
+
 
         /// <summary>
         /// Método para obtener las coordenadas de un lugar.
@@ -299,18 +303,43 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private class Location { public double Lat { get; set; } public double Lng { get; set; } }
 
-        private string ObtenerIconoParaUbicacion(int idOna)
+        private async Task<string?> ObtenerIconoONA(string pais, string ciudad)
         {
-            if (idOna == 1)
-                return "/images/Ecuador.svg"; // Reemplaza con la ruta correcta de la imagen
-                
-            else if (idOna == 2)
-                return "/images/Colombia.svg";
-            else if (idOna == 3)
-                return "/images/Peru.svg"; // Un ícono por defecto si no coincide con ningún país específico
-            else
-                return "/images/Bolivia.png";
+            try
+            {
+                // Buscar el objeto que contiene el ID del ONA basado en la ciudad y el país
+                var resultData = ListDataDto?
+                    .FirstOrDefault(d =>
+                        d.DataEsquemaJson?.Any(f => f.IdHomologacion == 84 && f.Data?.Trim() == pais) == true &&
+                        d.DataEsquemaJson?.Any(f => f.IdHomologacion == 85 && f.Data?.Trim() == ciudad) == true);
+
+                if (resultData == null || resultData.IdONA == null)
+                    return $"{Inicializar.UrlBaseApi}Icono/default-marker.png"; // Icono por defecto
+
+                // Obtener la URL del ícono para este ONA
+                var Onas = await iONAService.GetONAsAsync(Convert.ToInt32(resultData.IdONA));
+                var jsonRuta = Onas?.UrlIcono;
+
+                if (string.IsNullOrWhiteSpace(jsonRuta))
+                    return $"{Inicializar.UrlBaseApi}Icono/default-marker.png"; // Si está vacío, usa icono por defecto
+
+                // Deserializar JSON para obtener la ruta correcta
+                var objetoRuta = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(jsonRuta);
+
+                if (objetoRuta != null && objetoRuta.ContainsKey("filePath"))
+                {
+                    return $"{Inicializar.UrlBaseApi}{objetoRuta["filePath"]}"; // Devolver la ruta del icono
+                }
+
+                return $"{Inicializar.UrlBaseApi}Icono/default-marker.png"; // Si algo falla, usar ícono por defecto
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error obteniendo icono ONA: {ex.Message}");
+                return $"{Inicializar.UrlBaseApi}Icono/default-marker.png"; // En caso de error, usar un ícono por defecto
+            }
         }
+
 
     }
 }

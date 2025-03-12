@@ -1,5 +1,6 @@
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
@@ -50,6 +51,13 @@ namespace ClientApp.Pages.BuscadorCan
         private List<VwFiltroDto>? listaEtiquetasFiltros = new List<VwFiltroDto>();
 
         /// <summary>
+        /// Método para limpiar los checkboxes sin afectar la lista de opciones.
+        /// </summary>
+        /// <returns></returns>
+        [Inject] public IJSRuntime JS { get; set; }
+
+
+        /// <summary>
         /// Lista de valores seleccionados
         /// </summary>
         private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
@@ -58,6 +66,8 @@ namespace ClientApp.Pages.BuscadorCan
         /// Inicializador de datos
         /// </summary>
         /// <returns></returns>
+        /// 
+
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
@@ -137,42 +147,15 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 if (isCleaning) return; // Evita múltiples clics simultáneos
                 isCleaning = true;
-                StateHasChanged(); // Forzar actualización de la UI
 
-                // 1️⃣ Recorrer cada filtro seleccionado y deseleccionarlo
-                foreach (var filtro in selectedValues.ToList())
-                {
-                    foreach (var valor in filtro.Seleccion.ToList())
-                    {
-                        int comboIndex = listaEtiquetasFiltros.FindIndex(f => f.CodigoHomologacion == filtro.CodigoHomologacion);
-                        if (comboIndex >= 0)
-                        {
-                            CambiarSeleccion(valor, comboIndex, false); // Desmarcar
-                        }
-                    }
-                }
+                // Llamar a la función JavaScript para desmarcar todos los checkboxes
+                await JS.InvokeVoidAsync("desmarcarTodosLosCheckboxes");
 
-                // 2️⃣ Limpiar listas de filtros y opciones
+                // Limpiar la lista de seleccionados sin modificar las opciones
                 selectedValues.Clear();
-                listadeOpciones.Clear();
-                listaEtiquetasFiltros.Clear();
                 _ = onFilterChange.InvokeAsync(selectedValues);
 
-                // 3️⃣ Volver a cargar los filtros desde el backend
-                if (iCatalogosService != null)
-                {
-                    listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
-                    if (listaEtiquetasFiltros != null)
-                    {
-                        foreach (var opciones in listaEtiquetasFiltros)
-                        {
-                            listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<vwFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
-                        }
-                    }
-                }
-
-                // 4️⃣ Forzar la actualización de la UI
-                StateHasChanged();
+                StateHasChanged(); // Forzar la actualización visual
             }
             catch (Exception e)
             {
@@ -180,7 +163,7 @@ namespace ClientApp.Pages.BuscadorCan
             }
             finally
             {
-                isCleaning = false; // Habilitar el botón nuevamente al finalizar
+                isCleaning = false;
                 StateHasChanged();
             }
         }
