@@ -53,7 +53,10 @@
                                 aria-expanded="false">
                             Seleccionar @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
                         </button>
-                        <ul class="dropdown-menu p-2" style="font-size: 11px !important;" aria-labelledby="dropdownMenuButton-@currentIndex">
+                        <ul class="dropdown-menu p-2" 
+                            style="font-size: 11px !important;" 
+                            aria-labelledby="dropdownMenuButton-@currentIndex"
+                            data-bs-auto-close="false">
                             @if (listadeOpciones?[currentIndex] != null)
                             {
                                 @foreach (var opcion in listadeOpciones[currentIndex] ?? [])

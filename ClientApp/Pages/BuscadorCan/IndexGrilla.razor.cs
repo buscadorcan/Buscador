@@ -52,6 +52,10 @@ namespace ClientApp.Pages.BuscadorCan
         private string? PdfUrl;
         // private bool isLoading = true;
 
+        private bool isModalOpen = false;
+
+        [Inject] private IJSRuntime JS { get; set; } // 🔹 Inyección de JavaScript
+
         /// <summary>
         /// Método para mostrar el resultados en ventana modal
         /// </summary>
@@ -92,14 +96,38 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método para mostrar el resultados en ventana modal
         /// </summary>
-        private async void showModalESQ(BuscadorResultadoDataDto resultData)
+        private async Task showModalESQ(BuscadorResultadoDataDto resultData)
         {
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("resultData", resultData);
+            Console.WriteLine("🔄 Intentando eliminar el modal desde JavaScript...");
+
+            // 🔹 Verificar si `destroyModal` está disponible en JS
+            var exists = await JS.InvokeAsync<bool>("window.hasOwnProperty", "destroyModal");
+
+            if (exists)
+            {
+                await JS.InvokeVoidAsync("destroyModal", "modalId"); // 🔥 Llamar la función JS
+                Console.WriteLine("✅ destroyModal ejecutado correctamente.");
+            }
+            else
+            {
+                Console.WriteLine("⚠️ Error: La función destroyModal no está disponible en JS.");
+            }
+
+            await Task.Delay(300); // ⏳ Espera para asegurar la eliminación
+
+            var parameters = new Dictionary<string, object>
+            {
+                { "resultData", resultData }
+            };
+
             modal.Style = "font-size: 10px !important;";
             modal.Size = ModalSize.ExtraLarge;
+
             await modal.ShowAsync<IndvEsquemaModal>(title: "Información Esquema", parameters: parameters);
+
+            Console.WriteLine($"✅ Modal creado y abierto con datos de ID: {resultData.IdEsquemaData}");
         }
+
 
         /// <summary>
         /// Método para mostrar el resultados en ventana modal
@@ -145,6 +173,13 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 throw new Exception("Error al obtener la URL del certificado", ex);
             }
+        }
+
+        private async Task HandleModalClose()
+        {
+            Console.WriteLine("🔹 Modal cerrado automáticamente al hacer clic fuera.");
+            isModalOpen = false;
+            StateHasChanged(); // 🔄 Forzar actualización de la UI
         }
     }
 }
