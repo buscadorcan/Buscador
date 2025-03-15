@@ -105,9 +105,6 @@ namespace WebApp.Repositories
                 case "POSTGRES":
                     command.CommandText = "SELECT table_name FROM information_schema.views WHERE table_schema = 'public'";
                     break;
-                case "SQLITE":
-                    command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'view'";
-                    break;
                 default:
                     command.CommandText = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS";
                     break;
@@ -187,7 +184,6 @@ namespace WebApp.Repositories
                     "SQLSERVER" => new Microsoft.Data.SqlClient.SqlConnection(connectionString),
                     "MYSQL" => new MySqlConnection(connectionString),
                     "POSTGRES" => new Npgsql.NpgsqlConnection(connectionString),
-                    "SQLITE" => new Microsoft.Data.Sqlite.SqliteConnection(connectionString),
                     _ => throw new NotSupportedException($"Tipo de base de datos '{conexion.OrigenDatos}' no soportado.")
                 };
 

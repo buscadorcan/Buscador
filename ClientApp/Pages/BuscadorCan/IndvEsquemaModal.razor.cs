@@ -24,28 +24,39 @@ namespace ClientApp.Pages.BuscadorCan
         private List<fnEsquemaCabeceraDto>? Cabeceras;
         private List<DataEsquemaDatoBuscar>? resultados;
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
             try
             {
-                EsquemaCabecera = new fnEsquemaCabeceraDto();
-                Columnas = new List<HomologacionDto>();
-                esquema = resultData.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
+                Console.WriteLine("♻️ Refrescando datos en el modal con nuevo `resultData`");
 
-                if (servicio != null)
+                // 🔄 Reiniciar los datos antes de actualizar
+                EsquemaCabecera = null;
+                Columnas = new List<HomologacionDto>();
+                resultados = null;
+                esquema = resultData?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
+
+                if (servicio != null && resultData != null)
                 {
-                    //homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
+                    // 🔄 Forzar actualización de la UI antes de cargar nuevos datos
+                    StateHasChanged();
+                    await Task.Delay(50); // 🔄 Pequeña espera para permitir que Blazor detecte los cambios
+
+                    // Cargar nuevos datos
                     EsquemaCabecera = await servicio.FnEsquemaCabeceraAsync(resultData.IdEsquemaData ?? 0);
-                    //Cabeceras = (List<fnEsquemaCabeceraDto>?)JsonConvert.DeserializeObject<List<fnEsquemaCabeceraDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
-                    Columnas = (List<HomologacionDto>?)JsonConvert.DeserializeObject<List<HomologacionDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
+                    Columnas = JsonConvert.DeserializeObject<List<HomologacionDto>>(EsquemaCabecera?.EsquemaJson ?? "[]") ?? new List<HomologacionDto>();
+                    resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
                 }
-                StateHasChanged();
+
+                StateHasChanged(); // 🔄 Forzar actualización de la UI con los nuevos datos
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine($"❌ Error en OnParametersSetAsync: {e.Message}");
             }
         }
+
+
 
         private async Task<GridDataProviderResult<DataEsquemaDatoBuscar>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataEsquemaDatoBuscar> request)
         {
