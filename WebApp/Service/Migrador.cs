@@ -322,7 +322,7 @@ namespace WebApp.Service.IService
             try
             {
                 // Si el origen de datos es MySQL, se agregan las opciones necesarias a la cadena de conexión
-                if (origenDatos.ToUpper() == "MYSQL")
+                if (origenDatos.ToUpper() == "MYSQL" && idONA == 2)
                 {
                     connectionString += ";AllowZeroDateTime=True;ConvertZeroDateTime=True";
                 }

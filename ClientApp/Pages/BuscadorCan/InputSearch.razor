@@ -1,17 +1,18 @@
+@using BlazorBootstrap
+
 <link href="/css/buscador-can/input-search.css" rel="stylesheet">
 
 <div class="panel-search">
     <div class="panel-input">
         <div class="panel-input-text">
             <i class="fas fa-search" />
-            <input
-                type="text"
-                class="form-control input-text"
-                placeholder="¿Qué certificación necesitas?"
-                @bind="searchText"
-                @oninput="HandleChangeTextSearch"
-                list="suggestions"
-            />
+            <input type="text"
+                   class="form-control input-text"
+                   placeholder="¿Qué certificación necesitas?"
+                   @bind="searchText"
+                   @oninput="HandleChangeTextSearch"
+                   list="suggestions"
+                   disabled="@IsLoading" />
             <datalist id="suggestions">
                 @foreach (var word in ListFnPredictWordsDto)
                 {
@@ -19,11 +20,23 @@
                 }
             </datalist>
         </div>
-        <button type="button" @onclick="onClickFilter">
+
+        <button type="button" @onclick="onClickFilter" disabled="@IsLoading">
             <i class="fas fa-search" />
             <span>Buscar</span>
         </button>
+
+        @if (IsLoading)
+        {
+            <div class="loading-container">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="loading-text">Buscando...</p>
+            </div>
+        }
     </div>
+
     <div class="panel-input-checkbox">
         <input class="form-check-input" type="checkbox" @bind="isExactSearch" />
         <span>Búsqueda exacta</span>

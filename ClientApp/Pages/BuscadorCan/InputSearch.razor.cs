@@ -21,7 +21,12 @@ namespace ClientApp.Pages.BuscadorCan
         [Parameter] public EventCallback<(string, bool)> onClickSearch { get; set; }
 
         /// <summary>
-        /// valor del checkbox de búsqueda exacta.
+        /// Variable de estado para mostrar el spinner de carga.
+        /// </summary>
+        private bool IsLoading { get; set; } = false;
+
+        /// <summary>
+        /// Valor del checkbox de búsqueda exacta.
         /// </summary>
         private bool isExactSearch = false;
 
@@ -41,23 +46,8 @@ namespace ClientApp.Pages.BuscadorCan
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
 
         /// <summary>
-        /// Evento que se dispara cuando se cambia el checkbox.
-        /// </summary>
-        /// <param name="e"></param>
-        private void HandleChangeExactSearch(ChangeEventArgs e)
-        {
-            Console.WriteLine(e.Value);
-            if (e.Value is bool value)
-            {
-                isExactSearch = value;
-            }
-        }
-
-        /// <summary>
         /// Evento que se dispara cuando se cambia el texto del input.
         /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
         private void HandleChangeTextSearch(ChangeEventArgs e)
         {
             searchText = e.Value?.ToString();
@@ -66,34 +56,31 @@ namespace ClientApp.Pages.BuscadorCan
 
             _debounceTimer = new Timer(async _ =>
             {
-                await InvokeAsync(async() => await HandleSearch());
+                await InvokeAsync(async () => await HandleSearch());
             }, null, 500, Timeout.Infinite);
         }
 
         /// <summary>
         /// Método que maneja la búsqueda de texto predictivo.
         /// </summary>
-        /// <returns></returns>
         private async Task HandleSearch()
         {
             if (!string.IsNullOrWhiteSpace(searchText) && iBusquedaService != null)
             {
-                // Crear un FilterItem con los parámetros requeridos
                 var filterItem = new FilterItem(
-                    propertyName: "Word",                  // Nombre de la propiedad a filtrar
-                    value: searchText,                     // Valor de búsqueda
-                    @operator: FilterOperator.Contains,    // Operador de comparación
-                    stringComparison: StringComparison.OrdinalIgnoreCase // Tipo de comparación
+                    propertyName: "Word",
+                    value: searchText,
+                    @operator: FilterOperator.Contains,
+                    stringComparison: StringComparison.OrdinalIgnoreCase
                 );
 
-                // Crear la solicitud de autocompletado con el filtro
                 var request = new AutoCompleteDataProviderRequest<FnPredictWordsDto>
                 {
                     Filter = filterItem
                 };
 
                 ListFnPredictWordsDto = await iBusquedaService.FnPredictWords(request.Filter.Value);
-                await InvokeAsync(() => StateHasChanged());
+                await InvokeAsync(StateHasChanged);
             }
             else
             {
@@ -104,9 +91,20 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método que maneja el evento de clic en el botón de búsqueda.
         /// </summary>
-        /// <returns></returns>
-        private async Task onClickFilter() {
-            await onClickSearch.InvokeAsync((searchText, isExactSearch));
+        private async Task onClickFilter()
+        {
+            IsLoading = true;
+            StateHasChanged();
+
+            try
+            {
+                await onClickSearch.InvokeAsync((searchText, isExactSearch));
+            }
+            finally
+            {
+                IsLoading = false;
+                StateHasChanged();
+            }
         }
     }
 }

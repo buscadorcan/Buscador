@@ -465,3 +465,6 @@ form.search-form {
     width: 50%;
     margin-top: 10px;
 }
+.align-items-start {
+    align-items: flex-start !important;
+}
