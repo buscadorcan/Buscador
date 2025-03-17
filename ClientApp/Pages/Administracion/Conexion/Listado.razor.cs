@@ -1,4 +1,4 @@
-using BlazorBootstrap;
+ï»¿using BlazorBootstrap;
 using Blazored.LocalStorage;
 using ClientApp.Helpers;
 using ClientApp.Services.IService;
@@ -33,7 +33,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         private EventTrackingDto objEventTracking { get; set; } = new();
         private bool IsLoading { get; set; } = false;
         private int ProgressValue { get; set; } = 0;
-        private int PageSize = 10; // Cantidad de registros por página
+        private int PageSize = 10; // Cantidad de registros por pÃ¡gina
         private int CurrentPage = 1;
 
         private IEnumerable<ONAConexionDto> PaginatedItems => listasHevd
@@ -101,7 +101,7 @@ namespace ClientApp.Pages.Administracion.Conexion
                     listasHevd = await iConexionService.GetOnaConexionByOnaListAsync(IdOna) ?? new List<ONAConexionDto>();
                 }
             }
-            // Ajusta la paginación si la lista está vacía o cambia
+            // Ajusta la paginaciÃ³n si la lista estÃ¡ vacÃ­a o cambia
             if (listasHevd.Count > 0 && CurrentPage > TotalPages)
             {
                 CurrentPage = TotalPages;
@@ -109,7 +109,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         }
 
         /// <summary>
-        /// OnTestconexionClick: Test de la conexión externa, comprobando si la conexion esta en linea.
+        /// OnTestconexionClick: Test de la conexiÃ³n externa, comprobando si la conexion esta en linea.
         /// </summary>
         /// <param name="conexion">
         /// <returns cref="Task"> devuelve un valor true o false dependiendo de la conexion</returns>
@@ -128,39 +128,69 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                 if (iDynamicService != null && listasHevd != null)
                 {
-                    // Llamar al método del servicio para probar la conexión
-                    bool isConnected = await iDynamicService.TestConnectionAsync(conexion);
-                    var toastMessage = new ToastMessage
-                    {
-                        Type = isConnected ? ToastType.Success : ToastType.Danger,
-                        Title = "Mensaje de confirmación",
-                        HelpText = $"{DateTime.Now}",
-                        Message = isConnected ? "Conexión satisfactoria" : "Conexión fallida",
-                    };
-
-                    messages.Add(toastMessage);
+                    IsLoading = true;
+                    ProgressValue = 0;
                     StateHasChanged();
-                    // Configurar el cierre automático después de 5 segundos
-                    _ = Task.Delay(5000).ContinueWith(_ =>
-                    {
-                        messages.Remove(toastMessage);
-                        InvokeAsync(StateHasChanged); // Actualizar la UI
-                    });
 
-                    if (isConnected)
+                    try
                     {
-                        return true; // Devuelve true si la conexión fue exitosa
+                        // ðŸ”¹ Iniciar la prueba de conexiÃ³n en un Task separado
+                        var connectionTask = iDynamicService.TestConnectionAsync(conexion);
+
+                        // ðŸ”¥ Simular el progreso en intervalos de 500ms, pero limitÃ¡ndolo a 95% antes de que termine la conexiÃ³n
+                        while (!connectionTask.IsCompleted)
+                        {
+                            await Task.Delay(500); // Espera 500ms antes de aumentar
+                            if (ProgressValue < 95)
+                            {
+                                ProgressValue += 5; // Aumenta en 5% cada 500ms hasta 95%
+                                StateHasChanged();
+                            }
+                        }
+
+                        // ðŸ”¥ Esperar el resultado de la prueba de conexiÃ³n
+                        bool isConnected = await connectionTask;
+
+                        // ðŸ”¹ Asegurar que la barra llegue al 100% solo cuando la prueba de conexiÃ³n termine
+                        ProgressValue = 100;
+                        StateHasChanged();
+
+                        var toastMessage = new ToastMessage
+                        {
+                            Type = isConnected ? ToastType.Success : ToastType.Danger,
+                            Title = "Mensaje de confirmaciÃ³n",
+                            HelpText = $"{DateTime.Now}",
+                            Message = isConnected ? "ConexiÃ³n satisfactoria" : "ConexiÃ³n fallida",
+                        };
+
+                        messages.Add(toastMessage);
+                        StateHasChanged();
+
+                        // Mantener el mensaje visible por mÃ¡s tiempo (5 segundos)
+                        await Task.Delay(5000);
+
+                        // Remover mensaje despuÃ©s de la espera
+                        messages.Remove(toastMessage);
+                        InvokeAsync(StateHasChanged);
+
+                        return isConnected;
+                    }
+                    finally
+                    {
+                        IsLoading = false;
+                        ProgressValue = 0;
+                        StateHasChanged();
                     }
                 }
-                return false; // Devuelve false si algo falla
+                return false;
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                Console.WriteLine($"âŒ Error en OnTestconexionClick: {ex.Message}");
+                return false;
             }
-           
         }
+
 
         /// <summary>
         /// OnMigrarClick: Migrar los datos de la ONA desde el servidor externo.
@@ -186,42 +216,42 @@ namespace ClientApp.Pages.Administracion.Conexion
 
                 try
                 {
-                    // Iniciar un temporizador que aumente progresivamente hasta el 90%
-                    var progressTask = Task.Run(async () =>
+                    // ðŸ”¹ Iniciar la migraciÃ³n en un Task separado para permitir la actualizaciÃ³n de la UI
+                    var migrationTask = iDynamicService.MigrarConexionAsync(conexion);
+
+                    // ðŸ”¥ Simular el progreso en intervalos de 500ms, pero limitÃ¡ndolo a 95% antes de que termine la migraciÃ³n
+                    while (!migrationTask.IsCompleted)
                     {
-                        while (ProgressValue < 90)
+                        await Task.Delay(500); // Espera 500ms antes de aumentar
+                        if (ProgressValue < 95)
                         {
-                            await Task.Delay(500); // Espera 500ms antes de aumentar
-                            ProgressValue += 5; // Aumenta en 5% cada 500ms
+                            ProgressValue += 5; // Aumenta en 5% cada 500ms hasta 95%
                             StateHasChanged();
                         }
-                    });
+                    }
 
-                    // Ejecutar la migración en paralelo
-                    bool migracion = await iDynamicService.MigrarConexionAsync(conexion);
+                    // ðŸ”¥ Esperar el resultado de la migraciÃ³n
+                    bool migracion = await migrationTask;
 
-                    // Esperar a que la barra de progreso llegue a 90%
-                    await progressTask;
-
-                    // Completar la barra de progreso al 100%
+                    // ðŸ”¹ Asegurar que la barra llegue al 100% solo cuando termine la migraciÃ³n
                     ProgressValue = 100;
                     StateHasChanged();
 
                     var toastMessage = new ToastMessage
                     {
                         Type = migracion ? ToastType.Success : ToastType.Danger,
-                        Title = "Mensaje de confirmación",
+                        Title = "Mensaje de confirmaciÃ³n",
                         HelpText = $"{DateTime.Now}",
-                        Message = migracion ? "Migración satisfactoria" : "Migración no realizada",
+                        Message = migracion ? "MigraciÃ³n satisfactoria" : "MigraciÃ³n no realizada",
                     };
 
                     messages.Add(toastMessage);
                     StateHasChanged();
 
-                    // Mantener el mensaje visible por más tiempo (7 segundos)
+                    // Mantener el mensaje visible por mÃ¡s tiempo (7 segundos)
                     await Task.Delay(7000);
 
-                    // Remover mensaje después de la espera
+                    // Remover mensaje despuÃ©s de la espera
                     messages.Remove(toastMessage);
                     InvokeAsync(StateHasChanged);
 
@@ -236,6 +266,7 @@ namespace ClientApp.Pages.Administracion.Conexion
             }
             return false;
         }
+
 
 
         /// <summary>
