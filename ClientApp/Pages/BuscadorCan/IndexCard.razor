@@ -4,7 +4,7 @@
     @if (listaEtiquetasGrilla != null)
     {
         <div class="index-card">
-            <Modal @ref="modal" Size="ModalSize.ExtraLarge" />
+            <Modal @ref="modal" Size="ModalSize.ExtraLarge" UseStaticBackdrop="true" />
             <div class="row">
                 <div class="col-md-4">
                     <GoogleMap @ref="@mapa"
@@ -47,35 +47,35 @@
                                                         var segundaMitad = listaEtiquetasGrilla.Skip(mitad).ToList();
                                                     }
 
-                                                    <div class="row align-self-start">
+                                                    <div class="row">
                                                         <!-- Primera columna -->
                                                         <div class="col-md-6">
                                                             @foreach (var etiqueta in primeraMitad)
                                                             {
-                                                                <div class="mb-2" style="align-items-start">
+                                                                <div class="mb-2">
                                                                     <h6 class="mb-1" style="font-size: 11px !important;">@etiqueta.MostrarWeb</h6>
                                                                     @{
                                                                         // Obtener el dato correspondiente a la etiqueta
                                                                         var dato = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data;
                                                                     }
 
-                                                                    <div class="text-muted small text-start" style="font-size: 11px;">
+                                                                    <div class="text-muted small" style="font-size: 11px;">
                                                                         @if (etiqueta.IdHomologacion == 81)
                                                                         {
-                                                                            <div class="text-start">
-                                                                                <Button @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px;">
+                                                                            <p class="text-start">
+                                                                                <a href="#" @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px;">
                                                                                     @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                                </Button>
-                                                                            </div>
+                                                                                </a>
+                                                                            </p>
 
                                                                         }
                                                                         else if (etiqueta.IdHomologacion == 91)
                                                                         {
-                                                                            <div class="text-start">
-                                                                                <Button @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px;">
+                                                                            <p class="text-start">
+                                                                                <a href="#" @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px;">
                                                                                     @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                                </Button>
-                                                                            </div>
+                                                                                </a>
+                                                                            </p>
 
                                                                         }
                                                                         else if (etiqueta.IdHomologacion == 96 || etiqueta.IdHomologacion == 94 || etiqueta.IdHomologacion == 95)
@@ -115,23 +115,23 @@
                                                                         var dato = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data;
                                                                     }
 
-                                                                    <div class="text-muted small text-start" style="font-size: 11px;">
+                                                                    <div class="text-muted small" style="font-size: 11px;">
                                                                         @if (etiqueta.IdHomologacion == 81)
                                                                         {
-                                                                            <div class="text-start">
-                                                                                <Button @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px;">
+                                                                            <p class="text-start">
+                                                                                <a href="#" @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px;">
                                                                                     @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                                </Button>
-                                                                            </div>
+                                                                                </a>
+                                                                            </p>
 
                                                                         }
                                                                         else if (etiqueta.IdHomologacion == 91)
                                                                         {
-                                                                            <div class="text-start">
-                                                                                <Button @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px;">
+                                                                            <p class="text-start">
+                                                                                <a href="#" @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px;">
                                                                                     @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                                </Button>
-                                                                            </div>
+                                                                                </a>
+                                                                            </p>
                                                                         }
                                                                         else if (etiqueta.IdHomologacion == 96 || etiqueta.IdHomologacion == 94 || etiqueta.IdHomologacion == 95)
                                                                         {

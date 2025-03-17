@@ -468,3 +468,18 @@ form.search-form {
 .align-items-start {
     align-items: flex-start !important;
 }
+
+.button-link {
+    text-align: left !important;
+    display: block !important;
+    width: 100% !important;
+    font-size: 10px !important;
+}
+
+.button-link-fix {
+    text-align: left !important;
+    display: inline-block !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+}
