@@ -142,3 +142,9 @@
         display: none;
     }
 }
+
+.selected-filter {
+    background-color: #007bff !important; /* Color azul Bootstrap */
+    color: white !important; /* Texto en blanco */
+    border-color: #0056b3 !important; /* Borde azul oscuro */
+}

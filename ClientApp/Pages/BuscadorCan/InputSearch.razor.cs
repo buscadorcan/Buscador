@@ -94,7 +94,7 @@ namespace ClientApp.Pages.BuscadorCan
         private async Task onClickFilter()
         {
             IsLoading = true;
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged); // 🔥 Forzar la actualización de la UI
 
             try
             {
@@ -103,7 +103,7 @@ namespace ClientApp.Pages.BuscadorCan
             finally
             {
                 IsLoading = false;
-                StateHasChanged();
+                await InvokeAsync(StateHasChanged); // 🔥 Asegurar que la UI se actualice después de la búsqueda
             }
         }
     }

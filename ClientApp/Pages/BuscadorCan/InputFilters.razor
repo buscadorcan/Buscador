@@ -45,7 +45,7 @@
                         @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
                     </label>
                     <div>
-                        <button class="btn btn-secondary dropdown-toggle custom-bg"
+                        <button class="btn dropdown-toggle custom-bg @(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Count > 0) ? "selected-filter" : "")"
                                 style="font-size: 11px !important;"
                                 type="button"
                                 id="dropdownMenuButton-@currentIndex"

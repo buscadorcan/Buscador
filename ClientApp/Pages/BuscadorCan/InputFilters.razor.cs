@@ -92,20 +92,14 @@ namespace ClientApp.Pages.BuscadorCan
         private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
         {
             bool seleccionado = bool.Parse(isChecked.ToString());
-            // Obtén el CódigoHomologacion de listaEtiquetasFiltros
+
             var codigoHomologacion = listaEtiquetasFiltros?[comboIndex]?.CodigoHomologacion;
+            if (string.IsNullOrWhiteSpace(codigoHomologacion)) return;
 
-            if (string.IsNullOrWhiteSpace(codigoHomologacion))
-            {
-                return;
-            }
-
-            // Busca el filtro correspondiente en selectedValues
             var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
 
             if (filtro == null)
             {
-                // Si no existe el filtro, lo creamos
                 filtro = new FiltrosBusquedaSeleccion
                 {
                     CodigoHomologacion = codigoHomologacion,
@@ -116,7 +110,6 @@ namespace ClientApp.Pages.BuscadorCan
 
             if (seleccionado)
             {
-                // Agregar valor seleccionado
                 if (!filtro.Seleccion.Contains(valor))
                 {
                     filtro.Seleccion.Add(valor);
@@ -124,10 +117,8 @@ namespace ClientApp.Pages.BuscadorCan
             }
             else
             {
-                // Quitar valor deseleccionado
                 filtro.Seleccion.Remove(valor);
 
-                // Si ya no hay selecciones, eliminamos el filtro
                 if (!filtro.Seleccion.Any())
                 {
                     selectedValues.Remove(filtro);
@@ -135,7 +126,9 @@ namespace ClientApp.Pages.BuscadorCan
             }
 
             _ = onFilterChange.InvokeAsync(selectedValues);
+            StateHasChanged(); // 🔥 Forzar la actualización del estado visual del botón
         }
+
 
         /// <summary>
         /// Método para limpiar los filtros
