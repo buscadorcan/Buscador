@@ -8,22 +8,54 @@ using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {
-    public partial class IndvEsquemaModal
+    /// <summary>
+    /// Componente parcial para el modal de esquema.
+    /// </summary>
+    public partial class IndvEsquemaModal : ComponentBase
     {
-        [Parameter]
-        public BuscadorResultadoDataDto? resultData { get; set; }
-        [Parameter]
-        public string? esquema { get; set; }
+        /// <summary>
+        /// Resultado de la búsqueda.
+        /// </summary>
+        [Parameter] public BuscadorResultadoDataDto? resultData { get; set; }
 
-        [Inject]
-        private IBusquedaService? servicio { get; set; }
-        private IJSRuntime JS { get; set; } // Para llamar scripts JavaScript
-        private HomologacionEsquemaDto? homologacionEsquema;
+        /// <summary>
+        /// Esquema.
+        /// </summary>
+        [Parameter] public string? esquema { get; set; }
+
+        /// <summary>
+        /// Servicio de búsqueda.
+        /// </summary>
+        [Inject] private IBusquedaService? servicio { get; set; }
+        
+        /// <summary>
+        /// Servicio de JavaScript.
+        /// </summary>
+        [Inject] private IJSRuntime JS { get; set; } = default!;
+        
+        /// <summary>
+        /// Esquema de cabecera.
+        /// </summary>
         private fnEsquemaCabeceraDto? EsquemaCabecera;
+
+        /// <summary>
+        /// Columnas de la grilla.
+        /// </summary>
         private List<HomologacionDto>? Columnas;
+
+        /// <summary>
+        /// Cabeceras.
+        /// </summary>
         private List<fnEsquemaCabeceraDto>? Cabeceras;
+
+        /// <summary>
+        /// Resultados de la búsqueda.
+        /// </summary>
         private List<DataEsquemaDatoBuscar>? resultados;
 
+        /// <summary>
+        /// Inicializador de datos.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
             try
@@ -47,6 +79,11 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
+        /// <summary>
+        /// Mostrar datos obtenidos en la grilla.
+        /// </summary>
+        /// <param name="request">Solicitud de datos.</param>
+        /// <returns>Resultado de la grilla.</returns>
         private async Task<GridDataProviderResult<DataEsquemaDatoBuscar>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataEsquemaDatoBuscar> request)
         {
             try
@@ -60,15 +97,20 @@ namespace ClientApp.Pages.BuscadorCan
                     resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
                 }
 
+                await JS.InvokeVoidAsync("renderMathJax");
                 return await Task.FromResult(request.ApplyTo(resultados ?? []));
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine(ex);
+                return new GridDataProviderResult<DataEsquemaDatoBuscar>();
             }
 
         }
 
+        /// <summary>
+        /// parseador de formula.
+        /// </summary>
         private string ExtraerFormula(string input)
         {
             // Busca la parte dentro de $$ ... $$ y extrae solo la fórmula
@@ -83,7 +125,9 @@ namespace ClientApp.Pages.BuscadorCan
             return input; // Si no encuentra, devuelve el mismo dato
         }
 
-
+        /// <summary>
+        /// renderizado de formula luego de la carga de página.
+        /// </summary>
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
