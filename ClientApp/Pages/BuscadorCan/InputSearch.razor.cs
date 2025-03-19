@@ -10,6 +10,8 @@ namespace ClientApp.Pages.BuscadorCan
     /// </summary>
     public partial class InputSearch : ComponentBase
     {
+        private string errorMessage = "";
+
         /// <summary>
         /// Servicio de solicitud de búsqueda.
         /// </summary>
@@ -94,17 +96,39 @@ namespace ClientApp.Pages.BuscadorCan
         private async Task onClickFilter()
         {
             IsLoading = true;
-            await InvokeAsync(StateHasChanged); // 🔥 Forzar la actualización de la UI
+            errorMessage = ""; // Limpiar mensaje previo
+            await InvokeAsync(StateHasChanged);
 
             try
             {
+                // Validar que el campo de búsqueda no esté vacío
+                if (string.IsNullOrWhiteSpace(searchText))
+                {
+                    errorMessage = "El campo de búsqueda está vacío, verifique.";
+                    return;
+                }
+
+                // Validar posibles inyecciones SQL básicas
+                if (ContieneSQLInjection(searchText))
+                {
+                    errorMessage = "Entrada no válida. Se han detectado caracteres sospechosos en la búsqueda.";
+                    return;
+                }
+
+                // Ejecutar la búsqueda
                 await onClickSearch.InvokeAsync((searchText, isExactSearch));
             }
             finally
             {
                 IsLoading = false;
-                await InvokeAsync(StateHasChanged); // 🔥 Asegurar que la UI se actualice después de la búsqueda
+                await InvokeAsync(StateHasChanged);
             }
+        }
+
+        private bool ContieneSQLInjection(string input)
+        {
+            string[] palabrasPeligrosas = { "DELETE FROM", "DROP TABLE", "INSERT INTO", "UPDATE ", "SELECT ", "--", ";" };
+            return palabrasPeligrosas.Any(p => input.IndexOf(p, StringComparison.OrdinalIgnoreCase) >= 0);
         }
     }
 }

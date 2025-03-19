@@ -3,6 +3,11 @@
 <link href="/css/buscador-can/input-search.css" rel="stylesheet">
 
 <div class="panel-search">
+    <!-- Mensaje de error debajo del input -->
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="text-danger mt-2">@errorMessage</div>
+    }
     <div class="panel-input">
         <div class="panel-input-text">
             <i class="fas fa-search" />
@@ -25,7 +30,6 @@
             <i class="fas fa-search" />
             <span>Buscar</span>
         </button>
-
         @if (IsLoading)
         {
             <div class="loading-container">
