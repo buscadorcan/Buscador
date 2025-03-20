@@ -1,20 +1,16 @@
-@inject NavigationManager Navigation
+﻿@inject NavigationManager Navigation
 
 <link href="/css/buscador-can/input-filters.css" rel="stylesheet">
 
 <div class="panel-input-filters">
     <div class="panel-input-filters-title">
-        @if(isFilterVisible) 
-        {
-            <div @onclick="() => isFilterVisible = false">Ocultar Filtros Avanzados</div>
-        }
-        else {
-            <div @onclick="() => isFilterVisible = true">Filtros Avanzados</div>
-        }
+        <div onclick="toggleFilters()">
+            <span id="toggleText">Filtros Avanzados</span>
+        </div>
     </div>
     <div class="panel-input-filters-line" />
     <div class="panel-input-filters-img">
-        @if(isGridVisible)
+        @if (isGridVisible)
         {
             <div class="active" @onclick="() => _ = isGridVisibleChanged.InvokeAsync(false)">
                 <img src="login/img/location-on.svg" alt="Cards" />
@@ -31,62 +27,79 @@
         </div>
     </div>
 </div>
-@if (isFilterVisible) {
-    <div class="panel-input-filters-content">
 
-        @if (listadeOpciones != null)
+<!-- 🔥 Los filtros están ocultos al inicio y se muestran solo cuando el usuario hace clic -->
+<div id="filterPanel" class="panel-input-filters-content">
+    @if (listadeOpciones != null)
+    {
+        @for (int i = 0; i < listadeOpciones.Count; i++)
         {
-            @for (int i = 0; i < listadeOpciones.Count; i++)
-            {
-                var currentIndex = i;
-                <div class="col form-check-label" style="font-size: 12px !important;">
-                    <label for="select-@currentIndex" class="form-label text-small" style="font-weight: bold;"
-                            title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
-                        @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
-                    </label>
-                    <div>
-                        <button class="btn dropdown-toggle custom-bg @(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Count > 0) ? "selected-filter" : "")"
-                                style="font-size: 11px !important;"
-                                type="button"
-                                id="dropdownMenuButton-@currentIndex"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            Seleccionar @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
-                        </button>
-                        <ul class="dropdown-menu p-2" 
-                            style="font-size: 11px !important;" 
-                            aria-labelledby="dropdownMenuButton-@currentIndex"
-                            data-bs-auto-close="false">
-                            @if (listadeOpciones?[currentIndex] != null)
+            var currentIndex = i;
+            <div class="col form-check-label" style="font-size: 12px !important;">
+                <label for="select-@currentIndex" class="form-label text-small" style="font-weight: bold;"
+                       title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
+                    @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
+                </label>
+                <div>
+                    <button class="btn dropdown-toggle custom-bg @(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Count > 0) ? "selected-filter" : "")"
+                            style="font-size: 11px !important;"
+                            type="button"
+                            id="dropdownMenuButton-@currentIndex"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Seleccionar @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
+                    </button>
+                    <ul class="dropdown-menu p-2"
+                        style="font-size: 11px !important;"
+                        aria-labelledby="dropdownMenuButton-@currentIndex"
+                        data-bs-auto-close="false">
+                        @if (listadeOpciones?[currentIndex] != null)
+                        {
+                            @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
                             {
-                                @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
-                                {
-                                    <li>
-                                        <div class="form-check" style="display: flex; align-items: center;">
-                                            <input class="form-check-input"
-                                                    type="checkbox"
-                                                    id="check-@currentIndex-@opcion.MostrarWeb"
-                                                    style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
-                                                    @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
-                                            <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb" style="margin: 0;">
-                                                @opcion.MostrarWeb
-                                            </label>
-                                        </div>
-                                    </li>
-                                }
+                                <li>
+                                    <div class="form-check" style="display: flex; align-items: center;">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="check-@currentIndex-@opcion.MostrarWeb"
+                                               style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
+                                               @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
+                                        <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb" style="margin: 0;">
+                                            @opcion.MostrarWeb
+                                        </label>
+                                    </div>
+                                </li>
                             }
-                        </ul>
-                    </div>
+                        }
+                    </ul>
                 </div>
-            }
+            </div>
         }
-        <div class="panel-input-filters-content-button">
-            <label>Limpiar Filtro</label>
-            <button type="button" @onclick="LimpiarFiltros">
-                <span>Limpiar</span>
-                <i class="fas fa-broom" />
-            </button>
-        </div>
+    }
+    <div class="panel-input-filters-content-button">
+        <label>Limpiar Filtro</label>
+        <button type="button" @onclick="LimpiarFiltros">
+            <span>Limpiar</span>
+            <i class="fas fa-broom" />
+        </button>
     </div>
+</div>
 
-}
+
+<!-- 🔥 Agregar JavaScript al final para alternar la visibilidad -->
+<script>
+       function toggleFilters() {
+        var panel = document.getElementById("filterPanel");
+        var toggleText = document.getElementById("toggleText");
+
+        if (panel.classList.contains("show")) {
+            panel.classList.remove("show");
+            toggleText.innerText = "Filtros Avanzados";
+        } else {
+            panel.classList.add("show");
+            toggleText.innerText = "Ocultar Filtros Avanzados";
+        }
+    }
+
+
+</script>

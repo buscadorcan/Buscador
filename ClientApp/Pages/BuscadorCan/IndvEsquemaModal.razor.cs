@@ -56,6 +56,13 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Inicializador de datos.
         /// </summary>
+        /// 
+
+
+        private string sortColumn = "Id"; // Columna por defecto
+        private bool sortDescending = false; // Orden predeterminado (ascendente)
+        private Dictionary<string, string> filtros = new();
+
         protected override async Task OnInitializedAsync()
         {
             try
@@ -88,25 +95,94 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
-
-
                 if (resultados is null && servicio != null)
                 {
-                    // 🔥 Reiniciar la lista antes de cargar nuevos datos
-                    resultados = new List<DataEsquemaDatoBuscar>();
                     resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
                 }
 
-                await JS.InvokeVoidAsync("renderMathJax");
-                return await Task.FromResult(request.ApplyTo(resultados ?? []));
+                var datosFiltrados = resultados ?? new List<DataEsquemaDatoBuscar>();
+
+                // ✅ Aplicar Filtros Manuales
+                if (filtros.Any())
+                {
+                    foreach (var filtro in filtros)
+                    {
+                        if (!string.IsNullOrWhiteSpace(filtro.Value))
+                        {
+                            datosFiltrados = datosFiltrados
+                                .Where(r => r.DataEsquemaJson != null && r.DataEsquemaJson.Any(d =>
+                                    d.Data != null && d.Data.Contains(filtro.Value, StringComparison.OrdinalIgnoreCase)))
+                                .ToList();
+                        }
+                    }
+                }
+
+                // ✅ Aplicar Ordenamiento desde request
+                if (request.Sorting != null && request.Sorting.Any())
+                {
+                    foreach (var sort in request.Sorting)
+                    {
+                        datosFiltrados = sort.SortDirection == SortDirection.Descending
+                            ? datosFiltrados.OrderByDescending(d => GetPropertyValue(d, sort.SortString)).ToList()
+                            : datosFiltrados.OrderBy(d => GetPropertyValue(d, sort.SortString)).ToList();
+                    }
+                }
+
+                return new GridDataProviderResult<DataEsquemaDatoBuscar> { Data = datosFiltrados };
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                return new GridDataProviderResult<DataEsquemaDatoBuscar>();
+                Console.WriteLine($"❌ Error en HomologacionEsquemasDataProvider: {ex.Message}");
+                return new GridDataProviderResult<DataEsquemaDatoBuscar> { Data = new List<DataEsquemaDatoBuscar>() };
+            }
+        }
+
+
+        private void FiltrarTabla(string columna, string valor)
+        {
+            if (filtros.ContainsKey(columna))
+            {
+                filtros[columna] = valor;
+            }
+            else
+            {
+                filtros.Add(columna, valor);
             }
 
+            StateHasChanged();
         }
+
+        /// <summary>
+        /// Obtiene dinámicamente el valor de una propiedad de un objeto.
+        /// </summary>
+        private object GetPropertyValue(object obj, string propertyName)
+        {
+            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
+                return string.Empty;
+
+            var prop = obj.GetType().GetProperty(propertyName);
+            return prop?.GetValue(obj, null) ?? string.Empty;
+        }
+
+
+        /// <summary>
+        /// Método que cambia el orden de la columna seleccionada.
+        /// </summary>
+        private void CambiarOrden(string columna)
+        {
+            if (sortColumn == columna)
+            {
+                sortDescending = !sortDescending; // Si es la misma columna, alternar orden
+            }
+            else
+            {
+                sortColumn = columna;
+                sortDescending = false; // Nueva columna, empezar en ascendente
+            }
+
+            StateHasChanged(); // Refrescar UI
+        }
+
 
         /// <summary>
         /// parseador de formula.

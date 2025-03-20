@@ -66,6 +66,12 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método de inicialización de datos.
         /// </summary>
+
+
+        private string sortColumn = "Id"; // Columna predeterminada
+        private bool sortDescending = false; // Orden predeterminado (ascendente)
+        private Dictionary<string, string> filtros = new Dictionary<string, string>();
+
         protected override async Task OnInitializedAsync()
         {
             try
@@ -94,10 +100,84 @@ namespace ClientApp.Pages.BuscadorCan
                 resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaFK, idONA ?? 0);
             }
 
-            await JS.InvokeVoidAsync("renderMathJax");
+            var datosFiltrados = resultados ?? new List<DataHomologacionEsquema>();
 
-            return await Task.FromResult(request.ApplyTo(resultados ?? []));
+            // ✅ Aplicar filtros manualmente
+            foreach (var filtro in filtros)
+            {
+                if (!string.IsNullOrWhiteSpace(filtro.Value))
+                {
+                    datosFiltrados = datosFiltrados
+                        .Where(r => r.DataEsquemaJson != null && r.DataEsquemaJson.Any(d =>
+                            d.Data.Contains(filtro.Value, StringComparison.OrdinalIgnoreCase)))
+                        .ToList();
+                }
+            }
+
+            // ✅ Aplicar ordenamiento
+            if (!string.IsNullOrEmpty(sortColumn))
+            {
+                if (sortDescending)
+                {
+                    datosFiltrados = datosFiltrados.OrderByDescending(d => GetPropertyValue(d, sortColumn)).ToList();
+                }
+                else
+                {
+                    datosFiltrados = datosFiltrados.OrderBy(d => GetPropertyValue(d, sortColumn)).ToList();
+                }
+            }
+
+            return new GridDataProviderResult<DataHomologacionEsquema> { Data = datosFiltrados };
         }
+
+        /// <summary>
+        /// Guarda los valores de filtro en un diccionario y actualiza la grilla.
+        /// </summary>
+        private void FiltrarTabla(string columna, string valor)
+        {
+            if (filtros.ContainsKey(columna))
+            {
+                filtros[columna] = valor;
+            }
+            else
+            {
+                filtros.Add(columna, valor);
+            }
+
+            StateHasChanged(); // Refresca la UI
+        }
+
+        /// <summary>
+        /// Alterna la ordenación de una columna.
+        /// </summary>
+        private void CambiarOrden(string columna)
+        {
+            if (sortColumn == columna)
+            {
+                sortDescending = !sortDescending;
+            }
+            else
+            {
+                sortColumn = columna;
+                sortDescending = false;
+            }
+
+            StateHasChanged(); // Refresca la UI
+        }
+
+
+        /// <summary>
+        /// Obtiene dinámicamente el valor de una propiedad de un objeto.
+        /// </summary>
+        private object GetPropertyValue(object obj, string propertyName)
+        {
+            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
+                return string.Empty;
+
+            var prop = obj.GetType().GetProperty(propertyName);
+            return prop?.GetValue(obj, null) ?? string.Empty;
+        }
+
 
         /// <summary>
         /// Método para extraer la fórmula de un texto.

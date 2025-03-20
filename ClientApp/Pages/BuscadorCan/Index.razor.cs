@@ -133,7 +133,7 @@ namespace ClientApp.Pages.BuscadorCan
         private void HandlePanelONAChange (List<vwPanelONADto> newPanelONA)
         {
             var nroOrg = newPanelONA.Sum(x => x.NroOrg);
-            newPanelONA.Insert(0, new vwPanelONADto { NroOrg = nroOrg, Pais = "Total" });
+            newPanelONA.Insert(0, new vwPanelONADto { NroOrg = nroOrg, Pais = "Total Resultados" });
             PanelONA = newPanelONA;
         }
 
