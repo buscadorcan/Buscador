@@ -483,3 +483,18 @@ form.search-form {
     border: none !important;
     background: none !important;
 }
+
+#filterPanel {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    height: 0;
+    overflow: hidden;
+}
+
+#filterPanel.show {
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+}
+

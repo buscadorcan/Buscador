@@ -213,35 +213,54 @@ namespace ClientApp.Pages.BuscadorCan
             markers.Clear();
             var processedLocations = new HashSet<string>();
 
-            uniqueLocations = ListDataDto?
-                .Select(d =>
+            // ✅ Diccionario que almacena la cantidad de ONAs por ciudad
+            var onasPorCiudad = new Dictionary<string, int>();
+
+            // ✅ Agrupamos las ONAs por ciudad y contamos cuántas hay
+            var agrupacionONAs = ListDataDto?
+                .Where(d => d.DataEsquemaJson != null)
+                .GroupBy(d => new
                 {
-                    var pais = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim();
-                    var ciudad = d.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 85)?.Data?.Trim();
-
-                    return (!string.IsNullOrEmpty(pais) && !string.IsNullOrEmpty(ciudad)) ? (pais, ciudad) : default;
+                    Pais = d.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim(),
+                    Ciudad = d.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 85)?.Data?.Trim()
                 })
-                .Where(loc => loc != default)
-                .Distinct()
-                .ToList() ?? new List<(string, string)>();
+                .Where(g => !string.IsNullOrEmpty(g.Key.Pais) && !string.IsNullOrEmpty(g.Key.Ciudad))
+                .ToDictionary(
+                    g => $"{g.Key.Pais}-{g.Key.Ciudad}", // Clave: "Ecuador-Quito"
+                    g => g.Count() // Valor: cantidad de ONAs en esa ciudad
+                );
 
-            foreach (var location in uniqueLocations)
+            foreach (var location in agrupacionONAs)
             {
-                var locationKey = $"{location.Pais}-{location.Ciudad}";
+                string locationKey = location.Key;
+                string[] locationSplit = locationKey.Split('-');
+                string pais = locationSplit[0];
+                string ciudad = locationSplit[1];
+
                 if (processedLocations.Contains(locationKey)) continue;
 
-                var coordenadas = await ObtenerCoordenadas(location.Pais, location.Ciudad);
+                var coordenadas = await ObtenerCoordenadas(pais, ciudad);
                 if (coordenadas != null)
                 {
                     // Obtener el ícono del ONA para esta ubicación
-                    string? iconoRuta = await ObtenerIconoONA(location.Pais, location.Ciudad);
+                    string? iconoRuta = await ObtenerIconoONA(pais, ciudad);
 
-                    // Agregar marcador con icono personalizado
+                    // ✅ Recuperamos la cantidad de ONAs del diccionario
+                    int cantidadONAs = onasPorCiudad.ContainsKey(locationKey) ? onasPorCiudad[locationKey] : 1;
+
+                    // ✅ Agregamos el marcador con la cantidad de ONAs
                     markers.Add(new GoogleMapMarker
                     {
                         Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
-                        Title = $"{location.Ciudad}, {location.Pais}",
-                        Content = $"<img src='{iconoRuta}' width='32' height='32' style='border-radius:50%;' />"
+                        Title = $"{ciudad}, {pais} - {cantidadONAs} ONA(s)", // ✅ Título del marcador
+                        Content = $@"
+                                <div style='text-align: center; font-size: 12px;'>                                   
+                                    <p style='margin: 2px 0; font-weight: bold;'>
+                                        <span style='font-size: 13px;'>{ciudad}, {pais}</span><br />
+                                        <span style='color: red; font-weight: bold; font-size: 14px;'>ONAs: {cantidadONAs}</span>
+                                    </p>
+                                    <img src='{iconoRuta}' width='32' height='32' style='border-radius:50%;' />
+                                </div>"
                     });
 
                     processedLocations.Add(locationKey);
@@ -259,7 +278,6 @@ namespace ClientApp.Pages.BuscadorCan
 
             markers = new List<GoogleMapMarker>(markers);
         }
-
 
         /// <summary>
         /// Método para obtener las coordenadas de un lugar.

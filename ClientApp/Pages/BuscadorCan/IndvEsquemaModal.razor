@@ -21,12 +21,33 @@
                           Responsive="true"
                           FixedHeader="true"
                           Height="350"
+                          AllowFiltering="true"
+                          AllowSorting="true"
                           Style="font-size: 10px !important;">
+
                         @foreach (var item in Columnas)
                         {
-                            <GridColumn TItem="DataEsquemaDatoBuscar" PropertyName="@item.MostrarWeb">
+                            <GridColumn TItem="DataEsquemaDatoBuscar"
+                                        PropertyName="@item.MostrarWeb"
+                                        Sortable="true"
+                                        Filterable="true">
                                 <HeaderContent>
-                                    <Tooltip Title="@item.TooltipWeb"><span style="font-weight: bold;">@item.MostrarWeb</span></Tooltip>
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <Tooltip Title="@item.TooltipWeb">
+                                            <span style="font-weight: bold; cursor: pointer;" @onclick="() => CambiarOrden(item.MostrarWeb)">
+                                                @item.MostrarWeb
+                                                @if (sortColumn == item.MostrarWeb)
+                                                {
+                                                    <span>@(sortDescending ? " 🔽" : " 🔼")</span>
+                                                }
+                                            </span>
+                                        </Tooltip>
+                                        <!-- ✅ Input de filtro dentro del HeaderContent -->
+                                        <input type="text" class="form-control form-control-sm"
+                                               placeholder="Filtrar..."
+                                               style="width: 100%; font-size: 10px; margin-top: 5px;"
+                                               @oninput="@(e => FiltrarTabla(item.MostrarWeb, e.Value?.ToString() ?? string.Empty))" />
+                                    </div>
                                 </HeaderContent>
                                 <ChildContent>
                                     @{
@@ -34,13 +55,11 @@
                                     }
                                     @if (dato != null && dato.Contains("$$") && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
                                     {
-                                        <!-- Renderizamos la fórmula LaTeX -->
                                         string formulaExtraida = ExtraerFormula(dato);
                                         <span class="latex-formula">@((MarkupString)$"\\( {formulaExtraida} \\)")</span>
                                     }
                                     else
                                     {
-                                        <!-- Renderizamos texto normal -->
                                         @((MarkupString)dato)
                                     }
                                 </ChildContent>
@@ -50,7 +69,5 @@
                 </div>
             </Content>
         </Tab>
-
     }
-
 </Tabs>
