@@ -38,8 +38,7 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
             objEventTracking.CodigoHomologacionMenu = "/nuevo-config-menu";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "nuevo-config-menu";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
-                                              await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
@@ -104,8 +103,7 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
             objEventTracking.CodigoHomologacionMenu = "/nuevo-config-menu";
             objEventTracking.NombreAccion = "RegistrarConfiguracionMenu";
             objEventTracking.NombreControl = "btnGuardar";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Nombre_Local) + ' ' +
-                                              await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Apellido_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";

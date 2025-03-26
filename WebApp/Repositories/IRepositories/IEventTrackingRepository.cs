@@ -31,5 +31,36 @@ namespace WebApp.Repositories.IRepositories
         /// <param name="idHMenu">Identificador del menú.</param>
         /// <returns>Devuelve un objeto <see cref="Menus"/> si se encuentra, de lo contrario <c>null</c>.</returns>
         Menus? FindDataById(int idHRol, int idHMenu);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<VwEventUserAll> GetEventUserAll();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="report"></param>
+        /// <param name="fini"></param>
+        /// <param name="ffin"></param>
+        /// <returns></returns>
+        List<EventUser> GetEventAll(string report, DateOnly fini, DateOnly ffin);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fini"></param>
+        /// <param name="ffin"></param>
+        /// <returns></returns>
+        bool DeleteEventAll(DateOnly fini, DateOnly ffin);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        bool DeleteEventById(int id);
     }
 }

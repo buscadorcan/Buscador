@@ -1,4 +1,5 @@
-﻿using ClientApp.Helpers;
+﻿using Blazored.LocalStorage;
+using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -96,6 +97,13 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private List<VwGrillaDto>? listaEtiquetasCards;
 
+        [Inject]
+        private IBusquedaService iBusquedaService { get; set; }
+
+        private EventTrackingDto objEventTracking { get; set; } = new();
+
+        private object filtros {get; set;} 
+
         /// <summary>
         /// Método de inicialización del componente.
         /// </summary>
@@ -157,6 +165,10 @@ namespace ClientApp.Pages.BuscadorCan
             isExactSearch = _isExactSearch;
             ActivePageNumber = 1;
             await BuscarEsquemas(_searchText, _isExactSearch);
+
+            // Registra los Eventos
+            registeEvent("BuscarEsquema", "Buscar", "KEY_USER_SEARCH", JsonConvert.SerializeObject(filtros));
+
         }
 
         /// <summary>
@@ -195,7 +207,7 @@ namespace ClientApp.Pages.BuscadorCan
             {
                 if (iservicio != null)
                 {
-                    var filtros = new
+                    filtros = new
                     {
                         ExactaBuscar = isExactSearch,
                         TextoBuscar = searchText ?? "",
@@ -272,6 +284,21 @@ namespace ClientApp.Pages.BuscadorCan
                 return "https://via.placeholder.com/16";
             }
         }
+
+        private async void registeEvent(string nombreAccion, 
+                                        string nombreControl, 
+                                        string codigoHomologacion, 
+                                        string filtros)
+        {
+            objEventTracking.CodigoHomologacionMenu = "/";
+            objEventTracking.NombreAccion = nombreAccion;
+            objEventTracking.NombreControl = nombreControl;
+            objEventTracking.idUsuario = 0;
+            objEventTracking.CodigoHomologacionRol = codigoHomologacion;
+            objEventTracking.ParametroJson = filtros; ;
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+        }
     }
 
     /// <summary>
@@ -296,6 +323,5 @@ namespace ClientApp.Pages.BuscadorCan
         {
             Seleccion = new List<string>();
         }
-
     }
 }

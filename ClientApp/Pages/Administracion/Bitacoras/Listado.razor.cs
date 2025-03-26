@@ -105,13 +105,13 @@ namespace ClientApp.Pages.Administracion.Bitacoras
         /// Carga la lista de logs de migración y controla el acceso según el rol del usuario.
         /// </summary>
         private List<OnaDto>? listaONAs;
-       
+        
         protected override async Task OnInitializedAsync()
         {
             objEventTracking.CodigoHomologacionMenu = "/validacion";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "validacion";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
@@ -173,7 +173,7 @@ namespace ClientApp.Pages.Administracion.Bitacoras
                 objEventTracking.CodigoHomologacionMenu = "/bitacora";
                 objEventTracking.NombreAccion = "BuscarDatos";
                 objEventTracking.NombreControl = "btnGuardar";
-                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
                 objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";

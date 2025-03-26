@@ -41,7 +41,7 @@ namespace ClientApp.Pages.Administracion.Reportes
             objEventTracking.CodigoHomologacionMenu = "/reportecan";
             objEventTracking.NombreAccion = "OnAfterRenderAsync";
             objEventTracking.NombreControl = "reportecan";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
