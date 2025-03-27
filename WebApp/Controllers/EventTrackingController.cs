@@ -51,6 +51,91 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("EventUserAll")]
+        public IActionResult GetEventUserAll()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<VwEventUserAllDto>>
+                {
+                    Result = _iRepo.GetEventUserAll().Select(item => _mapper.Map<VwEventUserAllDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetEventUserAll));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="report"></param>
+        /// <param name="fini"></param>
+        /// <param name="ffin"></param>
+        /// <returns></returns>
+        [HttpGet("Even")]
+        public IActionResult GetEventAll([FromQuery] string report, [FromQuery] DateOnly fini, [FromQuery] DateOnly ffin)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<EventUserDto>>
+                {
+                    Result = _iRepo.GetEventAll(report, fini, ffin).Select(item => _mapper.Map<EventUserDto>(item)).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetEventUserAll));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fini"></param>
+        /// <param name="ffin"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteEven/{fini}/{ffin}")]
+        public IActionResult DeleteEventAll(DateOnly fini, DateOnly ffin)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<bool>
+                {
+                    Result = _iRepo.DeleteEventAll(fini, ffin)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetEventUserAll));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codigoEvento"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteEvenById/{codigoEvento}")]
+        public IActionResult DeleteEventById(int codigoEvento)
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<bool>
+                {
+                    Result = _iRepo.DeleteEventById(codigoEvento)
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetEventUserAll));
+            }
+        }
 
     }
 }

@@ -66,7 +66,7 @@ namespace ClientApp.Pages.Administracion.Grupo
             objEventTracking.CodigoHomologacionMenu = "/editar-grupos";
             objEventTracking.NombreAccion = "editar-grupos";
             objEventTracking.NombreControl = "OnInitializedAsync";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
@@ -108,7 +108,7 @@ namespace ClientApp.Pages.Administracion.Grupo
             objEventTracking.CodigoHomologacionMenu = "/editar-grupos";
             objEventTracking.NombreAccion = "GuardarHomologacion";
             objEventTracking.NombreControl = "btnGuardar";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";

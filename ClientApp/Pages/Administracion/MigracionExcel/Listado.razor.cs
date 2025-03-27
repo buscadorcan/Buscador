@@ -104,7 +104,7 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             objEventTracking.CodigoHomologacionMenu = "/migracion-excel";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "migracion-excel";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";

@@ -61,7 +61,7 @@ namespace ClientApp.Services
                     {
                         var result = respuesta.Result;
                         await _localStorage.SetItemAsync(Inicializar.Token_Local, result?.Token);
-                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.Email);
+                        await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Local, result?.Usuario?.IdUsuario);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Nombre_Local, result?.Usuario?.Nombre);
                         await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Apellido_Local, result?.Usuario?.Apellido);
                         //await _localStorage.SetItemAsync(Inicializar.Datos_Usuario_Rol_Local, result?.Usuario?.IdHomologacionRol);

@@ -175,7 +175,7 @@ namespace ClientApp.Pages.Administracion.ONA
             objEventTracking.CodigoHomologacionMenu = "/onas";
             objEventTracking.NombreAccion = "ConfirmDelete";
             objEventTracking.NombreControl = "btnEliminar";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
@@ -208,7 +208,7 @@ namespace ClientApp.Pages.Administracion.ONA
             objEventTracking.CodigoHomologacionMenu = "/onas";
             objEventTracking.NombreAccion = "OnInitializedAsync";
             objEventTracking.NombreControl = "onas";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "";
