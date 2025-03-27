@@ -36,6 +36,7 @@ builder.Services.AddScoped<IEsquemaService, EsquemaService>();
 builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
 builder.Services.AddScoped<IThesaurusService, ThesaurusService>();
 builder.Services.AddScoped<ILoginRetryValidatorService, LoginRetryValidatorService>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 builder.Services.AddScoped<IReporteService, ReporteService>();
 

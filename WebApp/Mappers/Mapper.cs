@@ -91,6 +91,12 @@ namespace WebApp.Mappers
             CreateMap<Expansion, ExpansionDto>();
             CreateMap<ExpansionDto, Expansion>();
             CreateMap<Replacement, ReplacementDto>();
+
+            //event
+            CreateMap<VwEventUserAll, VwEventUserAllDto>();
+            CreateMap<VwEventUserAllDto, VwEventUserAll>();
+            CreateMap<EventUser, EventUserDto>();
+            CreateMap<EventUserDto, EventUser>();
         }
     }
 }

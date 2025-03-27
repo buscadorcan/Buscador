@@ -70,6 +70,13 @@
 --    ,UsuarioIP 
 --    ,UsuarioPais
 --    ,UsuarioCiudad
+--    ,NULL AS ExactaBuscar
+--    ,NULL AS TextoBuscar 
+--    ,NULL AS FiltroPais 
+--    ,NULL AS FiltroOna 
+--    ,NULL AS FiltroEsquema 
+--    ,NULL AS FiltroNorma 
+--    ,NULL AS FiltroEstado
 --    ,ErrorTracking
 --    ,FechaCreacion
 --FROM    vwEventTracking
@@ -94,6 +101,13 @@
 --    ,UsuarioIP 
 --    ,UsuarioPais
 --    ,UsuarioCiudad
+--    ,NULL AS ExactaBuscar
+--    ,NULL AS TextoBuscar 
+--    ,NULL AS FiltroPais 
+--    ,NULL AS FiltroOna 
+--    ,NULL AS FiltroEsquema 
+--    ,NULL AS FiltroNorma 
+--    ,NULL AS FiltroEstado
 --    ,ErrorTracking
 --    ,FechaCreacion
 --FROM    vwEventTracking
@@ -118,6 +132,13 @@
 --    ,UsuarioIP 
 --    ,UsuarioPais
 --    ,UsuarioCiudad
+--    ,NULL AS ExactaBuscar
+--    ,NULL AS TextoBuscar 
+--    ,NULL AS FiltroPais 
+--    ,NULL AS FiltroOna 
+--    ,NULL AS FiltroEsquema 
+--    ,NULL AS FiltroNorma 
+--    ,NULL AS FiltroEstado
 --    ,ErrorTracking
 --    ,FechaCreacion
 --FROM    vwEventTracking

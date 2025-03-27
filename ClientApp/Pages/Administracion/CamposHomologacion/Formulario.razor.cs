@@ -63,7 +63,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
                 objEventTracking.CodigoHomologacionMenu = "/editar-campos-homologacion";
                 objEventTracking.NombreAccion = "OnInitializedAsync";
                 objEventTracking.NombreControl = "editar-campos-homologacion";
-                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
                 objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
@@ -75,7 +75,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
                 objEventTracking.CodigoHomologacionMenu = "/nuevo-campos-homologacion";
                 objEventTracking.NombreAccion = "OnInitializedAsync";
                 objEventTracking.NombreControl = "nuevo-campos-homologacion";
-                objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+                objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
                 objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
                 objEventTracking.ParametroJson = "{}";
                 objEventTracking.UbicacionJson = "";
@@ -98,7 +98,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             objEventTracking.CodigoHomologacionMenu = "/nuevo-campos-homologacion";
             objEventTracking.NombreAccion = "GuardarHomologacion";
             objEventTracking.NombreControl = "btnGuardar";
-            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
             objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
             objEventTracking.ParametroJson = "{}";
             objEventTracking.UbicacionJson = "{}";
