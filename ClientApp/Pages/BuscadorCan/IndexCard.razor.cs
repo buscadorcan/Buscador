@@ -54,6 +54,7 @@ namespace ClientApp.Pages.BuscadorCan
                 if (!Enumerable.SequenceEqual(_listDataDto ?? new(), value ?? new()))
                 {
                     _listDataDto = value;
+                    currentPage = 1; // Reiniciar a la página 1 cuando cambia la lista
                     _ = ObtenerCoordenadasYMarcarMapa();
                 }
             }
@@ -102,6 +103,16 @@ namespace ClientApp.Pages.BuscadorCan
         /// google maps
         /// </summary>
         private GoogleMap? mapa;
+
+        private int currentPage = 1;
+
+        private int pageSize = 10;
+
+        private IEnumerable<BuscadorResultadoDataDto> PagedListDataDto => _listDataDto?.Skip((currentPage - 1) * pageSize).Take(pageSize) ?? new List<BuscadorResultadoDataDto>();
+        private int totalPages => (int)Math.Ceiling((_listDataDto?.Count ?? 0) / (double)pageSize);
+
+        private bool CanGoNext => currentPage < totalPages;
+        private bool CanGoBack => currentPage > 1;
 
         /// <summary>
         /// Inicializar vaklores
@@ -213,10 +224,7 @@ namespace ClientApp.Pages.BuscadorCan
             markers.Clear();
             var processedLocations = new HashSet<string>();
 
-            // ✅ Diccionario que almacena la cantidad de ONAs por ciudad
-            var onasPorCiudad = new Dictionary<string, int>();
-
-            // ✅ Agrupamos las ONAs por ciudad y contamos cuántas hay
+            // ✅ Agrupamos las ONAs por ciudad y contamos cuántos OECs distintos hay en cada ciudad
             var agrupacionONAs = ListDataDto?
                 .Where(d => d.DataEsquemaJson != null)
                 .GroupBy(d => new
@@ -226,8 +234,11 @@ namespace ClientApp.Pages.BuscadorCan
                 })
                 .Where(g => !string.IsNullOrEmpty(g.Key.Pais) && !string.IsNullOrEmpty(g.Key.Ciudad))
                 .ToDictionary(
-                    g => $"{g.Key.Pais}-{g.Key.Ciudad}", // Clave: "Ecuador-Quito"
-                    g => g.Count() // Valor: cantidad de ONAs en esa ciudad
+                    g => $"{g.Key.Pais}-{g.Key.Ciudad}",
+                    g => g.Select(x => x.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 81)?.Data?.Trim())
+                          .Where(oec => !string.IsNullOrEmpty(oec))
+                          .Distinct()
+                          .Count() // ✅ Cantidad de OECs diferentes por ciudad
                 );
 
             foreach (var location in agrupacionONAs)
@@ -242,25 +253,22 @@ namespace ClientApp.Pages.BuscadorCan
                 var coordenadas = await ObtenerCoordenadas(pais, ciudad);
                 if (coordenadas != null)
                 {
-                    // Obtener el ícono del ONA para esta ubicación
                     string? iconoRuta = await ObtenerIconoONA(pais, ciudad);
 
-                    // ✅ Recuperamos la cantidad de ONAs del diccionario
-                    int cantidadONAs = onasPorCiudad.ContainsKey(locationKey) ? onasPorCiudad[locationKey] : 1;
+                    int cantidadOECs = location.Value;
 
-                    // ✅ Agregamos el marcador con la cantidad de ONAs
                     markers.Add(new GoogleMapMarker
                     {
                         Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
-                        Title = $"{ciudad}, {pais} - {cantidadONAs} ONA(s)", // ✅ Título del marcador
+                        Title = $"{ciudad}, {pais} - {cantidadOECs} OEC",
                         Content = $@"
-                                <div style='text-align: center; font-size: 12px;'>                                   
-                                    <p style='margin: 2px 0; font-weight: bold;'>
-                                        <span style='font-size: 13px;'>{ciudad}, {pais}</span><br />
-                                        <span style='color: red; font-weight: bold; font-size: 14px;'>ONAs: {cantidadONAs}</span>
-                                    </p>
-                                    <img src='{iconoRuta}' width='32' height='32' style='border-radius:50%;' />
-                                </div>"
+                        <div style='text-align: center; font-size: 12px;'>                                   
+                            <p style='margin: 2px 0; font-weight: bold;'>
+                                <span style='font-size: 13px;'>{ciudad}, {pais}</span><br />
+                                <span style='color: red; font-weight: bold; font-size: 14px;'>OEC: {cantidadOECs}</span>
+                            </p>
+                            <img src='{iconoRuta}' width='32' height='32' style='border-radius:50%;' />
+                        </div>"
                     });
 
                     processedLocations.Add(locationKey);
@@ -356,6 +364,18 @@ namespace ClientApp.Pages.BuscadorCan
                 Console.WriteLine($"Error obteniendo icono ONA: {ex.Message}");
                 return $"{Inicializar.UrlBaseApi}Icono/default-marker.png"; // En caso de error, usar un ícono por defecto
             }
+        }
+
+        private void NextPage()
+        {
+            if (CanGoNext)
+                currentPage++;
+        }
+
+        private void PrevPage()
+        {
+            if (CanGoBack)
+                currentPage--;
         }
 
 

@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
@@ -10,6 +11,13 @@ namespace ClientApp.Pages.BuscadorCan
     /// </summary>
     public partial class InputSearch : ComponentBase
     {
+        [Inject] 
+        public IJSRuntime JS { get; set; } = default!;
+
+        [Inject]
+        public ToastService? toastService { get; set; }
+
+        ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
         private string errorMessage = "";
 
         /// <summary>
@@ -46,6 +54,9 @@ namespace ClientApp.Pages.BuscadorCan
         /// Objeto de resultado de búsqueda de texto predictivo.
         /// </summary>
         private List<FnPredictWordsDto> ListFnPredictWordsDto = new List<FnPredictWordsDto>();
+
+        List<ToastMessage> messages = new();
+
 
         /// <summary>
         /// Evento que se dispara cuando se cambia el texto del input.
@@ -96,27 +107,53 @@ namespace ClientApp.Pages.BuscadorCan
         private async Task onClickFilter()
         {
             IsLoading = true;
-            errorMessage = ""; // Limpiar mensaje previo
             await InvokeAsync(StateHasChanged);
 
             try
             {
-                // Validar que el campo de búsqueda no esté vacío
                 if (string.IsNullOrWhiteSpace(searchText))
                 {
-                    errorMessage = "El campo de búsqueda está vacío, verifique.";
+                    toastService?.Notify(new ToastMessage
+                    {
+                        Type = ToastType.Danger,
+                        Title = "Error de validación",
+                        HelpText = DateTime.Now.ToString(),
+                        Message = "El campo de búsqueda está vacío, verifique.",
+                        AutoHide = true
+
+                    });
+
                     return;
                 }
 
-                // Validar posibles inyecciones SQL básicas
                 if (ContieneSQLInjection(searchText))
                 {
-                    errorMessage = "Entrada no válida. Se han detectado caracteres sospechosos en la búsqueda.";
+                    toastService?.Notify(new ToastMessage
+                    {
+                        Type = ToastType.Danger,
+                        Title = "Entrada no válida",
+                        HelpText = DateTime.Now.ToString(),
+                        Message = "Se han detectado caracteres sospechosos en la búsqueda.",
+                        AutoHide = true
+                    });
+
                     return;
                 }
 
-                // Ejecutar la búsqueda
                 await onClickSearch.InvokeAsync((searchText, isExactSearch));
+
+                // 🔥 Cierra todos los dropdowns
+                await JS.InvokeVoidAsync("cerrarDropdowns");
+
+                toastService?.Notify(new ToastMessage
+                {
+                    Type = ToastType.Success,
+                    Title = "Búsqueda completada",
+                    HelpText = DateTime.Now.ToString(),
+                    Message = "La búsqueda se ejecutó correctamente.",
+                    AutoHide = true
+
+                });
             }
             finally
             {
@@ -124,6 +161,8 @@ namespace ClientApp.Pages.BuscadorCan
                 await InvokeAsync(StateHasChanged);
             }
         }
+
+
 
         private bool ContieneSQLInjection(string input)
         {

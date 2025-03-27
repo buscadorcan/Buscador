@@ -10,6 +10,19 @@
 
     @if (listaEtiquetasGrilla != null)
     {
+        <div style="margin-bottom: 10px;">
+            <Tooltip Title="Exportar Excel">
+                <Button Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="ExportarExcel">
+                    <Icon Name="IconName.FileExcel" /> Excel
+                </Button>
+            </Tooltip>
+            <Tooltip Title="Exportar PDF">
+                <Button Color="ButtonColor.Danger" Size="ButtonSize.Small" @onclick="ExportarPDF">
+                    <Icon Name="IconName.FilePdf" /> PDF
+                </Button>
+            </Tooltip>
+        </div>
+
         <Grid TItem="BuscadorResultadoDataDto"
               class="table table-hover table-bordered table-striped"
               Data="ListDataDto"

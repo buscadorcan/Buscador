@@ -53,29 +53,46 @@
                         style="font-size: 11px !important;"
                         aria-labelledby="dropdownMenuButton-@currentIndex"
                         data-bs-auto-close="false">
-                        @if (listadeOpciones?[currentIndex] != null)
+
+                        <!-- 🔘 Checkbox de "Todos" -->
+                        <li>
+                            <div class="form-check" style="display: flex; align-items: center;">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="check-@currentIndex-Todos"
+                                       checked="@(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion) &&
+                                              selectedValues.First(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion).Seleccion.Count == (listadeOpciones[currentIndex]?.Count ?? 0))"
+                                       style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
+                                       @onchange="(e) => CambiarSeleccionTodos(currentIndex, e.Value)">
+                                <label class="form-check-label" for="check-@currentIndex-Todos" style="margin: 0;">
+                                    Todos
+                                </label>
+                            </div>
+                        </li>
+
+                        <!-- ✅ Checkboxes individuales -->
+                        @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
                         {
-                            @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
-                            {
-                                <li>
-                                    <div class="form-check" style="display: flex; align-items: center;">
-                                        <input class="form-check-input"
-                                               type="checkbox"
-                                               id="check-@currentIndex-@opcion.MostrarWeb"
-                                               style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
-                                               @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
-                                        <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb" style="margin: 0;">
-                                            @opcion.MostrarWeb
-                                        </label>
-                                    </div>
-                                </li>
-                            }
+                            <li>
+                                <div class="form-check" style="display: flex; align-items: center;">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="check-@currentIndex-@opcion.MostrarWeb"
+                                           checked="@selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Contains(opcion.MostrarWeb))"
+                                           style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
+                                           @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
+                                    <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb" style="margin: 0;">
+                                        @opcion.MostrarWeb
+                                    </label>
+                                </div>
+                            </li>
                         }
                     </ul>
                 </div>
             </div>
         }
     }
+
     <div class="panel-input-filters-content-button">
         <label>Limpiar Filtro</label>
         <button type="button" @onclick="LimpiarFiltros">

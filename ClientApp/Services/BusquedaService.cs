@@ -173,5 +173,28 @@ namespace ClientApp.Services
                 return null;
             }
         }
+
+        public async Task<byte[]> ExportarExcelAsync(List<BuscadorResultadoDataDto> data)
+        {
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync($"{Inicializar.UrlBaseApi}api/buscador/excel", content);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+
+        public async Task<byte[]> ExportarPdfAsync(List<BuscadorResultadoDataDto> data)
+        {
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync($"{Inicializar.UrlBaseApi}api/buscador/pdf", content);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+
     }
 }

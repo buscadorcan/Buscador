@@ -14,5 +14,8 @@ namespace ClientApp.Services.IService {
         Task<fnEsquemaCabeceraDto?> FnEsquemaCabeceraAsync(int IdEsquemadata);
         Task<bool> AddEventTrackingAsync(EventTrackingDto eventTracking);
         Task<GeocodeResponseDto?> ObtenerCoordenadasAsync(string pais, string ciudad);
+        Task<byte[]> ExportarExcelAsync(List<BuscadorResultadoDataDto> data);
+        Task<byte[]> ExportarPdfAsync(List<BuscadorResultadoDataDto> data);
+
     }
 }
