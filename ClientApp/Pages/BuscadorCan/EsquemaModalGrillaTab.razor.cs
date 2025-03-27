@@ -67,10 +67,9 @@ namespace ClientApp.Pages.BuscadorCan
         /// Método de inicialización de datos.
         /// </summary>
 
+        private Dictionary<int, string> filtros = new();
 
-        private string sortColumn = "Id"; // Columna predeterminada
-        private bool sortDescending = false; // Orden predeterminado (ascendente)
-        private Dictionary<string, string> filtros = new Dictionary<string, string>();
+        private Grid<DataHomologacionEsquema>? gridRef;
 
         protected override async Task OnInitializedAsync()
         {
@@ -93,6 +92,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         /// <param name="request">Solicitud de datos.</param>
         /// <returns>Resultado de la solicitud.</returns>
+
         private async Task<GridDataProviderResult<DataHomologacionEsquema>> HomologacionEsquemasDataProvider(GridDataProviderRequest<DataHomologacionEsquema> request)
         {
             if (resultados is null && servicio != null)
@@ -100,84 +100,55 @@ namespace ClientApp.Pages.BuscadorCan
                 resultados = await servicio.FnHomologacionEsquemaDatoAsync(IdEsquema, VistaFK, idONA ?? 0);
             }
 
-            var datosFiltrados = resultados ?? new List<DataHomologacionEsquema>();
+            IEnumerable<DataHomologacionEsquema> query = resultados ?? new List<DataHomologacionEsquema>();
 
-            // ✅ Aplicar filtros manualmente
+            // Aplicar filtros manuales (personalizados)
             foreach (var filtro in filtros)
             {
-                if (!string.IsNullOrWhiteSpace(filtro.Value))
+                int idHomologacionFiltro = filtro.Key;
+                string valorFiltro = filtro.Value;
+
+                if (!string.IsNullOrEmpty(valorFiltro))
                 {
-                    datosFiltrados = datosFiltrados
-                        .Where(r => r.DataEsquemaJson != null && r.DataEsquemaJson.Any(d =>
-                            d.Data.Contains(filtro.Value, StringComparison.OrdinalIgnoreCase)))
-                        .ToList();
+                    query = query.Where(r =>
+                        r.DataEsquemaJson != null &&
+                        r.DataEsquemaJson.Any(d =>
+                            d.IdHomologacion == idHomologacionFiltro &&
+                            d.Data != null &&
+                            d.Data.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase)));
                 }
             }
 
-            // ✅ Aplicar ordenamiento
-            if (!string.IsNullOrEmpty(sortColumn))
+            // Aplicar ordenamiento (si existe)
+            if (request.Sorting?.Any() == true)
             {
-                if (sortDescending)
+                foreach (var sort in request.Sorting)
                 {
-                    datosFiltrados = datosFiltrados.OrderByDescending(d => GetPropertyValue(d, sortColumn)).ToList();
-                }
-                else
-                {
-                    datosFiltrados = datosFiltrados.OrderBy(d => GetPropertyValue(d, sortColumn)).ToList();
+                    query = sort.SortDirection == SortDirection.Descending
+                        ? query.OrderByDescending(sort.SortKeySelector.Compile())
+                        : query.OrderBy(sort.SortKeySelector.Compile());
                 }
             }
 
-            return new GridDataProviderResult<DataHomologacionEsquema> { Data = datosFiltrados };
+            var resultadoFinal = query.ToList();
+
+            return new GridDataProviderResult<DataHomologacionEsquema>
+            {
+                Data = resultadoFinal,
+                TotalCount = resultadoFinal.Count
+            };
         }
 
-        /// <summary>
-        /// Guarda los valores de filtro en un diccionario y actualiza la grilla.
-        /// </summary>
-        private void FiltrarTabla(string columna, string valor)
+
+        private async void FiltrarTabla(int idHomologacion, string valor)
         {
-            if (filtros.ContainsKey(columna))
-            {
-                filtros[columna] = valor;
-            }
-            else
-            {
-                filtros.Add(columna, valor);
-            }
+            filtros[idHomologacion] = valor;
 
-            StateHasChanged(); // Refresca la UI
+            if (gridRef is not null)
+            {
+                await gridRef.RefreshDataAsync();
+            }
         }
-
-        /// <summary>
-        /// Alterna la ordenación de una columna.
-        /// </summary>
-        private void CambiarOrden(string columna)
-        {
-            if (sortColumn == columna)
-            {
-                sortDescending = !sortDescending;
-            }
-            else
-            {
-                sortColumn = columna;
-                sortDescending = false;
-            }
-
-            StateHasChanged(); // Refresca la UI
-        }
-
-
-        /// <summary>
-        /// Obtiene dinámicamente el valor de una propiedad de un objeto.
-        /// </summary>
-        private object GetPropertyValue(object obj, string propertyName)
-        {
-            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
-                return string.Empty;
-
-            var prop = obj.GetType().GetProperty(propertyName);
-            return prop?.GetValue(obj, null) ?? string.Empty;
-        }
-
 
         /// <summary>
         /// Método para extraer la fórmula de un texto.

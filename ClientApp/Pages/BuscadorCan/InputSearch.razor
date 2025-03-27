@@ -2,6 +2,9 @@
 
 <link href="/css/buscador-can/input-search.css" rel="stylesheet">
 
+
+<Toasts Placement="@toastsPlacement" />
+
 <div class="panel-search">
     <!-- Mensaje de error debajo del input -->
     @if (!string.IsNullOrEmpty(errorMessage))
@@ -46,3 +49,16 @@
         <span>Búsqueda exacta</span>
     </div>
 </div>
+<script>
+    window.cerrarDropdowns = () => {
+        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+            menu.classList.remove('show');
+        });
+
+        // Si es necesario, también remueve 'show' del botón padre
+        document.querySelectorAll('.dropdown-toggle.show').forEach(button => {
+            button.classList.remove('show');
+            button.setAttribute("aria-expanded", "false");
+        });
+    };
+</script>

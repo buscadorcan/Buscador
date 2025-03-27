@@ -16,6 +16,7 @@ namespace ClientApp.Services {
         public MigracionExcelService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _httpClient.Timeout = TimeSpan.FromMinutes(5);
         }
 
         public async Task<List<MigracionExcelDto>> GetMigracionExcelsAsync()

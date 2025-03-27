@@ -226,8 +226,9 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
                 }
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                throw ex;
                 saveButton.HideLoading();
                 navigationManager?.NavigateTo("/migracion-excel");
             }

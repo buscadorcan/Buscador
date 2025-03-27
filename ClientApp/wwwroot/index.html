@@ -93,7 +93,26 @@
             window.renderMathJax();
         });
     </script>
- 
+
+    <!-- jsPDF desde CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Inicializar window.jsPDF para uso global -->
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+    </script>
+
+    <script>
+        function descargarArchivo(base64, nombre, mimeType) {
+            const link = document.createElement("a");
+            link.href = "data:" + mimeType + ";base64," + base64;
+            link.download = nombre;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+
 </body>
 
 </html>

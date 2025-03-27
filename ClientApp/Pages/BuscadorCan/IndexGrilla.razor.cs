@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Components;
 using ClientApp.Services.IService;
 using SharedApp.Models.Dtos;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
+using ClientApp.Helpers;
+using System.Text;
 
 namespace ClientApp.Pages.BuscadorCan
 {
@@ -11,6 +14,31 @@ namespace ClientApp.Pages.BuscadorCan
     /// </summary>
     public partial class IndexGrilla : ComponentBase
     {
+
+        /// <summary>
+        /// Servicio de homologación.
+        /// </summary>
+        [Inject] 
+        public IBusquedaService BusquedaService { get; set; } = default!;
+
+        /// <summary>
+        /// Servicio de homologación.
+        /// </summary>
+        [Inject]
+        private IJSRuntime JS { get; set; } = default!;// 🔹 Inyección de JavaScript
+
+        /// <summary>
+        /// Servicio de homologación.
+        /// </summary>
+        [Inject]
+        public NavigationManager Navigation { get; set; } = default!;
+
+        /// <summary>
+        /// Servicio de homologación.
+        /// </summary>
+        [Inject]
+        public HttpClient Http { get; set; } = default!;
+
         /// <summary>
         /// Servicio de homologación.
         /// </summary>
@@ -53,8 +81,6 @@ namespace ClientApp.Pages.BuscadorCan
         // private bool isLoading = true;
 
         private bool isModalOpen = false;
-
-        [Inject] private IJSRuntime JS { get; set; } // 🔹 Inyección de JavaScript
 
         /// <summary>
         /// Método para mostrar el resultados en ventana modal
@@ -158,5 +184,60 @@ namespace ClientApp.Pages.BuscadorCan
             isModalOpen = false;
             StateHasChanged(); // 🔄 Forzar actualización de la UI
         }
+
+        private async Task ExportarExcel()
+        {
+            var datos = ConstruirDatosExportacion();
+            var json = JsonConvert.SerializeObject(datos);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await Http.PostAsync($"{Inicializar.UrlBaseApi}api/buscador/excel", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var bytes = await response.Content.ReadAsByteArrayAsync();
+                var base64 = Convert.ToBase64String(bytes);
+                await JS.InvokeVoidAsync("descargarArchivo", base64, "exportacion.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            }
+        }
+
+        private async Task ExportarPDF()
+        {
+            var datos = ConstruirDatosExportacion();
+            var json = JsonConvert.SerializeObject(datos);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await Http.PostAsync($"{Inicializar.UrlBaseApi}api/buscador/pdf", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var bytes = await response.Content.ReadAsByteArrayAsync();
+                var base64 = Convert.ToBase64String(bytes);
+                await JS.InvokeVoidAsync("descargarArchivo", base64, "exportacion.pdf", "application/pdf");
+            }
+        }
+
+
+        private List<Dictionary<string, string>> ConstruirDatosExportacion()
+        {
+            var resultado = new List<Dictionary<string, string>>();
+
+            if (ListDataDto == null || listaEtiquetasGrilla == null) return resultado;
+
+            foreach (var item in ListDataDto)
+            {
+                var fila = new Dictionary<string, string>();
+
+                foreach (var etiqueta in listaEtiquetasGrilla)
+                {
+                    var valor = item.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data ?? "";
+                    fila[etiqueta.MostrarWeb ?? $"Columna-{etiqueta.IdHomologacion}"] = valor;
+                }
+
+                resultado.Add(fila);
+            }
+
+            return resultado;
+        }
+
+
     }
 }
