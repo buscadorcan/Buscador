@@ -1,0 +1,33 @@
+
+--create or alter        FUNCTION [dbo].[fnEsquemaCabecera] ( 
+--    @IdEsquemadata INT
+--)
+----| 2K25.FEB.25 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0
+----| Descripción: Función para mostrar el esquema con sus datos buscados
+--RETURNS TABLE 
+--AS 
+--RETURN 
+--(
+--with Organizacion as
+--	(
+--		SELECT	VistaPK, ONAIdONA, OrgEsquemaAcreditado
+--		FROM	EsquemaOrganiza	(NOLOCK)  
+--		WHERE	IdEsquemaData = @IdEsquemadata
+--	)
+--	, Esquema_ as
+--	(
+--		SELECT  distinct ev.IdEsquema 
+--        FROM esquemadata (NOLOCK) ed  
+--		join EsquemaVista ev on ev.IdEsquemaVista = ed.IdEsquemaVista
+--        JOIN Organizacion org on org.VistaPK = ed.VistaFK and  ev.IdONA  = org.ONAIdONA
+--	)
+
+--	select 
+--			IdEsquema
+--			,MostrarWebOrden
+--			,MostrarWeb
+--			,TooltipWeb
+--			,EsquemaVista
+--			,EsquemaJson
+--	from fnEsquema((select top 1 idesquema from esquema_))
+--);

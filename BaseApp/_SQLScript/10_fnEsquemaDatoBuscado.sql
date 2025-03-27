@@ -1,0 +1,28 @@
+
+--create or ALTER   FUNCTION [dbo].[fnEsquemaDatoBuscado] ( 
+--    @IdEsquemadata INT,  
+--    @TextoBuscar NVARCHAR(400)
+--)
+----| 2K25.FEB.25 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0
+----| Descripción: Función para mostrar el esquema con sus datos buscados
+--RETURNS TABLE 
+--AS 
+--RETURN 
+--(
+--	with Organizacion as
+--	(
+--		SELECT	VistaPK, ONAIdONA, OrgEsquemaAcreditado
+--		FROM	EsquemaOrganiza	(NOLOCK)  
+--		WHERE	IdEsquemaData = @IdEsquemadata
+--	)
+--	 SELECT 
+--		 ed.IdEsquemaData
+--        ,ev.IdEsquema 
+--        ,ed.DataEsquemaJson
+--        FROM EsquemaFullText (NOLOCK) ef
+--		join esquemadata (NOLOCK) ed  on  ef.IdEsquemaData = ed.IdEsquemaData
+--		join EsquemaVista ev on ev.IdEsquemaVista = ed.IdEsquemaVista
+--        JOIN Organizacion org on org.VistaPK = ed.VistaFK and  ev.IdONA  = org.ONAIdONA
+--		JOIN	FREETEXTTABLE(EsquemaFullText, FullTextData, @TextoBuscar) as ftt		--,LANGUAGE N'English', 2) AS ftt  
+--		ON		ef.IdEsquemaFullText		= ftt.[KEY]	
+--);
