@@ -1,5 +1,8 @@
 using System.Web;
 using BlazorBootstrap;
+using Blazored.LocalStorage;
+using ClientApp.Helpers;
+using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Models.Dtos;
@@ -80,6 +83,10 @@ namespace ClientApp.Pages.Autenticacion
         /// </summary>
         private ElementReference input6;
 
+        [Inject] private IBusquedaService iBusquedaService { get; set; }
+        private EventTrackingDto objEventTracking { get; set; } = new();
+        [Inject] ILocalStorageService iLocalStorageService { get; set; }
+
         /// <summary>
         /// Método que realiza la validación del código de autenticación ingresado por el usuario.
         /// </summary>
@@ -108,6 +115,17 @@ namespace ClientApp.Pages.Autenticacion
                         {
                             navigationManager?.NavigateTo("/" + UrlRetorno);
                         }
+
+                        objEventTracking.CodigoHomologacionMenu = "acceder";
+                        objEventTracking.NombreAccion = "AccesoUsuario";
+                        objEventTracking.NombreControl = "/acceder";
+                        objEventTracking.idUsuario = authValidationDto.IdUsuario;
+                        objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+                        objEventTracking.ParametroJson = "{}";
+                        objEventTracking.UbicacionJson = "";
+
+                        await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
                     }
                     else
                     {

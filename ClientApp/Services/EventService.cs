@@ -60,5 +60,47 @@ namespace ClientApp.Services
             return result?.Result ?? false; // Evita posibles errores de null
         }
 
+        public async Task<List<VwEventTrackingSessionDto>> GetEventSessionAsync()
+        {
+            var response = await _httpClient.GetAsync($"{url}/EventSession");
+            response.EnsureSuccessStatusCode();
+
+            var sessions = (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwEventTrackingSessionDto>>>()).Result;
+
+            foreach (var session in sessions)
+            {
+                if (session.IpDirec != null)
+                {
+                    var coordinates = await GetCoordinatesByIPAsync(session.IpDirec);
+                    session.Latitud = coordinates?.lat;
+                    session.Longitud = coordinates?.lon;
+                }
+            }
+
+            return sessions;
+
+        }
+        private async Task<CoordinatesDto?> GetCoordinatesByIPAsync(string ip)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"http://ip-api.com/json/{ip}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<CoordinatesDto>();
+                }
+                return null;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Console.WriteLine("La solicitud se canceló (timeout): " + ex.Message);
+                return null;
+            }
+            catch (Exception ex){
+                Console.WriteLine("Error en la consulta de IP: " + ex.Message);
+                return null;
+            }
+        }
     }
 }

@@ -1,0 +1,192 @@
+﻿@page "/reporte-event"
+@layout AdminLayout
+@using ClientApp.Services.IService
+@using Microsoft.AspNetCore.Authorization
+@using SharedApp.Models.Dtos
+@attribute [Authorize]
+
+<div class="general title">
+    <h2 class="title headlineheadline2-h2">Reporte de Eventos del Sistema</h2>
+</div>
+
+<div class="card-body px-lg-5 pt-4">
+
+    <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Inicio de Sesión</div>
+
+    <div class="mt-2 mb-3 d-flex justify-content-end">
+        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="verGrafica">
+            <Icon Name="IconName.BarChart" />
+            <span class="ms-2 btnExp">Ver en Grafica</span>
+        </Button>
+    </div>
+
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            @foreach (var column in new[]
+            {
+                ("CodigoHomologacionRol", "Codigo Homologación"),
+                ("NombreControl", "Nombre Control"),
+                ("FechaCreacion", "Fecha Creacion"),
+                ("FechaInicio", "Fecha Inicio"),
+                ("FechaFin", "Fecha Fin"),
+                ("TiempoEnSegundos", "Tiempo En Segundos"),
+            })
+            {
+                <div class="table-heading-1 table-heading-10 sortable-header">
+                    <div class="header-label-1 header-label-4">
+                        <div class="label-heading headingheadline5-h5">
+                            @column.Item2
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (listasEventSession != null && listasEventSession.Any())
+    {
+        <div class="content content-2">
+            @foreach (var even in PaginatedItems)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row">
+                            <div class="ads-rules-list">
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.NombreControl</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaCreacion.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaInicio.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaFin.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.TiempoEnSegundos</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="pagination-container">
+            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                ⏪
+            </button>
+
+            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                ⏩
+            </button>
+        </div>
+    }
+    else
+    {
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+    }
+
+    <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Páginas más Visitadas</div>
+
+    <!-- Modal para la gráfica -->
+    <div class="modal fade @(IsModalOpen ? "show d-block" : "d-none")" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gráfica de Inicio de Sesión</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="map" style="height: 500px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code{
+
+    [Inject] public IEventService? EventService { get; set; }
+
+    [Inject] IJSRuntime JS { get; set; }
+    private List<HeatmapPoint> heatmapData = new();
+
+    private List<VwEventTrackingSessionDto> listasEventSession = new();
+    private bool IsModalOpen = false;
+    private int ProgressValue { get; set; } = 0;
+    private int PageSize = 5; // Cantidad de registros por página
+    private int CurrentPage = 1;
+    private IEnumerable<VwEventTrackingSessionDto> PaginatedItems => listasEventSession
+           .Skip((CurrentPage - 1) * PageSize)
+           .Take(PageSize);
+    private int TotalPages => listasEventSession.Count > 0 ? (int)Math.Ceiling((double)listasEventSession.Count / PageSize) : 1;
+    private bool CanGoPrevious => CurrentPage > 1;
+    private bool CanGoNext => CurrentPage < TotalPages;
+
+    private void PreviousPage()
+    {
+        if (CanGoPrevious)
+        {
+            CurrentPage--;
+        }
+    }
+
+    private void NextPage()
+    {
+        if (CanGoNext)
+        {
+            CurrentPage++;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        listasEventSession = await EventService.GetEventSessionAsync();
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(500);
+            await JS.InvokeVoidAsync("initMap");
+        }
+    }
+
+    private async Task verGrafica()
+    {
+        IsModalOpen = true;
+        await CargarDatos();
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+    }
+
+    // prueba para eliminar mas adelante
+    public async Task CargarDatos()
+    {
+     
+        if (listasEventSession != null)
+        {
+            foreach (var session in listasEventSession)
+            {
+                heatmapData.Add(new HeatmapPoint
+                    {
+                        Lat = session.Latitud, // Suponiendo que estos campos existen
+                        Lng = session.Longitud,
+                        Intensity = session.TiempoEnSegundos // Ajusta según tus necesidades
+                    });
+            }
+        }
+
+        await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
+    }
+
+    // prueba para eliminar mas adelante
+    public class HeatmapPoint
+    {
+        public double? Lat { get; set; }
+        public double? Lng { get; set; }
+        public double Intensity { get; set; }
+    }
+}
+

@@ -151,5 +151,23 @@ namespace WebApp.Repositories
             throw new NotImplementedException();
         }
 
+        public List<VwEventTrackingSessionDto> GetEventSession()
+        {
+            return ExecuteDbOperation(context =>
+                context.EventSession
+                    .AsNoTracking()
+                    .Select(x => new VwEventTrackingSessionDto
+                    {
+                        CodigoHomologacionRol = x.CodigoHomologacionRol,
+                        NombreControl = x.NombreControl,
+                        FechaCreacion = x.FechaCreacion,
+                        IpDirec = x.IpDirec,
+                        FechaInicio = x.FechaInicio,
+                        FechaFin = x.FechaFin,
+                        TiempoEnSegundos = x.TiempoEnSegundos      
+                    })
+                    .ToList()
+            );
+        }
     }
 }
