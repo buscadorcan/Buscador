@@ -6,6 +6,10 @@ using SharedApp.Models;
 using SharedApp.Models.Dtos;
 using MySqlX.XDevAPI;
 using System.Text.Json;
+using OfficeOpenXml;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Reflection.Metadata;
 
 namespace WebApp.Controllers
 {
@@ -287,6 +291,74 @@ namespace WebApp.Controllers
                 return new IpLocationDto { Country = "Desconocido", City = "Desconocido", Isp = "Desconocido" };
             }
         }
+
+        [HttpPost("excel")]
+        public IActionResult ExportExcel([FromBody] List<Dictionary<string, string>> data)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("Datos");
+
+            if (data.Count == 0)
+                return BadRequest("No hay datos para exportar");
+
+            var headers = data[0].Keys.ToList();
+
+            // Cabeceras
+            for (int i = 0; i < headers.Count; i++)
+                ws.Cells[1, i + 1].Value = headers[i];
+
+            // Filas
+            for (int i = 0; i < data.Count; i++)
+            {
+                for (int j = 0; j < headers.Count; j++)
+                {
+                    ws.Cells[i + 2, j + 1].Value = data[i][headers[j]];
+                }
+            }
+
+            var stream = package.GetAsByteArray();
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "exportacion.xlsx");
+        }
+
+
+        [HttpPost("pdf")]
+        public IActionResult ExportPdf([FromBody] List<Dictionary<string, string>> data)
+        {
+            using var stream = new MemoryStream();
+            var doc = new iTextSharp.text.Document();
+            PdfWriter.GetInstance(doc, stream);
+            doc.Open();
+
+            if (data.Count == 0)
+            {
+                doc.Add(new Paragraph("No hay datos para exportar"));
+                doc.Close();
+                return File(stream.ToArray(), "application/pdf", "exportacion.pdf");
+            }
+
+            var headers = data[0].Keys.ToList();
+            var table = new PdfPTable(headers.Count);
+
+            foreach (var header in headers)
+                table.AddCell(new PdfPCell(new Phrase(header)) { BackgroundColor = BaseColor.LIGHT_GRAY });
+
+            foreach (var fila in data)
+            {
+                foreach (var header in headers)
+                {
+                    var valor = fila.ContainsKey(header) ? fila[header] : "";
+                    table.AddCell(valor);
+                }
+            }
+
+            doc.Add(table);
+            doc.Close();
+
+            return File(stream.ToArray(), "application/pdf", "exportacion.pdf");
+        }
+
 
     }
 }

@@ -160,5 +160,42 @@ namespace ClientApp.Pages.BuscadorCan
                 StateHasChanged();
             }
         }
+
+        private void CambiarSeleccionTodos(int comboIndex, object isChecked)
+        {
+            bool seleccionarTodos = bool.Parse(isChecked.ToString());
+
+            var codigoHomologacion = listaEtiquetasFiltros?[comboIndex]?.CodigoHomologacion;
+            if (string.IsNullOrWhiteSpace(codigoHomologacion)) return;
+
+            var opciones = listadeOpciones[comboIndex];
+            if (opciones == null) return;
+
+            var filtroExistente = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
+            if (filtroExistente == null)
+            {
+                filtroExistente = new FiltrosBusquedaSeleccion
+                {
+                    CodigoHomologacion = codigoHomologacion,
+                    Seleccion = new List<string>()
+                };
+                selectedValues.Add(filtroExistente);
+            }
+
+            if (seleccionarTodos)
+            {
+                // Agrega todos si no están ya
+                filtroExistente.Seleccion = opciones.Select(o => o.MostrarWeb).Distinct().ToList();
+            }
+            else
+            {
+                // Elimina el filtro completo
+                selectedValues.RemoveAll(f => f.CodigoHomologacion == codigoHomologacion);
+            }
+
+            _ = onFilterChange.InvokeAsync(selectedValues);
+            StateHasChanged();
+        }
+
     }
 }

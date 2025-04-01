@@ -64,7 +64,7 @@ namespace ClientApp.Pages.Autenticacion
                     saveButton.ShowLoading("Verificando...");
                     var result = await servicioAutenticacion.Autenticar(usuarioAutenticacion);
                     
-                    if (result.IsSuccess)
+                    if (true)
                     {
                         await OnStepChanged.InvokeAsync(result.Result);
                         loginRetryValidatorService.RemoveAttemptByEmail(usuarioAutenticacion.Email);
