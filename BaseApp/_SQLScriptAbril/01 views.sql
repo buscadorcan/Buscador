@@ -1,15 +1,13 @@
 CREATE VIEW vw_EventTrackingSession AS
-SELECT
-    CodigoHomologacionRol,
-    NombreControl,
-    FechaCreacion,
-    MIN(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl) AS FechaInicio,
-    MAX(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl) AS FechaFin,
-    DATEDIFF(SECOND, 
-             MIN(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl),
-             MAX(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl)
-    ) AS TiempoEnSegundos
-FROM dbo.EventTracking;
+SELECT CodigoHomologacionRol, 
+NombreControl, 
+FechaCreacion, 
+JSON_VALUE(UbicacionJson, '$.IpAddress') AS IpDirec, 
+MIN(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl) AS FechaInicio, 
+                  MAX(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl) AS FechaFin, 
+                  DATEDIFF(SECOND, MIN(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, 
+                  NombreControl), MAX(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl)) AS TiempoEnSegundos
+FROM     dbo.EventTracking;
 
 
 CREATE VIEW vw_EventTrackingPorDia AS
