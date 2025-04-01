@@ -1,0 +1,40 @@
+--/*----------------------------------------------------------------------------------------\
+--|    ©Copyright 2K25					                          BUSCADOR ANDINO		  |
+--|-----------------------------------------------------------------------------------------|
+--| Este código está protegido por las leyes y tratados internacionales de derechos de autor|
+--\-----------------------------------------------------------------------------------------/
+--  [App]				: Buscador Andino											
+--	- Date          : 2K25.FEB.25	
+--	- Author        : patricio.paccha														
+--	- Version	    : 1.0										
+--	- Description   : Vista para las organicaiones certificadas
+--\----------------------------------------------------------------------------------------*/
+--CREATE OR ALTER VIEW [vwEsquemaOrganiza] AS
+----| 2K25.FEB.05 | patricio.paccha | BUSCADOR ANDINO | Versión: 1.0 
+----| Description   : Vista para las organicaiones certificadas
+--SELECT [PK]
+--      ,[IdEsquemaData]
+--      ,[IdEsquema]
+--      ,[ONAIdONA]
+--      ,[ONAPais]
+--      ,[ONAUrlIcono]
+--      ,[ONASiglas]
+--      ,[OrgNombreComercial]
+--      ,[OrgRazonSocial]
+--      ,[OrgPais]
+--      ,[OrgCiudad]
+--      ,[OrgDireccion]
+--      ,[OrgTelefono]
+--      ,[OrgWeb]
+--      ,[OrgCorreo]
+--      ,[OrgEstadoAcreditado]
+--      ,[OrgEsquemaAcreditado]
+--      ,[OrgNormaAcreditada]
+--      ,[OrgReconocimiento]
+--      ,[OrgFechaEfectivaAcreditacion]
+--      ,[OrgPeriodoVigencia]
+--      ,[OrgFechaActualizacion]
+--      ,[OrgCodigoAcreditacion]
+--      ,[OrgUrlCertificado]
+--      ,[DataFecha]
+--  FROM [CAN].[dbo].[EsquemaOrganiza](NOLOCK)

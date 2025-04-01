@@ -1,4 +1,3 @@
-using ClientApp.Services;
 using ClientApp.Services.IService;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -8,10 +7,12 @@ using OfficeOpenXml;
 using SharedApp.Models.Dtos;
 using System.Text.Json;
 
+
 namespace ClientApp.Pages.Administracion.Eventos
 {
     public partial class List_Event
     {
+        [Inject] NavigationManager NavigationManager { get; set; }
         private DateOnly fini { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         private DateOnly ffin { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         [Inject]
@@ -257,6 +258,11 @@ namespace ClientApp.Pages.Administracion.Eventos
                     await JSRuntime.InvokeVoidAsync("Swal.fire", "Error", "No se pudo eliminar el registro.", "error");
                 }
             }
+        }
+
+        private void verReport()
+        {
+            NavigationManager.NavigateTo("/reporte-event");
         }
 
         private void clearData()

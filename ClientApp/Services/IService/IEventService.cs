@@ -11,5 +11,7 @@ namespace ClientApp.Services.IService
         Task<bool> DeleteEventAllAsync(string report, DateOnly fini, DateOnly ffin);
 
         Task<bool> DeleteEventByIdAsync(string report, int codigoEvento);
+
+        Task<List<VwEventTrackingSessionDto>> GetEventSessionAsync();
     }
 }

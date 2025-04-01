@@ -137,5 +137,26 @@ namespace WebApp.Controllers
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("EventSession")]
+        public IActionResult GetEventSession()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<VwEventTrackingSessionDto>>
+                {
+                    Result = _iRepo.GetEventSession().ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetEventSession));
+            }
+        }
+
     }
 }

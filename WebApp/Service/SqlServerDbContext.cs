@@ -122,6 +122,8 @@ namespace WebApp.Service
 
         public DbSet<EventUser> EventUser { get; set; }
 
+        public DbSet<VwEventTrackingSessionDto> EventSession { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VwMenu>().HasNoKey().ToView("vwMenu");
@@ -161,6 +163,8 @@ namespace WebApp.Service
             modelBuilder.Entity<EventUser>().HasNoKey().ToView("vw_EventUserONA");
             modelBuilder.Entity<EventUser>().HasNoKey().ToView("vw_EventUserREAD");
             modelBuilder.Entity<EventUser>().HasNoKey().ToView("vw_EventUserSEARCH");
+
+            modelBuilder.Entity<VwEventTrackingSessionDto>().HasNoKey().ToView("vw_EventTrackingSession");
         }
 
     }
