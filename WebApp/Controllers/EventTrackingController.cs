@@ -6,6 +6,8 @@ using SharedApp.Models.Dtos;
 using SharedApp.Models;
 using WebApp.Models;
 using WebApp.Repositories.IRepositories;
+using WebApp.Service.IService;
+using System.Net.Http;
 
 namespace WebApp.Controllers
 {
@@ -16,9 +18,10 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class EventTrackingController(IEventTrackingRepository iRepo, IMapper mapper) : BaseController
+    public class EventTrackingController(IEventTrackingRepository iRepo, IMapper mapper, IIpCoordinatesService iIpCoordinatesService) : BaseController
     {
         private readonly IEventTrackingRepository _iRepo = iRepo;
+        private readonly IIpCoordinatesService _IIpCoordinatesService = iIpCoordinatesService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -155,6 +158,33 @@ namespace WebApp.Controllers
             catch (Exception e)
             {
                 return HandleException(e, nameof(GetEventSession));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        /// 
+        [HttpGet("coordinates/{ip}")]
+        public async Task<IActionResult> GetCoordinates(string ip)
+        {
+            try
+            {
+                var result = await _IIpCoordinatesService.GetCoordinates(ip);
+
+                if (result == null)
+                    return NotFound(new RespuestasAPI<string>
+                    {
+                        Result = null
+                    });
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetCoordinates));
             }
         }
 

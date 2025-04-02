@@ -99,15 +99,19 @@ namespace WebApp.Extensions
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IRecoverUserService, RecoverUserService>();
 
+            //IpCoordinates
+            services.AddHttpClient<IIpCoordinatesService, IpCoordinatesService>();
+
             // Registra servicios de trabajo en segundo plano (Worker Services).
             services.AddHostedService<BackgroundWorkerService>();
             services.AddHostedService<BackgroundExcelService>();
 
             //services.AddHostedService<MigracionJob>();
 
-
             // Configura AutoMapper para mapear entre modelos.
             services.AddAutoMapper(typeof(Mapper));
+
+
         }
 
         /// <summary>

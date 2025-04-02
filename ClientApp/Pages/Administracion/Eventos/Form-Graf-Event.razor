@@ -1,4 +1,4 @@
-﻿@page "/reporte-event"
+﻿ @page "/reporte-event"
 @layout AdminLayout
 @using ClientApp.Services.IService
 @using Microsoft.AspNetCore.Authorization
@@ -14,7 +14,7 @@
     <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Inicio de Sesión</div>
 
     <div class="mt-2 mb-3 d-flex justify-content-end">
-        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="verGrafica">
+        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="verGrafica" disabled="@(!listasEventSession.Any())">
             <Icon Name="IconName.BarChart" />
             <span class="ms-2 btnExp">Ver en Grafica</span>
         </Button>
@@ -26,6 +26,7 @@
             {
                 ("CodigoHomologacionRol", "Codigo Homologación"),
                 ("NombreControl", "Nombre Control"),
+                ("Ip", "Dirección Ip")  ,
                 ("FechaCreacion", "Fecha Creacion"),
                 ("FechaInicio", "Fecha Inicio"),
                 ("FechaFin", "Fecha Fin"),
@@ -54,6 +55,7 @@
                             <div class="ads-rules-list">
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.NombreControl</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpDirec</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaCreacion.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaInicio.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaFin.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
@@ -145,7 +147,6 @@
     {
         if (firstRender)
         {
-            await Task.Delay(500);
             await JS.InvokeVoidAsync("initMap");
         }
     }
@@ -154,6 +155,8 @@
     {
         IsModalOpen = true;
         await CargarDatos();
+        await Task.Delay(500);
+        await JS.InvokeVoidAsync("invalidateSize");
     }
 
     private void CloseModal()
@@ -161,27 +164,32 @@
         IsModalOpen = false;
     }
 
-    // prueba para eliminar mas adelante
     public async Task CargarDatos()
     {
-     
+
         if (listasEventSession != null)
         {
             foreach (var session in listasEventSession)
-            {
-                heatmapData.Add(new HeatmapPoint
-                    {
-                        Lat = session.Latitud, // Suponiendo que estos campos existen
-                        Lng = session.Longitud,
-                        Intensity = session.TiempoEnSegundos // Ajusta según tus necesidades
-                    });
+            {   
+                if (session.Latitud != null && session.Longitud != null)
+                {
+                    heatmapData.Add(new HeatmapPoint
+                        {
+                            Lat = session.Latitud,
+                            Lng = session.Longitud,
+                            Intensity = session.TiempoEnSegundos
+                        });
+
+                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoEnSegundos}";
+                    await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
+                }
+               
             }
         }
 
         await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
     }
 
-    // prueba para eliminar mas adelante
     public class HeatmapPoint
     {
         public double? Lat { get; set; }
