@@ -1,4 +1,4 @@
-CREATE VIEW vw_EventTrackingSession AS
+create or ALTER VIEW vw_EventTrackingSession AS
 SELECT CodigoHomologacionRol, 
 NombreControl, 
 FechaCreacion, 
@@ -8,9 +8,11 @@ MIN(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, Nomb
                   DATEDIFF(SECOND, MIN(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, 
                   NombreControl), MAX(FechaCreacion) OVER (PARTITION BY FechaCreacion, CodigoHomologacionRol, NombreControl)) AS TiempoEnSegundos
 FROM     dbo.EventTracking;
+go
 
 
-CREATE VIEW vw_EventTrackingPorDia AS
+
+create or ALTER VIEW vw_EventTrackingPorDia AS
 SELECT
     CAST(FechaCreacion AS DATE) AS Fecha,
     CodigoHomologacionRol,
@@ -20,8 +22,10 @@ FROM dbo.EventTracking
 GROUP BY
     CAST(FechaCreacion AS DATE),
     CodigoHomologacionRol;
+go
 
-CREATE VIEW vw_EventTrackingPorDiaDetalle AS
+
+create or ALTER VIEW vw_EventTrackingPorDiaDetalle AS
 SELECT
     CAST(FechaCreacion AS DATE) AS Fecha,
     IdUsuario,
@@ -34,4 +38,4 @@ GROUP BY
     IdUsuario,
     CodigoHomologacionRol,
     NombreControl;
-
+go

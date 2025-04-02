@@ -1,5 +1,7 @@
 --DROP TABLE IF EXISTS [dbo].[EventTracking]
 --GO
+drop table [dbo].[EventTracking]
+go
 
 CREATE TABLE [dbo].[EventTracking](
 	 IdEventTracking	INT IDENTITY(1,1) NOT NULL
