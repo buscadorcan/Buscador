@@ -1,4 +1,4 @@
-﻿@page "/reporte-event"
+﻿ @page "/reporte-event"
 @layout AdminLayout
 @using ClientApp.Services.IService
 @using Microsoft.AspNetCore.Authorization
@@ -14,7 +14,7 @@
     <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Inicio de Sesión</div>
 
     <div class="mt-2 mb-3 d-flex justify-content-end">
-        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="verGrafica">
+        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(1)" disabled="@(!listasEventSession.Any())">
             <Icon Name="IconName.BarChart" />
             <span class="ms-2 btnExp">Ver en Grafica</span>
         </Button>
@@ -26,6 +26,7 @@
             {
                 ("CodigoHomologacionRol", "Codigo Homologación"),
                 ("NombreControl", "Nombre Control"),
+                ("Ip", "Dirección Ip")  ,
                 ("FechaCreacion", "Fecha Creacion"),
                 ("FechaInicio", "Fecha Inicio"),
                 ("FechaFin", "Fecha Fin"),
@@ -54,6 +55,7 @@
                             <div class="ads-rules-list">
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.NombreControl</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpDirec</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaCreacion.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaInicio.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaFin.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
@@ -83,6 +85,117 @@
 
     <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Páginas más Visitadas</div>
 
+    <div class="mt-2 mb-3 d-flex justify-content-end">
+        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(2)" disabled="@(!listasEventPagMasVist.Any())">
+            <Icon Name="IconName.BarChart" />
+            <span class="ms-2 btnExp">Ver en Grafica</span>
+        </Button>
+    </div>
+
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            @foreach (var column in new[]
+            {
+            ("CodigoHomologacionRol", "Codigo Homologación"),
+            ("NombreControl", "Nombre Control"),
+            ("Ip", "Dirección Ip")  ,
+            ("uso", "uso"),
+            })
+            {
+                <div class="table-heading-1 table-heading-10 sortable-header">
+                    <div class="header-label-1 header-label-4">
+                        <div class="label-heading headingheadline5-h5">
+                            @column.Item2
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (listasEventPagMasVist != null && listasEventPagMasVist.Any())
+    {
+        <div class="content content-2">
+            @foreach (var even in listasEventPagMasVist)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row">
+                            <div class="ads-rules-list">
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionMenu</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpAddress</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.uso</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+    }
+
+
+    <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Filtro más Usados</div>
+
+    <div class="mt-2 mb-3 d-flex justify-content-end">
+        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(3)" disabled="@(!listasEventFiltrMasUsad.Any())">
+            <Icon Name="IconName.BarChart" />
+            <span class="ms-2 btnExp">Ver en Grafica</span>
+        </Button>
+    </div>
+
+    <div class="table table-1">
+        <div class="table-heading table-1">
+            @foreach (var column in new[]
+            {
+            ("CodigoHomologacionRol", "Codigo Homologación"),
+            ("Ip", "Dirección Ip"),
+            ("FiltroTipo", "Tipo de Filtro"),
+            ("FiltroValor", "Filtro"),
+            ("uso", "Uso"),
+            })
+            {
+                <div class="table-heading-1 table-heading-10 sortable-header">
+                    <div class="header-label-1 header-label-4">
+                        <div class="label-heading headingheadline5-h5">
+                            @column.Item2
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (listasEventFiltrMasUsad != null && listasEventFiltrMasUsad.Any())
+    {
+        <div class="content content-2">
+            @foreach (var even in listasEventFiltrMasUsad)
+            {
+                <div class="row row-15">
+                    <div class="componente">
+                        <div class="row">
+                            <div class="ads-rules-list">
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpAddress</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FiltroTipo</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FiltroValor</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.Uso</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+    }
+
     <!-- Modal para la gráfica -->
     <div class="modal fade @(IsModalOpen ? "show d-block" : "d-none")" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -108,6 +221,9 @@
     private List<HeatmapPoint> heatmapData = new();
 
     private List<VwEventTrackingSessionDto> listasEventSession = new();
+    private List<PaginasMasVisitadaDto> listasEventPagMasVist = new();
+    private List<FiltrosMasUsadoDto> listasEventFiltrMasUsad = new();
+
     private bool IsModalOpen = false;
     private int ProgressValue { get; set; } = 0;
     private int PageSize = 5; // Cantidad de registros por página
@@ -138,6 +254,8 @@
     protected override async Task OnInitializedAsync()
     {
         listasEventSession = await EventService.GetEventSessionAsync();
+        listasEventPagMasVist = await EventService.GetEventPagMasVistAsync();
+        listasEventFiltrMasUsad = await EventService.GetEventFiltroMasUsadAsync();
     }
 
 
@@ -145,15 +263,27 @@
     {
         if (firstRender)
         {
-            await Task.Delay(500);
             await JS.InvokeVoidAsync("initMap");
         }
     }
 
-    private async Task verGrafica()
+    private async Task verGrafica(int report)
     {
         IsModalOpen = true;
-        await CargarDatos();
+        switch (report)
+        {
+            case 1:
+                await CargarDatos();
+                break;
+            case 2:
+                await CargarDatosPagMasVisit();
+                break;
+            case 3:
+                await CargarDatosFiltrMasUsad();
+                break;
+        }
+        await Task.Delay(500);
+        await JS.InvokeVoidAsync("invalidateSize");
     }
 
     private void CloseModal()
@@ -161,27 +291,86 @@
         IsModalOpen = false;
     }
 
-    // prueba para eliminar mas adelante
     public async Task CargarDatos()
     {
-     
+
         if (listasEventSession != null)
         {
             foreach (var session in listasEventSession)
-            {
-                heatmapData.Add(new HeatmapPoint
-                    {
-                        Lat = session.Latitud, // Suponiendo que estos campos existen
-                        Lng = session.Longitud,
-                        Intensity = session.TiempoEnSegundos // Ajusta según tus necesidades
-                    });
+            {   
+                if (session.Latitud != null && session.Longitud != null)
+                {
+                    heatmapData.Add(new HeatmapPoint
+                        {
+                            Lat = session.Latitud,
+                            Lng = session.Longitud,
+                            Intensity = session.TiempoEnSegundos
+                        });
+
+                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoEnSegundos}";
+                    await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
+                }
+               
             }
         }
 
         await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
     }
 
-    // prueba para eliminar mas adelante
+        public async Task CargarDatosPagMasVisit()
+    {
+
+        if (listasEventPagMasVist != null)
+        {
+            foreach (var session in listasEventPagMasVist)
+            {   
+                if (session.Latitud != null && session.Longitud != null)
+                {
+                    heatmapData.Add(new HeatmapPoint
+                        {
+                            Lat = session.Latitud,
+                            Lng = session.Longitud,
+                            Intensity = session.uso
+                        });
+
+                    var display = $"{session.CodigoHomologacionRol}, {session.uso}";
+
+                    await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
+                }
+               
+            }
+        }
+
+        await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
+    }
+
+    public async Task CargarDatosFiltrMasUsad()
+    {
+
+        if (listasEventFiltrMasUsad != null)
+        {
+            foreach (var session in listasEventFiltrMasUsad)
+            {
+                if (session.Latitud != null && session.Longitud != null)
+                {
+                    heatmapData.Add(new HeatmapPoint
+                        {
+                            Lat = session.Latitud,
+                            Lng = session.Longitud,
+                            Intensity = session.Uso
+                        });
+
+                    var display = $"{session.CodigoHomologacionRol}, {session.Uso}";
+
+                    await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
+                }
+
+            }
+        }
+
+        await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
+    }
+
     public class HeatmapPoint
     {
         public double? Lat { get; set; }

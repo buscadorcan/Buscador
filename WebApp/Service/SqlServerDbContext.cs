@@ -122,6 +122,10 @@ namespace WebApp.Service
 
         public DbSet<EventUser> EventUser { get; set; }
 
+        public DbSet<PaginasMasVisitadaDto> EventPagMasVisit { get; set; }
+
+        public DbSet<FiltrosMasUsadoDto> EventFiltroMasUsado { get; set; }
+
         public DbSet<VwEventTrackingSessionDto> EventSession { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -164,7 +168,10 @@ namespace WebApp.Service
             modelBuilder.Entity<EventUser>().HasNoKey().ToView("vw_EventUserREAD");
             modelBuilder.Entity<EventUser>().HasNoKey().ToView("vw_EventUserSEARCH");
 
+            //Report Event
             modelBuilder.Entity<VwEventTrackingSessionDto>().HasNoKey().ToView("vw_EventTrackingSession");
+            modelBuilder.Entity<PaginasMasVisitadaDto>().HasNoKey().ToSqlQuery("EXEC getPaginasMasVisitada");
+            modelBuilder.Entity<FiltrosMasUsadoDto>().HasNoKey().ToSqlQuery("EXEC GetFiltroMasUsado");
         }
 
     }

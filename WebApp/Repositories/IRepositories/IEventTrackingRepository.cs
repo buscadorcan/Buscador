@@ -68,5 +68,17 @@ namespace WebApp.Repositories.IRepositories
         /// </summary>
         /// <returns></returns>
         List<VwEventTrackingSessionDto> GetEventSession();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<PaginasMasVisitadaDto> GetEventPagMasVisit();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<FiltrosMasUsadoDto> GetEventFiltroMasUsa();
     }
 }

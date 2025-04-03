@@ -21,6 +21,12 @@ window.initMap = function () {
     map.addLayer(heatLayer);
 };
 
+window.addMarker = function (lat, lng, text) {
+    L.marker([lat, lng]).addTo(map)
+        .bindPopup(text)
+        .openPopup();
+};
+
 window.addHeatmapData = function (data) {
 
     if (!heatLayer) {
@@ -34,4 +40,10 @@ window.addHeatmapData = function (data) {
     };
 
     heatLayer.setData(heatmapData);
+};
+
+window.invalidateSize = function () {
+   if (window.map) {
+       window.map.invalidateSize();
+   }
 };

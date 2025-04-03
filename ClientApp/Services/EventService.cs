@@ -3,8 +3,6 @@ using ClientApp.Services.IService;
 using SharedApp.Models;
 using SharedApp.Models.Dtos;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 
 namespace ClientApp.Services
 {
@@ -20,9 +18,16 @@ namespace ClientApp.Services
 
         async Task<List<VwEventUserAllDto>> IEventService.GetListEventUserAllAsync()
         {
-            var response = await _httpClient.GetAsync($"{url}/EventUserAll");
-            response.EnsureSuccessStatusCode();
-            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwEventUserAllDto>>>()).Result;
+            try
+            {
+                var response = await _httpClient.GetAsync($"{url}/EventUserAll");
+                response.EnsureSuccessStatusCode();
+                return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwEventUserAllDto>>>()).Result;
+            }
+            catch (Exception ex) {
+                Console.WriteLine("Error en la consulta: " + ex.Message);
+                return null;
+            }
         }
 
         async Task<List<EventUserDto>> IEventService.GetEventAsync(string report, DateOnly fini, DateOnly ffin)
@@ -62,29 +67,156 @@ namespace ClientApp.Services
 
         public async Task<List<VwEventTrackingSessionDto>> GetEventSessionAsync()
         {
-            var response = await _httpClient.GetAsync($"{url}/EventSession");
-            response.EnsureSuccessStatusCode();
-
-            var sessions = (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwEventTrackingSessionDto>>>()).Result;
-
-            foreach (var session in sessions)
+            try
             {
-                if (session.IpDirec != null)
+                var response = await _httpClient.GetAsync($"{url}/EventSession").ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
                 {
-                    var coordinates = await GetCoordinatesByIPAsync(session.IpDirec);
-                    session.Latitud = coordinates?.lat;
-                    session.Longitud = coordinates?.lon;
+                    Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}");
+                    return new List<VwEventTrackingSessionDto>(); // Devolvemos lista vacía en caso de error
                 }
+
+                var apiResponse = await response.Content
+                    .ReadFromJsonAsync<RespuestasAPI<List<VwEventTrackingSessionDto>>>()
+                    .ConfigureAwait(false);
+
+                var sessions = apiResponse?.Result ?? new List<VwEventTrackingSessionDto>();
+
+                // Ejecutar en paralelo para mejorar el rendimiento
+                await Parallel.ForEachAsync(sessions, async (session, _) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(session.IpDirec))
+                    {
+                        if(!session.IpDirec.Equals("::1"))
+                        {
+                            var coordinates = await GetCoordinatesByIPAsync(session.IpDirec);
+                            if (coordinates != null)
+                            {
+                                session.Latitud = coordinates.lat;
+                                session.Longitud = coordinates.lon;
+                            }
+                        }
+                    }
+                }).ConfigureAwait(false);
+
+                return sessions;
             }
-
-            return sessions;
-
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
+                return new List<VwEventTrackingSessionDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado en GetEventSessionAsync: {ex.Message}");
+                return new List<VwEventTrackingSessionDto>();
+            }
         }
+
+        public async Task<List<PaginasMasVisitadaDto>> GetEventPagMasVistAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{url}/EventPagMasVisit").ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}");
+                    return new List<PaginasMasVisitadaDto>(); // Devolvemos lista vacía en caso de error
+                }
+
+                var apiResponse = await response.Content
+                    .ReadFromJsonAsync<RespuestasAPI<List<PaginasMasVisitadaDto>>>()
+                    .ConfigureAwait(false);
+
+                var sessions = apiResponse?.Result ?? new List<PaginasMasVisitadaDto>();
+
+                // Ejecutar en paralelo para mejorar el rendimiento
+                await Parallel.ForEachAsync(sessions, async (session, _) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(session.IpAddress))
+                    {
+                        if (!session.IpAddress.Equals("::1"))
+                        {
+                            var coordinates = await GetCoordinatesByIPAsync(session.IpAddress);
+                            if (coordinates != null)
+                            {
+                                session.Latitud = coordinates.lat;
+                                session.Longitud = coordinates.lon;
+                            }
+                        }
+                    }
+                }).ConfigureAwait(false);
+
+                return sessions;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
+                return new List<PaginasMasVisitadaDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado en GetEventSessionAsync: {ex.Message}");
+                return new List<PaginasMasVisitadaDto>();
+            }
+        }
+
+        public async Task<List<FiltrosMasUsadoDto>> GetEventFiltroMasUsadAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{url}/EventFiltroMasUsado").ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Error en la solicitud HTTP: {response.StatusCode}");
+                    return new List<FiltrosMasUsadoDto>(); // Devolvemos lista vacía en caso de error
+                }
+
+                var apiResponse = await response.Content
+                    .ReadFromJsonAsync<RespuestasAPI<List<FiltrosMasUsadoDto>>>()
+                    .ConfigureAwait(false);
+
+                var sessions = apiResponse?.Result ?? new List<FiltrosMasUsadoDto>();
+
+                // Ejecutar en paralelo para mejorar el rendimiento
+                await Parallel.ForEachAsync(sessions, async (session, _) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(session.IpAddress))
+                    {
+                        if (!session.IpAddress.Equals("::1"))
+                        {
+                            var coordinates = await GetCoordinatesByIPAsync(session.IpAddress);
+                            if (coordinates != null)
+                            {
+                                session.Latitud = coordinates.lat;
+                                session.Longitud = coordinates.lon;
+                            }
+                        }
+                    }
+                }).ConfigureAwait(false);
+
+                return sessions;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
+                return new List<FiltrosMasUsadoDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado en GetEventSessionAsync: {ex.Message}");
+                return new List<FiltrosMasUsadoDto>();
+            }
+        }
+
         private async Task<CoordinatesDto?> GetCoordinatesByIPAsync(string ip)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"http://ip-api.com/json/{ip}");
+                var response = await _httpClient.GetAsync($"{url}/coordinates/{ip}");
 
                 if (response.IsSuccessStatusCode)
                 {
