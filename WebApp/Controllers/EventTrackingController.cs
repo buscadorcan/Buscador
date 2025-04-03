@@ -188,5 +188,41 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// consulta las paginas mas visitadas por pais
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("EventPagMasVisit")]
+        public IActionResult GetEventPagMasVisit()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<PaginasMasVisitadaDto>>
+                {
+                    Result = _iRepo.GetEventPagMasVisit().ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetEventPagMasVisit));
+            }
+        }
+
+        [HttpGet("EventFiltroMasUsado")]
+        public IActionResult GetEventFiltroMasUsado()
+        {
+            try
+            {
+                return Ok(new RespuestasAPI<List<FiltrosMasUsadoDto>>
+                {
+                    Result = _iRepo.GetEventFiltroMasUsa().ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(GetEventFiltroMasUsado));
+            }
+        }
+
     }
 }
