@@ -86,7 +86,7 @@ else
                 ("FechaCreacion", "Fecha"),
                 ("FechaInicio", "Fecha Inicio"),
                 ("FechaFin", "Fecha Fin"),
-                ("TiempoEnSegundos", "Tiempo De Conección"),
+                ("TiempoEnSegundos", "Tiempo De Conección En Min"),
             })
             {
                 <div class="table-heading-1 table-heading-10 sortable-header">
@@ -114,7 +114,7 @@ else
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.Fecha.ToString("dd/MM/yyyy")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaInicio.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaFin.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.TiempoDeConeccion</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.TiempoDeConeccionEnMin</div></div>
                             </div>
                         </div>
                     </div>
@@ -380,7 +380,7 @@ else
                 {
 
                     double zoomFactor = Math.Pow(2, (15 - zoomLevel)); 
-                    double adjustedIntensity = session.TiempoDeConeccion / zoomFactor;
+                    double adjustedIntensity = session.TiempoDeConeccionEnMin / zoomFactor;
 
                     heatmapData.Add(new HeatmapPoint
                         {
@@ -389,7 +389,7 @@ else
                             Intensity = adjustedIntensity
                         });
 
-                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoDeConeccion}h";
+                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoDeConeccionEnMin}Min";
                     await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
                 }  
             }
@@ -502,7 +502,7 @@ else
                     worksheet.Cells[row, 3].Value = even.Fecha;
                     worksheet.Cells[row, 4].Value = even.FechaInicio;
                     worksheet.Cells[row, 5].Value = even.FechaFin;
-                    worksheet.Cells[row, 6].Value = even.TiempoDeConeccion;
+                    worksheet.Cells[row, 6].Value = even.TiempoDeConeccionEnMin;
 
                     row++;
                 }

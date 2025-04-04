@@ -7,7 +7,7 @@ namespace SharedApp.Models.Dtos
         public DateTime Fecha { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
-        public int TiempoDeConeccion { get; set; }
+        public int TiempoDeConeccionEnMin { get; set; }
         public string? IpDirec { get; set; }
         public double? Latitud { get; set; } = null;
         public double? Longitud { get; set; } = null;
