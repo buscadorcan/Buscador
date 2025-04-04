@@ -389,7 +389,7 @@ else
                             Intensity = adjustedIntensity
                         });
 
-                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoDeConeccion}";
+                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoDeConeccion}h";
                     await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
                 }  
             }
