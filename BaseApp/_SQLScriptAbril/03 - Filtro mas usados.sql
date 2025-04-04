@@ -59,6 +59,8 @@ AS
 SELECT TOP 1 WITH TIES 
     CodigoHomologacionRol, 
     IpAddress, 
+    NULL AS Latitud,
+	NULL AS Longitud,
     FiltroTipo, 
     FiltroValor, 
     COUNT(*) AS Uso

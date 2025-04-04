@@ -154,20 +154,20 @@ namespace WebApp.Repositories
         public List<VwEventTrackingSessionDto> GetEventSession()
         {
             return ExecuteDbOperation(context =>
-                context.EventSession
-                    .AsNoTracking()
-                    .Select(x => new VwEventTrackingSessionDto
-                    {
-                        CodigoHomologacionRol = x.CodigoHomologacionRol,
-                        NombreControl = x.NombreControl,
-                        FechaCreacion = x.FechaCreacion,
-                        IpDirec = x.IpDirec,
-                        FechaInicio = x.FechaInicio,
-                        FechaFin = x.FechaFin,
-                        TiempoEnSegundos = x.TiempoEnSegundos      
-                    })
-                    .ToList()
-            );
+            {
+                try
+                {
+                    string sql = "exec GetTiempoEnSession";
+                    return context.EventSession
+                       .FromSqlRaw(sql)
+                       .ToList();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error executing query GetEventSession");
+                    return [];
+                }
+            });
         }
 
         public List<PaginasMasVisitadaDto> GetEventPagMasVisit()

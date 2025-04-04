@@ -93,8 +93,6 @@ namespace ClientApp.Pages.Administracion.Eventos
 
             StateHasChanged();
         }
-
-
         private async Task ExportarExcel()
         {
             if (listasEvent == null || !listasEvent.Any())
@@ -192,7 +190,6 @@ namespace ClientApp.Pages.Administracion.Eventos
             var fileName = "Eventos_Export.pdf";
             await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", Convert.ToBase64String(memoryStream.ToArray()));
         }
-
         private async Task DeleteEventAll()
         {
             var result = await JSRuntime.InvokeAsync<JsonElement>("Swal.fire", new

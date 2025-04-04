@@ -1,12 +1,69 @@
 ﻿ @page "/reporte-event"
-@layout AdminLayout
 @using ClientApp.Services.IService
 @using Microsoft.AspNetCore.Authorization
 @using SharedApp.Models.Dtos
+@using iTextSharp.text;
+@using iTextSharp.text.pdf;
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.JSInterop;
+@using OfficeOpenXml;
+
+@layout AdminLayout
 @attribute [Authorize]
+@inject NavigationManager Navigation
+
 
 <div class="general title">
     <h2 class="title headlineheadline2-h2">Reporte de Eventos del Sistema</h2>
+</div>
+
+@if (isLoading)
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+}
+else
+{
+<div class="mt-2 mb-3 d-flex justify-content-between">
+
+    <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="GoBack">
+        <Icon Name="IconName.ArrowReturnLeft" /> 
+        <span class="ms-2 btnExp">Regresar</span>
+    </Button>
+
+    <!-- Grupo de botones de exportación -->
+    <div class="d-flex gap-2 mt-3">
+        <!-- Botón Exportar a Excel -->
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownExport" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-file-earmark-arrow-down"></i> <!-- Ícono de Bootstrap -->
+                <span class="ms-2">Exportar Excel</span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownExport">
+                <li>
+                    <button class="dropdown-item" @onclick="() =>ExportarExcel(1)" disabled="@(!listasEventSession.Any())">
+                        <i class="bi bi-file-earmark-excel"></i> <!-- Ícono de Excel -->
+                        <span class="ms-2">Tiempo de session</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item" @onclick="() =>ExportarExcel(2)" disabled="@(!listasEventPagMasVist.Any())">
+                        <i class="bi bi-file-earmark-pdf"></i> <!-- Ícono de PDF -->
+                        <span class="ms-2">Paginas mas visitadas</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item" @onclick="() =>ExportarExcel(3)" disabled="@(!listasEventFiltrMasUsad.Any())">
+                        <i class="bi bi-file-earmark-pdf"></i> <!-- Ícono de PDF -->
+                        <span class="ms-2">Filtros mas usados</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <div class="card-body px-lg-5 pt-4">
@@ -25,12 +82,11 @@
             @foreach (var column in new[]
             {
                 ("CodigoHomologacionRol", "Codigo Homologación"),
-                ("NombreControl", "Nombre Control"),
                 ("Ip", "Dirección Ip")  ,
-                ("FechaCreacion", "Fecha Creacion"),
+                ("FechaCreacion", "Fecha"),
                 ("FechaInicio", "Fecha Inicio"),
                 ("FechaFin", "Fecha Fin"),
-                ("TiempoEnSegundos", "Tiempo En Segundos"),
+                ("TiempoEnSegundos", "Tiempo De Conección"),
             })
             {
                 <div class="table-heading-1 table-heading-10 sortable-header">
@@ -54,12 +110,11 @@
                         <div class="row">
                             <div class="ads-rules-list">
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.NombreControl</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpDirec</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaCreacion.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.Fecha.ToString("dd/MM/yyyy")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaInicio.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
                                 <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaFin.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.TiempoEnSegundos</div></div>
+                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.TiempoDeConeccion</div></div>
                             </div>
                         </div>
                     </div>
@@ -195,31 +250,39 @@
     {
         <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
     }
+</div>
 
-    <!-- Modal para la gráfica -->
-    <div class="modal fade @(IsModalOpen ? "show d-block" : "d-none")" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Gráfica de Inicio de Sesión</h5>
-                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="map" style="height: 500px; width: 100%;"></div>
-                </div>
+    <div class="mt-2 mb-5 d-flex justify-content-start">
+        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="GoBack">
+            <Icon Name="IconName.ArrowReturnLeft" />
+            <span class="ms-2 btnExp">Regresar</span>
+        </Button>
+    </div>
+}
+
+<!-- Modal para la gráfica -->
+<div class="modal fade @(IsModalOpen ? "show d-block" : "d-none")" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gráfica de Inicio de Sesión</h5>
+                <button type="button" class="btn-close" @onclick="CloseModal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="map" style="height: 500px; width: 100%;"></div>
             </div>
         </div>
     </div>
-
 </div>
 
 @code{
 
     [Inject] public IEventService? EventService { get; set; }
-
     [Inject] IJSRuntime JS { get; set; }
-    private List<HeatmapPoint> heatmapData = new();
+    [Inject] public IJSRuntime JSRuntime { get; set; }
 
+    private bool isLoading = true;
+    private List<HeatmapPoint> heatmapData = new();
     private List<VwEventTrackingSessionDto> listasEventSession = new();
     private List<PaginasMasVisitadaDto> listasEventPagMasVist = new();
     private List<FiltrosMasUsadoDto> listasEventFiltrMasUsad = new();
@@ -253,9 +316,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        listasEventSession = await EventService.GetEventSessionAsync();
-        listasEventPagMasVist = await EventService.GetEventPagMasVistAsync();
-        listasEventFiltrMasUsad = await EventService.GetEventFiltroMasUsadAsync();
+        isLoading = true;
+
+        try
+        {
+            listasEventSession = await EventService.GetEventSessionAsync();
+            listasEventPagMasVist = await EventService.GetEventPagMasVistAsync();
+            listasEventFiltrMasUsad = await EventService.GetEventFiltroMasUsadAsync();
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 
 
@@ -296,28 +368,37 @@
 
         if (listasEventSession != null)
         {
+
+            heatmapData.Clear();
+            var markers = new List<object>();
+
+            var zoomLevel = await JS.InvokeAsync<int>("getMapZoom");
+
             foreach (var session in listasEventSession)
             {   
                 if (session.Latitud != null && session.Longitud != null)
                 {
+
+                    double zoomFactor = Math.Pow(2, (15 - zoomLevel)); 
+                    double adjustedIntensity = session.TiempoDeConeccion / zoomFactor;
+
                     heatmapData.Add(new HeatmapPoint
                         {
                             Lat = session.Latitud,
                             Lng = session.Longitud,
-                            Intensity = session.TiempoEnSegundos
+                            Intensity = adjustedIntensity
                         });
 
-                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoEnSegundos}";
+                    var display = $"{session.CodigoHomologacionRol}, {session.TiempoDeConeccion}";
                     await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
-                }
-               
+                }  
             }
-        }
 
-        await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
+            await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
+        }
     }
 
-        public async Task CargarDatosPagMasVisit()
+    public async Task CargarDatosPagMasVisit()
     {
 
         if (listasEventPagMasVist != null)
@@ -337,7 +418,7 @@
 
                     await JS.InvokeVoidAsync("addMarker", session.Latitud, session.Longitud, display);
                 }
-               
+
             }
         }
 
@@ -369,6 +450,95 @@
         }
 
         await JS.InvokeVoidAsync("addHeatmapData", heatmapData);
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/eventos", forceLoad: false);
+    }
+
+    private async Task ExportarExcel(int TypeReport)
+    {
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Eventos");
+
+        // Agregar encabezados
+
+        worksheet.Cells[1, 1].Value = "Codigo Homologación";
+        worksheet.Cells[1, 2].Value = "Ip";
+
+        switch (TypeReport)
+        {
+            case 1:
+                worksheet.Cells[1, 3].Value = "Fecha";
+                worksheet.Cells[1, 4].Value = "Fecha Inicio";
+                worksheet.Cells[1, 5].Value = "Fecha Fin";
+                worksheet.Cells[1, 6].Value = "Tiempo de Conección";
+                break;
+            case 2:
+                worksheet.Cells[1, 3].Value = "Nombre Control";
+                worksheet.Cells[1, 4].Value = "Uso";
+                break;
+            case 3:
+                worksheet.Cells[1, 3].Value = "Tipo de Filtro";
+                worksheet.Cells[1, 4].Value = "Filtro";
+                worksheet.Cells[1, 5].Value = "Uso";
+                break;
+        }
+
+
+        int row = 2;
+
+        switch (TypeReport)
+        {
+            case 1: 
+                foreach (var even in listasEventSession)
+                {
+                    worksheet.Cells[row, 1].Value = even.CodigoHomologacionRol;
+                    worksheet.Cells[row, 2].Value = even.IpDirec;
+                    worksheet.Cells[row, 3].Value = even.Fecha;
+                    worksheet.Cells[row, 4].Value = even.FechaInicio;
+                    worksheet.Cells[row, 5].Value = even.FechaFin;
+                    worksheet.Cells[row, 6].Value = even.TiempoDeConeccion;
+
+                    row++;
+                }
+                break;
+            case 2:
+                foreach (var even in listasEventPagMasVist)
+                {
+                    worksheet.Cells[row, 1].Value = even.CodigoHomologacionRol;
+                    worksheet.Cells[row, 2].Value = even.IpAddress;
+                    worksheet.Cells[row, 3].Value = even.CodigoHomologacionMenu;
+                    worksheet.Cells[row, 4].Value = even.uso;
+                    row++;
+                }
+                break;
+            case 3:
+                foreach (var even in listasEventFiltrMasUsad)
+                {
+                    worksheet.Cells[row, 1].Value = even.CodigoHomologacionRol;
+                    worksheet.Cells[row, 2].Value = even.IpAddress;
+                    worksheet.Cells[row, 3].Value = even.FiltroTipo;
+                    worksheet.Cells[row, 4].Value = even.FiltroValor;
+                    worksheet.Cells[row, 5].Value = even.Uso;
+                    row++;
+                }
+                break;
+        }
+
+
+
+        worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+        var fileName = "Eventos_Export.xlsx";
+        var fileBytes = package.GetAsByteArray();
+        var fileBase64 = Convert.ToBase64String(fileBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
     }
 
     public class HeatmapPoint

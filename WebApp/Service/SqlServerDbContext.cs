@@ -169,7 +169,7 @@ namespace WebApp.Service
             modelBuilder.Entity<EventUser>().HasNoKey().ToView("vw_EventUserSEARCH");
 
             //Report Event
-            modelBuilder.Entity<VwEventTrackingSessionDto>().HasNoKey().ToView("vw_EventTrackingSession");
+            modelBuilder.Entity<VwEventTrackingSessionDto>().HasNoKey().ToView("EXEC GetTiempoEnSession");
             modelBuilder.Entity<PaginasMasVisitadaDto>().HasNoKey().ToSqlQuery("EXEC getPaginasMasVisitada");
             modelBuilder.Entity<FiltrosMasUsadoDto>().HasNoKey().ToSqlQuery("EXEC GetFiltroMasUsado");
         }

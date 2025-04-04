@@ -19,7 +19,12 @@ AS
 			  AND JSON_VALUE(UbicacionJson, '$.IpAddress') <> '::1'
 		GROUP BY CodigoHomologacionRol, CodigoHomologacionMenu, JSON_VALUE(UbicacionJson, '$.IpAddress')
 	)
-	SELECT CodigoHomologacionRol, CodigoHomologacionMenu, IpAddress, uso
+	SELECT CodigoHomologacionRol, 
+	CodigoHomologacionMenu, 
+	IpAddress,	
+	NULL AS Latitud,
+	NULL AS Longitud, 
+	uso
 	FROM UsoPorIP
 	WHERE rn = 1
 	ORDER BY uso DESC;
