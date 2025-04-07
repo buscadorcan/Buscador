@@ -1,4 +1,5 @@
-﻿ @page "/reporte-event"
+﻿@page "/reporte-event"
+@page "/reporte-event/{selectUser}/{dateStart}/{dateEnd}"
 @using ClientApp.Services.IService
 @using Microsoft.AspNetCore.Authorization
 @using SharedApp.Models.Dtos
@@ -27,60 +28,88 @@
 }
 else
 {
-<div class="mt-2 mb-3 d-flex justify-content-between">
+    <div class="mt-2 mb-3 d-flex justify-content-between">
 
-    <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="GoBack">
-        <Icon Name="IconName.ArrowReturnLeft" /> 
-        <span class="ms-2 btnExp">Regresar</span>
-    </Button>
+        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="GoBack">
+            <Icon Name="IconName.ArrowReturnLeft" /> 
+            <span class="ms-2 btnExp">Regresar</span>
+        </Button>
 
-    <!-- Grupo de botones de exportación -->
-    <div class="d-flex gap-2 mt-3">
-        <!-- Botón Exportar a Excel -->
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownExport" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-file-earmark-arrow-down"></i> <!-- Ícono de Bootstrap -->
-                <span class="ms-2">Exportar Excel</span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownExport">
-                <li>
-                    <button class="dropdown-item" @onclick="() =>ExportarExcel(1)" disabled="@(!listasEventSession.Any())">
-                        <i class="bi bi-file-earmark-excel"></i> <!-- Ícono de Excel -->
-                        <span class="ms-2">Tiempo de session</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item" @onclick="() =>ExportarExcel(2)" disabled="@(!listasEventPagMasVist.Any())">
-                        <i class="bi bi-file-earmark-pdf"></i> <!-- Ícono de PDF -->
-                        <span class="ms-2">Paginas mas visitadas</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item" @onclick="() =>ExportarExcel(3)" disabled="@(!listasEventFiltrMasUsad.Any())">
-                        <i class="bi bi-file-earmark-pdf"></i> <!-- Ícono de PDF -->
-                        <span class="ms-2">Filtros mas usados</span>
-                    </button>
-                </li>
-            </ul>
+        <!-- Grupo de botones de exportación -->
+        <div class="d-flex gap-2 mt-3">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownExport" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-file-earmark-arrow-down"></i>
+                    <span class="ms-2">Seccione el Reporte</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownExport">
+                    <li>
+                        <button class="dropdown-item" @onclick="() => verReport(reporteView.TiempoSession)">
+                            <i class="bi bi-file-earmark-excel"></i> 
+                            <span class="ms-2">Tiempo de sessión</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" @onclick="() => verReport(reporteView.PaginasMasVisitadas)">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            <span class="ms-2">Paginas mas visitadas</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" @onclick="() => verReport(reporteView.FiltroMasUsado)">
+                            <i class="bi bi-file-earmark-pdf"></i> 
+                            <span class="ms-2">Filtros mas usados</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <!-- Botón Exportar a Excel -->
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownExport" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-file-earmark-arrow-down"></i> <!-- Ícono de Bootstrap -->
+                    <span class="ms-2">Exportar Excel</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownExport">
+                    <li>
+                        <button class="dropdown-item" @onclick="() =>ExportarExcel(reporteView.TiempoSession)" disabled="@(!listasEventSession.Any())">
+                            <i class="bi bi-file-earmark-excel"></i> <!-- Ícono de Excel -->
+                            <span class="ms-2">Tiempo de session</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" @onclick="() =>ExportarExcel(reporteView.PaginasMasVisitadas)" disabled="@(!listasEventPagMasVist.Any())">
+                            <i class="bi bi-file-earmark-pdf"></i> <!-- Ícono de PDF -->
+                            <span class="ms-2">Paginas mas visitadas</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" @onclick="() =>ExportarExcel(reporteView.FiltroMasUsado)" disabled="@(!listasEventFiltrMasUsad.Any())">
+                            <i class="bi bi-file-earmark-pdf"></i> <!-- Ícono de PDF -->
+                            <span class="ms-2">Filtros mas usados</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="card-body px-lg-5 pt-4">
+    @if (selectView == reporteView.TiempoSession)
+    {
+        <div class="card-body px-lg-5 pt-4" >
 
-    <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Inicio de Sesión</div>
+            <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Inicio de Sesión</div>
 
-    <div class="mt-2 mb-3 d-flex justify-content-end">
-        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(1)" disabled="@(!listasEventSession.Any())">
-            <Icon Name="IconName.BarChart" />
-            <span class="ms-2 btnExp">Ver en Grafica</span>
-        </Button>
-    </div>
+            <div class="mt-2 mb-3 d-flex justify-content-end">
+                <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(reporteView.TiempoSession)" disabled="@(!listasEventSession.Any())">
+                    <Icon Name="IconName.BarChart" />
+                    <span class="ms-2 btnExp">Ver en Grafica</span>
+                </Button>
+            </div>
 
-    <div class="table table-1">
-        <div class="table-heading table-1">
-            @foreach (var column in new[]
-            {
+            <div class="table table-1">
+                <div class="table-heading table-1">
+                    @foreach (var column in new[]
+               {
                 ("CodigoHomologacionRol", "Codigo Homologación"),
                 ("Ip", "Dirección Ip")  ,
                 ("FechaCreacion", "Fecha"),
@@ -88,176 +117,182 @@ else
                 ("FechaFin", "Fecha Fin"),
                 ("TiempoEnSegundos", "Tiempo De Conección En Min"),
             })
-            {
-                <div class="table-heading-1 table-heading-10 sortable-header">
-                    <div class="header-label-1 header-label-4">
-                        <div class="label-heading headingheadline5-h5">
-                            @column.Item2
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-    @if (listasEventSession != null && listasEventSession.Any())
-    {
-        <div class="content content-2">
-            @foreach (var even in PaginatedItems)
-            {
-                <div class="row row-15">
-                    <div class="componente">
-                        <div class="row">
-                            <div class="ads-rules-list">
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpDirec</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.Fecha.ToString("dd/MM/yyyy")</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaInicio.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaFin.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.TiempoDeConeccionEnMin</div></div>
+                    {
+                        <div class="table-heading-1 table-heading-10 sortable-header">
+                            <div class="header-label-1 header-label-4">
+                                <div class="label-heading headingheadline5-h5">
+                                    @column.Item2
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                </div>
+            </div>
+
+            @if (listasEventSession != null && listasEventSession.Any())
+            {
+                <div class="content content-2">
+                    @foreach (var even in PaginatedItems)
+                    {
+                        <div class="row row-15">
+                            <div class="componente">
+                                <div class="row">
+                                    <div class="ads-rules-list">
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpDirec</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.Fecha.ToString("dd/MM/yyyy")</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaInicio.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FechaFin.ToString("dd/MM/yyyy HH:mm:ss")</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.TiempoDeConeccionEnMin</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="pagination-container">
+                    <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
+                        ⏪
+                    </button>
+
+                    <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
+
+                    <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
+                        ⏩
+                    </button>
                 </div>
             }
-        </div>
-        <div class="pagination-container">
-            <button class="btn btn-primary btn-sm" @onclick="PreviousPage" disabled="@(!CanGoPrevious)">
-                ⏪
-            </button>
-
-            <span class="pagination-text inter-regular-normal-comet-14px">Página @CurrentPage de @TotalPages</span>
-
-            <button class="btn btn-primary btn-sm" @onclick="NextPage" disabled="@(!CanGoNext)">
-                ⏩
-            </button>
-        </div>
-    }
-    else
-    {
-        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
-    }
-
-    <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Páginas más Visitadas</div>
-
-    <div class="mt-2 mb-3 d-flex justify-content-end">
-        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(2)" disabled="@(!listasEventPagMasVist.Any())">
-            <Icon Name="IconName.BarChart" />
-            <span class="ms-2 btnExp">Ver en Grafica</span>
-        </Button>
-    </div>
-
-    <div class="table table-1">
-        <div class="table-heading table-1">
-            @foreach (var column in new[]
+            else
             {
+                <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+            }
+
+        </div>
+    }
+    @if (selectView == reporteView.PaginasMasVisitadas)
+    {
+        <div class="card-body px-lg-5 pt-4">
+
+            <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Páginas más Visitadas</div>
+
+            <div class="mt-2 mb-3 d-flex justify-content-end">
+                <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(reporteView.PaginasMasVisitadas)" disabled="@(!listasEventPagMasVist.Any())">
+                    <Icon Name="IconName.BarChart" />
+                    <span class="ms-2 btnExp">Ver en Grafica</span>
+                </Button>
+            </div>
+
+            <div class="table table-1">
+                <div class="table-heading table-1">
+                    @foreach (var column in new[]
+                {
             ("CodigoHomologacionRol", "Codigo Homologación"),
             ("NombreControl", "Nombre Control"),
             ("Ip", "Dirección Ip")  ,
             ("uso", "uso"),
             })
-            {
-                <div class="table-heading-1 table-heading-10 sortable-header">
-                    <div class="header-label-1 header-label-4">
-                        <div class="label-heading headingheadline5-h5">
-                            @column.Item2
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-    @if (listasEventPagMasVist != null && listasEventPagMasVist.Any())
-    {
-        <div class="content content-2">
-            @foreach (var even in listasEventPagMasVist)
-            {
-                <div class="row row-15">
-                    <div class="componente">
-                        <div class="row">
-                            <div class="ads-rules-list">
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionMenu</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpAddress</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.uso</div></div>
+                    {
+                        <div class="table-heading-1 table-heading-10 sortable-header">
+                            <div class="header-label-1 header-label-4">
+                                <div class="label-heading headingheadline5-h5">
+                                    @column.Item2
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                </div>
+            </div>
+
+            @if (listasEventPagMasVist != null && listasEventPagMasVist.Any())
+            {
+                <div class="content content-2">
+                    @foreach (var even in listasEventPagMasVist)
+                    {
+                        <div class="row row-15">
+                            <div class="componente">
+                                <div class="row">
+                                    <div class="ads-rules-list">
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionMenu</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpAddress</div></div>
+                                        <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.uso</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
+            else
+            {
+                <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+            }
+
         </div>
     }
-    else
+    @if (selectView == reporteView.FiltroMasUsado)
     {
-        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
-    }
+         <div class="card-body px-lg-5 pt-4">
 
+        <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Filtro más Usados</div>
 
-    <div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis">Reporte de Filtro más Usados</div>
+        <div class="mt-2 mb-3 d-flex justify-content-end">
+            <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(reporteView.FiltroMasUsado)" disabled="@(!listasEventFiltrMasUsad.Any())">
+                <Icon Name="IconName.BarChart" />
+                <span class="ms-2 btnExp">Ver en Grafica</span>
+            </Button>
+        </div>
 
-    <div class="mt-2 mb-3 d-flex justify-content-end">
-        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Primary" Outline="true" @onclick="() =>verGrafica(3)" disabled="@(!listasEventFiltrMasUsad.Any())">
-            <Icon Name="IconName.BarChart" />
-            <span class="ms-2 btnExp">Ver en Grafica</span>
-        </Button>
-    </div>
-
-    <div class="table table-1">
-        <div class="table-heading table-1">
-            @foreach (var column in new[]
-            {
+        <div class="table table-1">
+            <div class="table-heading table-1">
+                @foreach (var column in new[]
+             {
             ("CodigoHomologacionRol", "Codigo Homologación"),
             ("Ip", "Dirección Ip"),
             ("FiltroTipo", "Tipo de Filtro"),
             ("FiltroValor", "Filtro"),
             ("uso", "Uso"),
             })
-            {
-                <div class="table-heading-1 table-heading-10 sortable-header">
-                    <div class="header-label-1 header-label-4">
-                        <div class="label-heading headingheadline5-h5">
-                            @column.Item2
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-    @if (listasEventFiltrMasUsad != null && listasEventFiltrMasUsad.Any())
-    {
-        <div class="content content-2">
-            @foreach (var even in listasEventFiltrMasUsad)
-            {
-                <div class="row row-15">
-                    <div class="componente">
-                        <div class="row">
-                            <div class="ads-rules-list">
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpAddress</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FiltroTipo</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FiltroValor</div></div>
-                                <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.Uso</div></div>
+                {
+                    <div class="table-heading-1 table-heading-10 sortable-header">
+                        <div class="header-label-1 header-label-4">
+                            <div class="label-heading headingheadline5-h5">
+                                @column.Item2
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
-    }
-    else
-    {
-        <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
-    }
-</div>
 
-    <div class="mt-2 mb-5 d-flex justify-content-start">
-        <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Danger" Outline="true" @onclick="GoBack">
-            <Icon Name="IconName.ArrowReturnLeft" />
-            <span class="ms-2 btnExp">Regresar</span>
-        </Button>
+        @if (listasEventFiltrMasUsad != null && listasEventFiltrMasUsad.Any())
+        {
+            <div class="content content-2">
+                @foreach (var even in listasEventFiltrMasUsad)
+                {
+                    <div class="row row-15">
+                        <div class="componente">
+                            <div class="row">
+                                <div class="ads-rules-list">
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.CodigoHomologacionRol</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.IpAddress</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FiltroTipo</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.FiltroValor</div></div>
+                                    <div class="cell cell-1"><div class="cell-text cell-1 bodybody-small">@even.Uso</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="label valign-text-middle inter-regular-normal-comet-16px">No hay datos disponibles.</p>
+        }
     </div>
+    }
+   
 }
 
 <!-- Modal para la gráfica -->
@@ -277,11 +312,24 @@ else
 
 @code{
 
+    [Parameter] public string? selectUser { get; set; }
+    [Parameter] public DateOnly? dateStart { get; set; }
+    [Parameter] public DateOnly? dateEnd { get; set; }
+
     [Inject] public IEventService? EventService { get; set; }
     [Inject] IJSRuntime JS { get; set; }
     [Inject] public IJSRuntime JSRuntime { get; set; }
 
-    private bool isLoading = true;
+    private enum reporteView
+    {
+        TiempoSession = 1,
+        PaginasMasVisitadas = 2,
+        FiltroMasUsado = 3
+    }
+
+    private bool isLoading = false;
+    private reporteView selectView;
+
     private List<HeatmapPoint> heatmapData = new();
     private List<VwEventTrackingSessionDto> listasEventSession = new();
     private List<PaginasMasVisitadaDto> listasEventPagMasVist = new();
@@ -314,20 +362,11 @@ else
         }
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnParametersSet()
     {
-        isLoading = true;
-
-        try
-        {
-            listasEventSession = await EventService.GetEventSessionAsync();
-            listasEventPagMasVist = await EventService.GetEventPagMasVistAsync();
-            listasEventFiltrMasUsad = await EventService.GetEventFiltroMasUsadAsync();
-        }
-        finally
-        {
-            isLoading = false;
-        }
+        Console.WriteLine($"Usuario seleccionado: {selectUser}");
+        Console.WriteLine($"Fecha inicio: {dateStart}");
+        Console.WriteLine($"Fecha fin: {dateEnd}");
     }
 
 
@@ -339,18 +378,46 @@ else
         }
     }
 
-    private async Task verGrafica(int report)
+    private async Task verReport(reporteView report)
+    {
+        isLoading = true;
+
+        selectView = report;
+
+        try
+        {   
+            switch (report)
+            {
+                case reporteView.TiempoSession :
+                    listasEventSession = await EventService.GetEventSessionAsync();
+                    break;
+                case reporteView.PaginasMasVisitadas:
+                  listasEventPagMasVist = await EventService.GetEventPagMasVistAsync();
+                    break;
+                case reporteView.FiltroMasUsado:
+                    listasEventFiltrMasUsad = await EventService.GetEventFiltroMasUsadAsync();
+                    break;
+            }
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task verGrafica(reporteView report)
     {
         IsModalOpen = true;
+
         switch (report)
         {
-            case 1:
+            case reporteView.TiempoSession:
                 await CargarDatos();
                 break;
-            case 2:
+            case reporteView.PaginasMasVisitadas:
                 await CargarDatosPagMasVisit();
                 break;
-            case 3:
+            case reporteView.FiltroMasUsado:
                 await CargarDatosFiltrMasUsad();
                 break;
         }
@@ -457,7 +524,7 @@ else
         Navigation.NavigateTo("/eventos", forceLoad: false);
     }
 
-    private async Task ExportarExcel(int TypeReport)
+    private async Task ExportarExcel(reporteView TypeReport)
     {
 
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
@@ -472,29 +539,28 @@ else
 
         switch (TypeReport)
         {
-            case 1:
+            case reporteView.TiempoSession:
                 worksheet.Cells[1, 3].Value = "Fecha";
                 worksheet.Cells[1, 4].Value = "Fecha Inicio";
                 worksheet.Cells[1, 5].Value = "Fecha Fin";
                 worksheet.Cells[1, 6].Value = "Tiempo de Conección";
                 break;
-            case 2:
+            case reporteView.PaginasMasVisitadas:
                 worksheet.Cells[1, 3].Value = "Nombre Control";
                 worksheet.Cells[1, 4].Value = "Uso";
                 break;
-            case 3:
+            case reporteView.FiltroMasUsado:
                 worksheet.Cells[1, 3].Value = "Tipo de Filtro";
                 worksheet.Cells[1, 4].Value = "Filtro";
                 worksheet.Cells[1, 5].Value = "Uso";
                 break;
         }
 
-
         int row = 2;
 
         switch (TypeReport)
         {
-            case 1: 
+            case reporteView.TiempoSession:
                 foreach (var even in listasEventSession)
                 {
                     worksheet.Cells[row, 1].Value = even.CodigoHomologacionRol;
@@ -507,7 +573,7 @@ else
                     row++;
                 }
                 break;
-            case 2:
+            case reporteView.PaginasMasVisitadas:
                 foreach (var even in listasEventPagMasVist)
                 {
                     worksheet.Cells[row, 1].Value = even.CodigoHomologacionRol;
@@ -517,7 +583,7 @@ else
                     row++;
                 }
                 break;
-            case 3:
+            case reporteView.FiltroMasUsado:
                 foreach (var even in listasEventFiltrMasUsad)
                 {
                     worksheet.Cells[row, 1].Value = even.CodigoHomologacionRol;
@@ -529,8 +595,6 @@ else
                 }
                 break;
         }
-
-
 
         worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
 
