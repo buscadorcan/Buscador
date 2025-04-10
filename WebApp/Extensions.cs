@@ -102,6 +102,9 @@ namespace WebApp.Extensions
             //IpCoordinates
             services.AddHttpClient<IIpCoordinatesService, IpCoordinatesService>();
 
+            // OnacMIgrate
+            services.AddScoped<IOnaMigrateRepository, OnaMigrateRepository>();
+            services.AddHttpClient<IOnaMigrate, OnaMigrateService>();
             // Registra servicios de trabajo en segundo plano (Worker Services).
             services.AddHostedService<BackgroundWorkerService>();
             services.AddHostedService<BackgroundExcelService>();

@@ -128,6 +128,8 @@ namespace WebApp.Service
 
         public DbSet<VwEventTrackingSessionDto> EventSession { get; set; }
 
+        public DbSet<OnaMigrateDto> onaMigrate { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VwMenu>().HasNoKey().ToView("vwMenu");
@@ -172,6 +174,10 @@ namespace WebApp.Service
             modelBuilder.Entity<VwEventTrackingSessionDto>().HasNoKey().ToView("EXEC GetTiempoEnSession");
             modelBuilder.Entity<PaginasMasVisitadaDto>().HasNoKey().ToSqlQuery("EXEC getPaginasMasVisitada");
             modelBuilder.Entity<FiltrosMasUsadoDto>().HasNoKey().ToSqlQuery("EXEC GetFiltroMasUsado");
+
+            //Ona Migrate
+            modelBuilder.Entity<OnaMigrateDto>().HasNoKey().ToSqlQuery("GenerarEsquemaData");
+
         }
 
     }

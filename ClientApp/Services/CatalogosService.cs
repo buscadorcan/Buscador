@@ -52,55 +52,10 @@ namespace ClientApp.Services
 
         public async Task<List<VwFiltroDto>> GetFiltrosAsync()
         {
-            try
-            {
-                var url = _urlBaseApi + "filters/schema";
-                var response = await _httpClient.GetAsync(url);
-
-                // Verificar si la respuesta es exitosa antes de continuar
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine($"Error en la respuesta HTTP: {response.StatusCode}");
-                    return new List<VwFiltroDto>();
-                }
-
-                var jsonString = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Respuesta API: {jsonString}");
-
-                // Verificar si la respuesta contiene JSON válido antes de deserializar
-                if (string.IsNullOrWhiteSpace(jsonString))
-                {
-                    Console.WriteLine("La respuesta de la API está vacía.");
-                    return new List<VwFiltroDto>();
-                }
-
-                // Intentar deserializar manualmente el JSON
-                var apiResponse = JsonSerializer.Deserialize<RespuestasAPI<List<VwFiltroDto>>>(
-                    jsonString,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                if (apiResponse == null)
-                {
-                    Console.WriteLine("No se pudo deserializar la respuesta JSON.");
-                    return new List<VwFiltroDto>();
-                }
-
-                return apiResponse.Result ?? new List<VwFiltroDto>();
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
-            }
-            catch (JsonException ex)
-            {
-                Console.WriteLine($"Error en la deserialización JSON: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error inesperado: {ex.Message}");
-            }
-
-            return new List<VwFiltroDto>();
+            var url = _urlBaseApi + "filters/schema";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwFiltroDto>>>()).Result;
         }
 
         public async Task<List<vwPanelONADto>> GetPanelOnaAsync()
