@@ -35,7 +35,7 @@ namespace WebApp.Service
         {
             try
             {
-                var url = $"{UrlBase}/services/CSONAC.OEC.svc/{view}?ConDatos=true";
+                var url = $"{UrlBase}/services/CSONAC.OEC.svc/{view}?ConDatos=true&NroRegistros=10";
                 var response = await _httpClient.GetAsync(url);
 
                 response.EnsureSuccessStatusCode();
