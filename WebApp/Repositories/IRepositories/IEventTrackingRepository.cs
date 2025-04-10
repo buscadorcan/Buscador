@@ -62,5 +62,23 @@ namespace WebApp.Repositories.IRepositories
         /// <param name="id"></param>
         /// <returns></returns>
         bool DeleteEventById(int id);
+
+        /// <summary>
+        /// Consulta los inicios de sesion 
+        /// </summary>
+        /// <returns></returns>
+        List<VwEventTrackingSessionDto> GetEventSession();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<PaginasMasVisitadaDto> GetEventPagMasVisit();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<FiltrosMasUsadoDto> GetEventFiltroMasUsa();
     }
 }

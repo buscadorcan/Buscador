@@ -4,7 +4,6 @@
 @using SharedApp.Data
 @using SharedApp.Models.Dtos
 @attribute [Authorize]
-@inject NavigationManager NavigationManager
 
 <div class="general title">
     <h2 class="title headlineheadline2-h2">Lista de eventos del sistema</h2>
@@ -60,10 +59,14 @@
         </Button>
     </div>
 
-    <div class="button-container">
+    <div class="d-flex gap-2">
+        <!-- Botón ver graficas -->
+        <Button id="btnviewChart" Type="ButtonType.Button" Color="ButtonColor.Secondary" @onclick="verReport">
+            <Icon Name="IconName.BarChart" />
+            <span class="ms-2">Ver reporte</span>
+        </Button>
         <Button id="btnDeleteAll" Type="ButtonType.Button" Color="ButtonColor.Danger" disabled="@(!listasEvent.Any())" @onclick="DeleteEventAll">
             <Icon Name="IconName.Trash" />
-            @*   <span class="ms-2">Eliminar Todo</span> *@
         </Button>
     </div>
 </div>

@@ -151,5 +151,61 @@ namespace WebApp.Repositories
             throw new NotImplementedException();
         }
 
+        public List<VwEventTrackingSessionDto> GetEventSession()
+        {
+            return ExecuteDbOperation(context =>
+            {
+                try
+                {
+                    string sql = "exec GetTiempoEnSession";
+                    return context.EventSession
+                       .FromSqlRaw(sql)
+                       .ToList();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error executing query GetEventSession");
+                    return [];
+                }
+            });
+        }
+
+        public List<PaginasMasVisitadaDto> GetEventPagMasVisit()
+        {
+            return ExecuteDbOperation(context =>
+            {
+                try
+                {
+                    string sql = "exec getPaginasMasVisitada";
+                    return context.EventPagMasVisit
+                       .FromSqlRaw(sql)
+                       .ToList();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error executing query GetEventPagMasVisit");
+                    return [];
+                }
+            });
+        }
+
+        public List<FiltrosMasUsadoDto> GetEventFiltroMasUsa()
+        {
+            return ExecuteDbOperation(context =>
+            {
+                try
+                {
+                    string sql = "Exec GetFiltroMasUsado";
+                    return context.EventFiltroMasUsado
+                       .FromSqlRaw(sql)
+                       .ToList();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error executing query GetEventFiltroMasUsa");
+                    return [];
+                }
+            });
+        }
     }
 }
