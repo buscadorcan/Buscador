@@ -1,44 +1,29 @@
-#EVN:  *nov2K24*
-1. SDK .NET : https://dotnet.microsoft.com/en-us/download
-2. VSCode   : https:2//code.visualstudio.com/download
+#EVN:  *@2k25 Buscador Andino*
+1. SDK .NET + VSCode | visual studio 
   - EXT:  
     - .NET Install Tool
-    - Docker
-    - Database Client JDBC
-    - turder client /  Postman 
+    - Turder client /  Postman 
     - .NET Core Test Explorer
     - Coverage Gutters
-  - 
-3. crear la base de datos
+    - docker
+
+2. Crear la base de datos
   - .devcontainer\database\query\canShemma.sql
   - .devcontainer\database\query\canOrgFullText.sql
-4. Codificar WebApp
-    - MODELO
-      WebApp\Models
 
-      - modelo de la apliacion CAN_DB
-        - WebApp\Models\CANOrganizacion.cs  
-        - WebApp\Models\CANOrganizacionPais.cs  
-        - ...
-      - modelos del CAN : Col, ecu, bov, peru
-        - WebApp\Models\ColombiaCONACvwBusqueda.cs
-        - WebApp\Models\EcuadorSAEvwBusqueda.cs    *
-        - WebApp\Models\PeruINACALvwBusqueda.cs
-        - WebApp\Models\BoliviaIBMETROvwBusqueda.cs
+3. Arq.Buscador
 
-    - REPOSITORIO
-    - WebApp\Repositories
-      (persona)
-      - repositories para los modelos del CAN_DB
-      - repositories para los modelos de CAN : Col, ecu, bov, peru
+    📁 ClientApp
+    📁 DataAccess
+    📁 SharedApp
+    📁 WebApp
+    📄 Buscador.sln
+    📄 package.json
+    📄 readme.md
+  -------------------------------
 
-    - CONTROLADORES
-    - WebApp\Controllers
-      (persona)
-      - Controllers para los repositories del CAN_DB
-      - Controllers para los repositories de CAN : Col, ecu, bov, peru
 
-5. Configurar tests
+4. Configurar tests
   - dotnet add package Microsoft.AspNetCore.Mvc.Testing
   - dotnet add package moq
   - dotnet add package coverlet.msbuild
@@ -49,18 +34,6 @@
 dotnet run
 
 ------------------------------------------------
-
-buscador parte necesarias
-- impacto del buscador
-- detalle y analis de los reque
-- procesmaiento de cada buscador con dire y reporte traccional, mapa tematico y requerimeinto del ONa 
-- requerimeinto para la interoperabilidad
-- 
-Darwin Alexander: (Ecuador)
--  
-
-
-
 
 ## Agregar dependencias
 url:
