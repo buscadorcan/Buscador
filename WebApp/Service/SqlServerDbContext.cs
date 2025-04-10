@@ -66,6 +66,9 @@ namespace WebApp.Service
         /// <summary>Vista que almacena filtros para realizar consultas específicas.</summary>
         public DbSet<VwFiltro> VwFiltro { get; set; }
 
+        /// <summary>Vista que almacena filtros anidados para realizar consultas específicas.</summary>
+        public DbSet<vw_FiltrosAnidadosDto> VwFiltroAnidados { get; set; }
+
         /// <summary>Vista que representa grillas o cuadrículas de información.</summary>
         public DbSet<VwGrilla> VwGrilla { get; set; }
 
@@ -148,6 +151,7 @@ namespace WebApp.Service
             modelBuilder.Entity<VwBusquedaFiltro>().HasNoKey().ToView("vw_BusquedaFiltro");
             modelBuilder.Entity<VwBusquedaUbicacion>().HasNoKey().ToView("vw_BusquedaUbicacion");
             modelBuilder.Entity<VwActualizacionONA>().HasNoKey().ToView("vw_ActualizacionONA");
+            modelBuilder.Entity<vw_FiltrosAnidados>().HasNoKey().ToView("vw_FiltrosAnidados");
 
             //ona
             modelBuilder.Entity<VwOrganismoRegistrado>().HasNoKey().ToView("vw_OrganismoRegistrado");

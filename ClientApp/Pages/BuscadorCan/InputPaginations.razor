@@ -13,6 +13,7 @@
             NextLinkIcon="IconName.ChevronRight"
             LastLinkIcon="IconName.ChevronDoubleRight"
             PageChanged="OnPageChangedAsync"
+            Disabled="@IsLoadingPage"
         />
     </div>
     <div class="panel-input-paginations-items">
@@ -21,6 +22,7 @@
                 <button class="btn btn-secondary dropdown-toggle custom-bg"
                         style="color: #1773FC; font-size: 14px; border-color: #DFE1EB;"
                         type="button"
+                        disabled="@IsLoadingPage"
                         id="dropdownMenuButton-pg-001"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">

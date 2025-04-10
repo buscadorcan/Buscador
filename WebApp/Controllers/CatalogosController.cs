@@ -77,6 +77,64 @@ namespace WebApp.Controllers
         }
 
         /// <summary>
+        /// ObtenerVwFiltro
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de VwFiltroDto que representa la estructura de los filtros.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
+        [HttpPost("filters/anidados")]
+        public IActionResult ObtenerFiltrosAnidados([FromBody] List<FiltrosBusquedaSeleccionDto> filtrosSeleccionados)
+        {
+            try
+            {
+                var resultado = _vhRepo.ObtenerFiltrosAnidados(filtrosSeleccionados);
+                var dto = new Dictionary<string, List<vw_FiltrosAnidadosDto>>();
+
+                // Agrupamos las opciones por tipo de filtro (KEY_FIL_ONA, KEY_FIL_PAI, etc.)
+                foreach (var key in new[] { "KEY_FIL_ONA", "KEY_FIL_PAI", "KEY_FIL_EST", "KEY_FIL_ESO", "KEY_FIL_NOR", "KEY_FIL_REC" })
+                {
+                    var valores = resultado
+                        .Select(r => ObtenerValorPorClave(r, key))
+                        .Where(v => !string.IsNullOrWhiteSpace(v))
+                        .Distinct()
+                        .ToList();
+
+                    dto[key] = valores.Select(val => new vw_FiltrosAnidadosDto
+                    {
+                        KEY_FIL_ONA = key == "KEY_FIL_ONA" ? val : null,
+                        KEY_FIL_PAI = key == "KEY_FIL_PAI" ? val : null,
+                        KEY_FIL_EST = key == "KEY_FIL_EST" ? val : null,
+                        KEY_FIL_ESO = key == "KEY_FIL_ESO" ? val : null,
+                        KEY_FIL_NOR = key == "KEY_FIL_NOR" ? val : null,
+                        KEY_FIL_REC = key == "KEY_FIL_REC" ? val : null,
+                    }).ToList();
+                }
+
+                return Ok(dto);
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(ObtenerFiltrosAnidados));
+            }
+        }
+
+        private string ObtenerValorPorClave(vw_FiltrosAnidadosDto item, string clave)
+        {
+            return clave switch
+            {
+                "KEY_FIL_ONA" => item.KEY_FIL_ONA,
+                "KEY_FIL_PAI" => item.KEY_FIL_PAI,
+                "KEY_FIL_EST" => item.KEY_FIL_EST,
+                "KEY_FIL_ESO" => item.KEY_FIL_ESO,
+                "KEY_FIL_NOR" => item.KEY_FIL_NOR,
+                "KEY_FIL_REC" => item.KEY_FIL_REC,
+                _ => string.Empty
+            };
+        }
+
+
+        /// <summary>
         /// ObtenerFiltroDetalles
         /// </summary>
         /// <param name="codigo">Código del filtro para obtener sus detalles.</param>

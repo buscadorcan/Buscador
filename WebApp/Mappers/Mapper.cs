@@ -10,6 +10,7 @@ namespace WebApp.Mappers
         {
             CreateMap<VwGrilla, VwGrillaDto>();
             CreateMap<VwFiltro, VwFiltroDto>();
+            CreateMap<vw_FiltrosAnidadosDto, vw_FiltrosAnidadosDto>();
             CreateMap<vwFiltroDetalle, vwFiltroDetalleDto>();
             CreateMap<VwDimension, VwDimensionDto>();
             CreateMap<Homologacion, GruposDto>();

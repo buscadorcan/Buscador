@@ -43,6 +43,8 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private List<BuscadorResultadoDataDto>? _listDataDto;
 
+        private bool IsLoadingPage = false;
+
         /// <summary>
         /// Gets or sets the list data dto.
         /// </summary>
@@ -366,18 +368,19 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-        private void NextPage()
+        private async Task CambiarPagina(int nuevaPagina)
         {
-            if (CanGoNext)
-                currentPage++;
-        }
+            IsLoadingPage = true;
+            StateHasChanged();
+            currentPage = nuevaPagina;
 
-        private void PrevPage()
-        {
-            if (CanGoBack)
-                currentPage--;
-        }
+            await Task.Delay(1500);
 
+            await ObtenerCoordenadasYMarcarMapa();
+
+            IsLoadingPage = false;
+            StateHasChanged();
+        }
 
     }
 }

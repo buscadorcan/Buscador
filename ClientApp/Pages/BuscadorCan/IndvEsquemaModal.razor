@@ -28,27 +28,28 @@
                         @foreach (var item in Columnas)
                         {
                             <GridColumn TItem="DataEsquemaDatoBuscar"
-                                        PropertyName="@item.MostrarWeb"
                                         Sortable="true"
-                                        Filterable="true">
+                                        Filterable="false"
+                                        ColumnName="@item.IdHomologacion.ToString()">
                                 <HeaderContent>
                                     <div style="display: flex; flex-direction: column; align-items: center;">
                                         <Tooltip Title="@item.TooltipWeb">
-                                            <span style="font-weight: bold; cursor: pointer;" @onclick="() => CambiarOrden(item.MostrarWeb)">
+                                            <span style="font-weight: bold; cursor: pointer;" @onclick="() => AplicarOrden(item.IdHomologacion)">
                                                 @item.MostrarWeb
-                                                @if (sortColumn == item.MostrarWeb)
+                                                @if (columnaOrdenActualId == item.IdHomologacion)
                                                 {
-                                                    <span>@(sortDescending ? " 🔽" : " 🔼")</span>
+                                                    <span>@(ordenDescendente ? " 🔽" : " 🔼")</span>
                                                 }
                                             </span>
                                         </Tooltip>
-                                        <!-- ✅ Input de filtro dentro del HeaderContent -->
+
                                         <input type="text" class="form-control form-control-sm"
                                                placeholder="Filtrar..."
                                                style="width: 100%; font-size: 10px; margin-top: 5px;"
-                                               @oninput="@(e => FiltrarTabla(item.MostrarWeb, e.Value?.ToString() ?? string.Empty))" />
+                                               @oninput="@(e => FiltrarTabla(item.IdHomologacion, e.Value?.ToString() ?? string.Empty))" />
                                     </div>
                                 </HeaderContent>
+
                                 <ChildContent>
                                     @{
                                         var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;

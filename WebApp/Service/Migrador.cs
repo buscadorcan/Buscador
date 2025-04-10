@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using MySqlConnector;
+using MySqlX.XDevAPI;
 using Newtonsoft.Json;
 using Npgsql;
 using System.Data;
@@ -346,9 +347,18 @@ namespace WebApp.Service.IService
 
                 // Construir el SELECT dinámico
                 var columnasQuery = string.Join(", ", columnas.Select(c =>
-                    origenDatos.ToUpper() == "MYSQL" || origenDatos.ToUpper() == "POSTGRES"
-                    ? $"`{c.ColumnaVista}`"
-                    : $"[{c.ColumnaVista}]"));
+                {
+                    var colName = c.ColumnaVista;
+
+                    return origenDatos.ToUpper() switch
+                    {
+                        "SQLSERVER" => $"ISNULL([{colName}], '') AS [{colName}]",
+                        "MYSQL" => $"IFNULL(`{colName}`, '') AS `{colName}`",
+                        "POSTGRES" => $"COALESCE(\"{colName}\", '') AS \"{colName}\"",
+                        "SQLLITE" => $"IFNULL([{colName}], '') AS [{colName}]", // SQLite también soporta IFNULL
+                        _ => colName
+                    };
+                }));
 
                 var query = $"SELECT {columnasQuery} FROM {vista}";
 

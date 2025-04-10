@@ -59,9 +59,9 @@ namespace ClientApp.Pages.BuscadorCan
         /// 
 
 
-        private string sortColumn = "Id"; // Columna por defecto
-        private bool sortDescending = false; // Orden predeterminado (ascendente)
-        private Dictionary<string, string> filtros = new();
+        private int? columnaOrdenActualId;
+        private bool ordenDescendente = false;
+        private Dictionary<int, string> filtros = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -100,35 +100,44 @@ namespace ClientApp.Pages.BuscadorCan
                     resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
                 }
 
-                var datosFiltrados = resultados ?? new List<DataEsquemaDatoBuscar>();
+                IEnumerable<DataEsquemaDatoBuscar> query = resultados ?? new List<DataEsquemaDatoBuscar>();
 
-                // ✅ Aplicar Filtros Manuales
-                if (filtros.Any())
+                // Aplicar filtros manuales por IdHomologacion
+                foreach (var filtro in filtros)
                 {
-                    foreach (var filtro in filtros)
+                    int idHomologacionFiltro = filtro.Key;
+                    string valorFiltro = filtro.Value;
+
+                    if (!string.IsNullOrWhiteSpace(valorFiltro))
                     {
-                        if (!string.IsNullOrWhiteSpace(filtro.Value))
-                        {
-                            datosFiltrados = datosFiltrados
-                                .Where(r => r.DataEsquemaJson != null && r.DataEsquemaJson.Any(d =>
-                                    d.Data != null && d.Data.Contains(filtro.Value, StringComparison.OrdinalIgnoreCase)))
-                                .ToList();
-                        }
+                        query = query.Where(r =>
+                            r.DataEsquemaJson != null &&
+                            r.DataEsquemaJson.Any(d =>
+                                d.IdHomologacion == idHomologacionFiltro &&
+                                d.Data != null &&
+                                d.Data.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase)));
                     }
                 }
 
-                // ✅ Aplicar Ordenamiento desde request
-                if (request.Sorting != null && request.Sorting.Any())
+                // Aplicar ordenamiento manual
+                if (columnaOrdenActualId is not null)
                 {
-                    foreach (var sort in request.Sorting)
-                    {
-                        datosFiltrados = sort.SortDirection == SortDirection.Descending
-                            ? datosFiltrados.OrderByDescending(d => GetPropertyValue(d, sort.SortString)).ToList()
-                            : datosFiltrados.OrderBy(d => GetPropertyValue(d, sort.SortString)).ToList();
-                    }
+                    int idOrden = columnaOrdenActualId.Value;
+
+                    query = ordenDescendente
+                        ? query.OrderByDescending(r =>
+                            r.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idOrden)?.Data)
+                        : query.OrderBy(r =>
+                            r.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idOrden)?.Data);
                 }
 
-                return new GridDataProviderResult<DataEsquemaDatoBuscar> { Data = datosFiltrados };
+                var resultadoFinal = query.ToList();
+
+                return new GridDataProviderResult<DataEsquemaDatoBuscar>
+                {
+                    Data = resultadoFinal,
+                    TotalCount = resultadoFinal.Count
+                };
             }
             catch (Exception ex)
             {
@@ -138,17 +147,9 @@ namespace ClientApp.Pages.BuscadorCan
         }
 
 
-        private void FiltrarTabla(string columna, string valor)
+        private async void FiltrarTabla(int idHomologacion, string valor)
         {
-            if (filtros.ContainsKey(columna))
-            {
-                filtros[columna] = valor;
-            }
-            else
-            {
-                filtros.Add(columna, valor);
-            }
-
+            filtros[idHomologacion] = valor;
             StateHasChanged();
         }
 
@@ -164,25 +165,18 @@ namespace ClientApp.Pages.BuscadorCan
             return prop?.GetValue(obj, null) ?? string.Empty;
         }
 
-
-        /// <summary>
-        /// Método que cambia el orden de la columna seleccionada.
-        /// </summary>
-        private void CambiarOrden(string columna)
+        private async Task AplicarOrden(int idHomologacion)
         {
-            if (sortColumn == columna)
-            {
-                sortDescending = !sortDescending; // Si es la misma columna, alternar orden
-            }
+            if (columnaOrdenActualId == idHomologacion)
+                ordenDescendente = !ordenDescendente;
             else
             {
-                sortColumn = columna;
-                sortDescending = false; // Nueva columna, empezar en ascendente
+                columnaOrdenActualId = idHomologacion;
+                ordenDescendente = false;
             }
 
-            StateHasChanged(); // Refrescar UI
+            StateHasChanged(); // O usa await gridRef?.RefreshDataAsync(); si tienes referencia al grid
         }
-
 
         /// <summary>
         /// parseador de formula.

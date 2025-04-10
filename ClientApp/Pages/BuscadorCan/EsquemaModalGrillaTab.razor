@@ -17,18 +17,22 @@
         {
             <GridColumn TItem="DataHomologacionEsquema"
                         Sortable="true"
-                        Filterable="false">
+                        Filterable="false"
+                        ColumnName="@item.IdHomologacion.ToString()">
                 @* importante Filterable=false ya que es manual *@
 
                 <HeaderContent>
                     <div style="display: flex; flex-direction: column; align-items: center;">
                         <Tooltip Title="@item.TooltipWeb">
-                            <span style="font-weight: bold;">
+                            <span style="font-weight: bold; cursor: pointer;" @onclick="() => AplicarOrden(item.IdHomologacion)">
                                 @item.MostrarWeb
+                                @if (columnaOrdenActualId == item.IdHomologacion)
+                                {
+                                    <span>@(ordenDescendente ? " 🔽" : " 🔼")</span>
+                                }
                             </span>
                         </Tooltip>
 
-                        <!-- ✅ Filtro manual aquí mismo (HeaderContent) -->
                         <input type="text"
                                class="form-control form-control-sm"
                                placeholder="Filtrar..."
@@ -36,6 +40,7 @@
                                @oninput="@(e => FiltrarTabla(item.IdHomologacion, e.Value?.ToString() ?? ""))" />
                     </div>
                 </HeaderContent>
+
 
                 <ChildContent Context="context">
                     @{

@@ -12,11 +12,9 @@
             <SummaryCards PanelONA="PanelONA" HandlePanelONAChange="HandlePanelONAChange" />
         </div>
 
-        <InputFilters
-            onFilterChange="HandleFilterChange"
-            isGridVisibleChanged="isGridVisibleChanged"
-            isGridVisible="isGridVisible"
-        />
+        <InputFilters onFilterChange="@(args => HandleFilterChange(args))"
+                      isGridVisibleChanged="@(value => isGridVisibleChanged(value))"
+                      isGridVisible="isGridVisible" />
 
         @if(isGridVisible) {
             <IndexGrilla

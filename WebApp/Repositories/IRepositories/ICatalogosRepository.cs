@@ -23,6 +23,17 @@ namespace WebApp.Repositories.IRepositories
         /// </returns>
         List<VwFiltro> ObtenerVwFiltro();
 
+
+        /// <summary>
+        /// WebApp/ObtenerVwFiltro: Obtiene el esquema de los filtros.
+        /// Este método permite recuperar la configuración de los filtros disponibles en el sistema.
+        /// </summary>
+        /// <returns>
+        /// Devuelve una lista de objetos VwFiltro con la estructura de los filtros configurados.
+        /// </returns>
+        List<vw_FiltrosAnidadosDto> ObtenerFiltrosAnidados(List<FiltrosBusquedaSeleccionDto> filtrosSeleccionados);
+
+
         /// <summary>
         /// WebApp/ObtenerVwDimension: Obtiene el esquema de las dimensiones.
         /// Este método permite obtener la estructura de dimensiones utilizadas en la aplicación.

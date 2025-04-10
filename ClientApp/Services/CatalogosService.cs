@@ -26,6 +26,7 @@ namespace ClientApp.Services
         {
             return await GetApiResponseAsync<T>($"{endpoint}/{CodigoHomologacion}");
         }
+
         private async Task<T?> GetApiResponseAsync<T>(string apiEndpoint)
         {
             
@@ -56,6 +57,17 @@ namespace ClientApp.Services
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<VwFiltroDto>>>()).Result;
         }
+
+        public async Task<Dictionary<string, List<vw_FiltrosAnidadosDto>>> GetFiltrosAnidadosAsync(List<FiltrosBusquedaSeleccionDto> filtros)
+        {
+            var url = _urlBaseApi + "filters/anidados";
+            var response = await _httpClient.PostAsJsonAsync(url, filtros);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<Dictionary<string, List<vw_FiltrosAnidadosDto>>>()
+                   ?? new Dictionary<string, List<vw_FiltrosAnidadosDto>>();
+        }
+
 
         public async Task<List<vwPanelONADto>> GetPanelOnaAsync()
         {

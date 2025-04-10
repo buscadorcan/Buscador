@@ -50,7 +50,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Lista de valores seleccionados
         /// </summary>
-        private List<FiltrosBusquedaSeleccion> selectedFilter = new List<FiltrosBusquedaSeleccion>();
+        private List<FiltrosBusquedaSeleccionDto> selectedFilter = new();
 
         /// <summary>
         /// Lista de urls devuerltos por el servicio
@@ -148,7 +148,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método para manejar el cambio de filtros.
         /// </summary>
-        private void HandleFilterChange(List<FiltrosBusquedaSeleccion> newFilter)
+        private void HandleFilterChange(List<FiltrosBusquedaSeleccionDto> newFilter)
         {
             selectedFilter = newFilter;
         }
@@ -323,5 +323,6 @@ namespace ClientApp.Pages.BuscadorCan
         {
             Seleccion = new List<string>();
         }
+
     }
 }

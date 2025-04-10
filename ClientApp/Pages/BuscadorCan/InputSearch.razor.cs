@@ -121,7 +121,8 @@ namespace ClientApp.Pages.BuscadorCan
                         Message = "El campo de búsqueda está vacío, verifique.",
                         AutoHide = true
 
-                    });
+                });
+                    await onClickSearch.InvokeAsync((string.Empty, isExactSearch));
 
                     return;
                 }
@@ -136,7 +137,7 @@ namespace ClientApp.Pages.BuscadorCan
                         Message = "Se han detectado caracteres sospechosos en la búsqueda.",
                         AutoHide = true
                     });
-
+                    await onClickSearch.InvokeAsync((string.Empty, isExactSearch));
                     return;
                 }
 

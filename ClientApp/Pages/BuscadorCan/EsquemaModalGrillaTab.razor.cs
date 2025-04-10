@@ -71,6 +71,9 @@ namespace ClientApp.Pages.BuscadorCan
 
         private Grid<DataHomologacionEsquema>? gridRef;
 
+        private int? columnaOrdenActualId;
+
+        private bool ordenDescendente;
         protected override async Task OnInitializedAsync()
         {
             try
@@ -119,15 +122,16 @@ namespace ClientApp.Pages.BuscadorCan
                 }
             }
 
-            // Aplicar ordenamiento (si existe)
-            if (request.Sorting?.Any() == true)
+            // Aplicar ordenamiento manual por columna seleccionada
+            if (columnaOrdenActualId is not null)
             {
-                foreach (var sort in request.Sorting)
-                {
-                    query = sort.SortDirection == SortDirection.Descending
-                        ? query.OrderByDescending(sort.SortKeySelector.Compile())
-                        : query.OrderBy(sort.SortKeySelector.Compile());
-                }
+                int idOrden = columnaOrdenActualId.Value;
+
+                query = ordenDescendente
+                    ? query.OrderByDescending(r =>
+                        r.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idOrden)?.Data)
+                    : query.OrderBy(r =>
+                        r.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == idOrden)?.Data);
             }
 
             var resultadoFinal = query.ToList();
@@ -188,6 +192,25 @@ namespace ClientApp.Pages.BuscadorCan
                 }
             }
         }
+
+        private async Task AplicarOrden(int idHomologacion)
+        {
+            if (columnaOrdenActualId == idHomologacion)
+            {
+                // Si ya está ordenando esta columna, invierte el orden
+                ordenDescendente = !ordenDescendente;
+            }
+            else
+            {
+                // Si es una nueva columna, establece como actual
+                columnaOrdenActualId = idHomologacion;
+                ordenDescendente = false;
+            }
+
+            if (gridRef is not null)
+                await gridRef.RefreshDataAsync();
+        }
+
 
     }
 }

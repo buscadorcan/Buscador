@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
 
+
 namespace ClientApp.Pages.BuscadorCan
 {
     /// <summary>
@@ -18,13 +19,12 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Evento que se dispara para mantener al componente padre informado de los cambios en los filtros.
         /// </summary>
-        [Parameter] public EventCallback<List<FiltrosBusquedaSeleccion>> onFilterChange { get; set; }
+        [Parameter] public EventCallback<List<FiltrosBusquedaSeleccionDto>> onFilterChange { get; set; }
 
         /// <summary>
         /// Evento que se dispara para mantener al componente padre informado de la visibilidad de la grilla.
         /// </summary>
         [Parameter] public EventCallback<bool> isGridVisibleChanged { get; set; }
-
         /// <summary>
         /// Propiedad para mostrar la grilla
         /// </summary>
@@ -60,7 +60,8 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Lista de valores seleccionados
         /// </summary>
-        private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
+        private List<FiltrosBusquedaSeleccionDto> selectedValues = new();
+
 
         /// <summary>
         /// Inicializador de datos
@@ -89,7 +90,47 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método para agregar / quitar seleccion el filtro
         /// </summary>
-        private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
+        //private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
+        //{
+        //    bool seleccionado = bool.Parse(isChecked.ToString());
+
+        //    var codigoHomologacion = listaEtiquetasFiltros?[comboIndex]?.CodigoHomologacion;
+        //    if (string.IsNullOrWhiteSpace(codigoHomologacion)) return;
+
+        //    var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
+
+        //    if (filtro == null)
+        //    {
+        //        filtro = new FiltrosBusquedaSeleccion
+        //        {
+        //            CodigoHomologacion = codigoHomologacion,
+        //            Seleccion = new List<string>()
+        //        };
+        //        selectedValues.Add(filtro);
+        //    }
+
+        //    if (seleccionado)
+        //    {
+        //        if (!filtro.Seleccion.Contains(valor))
+        //        {
+        //            filtro.Seleccion.Add(valor);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        filtro.Seleccion.Remove(valor);
+
+        //        if (!filtro.Seleccion.Any())
+        //        {
+        //            selectedValues.Remove(filtro);
+        //        }
+        //    }
+
+        //    _ = onFilterChange.InvokeAsync(selectedValues);
+        //    StateHasChanged(); // 🔥 Forzar la actualización del estado visual del botón
+        //}
+
+        private async void CambiarSeleccion(string valor, int comboIndex, object isChecked)
         {
             bool seleccionado = bool.Parse(isChecked.ToString());
 
@@ -100,7 +141,7 @@ namespace ClientApp.Pages.BuscadorCan
 
             if (filtro == null)
             {
-                filtro = new FiltrosBusquedaSeleccion
+                filtro = new FiltrosBusquedaSeleccionDto
                 {
                     CodigoHomologacion = codigoHomologacion,
                     Seleccion = new List<string>()
@@ -118,16 +159,58 @@ namespace ClientApp.Pages.BuscadorCan
             else
             {
                 filtro.Seleccion.Remove(valor);
-
                 if (!filtro.Seleccion.Any())
                 {
                     selectedValues.Remove(filtro);
                 }
             }
 
-            _ = onFilterChange.InvokeAsync(selectedValues);
-            StateHasChanged(); // 🔥 Forzar la actualización del estado visual del botón
+            if (iCatalogosService != null)
+            {
+                try
+                {
+                    var nuevosDatos = await iCatalogosService.GetFiltrosAnidadosAsync(selectedValues);
+                    ActualizarOpcionesDesdeBackend(nuevosDatos);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error obteniendo combos anidados: {ex.Message}");
+                }
+            }
+
+            await onFilterChange.InvokeAsync(selectedValues);
+            StateHasChanged();
         }
+
+        private void ActualizarOpcionesDesdeBackend(Dictionary<string, List<vw_FiltrosAnidadosDto>> respuesta)
+        {
+            for (int i = 0; i < listaEtiquetasFiltros?.Count; i++)
+            {
+                var codigo = listaEtiquetasFiltros[i].CodigoHomologacion;
+                if (respuesta.ContainsKey(codigo))
+                {
+                    var opcionesActualizadas = respuesta[codigo]
+                        .Select(dto => new vwFiltroDetalleDto
+                        {
+                            MostrarWeb = codigo switch
+                            {
+                                "KEY_FIL_ONA" => dto.KEY_FIL_ONA,
+                                "KEY_FIL_PAI" => dto.KEY_FIL_PAI,
+                                "KEY_FIL_EST" => dto.KEY_FIL_EST,
+                                "KEY_FIL_ESO" => dto.KEY_FIL_ESO,
+                                "KEY_FIL_NOR" => dto.KEY_FIL_NOR,
+                                "KEY_FIL_REC" => dto.KEY_FIL_REC,
+                                _ => null
+                            }
+                        })
+                        .Where(o => !string.IsNullOrWhiteSpace(o.MostrarWeb))
+                        .ToList();
+
+                    listadeOpciones[i] = opcionesActualizadas;
+                }
+            }
+        }
+
 
 
         /// <summary>
@@ -174,7 +257,7 @@ namespace ClientApp.Pages.BuscadorCan
             var filtroExistente = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
             if (filtroExistente == null)
             {
-                filtroExistente = new FiltrosBusquedaSeleccion
+                filtroExistente = new FiltrosBusquedaSeleccionDto
                 {
                     CodigoHomologacion = codigoHomologacion,
                     Seleccion = new List<string>()

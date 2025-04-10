@@ -37,6 +37,8 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         [Parameter] public EventCallback<int> DisplayPagesChanged { get; set; }
 
+        [Parameter] public bool IsLoadingPage { get; set; }
+
         /// <summary>
         /// Gets or sets the page number.
         /// </summary>
