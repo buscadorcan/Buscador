@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Models.Dtos;
 
-
 namespace ClientApp.Pages.BuscadorCan
 {
     /// <summary>
@@ -25,6 +24,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// Evento que se dispara para mantener al componente padre informado de la visibilidad de la grilla.
         /// </summary>
         [Parameter] public EventCallback<bool> isGridVisibleChanged { get; set; }
+
         /// <summary>
         /// Propiedad para mostrar la grilla
         /// </summary>
@@ -56,19 +56,17 @@ namespace ClientApp.Pages.BuscadorCan
         /// <returns></returns>
         [Inject] public IJSRuntime JS { get; set; }
 
-
         /// <summary>
         /// Lista de valores seleccionados
         /// </summary>
         private List<FiltrosBusquedaSeleccionDto> selectedValues = new();
-
 
         /// <summary>
         /// Inicializador de datos
         /// </summary>
         /// <returns></returns>
         /// 
-
+        private DotNetObjectReference<InputFilters>? _objRef;
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
@@ -87,50 +85,16 @@ namespace ClientApp.Pages.BuscadorCan
             StateHasChanged();
         }
 
-        /// <summary>
-        /// Método para agregar / quitar seleccion el filtro
-        /// </summary>
-        //private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
-        //{
-        //    bool seleccionado = bool.Parse(isChecked.ToString());
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                _objRef = DotNetObjectReference.Create(this);
+                await JS.InvokeVoidAsync("registrarInstanciaInputFilters", _objRef);
+            }
+        }
 
-        //    var codigoHomologacion = listaEtiquetasFiltros?[comboIndex]?.CodigoHomologacion;
-        //    if (string.IsNullOrWhiteSpace(codigoHomologacion)) return;
-
-        //    var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
-
-        //    if (filtro == null)
-        //    {
-        //        filtro = new FiltrosBusquedaSeleccion
-        //        {
-        //            CodigoHomologacion = codigoHomologacion,
-        //            Seleccion = new List<string>()
-        //        };
-        //        selectedValues.Add(filtro);
-        //    }
-
-        //    if (seleccionado)
-        //    {
-        //        if (!filtro.Seleccion.Contains(valor))
-        //        {
-        //            filtro.Seleccion.Add(valor);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        filtro.Seleccion.Remove(valor);
-
-        //        if (!filtro.Seleccion.Any())
-        //        {
-        //            selectedValues.Remove(filtro);
-        //        }
-        //    }
-
-        //    _ = onFilterChange.InvokeAsync(selectedValues);
-        //    StateHasChanged(); // 🔥 Forzar la actualización del estado visual del botón
-        //}
-
-        private async void CambiarSeleccion(string valor, int comboIndex, object isChecked)
+        private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
         {
             bool seleccionado = bool.Parse(isChecked.ToString());
 
@@ -165,20 +129,8 @@ namespace ClientApp.Pages.BuscadorCan
                 }
             }
 
-            if (iCatalogosService != null)
-            {
-                try
-                {
-                    var nuevosDatos = await iCatalogosService.GetFiltrosAnidadosAsync(selectedValues);
-                    ActualizarOpcionesDesdeBackend(nuevosDatos);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error obteniendo combos anidados: {ex.Message}");
-                }
-            }
-
-            await onFilterChange.InvokeAsync(selectedValues);
+            // Llamada al padre solo para actualizar la UI
+            _ = onFilterChange.InvokeAsync(selectedValues);
             StateHasChanged();
         }
 
@@ -210,8 +162,6 @@ namespace ClientApp.Pages.BuscadorCan
                 }
             }
         }
-
-
 
         /// <summary>
         /// Método para limpiar los filtros
@@ -278,6 +228,52 @@ namespace ClientApp.Pages.BuscadorCan
 
             _ = onFilterChange.InvokeAsync(selectedValues);
             StateHasChanged();
+        }
+
+        [JSInvokable]
+        public async Task RecibirSeleccionados(List<SeleccionadoDto> seleccionados)
+        {
+            try
+            {
+                if (seleccionados == null || !seleccionados.Any()) return;
+
+                // Aquí se procesan los filtros seleccionados.
+                selectedValues.Clear();
+                foreach (var seleccionado in seleccionados)
+                {
+                    var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == seleccionado.Combo);
+                    if (filtro == null)
+                    {
+                        filtro = new FiltrosBusquedaSeleccionDto
+                        {
+                            CodigoHomologacion = seleccionado.Combo,
+                            Seleccion = new List<string>()
+                        };
+                        selectedValues.Add(filtro);
+                    }
+
+                    filtro.Seleccion.Add(seleccionado.Valor);
+                }
+
+                // Aquí puedes llamar al servicio de backend para obtener los filtros actualizados
+                if (iCatalogosService != null)
+                {
+                    var nuevosDatos = await iCatalogosService.GetFiltrosAnidadosAsync(selectedValues);
+                    ActualizarOpcionesDesdeBackend(nuevosDatos);
+                }
+
+                await onFilterChange.InvokeAsync(selectedValues);
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar los filtros: {ex.Message}");
+            }
+        }
+
+        public void Dispose()
+        {
+            _objRef?.Dispose();
         }
 
     }

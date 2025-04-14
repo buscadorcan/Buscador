@@ -104,8 +104,8 @@
 
 
 <!-- 🔥 Agregar JavaScript al final para alternar la visibilidad -->
-<script>
-       
+<script type="text/javascript">
+
     function toggleFilters() {
         var panel = document.getElementById("filterPanel");
         var toggleText = document.getElementById("toggleText");
@@ -139,22 +139,37 @@
 
         if (!filterPanel.contains(event.target)) {
             const checkboxes = document.querySelectorAll(".checkbox-filtro:checked");
-            const seleccionados = [];
 
-            checkboxes.forEach(chk => {
-                const label = document.querySelector(`label[for='${chk.id}']`);
-                if (label) {
-                    const comboIndex = chk.id.split('-')[1]; // Extraer el índice del combo
-                    seleccionados.push({
-                        combo: comboIndex,
-                        valor: label.innerText.trim()
-                    });
+            if (checkboxes.length > 0) {
+                const seleccionados = [];
+
+                checkboxes.forEach(chk => {
+                    const label = document.querySelector(`label[for='${chk.id}']`);
+                    if (label) {
+                        const comboIndex = chk.id.split('-')[1]; // Extraer el índice del combo
+                        seleccionados.push({
+                            Combo: comboIndex,
+                            Valor: label.innerText.trim()
+                        });
+                    }
+                });
+
+                if (instanciaInputFilters) {
+                   instanciaInputFilters.invokeMethodAsync('RecibirSeleccionados', seleccionados)
+                   .then(result => console.log("Método ejecutado con éxito"))
+                   .catch(error => console.error("Error en la invocación de Blazor:", error));
                 }
-            });
-
-            // Llamar al método de Blazor con los datos seleccionados
-            DotNet.invokeMethodAsync('NOMBRE_DEL_ASSEMBLY', 'RecibirSeleccionados', seleccionados);
+            }
         }
     });
+
+    let instanciaInputFilters = null;
+
+    function registrarInstanciaInputFilters(ref) {
+        instanciaInputFilters = ref;
+    }
+
+
+
 
 </script>
