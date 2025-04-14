@@ -9,13 +9,20 @@ window.initMap = function () {
     }).addTo(map);
 
     heatLayer = new HeatmapOverlay({
-        radius: 20, // Reducido para que no se expanda demasiado
-        maxOpacity: 0.75,
-        scaleRadius: true, // Escala el radio según el nivel de zoom
-        useLocalExtrema: true, // Importante para que los puntos se muestren con intensidad real
+        radius: 1, // un poco más pequeño
+        maxOpacity: 0.6,
+        scaleRadius: true,
+        useLocalExtrema: true,
         latField: 'lat',
         lngField: 'lng',
-        valueField: 'intensity'
+        valueField: 'intensity',
+        gradient: {
+            0.0: "transparent", // invisibilidad en 0
+            0.4: "blue",
+            0.6: "lime",
+            0.8: "orange",
+            1.0: "red"
+    }
     });
 
     map.addLayer(heatLayer);
