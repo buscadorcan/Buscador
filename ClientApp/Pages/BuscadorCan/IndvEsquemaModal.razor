@@ -1,5 +1,5 @@
 ﻿@using ClientApp.Models;
-@using SharedApp.Models.Dtos;
+@using SharedApp.Dtos;
 
 <Tabs EnableFadeEffect="true">
     @if (Columnas != null && Columnas.Any())
@@ -32,7 +32,7 @@
                                         Sortable="true"
                                         Filterable="true">
                                 <HeaderContent>
-                                    <div style="display: flex; flex-direction: column; align-items: center;">
+          @*                           <div style="display: flex; flex-direction: column; align-items: center;">
                                         <Tooltip Title="@item.TooltipWeb">
                                             <span style="font-weight: bold; cursor: pointer;" @onclick="() => CambiarOrden(item.MostrarWeb)">
                                                 @item.MostrarWeb
@@ -46,8 +46,13 @@
                                         <input type="text" class="form-control form-control-sm"
                                                placeholder="Filtrar..."
                                                style="width: 100%; font-size: 10px; margin-top: 5px;"
+<<<<<<< Updated upstream
                                                @oninput="@(e => FiltrarTabla(item.MostrarWeb, e.Value?.ToString() ?? string.Empty))" />
                                     </div>
+=======
+                                               @oninput="@(e => FiltrarTabla(item.IdHomologacion, e.Value?.ToString() ?? string.Empty))" />
+                                    </div> *@
+>>>>>>> Stashed changes
                                 </HeaderContent>
                                 <ChildContent>
                                     @{

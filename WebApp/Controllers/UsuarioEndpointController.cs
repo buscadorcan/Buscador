@@ -1,12 +1,12 @@
 ﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/UsuarioEndpointController: Controlador para funcionalidad en usuarios
-using WebApp.Repositories.IRepositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Response;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
+using DataAccess.Models;
 
 namespace WebApp.Controllers
 {

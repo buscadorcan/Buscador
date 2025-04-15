@@ -4,7 +4,7 @@ using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using OfficeOpenXml;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 using System.Text.Json;
 
 

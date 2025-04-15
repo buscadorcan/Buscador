@@ -1,10 +1,10 @@
 using Xunit;
 using Moq;
 using Microsoft.Extensions.Logging;
-using WebApp.Repositories.IRepositories;
 using WebApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using DataAccess.Interfaces;
 
 namespace WebApp.Tests.Integration
 {

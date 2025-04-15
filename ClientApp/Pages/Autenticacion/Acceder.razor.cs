@@ -1,6 +1,6 @@
 ﻿using BlazorBootstrap;
-using SharedApp.Models.Dtos;
 using Microsoft.AspNetCore.Components;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Autenticacion
 {

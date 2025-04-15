@@ -6,7 +6,7 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 using SharedApp.Data;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 

@@ -1,11 +1,11 @@
 ﻿using ClientApp.Helpers;
 using ClientApp.Models;
 using Newtonsoft.Json;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
+using SharedApp.Response;
 using System.Net.Http.Json;
 using System.Text;
 using ClientApp.Services.IService;
+using SharedApp.Dtos;
 
 namespace ClientApp.Services
 {

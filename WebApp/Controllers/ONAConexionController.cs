@@ -1,12 +1,12 @@
 /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/ONAConexionController: Controlador para funcionalidad de Ona conexión
-using WebApp.Models;
-using WebApp.Repositories.IRepositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
+using SharedApp.Response;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
+using DataAccess.Models;
 
 namespace WebApp.Controllers
 {

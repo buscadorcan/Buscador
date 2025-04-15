@@ -1,5 +1,4 @@
 using BlazorBootstrap;
-using SharedApp.Models.Dtos;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -8,6 +7,7 @@ using ClientApp.Helpers;
 using System.Text;
 using System.Net.Http;
 using ClientApp.Services;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.Validacion
 {

@@ -1,5 +1,5 @@
 ﻿using ClientApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 using System.Collections.Generic;
 
 namespace ClientApp.Services.IService

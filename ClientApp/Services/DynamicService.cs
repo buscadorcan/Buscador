@@ -2,8 +2,8 @@ using System.Net.Http.Json;
 using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
+using SharedApp.Response;
 
 namespace ClientApp.Services {
     public class DynamicService : IDynamicService

@@ -28,7 +28,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Npgsql" Version="9.0.2" />
 	</ItemGroup>

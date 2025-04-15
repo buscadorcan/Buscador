@@ -2,14 +2,21 @@
 
 	<ItemGroup>
 		<Compile Remove="Icono\**" />
+		<Compile Remove="Mappers\**" />
+		<Compile Remove="Repositories\**" />
+		<Compile Remove="Service\**" />
 		<Content Remove="Icono\**" />
+		<Content Remove="Mappers\**" />
+		<Content Remove="Repositories\**" />
+		<Content Remove="Service\**" />
 		<EmbeddedResource Remove="Icono\**" />
+		<EmbeddedResource Remove="Mappers\**" />
+		<EmbeddedResource Remove="Repositories\**" />
+		<EmbeddedResource Remove="Service\**" />
 		<None Remove="Icono\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\DataAccess\DataAccess.csproj" />
-		<ProjectReference Include="..\SharedApp\SharedApp.csproj" />
+		<None Remove="Mappers\**" />
+		<None Remove="Repositories\**" />
+		<None Remove="Service\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -23,9 +30,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
-		<PackageReference Include="MimeKit" Version="4.10.0" />
 		<PackageReference Include="MySqlConnector" Version="2.4.0" />
-		<PackageReference Include="Npgsql" Version="9.0.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
 		<PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.2" />
@@ -40,6 +45,9 @@
 	  <None Include="wwwroot\Files\tsesn.xml" />
 	  <None Include="wwwroot\Files\verification_code_template.html" />
 	  <None Include="wwwroot\Files\tokens\Google.Apis.Auth.OAuth2.Responses.TokenResponse-buscadorcan%40gmail.com" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Core\Core.csproj" />
 	</ItemGroup>
 
 	<PropertyGroup>

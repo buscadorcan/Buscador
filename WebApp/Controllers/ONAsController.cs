@@ -2,12 +2,11 @@
 /// WebApp/ONAsController: Controlador para funcionalidad de Onas
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
-using WebApp.Models;
-using WebApp.Repositories.IRepositories;
+using SharedApp.Response;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
+using DataAccess.Models;
 
 namespace WebApp.Controllers
 {

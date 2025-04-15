@@ -1,9 +1,10 @@
 @page "/menu-config-lista"
 @layout AdminLayout
+@using System.Text;
 @using Microsoft.AspNetCore.Authorization;
 @using OfficeOpenXml;
-@using SharedApp.Models.Dtos;
-@using System.Text;
+@using SharedApp.Dtos
+@using SharedApp.Dtos;
 @attribute [Authorize]
 @inject IJSRuntime JSRuntime
 @using System.IO;

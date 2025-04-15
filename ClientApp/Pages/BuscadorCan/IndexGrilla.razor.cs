@@ -1,11 +1,11 @@
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using ClientApp.Services.IService;
-using SharedApp.Models.Dtos;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using ClientApp.Helpers;
 using System.Text;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {

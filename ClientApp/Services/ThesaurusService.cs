@@ -1,16 +1,10 @@
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using ClientApp.Helpers;
 using ClientApp.Models;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using SharedApp.Dtos;
 
 namespace ClientApp.Services
 {
@@ -34,7 +28,7 @@ namespace ClientApp.Services
         {
             var response = await _httpClient.GetAsync($"{_urlBaseApi}{endpoint}");
             response.EnsureSuccessStatusCode();
-            var respuesta = await response.Content.ReadFromJsonAsync<RespuestasAPI<ThesaurusDto>>();
+            var respuesta = await response.Content.ReadFromJsonAsync<SharedApp.Response.RespuestasAPI<ThesaurusDto>>();
 
             if (respuesta != null && respuesta.IsSuccess && respuesta.Result != null)
             {
@@ -72,7 +66,7 @@ namespace ClientApp.Services
         {
             var response = await _httpClient.GetAsync($"{_urlBaseApi}{endpoint}");
             response.EnsureSuccessStatusCode();
-            var respuesta = await response.Content.ReadFromJsonAsync<RespuestasAPI<string>>();
+            var respuesta = await response.Content.ReadFromJsonAsync<SharedApp.Response.RespuestasAPI<string>>();
 
             if (respuesta != null && respuesta.IsSuccess && respuesta.Result != null)
             {
@@ -89,7 +83,7 @@ namespace ClientApp.Services
         {
             var response = await _httpClient.GetAsync($"{_urlBaseApi}{endpoint}");
             response.EnsureSuccessStatusCode();
-            var respuesta = await response.Content.ReadFromJsonAsync<RespuestasAPI<string>>();
+            var respuesta = await response.Content.ReadFromJsonAsync<SharedApp.Response.RespuestasAPI<string>>();
 
             if (respuesta != null && respuesta.IsSuccess && respuesta.Result != null)
             {

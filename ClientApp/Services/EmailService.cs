@@ -8,8 +8,8 @@ using ClientApp.Helpers;
 using ClientApp.Models;
 using ClientApp.Services.IService;
 using Newtonsoft.Json;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
+using SharedApp.Response;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ClientApp.Services

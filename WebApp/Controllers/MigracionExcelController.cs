@@ -1,13 +1,13 @@
 /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/MigacionExcelController: Controlador para funcionalidad de migración excel
-using WebApp.Models;
-using WebApp.Repositories.IRepositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
-using WebApp.Service.IService;
+using SharedApp.Response;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
+using Core.Interfaces;
+using DataAccess.Models;
 
 namespace WebApp.Controllers
 {

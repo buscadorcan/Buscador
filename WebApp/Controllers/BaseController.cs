@@ -1,7 +1,7 @@
 /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/BaseController: Controlador para Base
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models;
+using SharedApp.Response;
 using System.Net;
 
 namespace WebApp.Controllers

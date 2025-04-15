@@ -2,11 +2,10 @@
 /// WebApp/ReporteController: Controlador para funcionalidad en reportes
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
-using WebApp.Repositories.IRepositories;
+using SharedApp.Response;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
 
 namespace WebApp.Controllers
 {

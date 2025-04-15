@@ -3,8 +3,8 @@ using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using SharedApp.Models.Dtos;
-using Microsoft.JSInterop; // Para invocar funciones de JavaScript
+using Microsoft.JSInterop;
+using SharedApp.Dtos; // Para invocar funciones de JavaScript
 
 namespace ClientApp.Pages.BuscadorCan
 {

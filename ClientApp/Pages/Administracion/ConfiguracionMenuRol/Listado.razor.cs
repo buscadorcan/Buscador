@@ -5,7 +5,7 @@ using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 using System.Text;
 using static System.Net.WebRequestMethods;
 

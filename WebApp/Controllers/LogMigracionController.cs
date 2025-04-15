@@ -1,12 +1,11 @@
 /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/LogMigracionController: Controlador para log de migración
-using WebApp.Models;
-using WebApp.Repositories.IRepositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
+using SharedApp.Response;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
 
 namespace WebApp.Controllers
 {

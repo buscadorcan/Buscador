@@ -6,7 +6,7 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.Esquemas
 {

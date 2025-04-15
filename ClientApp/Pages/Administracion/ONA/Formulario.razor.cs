@@ -4,7 +4,7 @@ using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.ONA
 {

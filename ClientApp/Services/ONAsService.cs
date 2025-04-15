@@ -3,8 +3,8 @@ using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.Win32;
 using Newtonsoft.Json;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
+using SharedApp.Response;
 using System.Net.Http.Json;
 using System.Text;
 

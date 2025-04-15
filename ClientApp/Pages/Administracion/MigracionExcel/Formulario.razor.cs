@@ -7,7 +7,7 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.MigracionExcel
 {

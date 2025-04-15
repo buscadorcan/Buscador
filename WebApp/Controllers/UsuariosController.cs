@@ -1,14 +1,13 @@
 ﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/UsuariosController: Controlador para funcionalidad en Usuarios
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
-using WebApp.Models;
+using SharedApp.Response;
 using AutoMapper;
-using WebApp.Service.IService;
-using System.Net;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
+using DataAccess.Models;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {

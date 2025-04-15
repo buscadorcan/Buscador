@@ -1,12 +1,11 @@
 /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/CatalogosController: Controlador para catalogos
-using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
-using Microsoft.AspNetCore.Authorization;
+using SharedApp.Response;
 using AutoMapper;
-using WebApp.Models;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
+using DataAccess.Models;
 
 namespace WebApp.Controllers
 {

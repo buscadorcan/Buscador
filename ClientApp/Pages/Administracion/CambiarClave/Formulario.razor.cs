@@ -1,7 +1,7 @@
 using BlazorBootstrap;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.CambiarClave
 {

@@ -3,7 +3,7 @@ using ClientApp.Helpers;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {

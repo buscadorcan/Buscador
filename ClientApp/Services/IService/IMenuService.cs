@@ -1,5 +1,5 @@
 ﻿using ClientApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Services.IService
 {

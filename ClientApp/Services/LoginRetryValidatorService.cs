@@ -1,7 +1,7 @@
 using System.Text.Json;
 using ClientApp.Services.IService;
 using Microsoft.JSInterop;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Services
 {

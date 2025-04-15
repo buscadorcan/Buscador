@@ -6,8 +6,8 @@ using ClientApp.Models;
 using ClientApp.Services.IService;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
+using SharedApp.Response;
 
 namespace ClientApp.Services
 {

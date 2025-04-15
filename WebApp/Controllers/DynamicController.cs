@@ -1,11 +1,10 @@
 /// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/DynamicController: Controlador para formularios de aplicativo
-using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Response;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Repositories;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
 
 namespace WebApp.Controllers
 {

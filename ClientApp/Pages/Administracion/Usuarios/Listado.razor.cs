@@ -5,7 +5,7 @@ using ClientApp.Pages.Administracion.Esquemas;
 using ClientApp.Services;
 using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.Usuarios
 {

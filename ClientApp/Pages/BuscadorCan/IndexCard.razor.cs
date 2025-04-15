@@ -4,7 +4,7 @@ using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.JSInterop;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
 
 namespace ClientApp.Pages.BuscadorCan
 {

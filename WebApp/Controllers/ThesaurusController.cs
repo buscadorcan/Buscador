@@ -1,12 +1,11 @@
 ﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/ThesaurusController: Controlador para funcionalidad en Thesaurus
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models.Dtos;
-using SharedApp.Models;
-using WebApp.Service.IService;
+using SharedApp.Response;
 using AutoMapper;
-using WebApp.Models;
+using SharedApp.Dtos;
+using Core.Interfaces;
+using DataAccess.Models;
 
 namespace WebApp.Controllers
 {

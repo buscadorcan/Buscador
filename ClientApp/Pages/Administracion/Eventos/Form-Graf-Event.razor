@@ -2,12 +2,13 @@
 @page "/reporte-event/{selectUser}/{dateStart}/{dateEnd}"
 @using ClientApp.Services.IService
 @using Microsoft.AspNetCore.Authorization
-@using SharedApp.Models.Dtos
-@using iTextSharp.text;
-@using iTextSharp.text.pdf;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.JSInterop;
 @using OfficeOpenXml;
+@using SharedApp.Dtos
+@using SharedApp.Dtos
+@using iTextSharp.text;
+@using iTextSharp.text.pdf;
 
 @layout AdminLayout
 @attribute [Authorize]

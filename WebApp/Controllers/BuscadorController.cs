@@ -1,15 +1,13 @@
 ﻿/// Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
 /// WebApp/BuscadorController: Controlador para formulario del buscador
-using WebApp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
-using MySqlX.XDevAPI;
+using SharedApp.Response;
 using System.Text.Json;
 using OfficeOpenXml;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.Reflection.Metadata;
+using DataAccess.Interfaces;
+using SharedApp.Dtos;
 
 namespace WebApp.Controllers
 {

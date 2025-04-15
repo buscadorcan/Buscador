@@ -1,7 +1,7 @@
 ﻿using ClientApp.Helpers;
 using ClientApp.Services.IService;
-using SharedApp.Models;
-using SharedApp.Models.Dtos;
+using SharedApp.Dtos;
+using SharedApp.Response;
 using System.Net.Http.Json;
 
 namespace ClientApp.Services

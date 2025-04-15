@@ -1,7 +1,3 @@
-using WebApp.Service;
-using WebApp.Repositories;
-using WebApp.Service.IService;
-using WebApp.Repositories.IRepositories;
 using WebApp.WorkerService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -9,6 +5,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.Mappers;
+using DataAccess.Interfaces;
+using Core.Service;
+using Core.Interfaces;
+using DataAccess.Repositories;
+using Core.Service.IService;
+using DataAccess.Data;
+using SharedApp.Services;
 
 namespace WebApp.Extensions
 {
@@ -103,9 +106,9 @@ namespace WebApp.Extensions
             services.AddHttpClient<IIpCoordinatesService, IpCoordinatesService>();
 
             // Registra servicios de trabajo en segundo plano (Worker Services).
-            services.AddHostedService<BackgroundWorkerService>();
-            services.AddHostedService<BackgroundExcelService>();
 
+            //services.AddHostedService<BackgroundWorkerService>();
+            //services.AddHostedService<BackgroundExcelService>();
             //services.AddHostedService<MigracionJob>();
 
             // Configura AutoMapper para mapear entre modelos.
