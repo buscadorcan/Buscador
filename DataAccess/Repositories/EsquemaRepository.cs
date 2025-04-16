@@ -3,24 +3,20 @@ using DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using DataAccess.Models;
-using SharedApp.Services;
 
 namespace DataAccess.Repositories
 {
     public class EsquemaRepository : BaseRepository, IEsquemaRepository
     {
-        private readonly IJwtService _jwtService;
         public EsquemaRepository(
-          IJwtService jwtService,
           ILogger<UsuarioRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
         }
         public bool Create(Esquema data)
         {
-            data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            //data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
             data.FechaCreacion = DateTime.Now;
             data.FechaModifica = DateTime.Now;
@@ -34,7 +30,7 @@ namespace DataAccess.Repositories
         }
         public bool CreateEsquemaValidacion(EsquemaVista data)
         {
-            data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            //data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
             data.FechaModifica = DateTime.Now;
             data.Estado = "A";
@@ -102,7 +98,7 @@ namespace DataAccess.Repositories
                 var _exits = MergeEntityProperties(context, newRecord, u => u.IdEsquema == newRecord.IdEsquema);
 
                 _exits.FechaModifica = DateTime.Now;
-                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                //_exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
                 context.Esquema.Update(_exits);
                 return context.SaveChanges() >= 0;
@@ -123,7 +119,7 @@ namespace DataAccess.Repositories
                     {
                         registro.Estado = "X"; // Actualizar el estado
                         registro.FechaModifica = DateTime.Now;
-                        registro.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                        //registro.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
                     }
 
                     // Guardar los cambios en el contexto
@@ -148,7 +144,7 @@ namespace DataAccess.Repositories
                     existingRecord = MergeEntityProperties(context, newRecord, u => u.IdONA == newRecord.IdONA &&
                                                                                      u.IdEsquema == newRecord.IdEsquema);
                     existingRecord.FechaModifica = DateTime.Now;
-                    existingRecord.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                    //existingRecord.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
                     context.EsquemaVista.Update(existingRecord);
                 }
@@ -156,7 +152,7 @@ namespace DataAccess.Repositories
                 {
                     // Crear un nuevo registro
                     newRecord.FechaCreacion = DateTime.Now;
-                    newRecord.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                    //newRecord.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
                     newRecord.Estado = "A";
 
                     context.EsquemaVista.Add(newRecord);
@@ -260,13 +256,13 @@ namespace DataAccess.Repositories
                 }
 
                 // Asignamos valores comunes a cada elemento de la lista
-                var userId = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                //var userId = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
                 var fechaActual = DateTime.Now;
 
                 foreach (var item in listaEsquemaVistaColumna)
                 {
-                    item.IdUserCreacion = userId;
-                    item.IdUserModifica = userId;
+                    item.IdUserCreacion = 0; // userId
+                    item.IdUserModifica = 0; // userId
                     item.FechaModifica = fechaActual;
                     item.Estado = "A";
                     item.IdEsquemaVista = idEsquemaVista; // Asignamos el idEsquemaVista

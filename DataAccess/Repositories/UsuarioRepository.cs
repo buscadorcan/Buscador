@@ -5,30 +5,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SharedApp.Dtos;
 using DataAccess.Models;
-using SharedApp.Services;
 
 namespace DataAccess.Repositories
 {
     public class UsuarioRepository : BaseRepository, IUsuarioRepository
     {
-        private readonly IJwtService _jwtService;
-        private readonly IHashService _hashService;
-        private readonly IEmailService _emailService;
         private readonly IEventTrackingRepository _eventTrackingRepository;
         private readonly IConfiguration _configuration;
         public UsuarioRepository (
-            IJwtService jwtService,
-            IEmailService emailService,
-            IHashService hashService,
             ILogger<UsuarioRepository> logger,
             ISqlServerDbContextFactory sqlServerDbContextFactory,
             IEventTrackingRepository eventTrackingRepository,
             IConfiguration configuration
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
-            _hashService = hashService;
-            _emailService = emailService;
             _eventTrackingRepository = eventTrackingRepository;
             _configuration = configuration;
         }
@@ -106,17 +96,17 @@ namespace DataAccess.Repositories
         }
         public bool Create(Usuario usuario)
         {
-            var clave = usuario.Clave;
-            usuario.Clave = _hashService.GenerateHash(clave);
-            usuario.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
-            usuario.IdUserModifica = usuario.IdUserCreacion;
-            usuario.Estado = "A";
+            //var clave = usuario.Clave;
+            //usuario.Clave = _hashService.GenerateHash(clave);
+            //usuario.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            //usuario.IdUserModifica = usuario.IdUserCreacion;
+            //usuario.Estado = "A";
             return ExecuteDbOperation(context =>
             {
                 context.Usuario.Add(usuario);
                 if ( context.SaveChanges() >= 0 )
                 {
-                    SendConfirmationEmail(usuario, clave);
+                    SendConfirmationEmail(usuario, usuario.Clave);
                     return true;
                 }
                 return false;
@@ -135,7 +125,7 @@ namespace DataAccess.Repositories
                     try
                     {
                         htmlBody = string.Format(htmlBody, usuario.Nombre, usuario.Email, clave);
-                        await _emailService.SendEmailAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
+                        //await _emailService.SendEmailAsync(usuario.Email ?? "", "Confirmación de Recepción de Clave de Acceso al Sistema", htmlBody);
                     }
                     catch (Exception ex)
                     {
@@ -173,7 +163,7 @@ namespace DataAccess.Repositories
                 }
 
                 _exits.FechaModifica = DateTime.Now;
-                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                //_exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
                 // Consultamos la clave actual del usuario en la base de datos
                 var claveActual = context.Usuario
@@ -188,7 +178,7 @@ namespace DataAccess.Repositories
                 }
                 else
                 {
-                    _exits.Clave = _hashService.GenerateHash(usuario.Clave);
+                    //_exits.Clave = _hashService.GenerateHash(usuario.Clave);
                 }
 
                 context.Usuario.Update(_exits);
@@ -198,9 +188,9 @@ namespace DataAccess.Repositories
 
         public Result<bool> ChangePasswd(string clave, string claveNueva)
         {
-            var actual = _hashService.GenerateHash(clave);
-            var nueva = _hashService.GenerateHash(claveNueva);
-            var idUsuario = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "0");
+            //var actual = _hashService.GenerateHash(clave);
+            //var nueva = _hashService.GenerateHash(claveNueva);
+            //var idUsuario = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "0");
 
             var eventTrackingDto = new paAddEventTrackingDto
             {
@@ -209,14 +199,14 @@ namespace DataAccess.Repositories
                 NombreAccion = "OnCambiarClave()",
                 ParametroJson = JsonConvert.SerializeObject(new
                 {
-                    IdUsuario = idUsuario,
+                    IdUsuario = 0, //idUsuario
                     Clave = clave,
                     ClaveNueva = claveNueva
                 })
             };
 
             return ExecuteDbOperation(context => {
-                var usuario = context.Usuario.AsNoTracking().Where((c) => c.IdUsuario == idUsuario).FirstOrDefault();
+                var usuario = context.Usuario.AsNoTracking().Where((c) => c.IdUsuario == 0).FirstOrDefault();
 
                 if (usuario == null)
                 {
@@ -229,12 +219,12 @@ namespace DataAccess.Repositories
                 eventTrackingDto.NombreUsuario = usuario.Nombre;
                 _eventTrackingRepository.Create(eventTrackingDto);
 
-                if (usuario.Clave != actual)
+                if (usuario.Clave != "") //clave
                 {
                     return Result<bool>.Failure("Clave incorrecta");
                 }
 
-                usuario.Clave = nueva;
+                usuario.Clave = ""; //nueva
                 context.Usuario.Update(usuario);
                 if (context.SaveChanges() > 0)
                 {

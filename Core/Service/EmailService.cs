@@ -3,7 +3,7 @@ using Google.Apis.Gmail.v1.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using SharedApp.Services;
+using Core.Services;
 
 namespace Core.Service
 {

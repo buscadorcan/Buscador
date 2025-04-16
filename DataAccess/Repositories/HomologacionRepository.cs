@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using SharedApp.Services;
 using Microsoft.Extensions.Logging;
 using DataAccess.Models;
 
@@ -9,18 +8,15 @@ namespace DataAccess.Repositories
 {
     public class HomologacionRepository : BaseRepository, IHomologacionRepository
     {
-        private readonly IJwtService _jwtService;
         public HomologacionRepository(
-          IJwtService jwtService,
           ILogger<UsuarioRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
         }
         public bool Create(Homologacion data)
         {
-            data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            //data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
             data.Estado = "A";
             data.Mostrar = "S";
@@ -64,7 +60,7 @@ namespace DataAccess.Repositories
                 var _exits = MergeEntityProperties(context, newRecord, u => u.IdHomologacion == newRecord.IdHomologacion);
 
                 _exits.FechaModifica = DateTime.Now;
-                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                //_exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
                 context.Homologacion.Update(_exits);
                 return context.SaveChanges() >= 0;
             });

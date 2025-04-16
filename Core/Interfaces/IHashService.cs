@@ -1,4 +1,4 @@
-namespace SharedApp.Services
+namespace Core.Services
 {
     public interface IHashService
     {

@@ -3,20 +3,19 @@ using DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using DataAccess.Models;
-using SharedApp.Services;
+
 
 namespace DataAccess.Repositories
 {
     public class MenuRepository : BaseRepository, IMenuRepository
     {
-        private readonly IJwtService _jwtService;
+
         public MenuRepository(
-          IJwtService jwtService,
           ILogger<MenuRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
+
         }
 
         public bool Create(MenuRol data)

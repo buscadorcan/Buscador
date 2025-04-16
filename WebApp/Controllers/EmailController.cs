@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SharedApp.Dtos;
 using SharedApp.Response;
-using SharedApp.Services;
+using Core.Services;
 
 
 namespace WebApp.Controllers

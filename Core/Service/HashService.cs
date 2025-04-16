@@ -1,5 +1,5 @@
 
-namespace SharedApp.Services
+namespace Core.Services
 {
     public class HashService : Services.IHashService
     {

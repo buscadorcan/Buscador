@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SharedApp.Dtos;
 using DataAccess.Models;
-using SharedApp.Services;
+using Core.Services;
 
 namespace Core.Service
 {

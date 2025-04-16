@@ -3,20 +3,16 @@ using DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using DataAccess.Models;
-using SharedApp.Services;
 
 namespace DataAccess.Repositories
 {
     public class LogMigracionRepository : BaseRepository, ILogMigracionRepository
     {
-        private readonly IJwtService _jwtService;
         public LogMigracionRepository(
-          IJwtService jwtService,
           ILogger<LogMigracionRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
         }
         public LogMigracion Create(LogMigracion data)
         {

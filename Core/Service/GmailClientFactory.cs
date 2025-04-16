@@ -5,7 +5,7 @@ using Google.Apis.Gmail.v1;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
-namespace Core.Service
+namespace Core.Services
 {
     /// <summary>
     /// Implementación de <see cref="IGmailClientFactory"/> que crea instancias de <see cref="GmailService"/> configuradas para el envío de correos electrónicos con OAuth 2.0.

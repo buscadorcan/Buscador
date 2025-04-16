@@ -1,7 +1,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace SharedApp.Services
+namespace Core.Services
 {
     public interface IJwtFactory
     {

@@ -2,19 +2,16 @@ using System.Data;
 using DataAccess.Interfaces;
 using Microsoft.Extensions.Logging;
 using DataAccess.Models;
-using SharedApp.Services;
 namespace DataAccess.Repositories
 {
   public class UsuarioEndpointRepository : BaseRepository, IUsuarioEndpointRepository
   {
-    private readonly IJwtService _jwtService;
     public UsuarioEndpointRepository (
-      IJwtService jwtService,
       ILogger<UsuarioEndpointRepository> logger,
       ISqlServerDbContextFactory sqlServerDbContextFactory
     ) : base(sqlServerDbContextFactory, logger)
     {
-      _jwtService = jwtService;
+      //_jwtService = jwtService;
     }
     public UsuarioEndpoint? FindByEndpointId(int endpointId)
     {
@@ -26,7 +23,7 @@ namespace DataAccess.Repositories
     }
     public bool Create(UsuarioEndpoint usuarioEndpoint)
     {
-      usuarioEndpoint.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+      //usuarioEndpoint.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
       usuarioEndpoint.IdUserModifica = usuarioEndpoint.IdUserCreacion;
 
       return ExecuteDbOperation(context => {

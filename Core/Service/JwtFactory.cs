@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace SharedApp.Services
+namespace Core.Services
 {
     public class JwtFactory : IJwtFactory
     {

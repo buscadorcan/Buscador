@@ -3,25 +3,21 @@ using DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using DataAccess.Models;
-using SharedApp.Services;
 
 namespace DataAccess.Repositories
 {
     public class ONAConexionRepository : BaseRepository, IONAConexionRepository
     {
-        private readonly IJwtService _jwtService;
         public ONAConexionRepository(
-          IJwtService jwtService,
           ILogger<ONAConexionRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
 
         }
         public bool Create(ONAConexion data)
         {
-            data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            //data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
             data.FechaCreacion = DateTime.Now;
             data.FechaModifica = data.FechaCreacion;
@@ -69,7 +65,7 @@ namespace DataAccess.Repositories
                 var _exits = MergeEntityProperties(context, newRecord, u => u.IdONA == newRecord.IdONA);
 
                 _exits.FechaModifica = DateTime.Now;
-                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                //_exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
                 context.ONAConexion.Update(_exits);
                 return context.SaveChanges() >= 0;

@@ -1,4 +1,4 @@
-using SharedApp.Services;
+using Core.Services;
 using System.Security.Cryptography;
 using System.Text;
 

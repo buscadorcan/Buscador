@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace SharedApp.Services
+namespace Core.Services
 {
     public class JwtService (
         IConfiguration configuration,

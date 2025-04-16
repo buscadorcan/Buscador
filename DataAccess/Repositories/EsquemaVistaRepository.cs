@@ -3,24 +3,23 @@ using DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using DataAccess.Models;
-using SharedApp.Services;
+
 
 namespace DataAccess.Repositories
 {
     public class EsquemaVistaRepository : BaseRepository, IEsquemaVistaRepository
     {
-        private readonly IJwtService _jwtService;
+
         public EsquemaVistaRepository(
-          IJwtService jwtService,
           ILogger<UsuarioRepository> logger,
           ISqlServerDbContextFactory sqlServerDbContextFactory
         ) : base(sqlServerDbContextFactory, logger)
         {
-            _jwtService = jwtService;
+
         }
         public bool Create(EsquemaVista data)
         {
-            data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+            //data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
 
             return ExecuteDbOperation(context =>
@@ -73,7 +72,7 @@ namespace DataAccess.Repositories
                 var _exits = MergeEntityProperties(context, newRecord, u => u.IdEsquemaVista == newRecord.IdEsquemaVista);
 
                 _exits.FechaModifica = DateTime.Now;
-                _exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                //_exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
 
                 context.EsquemaVista.Update(_exits);
                 return context.SaveChanges() >= 0;

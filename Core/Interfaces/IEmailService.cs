@@ -1,4 +1,4 @@
-namespace SharedApp.Services
+namespace Core.Services
 {
     /// <summary>
     /// Define un servicio para el envío de correos electrónicos.

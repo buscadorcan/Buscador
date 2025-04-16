@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Interfaces\IGmailClientFactory.cs" />
-    <Compile Remove="Service\GmailClientFactory.cs" />
     <Compile Remove="Service\IHttpContextAccessor.cs" />
   </ItemGroup>
 
@@ -16,6 +14,7 @@
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.68.0.3427" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0-preview.3.25171.5" />

@@ -11,7 +11,7 @@ using Core.Interfaces;
 using DataAccess.Repositories;
 using Core.Service.IService;
 using DataAccess.Data;
-using SharedApp.Services;
+using Core.Services;
 
 namespace WebApp.Extensions
 {
