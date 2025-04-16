@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.Authorization;
 using ClientApp;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using Infractruture.Services;
+using Infractruture.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 // Registramos la configuración en DI para poder inyectarla en servicios:
@@ -25,7 +25,7 @@ builder.Services.AddScoped<IServiceAutenticacion, ServiceAutenticacion>();
 builder.Services.AddScoped<ICatalogosService, CatalogosService>();
 builder.Services.AddScoped<IHomologacionService, HomologacionService>();
 builder.Services.AddScoped<IHomologacionEsquemaService, HomologacionEsquemaService>();
-builder.Services.AddSingleton<ClientApp.Services.ToastService>();
+builder.Services.AddSingleton<Infractruture.Services.ToastService>();
 builder.Services.AddScoped<IDynamicService, DynamicService>();
 builder.Services.AddScoped<IConexionService, ConexionService>();
 builder.Services.AddScoped<IMigracionExcelService, MigracionExcelService>();

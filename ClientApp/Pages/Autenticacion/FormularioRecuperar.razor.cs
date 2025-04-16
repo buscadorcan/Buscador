@@ -1,5 +1,5 @@
 ﻿using BlazorBootstrap;
-using ClientApp.Services.IService;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
 

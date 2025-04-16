@@ -1,9 +1,9 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
+using SharedApp.Helpers;
 using ClientApp.Pages.Administracion.Esquemas;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using Infractruture.Services;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
@@ -87,7 +87,7 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
         /// Servicio de notificaciones Toast.
         /// </summary>
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         /// <summary>
         /// Servicio de búsqueda y registro de eventos.
         /// </summary>

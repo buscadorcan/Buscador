@@ -1,9 +1,9 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
+using SharedApp.Helpers;
 using ClientApp.Pages.Administracion.Esquemas;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using Infractruture.Services;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
 
@@ -32,7 +32,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
         private Grid<UsuarioDto>? grid;
         private int? selectedIdUsuario;    // Almacena el ID del usuario seleccionado
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
         private EventTrackingDto objEventTracking { get; set; } = new();

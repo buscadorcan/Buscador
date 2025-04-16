@@ -1,6 +1,6 @@
 ﻿using BlazorBootstrap;
-using ClientApp.Helpers;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.JSInterop;

@@ -1,9 +1,9 @@
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
-using ClientApp.Services.IService;
+using Infractruture.Interfaces;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using ClientApp.Helpers;
+using SharedApp.Helpers;
 using System.Text;
 using SharedApp.Dtos;
 

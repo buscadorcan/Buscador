@@ -1,4 +1,4 @@
-﻿using ClientApp.Services.IService;
+﻿using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace ClientApp.Pages.Autenticacion

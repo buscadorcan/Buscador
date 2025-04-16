@@ -2,10 +2,11 @@
 @using Blazored.LocalStorage
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
-@inject ClientApp.Services.ToastService ToastService
+@inject Infractruture.Services.ToastService ToastService
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
-@using ClientApp.Services.IService
+@using Infractruture.Interfaces;
+
 @*
 /// <summary>
 /// Pagina que se utiliza para poder formar el layout del sistema, es la plantilla general donde se cargaran todas las paginas

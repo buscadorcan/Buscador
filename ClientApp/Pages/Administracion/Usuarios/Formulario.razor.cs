@@ -1,8 +1,8 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Services;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
 using System.Data;
@@ -24,7 +24,7 @@ namespace ClientApp.Pages.Administracion.Usuarios
         [Parameter]
         public int? Id { get; set; }
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         private List<UsuarioDto>? listaUsuarios;
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }

@@ -2,8 +2,8 @@
 @page "/editar-campos-homologacion/{IdPadre:int}/{Id:int}"
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization;
-@using ClientApp.Services.IService
-@using ClientApp.Models;
+@using Infractruture.Interfaces;
+@using Infractruture.Models;
 @using SharedApp.Dtos
 @attribute [Authorize]
 @inject NavigationManager NavigationManager

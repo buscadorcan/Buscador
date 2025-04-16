@@ -1,7 +1,7 @@
 ﻿using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
 
@@ -15,7 +15,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         private string modalMessage;
         private int? selectedIdOna;
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         List<ToastMessage> messages = new();
 
         [Inject]

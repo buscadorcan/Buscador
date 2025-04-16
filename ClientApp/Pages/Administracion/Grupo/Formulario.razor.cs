@@ -1,8 +1,8 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Services;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Dtos;
@@ -39,7 +39,7 @@ namespace ClientApp.Pages.Administracion.Grupo
         /// Servicio de notificaciones Toast.
         /// </summary>
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         /// <summary>
         /// Servicio de búsqueda y registro de eventos.
         /// </summary>

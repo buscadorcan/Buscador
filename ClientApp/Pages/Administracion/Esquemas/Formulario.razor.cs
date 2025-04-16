@@ -1,7 +1,7 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
@@ -47,7 +47,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         protected IJSRuntime? JSRuntime { get; set; }
         
         [Inject]
-        public Services.ToastService? ToastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
 
@@ -154,13 +154,13 @@ namespace ClientApp.Pages.Administracion.Esquemas
                                     await HomologacionService.RegistrarOActualizar(new HomologacionDto { IdHomologacion = n.IdHomologacion, MostrarWebOrden = n.MostrarWebOrden  });
                             }
 
-                            ToastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                            toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
                             NavigationManager?.NavigateTo("/esquemas");
                         }
                     }
                     else
                     {
-                        ToastService?.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
+                        toastService?.CreateToastMessage(ToastType.Danger, "Debe llenar todos los campos");
                     }
                 }
             }

@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Dtos;

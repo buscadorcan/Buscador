@@ -1,7 +1,7 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
 
@@ -38,7 +38,7 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
         public int? IdPadre { get; set; }
         // Servicio de notificaciones Toast inyectado
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         // Servicio de búsqueda inyectado
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }

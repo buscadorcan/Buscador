@@ -1,9 +1,9 @@
 ﻿using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services.IService;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
+using Infractruture.Interfaces;
+using SharedApp.Helpers;
 
 namespace ClientApp.Pages.Administracion.Bitacoras
 {
@@ -17,7 +17,7 @@ namespace ClientApp.Pages.Administracion.Bitacoras
         private int? selectedOna { get; set; }
 
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         [Inject]
         public IONAService? iONAservice { get; set; }
         /// <summary>

@@ -33,6 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Infractructure\Infractructure.csproj" />
 		<ProjectReference Include="..\SharedApp\SharedApp.csproj" />
 	</ItemGroup>
 

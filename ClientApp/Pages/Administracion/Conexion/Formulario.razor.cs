@@ -1,10 +1,8 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.Conexion
@@ -43,7 +41,7 @@ namespace ClientApp.Pages.Administracion.Conexion
         // Servicio de notificaciones Toast
 
         [Inject]
-        public Services.ToastService? ToastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         // Servicio de búsqueda inyectado
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
@@ -128,13 +126,13 @@ namespace ClientApp.Pages.Administracion.Conexion
                     if (result.registroCorrecto)
                     {
                         //Mensaje de éxito
-                        ToastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
+                        toastService?.CreateToastMessage(ToastType.Success, "Registrado exitosamente");
                         navigationManager?.NavigateTo("/conexion");
                     }
                     else
                     {
                         // Mensaje de error
-                        ToastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
+                        toastService?.CreateToastMessage(ToastType.Danger, "Error al registrar en el servidor");
                     }
                 }
                 catch (Exception ex)

@@ -1,6 +1,6 @@
 ﻿using BlazorBootstrap;
-using ClientApp.Models;
-using ClientApp.Services.IService;
+using Infractruture.Models;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Microsoft.JSInterop;

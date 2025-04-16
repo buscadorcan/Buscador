@@ -1,8 +1,8 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Services;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
@@ -30,7 +30,7 @@ namespace ClientApp.Pages.Administracion.Esquemas
         private int? selectedIdEsquema;
         // Servicio de notificaciones Toast
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         // Lista de esquemas disponibles
         private IEnumerable<EsquemaDto>? listaEsquemas;
         // Servicio de esquemas inyectado

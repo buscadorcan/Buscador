@@ -1,12 +1,12 @@
 using BlazorBootstrap;
-using ClientApp.Services.IService;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
+using SharedApp.Helpers;
 using System.Text;
 using System.Net.Http;
-using ClientApp.Services;
+using Infractruture.Services;
 using SharedApp.Dtos;
 
 namespace ClientApp.Pages.Administracion.Validacion
@@ -30,7 +30,7 @@ namespace ClientApp.Pages.Administracion.Validacion
         [Inject]
         private HttpClient _httpClient { get; set; }
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         [Inject]
         public NavigationManager? navigationManager { get; set; }
         [Inject]

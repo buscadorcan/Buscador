@@ -1,8 +1,7 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
-using ClientApp.Helpers;
-using ClientApp.Services;
-using ClientApp.Services.IService;
+using SharedApp.Helpers;
+using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
 
@@ -23,7 +22,7 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
         [Inject]
         public NavigationManager? navigationManager { get; set; }
         [Inject]
-        public Services.ToastService? toastService { get; set; }
+        public Infractruture.Services.ToastService? toastService { get; set; }
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
         private bool isRol16; 
