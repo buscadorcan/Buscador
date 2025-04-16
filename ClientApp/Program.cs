@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.Authorization;
 using ClientApp;
 using Infractruture.Services;
-using Infractruture.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-// Registramos la configuración en DI para poder inyectarla en servicios:
+
+// Configuración general
 builder.Services.AddSingleton(builder.Configuration);
 
 builder.RootComponents.Add<App>("#app");
@@ -15,33 +15,25 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddBlazorBootstrap();
 
-builder.Services.AddScoped(sp => new HttpClient {
-  BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
 });
 
-builder.Services.AddScoped<IBusquedaService, BusquedaService>();
-builder.Services.AddScoped<IUsuariosService, UsuariosService>();
-builder.Services.AddScoped<IServiceAutenticacion, ServiceAutenticacion>();
-builder.Services.AddScoped<ICatalogosService, CatalogosService>();
-builder.Services.AddScoped<IHomologacionService, HomologacionService>();
-builder.Services.AddScoped<IHomologacionEsquemaService, HomologacionEsquemaService>();
+builder.Services.Scan(scan => scan
+    .FromAssemblyOf<BusquedaService>() // cualquier clase dentro de Infractruture
+    .AddClasses(classes => classes.InNamespaces("Infractruture.Services"))
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+);
+
+// Servicios adicionales que no siguen la convención o no tienen interfaz
 builder.Services.AddSingleton<Infractruture.Services.ToastService>();
-builder.Services.AddScoped<IDynamicService, DynamicService>();
-builder.Services.AddScoped<IConexionService, ConexionService>();
-builder.Services.AddScoped<IMigracionExcelService, MigracionExcelService>();
-builder.Services.AddScoped<ILogMigracionService, LogMigracionService>();
-builder.Services.AddScoped<IONAService, ONAsService>();
-builder.Services.AddScoped<IMenuService, MenuService>();
-builder.Services.AddScoped<IEsquemaService, EsquemaService>();
-builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
-builder.Services.AddScoped<IThesaurusService, ThesaurusService>();
-builder.Services.AddScoped<ILoginRetryValidatorService, LoginRetryValidatorService>();
-builder.Services.AddScoped<IEventService, EventService>();
 
-builder.Services.AddScoped<IReporteService, ReporteService>();
-
+// Blazored LocalStorage
 builder.Services.AddBlazoredLocalStorage();
 
+// Autenticación y autorización
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(

@@ -30,6 +30,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Npgsql" Version="9.0.2" />
+		<PackageReference Include="Scrutor" Version="6.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -31,6 +31,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
 		<PackageReference Include="MySqlConnector" Version="2.4.0" />
+		<PackageReference Include="Scrutor" Version="6.0.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
 		<PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.2" />

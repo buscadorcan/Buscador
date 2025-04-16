@@ -1,4 +1,3 @@
-using WebApp.WorkerService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,7 +7,6 @@ using DataAccess.Interfaces;
 using Core.Service;
 using Core.Interfaces;
 using DataAccess.Repositories;
-using Core.Service.IService;
 using DataAccess.Data;
 using Core.Services;
 using Core.Mappers;
@@ -50,70 +48,51 @@ namespace WebApp.Extensions
         /// <param name="services">El contenedor de servicios de la aplicación.</param>
         public static void ConfigureServices(this IServiceCollection services)
         {
-            // Registra servicios relacionados con correos electrónicos.
-            services.AddScoped<IGmailClientFactory, GmailClientFactory>();
-            services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IUsuarioEmailRepository, UsuarioEmailRepository>();
 
-
-            // Registra servicios relacionados con JWT (autenticación basada en tokens).
-            services.AddScoped<IJwtFactory, JwtFactory>();
-            services.AddScoped<IJwtService, JwtService>();
-
-            // Registra servicios relacionados con hash y generación de contraseñas.
-            services.AddScoped<IHashStrategy, Md5HashStrategy>();
-            services.AddScoped<IHashService, HashService>();
-            services.AddScoped<IRandomStringGeneratorService, RandomStringGeneratorService>();
-
-            //Thesaurus
-            services.AddScoped<IThesaurusService, ThesaurusService>();
-
-            // Proporciona acceso al contexto HTTP actual.
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            // Registra repositorios para acceso a datos.
-            services.AddScoped<IONARepository, ONARepository>();
-            services.AddScoped<IMenuRepository, MenuRepository>();
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IExcelService, ExcelService>();
-            services.AddScoped<IImportador, ImportadorService>();
-            services.AddScoped<IMigrador, Migrador>();
-            services.AddScoped<IUsuarioEndpointRepository, UsuarioEndpointRepository>();
-            services.AddScoped<IBuscadorRepository, BuscadorRepository>();
-            services.AddScoped<ICatalogosRepository, CatalogosRepository>();
-            services.AddScoped<IHomologacionRepository, HomologacionRepository>();
-            services.AddScoped<IEsquemaRepository, EsquemaRepository>();
-            services.AddScoped<IEsquemaVistaRepository, EsquemaVistaRepository>();
-            services.AddScoped<IEsquemaVistaColumnaRepository, EsquemaVistaColumnaRepository>();
-            services.AddScoped<IEsquemaDataRepository, EsquemaDataRepository>();
-            services.AddScoped<IEsquemaFullTextRepository, EsquemaFullTextRepository>();
-            services.AddScoped<IONAConexionRepository, ONAConexionRepository>();
-            services.AddScoped<IConectionStringBuilderService, ConectionStringBuilderService>();
-            services.AddScoped<IDynamicRepository, DynamicRepository>();
-            services.AddScoped<IMigracionExcelRepository, MigracionExcelRepository>();
-            services.AddScoped<ILogMigracionRepository, LogMigracionRepository>();
-            services.AddScoped<IReporteRepository, ReporteRepository>();
-            services.AddScoped<IpaActualizarFiltroRepository, paActualizarFiltroRepository>();
-            services.AddScoped<IEventTrackingRepository, EventTrackingRepository>();
-
-            //Thesaurus
-            services.AddScoped<IThesaurusRepository, ThesaurusRepository>();
-
-            services.AddScoped<IAuthenticateService, AuthenticateService>();
-            services.AddScoped<IRecoverUserService, RecoverUserService>();
-
-            //IpCoordinates
-            services.AddHttpClient<IIpCoordinatesService, IpCoordinatesService>();
-
-            // Registra servicios de trabajo en segundo plano (Worker Services).
-
-            //services.AddHostedService<BackgroundWorkerService>();
-            //services.AddHostedService<BackgroundExcelService>();
-            //services.AddHostedService<MigracionJob>();
-
-            // Configura AutoMapper para mapear entre modelos.
             services.AddAutoMapper(typeof(Mapper));
 
+            // Scrutor: registra todas las interfaces y clases de Core y DataAccess
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(EmailService), typeof(ONARepository)) // Puedes poner clases de ejemplo de cada ensamblado
+                .AddClasses(classes => classes.AssignableToAny(
+                    typeof(IGmailClientFactory),
+                    typeof(IEmailService),
+                    typeof(IUsuarioEmailRepository),
+                    typeof(IJwtFactory),
+                    typeof(IJwtService),
+                    typeof(IHashStrategy),
+                    typeof(IHashService),
+                    typeof(IRandomStringGeneratorService),
+                    typeof(IThesaurusService),
+                    typeof(IUsuarioRepository),
+                    typeof(IImportador),
+                    typeof(IMigrador),
+                    typeof(IAuthenticateService),
+                    typeof(IRecoverUserService),
+                    typeof(IConectionStringBuilderService),
+                    typeof(IDynamicRepository),
+                    typeof(IReporteRepository),
+                    typeof(IpaActualizarFiltroRepository),
+                    typeof(IEventTrackingRepository),
+                    typeof(IThesaurusRepository)
+                ))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+            );
+
+            // También puedes registrar todos los servicios por convención:
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(EmailService), typeof(ONARepository)) // uno por cada proyecto
+                .AddClasses()
+                .AsMatchingInterface()
+                .WithScopedLifetime()
+            );
+
+            // HttpContextAccessor como Singleton
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // HttpClient para servicios externos
+            services.AddHttpClient<IIpCoordinatesService, IpCoordinatesService>();
 
         }
 
