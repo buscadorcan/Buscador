@@ -41,7 +41,7 @@ namespace WebApp.Service.IService
         List<string> lstViewRegistradas = new List<string>();
         List<string> lstColumnsNoRegistradas = new List<string>();
         List<string> lstColumnsRegistradas = new List<string>();
-        public async Task<bool> MigrarAsync(ONAConexion conexion)
+        public async Task<bool> MigrarAsync(ONAConexion conexion, int idUsuario)
         {
             List<EsquemaVista> viewRegistradas = new List<EsquemaVista>();
             List<EsquemaVistaColumna> viewColumns = new List<EsquemaVistaColumna>();
@@ -185,9 +185,12 @@ namespace WebApp.Service.IService
                 {
                     IdONA = idOna,
                     OrigenDatos = conexion.OrigenDatos,
+                    Usuario = idUsuario.ToString(),
+                    BaseDatos = conexion.BaseDatos,
+                    Fecha = DateTime.Now,
                     Observacion = $"Tiempo total de migración: {tiempoTotal.Hours}h {tiempoTotal.Minutes}m {tiempoTotal.Seconds}s {tiempoTotal.Milliseconds}ms."
                 };
-
+                
                 _logMigracion.Create(logTiempo);
 
                 return resultado;

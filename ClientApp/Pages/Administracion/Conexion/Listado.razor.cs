@@ -213,11 +213,11 @@ namespace ClientApp.Pages.Administracion.Conexion
                 IsLoading = true;
                 ProgressValue = 0;
                 StateHasChanged();
-
+                int idUsuario = await iLocalStorageService.GetItemAsync<int>(Inicializar.Datos_Usuario_Local);
                 try
                 {
                     // 🔹 Iniciar la migración en un Task separado para permitir la actualización de la UI
-                    var migrationTask = iDynamicService.MigrarConexionAsync(conexion);
+                    var migrationTask = iDynamicService.MigrarConexionAsync(conexion, idUsuario);
 
                     // 🔥 Simular el progreso en intervalos de 500ms, pero limitándolo a 95% antes de que termine la migración
                     while (!migrationTask.IsCompleted)

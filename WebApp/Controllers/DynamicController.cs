@@ -165,12 +165,12 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpPost("migrar/{idOna:int}")]
-        public async Task<IActionResult> MigrarConexion(int idOna)
+        [HttpPost("migrar/{idOna:int}/{idUsuario:int}")]
+        public async Task<IActionResult> MigrarConexion(int idOna , int idUsuario)
         {
             try
             {
-                bool resultado = await _vhRepo.MigrarConexionAsync(idOna);
+                bool resultado = await _vhRepo.MigrarConexionAsync(idOna, idUsuario);
 
                 return Ok(new
                 {

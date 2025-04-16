@@ -78,7 +78,7 @@ namespace WebApp.Repositories.IRepositories
         /// <returns>
         /// Devuelve una tarea (`Task<bool>`) indicando si la migración se completó exitosamente.
         /// </returns>
-        Task<bool> MigrarConexionAsync(int idONA);
+        Task<bool> MigrarConexionAsync(int idONA, int idUsuario);
 
 
     }

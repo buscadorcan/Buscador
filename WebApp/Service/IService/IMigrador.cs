@@ -21,7 +21,7 @@ namespace WebApp.Service.IService
         /// Este método establece una conexión con la base de datos ONA y ejecuta la lógica de migración de datos.
         /// La migración puede incluir transferencia de datos, validaciones y transformaciones.
         /// </remarks>
-        Task<bool> MigrarAsync(ONAConexion conexion);
+        Task<bool> MigrarAsync(ONAConexion conexion, int idUsuario);
 
     }
 }

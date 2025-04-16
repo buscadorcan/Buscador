@@ -62,7 +62,7 @@ namespace WebApp.Controllers
         /// </returns>
         [Authorize]
         [HttpPost("upload")]
-        public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
+        public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna, string idUsuario)
         {
             try
             {
@@ -104,10 +104,13 @@ namespace WebApp.Controllers
                 LogMigracion migracion = iRepo.Create(new LogMigracion
                 {
                     Estado = "PENDING",
+                    Usuario = idUsuario,
+                    Fecha = DateTime.Now,
+                    OrigenDatos = "EXCEL",
                     ExcelFileName = file.FileName
                 });
 
-                var result = importer.ImportarExcel(filePath, migracion, idOna);
+                var result = importer.ImportarExcel(filePath, migracion, idOna, idUsuario);
 
                 return Ok(new RespuestasAPI<bool>
                 {

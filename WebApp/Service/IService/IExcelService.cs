@@ -30,7 +30,7 @@ namespace WebApp.Service.IService
         /// <exception cref="DbUpdateException">
         /// Se lanza si hay un error al registrar la migración en la base de datos.
         /// </exception>
-        Task<bool> ImportarExcel(string path, LogMigracion migracion, int idOna);
+        Task<bool> ImportarExcel(string path, LogMigracion migracion, int idOna, string idUsuario);
 
     }
 }

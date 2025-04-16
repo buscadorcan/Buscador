@@ -100,12 +100,12 @@ namespace ClientApp.Services {
             }
         }
 
-        public async Task<bool> MigrarConexionAsync(int idOna)
+        public async Task<bool> MigrarConexionAsync(int idOna, int idUsuario)
         {
             try
             {
                 // Realizar la solicitud al endpoint de migración
-                var response = await _httpClient.PostAsync($"{url}/migrar/{idOna}", null);
+                var response = await _httpClient.PostAsync($"{url}/migrar/{idOna}/{idUsuario}", null);
                 response.EnsureSuccessStatusCode();
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<TestConnectionResponse>(jsonString);

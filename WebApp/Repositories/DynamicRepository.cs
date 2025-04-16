@@ -230,7 +230,7 @@ namespace WebApp.Repositories
         }
 
 
-        public async Task<bool> MigrarConexionAsync(int idONA)
+        public async Task<bool> MigrarConexionAsync(int idONA, int idUsuario)
         {
             try
             {
@@ -244,7 +244,7 @@ namespace WebApp.Repositories
                 }
 
                 // Llamar al servicio `Migrador` para realizar la migración
-                bool resultado = await _migrador.MigrarAsync(conexion);
+                bool resultado = await _migrador.MigrarAsync(conexion, idUsuario);
 
                 if (resultado)
                 {
