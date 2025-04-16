@@ -2,7 +2,7 @@
 using SharedApp.Dtos;
 using DataAccess.Models;
 
-namespace WebApp.Mappers
+namespace Core.Mappers
 {
     public class Mapper : Profile
     {

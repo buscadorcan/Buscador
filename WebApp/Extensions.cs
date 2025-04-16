@@ -4,7 +4,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using WebApp.Mappers;
 using DataAccess.Interfaces;
 using Core.Service;
 using Core.Interfaces;
@@ -12,6 +11,7 @@ using DataAccess.Repositories;
 using Core.Service.IService;
 using DataAccess.Data;
 using Core.Services;
+using Core.Mappers;
 
 namespace WebApp.Extensions
 {
