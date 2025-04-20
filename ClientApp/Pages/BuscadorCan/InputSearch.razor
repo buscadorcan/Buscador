@@ -14,7 +14,7 @@
     <div class="panel-input">
         <div class="panel-input-text">
             <i class="fas fa-search" />
-            <input type="text"
+            <input id="inputBusqueda"
                    class="form-control input-text"
                    placeholder="¿Qué certificación necesitas?"
                    @bind="searchText"
@@ -50,12 +50,20 @@
     </div>
 </div>
 <script>
-    window.cerrarDropdowns = () => {
+     window.cerrarDropdowns = () => {
+        const active = document.activeElement;
+
+        // Evita cerrar dropdowns si el foco está en el input de búsqueda
+        if (active && active.id === "inputBusqueda") {
+            return;
+        }
+
+        // Cierra los dropdowns visibles
         document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
             menu.classList.remove('show');
         });
 
-        // Si es necesario, también remueve 'show' del botón padre
+        // Cierra los toggles visibles
         document.querySelectorAll('.dropdown-toggle.show').forEach(button => {
             button.classList.remove('show');
             button.setAttribute("aria-expanded", "false");

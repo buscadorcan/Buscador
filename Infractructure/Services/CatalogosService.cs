@@ -125,5 +125,16 @@ namespace Infractruture.Services
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<List<vwEsquemaOrganizaDto>>>()).Result;
         }
 
+        public async Task<Dictionary<string, List<vw_FiltrosAnidadosDto>>> GetFiltrosAnidadosAsync(List<FiltrosBusquedaSeleccionDto> filtros)
+        {
+            var url = _urlBaseApi + "filters/anidados";
+            var response = await _httpClient.PostAsJsonAsync(url, filtros);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<Dictionary<string, List<vw_FiltrosAnidadosDto>>>()
+                   ?? new Dictionary<string, List<vw_FiltrosAnidadosDto>>();
+        }
+
+
     }
 }

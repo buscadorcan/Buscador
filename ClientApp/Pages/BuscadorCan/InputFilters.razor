@@ -75,9 +75,11 @@
                         {
                             <li>
                                 <div class="form-check" style="display: flex; align-items: center;">
-                                    <input class="form-check-input"
+                                    <input class="form-check-input checkbox-filtro"
                                            type="checkbox"
                                            id="check-@currentIndex-@opcion.MostrarWeb"
+                                           data-idhomologacion="@opcion.IdHomologacion"
+                                           data-codigohomologacion="@listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion"
                                            checked="@selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Contains(opcion.MostrarWeb))"
                                            style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
                                            @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
@@ -104,8 +106,9 @@
 
 
 <!-- 🔥 Agregar JavaScript al final para alternar la visibilidad -->
-<script>
-       function toggleFilters() {
+<script type="text/javascript">
+
+    function toggleFilters() {
         var panel = document.getElementById("filterPanel");
         var toggleText = document.getElementById("toggleText");
 
@@ -117,6 +120,61 @@
             toggleText.innerText = "Ocultar Filtros Avanzados";
         }
     }
+
+    document.addEventListener('click', function (event) {
+        var dropdowns = document.querySelectorAll('.dropdown-toggle');
+
+        dropdowns.forEach(function (dropdown) {
+            var dropdownMenu = dropdown.nextElementSibling;
+
+            if (!dropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                var bootstrapDropdown = bootstrap.Dropdown.getInstance(dropdown);
+                if (bootstrapDropdown) {
+                    bootstrapDropdown.show();
+                }
+            }
+        });
+    });
+
+    document.addEventListener("click", function (event) {
+        const filterPanel = document.getElementById("filterPanel");
+
+        if (!filterPanel.contains(event.target)) {
+            const checkboxes = document.querySelectorAll(".checkbox-filtro:checked");
+
+            if (checkboxes.length > 0) {
+                const seleccionados = [];
+
+                checkboxes.forEach(chk => {
+                    const label = document.querySelector(`label[for='${chk.id}']`);
+                    const comboCodigo = chk.getAttribute("data-codigohomologacion");
+                    const idHomologacion = parseInt(chk.getAttribute("data-idhomologacion"));
+
+                    if (label && comboCodigo) {
+                        seleccionados.push({
+                            Combo: comboCodigo,
+                            Valor: label.innerText.trim(),
+                            IdHomologacion: idHomologacion
+                        });
+                    }
+                });
+
+                if (instanciaInputFilters) {
+                    instanciaInputFilters.invokeMethodAsync('RecibirSeleccionados', seleccionados)
+                        .then(result => console.log("Método ejecutado con éxito"))
+                        .catch(error => console.error("Error en la invocación de Blazor:", error));
+                }
+            }
+        }
+    });
+
+    let instanciaInputFilters = null;
+
+    function registrarInstanciaInputFilters(ref) {
+        instanciaInputFilters = ref;
+    }
+
+
 
 
 </script>

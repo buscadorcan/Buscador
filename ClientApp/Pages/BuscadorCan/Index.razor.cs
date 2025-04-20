@@ -50,7 +50,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Lista de valores seleccionados
         /// </summary>
-        private List<FiltrosBusquedaSeleccion> selectedFilter = new List<FiltrosBusquedaSeleccion>();
+        private List<FiltrosBusquedaSeleccionDto> selectedFilter = new List<FiltrosBusquedaSeleccionDto>();
 
         /// <summary>
         /// Lista de urls devuerltos por el servicio
@@ -148,10 +148,11 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método para manejar el cambio de filtros.
         /// </summary>
-        private void HandleFilterChange(List<FiltrosBusquedaSeleccion> newFilter)
+        private void HandleFilterChange(List<FiltrosBusquedaSeleccionDto> newFilter)
         {
             selectedFilter = newFilter;
         }
+
 
         /// <summary>
         /// Servicio de catálogos inyectado.
@@ -304,24 +305,24 @@ namespace ClientApp.Pages.BuscadorCan
     /// <summary>
     /// Clase para manejar los filtros de búsqueda seleccionados.
     /// </summary>
-    public class FiltrosBusquedaSeleccion
-    {
-        /// <summary>
-        /// Código de homologación del filtro.
-        /// </summary>
-        public string CodigoHomologacion { get; set; } = string.Empty;
+    //public class FiltrosBusquedaSeleccion
+    //{
+    //    /// <summary>
+    //    /// Código de homologación del filtro.
+    //    /// </summary>
+    //    public string CodigoHomologacion { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Lista de valores seleccionados.
-        /// </summary>
-        public List<string> Seleccion { get; set; } = new List<string>();
+    //    /// <summary>
+    //    /// Lista de valores seleccionados.
+    //    /// </summary>
+    //    public List<string> Seleccion { get; set; } = new List<string>();
 
-        /// <summary>
-        /// Inicializador de la clase.
-        /// </summary>
-        public FiltrosBusquedaSeleccion()
-        {
-            Seleccion = new List<string>();
-        }
-    }
+    //    /// <summary>
+    //    /// Inicializador de la clase.
+    //    /// </summary>
+    //    public FiltrosBusquedaSeleccion()
+    //    {
+    //        Seleccion = new List<string>();
+    //    }
+    //}
 }

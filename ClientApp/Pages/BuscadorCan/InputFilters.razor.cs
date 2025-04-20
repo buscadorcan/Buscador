@@ -8,7 +8,7 @@ namespace ClientApp.Pages.BuscadorCan
     /// <summary>
     /// Clase InputFilters
     /// </summary>
-    public partial class InputFilters : ComponentBase
+    public partial class InputFilters : ComponentBase, IDisposable
     {
         /// <summary>
         /// Variable para consultar datos de catalogos
@@ -18,7 +18,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Evento que se dispara para mantener al componente padre informado de los cambios en los filtros.
         /// </summary>
-        [Parameter] public EventCallback<List<FiltrosBusquedaSeleccion>> onFilterChange { get; set; }
+        [Parameter] public EventCallback<List<FiltrosBusquedaSeleccionDto>> onFilterChange { get; set; }
 
         /// <summary>
         /// Evento que se dispara para mantener al componente padre informado de la visibilidad de la grilla.
@@ -53,21 +53,21 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método para limpiar los checkboxes sin afectar la lista de opciones.
         /// </summary>
-        /// <returns></returns>
         [Inject] public IJSRuntime JS { get; set; }
-
 
         /// <summary>
         /// Lista de valores seleccionados
         /// </summary>
-        private List<FiltrosBusquedaSeleccion> selectedValues = new List<FiltrosBusquedaSeleccion>();
+        private List<FiltrosBusquedaSeleccionDto> selectedValues = new();
+
+        /// <summary>
+        /// Referencia al objeto para llamadas desde JS
+        /// </summary>
+        private DotNetObjectReference<InputFilters>? _objRef;
 
         /// <summary>
         /// Inicializador de datos
         /// </summary>
-        /// <returns></returns>
-        /// 
-
         protected override async Task OnInitializedAsync()
         {
             if (iCatalogosService != null)
@@ -87,7 +87,7 @@ namespace ClientApp.Pages.BuscadorCan
         }
 
         /// <summary>
-        /// Método para agregar / quitar seleccion el filtro
+        /// Método para agregar / quitar selección del filtro
         /// </summary>
         private void CambiarSeleccion(string valor, int comboIndex, object isChecked)
         {
@@ -100,7 +100,7 @@ namespace ClientApp.Pages.BuscadorCan
 
             if (filtro == null)
             {
-                filtro = new FiltrosBusquedaSeleccion
+                filtro = new FiltrosBusquedaSeleccionDto
                 {
                     CodigoHomologacion = codigoHomologacion,
                     Seleccion = new List<string>()
@@ -129,11 +129,9 @@ namespace ClientApp.Pages.BuscadorCan
             StateHasChanged(); // 🔥 Forzar la actualización del estado visual del botón
         }
 
-
         /// <summary>
         /// Método para limpiar los filtros
         /// </summary>
-        /// <returns></returns>
         async Task LimpiarFiltros()
         {
             try
@@ -161,6 +159,9 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
+        /// <summary>
+        /// Método para seleccionar o deseleccionar todos los valores de un combo
+        /// </summary>
         private void CambiarSeleccionTodos(int comboIndex, object isChecked)
         {
             bool seleccionarTodos = bool.Parse(isChecked.ToString());
@@ -174,7 +175,7 @@ namespace ClientApp.Pages.BuscadorCan
             var filtroExistente = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
             if (filtroExistente == null)
             {
-                filtroExistente = new FiltrosBusquedaSeleccion
+                filtroExistente = new FiltrosBusquedaSeleccionDto
                 {
                     CodigoHomologacion = codigoHomologacion,
                     Seleccion = new List<string>()
@@ -197,5 +198,98 @@ namespace ClientApp.Pages.BuscadorCan
             StateHasChanged();
         }
 
+        /// <summary>
+        /// Método invocable desde JavaScript para recibir filtros seleccionados
+        /// </summary>
+        [JSInvokable]
+        public async Task RecibirSeleccionados(List<SeleccionadoDto> seleccionados)
+        {
+            try
+            {
+                if (seleccionados == null || !seleccionados.Any()) return;
+
+                // Aquí se procesan los filtros seleccionados.
+                selectedValues.Clear();
+                foreach (var seleccionado in seleccionados)
+                {
+                    var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == seleccionado.Combo);
+                    if (filtro == null)
+                    {
+                        filtro = new FiltrosBusquedaSeleccionDto
+                        {
+                            CodigoHomologacion = seleccionado.Combo,
+                            Seleccion = new List<string>()
+                        };
+                        selectedValues.Add(filtro);
+                    }
+
+                    filtro.Seleccion.Add(seleccionado.Valor);
+                }
+
+                // Aquí puedes llamar al servicio de backend para obtener los filtros actualizados
+                if (iCatalogosService != null)
+                {
+                    var nuevosDatos = await iCatalogosService.GetFiltrosAnidadosAsync(selectedValues);
+                    ActualizarOpcionesDesdeBackend(nuevosDatos);
+                }
+
+                await onFilterChange.InvokeAsync(selectedValues);
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar los filtros: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Método para actualizar los combos desde los datos anidados del backend
+        /// </summary>
+        private void ActualizarOpcionesDesdeBackend(Dictionary<string, List<vw_FiltrosAnidadosDto>> respuesta)
+        {
+            for (int i = 0; i < listaEtiquetasFiltros?.Count; i++)
+            {
+                var codigo = listaEtiquetasFiltros[i].CodigoHomologacion;
+                if (respuesta.ContainsKey(codigo))
+                {
+                    var opcionesActualizadas = respuesta[codigo]
+                        .Select(dto => new vwFiltroDetalleDto
+                        {
+                            MostrarWeb = codigo switch
+                            {
+                                "KEY_FIL_ONA" => dto.KEY_FIL_ONA,
+                                "KEY_FIL_PAI" => dto.KEY_FIL_PAI,
+                                "KEY_FIL_EST" => dto.KEY_FIL_EST,
+                                "KEY_FIL_ESO" => dto.KEY_FIL_ESO,
+                                "KEY_FIL_NOR" => dto.KEY_FIL_NOR,
+                                "KEY_FIL_REC" => dto.KEY_FIL_REC,
+                                _ => null
+                            }
+                        })
+                        .Where(o => !string.IsNullOrWhiteSpace(o.MostrarWeb))
+                        .ToList();
+
+                    listadeOpciones[i] = opcionesActualizadas;
+                }
+            }
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                _objRef = DotNetObjectReference.Create(this);
+                await JS.InvokeVoidAsync("registrarInstanciaInputFilters", _objRef);
+            }
+        }
+
+
+        /// <summary>
+        /// Liberar recursos
+        /// </summary>
+        public void Dispose()
+        {
+            _objRef?.Dispose();
+        }
     }
 }
