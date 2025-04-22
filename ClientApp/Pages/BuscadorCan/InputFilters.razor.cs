@@ -43,7 +43,10 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Lista de opciones de filtros
         /// </summary>
-        private List<List<vwFiltroDetalleDto>?> listadeOpciones = new List<List<vwFiltroDetalleDto>?>();
+        //private List<List<vwFiltroDetalleDto>?> listadeOpciones = new List<List<vwFiltroDetalleDto>?>();
+        private List<List<vwFiltroDetalleDto>?> listadeOpciones = new();
+
+
 
         /// <summary>
         /// Lista de etiquetas de filtros
@@ -73,16 +76,37 @@ namespace ClientApp.Pages.BuscadorCan
             if (iCatalogosService != null)
             {
                 listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
+                var datosAnidados = await iCatalogosService.ObtenerFiltrosAnidadosAllAsync();
 
-                if (listaEtiquetasFiltros != null)
+                if (listaEtiquetasFiltros != null && datosAnidados != null)
                 {
                     foreach (var opciones in listaEtiquetasFiltros)
                     {
-                        listadeOpciones.Add(await iCatalogosService.GetFiltroDetalleAsync<List<vwFiltroDetalleDto>>("filters/data", opciones.CodigoHomologacion));
+                        string codigo = opciones.CodigoHomologacion; // Ej: "KEY_FIL_PAI"
+
+                        var valores = datosAnidados
+                            .Select(d =>
+                            {
+                                var prop = typeof(vw_FiltrosAnidadosDto).GetProperty(codigo);
+                                return prop != null ? prop.GetValue(d)?.ToString() : null;
+                            })
+                            .Where(valor => !string.IsNullOrEmpty(valor))
+                            .Distinct();
+
+                        var listaPorFiltro = valores
+                            .Select(valor => new vwFiltroDetalleDto
+                            {
+                                IdHomologacion = 1,
+                                MostrarWeb = valor,
+                                CodigoHomologacion = codigo
+                            })
+                            .ToList();
+
+                        listadeOpciones.Add(listaPorFiltro);
                     }
+
                 }
             }
-
             StateHasChanged();
         }
 
@@ -136,6 +160,8 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
+                await JS.InvokeVoidAsync("cerrarDropdowns");
+
                 if (isCleaning) return; // Evita múltiples clics simultáneos
                 isCleaning = true;
 
@@ -183,11 +209,11 @@ namespace ClientApp.Pages.BuscadorCan
                 selectedValues.Add(filtroExistente);
             }
 
-            if (seleccionarTodos)
-            {
-                // Agrega todos si no están ya
-                filtroExistente.Seleccion = opciones.Select(o => o.MostrarWeb).Distinct().ToList();
-            }
+            //if (seleccionarTodos)
+            //{
+            //    // Agrega todos si no están ya
+            //    filtroExistente.Seleccion = opciones.Select(o => o.MostrarWeb).Distinct().ToList();
+            //}
             else
             {
                 // Elimina el filtro completo
@@ -269,7 +295,7 @@ namespace ClientApp.Pages.BuscadorCan
                         .Where(o => !string.IsNullOrWhiteSpace(o.MostrarWeb))
                         .ToList();
 
-                    listadeOpciones[i] = opcionesActualizadas;
+                    //listadeOpciones[i] = opcionesActualizadas;
                 }
             }
         }

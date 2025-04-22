@@ -12,5 +12,6 @@ namespace Infractruture.Interfaces
         Task<List<vwONADto>> GetvwOnaAsync();
         Task<List<vwEsquemaOrganizaDto>> GetvwEsquemaOrganizaAsync();
         Task<Dictionary<string, List<vw_FiltrosAnidadosDto>>> GetFiltrosAnidadosAsync(List<FiltrosBusquedaSeleccionDto> filtros);
+        Task<List<vw_FiltrosAnidadosDto>> ObtenerFiltrosAnidadosAllAsync();
     }
 }

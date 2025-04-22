@@ -135,6 +135,16 @@ namespace Infractruture.Services
                    ?? new Dictionary<string, List<vw_FiltrosAnidadosDto>>();
         }
 
+        public async Task<List<vw_FiltrosAnidadosDto>> ObtenerFiltrosAnidadosAllAsync()
+        {
+            var url = _urlBaseApi + "anidados";
 
+            // Como no envías ningún cuerpo, usamos null
+            var response = await _httpClient.PostAsync(url, null);
+            response.EnsureSuccessStatusCode();
+
+            var resultado = await response.Content.ReadFromJsonAsync<List<vw_FiltrosAnidadosDto>>();
+            return resultado ?? new List<vw_FiltrosAnidadosDto>();
+        }
     }
 }

@@ -329,6 +329,30 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// filters/anidados
+        /// </summary>
+        /// <returns>
+        /// Devuelve un objeto IActionResult con una lista de vwONADto que representa los ONAs registrados.
+        /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
+        /// </returns>
+        [HttpPost("anidados")]
+        public IActionResult ObtenerFiltrosAnidadosAll()
+        {
+            try
+            {
+                var resultado = _vhRepo.ObtenerFiltrosAnidadosAll();
+                return Ok(resultado);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Error al obtener filtros anidados: {e.Message}");
+            }
+        }
+
+
+
+
         private string ObtenerValorPorClave(vw_FiltrosAnidadosDto item, string clave)
         {
             return clave switch

@@ -33,6 +33,16 @@ namespace DataAccess.Interfaces
         /// </returns>
         List<vw_FiltrosAnidadosDto> ObtenerFiltrosAnidados(List<FiltrosBusquedaSeleccionDto> filtrosSeleccionados);
 
+        /// <summary>
+        /// WebApp/ObtenerVwFiltro: Obtiene el esquema de los filtros.
+        /// Este método permite recuperar la configuración de los filtros disponibles en el sistema.
+        /// </summary>
+        /// <returns>
+        /// Devuelve una lista de objetos VwFiltro con la estructura de los filtros configurados.
+        /// </returns>
+        List<vw_FiltrosAnidadosDto> ObtenerFiltrosAnidadosAll();
+
+
 
         /// <summary>
         /// WebApp/ObtenerVwDimension: Obtiene el esquema de las dimensiones.

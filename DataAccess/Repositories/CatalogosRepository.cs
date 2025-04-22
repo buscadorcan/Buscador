@@ -92,6 +92,28 @@ namespace DataAccess.Repositories
         }
 
 
+        public List<vw_FiltrosAnidadosDto> ObtenerFiltrosAnidadosAll()
+        {
+            return ExecuteDbOperation(context =>
+            {
+                var query = context.VwFiltroAnidados.AsQueryable();
+
+                return query
+                    .AsNoTracking()
+                    .Select(f => new vw_FiltrosAnidadosDto
+                    {
+                        KEY_FIL_ONA = f.KEY_FIL_ONA,
+                        KEY_FIL_PAI = f.KEY_FIL_PAI,
+                        KEY_FIL_EST = f.KEY_FIL_EST,
+                        KEY_FIL_ESO = f.KEY_FIL_ESO,
+                        KEY_FIL_NOR = f.KEY_FIL_NOR,
+                        KEY_FIL_REC = f.KEY_FIL_REC
+                    })
+                    .ToList();
+            });
+        }
+
+
 
         /// <inheritdoc />
         public List<VwDimension> ObtenerVwDimension()

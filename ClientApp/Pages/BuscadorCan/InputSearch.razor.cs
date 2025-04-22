@@ -106,6 +106,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private async Task onClickFilter()
         {
+            await JS.InvokeVoidAsync("cerrarDropdowns");
             IsLoading = true;
             await InvokeAsync(StateHasChanged);
 
