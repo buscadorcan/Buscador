@@ -142,31 +142,31 @@
         if (!filterPanel.contains(event.target)) {
             const checkboxes = document.querySelectorAll(".checkbox-filtro:checked");
 
-            if (checkboxes.length > 0) {
-                const seleccionados = [];
+            const seleccionados = [];
 
-                checkboxes.forEach(chk => {
-                    const label = document.querySelector(`label[for='${chk.id}']`);
-                    const comboCodigo = chk.getAttribute("data-codigohomologacion");
-                    const idHomologacion = parseInt(chk.getAttribute("data-idhomologacion"));
+            checkboxes.forEach(chk => {
+                const label = document.querySelector(`label[for='${chk.id}']`);
+                const comboCodigo = chk.getAttribute("data-codigohomologacion");
+                const idHomologacion = parseInt(chk.getAttribute("data-idhomologacion"));
 
-                    if (label && comboCodigo) {
-                        seleccionados.push({
-                            Combo: comboCodigo,
-                            Valor: label.innerText.trim(),
-                            IdHomologacion: idHomologacion
-                        });
-                    }
-                });
-
-                if (instanciaInputFilters) {
-                    instanciaInputFilters.invokeMethodAsync('RecibirSeleccionados', seleccionados)
-                        .then(result => console.log("Método ejecutado con éxito"))
-                        .catch(error => console.error("Error en la invocación de Blazor:", error));
+                if (label && comboCodigo) {
+                    seleccionados.push({
+                        Combo: comboCodigo,
+                        Valor: label.innerText.trim(),
+                        IdHomologacion: idHomologacion
+                    });
                 }
+            });
+
+            // ✅ Siempre invocar, aunque seleccionados esté vacío
+            if (instanciaInputFilters) {
+                instanciaInputFilters.invokeMethodAsync('RecibirSeleccionados', seleccionados)
+                    .then(result => console.log("✅ Método ejecutado con éxito"))
+                    .catch(error => console.error("❌ Error en la invocación de Blazor:", error));
             }
         }
     });
+
 
     let instanciaInputFilters = null;
 

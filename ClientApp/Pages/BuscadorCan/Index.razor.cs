@@ -148,9 +148,10 @@ namespace ClientApp.Pages.BuscadorCan
         /// <summary>
         /// Método para manejar el cambio de filtros.
         /// </summary>
-        private void HandleFilterChange(List<FiltrosBusquedaSeleccionDto> newFilter)
+        private async Task HandleFilterChange(List<FiltrosBusquedaSeleccionDto> newFilter)
         {
             selectedFilter = newFilter;
+            await Task.CompletedTask; // o hacer algo asíncrono si lo necesitas
         }
 
 

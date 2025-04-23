@@ -69,6 +69,12 @@ namespace ClientApp.Pages.BuscadorCan
         private DotNetObjectReference<InputFilters>? _objRef;
 
         /// <summary>
+        /// llenaado de todos los datos anidados completos
+        /// </summary>
+        private List<vw_FiltrosAnidadosDto> datosAnidadosCompletos = new();
+
+
+        /// <summary>
         /// Inicializador de datos
         /// </summary>
         protected override async Task OnInitializedAsync()
@@ -76,22 +82,25 @@ namespace ClientApp.Pages.BuscadorCan
             if (iCatalogosService != null)
             {
                 listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
-                var datosAnidados = await iCatalogosService.ObtenerFiltrosAnidadosAllAsync();
+                datosAnidadosCompletos = await iCatalogosService.ObtenerFiltrosAnidadosAllAsync();
 
-                if (listaEtiquetasFiltros != null && datosAnidados != null)
+                if (listaEtiquetasFiltros != null && datosAnidadosCompletos != null)
                 {
                     foreach (var opciones in listaEtiquetasFiltros)
                     {
-                        string codigo = opciones.CodigoHomologacion; // Ej: "KEY_FIL_PAI"
+                        string codigo = opciones.CodigoHomologacion;
 
-                        var valores = datosAnidados
+                        var valores = datosAnidadosCompletos
                             .Select(d =>
                             {
                                 var prop = typeof(vw_FiltrosAnidadosDto).GetProperty(codigo);
                                 return prop != null ? prop.GetValue(d)?.ToString() : null;
                             })
                             .Where(valor => !string.IsNullOrEmpty(valor))
-                            .Distinct().ToList();
+                            .Distinct(StringComparer.OrdinalIgnoreCase) // ✔️ <-- ¡esto es lo clave!
+                            .OrderBy(v => v, StringComparer.OrdinalIgnoreCase) // ✔️ también aplica para orden
+                            .ToList();
+                            
 
                         var listaPorFiltro = valores
                             .Select(valor => new vwFiltroDetalleDto
@@ -104,11 +113,12 @@ namespace ClientApp.Pages.BuscadorCan
 
                         listadeOpciones.Add(listaPorFiltro);
                     }
-
                 }
             }
+
             StateHasChanged();
         }
+
 
         /// <summary>
         /// Método para agregar / quitar selección del filtro
@@ -198,31 +208,34 @@ namespace ClientApp.Pages.BuscadorCan
             var opciones = listadeOpciones[comboIndex];
             if (opciones == null) return;
 
-            var filtroExistente = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
-            if (filtroExistente == null)
+            if (seleccionarTodos)
             {
-                filtroExistente = new FiltrosBusquedaSeleccionDto
-                {
-                    CodigoHomologacion = codigoHomologacion,
-                    Seleccion = new List<string>()
-                };
-                selectedValues.Add(filtroExistente);
-            }
+                var seleccion = opciones.Select(o => o.MostrarWeb).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
-            //if (seleccionarTodos)
-            //{
-            //    // Agrega todos si no están ya
-            //    filtroExistente.Seleccion = opciones.Select(o => o.MostrarWeb).Distinct().ToList();
-            //}
+                var filtroExistente = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == codigoHomologacion);
+                if (filtroExistente == null)
+                {
+                    filtroExistente = new FiltrosBusquedaSeleccionDto
+                    {
+                        CodigoHomologacion = codigoHomologacion,
+                        Seleccion = seleccion
+                    };
+                    selectedValues.Add(filtroExistente);
+                }
+                else
+                {
+                    filtroExistente.Seleccion = seleccion;
+                }
+            }
             else
             {
-                // Elimina el filtro completo
                 selectedValues.RemoveAll(f => f.CodigoHomologacion == codigoHomologacion);
             }
 
             _ = onFilterChange.InvokeAsync(selectedValues);
             StateHasChanged();
         }
+
 
         /// <summary>
         /// Método invocable desde JavaScript para recibir filtros seleccionados
@@ -232,73 +245,133 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
-                if (seleccionados == null || !seleccionados.Any()) return;
-
-                // Aquí se procesan los filtros seleccionados.
-                selectedValues.Clear();
-                foreach (var seleccionado in seleccionados)
+                if (seleccionados == null || !seleccionados.Any())
                 {
-                    var filtro = selectedValues.FirstOrDefault(f => f.CodigoHomologacion == seleccionado.Combo);
-                    if (filtro == null)
+                    await CargarFiltrosIniciales();
+                    return;
+                }
+
+                // Filtramos datosAnidadosCompletos en base a los seleccionados
+                var filtrado = datosAnidadosCompletos.Where(item =>
+                {
+                    bool coincide = true;
+
+                    foreach (var filtro in seleccionados)
                     {
-                        filtro = new FiltrosBusquedaSeleccionDto
+                        var prop = typeof(vw_FiltrosAnidadosDto).GetProperty(filtro.Combo);
+                        if (prop == null) continue;
+
+                        var valorProp = prop.GetValue(item)?.ToString()?.Trim();
+                        var valorFiltro = filtro.Valor?.Trim();
+
+                        if (!string.Equals(valorProp?.Trim().ToUpperInvariant(), valorFiltro?.Trim().ToUpperInvariant()))
                         {
-                            CodigoHomologacion = seleccionado.Combo,
-                            Seleccion = new List<string>()
-                        };
-                        selectedValues.Add(filtro);
+                            coincide = false;
+                            break;
+                        }
                     }
 
-                    filtro.Seleccion.Add(seleccionado.Valor);
-                }
+                    return coincide;
+                }).ToList();
 
-                // Aquí puedes llamar al servicio de backend para obtener los filtros actualizados
-                if (iCatalogosService != null)
+                // Limpiamos y reconstruimos listadeOpciones desde el nuevo conjunto filtrado
+                listadeOpciones.Clear();
+
+                foreach (var etiqueta in listaEtiquetasFiltros)
                 {
-                    var nuevosDatos = await iCatalogosService.GetFiltrosAnidadosAsync(selectedValues);
-                    ActualizarOpcionesDesdeBackend(nuevosDatos);
+                    var prop = typeof(vw_FiltrosAnidadosDto).GetProperty(etiqueta.CodigoHomologacion);
+                    if (prop == null)
+                    {
+                        listadeOpciones.Add(new List<vwFiltroDetalleDto>());
+                        continue;
+                    }
+
+                    var opciones = filtrado
+                        .Select(f => prop.GetValue(f)?.ToString()?.Trim())
+                        .Where(val => !string.IsNullOrWhiteSpace(val))
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(val => val, StringComparer.OrdinalIgnoreCase)
+                        .Select(val => new vwFiltroDetalleDto
+                        {
+                            CodigoHomologacion = etiqueta.CodigoHomologacion,
+                            MostrarWeb = val,
+                            IdHomologacion = 1
+                        })
+                        .ToList();
+
+                    listadeOpciones.Add(opciones);
                 }
 
-                await onFilterChange.InvokeAsync(selectedValues);
+                // Actualizamos selectedValues (por si quieres seguir mostrándolos)
+                selectedValues = seleccionados
+                    .GroupBy(s => s.Combo)
+                    .Select(g => new FiltrosBusquedaSeleccionDto
+                    {
+                        CodigoHomologacion = g.Key,
+                        Seleccion = g.Select(x => x.Valor).ToList()
+                    })
+                    .ToList();
+
+                // Notificamos al componente padre (si aplica)
+                if (onFilterChange.HasDelegate)
+                {
+                    await onFilterChange.InvokeAsync(selectedValues);
+                }
+
                 StateHasChanged();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al actualizar los filtros: {ex.Message}");
+                Console.WriteLine($"❌ Error simplificado en RecibirSeleccionados: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Método para actualizar los combos desde los datos anidados del backend
-        /// </summary>
-        private void ActualizarOpcionesDesdeBackend(Dictionary<string, List<vw_FiltrosAnidadosDto>> respuesta)
+    
+
+        private async Task CargarFiltrosIniciales()
         {
-            for (int i = 0; i < listaEtiquetasFiltros?.Count; i++)
+            listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
+            datosAnidadosCompletos = await iCatalogosService.ObtenerFiltrosAnidadosAllAsync();
+
+            listadeOpciones.Clear(); // ← ¡esto es lo que faltaba!
+
+            if (listaEtiquetasFiltros != null && datosAnidadosCompletos != null)
             {
-                var codigo = listaEtiquetasFiltros[i].CodigoHomologacion;
-                if (respuesta.ContainsKey(codigo))
+                foreach (var opciones in listaEtiquetasFiltros)
                 {
-                    var opcionesActualizadas = respuesta[codigo]
-                        .Select(dto => new vwFiltroDetalleDto
+                    string codigo = opciones.CodigoHomologacion;
+
+                    var valores = datosAnidadosCompletos
+                        .Select(d =>
                         {
-                            MostrarWeb = codigo switch
-                            {
-                                "KEY_FIL_ONA" => dto.KEY_FIL_ONA,
-                                "KEY_FIL_PAI" => dto.KEY_FIL_PAI,
-                                "KEY_FIL_EST" => dto.KEY_FIL_EST,
-                                "KEY_FIL_ESO" => dto.KEY_FIL_ESO,
-                                "KEY_FIL_NOR" => dto.KEY_FIL_NOR,
-                                "KEY_FIL_REC" => dto.KEY_FIL_REC,
-                                _ => null
-                            }
+                            var prop = typeof(vw_FiltrosAnidadosDto).GetProperty(codigo);
+                            return prop != null ? prop.GetValue(d)?.ToString()?.Trim() : null;
                         })
-                        .Where(o => !string.IsNullOrWhiteSpace(o.MostrarWeb))
+                        .Where(valor => !string.IsNullOrWhiteSpace(valor))
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(v => v, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
-                    //listadeOpciones[i] = opcionesActualizadas;
+                    var listaPorFiltro = valores
+                        .Select(valor => new vwFiltroDetalleDto
+                        {
+                            IdHomologacion = 1,
+                            MostrarWeb = valor,
+                            CodigoHomologacion = codigo
+                        })
+                        .ToList();
+
+                    listadeOpciones.Add(listaPorFiltro);
                 }
             }
+
+            selectedValues.Clear(); // Opcional, si quieres reiniciar también selección
+            await onFilterChange.InvokeAsync(selectedValues); // Informar al padre
+            StateHasChanged(); // Refrescar UI
         }
+
+
+
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
