@@ -336,7 +336,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de vwONADto que representa los ONAs registrados.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpPost("anidados")]
+        [HttpGet("anidados")]
         public IActionResult ObtenerFiltrosAnidadosAll()
         {
             try

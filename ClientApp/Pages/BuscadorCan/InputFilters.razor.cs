@@ -91,7 +91,7 @@ namespace ClientApp.Pages.BuscadorCan
                                 return prop != null ? prop.GetValue(d)?.ToString() : null;
                             })
                             .Where(valor => !string.IsNullOrEmpty(valor))
-                            .Distinct();
+                            .Distinct().ToList();
 
                         var listaPorFiltro = valores
                             .Select(valor => new vwFiltroDetalleDto

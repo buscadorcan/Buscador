@@ -139,11 +139,7 @@ namespace Infractruture.Services
         {
             var url = _urlBaseApi + "anidados";
 
-            // Como no envías ningún cuerpo, usamos null
-            var response = await _httpClient.PostAsync(url, null);
-            response.EnsureSuccessStatusCode();
-
-            var resultado = await response.Content.ReadFromJsonAsync<List<vw_FiltrosAnidadosDto>>();
+            var resultado = await _httpClient.GetFromJsonAsync<List<vw_FiltrosAnidadosDto>>(url);
             return resultado ?? new List<vw_FiltrosAnidadosDto>();
         }
     }
