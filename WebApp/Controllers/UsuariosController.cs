@@ -11,24 +11,34 @@ using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-  [Route("api/usuarios")]
-  [ApiController]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  [ProducesResponseType(StatusCodes.Status403Forbidden)]
-  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public class UsuariosController(
-    IUsuarioService iUsuarioService,
-    IMapper mapper,
-    IAuthenticateService iService,
-    IRecoverUserService iServiceRecover
-  ) : BaseController
-  {
-    private readonly IUsuarioService _iUsuarioService = iUsuarioService;
-    private readonly IAuthenticateService _iService = iService;
-    private readonly IRecoverUserService _iServiceRecover = iServiceRecover;
-    private readonly IMapper _mapper = mapper;
+    [Route("api/usuarios")]
+    [ApiController]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class UsuariosController : BaseController
+    {
+        private readonly IUsuarioService _iUsuarioService;
+        private readonly IMapper _mapper;
+        private readonly IAuthenticateService _iService;
+        private readonly IRecoverUserService _iServiceRecover;
+
+        public UsuariosController(
+                IUsuarioService iUsuarioService,
+                IMapper mapper,
+                IAuthenticateService iService,
+                IRecoverUserService iServiceRecover,
+                ILogger<BaseController> logger
+              ) : base(logger)
+        {
+            this._iUsuarioService = iUsuarioService;
+            this._mapper = mapper;
+            this._iService = iService;
+            this._iServiceRecover = iServiceRecover;
+        }
+
 
         /// <summary>
         /// WebApp/Login: Autentica a un usuario en el sistema y devuelve sus credenciales.
@@ -40,11 +50,11 @@ namespace WebApp.Controllers
         /// En caso de credenciales inválidas, devuelve un mensaje de error.
         /// </returns>
         [HttpPost("login")]
-    public IActionResult Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
+        public IActionResult Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
             try
             {
-        var result = _iService.Authenticate(usuarioAutenticacionDto);
+                var result = _iService.Authenticate(usuarioAutenticacionDto);
 
                 if (!result.IsSuccess)
                 {
@@ -289,34 +299,35 @@ namespace WebApp.Controllers
             catch (Exception e)
             {
                 return HandleException(e, nameof(ValidarEmail));
-        }   
-    }
-
-    /* 
-     * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
-     * WebApp/ValidarEmail: Cambia las claves de un usuario en especifico.
-    */
-    [Authorize]
-    [HttpPost("cambiar_clave")]
-    public IActionResult CambiarClave([FromBody] UsuarioCambiarClaveDto usuario)
-    {
-      try
-      {
-        var result = _iUsuarioService.ChangePasswd(usuario.Clave, usuario.ClaveNueva);
-
-        if (!result.IsSuccess) {
-          return BadRequestResponse(result.ErrorMessage);
+            }
         }
 
-        return Ok(new RespuestasAPI<bool> {
-          Result = result.Value
-        });
-      }
-      catch (Exception e)
-      {
-        return HandleException(e, nameof(Login));
-      }
-        }
+        /* 
+         * Copyright © SIDESOFT | BuscadorAndino | 2025.Feb.18
+         * WebApp/ValidarEmail: Cambia las claves de un usuario en especifico.
+        */
+        [Authorize]
+        [HttpPost("cambiar_clave")]
+        public IActionResult CambiarClave([FromBody] UsuarioCambiarClaveDto usuario)
+        {
+            try
+            {
+                var result = _iUsuarioService.ChangePasswd(usuario.Clave, usuario.ClaveNueva);
 
+                if (!result.IsSuccess)
+                {
+                    return BadRequestResponse(result.ErrorMessage);
+                }
+
+                return Ok(new RespuestasAPI<bool>
+                {
+                    Result = result.Value
+                });
+            }
+            catch (Exception e)
+            {
+                return HandleException(e, nameof(Login));
+            }
+        }
     }
 }

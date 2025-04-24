@@ -1,7 +1,17 @@
 using Microsoft.AspNetCore.Http.Features;
+using Serilog;
 using WebApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// ← Crea el logger ANTES de construir el host
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 /// <summary>
 /// Configura las opciones para el manejo de formularios multipart, 

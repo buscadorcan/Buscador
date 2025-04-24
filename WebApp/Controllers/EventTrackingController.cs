@@ -14,11 +14,21 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class EventTrackingController(IEventTrackingService iEventTrackingService, IMapper mapper, IIpCoordinatesService iIpCoordinatesService) : BaseController
+    public class EventTrackingController: BaseController
     {
-        private readonly IEventTrackingService _iEventTrackingService = iEventTrackingService;
-        private readonly IIpCoordinatesService _IIpCoordinatesService = iIpCoordinatesService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IEventTrackingService _iEventTrackingService;
+        private readonly IMapper _mapper;
+        private readonly IIpCoordinatesService _iIpCoordinatesService;
+
+        public EventTrackingController(IEventTrackingService iEventTrackingService, 
+                                       IMapper mapper, 
+                                       IIpCoordinatesService iIpCoordinatesService,
+                                       ILogger<BaseController> logger) : base(logger)
+        {
+            this._iEventTrackingService = iEventTrackingService;
+            this._mapper = mapper;
+            this._iIpCoordinatesService = iIpCoordinatesService;
+        }
 
         /// <summary>
         /// FindById
@@ -168,7 +178,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var result = await _IIpCoordinatesService.GetCoordinates(ip);
+                var result = await _iIpCoordinatesService.GetCoordinates(ip);
 
                 if (result == null)
                     return NotFound(new RespuestasAPI<string>

@@ -16,11 +16,18 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class ThesaurusController(IThesaurusService thesaurusService, IMapper mapper) : BaseController
+    public class ThesaurusController : BaseController
     {
-        private readonly IThesaurusService _thesaurusService = thesaurusService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IThesaurusService _thesaurusService;
+        private readonly IMapper _mapper;
 
+        public ThesaurusController(IThesaurusService thesaurusService, 
+            IMapper mapper, 
+            ILogger<BaseController> logger): base(logger)
+        {
+            this._thesaurusService = thesaurusService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// ObtenerThesaurus

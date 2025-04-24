@@ -3,10 +3,10 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
 using AutoMapper;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
 using Core.Interfaces;
+
 
 namespace WebApp.Controllers
 {
@@ -18,13 +18,20 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public class CatalogosController(
-      ICatalogosService iCatalogosService,
-      IMapper mapper
-    ) : BaseController
+    public class CatalogosController : BaseController
     {
-        private readonly ICatalogosService _iCatalogosService = iCatalogosService;
-        private readonly IMapper _mapper = mapper;
+        private readonly ICatalogosService _iCatalogosService;
+        private readonly IMapper _mapper;
+
+        public CatalogosController(
+          ICatalogosService iCatalogosService,
+          IMapper mapper,
+          ILogger<BaseController> logger)
+          : base(logger)
+        {
+            this._iCatalogosService = iCatalogosService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// ObtenerVwGrilla

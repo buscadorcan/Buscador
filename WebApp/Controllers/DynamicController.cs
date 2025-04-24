@@ -19,7 +19,7 @@ namespace WebApp.Controllers
   public class DynamicController : BaseController
   {
     private readonly IDynamicService _dynamicService;
-    public DynamicController(IDynamicService dynamicService)
+    public DynamicController(IDynamicService dynamicService, ILogger<BaseController> logger) : base(logger)
     {
             _dynamicService = dynamicService;
     }

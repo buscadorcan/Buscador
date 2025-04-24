@@ -17,10 +17,18 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class ReporteController(IReporteService reporteService, IMapper mapper) : BaseController
+    public class ReporteController : BaseController
     {
-        private readonly IReporteService _reporteService = reporteService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IReporteService _reporteService;
+        private readonly IMapper _mapper;
+
+        public ReporteController(IReporteService reporteService, 
+            IMapper mapper, 
+            ILogger<BaseController>logger) : base(logger) 
+        {
+            this._reporteService = reporteService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// findByVista

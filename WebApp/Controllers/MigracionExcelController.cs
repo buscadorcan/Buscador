@@ -18,14 +18,23 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public class MigacionExcelController(
-    IMigracionExcelService migracionExcelService,
-    IMapper mapper,
-    IExcelService importer
-  ) : BaseController
+  public class MigacionExcelController: BaseController
   {
-        private readonly IMigracionExcelService _migracionExcelService = migracionExcelService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IMigracionExcelService _migracionExcelService;
+        private readonly IMapper _mapper;
+        private readonly IExcelService _importer;
+
+        public MigacionExcelController(
+                IMigracionExcelService migracionExcelService,
+                IMapper mapper,
+                IExcelService importer,
+                ILogger<BaseController> logger
+                ): base(logger)
+        {
+            this._migracionExcelService = migracionExcelService;
+            this._mapper = mapper;
+            this._importer = importer;
+        }
 
         /// <summary>
         /// FindAll
@@ -107,7 +116,7 @@ namespace WebApp.Controllers
                     ExcelFileName = file.FileName
                 });
 
-                var result = importer.ImportarExcel(filePath, migracion, idOna);
+                var result = _importer.ImportarExcel(filePath, migracion, idOna);
 
                 return Ok(new RespuestasAPI<bool>
                 {

@@ -18,13 +18,18 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class HomologacionController(
-      IHomologacionService iHomologacionService,
-      IMapper mapper
-    ) : BaseController
+    public class HomologacionController : BaseController
     {
-        private readonly IHomologacionService _iHomologacionService = iHomologacionService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IHomologacionService _iHomologacionService;
+        private readonly IMapper _mapper;
+
+        public HomologacionController( IHomologacionService iHomologacionService, 
+                                       IMapper mapper, 
+                                       ILogger<BaseController> logger) : base(logger)
+        {
+            this._iHomologacionService = iHomologacionService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// FindByParent
