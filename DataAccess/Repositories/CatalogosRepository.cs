@@ -65,7 +65,7 @@ namespace DataAccess.Repositories
                             query = query.Where(q => filtro.Seleccion.Contains(q.KEY_FIL_EST));
                             break;
                         case "KEY_FIL_ESO":
-                            query = query.Where(q => filtro.Seleccion.Contains(q.KEY_FIL_ESO));
+                            query = query.Where(q => filtro.Seleccion.Contains(q.KEY_FIL_ESQ));
                             break;
                         case "KEY_FIL_NOR":
                             query = query.Where(q => filtro.Seleccion.Contains(q.KEY_FIL_NOR));
@@ -83,7 +83,7 @@ namespace DataAccess.Repositories
                         KEY_FIL_ONA = f.KEY_FIL_ONA,
                         KEY_FIL_PAI = f.KEY_FIL_PAI,
                         KEY_FIL_EST = f.KEY_FIL_EST,
-                        KEY_FIL_ESO = f.KEY_FIL_ESO,
+                        KEY_FIL_ESQ = f.KEY_FIL_ESQ,
                         KEY_FIL_NOR = f.KEY_FIL_NOR,
                         KEY_FIL_REC = f.KEY_FIL_REC
                     })
@@ -105,7 +105,7 @@ namespace DataAccess.Repositories
                         KEY_FIL_ONA = f.KEY_FIL_ONA,
                         KEY_FIL_PAI = f.KEY_FIL_PAI,
                         KEY_FIL_EST = f.KEY_FIL_EST,
-                        KEY_FIL_ESO = f.KEY_FIL_ESO,
+                        KEY_FIL_ESQ = f.KEY_FIL_ESQ,
                         KEY_FIL_NOR = f.KEY_FIL_NOR,
                         KEY_FIL_REC = f.KEY_FIL_REC
                     })

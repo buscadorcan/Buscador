@@ -303,7 +303,7 @@ namespace WebApp.Controllers
                 var dto = new Dictionary<string, List<vw_FiltrosAnidadosDto>>();
 
                 // Agrupamos las opciones por tipo de filtro (KEY_FIL_ONA, KEY_FIL_PAI, etc.)
-                foreach (var key in new[] { "KEY_FIL_ONA", "KEY_FIL_PAI", "KEY_FIL_EST", "KEY_FIL_ESO", "KEY_FIL_NOR", "KEY_FIL_REC" })
+                foreach (var key in new[] { "KEY_FIL_ONA", "KEY_FIL_PAI", "KEY_FIL_EST", "KEY_FIL_ESQ", "KEY_FIL_NOR", "KEY_FIL_REC" })
                 {
                     var valores = resultado
                         .Select(r => ObtenerValorPorClave(r, key))
@@ -316,7 +316,7 @@ namespace WebApp.Controllers
                         KEY_FIL_ONA = key == "KEY_FIL_ONA" ? val : null,
                         KEY_FIL_PAI = key == "KEY_FIL_PAI" ? val : null,
                         KEY_FIL_EST = key == "KEY_FIL_EST" ? val : null,
-                        KEY_FIL_ESO = key == "KEY_FIL_ESO" ? val : null,
+                        KEY_FIL_ESQ = key == "KEY_FIL_ESO" ? val : null,
                         KEY_FIL_NOR = key == "KEY_FIL_NOR" ? val : null,
                         KEY_FIL_REC = key == "KEY_FIL_REC" ? val : null,
                     }).ToList();
@@ -361,7 +361,7 @@ namespace WebApp.Controllers
                 "KEY_FIL_ONA" => item.KEY_FIL_ONA,
                 "KEY_FIL_PAI" => item.KEY_FIL_PAI,
                 "KEY_FIL_EST" => item.KEY_FIL_EST,
-                "KEY_FIL_ESO" => item.KEY_FIL_ESO,
+                "KEY_FIL_ESO" => item.KEY_FIL_ESQ,
                 "KEY_FIL_NOR" => item.KEY_FIL_NOR,
                 "KEY_FIL_REC" => item.KEY_FIL_REC,
                 _ => string.Empty
