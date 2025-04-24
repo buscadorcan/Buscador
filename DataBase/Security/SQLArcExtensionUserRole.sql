@@ -1,7 +1,0 @@
-﻿CREATE ROLE [SQLArcExtensionUserRole]
-    AUTHORIZATION [dbo];
-
-
-GO
-ALTER ROLE [SQLArcExtensionUserRole] ADD MEMBER [NT AUTHORITY\SYSTEM];
-
