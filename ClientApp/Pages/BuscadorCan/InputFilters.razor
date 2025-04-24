@@ -127,12 +127,12 @@
         dropdowns.forEach(function (dropdown) {
             var dropdownMenu = dropdown.nextElementSibling;
 
-            if (!dropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
+    @*         if (!dropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
                 var bootstrapDropdown = bootstrap.Dropdown.getInstance(dropdown);
                 if (bootstrapDropdown) {
                     bootstrapDropdown.show();
                 }
-            }
+            } *@
         });
     });
 

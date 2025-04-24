@@ -330,10 +330,8 @@ namespace ClientApp.Pages.BuscadorCan
 
         private async Task CargarFiltrosIniciales()
         {
-            listaEtiquetasFiltros = await iCatalogosService.GetFiltrosAsync();
-            datosAnidadosCompletos = await iCatalogosService.ObtenerFiltrosAnidadosAllAsync();
-
-            listadeOpciones.Clear(); // ← ¡esto es lo que faltaba!
+          
+            listadeOpciones.Clear();
 
             if (listaEtiquetasFiltros != null && datosAnidadosCompletos != null)
             {
@@ -365,7 +363,7 @@ namespace ClientApp.Pages.BuscadorCan
                 }
             }
 
-            selectedValues.Clear(); // Opcional, si quieres reiniciar también selección
+            selectedValues.Clear(); // Limpiar selección
             await onFilterChange.InvokeAsync(selectedValues); // Informar al padre
             StateHasChanged(); // Refrescar UI
         }
