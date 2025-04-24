@@ -7,6 +7,7 @@ using SharedApp.Response;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -18,11 +19,11 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class HomologacionController(
-      IHomologacionRepository iRepo,
+      IHomologacionService iHomologacionService,
       IMapper mapper
     ) : BaseController
     {
-        private readonly IHomologacionRepository _iRepo = iRepo;
+        private readonly IHomologacionService _iHomologacionService = iHomologacionService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<HomologacionDto>>
                 {
-                    Result = _iRepo.FindByParent().Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
+                    Result = _iHomologacionService.FindByParent().Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -62,7 +63,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindById(id);
+                var record = _iHomologacionService.FindById(id);
 
                 if (record == null)
                 {
@@ -99,7 +100,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(_mapper.Map<Homologacion>(dto))
+                    IsSuccess = _iHomologacionService.Update(_mapper.Map<Homologacion>(dto))
                 });
             }
             catch (Exception e)
@@ -123,7 +124,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Create(_mapper.Map<Homologacion>(dto))
+                    IsSuccess = _iHomologacionService.Create(_mapper.Map<Homologacion>(dto))
                 });
             }
             catch (Exception e)
@@ -145,7 +146,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindById(id);
+                var record = _iHomologacionService.FindById(id);
 
                 if (record == null)
                 {
@@ -156,7 +157,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(record)
+                    IsSuccess = _iHomologacionService.Update(record)
                 });
             }
             catch (Exception e)
@@ -180,7 +181,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwHomologacionDto>>
                 {
-                    Result = _iRepo.ObtenerVwHomologacionPorCodigo(codigoHomologacion)
+                    Result = _iHomologacionService.ObtenerVwHomologacionPorCodigo(codigoHomologacion)
                         .Select(item => _mapper.Map<VwHomologacionDto>(item)).ToList()
                 });
             }
@@ -204,7 +205,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<HomologacionDto>>
                 {
-                    Result = _iRepo.FindByAll().Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
+                    Result = _iHomologacionService.FindByAll().Select(item => _mapper.Map<HomologacionDto>(item)).ToList()
                 });
             }
             catch (Exception e)

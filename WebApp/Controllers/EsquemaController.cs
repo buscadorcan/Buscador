@@ -4,9 +4,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SharedApp.Response;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -18,11 +18,11 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class EsquemaController(
-      IEsquemaRepository iRepo,
+      IEsquemaService iEsquemaService,
       IMapper mapper
     ) : BaseController
     {
-        private readonly IEsquemaRepository _iRepo = iRepo;
+        private readonly IEsquemaService _iEsquemaService = iEsquemaService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<EsquemaDto>>
                 {
-                    Result = _iRepo.FindAll().Select(item => _mapper.Map<EsquemaDto>(item)).ToList()
+                    Result = _iEsquemaService.FindAll().Select(item => _mapper.Map<EsquemaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -63,7 +63,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindById(id);
+                var record = _iEsquemaService.FindById(id);
 
                 if (record == null)
                 {
@@ -100,7 +100,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(record)
+                    IsSuccess = _iEsquemaService.Update(record)
                 });
             }
             catch (Exception e)
@@ -126,7 +126,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Create(record)
+                    IsSuccess = _iEsquemaService.Create(record)
                 });
             }
             catch (Exception e)
@@ -148,7 +148,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindById(id);
+                var record = _iEsquemaService.FindById(id);
 
                 if (record == null)
                 {
@@ -159,7 +159,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(record)
+                    IsSuccess = _iEsquemaService.Update(record)
                 });
             }
             catch (Exception e)
@@ -181,7 +181,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.GetEsquemaVistaColumnaByIdEquemaVistaAsync(esquemaRegistro.IdOna, esquemaRegistro.IdEsquema);
+                var record = _iEsquemaService.GetEsquemaVistaColumnaByIdEquemaVistaAsync(esquemaRegistro.IdOna, esquemaRegistro.IdEsquema);
 
                 if (record == null)
                 {
@@ -190,7 +190,7 @@ namespace WebApp.Controllers
 
                 record.Estado = "X";
 
-                var isDeleted = _iRepo.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(record.IdEsquemaVista);
+                var isDeleted = _iEsquemaService.EliminarEsquemaVistaColumnaByIdEquemaVistaAsync(record.IdEsquemaVista);
 
                 return Ok(new RespuestasAPI<bool>
                 {
@@ -221,7 +221,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.UpdateEsquemaValidacion(record)
+                    IsSuccess = _iEsquemaService.UpdateEsquemaValidacion(record)
                 });
             }
             catch (Exception e)
@@ -248,7 +248,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.CreateEsquemaValidacion(record)
+                    IsSuccess = _iEsquemaService.CreateEsquemaValidacion(record)
                 });
             }
             catch (Exception e)
@@ -281,7 +281,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.GuardarListaEsquemaVistaColumna(record, idOna, idEsquema)
+                    IsSuccess = _iEsquemaService.GuardarListaEsquemaVistaColumna(record, idOna, idEsquema)
                 });
             }
             catch (Exception e)
@@ -304,7 +304,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var result = _iRepo.GetListaEsquemaByOna(idOna);
+                var result = _iEsquemaService.GetListaEsquemaByOna(idOna);
                 return Ok(new RespuestasAPI<List<Esquema>> { Result = result });
             }
             catch (Exception e)

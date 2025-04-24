@@ -19,12 +19,12 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class MigacionExcelController(
-    IMigracionExcelRepository iRepo,
+    IMigracionExcelService migracionExcelService,
     IMapper mapper,
     IExcelService importer
   ) : BaseController
   {
-        private readonly IMigracionExcelRepository _iRepo = iRepo;
+        private readonly IMigracionExcelService _migracionExcelService = migracionExcelService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<MigracionExcelDto>>
                 {
-                    Result = _iRepo.FindAll().Select(item => _mapper.Map<MigracionExcelDto>(item)).ToList()
+                    Result = _migracionExcelService.FindAll().Select(item => _mapper.Map<MigracionExcelDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -101,7 +101,7 @@ namespace WebApp.Controllers
                 }
 
                 // Guardar en base de datos
-                LogMigracion migracion = iRepo.Create(new LogMigracion
+                LogMigracion migracion = _migracionExcelService.Create(new LogMigracion
                 {
                     Estado = "PENDING",
                     ExcelFileName = file.FileName

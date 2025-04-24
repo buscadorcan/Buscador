@@ -4,9 +4,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
 using Microsoft.AspNetCore.Authorization;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -19,11 +19,11 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class UsuarioEndpointController(
     ILogger<UsuarioEndpointController> logger,
-    IUsuarioEndpointRepository iRepo,
+    IUsuarioEndpontService usuarioEndpontService,
     IMapper mapper
   ) : BaseController
   {
-    private readonly IUsuarioEndpointRepository _iRepo = iRepo;
+    private readonly IUsuarioEndpontService _usuarioEndpontService = usuarioEndpontService;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<UsuarioEndpointController> _logger = logger;
 
@@ -42,7 +42,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Create(_mapper.Map<UsuarioEndpoint>(data))
+                    IsSuccess = _usuarioEndpontService.Create(_mapper.Map<UsuarioEndpoint>(data))
                 });
             }
             catch (Exception e)
@@ -65,7 +65,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<UsuarioEndpointPermisoDto>>
                 {
-                    Result = _mapper.Map<List<UsuarioEndpointPermisoDto>>(_iRepo.FindAll())
+                    Result = _mapper.Map<List<UsuarioEndpointPermisoDto>>(_usuarioEndpontService.FindAll())
                 });
             }
             catch (Exception e)
@@ -88,7 +88,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var itemUsuario = _iRepo.FindByEndpointId(endpointId);
+                var itemUsuario = _usuarioEndpontService.FindByEndpointId(endpointId);
 
                 if (itemUsuario == null)
                 {

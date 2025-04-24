@@ -7,6 +7,7 @@ using SharedApp.Response;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -17,9 +18,9 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class MenuController(IMenuRepository iRepo, IMapper mapper) : BaseController
+    public class MenuController(IMenuService menuService, IMapper mapper) : BaseController
     {
-        private readonly IMenuRepository _iRepo = iRepo;
+        private readonly IMenuService _menuService = menuService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<MenuRolDto>>
                 {
-                    Result = _iRepo.FindAll().Select(item => _mapper.Map<MenuRolDto>(item)).ToList()
+                    Result = _menuService.FindAll().Select(item => _mapper.Map<MenuRolDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -59,7 +60,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindDataById(idHRol, idHMenu);
+                var record = _menuService.FindDataById(idHRol, idHMenu);
                 if (record == null)
                 {
                     return NotFoundResponse("Registro no encontrado");
@@ -101,7 +102,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(menuRol)
+                    IsSuccess = _menuService.Update(menuRol)
                 });
             }
             catch (Exception e)
@@ -126,7 +127,7 @@ namespace WebApp.Controllers
                 var record = _mapper.Map<MenuRol>(dto);
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Create(record)
+                    IsSuccess = _menuService.Create(record)
                 });
             }
             catch (Exception e)
@@ -149,7 +150,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindById(idHRol, idHMenu);
+                var record = _menuService.FindById(idHRol, idHMenu);
                 record.Estado = record.Estado == "A" ? "X" : "A";
                 if (record == null)
                 {
@@ -157,7 +158,7 @@ namespace WebApp.Controllers
                 }
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(record)
+                    IsSuccess = _menuService.Update(record)
                 });
             }
             catch (Exception e)
@@ -180,7 +181,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<MenuPaginaDto>>
                 {
-                    Result = _iRepo.ObtenerMenusPendingConfig(idHomologacionRol).Select(item => _mapper.Map<MenuPaginaDto>(item)).ToList()
+                    Result = _menuService.ObtenerMenusPendingConfig(idHomologacionRol).Select(item => _mapper.Map<MenuPaginaDto>(item)).ToList()
                 });
             }
             catch (Exception e)

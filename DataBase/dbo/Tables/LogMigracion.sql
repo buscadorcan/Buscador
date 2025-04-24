@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[LogMigracion] (
+    [IdLogMigracion] INT            IDENTITY (1, 1) NOT NULL,
+    [IdONA]          INT            NOT NULL,
+    [Host]           NVARCHAR (100) DEFAULT ('') NOT NULL,
+    [Puerto]         INT            DEFAULT ((0)) NOT NULL,
+    [Usuario]        NVARCHAR (100) DEFAULT ('') NOT NULL,
+    [BaseDatos]      NVARCHAR (100) DEFAULT ('') NOT NULL,
+    [OrigenDatos]    NVARCHAR (100) DEFAULT ('') NOT NULL,
+    [Migrar]         NVARCHAR (1)   DEFAULT ('S') NOT NULL,
+    [Migracion]      INT            DEFAULT ((0)) NOT NULL,
+    [Estado]         NVARCHAR (10)  DEFAULT ('') NOT NULL,
+    [EsquemaId]      INT            DEFAULT ((0)) NOT NULL,
+    [EsquemaVista]   NVARCHAR (100) DEFAULT ('') NOT NULL,
+    [EsquemaFilas]   INT            DEFAULT ((0)) NOT NULL,
+    [VistaOrigen]    NVARCHAR (100) DEFAULT ('') NOT NULL,
+    [VistaFilas]     INT            DEFAULT ((0)) NOT NULL,
+    [Tiempo]         AS             (case when [Final] IS NOT NULL then (((CONVERT([varchar],datediff(second,[Inicio],[Final])/(3600))+':')+right('0'+CONVERT([varchar],(datediff(second,[Inicio],[Final])%(3600))/(60)),(2)))+':')+right('0'+CONVERT([varchar],datediff(second,[Inicio],[Final])%(60)),(2))  end),
+    [Inicio]         DATETIME       DEFAULT (getdate()) NOT NULL,
+    [Final]          DATETIME       DEFAULT (getdate()) NOT NULL,
+    [Fecha]          DATETIME       DEFAULT (getdate()) NOT NULL,
+    [Observacion]    NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [ExcelFileName]  NVARCHAR (500) CONSTRAINT [DF_LogMigracion_ExcelFileName] DEFAULT (' ') NULL,
+    CONSTRAINT [PK_LM_IdLogMigracion] PRIMARY KEY CLUSTERED ([IdLogMigracion] ASC),
+    CONSTRAINT [CK_LM_Estado] CHECK ([Estado]='' OR [Estado]='BATCH' OR [Estado]='START' OR [Estado]='ERROR' OR [Estado]='OK' OR [Estado]='PROCESSING' OR [Estado]='SUCCESS' OR [Estado]='PENDING')
+);
+

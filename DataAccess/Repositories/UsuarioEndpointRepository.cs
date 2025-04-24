@@ -23,7 +23,6 @@ namespace DataAccess.Repositories
     }
     public bool Create(UsuarioEndpoint usuarioEndpoint)
     {
-      //usuarioEndpoint.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
       usuarioEndpoint.IdUserModifica = usuarioEndpoint.IdUserCreacion;
 
       return ExecuteDbOperation(context => {

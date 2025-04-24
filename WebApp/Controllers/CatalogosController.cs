@@ -6,6 +6,7 @@ using AutoMapper;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -18,11 +19,11 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public class CatalogosController(
-      ICatalogosRepository vhRepo,
+      ICatalogosService iCatalogosService,
       IMapper mapper
     ) : BaseController
     {
-        private readonly ICatalogosRepository _vhRepo = vhRepo;
+        private readonly ICatalogosService _iCatalogosService = iCatalogosService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -37,13 +38,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                if (_vhRepo == null)
+                if (_iCatalogosService == null)
                 {
                     return StatusCode(500, new { mensaje = "El repositorio está NULL" });
                 }
                 return Ok(new RespuestasAPI<List<VwGrillaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwGrilla().Select(item => _mapper.Map<VwGrillaDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerVwGrilla().Select(item => _mapper.Map<VwGrillaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -66,7 +67,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwFiltroDto>>
                 {
-                    Result = _vhRepo.ObtenerVwFiltro().Select(item => _mapper.Map<VwFiltroDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerVwFiltro().Select(item => _mapper.Map<VwFiltroDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -90,7 +91,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<vwFiltroDetalleDto>>
                 {
-                    Result = _vhRepo.ObtenerFiltroDetalles(codigo).Select(item => _mapper.Map<vwFiltroDetalleDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerFiltroDetalles(codigo).Select(item => _mapper.Map<vwFiltroDetalleDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -113,7 +114,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwDimensionDto>>
                 {
-                    Result = _vhRepo.ObtenerVwDimension().Select(item => _mapper.Map<VwDimensionDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerVwDimension().Select(item => _mapper.Map<VwDimensionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -136,7 +137,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwHomologacionGrupoDto>>
                 {
-                    Result = _vhRepo.ObtenerVwHomologacionGrupo().Select(item => _mapper.Map<VwHomologacionGrupoDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerVwHomologacionGrupo().Select(item => _mapper.Map<VwHomologacionGrupoDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -160,7 +161,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwRolDto>>
                 {
-                    Result = _vhRepo.ObtenerVwRol().Select(item => _mapper.Map<VwRolDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerVwRol().Select(item => _mapper.Map<VwRolDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -183,7 +184,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<OnaDto>>
                 {
-                    Result = _vhRepo.ObtenerOna().Select(item => _mapper.Map<OnaDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerOna().Select(item => _mapper.Map<OnaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -208,7 +209,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwMenuDto>>
                 {
-                    Result = _vhRepo.ObtenerVwMenu().Select(item => _mapper.Map<VwMenuDto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerVwMenu().Select(item => _mapper.Map<VwMenuDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -231,7 +232,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<vwPanelONA>>
                 {
-                    Result = _vhRepo.ObtenerVwPanelOna().Select(item => _mapper.Map<vwPanelONA>(item)).ToList()
+                    Result = _iCatalogosService.ObtenerVwPanelOna().Select(item => _mapper.Map<vwPanelONA>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -254,7 +255,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<vwEsquemaOrganiza>>
                 {
-                    Result = _vhRepo.ObtenervwEsquemaOrganiza().Select(item => _mapper.Map<vwEsquemaOrganiza>(item)).ToList()
+                    Result = _iCatalogosService.ObtenervwEsquemaOrganiza().Select(item => _mapper.Map<vwEsquemaOrganiza>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -277,7 +278,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<vwONADto>>
                 {
-                    Result = _vhRepo.ObtenervwOna().Select(item => _mapper.Map<vwONADto>(item)).ToList()
+                    Result = _iCatalogosService.ObtenervwOna().Select(item => _mapper.Map<vwONADto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -298,7 +299,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var resultado = _vhRepo.ObtenerFiltrosAnidados(filtrosSeleccionados);
+                var resultado = _iCatalogosService.ObtenerFiltrosAnidados(filtrosSeleccionados);
                 var dto = new Dictionary<string, List<vw_FiltrosAnidadosDto>>();
 
                 // Agrupamos las opciones por tipo de filtro (KEY_FIL_ONA, KEY_FIL_PAI, etc.)
@@ -341,7 +342,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var resultado = _vhRepo.ObtenerFiltrosAnidadosAll();
+                var resultado = _iCatalogosService.ObtenerFiltrosAnidadosAll();
                 return Ok(resultado);
             }
             catch (Exception e)

@@ -56,6 +56,7 @@ namespace WebApp.Extensions
                 .FromAssembliesOf(typeof(EmailService), typeof(ONARepository)) // Puedes poner clases de ejemplo de cada ensamblado
                 .AddClasses(classes => classes.AssignableToAny(
                     typeof(IGmailClientFactory),
+                    typeof(ICatalogosService),
                     typeof(IEmailService),
                     typeof(IUsuarioEmailRepository),
                     typeof(IJwtFactory),
@@ -67,6 +68,7 @@ namespace WebApp.Extensions
                     typeof(IUsuarioRepository),
                     typeof(IImportador),
                     typeof(IMigrador),
+                    typeof(IOnaMigrate),
                     typeof(IAuthenticateService),
                     typeof(IRecoverUserService),
                     typeof(IConectionStringBuilderService),

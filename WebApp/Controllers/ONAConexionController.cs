@@ -7,6 +7,7 @@ using SharedApp.Response;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -17,9 +18,9 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class ONAConexionController(IONAConexionRepository iRepo, IMapper mapper) : BaseController
+    public class ONAConexionController(IONAConexionService oNAConexionService, IMapper mapper) : BaseController
     {
-        private readonly IONAConexionRepository _iRepo = iRepo;
+        private readonly IONAConexionService _oNAConexionService = oNAConexionService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<ONAConexionDto>>
                 {
-                    Result = _iRepo.FindAll().Select(item => _mapper.Map<ONAConexionDto>(item)).ToList()
+                    Result = _oNAConexionService.FindAll().Select(item => _mapper.Map<ONAConexionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -62,7 +63,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<ONAConexionDto>>
                 {
-                    Result = _iRepo.GetOnaConexionByOnaListAsync(idOna).Select(item => _mapper.Map<ONAConexionDto>(item)).ToList()
+                    Result = _oNAConexionService.GetOnaConexionByOnaListAsync(idOna).Select(item => _mapper.Map<ONAConexionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -85,7 +86,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindById(id);
+                var record = _oNAConexionService.FindById(id);
 
                 if (record == null)
                 {
@@ -122,7 +123,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(homologacion)
+                    IsSuccess = _oNAConexionService.Update(homologacion)
                 });
             }
             catch (Exception e)
@@ -148,7 +149,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Create(record)
+                    IsSuccess = _oNAConexionService.Create(record)
                 });
             }
             catch (Exception e)
@@ -170,7 +171,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindById(id);
+                var record = _oNAConexionService.FindById(id);
 
                 if (record == null)
                 {
@@ -181,7 +182,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(record)
+                    IsSuccess = _oNAConexionService.Update(record)
                 });
             }
             catch (Exception e)

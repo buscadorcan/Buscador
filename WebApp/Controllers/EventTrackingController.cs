@@ -14,9 +14,9 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class EventTrackingController(IEventTrackingRepository iRepo, IMapper mapper, IIpCoordinatesService iIpCoordinatesService) : BaseController
+    public class EventTrackingController(IEventTrackingService iEventTrackingService, IMapper mapper, IIpCoordinatesService iIpCoordinatesService) : BaseController
     {
-        private readonly IEventTrackingRepository _iRepo = iRepo;
+        private readonly IEventTrackingService _iEventTrackingService = iEventTrackingService;
         private readonly IIpCoordinatesService _IIpCoordinatesService = iIpCoordinatesService;
         private readonly IMapper _mapper = mapper;
 
@@ -34,7 +34,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var record = _iRepo.FindDataById(idHRol, idHMenu);
+                var record = _iEventTrackingService.FindDataById(idHRol, idHMenu);
                 if (record == null)
                 {
                     return NotFoundResponse("Registro no encontrado");
@@ -61,7 +61,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwEventUserAllDto>>
                 {
-                    Result = _iRepo.GetEventUserAll().Select(item => _mapper.Map<VwEventUserAllDto>(item)).ToList()
+                    Result = _iEventTrackingService.GetEventUserAll().Select(item => _mapper.Map<VwEventUserAllDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -84,7 +84,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<EventUserDto>>
                 {
-                    Result = _iRepo.GetEventAll(report, fini, ffin).Select(item => _mapper.Map<EventUserDto>(item)).ToList()
+                    Result = _iEventTrackingService.GetEventAll(report, fini, ffin).Select(item => _mapper.Map<EventUserDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -106,7 +106,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<bool>
                 {
-                    Result = _iRepo.DeleteEventAll(fini, ffin)
+                    Result = _iEventTrackingService.DeleteEventAll(fini, ffin)
                 });
             }
             catch (Exception e)
@@ -127,7 +127,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<bool>
                 {
-                    Result = _iRepo.DeleteEventById(codigoEvento)
+                    Result = _iEventTrackingService.DeleteEventById(codigoEvento)
                 });
             }
             catch (Exception e)
@@ -148,7 +148,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwEventTrackingSessionDto>>
                 {
-                    Result = _iRepo.GetEventSession().ToList()
+                    Result = _iEventTrackingService.GetEventSession().ToList()
                 });
             }
             catch (Exception e)
@@ -195,7 +195,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<PaginasMasVisitadaDto>>
                 {
-                    Result = _iRepo.GetEventPagMasVisit().ToList()
+                    Result = _iEventTrackingService.GetEventPagMasVisit().ToList()
                 });
             }
             catch (Exception e)
@@ -211,7 +211,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<FiltrosMasUsadoDto>>
                 {
-                    Result = _iRepo.GetEventFiltroMasUsa().ToList()
+                    Result = _iEventTrackingService.GetEventFiltroMasUsa().ToList()
                 });
             }
             catch (Exception e)
