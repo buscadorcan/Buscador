@@ -1,4 +1,0 @@
-﻿CREATE FULLTEXT CATALOG [OrganizacionFullText_cat]
-    WITH ACCENT_SENSITIVITY = OFF
-    AUTHORIZATION [dbo];
-
