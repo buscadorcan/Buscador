@@ -256,15 +256,15 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     bool coincide = true;
 
-                    foreach (var filtro in seleccionados)
+                    foreach (var filtro in selectedValues)
                     {
-                        var prop = typeof(vw_FiltrosAnidadosDto).GetProperty(filtro.Combo);
+                        var prop = typeof(vw_FiltrosAnidadosDto).GetProperty(filtro.CodigoHomologacion);
                         if (prop == null) continue;
 
                         var valorProp = prop.GetValue(item)?.ToString()?.Trim();
-                        var valorFiltro = filtro.Valor?.Trim();
 
-                        if (!string.Equals(valorProp?.Trim().ToUpperInvariant(), valorFiltro?.Trim().ToUpperInvariant()))
+                        if (!filtro.Seleccion.Any(sel =>
+                            string.Equals(valorProp?.ToUpperInvariant(), sel.Trim().ToUpperInvariant())))
                         {
                             coincide = false;
                             break;
