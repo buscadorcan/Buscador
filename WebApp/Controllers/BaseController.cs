@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
 using System.Net;
+using System.Runtime.CompilerServices;
 
 namespace WebApp.Controllers
 {
@@ -11,6 +12,17 @@ namespace WebApp.Controllers
     /// </summary>
     public class BaseController : ControllerBase
     {
+        private readonly ILogger<BaseController> _logger;
+
+        /// <summary>
+        ///  inicia el constructor con para poder iniciar los log
+        /// </summary>
+        /// <param name="logger"></param>
+        protected BaseController(ILogger<BaseController> logger)
+        {
+            this._logger = logger;
+        }
+        
         /// <summary>
         /// HandleException
         /// </summary>
@@ -20,25 +32,26 @@ namespace WebApp.Controllers
         /// <returns>IsSuccess</returns>
         /// <returns>ErrorMessages</returns>
         /// <returns>Result</returns>
-        protected IActionResult HandleException(Exception e, string methodName)
+        protected IActionResult HandleException(Exception e, 
+            string methodName, 
+            [CallerMemberName] string? caller = null)
         {
-          try
-          {
-              var logger = (ILogger<BaseController>?)HttpContext.RequestServices.GetService(typeof(ILogger<BaseController>));
-              if (logger != null)
-              {
-                  logger.LogError(e, $"Error en {methodName}");
-              }
-          }
-          catch (Exception) {}
-           
-          return StatusCode(StatusCodes.Status500InternalServerError, new RespuestasAPI<object>
-          {
-            StatusCode = HttpStatusCode.InternalServerError,
-            IsSuccess = false,
-            ErrorMessages = new List<string> { "Error en el servidor", e.Message, e.StackTrace },
-            Result = new { }
-          });
+            _logger.LogError(e,
+            "Error en {Method}::{Caller} — RequestId {RequestId}",
+            methodName,
+            caller,
+            HttpContext.TraceIdentifier);
+
+            // Mensaje breve al cliente
+            var respuesta = new RespuestasAPI<object>
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                IsSuccess = false,
+                ErrorMessages = new List<string> { "Error interno del servidor" },
+                Result = new { }
+            };
+
+            return StatusCode(StatusCodes.Status500InternalServerError, respuesta);
         }
 
         /// <summary>

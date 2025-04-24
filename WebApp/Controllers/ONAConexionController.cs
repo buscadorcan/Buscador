@@ -18,10 +18,19 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class ONAConexionController(IONAConexionService oNAConexionService, IMapper mapper) : BaseController
+    public class ONAConexionController : BaseController
     {
-        private readonly IONAConexionService _oNAConexionService = oNAConexionService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IONAConexionService _oNAConexionService;
+        private readonly IMapper _mapper;
+
+        public ONAConexionController(IONAConexionService oNAConexionService, 
+                                     IMapper mapper, 
+                                     ILogger<BaseController> logger)
+            : base(logger) 
+        {
+            this._oNAConexionService = oNAConexionService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// FindAll

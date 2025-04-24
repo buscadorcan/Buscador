@@ -13,9 +13,15 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class EmailController(IEmailService emailService) : BaseController
+    public class EmailController : BaseController 
     {
-        private readonly IEmailService _emailService = emailService;
+        private readonly IEmailService _emailService;
+
+        public EmailController(IEmailService emailService, 
+                               ILogger<BaseController> logger): base(logger)
+        {
+            this._emailService = emailService;
+        }
 
         [HttpPost("enviar")]
         public async Task<IActionResult> EnviarCorreoRol([FromBody] EmailDto email) {

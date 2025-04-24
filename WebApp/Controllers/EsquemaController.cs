@@ -17,13 +17,17 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class EsquemaController(
-      IEsquemaService iEsquemaService,
-      IMapper mapper
-    ) : BaseController
+    public class EsquemaController : BaseController
     {
-        private readonly IEsquemaService _iEsquemaService = iEsquemaService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IEsquemaService _iEsquemaService;
+        private readonly IMapper _mapper;
+
+        public EsquemaController(IEsquemaService iEsquemaService,
+                                 IMapper mapper, ILogger<BaseController> logger) : base(logger)
+        {
+            this._iEsquemaService = iEsquemaService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// FindAll

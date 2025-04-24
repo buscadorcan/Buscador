@@ -17,16 +17,20 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public class UsuarioEndpointController(
-    ILogger<UsuarioEndpointController> logger,
-    IUsuarioEndpontService usuarioEndpontService,
-    IMapper mapper
-  ) : BaseController
+  public class UsuarioEndpointController : BaseController
   {
-    private readonly IUsuarioEndpontService _usuarioEndpontService = usuarioEndpontService;
-    private readonly IMapper _mapper = mapper;
-    private readonly ILogger<UsuarioEndpointController> _logger = logger;
+        private readonly IUsuarioEndpontService _usuarioEndpontService;
+        private readonly IMapper _mapper;
 
+        public UsuarioEndpointController(
+            IUsuarioEndpontService usuarioEndpontService,
+            IMapper mapper,
+            ILogger<BaseController>logger
+          ): base(logger)
+        {
+            this._usuarioEndpontService = usuarioEndpontService;
+            this._mapper = mapper;
+        }
         /// <summary>
         /// Create
         /// </summary>

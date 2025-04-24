@@ -4,7 +4,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
 using Core.Interfaces;
@@ -18,10 +17,18 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class MenuController(IMenuService menuService, IMapper mapper) : BaseController
+    public class MenuController : BaseController
     {
-        private readonly IMenuService _menuService = menuService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IMenuService _menuService;
+        private readonly IMapper _mapper;
+
+        public MenuController(IMenuService menuService, 
+            IMapper mapper, ILogger<BaseController> logger)
+            : base(logger)
+        {
+            this._menuService = menuService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// FindAll

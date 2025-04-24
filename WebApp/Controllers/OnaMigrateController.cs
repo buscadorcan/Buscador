@@ -13,10 +13,15 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public class OnaMigrateController(IOnaMigrate IonaMigrate) : BaseController
+    public class OnaMigrateController : BaseController
     {
-        private readonly IOnaMigrate _IonaMigrate = IonaMigrate;
+        private readonly IOnaMigrate _ionaMigrate;
 
+        public OnaMigrateController(IOnaMigrate IonaMigrate, 
+             ILogger<BaseController> logger) : base(logger)
+        {
+            _ionaMigrate = IonaMigrate;
+        }
 
         /// <summary>
         /// 
@@ -30,7 +35,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<OnaMigrateDto>>
                 {
-                    Result = (await _IonaMigrate.postOnaMigrate(request.vista, request.IdOna, request.IdEsquema)).ToList()
+                    Result = (await _ionaMigrate.postOnaMigrate(request.vista, request.IdOna, request.IdEsquema)).ToList()
                 });
 
             }

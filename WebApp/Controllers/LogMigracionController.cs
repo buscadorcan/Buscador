@@ -17,13 +17,19 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public class LogMigracionController(
-    ILogMigracionService logMigracionService,
-    IMapper mapper
-  ) : BaseController
+  public class LogMigracionController : BaseController
   {
-    private readonly ILogMigracionService _logMigracionService = logMigracionService;
-    private readonly IMapper _mapper = mapper;
+        private readonly ILogMigracionService _logMigracionService;
+        private readonly IMapper _mapper;
+
+        public LogMigracionController(ILogMigracionService logMigracionService,
+            IMapper mapper,
+            ILogger<BaseController> logger)
+            : base(logger)
+        {
+            this._logMigracionService = logMigracionService;
+            this._mapper = mapper;
+        }
 
         /// <summary>
         /// FindAll
