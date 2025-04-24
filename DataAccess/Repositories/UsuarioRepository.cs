@@ -96,11 +96,6 @@ namespace DataAccess.Repositories
         }
         public bool Create(Usuario usuario)
         {
-            //var clave = usuario.Clave;
-            //usuario.Clave = _hashService.GenerateHash(clave);
-            //usuario.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
-            //usuario.IdUserModifica = usuario.IdUserCreacion;
-            //usuario.Estado = "A";
             return ExecuteDbOperation(context =>
             {
                 context.Usuario.Add(usuario);
@@ -186,12 +181,11 @@ namespace DataAccess.Repositories
             });
         }
 
-        public Result<bool> ChangePasswd(string clave, string claveNueva)
+        public Result<bool> ChangePasswd(string clave, 
+                                         string claveNueva, 
+                                         int idUsuario, 
+                                         string nueva)
         {
-            //var actual = _hashService.GenerateHash(clave);
-            //var nueva = _hashService.GenerateHash(claveNueva);
-            //var idUsuario = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "0");
-
             var eventTrackingDto = new paAddEventTrackingDto
             {
                 CodigoHomologacionMenu = "cambiar_clave",
@@ -199,7 +193,7 @@ namespace DataAccess.Repositories
                 NombreAccion = "OnCambiarClave()",
                 ParametroJson = JsonConvert.SerializeObject(new
                 {
-                    IdUsuario = 0, //idUsuario
+                    IdUsuario = idUsuario,
                     Clave = clave,
                     ClaveNueva = claveNueva
                 })
@@ -219,12 +213,13 @@ namespace DataAccess.Repositories
                 eventTrackingDto.NombreUsuario = usuario.Nombre;
                 _eventTrackingRepository.Create(eventTrackingDto);
 
-                if (usuario.Clave != "") //clave
+                if (usuario.Clave != clave) //clave
                 {
                     return Result<bool>.Failure("Clave incorrecta");
                 }
 
-                usuario.Clave = ""; //nueva
+                usuario.Clave = nueva;
+
                 context.Usuario.Update(usuario);
                 if (context.SaveChanges() > 0)
                 {

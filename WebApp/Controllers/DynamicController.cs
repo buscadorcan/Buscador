@@ -5,6 +5,7 @@ using SharedApp.Response;
 using Microsoft.AspNetCore.Authorization;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -17,10 +18,10 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class DynamicController : BaseController
   {
-    private readonly IDynamicRepository _vhRepo;
-    public DynamicController(IDynamicRepository vhRepo)
+    private readonly IDynamicService _dynamicService;
+    public DynamicController(IDynamicService dynamicService)
     {
-      _vhRepo = vhRepo;
+            _dynamicService = dynamicService;
     }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var result = _vhRepo.GetProperties(idOna, viewName);
+                var result = _dynamicService.GetProperties(idOna, viewName);
                 return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
             }
             catch (Exception e)
@@ -65,7 +66,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var result = _vhRepo.GetValueColumna(idONA, valueColumn, viewName);
+                var result = _dynamicService.GetValueColumna(idONA, valueColumn, viewName);
                 return Ok(new RespuestasAPI<List<PropiedadesTablaDto>> { Result = result });
             }
             catch (Exception e)
@@ -88,7 +89,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var result = _vhRepo.GetViewNames(idOna);
+                var result = _dynamicService.GetViewNames(idOna);
                 return Ok(new RespuestasAPI<List<string>> { Result = result });
             }
             catch (Exception e)
@@ -112,7 +113,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var result = _vhRepo.GetListaValidacionEsquema(idOna, idEsquema);
+                var result = _dynamicService.GetListaValidacionEsquema(idOna, idEsquema);
                 return Ok(new RespuestasAPI<List<EsquemaVistaDto>> { Result = result });
             }
             catch (Exception e)
@@ -135,13 +136,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                var conexion = _vhRepo.GetConexion(idOna);
+                var conexion = _dynamicService.GetConexion(idOna);
                 if (conexion == null)
                 {
                     return NotFound(new { Message = "Conexión no encontrada." });
                 }
 
-                var isConnected = _vhRepo.TestDatabaseConnection(conexion);
+                var isConnected = _dynamicService.TestDatabaseConnection(conexion);
 
                 return Ok(new
                 {
@@ -169,7 +170,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                bool resultado = await _vhRepo.MigrarConexionAsync(idOna);
+                bool resultado = await _dynamicService.MigrarConexionAsync(idOna);
 
                 return Ok(new
                 {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using SharedApp.Response;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -17,11 +18,11 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class LogMigracionController(
-    ILogMigracionRepository iRepo,
+    ILogMigracionService logMigracionService,
     IMapper mapper
   ) : BaseController
   {
-    private readonly ILogMigracionRepository _iRepo = iRepo;
+    private readonly ILogMigracionService _logMigracionService = logMigracionService;
     private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace WebApp.Controllers
       try
       {
         return Ok(new RespuestasAPI<List<LogMigracionDto>> {
-          Result = _iRepo.FindAll().Select(item => _mapper.Map<LogMigracionDto>(item)).ToList()
+          Result = _logMigracionService.FindAll().Select(item => _mapper.Map<LogMigracionDto>(item)).ToList()
         });
       }
       catch (Exception e)

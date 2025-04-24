@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -16,9 +17,9 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class ReporteController(IReporteRepository iRepo, IMapper mapper) : BaseController
+    public class ReporteController(IReporteService reporteService, IMapper mapper) : BaseController
     {
-        private readonly IReporteRepository _vhRepo = iRepo;
+        private readonly IReporteService _reporteService = reporteService;
         private readonly IMapper _mapper = mapper;
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var homologacion = _vhRepo.findByVista(codigoHomologacion);
+                var homologacion = _reporteService.findByVista(codigoHomologacion);
 
                 if (homologacion == null)
                 {
@@ -72,7 +73,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwAcreditacionOnaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwAcreditacionOna().Select(item => _mapper.Map<VwAcreditacionOnaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwAcreditacionOna().Select(item => _mapper.Map<VwAcreditacionOnaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -95,7 +96,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwAcreditacionEsquemaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwAcreditacionEsquema().Select(item => _mapper.Map<VwAcreditacionEsquemaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwAcreditacionEsquema().Select(item => _mapper.Map<VwAcreditacionEsquemaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -118,7 +119,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwEstadoEsquemaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwEstadoEsquema().Select(item => _mapper.Map<VwEstadoEsquemaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwEstadoEsquema().Select(item => _mapper.Map<VwEstadoEsquemaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -141,7 +142,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwOecPaisDto>>
                 {
-                    Result = _vhRepo.ObtenerVwOecPais().Select(item => _mapper.Map<VwOecPaisDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwOecPais().Select(item => _mapper.Map<VwOecPaisDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -164,7 +165,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwEsquemaPaisDto>>
                 {
-                    Result = _vhRepo.ObtenerVwEsquemaPais().Select(item => _mapper.Map<VwEsquemaPaisDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwEsquemaPais().Select(item => _mapper.Map<VwEsquemaPaisDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -187,7 +188,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwOecFechaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwOecFecha().Select(item => _mapper.Map<VwOecFechaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwOecFecha().Select(item => _mapper.Map<VwOecFechaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -211,7 +212,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwProfesionalCalificadoDto>>
                 {
-                    Result = _vhRepo.ObtenerVwProfesionalCalificado().Select(item => _mapper.Map<VwProfesionalCalificadoDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwProfesionalCalificado().Select(item => _mapper.Map<VwProfesionalCalificadoDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -234,7 +235,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwProfesionalOnaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwProfesionalOna().Select(item => _mapper.Map<VwProfesionalOnaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwProfesionalOna().Select(item => _mapper.Map<VwProfesionalOnaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -257,7 +258,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwProfesionalEsquemaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwProfesionalEsquema().Select(item => _mapper.Map<VwProfesionalEsquemaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwProfesionalEsquema().Select(item => _mapper.Map<VwProfesionalEsquemaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -280,7 +281,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwProfesionalFechaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwProfesionalFecha().Select(item => _mapper.Map<VwProfesionalFechaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwProfesionalFecha().Select(item => _mapper.Map<VwProfesionalFechaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -303,7 +304,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwCalificaUbicacionDto>>
                 {
-                    Result = _vhRepo.ObtenerVwCalificaUbicacion().Select(item => _mapper.Map<VwCalificaUbicacionDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwCalificaUbicacion().Select(item => _mapper.Map<VwCalificaUbicacionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -326,7 +327,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwBusquedaFechaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwBusquedaFecha().Select(item => _mapper.Map<VwBusquedaFechaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwBusquedaFecha().Select(item => _mapper.Map<VwBusquedaFechaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -349,7 +350,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwBusquedaFiltroDto>>
                 {
-                    Result = _vhRepo.ObtenerVwBusquedaFiltro().Select(item => _mapper.Map<VwBusquedaFiltroDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwBusquedaFiltro().Select(item => _mapper.Map<VwBusquedaFiltroDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -372,7 +373,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwBusquedaUbicacionDto>>
                 {
-                    Result = _vhRepo.ObtenerVwBusquedaUbicacion().Select(item => _mapper.Map<VwBusquedaUbicacionDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwBusquedaUbicacion().Select(item => _mapper.Map<VwBusquedaUbicacionDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -395,7 +396,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwActualizacionONADto>>
                 {
-                    Result = _vhRepo.ObtenerVwActualizacionONA().Select(item => _mapper.Map<VwActualizacionONADto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwActualizacionONA().Select(item => _mapper.Map<VwActualizacionONADto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -418,7 +419,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwOrganismoRegistradoDto>>
                 {
-                    Result = _vhRepo.ObtenerVwOrganismoRegistrado().Select(item => _mapper.Map<VwOrganismoRegistradoDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwOrganismoRegistrado().Select(item => _mapper.Map<VwOrganismoRegistradoDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -441,7 +442,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwOrganizacionEsquemaDto>>
                 {
-                    Result = _vhRepo.ObtenerVwOrganizacionEsquema().Select(item => _mapper.Map<VwOrganizacionEsquemaDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwOrganizacionEsquema().Select(item => _mapper.Map<VwOrganizacionEsquemaDto>(item)).ToList()
                 });
             }
             catch (Exception e)
@@ -464,7 +465,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<VwOrganismoActividadDto>>
                 {
-                    Result = _vhRepo.ObtenerVwOrganismoActividad().Select(item => _mapper.Map<VwOrganismoActividadDto>(item)).ToList()
+                    Result = _reporteService.ObtenerVwOrganismoActividad().Select(item => _mapper.Map<VwOrganismoActividadDto>(item)).ToList()
                 });
             }
             catch (Exception e)

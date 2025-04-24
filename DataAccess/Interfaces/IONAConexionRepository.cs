@@ -9,7 +9,7 @@ namespace DataAccess.Interfaces
         /// </summary>
         /// <param name="data">Objeto <see cref="ONAConexion"/> con los datos actualizados.</param>
         /// <returns>Devuelve <c>true</c> si la actualización fue exitosa, de lo contrario <c>false</c>.</returns>
-        bool Update(ONAConexion data);
+        bool Update(ONAConexion data, int userToken);
 
         /// <summary>
         /// Crea un nuevo registro de <see cref="ONAConexion"/> en la base de datos.

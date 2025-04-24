@@ -19,13 +19,13 @@ namespace WebApp.Controllers
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public class UsuariosController(
-    IUsuarioRepository iRepo,
+    IUsuarioService iUsuarioService,
     IMapper mapper,
     IAuthenticateService iService,
     IRecoverUserService iServiceRecover
   ) : BaseController
   {
-    private readonly IUsuarioRepository _iRepo = iRepo;
+    private readonly IUsuarioService _iUsuarioService = iUsuarioService;
     private readonly IAuthenticateService _iService = iService;
     private readonly IRecoverUserService _iServiceRecover = iServiceRecover;
     private readonly IMapper _mapper = mapper;
@@ -139,7 +139,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                bool validarEmailUnico = _iRepo.IsUniqueUser(dto.Email ?? "");
+                bool validarEmailUnico = _iUsuarioService.IsUniqueUser(dto.Email ?? "");
                 if (!validarEmailUnico)
                 {
                     return BadRequestResponse("El nombre de usuario ya existe");
@@ -147,7 +147,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Create(_mapper.Map<Usuario>(dto))
+                    IsSuccess = _iUsuarioService.Create(_mapper.Map<Usuario>(dto))
                 });
             }
             catch (Exception e)
@@ -170,7 +170,7 @@ namespace WebApp.Controllers
             {
                 return Ok(new RespuestasAPI<List<UsuarioDto>>
                 {
-                    Result = _mapper.Map<List<UsuarioDto>>(_iRepo.FindAll())
+                    Result = _mapper.Map<List<UsuarioDto>>(_iUsuarioService.FindAll())
                 });
             }
             catch (Exception e)
@@ -192,7 +192,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var itemUsuario = _iRepo.FindById(idUsuario);
+                var itemUsuario = _iUsuarioService.FindById(idUsuario);
 
                 if (itemUsuario == null)
                 {
@@ -228,7 +228,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(usuario)
+                    IsSuccess = _iUsuarioService.Update(usuario)
                 });
             }
             catch (Exception e)
@@ -251,7 +251,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var usuario = _iRepo.FindById(idUsuario);
+                var usuario = _iUsuarioService.FindById(idUsuario);
 
                 if (usuario == null)
                 {
@@ -262,7 +262,7 @@ namespace WebApp.Controllers
 
                 return Ok(new RespuestasAPI<bool>
                 {
-                    IsSuccess = _iRepo.Update(usuario)
+                    IsSuccess = _iUsuarioService.Update(usuario)
                 });
             }
             catch (Exception e)
@@ -283,7 +283,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                bool isUnique = _iRepo.IsUniqueUser(email);
+                bool isUnique = _iUsuarioService.IsUniqueUser(email);
                 return Ok(isUnique);
             }
             catch (Exception e)
@@ -302,7 +302,7 @@ namespace WebApp.Controllers
     {
       try
       {
-        var result = _iRepo.ChangePasswd(usuario.Clave, usuario.ClaveNueva);
+        var result = _iUsuarioService.ChangePasswd(usuario.Clave, usuario.ClaveNueva);
 
         if (!result.IsSuccess) {
           return BadRequestResponse(result.ErrorMessage);

@@ -17,7 +17,6 @@ namespace DataAccess.Repositories
         }
         public bool Create(ONA data)
         {
-            //data.IdUserCreacion = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
             data.IdUserModifica = data.IdUserCreacion;
             data.InfoExtraJson = "{}";
             data.Estado = "A";
@@ -61,14 +60,14 @@ namespace DataAccess.Repositories
         {
             return ExecuteDbOperation(context => context.VwPais.AsNoTracking().ToList());
         }
-        public bool Update(ONA newRecord)
+        public bool Update(ONA newRecord, int userToken)
         {
             return ExecuteDbOperation(context =>
             {
                 var _exits = MergeEntityProperties(context, newRecord, u => u.IdONA == newRecord.IdONA);
 
                 _exits.FechaModifica = DateTime.Now;
-                //_exits.IdUserModifica = _jwtService.GetUserIdFromToken(_jwtService.GetTokenFromHeader() ?? "");
+                _exits.IdUserModifica = userToken; 
 
                 context.ONA.Update(_exits);
                 return context.SaveChanges() >= 0;

@@ -211,7 +211,7 @@ namespace DataAccess.Repositories
             
         }
 
-        public void AddEventTracking(EventTrackingDto eventTracking)
+        public int AddEventTracking(EventTrackingDto eventTracking)
         {
             _ = ExecuteDbOperation<int>(context =>
             {
@@ -231,6 +231,8 @@ namespace DataAccess.Repositories
                     new[] { idUsuario, codigoHomologacionRol, codigoHomologacionMenu, nombreControl, nombreAccion, ubicacionJson, parametroJson }
                 );
             });
+
+            return 0;
 
         }
     }

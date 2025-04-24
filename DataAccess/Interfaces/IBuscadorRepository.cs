@@ -96,7 +96,7 @@ namespace DataAccess.Interfaces
         /// Este método permite almacenar un evento en la base de datos para su posterior análisis.
         /// </summary>
         /// <param name="eventTracking">Objeto que contiene la información del evento de seguimiento a registrar.</param>
-        void AddEventTracking(EventTrackingDto eventTracking);
+        int AddEventTracking(EventTrackingDto eventTracking);
 
 
     }

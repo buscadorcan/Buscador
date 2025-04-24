@@ -1,0 +1,2 @@
+﻿CREATE USER [userCAN] WITHOUT LOGIN;
+

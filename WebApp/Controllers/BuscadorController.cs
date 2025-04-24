@@ -8,6 +8,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using DataAccess.Interfaces;
 using SharedApp.Dtos;
+using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -18,9 +19,9 @@ namespace WebApp.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public class BuscadorController(IBuscadorRepository vhRepo) : BaseController
+    public class BuscadorController(IBuscadorService vhRepo) : BaseController
     {
-        private readonly IBuscadorRepository _vhRepo = vhRepo;
+        private readonly IBuscadorService _vhRepo = vhRepo;
         
         /// <summary>
         /// PsBuscarPalabra

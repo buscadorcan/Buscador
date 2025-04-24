@@ -7,13 +7,13 @@ using DataAccess.Models;
 
 namespace Core.Service.IService
 {
-  public class ImportadorService(IEsquemaDataRepository dataLakeOrganizacionRepository, IEsquemaFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository homologacionEsquemaRepository, IONAConexionRepository conexionRepository) : IImportador
+  public class ImportadorService(IEsquemaDataRepository dataLakeOrganizacionRepository, IEsquemaFullTextRepository canFullTextRepository, IHomologacionRepository homologacionRepository, IEsquemaRepository homologacionEsquemaRepository, IONAConexionService conexionService) : IImportador
     {
       private IEsquemaDataRepository _repositoryDLO = dataLakeOrganizacionRepository;
       private IEsquemaFullTextRepository _repositoryOFT = canFullTextRepository;
       private IHomologacionRepository _repositoryH = homologacionRepository;
       private IEsquemaRepository _repositoryHE = homologacionEsquemaRepository;
-      private IONAConexionRepository _repositoryC = conexionRepository;
+      private IONAConexionService _serviceC = conexionService;
       private string connectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
       // private readonly string defaultConnectionString = "Server=localhost,1434;Initial Catalog=CAN_DB;User ID=sa;Password=pat_mic_DBKEY;TrustServerCertificate=True";
       private ONAConexion? currentConexion = null;
@@ -34,7 +34,7 @@ namespace Core.Service.IService
         try
         {
           // Agregar obtensión de vistas de base de datos
-          List<ONAConexion> conexiones = _repositoryC.FindAll();
+          List<ONAConexion> conexiones = _serviceC.FindAll();
           ConectionStringBuilderService conectionStringBuilderService = new ConectionStringBuilderService();
           List<Esquema> homologacionEsquemas = _repositoryHE.FindAllWithViews();
           // HashSet<string> DBViews = homologacionEsquemas.Select(he => he.VistaNombre).Where(v => v != null).Select(v => v!).ToHashSet();
@@ -61,7 +61,7 @@ namespace Core.Service.IService
             // Environment.Exit(0);
             // conexion.FechaConexion = DateTime.Now;
             conexion.Migrar = "N";
-            _repositoryC.Update(conexion);
+            _serviceC.Update(conexion);
           }
 
           return true;
