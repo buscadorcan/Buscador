@@ -1,116 +1,98 @@
 ﻿@inject NavigationManager Navigation
 
-<link href="/css/buscador-can/input-filters.css" rel="stylesheet">
 
-<div class="panel-input-filters">
-    <div class="panel-input-filters-title">
-        <div onclick="toggleFilters()">
-            <span id="toggleText">Filtros Avanzados</span>
-        </div>
-    </div>
-    <div class="panel-input-filters-line" />
-    <div class="panel-input-filters-img">
-        @if (isGridVisible)
+<div class="header-filtros-avanzados padding-0-30" style="display: none">
+    <p class="inter-regular" onclick="toggleFilters()">Filtros avanzados</p>
+    <div class="content-grid-filtros panel-input-filters-content">
+        @if (listadeOpciones != null)
         {
-            <div class="active" @onclick="() => _ = isGridVisibleChanged.InvokeAsync(false)">
-                <img src="login/img/location-on.svg" alt="Cards" />
-            </div>
-        }
-        else
-        {
-            <div class="active" @onclick="() => _ = isGridVisibleChanged.InvokeAsync(true)">
-                <img src="login/img/format-list-bulleted-5.svg" alt="Grid" />
-            </div>
-        }
-        <div @onclick="@(() => Navigation.NavigateTo("/acceder"))">
-            <i class="fas fa-user" />
-        </div>
-    </div>
-</div>
+            @for (int i = 0; i < listadeOpciones.Count; i++)
+            {
+                var currentIndex = i;
+                <div class="form-check-label" style="margin-bottom: 0.5rem;">
+                    <label for="select-@currentIndex"
+                           class="visually-hidden"
+                           title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
+                        @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
+                    </label>
+                    <div class="filter-content">
+                        <button class="btn dropdown-toggle custom-bg @(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Count > 0) ? "selected-filter" : "")"
+                                style="font-size: 12px;"
+                                type="button"
+                                id="dropdownMenuButton-@currentIndex"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            Seleccionar @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
+                        </button>
+                        <ul class="dropdown-menu p-2"
+                            style="font-size: 12px;"
+                            aria-labelledby="dropdownMenuButton-@currentIndex"
+                            data-bs-auto-close="false">
 
-<!-- 🔥 Los filtros están ocultos al inicio y se muestran solo cuando el usuario hace clic -->
-<div id="filterPanel" class="panel-input-filters-content">
-    @if (listadeOpciones != null)
-    {
-        @for (int i = 0; i < listadeOpciones.Count; i++)
-        {
-            var currentIndex = i;
-            <div class="col form-check-label" style="font-size: 12px !important;">
-                <label for="select-@currentIndex" class="form-label text-small" style="font-weight: bold;"
-                       title="@listaEtiquetasFiltros?[currentIndex]?.TooltipWeb">
-                    @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
-                </label>
-                <div>
-                    <button class="btn dropdown-toggle custom-bg @(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Count > 0) ? "selected-filter" : "")"
-                            style="font-size: 11px !important;"
-                            type="button"
-                            id="dropdownMenuButton-@currentIndex"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        Seleccionar @listaEtiquetasFiltros?[currentIndex]?.MostrarWeb
-                    </button>
-                    <ul class="dropdown-menu p-2"
-                        style="font-size: 11px !important;"
-                        aria-labelledby="dropdownMenuButton-@currentIndex"
-                        data-bs-auto-close="false">
-
-                        <!-- 🔘 Checkbox de "Todos" -->
-                        <li>
-                            <div class="form-check" style="display: flex; align-items: center;">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       id="check-@currentIndex-Todos"
-                                       checked="@(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion) &&
-                                              selectedValues.First(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion).Seleccion.Count == (listadeOpciones[currentIndex]?.Count ?? 0))"
-                                       style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
-                                       @onchange="(e) => CambiarSeleccionTodos(currentIndex, e.Value)">
-                                <label class="form-check-label" for="check-@currentIndex-Todos" style="margin: 0;">
-                                    Todos
-                                </label>
-                            </div>
-                        </li>
-
-                        <!-- ✅ Checkboxes individuales -->
-                        @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
-                        {
+                            <!-- 🔘 Checkbox de "Todos" -->
                             <li>
-                                <div class="form-check" style="display: flex; align-items: center;">
-                                    <input class="form-check-input checkbox-filtro"
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input"
                                            type="checkbox"
-                                           id="check-@currentIndex-@opcion.MostrarWeb"
-                                           data-idhomologacion="@opcion.IdHomologacion"
-                                           data-codigohomologacion="@listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion"
-                                           checked="@selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Contains(opcion.MostrarWeb))"
+                                           id="check-@currentIndex-Todos"
+                                           checked="@(selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion) &&
+                                              selectedValues.First(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion).Seleccion.Count == (listadeOpciones[currentIndex]?.Count ?? 0))"
                                            style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
-                                           @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
-                                    <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb" style="margin: 0;">
-                                        @opcion.MostrarWeb
+                                           @onchange="(e) => CambiarSeleccionTodos(currentIndex, e.Value)">
+                                    <label class="form-check-label" for="check-@currentIndex-Todos" style="margin: 0;">
+                                        Todos
                                     </label>
                                 </div>
                             </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        }
-    }
 
-    <div class="panel-input-filters-content-button">
-        <label>Limpiar Filtro</label>
-        <button type="button" @onclick="LimpiarFiltros">
-            <span>Limpiar</span>
-            <i class="fas fa-broom" />
-        </button>
-    </div>
+                            <!-- ✅ Checkboxes individuales -->
+                            @foreach (var opcion in listadeOpciones[currentIndex] ?? [])
+                            {
+                                <li>
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input checkbox-filtro"
+                                               type="checkbox"
+                                               id="check-@currentIndex-@opcion.MostrarWeb"
+                                               data-idhomologacion="@opcion.IdHomologacion"
+                                               data-codigohomologacion="@listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion"
+                                               checked="@selectedValues.Any(f => f.CodigoHomologacion == listaEtiquetasFiltros?[currentIndex]?.CodigoHomologacion && f.Seleccion.Contains(opcion.MostrarWeb))"
+                                               style="border: 2px solid #007bff; width: 18px; height: 18px; margin-right: 8px;"
+                                               @onchange="(e) => CambiarSeleccion(opcion.MostrarWeb, currentIndex, e.Value)">
+                                        <label class="form-check-label" for="check-@currentIndex-@opcion.MostrarWeb" style="margin: 0;">
+                                            @opcion.MostrarWeb
+                                        </label>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+        <!-- 🔥 Los filtros están ocultos al inicio y se muestran solo cuando el usuario hace clic -->
+        <div class="panel-input-filters-content-button">
+            <button type="button" @onclick="LimpiarFiltros">
+                <span>Limpiar</span>
+                <i class="fas fa-broom"></i>
+            </button>
+        </div>
+    </div> 
 </div>
 
 
+
+
 <!-- 🔥 Agregar JavaScript al final para alternar la visibilidad -->
-<script type="text/javascript">
+<script>
+    let instanciaInputFilters = null;
+
+    function registrarInstanciaInputFilters(ref) {
+        instanciaInputFilters = ref;
+    }
 
     function toggleFilters() {
-        var panel = document.getElementById("filterPanel");
-        var toggleText = document.getElementById("toggleText");
+        const panel = document.getElementById("filterPanel");
+        const toggleText = document.getElementById("toggleText");
 
         if (panel.classList.contains("show")) {
             panel.classList.remove("show");
@@ -121,60 +103,44 @@
         }
     }
 
-    document.addEventListener('click', function (event) {
-        var dropdowns = document.querySelectorAll('.dropdown-toggle');
+    document.addEventListener("click", function (event) {
+        // Para cada combo desplegado
+        const combos = document.querySelectorAll(".dropdown-menu");
+        combos.forEach(menu => {
+            const toggle = menu.previousElementSibling;
 
-        dropdowns.forEach(function (dropdown) {
-            var dropdownMenu = dropdown.nextElementSibling;
-
-    @*         if (!dropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                var bootstrapDropdown = bootstrap.Dropdown.getInstance(dropdown);
-                if (bootstrapDropdown) {
-                    bootstrapDropdown.show();
-                }
-            } *@
+            // Si el click NO fue dentro del combo ni del botón que lo abre
+            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+                invocarSeleccionados(); // Aquí llamamos a Blazor
+            }
         });
     });
 
-    document.addEventListener("click", function (event) {
-        const filterPanel = document.getElementById("filterPanel");
+    function invocarSeleccionados() {
+        const seleccionados = [];
 
-        if (!filterPanel.contains(event.target)) {
-            const checkboxes = document.querySelectorAll(".checkbox-filtro:checked");
+        const checkboxes = document.querySelectorAll(".checkbox-filtro:checked");
+        checkboxes.forEach(chk => {
+            const label = document.querySelector(`label[for='${chk.id}']`);
+            const comboCodigo = chk.getAttribute("data-codigohomologacion");
+            const idHomologacion = parseInt(chk.getAttribute("data-idhomologacion"));
 
-            const seleccionados = [];
-
-            checkboxes.forEach(chk => {
-                const label = document.querySelector(`label[for='${chk.id}']`);
-                const comboCodigo = chk.getAttribute("data-codigohomologacion");
-                const idHomologacion = parseInt(chk.getAttribute("data-idhomologacion"));
-
-                if (label && comboCodigo) {
-                    seleccionados.push({
-                        Combo: comboCodigo,
-                        Valor: label.innerText.trim(),
-                        IdHomologacion: idHomologacion
-                    });
-                }
-            });
-
-            // ✅ Siempre invocar, aunque seleccionados esté vacío
-            if (instanciaInputFilters) {
-                instanciaInputFilters.invokeMethodAsync('RecibirSeleccionados', seleccionados)
-                    .then(result => console.log("✅ Método ejecutado con éxito"))
-                    .catch(error => console.error("❌ Error en la invocación de Blazor:", error));
+            if (label && comboCodigo) {
+                seleccionados.push({
+                    Combo: comboCodigo,
+                    Valor: label.innerText.trim(),
+                    IdHomologacion: idHomologacion
+                });
             }
+        });
+
+        if (instanciaInputFilters) {
+            instanciaInputFilters.invokeMethodAsync('RecibirSeleccionados', seleccionados)
+                .then(() => console.log("✅ RecibirSeleccionados ejecutado"))
+                .catch(err => console.error("❌ Error al invocar:", err));
         }
-    });
-
-
-    let instanciaInputFilters = null;
-
-    function registrarInstanciaInputFilters(ref) {
-        instanciaInputFilters = ref;
     }
-
-
-
-
 </script>
+
+
+

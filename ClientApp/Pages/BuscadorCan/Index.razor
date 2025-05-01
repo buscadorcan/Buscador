@@ -2,42 +2,183 @@
 @page "/persona"
 @using SharedApp.Dtos
 
-<link href="/css/buscador-can/index-buscador-can.css" rel="stylesheet">
 
-<div class="panel-buscador-can">
-    <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-        <Banner />
 
-        <div style="display: flex; flex-direction: row; width: 100%;">
-            <InputSearch onClickSearch="@(x => onClickSearch(x.Item1, x.Item2))" />
-            <SummaryCards PanelONA="PanelONA" HandlePanelONAChange="HandlePanelONAChange" />
-        </div>
+<Banner />
 
-        <InputFilters onFilterChange="@(args => HandleFilterChange(args))"
-                      isGridVisibleChanged="@(value => isGridVisibleChanged(value))"
-                      isGridVisible="isGridVisible" />
-
-        @if(isGridVisible) {
-            <IndexGrilla
-                iconUrls="iconUrls"
-                ListDataDto="listBuscadorResultadoDataDto"
-                listaEtiquetasGrilla="listaEtiquetasGrilla"
-            />
-        } else {
-            <IndexCard
-                iconUrls="iconUrls"
-                ListDataDto="listBuscadorResultadoDataDto"
-                listaEtiquetasGrilla="listaEtiquetasCards"
-            />
-        }
+<section class="filtros-data padding-initial">
+    <div class="content-buscador-filtros">
+        <InputSearch onClickSearch="@(x => onClickSearch(x.Item1, x.Item2))"
+                     isGridVisible="@isGridVisible"
+                     isGridVisibleChanged="@(value => isGridVisible = value)" />
     </div>
+    <SummaryCards PanelONA="PanelONA" HandlePanelONAChange="HandlePanelONAChange" />
 
-    <InputPaginations
-        TotalItems="TotalItems"
-        TotalPages="TotalPages"
-        DisplayPages="DisplayPages"
-        ActivePageNumber="ActivePageNumber"
-        ActivePageNumberChanged="ActivePageNumberChanged"
-        DisplayPagesChanged="DisplayPagesChanged"
-    />
+</section>
+
+<InputFilters onFilterChange="@(args => HandleFilterChange(args))"
+              isGridVisibleChanged="@(value => isGridVisibleChanged(value))"
+              isGridVisible="isGridVisible" />
+
+@if (isGridVisible)
+{
+    <IndexGrilla iconUrls="iconUrls"
+                 ListDataDto="listBuscadorResultadoDataDto"
+                 listaEtiquetasGrilla="listaEtiquetasGrilla" />
+}
+else
+{
+    <IndexCard iconUrls="iconUrls"
+               ListDataDto="listBuscadorResultadoDataDto"
+               listaEtiquetasGrilla="listaEtiquetasCards" />
+}
+
+
+@* <InputPaginations TotalItems="TotalItems"
+                  TotalPages="TotalPages"
+                  DisplayPages="DisplayPages"
+                  ActivePageNumber="ActivePageNumber"
+                  ActivePageNumberChanged="ActivePageNumberChanged"
+                  DisplayPagesChanged="DisplayPagesChanged" /> *@
+<!-- Lightbox oculto con carrusel para instrucciones -->
+<div id="popupCarrusel" class="mfp-hide content-lightbox-instrucciones">
+    <h3 class="poppins-regular">Aprende a usar el buscador en 3 pasos</h3>
+    <div class="owl-carousel owl-theme">
+        <div class="content-instruccion">
+            <div class="instruccion">
+                <span>01</span>
+                <h4 class="inter-medium">Escribe el nombre o tema que buscas</h4>
+                <p class="inter-light">
+                    EJ. "Leche", en el cuadro de texto, el sistema sugerira las palabras mas buscadas
+                    relacionadas a Leche, como "milk", "lechoso", "lacteo".
+                </p>
+            </div>
+            <!--<img src="images/imagen-digite-palabra-o-frase.png" alt="Escribe el nombre o tema que buscas">-->
+        </div>
+        <div class="content-instruccion">
+            <div class="instruccion">
+                <span>02</span>
+                <h4 class="inter-medium">Filtrables</h4>
+                <p class="inter-light">
+                    Si ademas de la busqueda anterior, requiere filtrar por Pais, Organismo o
+                    Esquema, despliegue y seleccione la opcion.
+                </p>
+            </div>
+            <!--<img src="images/imagen-filtrables.png" alt="Filtrables">-->
+        </div>
+        <div class="content-instruccion">
+            <div class="instruccion">
+                <span>03</span>
+                <h4 class="inter-medium">Usuario experto</h4>
+                <p class="inter-light">
+                    Si eres un usuario experto y necesitas filtrar por Norma Acreditada, Estado o
+                    Reconocimiento, despliega y selecciona la opcion.
+                </p>
+            </div>
+            <!--<img src="images/imagen-usuario-experto.png" alt="Usuario experto">-->
+        </div>
+    </div>
 </div>
+<!-- Lightbox oculto para información empresas CAN responsive-->
+<div id="popupInfoEmpresas" class="mfp-hide content-lightbox-general content-lightbox-empresas">
+    <h4>Organismos Evaluadores de la Conformidad acreditados de la CAN</h4>
+    <div class="data-empresas m-top-2">
+        <div class="info-empresa totales">
+            <p class="inter-medium">Total<br>Resultados</p>
+            <span class="c-black poppins-medium">1356</span>
+        </div>
+        <div class="info-empresa">
+            <img src="/images/logo-sae.png" width="52" height="auto" alt="SAE">
+            <p class="inter-regular">Ecuador</p>
+            <span class="c-black poppins-medium">1356</span>
+        </div>
+        <div class="info-empresa">
+            <img src="/images/logo-onac.png" width="65" height="auto" alt="ONAC">
+            <p class="inter-regular">Colombia</p>
+            <span class="c-black poppins-medium">270</span>
+        </div>
+        <div class="info-empresa">
+            <img src="/images/logo-inacal.png" width="75" height="auto" alt="INACAL">
+            <p class="inter-regular">Perú</p>
+            <span class="c-black poppins-medium">150</span>
+        </div>
+        <div class="info-empresa">
+            <img src="/images/logo-ibmetro.png" width="86" height="auto" alt="IBMETRO">
+            <p class="inter-regular">Bolivia</p>
+            <span class="c-black poppins-medium">100</span>
+        </div>
+    </div>
+</div>
+<!-- Lightbox oculto para información empresas CAN responsive-->
+<div id="popupInfoDetallada" class="mfp-hide content-lightbox-general content-lightbox-empresas full">
+    <h4>Información Detallada</h4>
+    <img src="/images/info-detallada.png" width="100%" height="auto">
+</div>
+<div id="popupBusquedaResponsive" class="mfp-hide content-lightbox-general content-lightbox-empresas">
+    <h4>Filtros de búsqueda</h4>
+    <div class="content-filtros m-top-2">
+        <label class="container-checkbox c-light-blue" for="busqueda-exacta-mobile">
+            <input type="checkbox" checked="checked" id="busqueda-exacta-mobile">
+            <span class="checkmark"></span>
+            Búsqueda exacta
+        </label>
+    </div>
+    <div class="content-grid-filtros grid-filtros-responsive panel-input-filters-content">
+        <div class="form-check-label">
+            <div class="filter-content">
+                <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-0"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar Por País:
+                </button><!--!-->
+            </div>
+        </div>
+        <div class="form-check-label">
+            <div class="filter-content">
+                <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar ONA:
+                </button><!--!-->
+            </div>
+        </div>
+        <div class="form-check-label">
+            <div class="filter-content">
+                <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-2"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar Esquemas:
+                </button><!--!-->
+            </div>
+        </div>
+        <div class="form-check-label">
+            <div class="filter-content">
+                <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-3"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar Norma:
+                </button><!--!-->
+            </div>
+        </div>
+        <div class="form-check-label">
+            <div class="filter-content">
+                <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-4"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar Estado:
+                </button><!--!-->
+            </div>
+        </div>
+        <div class="form-check-label">
+            <div class="filter-content">
+                <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-5"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar Reconocimiento:
+                </button><!--!-->
+            </div>
+        </div>
+        <div class="div-quitar-buscar m-top-1">
+            <a href="#" class="quitar-filtro-responsive poppins-medium">Quitar filtros</a>
+            <button class="btn-general btn-rounded b-yellow c-black btn-search-responsive">
+                <img src="/images/ico-search.svg" width="18" height="18" alt="Accede a tu cuenta">Buscar
+            </button>
+        </div>
+    </div>
+</div>
+
+

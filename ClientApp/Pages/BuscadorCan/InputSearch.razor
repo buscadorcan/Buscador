@@ -1,54 +1,78 @@
 @using BlazorBootstrap
 
-<link href="/css/buscador-can/input-search.css" rel="stylesheet">
-
 
 <Toasts Placement="@toastsPlacement" />
 
-<div class="panel-search">
-    <!-- Mensaje de error debajo del input -->
-    @if (!string.IsNullOrEmpty(errorMessage))
-    {
-        <div class="text-danger mt-2">@errorMessage</div>
-    }
-    <div class="panel-input">
-        <div class="panel-input-text">
-            <i class="fas fa-search" />
-            <input id="inputBusqueda"
-                   class="form-control input-text"
-                   placeholder="¿Qué certificación necesitas?"
-                   @bind="searchText"
-                   @oninput="HandleChangeTextSearch"
-                   list="suggestions"
-                   disabled="@IsLoading" />
-            <datalist id="suggestions">
-                @foreach (var word in ListFnPredictWordsDto)
-                {
-                    <option value="@word.Word"></option>
-                }
-            </datalist>
-        </div>
-
-        <button type="button" @onclick="onClickFilter" disabled="@IsLoading">
-            <i class="fas fa-search" />
-            <span>Buscar</span>
-        </button>
-        @if (IsLoading)
+<div class="content-buscador">
+    <div class="div-input-text">
+        @if (!string.IsNullOrEmpty(errorMessage))
         {
-            <div class="loading-container">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Cargando...</span>
-                </div>
-                <p class="loading-text">Buscando...</p>
-            </div>
+            <div class="text-danger mt-2">@errorMessage</div>
         }
+        <img src="/images/ico-search-gray.svg" width="20" height="20" alt="Buscar...">
+        <input id="inputBusqueda"
+               class="input-search"
+               placeholder="¿Qué certificación necesitas?"
+               @bind="searchText"
+               @oninput="HandleChangeTextSearch"
+               list="suggestions"
+               disabled="@IsLoading" />
+        <datalist id="suggestions">
+            @foreach (var word in ListFnPredictWordsDto)
+            {
+                <option value="@word.Word"></option>
+            }
+        </datalist>
     </div>
+    <button class="btn-general btn-rounded b-yellow c-black btn-search" @onclick="onClickFilter" disabled="@IsLoading">
+        <img src="/images/ico-search.svg" width="18" height="18" alt="Accede a tu cuenta">Buscar
+    </button>
+    @if (IsLoading)
+    {
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="loading-text">Buscando...</p>
+        </div>
+    }
 
-    <div class="panel-input-checkbox">
-        <input class="form-check-input" type="checkbox" @bind="isExactSearch" />
-        <span>Búsqueda exacta</span>
+    @if (isGridVisible)
+    {
+        <button class="btn-general btn-rounded btn-info-empresas" style="display: none" @onclick="() => _ = isGridVisibleChanged.InvokeAsync(false)">
+            <img src="/images/ico-empresas.svg" width="18" height="18">
+        </button>
+    }
+    else
+    {
+        <button class="btn-general btn-rounded btn-filters-mobile" style="display: none" @onclick="() => _ = isGridVisibleChanged.InvokeAsync(true)">
+            <img src="/images/ico-menu-dots.svg" width="30" height="30">
+        </button>
+    }
+    
+   
+</div>
+<div class="content-filtros m-top-2">
+    <label class="container-checkbox c-light-blue" for="busqueda-exacta">
+        <input type="checkbox" @bind="isExactSearch" id="busqueda-exacta">
+        <span class="checkmark"></span>
+        Búsqueda exacta
+    </label>
+    <label class="container-checkbox c-light-blue" for="filtros-avanzados">
+        <input type="checkbox" id="filtros-avanzados">
+        <span class="checkmark"></span>
+        Ver filtros avanzados
+    </label>
+    <div class="content-filtro-visualizacion c-light-blue">
+        Visualización
+        <div class="filtros-visualizacion b-neutral-gray">
+            <button class="btn-visualizacion" data-id="tabla"><img src="/images/ico-filter-grid.svg"></button>
+            <button class="btn-visualizacion" data-id="mapa"><img src="/images/ico-filter-map.svg"></button>
+        </div>
     </div>
 </div>
+
+
 <script>
      window.cerrarDropdowns = () => {
         const active = document.activeElement;
