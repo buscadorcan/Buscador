@@ -50,6 +50,10 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private Timer? _debounceTimer;
 
+        [Parameter] public bool isGridVisible { get; set; }
+
+        [Parameter] public EventCallback<bool> isGridVisibleChanged { get; set; }
+
         /// <summary>
         /// Objeto de resultado de búsqueda de texto predictivo.
         /// </summary>
