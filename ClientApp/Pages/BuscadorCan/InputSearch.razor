@@ -37,20 +37,7 @@
         </div>
     }
 
-    @if (isGridVisible)
-    {
-        <button class="btn-general btn-rounded btn-info-empresas" style="display: none" @onclick="() => _ = isGridVisibleChanged.InvokeAsync(false)">
-            <img src="/images/ico-empresas.svg" width="18" height="18">
-        </button>
-    }
-    else
-    {
-        <button class="btn-general btn-rounded btn-filters-mobile" style="display: none" @onclick="() => _ = isGridVisibleChanged.InvokeAsync(true)">
-            <img src="/images/ico-menu-dots.svg" width="30" height="30">
-        </button>
-    }
-    
-   
+  
 </div>
 <div class="content-filtros m-top-2">
     <label class="container-checkbox c-light-blue" for="busqueda-exacta">
@@ -59,15 +46,22 @@
         Búsqueda exacta
     </label>
     <label class="container-checkbox c-light-blue" for="filtros-avanzados">
-        <input type="checkbox" id="filtros-avanzados">
+        <input type="checkbox"
+               id="filtros-avanzados"
+               checked="@filtrosAvanzadosVisibles"
+               @onchange="ToggleFiltrosAvanzados" />
         <span class="checkmark"></span>
         Ver filtros avanzados
     </label>
     <div class="content-filtro-visualizacion c-light-blue">
         Visualización
         <div class="filtros-visualizacion b-neutral-gray">
-            <button class="btn-visualizacion" data-id="tabla"><img src="/images/ico-filter-grid.svg"></button>
-            <button class="btn-visualizacion" data-id="mapa"><img src="/images/ico-filter-map.svg"></button>
+            <button class="btn-visualizacion" @onclick="() => CambiarVisualizacion(true)">
+                <img src="/images/ico-filter-grid.svg" alt="Mostrar grilla">
+            </button>
+            <button class="btn-visualizacion" @onclick="() => CambiarVisualizacion(false)">
+                <img src="/images/ico-filter-map.svg" alt="Mostrar tarjetas">
+            </button>
         </div>
     </div>
 </div>

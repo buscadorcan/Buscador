@@ -221,6 +221,7 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private async Task ObtenerCoordenadasYMarcarMapa()
         {
+
             markers.Clear();
             var processedLocations = new HashSet<string>();
 
@@ -294,6 +295,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
+
                 var response = await Servicio.ObtenerCoordenadasAsync(pais, ciudad);
 
                 if (response?.Results?.Length > 0)

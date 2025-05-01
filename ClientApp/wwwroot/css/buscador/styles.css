@@ -1179,3 +1179,17 @@ input[type=text].input-search {
     all: unset;
     all: revert;
 }
+
+.data-empresas {
+    align-items: flex-start; /* 🧭 asegura que todos se alineen arriba */
+}
+
+.data-empresas .info-empresa {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrado horizontal */
+    justify-content: flex-start; /* Alineación al tope */
+    text-align: center;
+    min-height: 150px; /* 🧱 fuerza altura mínima */
+    padding: 20px 10px;
+}

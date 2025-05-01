@@ -102,7 +102,9 @@ namespace ClientApp.Pages.BuscadorCan
 
         private EventTrackingDto objEventTracking { get; set; } = new();
 
-        private object filtros {get; set;} 
+        private object filtros {get; set;}
+
+        private bool mostrarFiltrosAvanzados = false;
 
         /// <summary>
         /// Método de inicialización del componente.
@@ -301,29 +303,12 @@ namespace ClientApp.Pages.BuscadorCan
             objEventTracking.UbicacionJson = "";
             await iBusquedaService.AddEventTrackingAsync(objEventTracking);
         }
+
+        private void CambiarVisibilidadFiltrosAvanzados(bool mostrar)
+        {
+            mostrarFiltrosAvanzados = mostrar;
+        }
     }
 
-    /// <summary>
-    /// Clase para manejar los filtros de búsqueda seleccionados.
-    /// </summary>
-    //public class FiltrosBusquedaSeleccion
-    //{
-    //    /// <summary>
-    //    /// Código de homologación del filtro.
-    //    /// </summary>
-    //    public string CodigoHomologacion { get; set; } = string.Empty;
-
-    //    /// <summary>
-    //    /// Lista de valores seleccionados.
-    //    /// </summary>
-    //    public List<string> Seleccion { get; set; } = new List<string>();
-
-    //    /// <summary>
-    //    /// Inicializador de la clase.
-    //    /// </summary>
-    //    public FiltrosBusquedaSeleccion()
-    //    {
-    //        Seleccion = new List<string>();
-    //    }
-    //}
+  
 }
