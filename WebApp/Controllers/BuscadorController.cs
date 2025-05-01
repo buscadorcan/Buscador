@@ -162,7 +162,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                var apiKey = "TU_API_KEY";
+                var apiKey = "AIzaSyC7NUCEvrqrrQDDDRLK2q0HSqswPxtBVAk";
                 var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={Uri.EscapeDataString(address)}&key={apiKey}";
 
                 using var httpClient = new HttpClient();
