@@ -160,5 +160,12 @@ namespace WebApp.Extensions
         });
             });
         }
+
+        public static void ConfigureRoutes(this IServiceCollection services, IConfiguration configuration)
+        {
+            var routes = configuration.GetSection("Buscador");
+
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-using BlazorBootstrap;
+Ôªøusing BlazorBootstrap;
 using Blazored.LocalStorage;
 using SharedApp.Helpers;
 using Infractruture.Services;
@@ -7,27 +7,30 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Dtos;
 using System.Text;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using OfficeOpenXml;
 
 namespace ClientApp.Pages.Administracion.ONA
 {
     /// <summary>
-    /// P·gina de listado de ONAs (Organismos Nacionales de AcreditaciÛn).
+    /// P√°gina de listado de ONAs (Organismos Nacionales de Acreditaci√≥n).
     /// Permite visualizar, paginar y eliminar registros de ONAs.
     /// </summary>
     public partial class Listado
     {
-        // Controla la visibilidad del modal de eliminaciÛn
+        // Controla la visibilidad del modal de eliminaci√≥n
         private bool showModal = false; // Controla la visibilidad del modal
-        // ID del ONA seleccionado para eliminaciÛn
+        // ID del ONA seleccionado para eliminaci√≥n
         private int? selectedIdONA;    // Almacena el ID del ONA seleccionado
         // Lista de ONAs obtenidos desde el servicio
         private List<OnaDto>? listaONAs; // Lista de registros ONAs
-        // BotÛn de guardar con animaciÛn de carga
+        // Bot√≥n de guardar con animaci√≥n de carga
         private Button saveButton = default!;
         // Componente de la grilla para mostrar la lista de ONAs
         private Grid<OnaDto>? grid;
         /// <summary>
-        /// Servicio de gestiÛn de ONAs.
+        /// Servicio de gesti√≥n de ONAs.
         /// </summary>
         [Inject]
         public IONAService? iONAservice { get; set; }
@@ -37,7 +40,7 @@ namespace ClientApp.Pages.Administracion.ONA
         [Inject]
         public Infractruture.Services.ToastService? toastService { get; set; }
         /// <summary>
-        /// Servicio de navegaciÛn.
+        /// Servicio de navegaci√≥n.
         /// </summary>
         [Inject]
         public NavigationManager? navigationManager { get; set; }
@@ -47,7 +50,7 @@ namespace ClientApp.Pages.Administracion.ONA
         [Inject]
         ILocalStorageService iLocalStorageService { get; set; }
         /// <summary>
-        /// Servicio de b˙squeda y registro de eventos.
+        /// Servicio de b√∫squeda y registro de eventos.
         /// </summary>
         [Inject]
         private IBusquedaService iBusquedaService { get; set; }
@@ -57,7 +60,7 @@ namespace ClientApp.Pages.Administracion.ONA
         private bool isRolAdmin;
 
         /// <summary>
-        /// MÈtodo que carga la lista de ONAs seg˙n el rol del usuario.
+        /// M√©todo que carga la lista de ONAs seg√∫n el rol del usuario.
         /// </summary>
         private async Task LoadONAs()
         {
@@ -75,14 +78,14 @@ namespace ClientApp.Pages.Administracion.ONA
                     listaONAs = await iONAservice.GetListByONAsAsync(IdOna) ?? new List<OnaDto>();
                 }
             }
-            // Ajusta la paginaciÛn si la lista est· vacÌa o cambia
+            // Ajusta la paginaci√≥n si la lista est√° vac√≠a o cambia
             if (listaONAs.Count > 0 && CurrentPage > TotalPages)
             {
                 CurrentPage = TotalPages;
             }
         }
-        // ConfiguraciÛn de paginaciÛn
-        private int PageSize = 10; // Cantidad de registros por p·gina
+        // Configuraci√≥n de paginaci√≥n
+        private int PageSize = 10; // Cantidad de registros por p√°gina
         private int CurrentPage = 1;
 
         /// <summary>
@@ -93,20 +96,20 @@ namespace ClientApp.Pages.Administracion.ONA
             .Take(PageSize);
 
         /// <summary>
-        /// Calcula el n˙mero total de p·ginas basado en el n˙mero de registros.
+        /// Calcula el n√∫mero total de p√°ginas basado en el n√∫mero de registros.
         /// </summary>
         private int TotalPages => listaONAs.Count > 0 ? (int)Math.Ceiling((double)listaONAs.Count / PageSize) : 1;
         /// <summary>
-        /// Calcula el n˙mero total de p·ginas basado en el n˙mero de registros.
+        /// Calcula el n√∫mero total de p√°ginas basado en el n√∫mero de registros.
         /// </summary>
         private bool CanGoPrevious => CurrentPage > 1;
         /// <summary>
-        /// Indica si se puede avanzar a la siguiente p·gina.
+        /// Indica si se puede avanzar a la siguiente p√°gina.
         /// </summary>
         private bool CanGoNext => CurrentPage < TotalPages;
 
         /// <summary>
-        /// Cambia a la p·gina anterior en la paginaciÛn.
+        /// Cambia a la p√°gina anterior en la paginaci√≥n.
         /// </summary>
         private void PreviousPage()
         {
@@ -117,7 +120,7 @@ namespace ClientApp.Pages.Administracion.ONA
         }
 
          /// <summary>
-        /// Cambia a la siguiente p·gina en la paginaciÛn.
+        /// Cambia a la siguiente p√°gina en la paginaci√≥n.
         /// </summary>
         private void NextPage()
         {
@@ -137,7 +140,7 @@ namespace ClientApp.Pages.Administracion.ONA
             {
                 if (listaONAs is null && iONAservice != null)
                 {
-                    await LoadONAs(); // Carga los datos si a˙n no est·n cargados
+                    await LoadONAs(); // Carga los datos si a√∫n no est√°n cargados
                 }
 
                 return await Task.FromResult(request.ApplyTo(listaONAs ?? new List<OnaDto>()));
@@ -149,7 +152,7 @@ namespace ClientApp.Pages.Administracion.ONA
         }
 
         /// <summary>
-        /// Abre el modal de confirmaciÛn de eliminaciÛn.
+        /// Abre el modal de confirmaci√≥n de eliminaci√≥n.
         /// </summary>
         /// <param name="idONA">ID del ONA a eliminar.</param>
         private void OpenDeleteModal(int idONA)
@@ -159,7 +162,7 @@ namespace ClientApp.Pages.Administracion.ONA
         }
 
         /// <summary>
-        /// Cierra el modal de confirmaciÛn de eliminaciÛn.
+        /// Cierra el modal de confirmaci√≥n de eliminaci√≥n.
         /// </summary>
         private void CloseModal()
         {
@@ -168,7 +171,7 @@ namespace ClientApp.Pages.Administracion.ONA
         }
 
         /// <summary>
-        /// Confirma la eliminaciÛn de un ONA.
+        /// Confirma la eliminaci√≥n de un ONA.
         /// </summary>
         private async Task ConfirmDelete()
         {
@@ -201,7 +204,7 @@ namespace ClientApp.Pages.Administracion.ONA
         }
 
         /// <summary>
-        /// MÈtodo asincrÛnico que se ejecuta al inicializar el componente.
+        /// M√©todo asincr√≥nico que se ejecuta al inicializar el componente.
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
@@ -217,5 +220,122 @@ namespace ClientApp.Pages.Administracion.ONA
             await LoadONAs(); // Carga la lista al iniciar el componente
         }
 
+        private string sortColumn = nameof(OnaDto.RazonSocial);
+        private bool sortAscending = true;
+
+        private void OrdenarPor(string column)
+        {
+            if (sortColumn == column)
+            {
+                sortAscending = !sortAscending;
+            }
+            else
+            {
+                sortColumn = column;
+                sortAscending = true;
+            }
+
+            listaONAs = sortAscending
+                ? listaONAs.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+                : listaONAs.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+        }
+
+        private async Task ExportarExcel()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/onas";
+            objEventTracking.NombreAccion = "ExportarExcel";
+            objEventTracking.NombreControl = "btnExportarExcel";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+
+            if (listaONAs == null || !listaONAs.Any())
+            {
+                return;
+            }
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // üîπ Soluci√≥n: Configurar licencia
+
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("ONAs");
+
+            // Agregar encabezados
+            worksheet.Cells[1, 1].Value = "Raz√≥n Social";
+            worksheet.Cells[1, 2].Value = "Siglas";
+            worksheet.Cells[1, 3].Value = "Ciudad";
+            worksheet.Cells[1, 4].Value = "Correo";
+            worksheet.Cells[1, 5].Value = "Direcci√≥n";
+            worksheet.Cells[1, 6].Value = "P√°gina Web";
+            worksheet.Cells[1, 7].Value = "Tel√©fono";
+
+            int row = 2;
+            foreach (var ona in listaONAs)
+            {
+                worksheet.Cells[row, 1].Value = ona.RazonSocial;
+                worksheet.Cells[row, 2].Value = ona.Siglas;
+                worksheet.Cells[row, 3].Value = ona.Ciudad;
+                worksheet.Cells[row, 4].Value = ona.Correo;
+                worksheet.Cells[row, 5].Value = ona.Direccion;
+                worksheet.Cells[row, 6].Value = ona.PaginaWeb;
+                worksheet.Cells[row, 7].Value = ona.Telefono;
+                row++;
+            }
+
+            worksheet.Cells.AutoFitColumns(); // Ajustar autom√°ticamente columnas
+
+            var fileName = "ONAs_Export.xlsx";
+            var fileBytes = package.GetAsByteArray();
+            var fileBase64 = Convert.ToBase64String(fileBytes);
+
+            await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+        }
+
+        private async Task ExportarPDF()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/onas";
+            objEventTracking.NombreAccion = "ExportarPDF";
+            objEventTracking.NombreControl = "btnExportarPDF";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+
+            if (listaONAs == null || !listaONAs.Any())
+            {
+                return;
+            }
+
+            using var memoryStream = new MemoryStream();
+            var document = new Document(iTextSharp.text.PageSize.A4);
+            var writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+            var table = new PdfPTable(7) { WidthPercentage = 100 };
+
+            table.AddCell(new Phrase("Raz√≥n Social", font));
+            table.AddCell(new Phrase("Siglas", font));
+            table.AddCell(new Phrase("Ciudad", font));
+            table.AddCell(new Phrase("Correo", font));
+            table.AddCell(new Phrase("Direcci√≥n", font));
+            table.AddCell(new Phrase("P√°gina Web", font));
+            table.AddCell(new Phrase("Tel√©fono", font));
+
+            foreach (var ona in listaONAs)
+            {
+                table.AddCell(ona.RazonSocial);
+                table.AddCell(ona.Siglas);
+                table.AddCell(ona.Ciudad);
+                table.AddCell(ona.Correo);
+                table.AddCell(ona.Direccion);
+                table.AddCell(ona.PaginaWeb);
+                table.AddCell(ona.Telefono);
+            }
+
+            document.Add(table);
+            document.Close();
+
+            var fileName = "ONAs_Export.pdf";
+            var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+            await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
+        }
     }
 }

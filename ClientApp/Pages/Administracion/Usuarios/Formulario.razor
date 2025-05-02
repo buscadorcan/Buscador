@@ -194,10 +194,3 @@
         <Button id="btnGuardar" @ref="saveButton" class="button-2 label valign-text-middle inter-regular-normal-comet-14px" @onclick="async () => await RegistrarUsuario()"><div class="button-3 headingheadline4-h4">Guardar</div></Button>
     </div>
 </div>
-
-@code {
-    private void Regresar()
-    {
-        NavigationManager.NavigateTo("/usuarios");
-    }
-}

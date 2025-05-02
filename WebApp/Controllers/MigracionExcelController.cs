@@ -4,14 +4,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SharedApp.Response;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using Core.Interfaces;
 using DataAccess.Models;
 
 namespace WebApp.Controllers
 {
-  [Route("api/migracionexcel")]
+  [Route(Routes.MIGRACION_EXCEL)]
   [ApiController]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -70,7 +69,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpPost("upload")]
+        [HttpPost(Routes.MIGRACION_UPLOAD)]
         public IActionResult ImportarExcel(IFormFile file, [FromQuery] int idOna)
         {
             try

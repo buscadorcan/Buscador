@@ -4,13 +4,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-    [Route("api/reportevista")]
+    [Route(Routes.REPORTES_VISTA)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,7 +38,7 @@ namespace WebApp.Controllers
         /// En caso de que no exista, devuelve un objeto vacío.
         /// </returns>
         [Authorize]
-        [HttpGet("findByVista/{codigoHomologacion}")]
+        [HttpGet(Routes.FIND_BY_VISTA)]
         public IActionResult findByVista(string codigoHomologacion)
         {
             try
@@ -74,7 +73,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de acreditaciones de ONAs disponibles.
         /// </returns>
         [Authorize]
-        [HttpGet("acreditacion-ona")]
+        [HttpGet(Routes.ACREDITACION_ONA)]
         public IActionResult ObtenerAcreditacionOna()
         {
             try
@@ -97,7 +96,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de esquemas acreditados.
         /// </returns>
         [Authorize]
-        [HttpGet("acreditacion-esquema")]
+        [HttpGet(Routes.ACREDITACION_ESQUEMA)]
         public IActionResult ObtenerAcreditacionEsquema()
         {
             try
@@ -120,7 +119,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de estados de los esquemas.
         /// </returns>
         [Authorize]
-        [HttpGet("estado-esquema")]
+        [HttpGet(Routes.ESTADO_ESQUEMA)]
         public IActionResult ObtenerEstadoEsquema()
         {
             try
@@ -143,7 +142,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de OECs asociados a cada país.
         /// </returns>
         [Authorize]
-        [HttpGet("oec-pais")]
+        [HttpGet(Routes.OEC_PAIS)]
         public IActionResult ObtenerOecPais()
         {
             try
@@ -166,7 +165,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de esquemas disponibles en cada país.
         /// </returns>
         [Authorize]
-        [HttpGet("esquema-pais")]
+        [HttpGet(Routes.ESQUEMA_PAIS)]
         public IActionResult ObtenerEsquemaPais()
         {
             try
@@ -189,7 +188,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de OECs filtrados por fecha.
         /// </returns>
         [Authorize]
-        [HttpGet("oec-fecha")]
+        [HttpGet(Routes.OEC_FECHA)]
         public IActionResult ObtenerOecFecha()
         {
             try
@@ -213,7 +212,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de profesionales calificados.
         /// </returns>
         [Authorize]
-        [HttpGet("profesional-calificado")]
+        [HttpGet(Routes.PROFESIONAL_CALIFICADO)]
         public IActionResult ObtenerProfesionalCalificado()
         {
             try
@@ -236,7 +235,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de profesionales en ONAs.
         /// </returns>
         [Authorize]
-        [HttpGet("profesional-ona")]
+        [HttpGet(Routes.PROFESIONAL_ONA)]
         public IActionResult ObtenerProfesionalOna()
         {
             try
@@ -259,7 +258,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de profesionales organizados por esquema.
         /// </returns>
         [Authorize]
-        [HttpGet("profesional-esquema")]
+        [HttpGet(Routes.PROFESIONAL_ESQUEMA)]
         public IActionResult ObtenerProfesionalEsquema()
         {
             try
@@ -282,7 +281,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de profesionales filtrados por fecha.
         /// </returns>
         [Authorize]
-        [HttpGet("profesional-fecha")]
+        [HttpGet(Routes.PROFESIONAL_FECHA)]
         public IActionResult ObtenerProfesionalFecha()
         {
             try
@@ -305,7 +304,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de calificaciones organizadas por ubicación.
         /// </returns>
         [Authorize]
-        [HttpGet("califica-ubicacion")]
+        [HttpGet(Routes.CALIFICA_UBICACION)]
         public IActionResult ObtenerCalificaUbicacion()
         {
             try
@@ -328,7 +327,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de búsquedas filtradas por fecha.
         /// </returns>
         [Authorize]
-        [HttpGet("busqueda-fecha")]
+        [HttpGet(Routes.BUSQUEDA_FECHA)]
         public IActionResult ObtenerBusquedaFecha()
         {
             try
@@ -351,7 +350,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de búsquedas filtradas según los criterios aplicados.
         /// </returns>
         [Authorize]
-        [HttpGet("busqueda-filtro")]
+        [HttpGet(Routes.BUSQUEDA_FILTRO)]
         public IActionResult ObtenerBusquedaFiltro()
         {
             try
@@ -374,7 +373,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de búsquedas organizadas por ubicación.
         /// </returns>
         [Authorize]
-        [HttpGet("busqueda-ubicacion")]
+        [HttpGet(Routes.BUSQUEDA_UBICACION)]
         public IActionResult ObtenerBusquedaUbicacion()
         {
             try
@@ -397,7 +396,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de actualizaciones registradas en los ONAs.
         /// </returns>
         [Authorize]
-        [HttpGet("actualizacion-ona")]
+        [HttpGet(Routes.ACTUALIZACION_ONA)]
         public IActionResult ObtenerActualizacionONA()
         {
             try
@@ -420,7 +419,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de organismos registrados.
         /// </returns>
         [Authorize]
-        [HttpGet("organismo-registrado")]
+        [HttpGet(Routes.ORGANISMO_REGISTRADO)]
         public IActionResult ObtenerOrganismoRegistrado()
         {
             try
@@ -443,7 +442,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de organizaciones y sus esquemas asociados.
         /// </returns>
         [Authorize]
-        [HttpGet("organizacion-esquema")]
+        [HttpGet(Routes.ORGANISMO_ESQUEMA)]
         public IActionResult ObtenerOrganizacionEsquema()
         {
             try
@@ -466,7 +465,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la lista de organismos y las actividades que realizan.
         /// </returns>
         [Authorize]
-        [HttpGet("organismo-actividad")]
+        [HttpGet(Routes.ORGANISMO_ACTIVIDAD)]
         public IActionResult ObtenerOrganismoActividad()
         {
             try

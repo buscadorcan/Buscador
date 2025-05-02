@@ -4,14 +4,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SharedApp.Response;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
 using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-    [Route("api/conexion")]
+    [Route(Routes.CONEXION)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -65,7 +64,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("ListaOna/{idOna:int}")]
+        [HttpGet(Routes.LISTA_ONA)]
         public IActionResult GetOnaConexionByOnaListAsync(int idOna)
         {
             try

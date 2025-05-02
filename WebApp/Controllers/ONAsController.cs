@@ -11,7 +11,7 @@ using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-    [Route("api/ona")]
+    [Route(Routes.ONA)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,7 +61,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("Lista/{idOna:int}")]
+        [HttpGet(Routes.LISTA_ONA_BY_ID)]
         public IActionResult GetListByONAsAsync(int idOna)
         {
             try
@@ -85,7 +85,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("paises")]
+        [HttpGet(Routes.PAISES)]
         public IActionResult FindAllPais()
         {
             try

@@ -13,7 +13,7 @@ namespace WebApp.Controllers
     /// <summary>
     /// Controlador para la gestión de catálogos, filtros, dimensiones y roles.
     /// </summary>
-    [Route("api/catalogos")]
+    [Route(Routes.CATALOGOS)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -40,7 +40,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwGrillaDto que representa la estructura de la grilla.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("grid/schema")]
+        [HttpGet(Routes.GRID_SCHEMA)]
         public IActionResult ObtenerVwGrilla()
         {
             try
@@ -67,7 +67,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwFiltroDto que representa la estructura de los filtros.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("filters/schema")]
+        [HttpGet(Routes.FILTERS_SCHEMA)]
         public IActionResult ObtenerVwFiltro()
         {
             try
@@ -91,7 +91,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de vwFiltroDetalleDto que representa los detalles del filtro.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("filters/data/{codigo}")]
+        [HttpGet($"{Routes.FILTERS_DATA}/{{codigo}}")]
         public IActionResult ObtenerFiltroDetalles(string codigo)
         {
             try
@@ -114,7 +114,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwDimensionDto que representa la estructura de las dimensiones.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("dimensions/schema")]
+        [HttpGet(Routes.DIMENSION_SCHEMA)]
         public IActionResult ObtenerVwDimension()
         {
             try
@@ -137,7 +137,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwHomologacionGrupoDto que representa los grupos en la aplicación.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("grupos")]
+        [HttpGet(Routes.GRUPOS)]
         public IActionResult ObtenerGrupos()
         {
             try
@@ -161,7 +161,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwRolDto que representa los roles.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("roles")]
+        [HttpGet(Routes.ROLES)]
         public IActionResult ObtenerVwRol()
         {
             try
@@ -184,7 +184,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de OnaDto que representa los ONAs.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("onas")]
+        [HttpGet(Routes.ONAS)]
         public IActionResult ObtenerOna()
         {
             try
@@ -209,7 +209,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwMenuDto que representa los elementos del menú.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("menu")]
+        [HttpGet(Routes.MENU)]
         public IActionResult ObtenerVwMenu()
         {
             try
@@ -232,7 +232,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de vwPanelONA que representa la configuración del panel ONA.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("panel")]
+        [HttpGet(Routes.PANEL)]
         public IActionResult ObtenerPanelOna()
         {
             try
@@ -255,7 +255,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de vwEsquemaOrganiza que representa la estructura organizacional.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("EsquemaOrganiza")]
+        [HttpGet(Routes.ESQUEMA_ORGANIZACION)]
         public IActionResult ObtenerEsquemaOrganiza()
         {
             try
@@ -278,7 +278,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de vwONADto que representa los ONAs registrados.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("vwona")]
+        [HttpGet(Routes.VW_ONA)]
         public IActionResult ObtenerVwOna()
         {
             try
@@ -301,7 +301,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de vwONADto que representa los ONAs registrados.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpPost("filters/anidados")]
+        [HttpPost(Routes.FILTERS_ANINADOS)]
         public IActionResult ObtenerFiltrosAnidados([FromBody] List<FiltrosBusquedaSeleccionDto> filtrosSeleccionados)
         {
             try
@@ -344,7 +344,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de vwONADto que representa los ONAs registrados.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("anidados")]
+        [HttpGet(Routes.ANINADOS)]
         public IActionResult ObtenerFiltrosAnidadosAll()
         {
             try

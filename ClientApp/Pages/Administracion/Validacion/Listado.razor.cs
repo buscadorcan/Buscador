@@ -8,6 +8,10 @@ using System.Text;
 using System.Net.Http;
 using Infractruture.Services;
 using SharedApp.Dtos;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using Microsoft.JSInterop;
+using OfficeOpenXml;
 
 namespace ClientApp.Pages.Administracion.Validacion
 {
@@ -727,6 +731,83 @@ namespace ClientApp.Pages.Administracion.Validacion
                 validateButton.HideLoading();
             }
             
+        }
+
+        private async Task ExportarExcel()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/validacion";
+            objEventTracking.NombreAccion = "ExportarExcel";
+            objEventTracking.NombreControl = "btnExportarExcel";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
+            if (listasHevd == null || !listasHevd.Any())
+            {
+                return;
+            }
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Esquemas");
+
+            // Agregar encabezados
+            worksheet.Cells[1, 1].Value = "Nombre Campo Esquema";
+            worksheet.Cells[1, 2].Value = "Nombre Campo Vista";
+            worksheet.Cells[1, 3].Value = "Existe";
+
+            int row = 2;
+            foreach (var esquema in listasHevd)
+            {
+                worksheet.Cells[row, 1].Value = esquema.NombreEsquema;
+                worksheet.Cells[row, 2].Value = esquema.NombreVista;
+                worksheet.Cells[row, 3].Value = esquema.IsValid ? "Sí" : "No";
+                row++;
+            }
+
+            worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+            var fileName = "Esquemas_Export.xlsx";
+            var fileBytes = package.GetAsByteArray();
+            var fileBase64 = Convert.ToBase64String(fileBytes);
+
+            await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+        }
+        private async Task ExportarPDF()
+        {
+            if (listasHevd == null || !listasHevd.Any())
+            {
+                return;
+            }
+
+            using var memoryStream = new MemoryStream();
+            var document = new Document(iTextSharp.text.PageSize.A4);
+            var writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+            var table = new PdfPTable(3) { WidthPercentage = 100 };
+
+            foreach (var header in new[] { "Nombre Campo Esquema", "Nombre Campo Vista", "Existe" })
+            {
+                table.AddCell(new Phrase(header, font));
+            }
+
+            foreach (var esquema in listasHevd)
+            {
+                table.AddCell(esquema.NombreEsquema ?? "-");
+                table.AddCell(esquema.NombreVista ?? "-");
+                table.AddCell(esquema.IsValid ? "Sí" : "No");
+            }
+
+            document.Add(table);
+            document.Close();
+
+            var fileName = "Esquemas_Export.pdf";
+            await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", Convert.ToBase64String(memoryStream.ToArray()));
         }
 
     }

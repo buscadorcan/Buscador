@@ -23,7 +23,7 @@ namespace WebApp.Controllers
             this._emailService = emailService;
         }
 
-        [HttpPost("enviar")]
+        [HttpPost(Routes.ENVIAR)]
         public async Task<IActionResult> EnviarCorreoRol([FromBody] EmailDto email) {
             try
             {

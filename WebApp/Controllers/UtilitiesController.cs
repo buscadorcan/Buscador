@@ -24,7 +24,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la ruta relativa del archivo almacenado en el servidor.
         /// En caso de error, devuelve un mensaje de error específico.
         /// </returns>
-        [HttpPost("UploadIcon")]
+        [HttpPost(Routes.UPLOAD_ICON)]
         public async Task<IActionResult> UploadIcon([FromForm] IFormFile file, [FromForm] int idONA)
         {
             try

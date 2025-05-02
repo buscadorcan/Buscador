@@ -14,7 +14,7 @@ namespace WebApp.Controllers
     /// Controlador para las operaciones de búsqueda y utilidades de exportación.
     /// </summary>
     [ApiController]
-    [Route("api/buscador")]
+    [Route(Routes.BUSCADOR)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -34,7 +34,7 @@ namespace WebApp.Controllers
 
         // ---------------------------- MÉTODOS ----------------------------
 
-        [HttpGet("search/phrase")]
+        [HttpGet(Routes.SEARCH_PHRASE)]
         public IActionResult PsBuscarPalabra(string paramJSON, int PageNumber, int RowsPerPage)
         {
             try
@@ -47,7 +47,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(PsBuscarPalabra)); }
         }
 
-        [HttpGet("homologacionEsquemaTodo")]
+        [HttpGet(Routes.HOMOLOGACION_ESQUEMA_TODO)]
         public IActionResult FnHomologacionEsquemaTodo(string VistaFk, int idOna)
         {
             try
@@ -60,7 +60,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(FnHomologacionEsquemaTodo)); }
         }
 
-        [HttpGet("homologacionEsquema/{idEsquema:int}")]
+        [HttpGet($"{Routes.HOMOLOGACION_ESQUEMA_ID}/{{idEsquema:int}}")]
         public IActionResult FnHomologacionEsquema(int idEsquema)
         {
             try
@@ -73,7 +73,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(FnHomologacionEsquema)); }
         }
 
-        [HttpGet("fnesquemacabecera/{IdEsquemadata:int}")]
+        [HttpGet($"{Routes.FN_ESQUEMA_CABECERA_ID}/{{IdEsquemadata:int}}")]
         public IActionResult FnEsquemaCabecera(int IdEsquemadata)
         {
             try
@@ -86,7 +86,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(FnEsquemaCabecera)); }
         }
 
-        [HttpGet("homologacionEsquemaDato/{idEsquema:int}/{idOna:int}")]
+        [HttpGet($"{Routes.HOMOLOGACION_ESQUEMA_DATO}/{{idEsquema:int}}/{{idOna:int}}")]
         public IActionResult FnHomologacionEsquemaDato(int idEsquema, string VistaFK, int idOna)
         {
             try
@@ -99,7 +99,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(FnHomologacionEsquemaDato)); }
         }
 
-        [HttpGet("EsquemaDatoBuscado")]
+        [HttpGet(Routes.ESQUEMA_DATO_BUSCADO)]
         public IActionResult FnEsquemaDato(int idEsquemaData, string TextoBuscar)
         {
             try
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(FnEsquemaDato)); }
         }
 
-        [HttpGet("predictWords")]
+        [HttpGet(Routes.PREDIC_WORDS)]
         public IActionResult FnPredictWords(string word)
         {
             try
@@ -123,7 +123,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(FnPredictWords)); }
         }
 
-        [HttpPost("validateWords")]
+        [HttpPost(Routes.PREDIC_WORDS)]
         public IActionResult ValidateWords([FromBody] List<string> words)
         {
             try
@@ -133,7 +133,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(ValidateWords)); }
         }
 
-        [HttpPost("addEventTracking")]
+        [HttpPost(Routes.EVENTTRACKING)]
         public IActionResult AddEventTracking([FromBody] EventTrackingDto eventTracking)
         {
             try
@@ -157,7 +157,7 @@ namespace WebApp.Controllers
             catch (Exception e) { return HandleException(e, nameof(AddEventTracking)); }
         }
 
-        [HttpGet("geocode")]
+        [HttpGet(Routes.GEO_CODE)]
         public async Task<IActionResult> GetCoordinates([FromQuery] string address)
         {
             try
@@ -194,7 +194,7 @@ namespace WebApp.Controllers
 
         // -------------------- EXPORTACIÓN --------------------
 
-        [HttpPost("excel")]
+        [HttpPost(Routes.EXCEL)]
         public IActionResult ExportExcel([FromBody] List<Dictionary<string, string>> data)
         {
             if (data.Count == 0) return BadRequest("No hay datos para exportar");
@@ -215,7 +215,7 @@ namespace WebApp.Controllers
                         "exportacion.xlsx");
         }
 
-        [HttpPost("pdf")]
+        [HttpPost(Routes.PDF)]
         public IActionResult ExportPdf([FromBody] List<Dictionary<string, string>> data)
         {
             using var stream = new MemoryStream();

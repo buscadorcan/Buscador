@@ -149,6 +149,11 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             }
         }
 
+        private void Regresar()
+        {
+            NavigationManager.NavigateTo("/campos-homologacion");
+        }
+
         /// <summary>
         /// Propiedad booleana vinculada al Switch para la indexación del campo.
         /// </summary>

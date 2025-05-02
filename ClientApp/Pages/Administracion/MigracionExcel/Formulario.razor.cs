@@ -264,5 +264,9 @@ namespace ClientApp.Pages.Administracion.MigracionExcel
             }
 
         }
+        private void Regresar()
+        {
+            NavigationManager.NavigateTo("/migracion-excel");
+        }
     }
 }

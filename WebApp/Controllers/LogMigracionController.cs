@@ -10,7 +10,7 @@ using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-  [Route("api/logmigracion")]
+  [Route(Routes.LOG_MIGRACION)]
   [ApiController]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

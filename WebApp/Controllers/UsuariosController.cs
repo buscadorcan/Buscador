@@ -11,7 +11,7 @@ using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-    [Route("api/usuarios")]
+    [Route(Routes.USUARIOS)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,7 +49,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la respuesta de autenticación que incluye el token de acceso si es exitoso.
         /// En caso de credenciales inválidas, devuelve un mensaje de error.
         /// </returns>
-        [HttpPost("login")]
+        [HttpPost(Routes.LOGIN)]
         public IActionResult Login([FromBody] UsuarioAutenticacionDto usuarioAutenticacionDto)
         {
             try
@@ -81,7 +81,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con la información de autenticación del usuario si la validación es exitosa.
         /// En caso de código inválido, devuelve un mensaje de error.
         /// </returns>
-        [HttpPost("validar")]
+        [HttpPost(Routes.VALIDAR)]
         public IActionResult Validar([FromBody] AuthValidationDto authValidationDto)
         {
             try
@@ -112,7 +112,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la solicitud de recuperación fue exitosa.
         /// </returns>
-        [HttpPost("recuperar")]
+        [HttpPost(Routes.RECUPERAR)]
         public IActionResult RecoverAsync([FromBody] UsuarioRecuperacionDto usuarioRecuperacionDto)
         {
             try
@@ -144,7 +144,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult indicando si la creación del usuario fue exitosa.
         /// Si el correo ya está registrado, devuelve un mensaje de error.
         /// </returns>
-        [HttpPost("registro")]
+        [HttpPost(Routes.REGISTRO)]
         public IActionResult Create([FromBody] UsuarioDto dto)
         {
             try
@@ -288,7 +288,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult con un valor booleano indicando si el correo es único en el sistema.
         /// </returns>
-        [HttpGet("validar-email")]
+        [HttpGet(Routes.VALIDAR_EMAIL)]
         public IActionResult ValidarEmail([FromQuery] string email)
         {
             try
@@ -307,7 +307,7 @@ namespace WebApp.Controllers
          * WebApp/ValidarEmail: Cambia las claves de un usuario en especifico.
         */
         [Authorize]
-        [HttpPost("cambiar_clave")]
+        [HttpPost(Routes.CAMBIAR_CLAVE)]
         public IActionResult CambiarClave([FromBody] UsuarioCambiarClaveDto usuario)
         {
             try

@@ -4,14 +4,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SharedApp.Response;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using DataAccess.Models;
 using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-    [Route("api/homologacion")]
+    [Route(Routes.HOMOLOGACION)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,7 +37,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de HomologacionDto que representa las homologaciones encontradas.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet("findByParent")]
+        [HttpGet(Routes.FIND_BY_PARENT)]
         public IActionResult FindByParent()
         {
             try
@@ -179,7 +178,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwHomologacionDto que representan las homologaciones encontradas.
         /// </returns>
         [Authorize]
-        [HttpGet("findByCodigoHomologacion/{codigoHomologacion}")]
+        [HttpGet(Routes.FIND_BY_CODIGO_HOMOLOGACION)]
         public IActionResult FindByCodigoHomologacion(string codigoHomologacion)
         {
             try
@@ -203,7 +202,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de HomologacionDto representando todas las homologaciones.
         /// </returns>
         [Authorize]
-        [HttpGet("FindByAll")]
+        [HttpGet(Routes.FIND_BY_ALL_HOMOLOGACION)]
         public IActionResult FindByAll()
         {
             try

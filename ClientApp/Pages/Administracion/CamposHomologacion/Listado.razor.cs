@@ -5,6 +5,9 @@ using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Dtos;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using OfficeOpenXml;
 
 namespace ClientApp.Pages.Administracion.CamposHomologacion
 {
@@ -202,6 +205,101 @@ namespace ClientApp.Pages.Administracion.CamposHomologacion
             {
                 listaHomologacions = await iHomologacionService.GetHomologacionsAsync();
             }
+        }
+
+        private async Task ExportarExcel()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/campos-homologacion";
+            objEventTracking.NombreAccion = "ExportarExcel";
+            objEventTracking.NombreControl = "btnExportarExcel";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
+            if (listaHomologacions == null || !listaHomologacions.Any())
+            {
+                return;
+            }
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Homologaciones");
+
+            // Agregar encabezados
+            worksheet.Cells[1, 1].Value = "Vista Código Homologado";
+            worksheet.Cells[1, 2].Value = "Texto a Mostrar en la Web";
+            worksheet.Cells[1, 3].Value = "Tooltip Web";
+            worksheet.Cells[1, 4].Value = "Tipo de Dato";
+            worksheet.Cells[1, 5].Value = "Si No Hay Dato";
+
+            int row = 2;
+            foreach (var homologacion in listaHomologacions)
+            {
+                worksheet.Cells[row, 1].Value = homologacion.NombreHomologado;
+                worksheet.Cells[row, 2].Value = homologacion.MostrarWeb;
+                worksheet.Cells[row, 3].Value = homologacion.TooltipWeb;
+                worksheet.Cells[row, 4].Value = homologacion.MascaraDato;
+                worksheet.Cells[row, 5].Value = homologacion.SiNoHayDato;
+                row++;
+            }
+
+            worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+            var fileName = "Homologaciones_Export.xlsx";
+            var fileBytes = package.GetAsByteArray();
+            var fileBase64 = Convert.ToBase64String(fileBytes);
+
+            await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+        }
+        private async Task ExportarPDF()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/campos-homologacion";
+            objEventTracking.NombreAccion = "ExportarPDF";
+            objEventTracking.NombreControl = "btnExportarPDF";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
+            if (listaHomologacions == null || !listaHomologacions.Any())
+            {
+                return;
+            }
+
+            using var memoryStream = new MemoryStream();
+            var document = new Document(iTextSharp.text.PageSize.A4);
+            var writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+            var table = new PdfPTable(5) { WidthPercentage = 100 };
+
+            table.AddCell(new Phrase("Vista Código Homologado", font));
+            table.AddCell(new Phrase("Texto a Mostrar en la Web", font));
+            table.AddCell(new Phrase("Tooltip Web", font));
+            table.AddCell(new Phrase("Tipo de Dato", font));
+            table.AddCell(new Phrase("Si No Hay Dato", font));
+
+            foreach (var homologacion in listaHomologacions)
+            {
+                table.AddCell(homologacion.NombreHomologado ?? "-");
+                table.AddCell(homologacion.MostrarWeb ?? "-");
+                table.AddCell(homologacion.TooltipWeb ?? "-");
+                table.AddCell(homologacion.MascaraDato ?? "-");
+                table.AddCell(homologacion.SiNoHayDato ?? "-");
+            }
+
+            document.Add(table);
+            document.Close();
+
+            var fileName = "Homologaciones_Export.pdf";
+            var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+            await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
         }
     }
 }

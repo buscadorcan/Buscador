@@ -319,5 +319,10 @@ namespace ClientApp.Pages.Administracion.Usuarios
             }
         }
 
+        private void Regresar()
+        {
+            NavigationManager.NavigateTo("/usuarios");
+        }
+
     }
 }

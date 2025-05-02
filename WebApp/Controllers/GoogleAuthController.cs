@@ -10,7 +10,7 @@ namespace WebApp.Controllers
     /// <summary>
     /// Controlador para la autenticación con Google.
     /// </summary>
-    [Route("auth/google")]
+    [Route(Routes.GOOGLE)]
     [ApiController]
     public class GoogleAuthController : ControllerBase
     {
@@ -38,7 +38,7 @@ namespace WebApp.Controllers
         /// <summary>
         /// Endpoint para redirigir al usuario a Google para la autenticación.
         /// </summary>
-        [HttpGet("authorize")]
+        [HttpGet(Routes.AUTHORIZE)]
         public IActionResult Authorize()
         {
             // Verificar si la carpeta existe
@@ -95,7 +95,7 @@ namespace WebApp.Controllers
         /// <summary>
         /// Endpoint de callback para manejar la respuesta de Google después de la autenticación.
         /// </summary>
-        [HttpGet("callback")]
+        [HttpGet(Routes.CALLBACK)]
         public async Task<IActionResult> Callback(string code)
         {
             if (string.IsNullOrEmpty(code))

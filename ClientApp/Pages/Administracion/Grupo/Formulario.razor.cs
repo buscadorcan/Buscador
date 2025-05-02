@@ -132,5 +132,9 @@ namespace ClientApp.Pages.Administracion.Grupo
 
             saveButton.HideLoading();
         }
+        private void Regresar()
+        {
+            NavigationManager.NavigateTo("/grupos");
+        }
     }
 }

@@ -207,6 +207,11 @@ namespace ClientApp.Pages.Administracion.Conexion
         {
             lista = lista?.Append(vwHomologacionSelected).ToList();
         }
-        
+
+        private void Regresar()
+        {
+            NavigationManager.NavigateTo("/conexion");
+        }
+
     }
 }

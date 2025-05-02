@@ -5,7 +5,7 @@ using SharedApp.Response;
 
 namespace WebApp.Controllers
 {
-    [Route("api/onac")]
+    [Route(Routes.ONAC)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -28,7 +28,7 @@ namespace WebApp.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("postOnaMigrate")]
+        [HttpPost(Routes.POST_ONA_MIGRATE)]
         public async Task<IActionResult> postOnaMigrate([FromBody] OnaMigrateRequestDto request)
         {
             try

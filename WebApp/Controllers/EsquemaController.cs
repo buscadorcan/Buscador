@@ -10,7 +10,7 @@ using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-    [Route("api/esquema")]
+    [Route(Routes.ESQUEMA)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -180,7 +180,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult indicando si la eliminación fue exitosa.
         /// </returns>
         [Authorize]
-        [HttpDelete("validacion")]
+        [HttpDelete(Routes.VALIDACION)]
         public IActionResult EliminarEsquemaVistaColumnaByIdEquemaVistaAsync([FromBody] EsquemaVistaValidacionDto esquemaRegistro)
         {
             try
@@ -215,7 +215,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
         /// </returns>
         [Authorize]
-        [Route("validacion/actualizar")]
+        [Route(Routes.VALIDACION_ACTUALIZACION)]
         [HttpPut]
         public IActionResult UpdateEsquemaValidacion([FromBody] EsquemaVistaValidacionDto dto)
         {
@@ -242,7 +242,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult indicando si la creación fue exitosa.
         /// </returns>
         [Authorize]
-        [Route("validacion")]
+        [Route(Routes.VALIDACION)]
         [HttpPost]
         public IActionResult CreateEsquemaValidacion([FromBody] EsquemaVistaValidacionDto dto)
         {
@@ -272,7 +272,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [Route("vista/columna")]
+        [Route(Routes.VISTA_COLUMNA)]
         [HttpPost]
         public IActionResult GuardarListaEsquemaVistaColumna(
             [FromBody] List<EsquemaVistaColumnaDto> listaEsquemaVistaColumna,
@@ -303,7 +303,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("esquemas/{idOna}", Name = "GetListaEsquemaByOna")]
+        [HttpGet(Routes.ESQUEMA_ID, Name = "GetListaEsquemaByOna")]
         public IActionResult GetListaEsquemaByOna(int idOna)
         {
             try

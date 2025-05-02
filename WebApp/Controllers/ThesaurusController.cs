@@ -9,7 +9,7 @@ using DataAccess.Models;
 
 namespace WebApp.Controllers
 {
-    [Route("api/thesaurus")]
+    [Route(Routes.THESAURUS)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,7 +36,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con el contenido del thesaurus actual.
         /// </returns>
         ///</summary>
-        [HttpGet("obtener/thesaurus")]
+        [HttpGet(Routes.GET_THESAURUS)]
         public IActionResult ObtenerThesaurus()
         {
             try
@@ -59,7 +59,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
         /// </returns>
-        [HttpPost("agregar/expansion")]
+        [HttpPost(Routes.THESAURUS_AGREGAR)]
         public IActionResult AgregarExpansion([FromBody] List<string> sinonimos)
         {
             try
@@ -82,7 +82,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la actualización fue exitosa.
         /// </returns>
-        [HttpPost("actualizar/expansion")]
+        [HttpPost(Routes.THESAURUS_ACTUALIZAR)]
         public IActionResult ActualizarExpansion([FromBody] List<ExpansionDto> expansions)
         {
             try
@@ -107,7 +107,7 @@ namespace WebApp.Controllers
         /// <returns>
         /// Devuelve un objeto IActionResult indicando si la operación fue exitosa.
         /// </returns>
-        [HttpGet("agregar/expansion/{expansionExistente}/sub/{nuevoSub}")]
+        [HttpGet(Routes.THESAURUS_AGREGAR_SUB)]
         public IActionResult AgregarSubExpansion([FromRoute] string expansionExistente, string nuevoSub)
         {
             try
@@ -130,7 +130,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult indicando si la ejecución del archivo BAT fue exitosa.
         /// </returns>
         ///</summary>
-        [HttpGet("ejecutar/bat")]
+        [HttpGet(Routes.THESAURUS_EJECUTAR)]
         public IActionResult EjecutarBat()
         {
             try
@@ -153,7 +153,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult indicando si la actualización de SQL Server fue exitosa.
         /// </returns>
         ///</summary>
-        [HttpGet("reset/sqlserver")]
+        [HttpGet(Routes.THESAURUS_RESET)]
         public IActionResult ResetSQLServer()
         {
             try

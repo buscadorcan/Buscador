@@ -41,6 +41,8 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 /// </summary>
 builder.Services.ConfigureSwagger();
 
+builder.Services.ConfigureRoutes(builder.Configuration);
+
 /// <summary>
 /// Agrega el soporte para controladores con la configuración de Newtonsoft.Json 
 /// para la serialización/deserialización de JSON.
@@ -57,6 +59,7 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
+
 
 var app = builder.Build();
 

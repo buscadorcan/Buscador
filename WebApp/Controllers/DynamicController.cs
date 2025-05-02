@@ -3,13 +3,12 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
 using Microsoft.AspNetCore.Authorization;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-  [Route("api/vistas")]
+  [Route(Routes.DYNAMIC)]
   [ApiController]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,7 +33,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("columns/{idOna}/{viewName}", Name = "getProperties")]
+        [HttpGet(Routes.GETPROPERTIES, Name = "getProperties")]
         public IActionResult GetProperties(int idOna, string viewName)
         {
             try
@@ -61,7 +60,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("columns/{idOna}/{valueColumn}/{viewName}", Name = "GetValueColumna")]
+        [HttpGet(Routes.GETVALUECOLUMNA, Name = "GetValueColumna")]
         public IActionResult GetValueColumna(int idONA, string valueColumn, string viewName)
         {
             try
@@ -108,7 +107,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("validacion/{idOna}/{idEsquema}", Name = "GetListaValidacionEsquema")]
+        [HttpGet(Routes.GETLISTAVALIDACIONESQUEMA, Name = "GetListaValidacionEsquema")]
         public IActionResult GetListaValidacionEsquema(int idOna, int idEsquema)
         {
             try
@@ -131,7 +130,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpGet("test/{idOna:int}")]
+        [HttpGet(Routes.TEST)]
         public IActionResult TestConnection(int idOna)
         {
             try
@@ -165,7 +164,7 @@ namespace WebApp.Controllers
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
         [Authorize]
-        [HttpPost("migrar/{idOna:int}")]
+        [HttpPost(Routes.MIGRAR)]
         public async Task<IActionResult> MigrarConexion(int idOna)
         {
             try

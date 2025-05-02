@@ -1,13 +1,14 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
 using SharedApp.Helpers;
-using Infractruture.Services;
 using Infractruture.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using SharedApp.Dtos;
-using System.Text;
-using static System.Net.WebRequestMethods;
+using iTextSharp.text.pdf;
+using OfficeOpenXml;
+using iTextSharp.text;
+
 
 namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
 {
@@ -214,6 +215,122 @@ namespace ClientApp.Pages.Administracion.ConfiguracionMenuRol
         //        Console.WriteLine("Error al actualizar el estado.");
         //    }
         //}
+
+        private string filtroBusqueda = "";
+
+        private void FiltrarLista(ChangeEventArgs e)
+        {
+            filtroBusqueda = e.Value?.ToString()?.ToLower() ?? "";
+
+            if (string.IsNullOrWhiteSpace(filtroBusqueda))
+            {
+                // Restaurar la lista original y la paginación
+                listaMenus = new List<MenuRolDto>(listaMenusOriginal);
+            }
+            else
+            {
+                // Aplicar el filtro sobre la lista original
+                listaMenus = listaMenusOriginal
+                    .Where(m => m.Rol.ToLower().Contains(filtroBusqueda) || m.Menu.ToLower().Contains(filtroBusqueda))
+                    .ToList();
+            }
+
+            // Reiniciar a la primera página para mostrar resultados correctamente
+            CurrentPage = 1;
+        }
+
+
+        private string sortColumn = nameof(MenuRolDto.Rol);
+        private bool sortAscending = true;
+        private void OrdenarPor(string column)
+        {
+            if (sortColumn == column)
+            {
+                sortAscending = !sortAscending;
+            }
+            else
+            {
+                sortColumn = column;
+                sortAscending = true;
+            }
+
+            listaMenus = sortAscending
+                ? listaMenus.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+                : listaMenus.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+        }
+
+        private async Task ExportarExcel()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/menu-config-lista";
+            objEventTracking.NombreAccion = "ExportarExcel";
+            objEventTracking.NombreControl = "btnExportarExcel";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
+            if (listaMenus == null || !listaMenus.Any()) return;
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Menús");
+
+            worksheet.Cells[1, 1].Value = "Rol";
+            worksheet.Cells[1, 2].Value = "Menú";
+            worksheet.Cells[1, 3].Value = "Estado";
+
+            int row = 2;
+            foreach (var menu in listaMenus)
+            {
+                worksheet.Cells[row, 1].Value = menu.Rol;
+                worksheet.Cells[row, 2].Value = menu.Menu;
+                worksheet.Cells[row, 3].Value = menu.Estado == "A" ? "Activo" : "Inactivo";
+                row++;
+            }
+
+            worksheet.Cells.AutoFitColumns();
+            var fileBytes = package.GetAsByteArray();
+            var fileBase64 = Convert.ToBase64String(fileBytes);
+            await JSRuntime.InvokeVoidAsync("downloadExcel", "Menus_Export.xlsx", fileBase64);
+        }
+
+        private async Task ExportarPDF()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/menu-config-lista";
+            objEventTracking.NombreAccion = "ExportarPDF";
+            objEventTracking.NombreControl = "btnExportarPDF";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
+            if (listaMenus == null || !listaMenus.Any()) return;
+
+            using var memoryStream = new MemoryStream();
+            var document = new Document(iTextSharp.text.PageSize.A4);
+            PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            var table = new PdfPTable(3) { WidthPercentage = 100 };
+            table.AddCell("Rol");
+            table.AddCell("Menú");
+            table.AddCell("Estado");
+
+            foreach (var menu in listaMenus)
+            {
+                table.AddCell(menu.Rol);
+                table.AddCell(menu.Menu);
+                table.AddCell(menu.Estado == "A" ? "Activo" : "Inactivo");
+            }
+
+            document.Add(table);
+            document.Close();
+
+            var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+            await JSRuntime.InvokeVoidAsync("downloadFile", "Menus_Export.pdf", "application/pdf", fileBase64);
+        }
 
     }
 }

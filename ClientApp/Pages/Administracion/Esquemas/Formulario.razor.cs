@@ -246,5 +246,10 @@ namespace ClientApp.Pages.Administracion.Esquemas
                 lista = lista?.Append(vwHomologacionSelected).ToList();
             }
         }
+
+        private void Regresar()
+        {
+            NavigationManager.NavigateTo("/esquemas");
+        }
     }
 }

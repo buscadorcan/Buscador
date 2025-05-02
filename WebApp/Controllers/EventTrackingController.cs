@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SharedApp.Response;
-using DataAccess.Interfaces;
 using SharedApp.Dtos;
 using Core.Interfaces;
 
 namespace WebApp.Controllers
 {
-    [Route("api/eventtracking")]
+    [Route(Routes.EVENT_TRACKING)]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,7 +63,7 @@ namespace WebApp.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("EventUserAll")]
+        [HttpGet(Routes.EVENT_USER_ALL)]
         public IActionResult GetEventUserAll()
         {
             try
@@ -87,7 +86,7 @@ namespace WebApp.Controllers
         /// <param name="fini"></param>
         /// <param name="ffin"></param>
         /// <returns></returns>
-        [HttpGet("Even")]
+        [HttpGet(Routes.EVENT)]
         public IActionResult GetEventAll([FromQuery] string report, [FromQuery] DateOnly fini, [FromQuery] DateOnly ffin)
         {
             try
@@ -109,7 +108,7 @@ namespace WebApp.Controllers
         /// <param name="fini"></param>
         /// <param name="ffin"></param>
         /// <returns></returns>
-        [HttpDelete("DeleteEven/{fini}/{ffin}")]
+        [HttpDelete(Routes.EVENT_DELETE)]
         public IActionResult DeleteEventAll(DateOnly fini, DateOnly ffin)
         {
             try
@@ -130,7 +129,7 @@ namespace WebApp.Controllers
         /// </summary>
         /// <param name="codigoEvento"></param>
         /// <returns></returns>
-        [HttpDelete("DeleteEvenById/{codigoEvento}")]
+        [HttpDelete(Routes.EVENT_DELETE_ID)]
         public IActionResult DeleteEventById(int codigoEvento)
         {
             try
@@ -151,7 +150,7 @@ namespace WebApp.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("EventSession")]
+        [HttpGet(Routes.EVENT_SESSION)]
         public IActionResult GetEventSession()
         {
             try
@@ -173,7 +172,7 @@ namespace WebApp.Controllers
         /// <param name="ip"></param>
         /// <returns></returns>
         /// 
-        [HttpGet("coordinates/{ip}")]
+        [HttpGet(Routes.COORDINATES)]
         public async Task<IActionResult> GetCoordinates(string ip)
         {
             try
@@ -198,7 +197,7 @@ namespace WebApp.Controllers
         /// consulta las paginas mas visitadas por pais
         /// </summary>
         /// <returns></returns>
-        [HttpGet("EventPagMasVisit")]
+        [HttpGet(Routes.EVENT_PAG_MAS_VISIT)]
         public IActionResult GetEventPagMasVisit()
         {
             try
@@ -214,7 +213,7 @@ namespace WebApp.Controllers
             }
         }
 
-        [HttpGet("EventFiltroMasUsado")]
+        [HttpGet(Routes.EVENT_FILTRO_MAS_USADO)]
         public IActionResult GetEventFiltroMasUsado()
         {
             try

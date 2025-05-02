@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Components;
 using SharedApp.Dtos;
 using Infractruture.Interfaces;
 using SharedApp.Helpers;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using Microsoft.JSInterop;
+using OfficeOpenXml;
 
 namespace ClientApp.Pages.Administracion.Bitacoras
 {
@@ -105,7 +109,10 @@ namespace ClientApp.Pages.Administracion.Bitacoras
         /// Carga la lista de logs de migración y controla el acceso según el rol del usuario.
         /// </summary>
         private List<OnaDto>? listaONAs;
-        
+
+        private string sortColumn = nameof(LogMigracionDto.IdLogMigracion);
+        private bool sortAscending = true;
+
         protected override async Task OnInitializedAsync()
         {
             objEventTracking.CodigoHomologacionMenu = "/validacion";
@@ -199,6 +206,131 @@ namespace ClientApp.Pages.Administracion.Bitacoras
                 buscarButton.HideLoading();
             }
 
+        }
+        private void OrdenarPor(string column)
+        {
+            if (sortColumn == column)
+            {
+                sortAscending = !sortAscending;
+            }
+            else
+            {
+                sortColumn = column;
+                sortAscending = true;
+            }
+
+            listasHevd = sortAscending
+                ? listasHevd.OrderBy(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList()
+                : listasHevd.OrderByDescending(x => x.GetType().GetProperty(sortColumn)?.GetValue(x, null)).ToList();
+        }
+
+        private async Task ExportarExcel()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/migracion-excel";
+            objEventTracking.NombreAccion = "ExportarExcel";
+            objEventTracking.NombreControl = "btnExportarExcel";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
+            if (listasHevd == null || !listasHevd.Any())
+            {
+                return;
+            }
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Configurar licencia para EPPlus
+
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Migraciones");
+
+            // Agregar encabezados
+            worksheet.Cells[1, 1].Value = "Migración";
+            worksheet.Cells[1, 2].Value = "EsquemaVista";
+            worksheet.Cells[1, 3].Value = "Estado";
+            worksheet.Cells[1, 4].Value = "Inicio Migración";
+            worksheet.Cells[1, 5].Value = "Final Migración";
+            worksheet.Cells[1, 6].Value = "Nombre archivo";
+            worksheet.Cells[1, 7].Value = "Error";
+
+            int row = 2;
+            foreach (var item in listasHevd)
+            {
+                worksheet.Cells[row, 1].Value = item.IdLogMigracion;
+                worksheet.Cells[row, 2].Value = item.EsquemaVista;
+                worksheet.Cells[row, 3].Value = item.Estado;
+                worksheet.Cells[row, 4].Value = item.Inicio;
+                worksheet.Cells[row, 5].Value = item.Final;
+                worksheet.Cells[row, 6].Value = item.ExcelFileName;
+                worksheet.Cells[row, 7].Value = item.Observacion;
+                row++;
+            }
+
+            worksheet.Cells.AutoFitColumns(); // Ajustar automáticamente las columnas
+
+            var fileName = "Migraciones_Export.xlsx";
+            var fileBytes = package.GetAsByteArray();
+            var fileBase64 = Convert.ToBase64String(fileBytes);
+
+            await JSRuntime.InvokeVoidAsync("downloadExcel", fileName, fileBase64);
+        }
+        private async Task ExportarPDF()
+        {
+            objEventTracking.CodigoHomologacionMenu = "/migracion-excel";
+            objEventTracking.NombreAccion = "ExportarPDF";
+            objEventTracking.NombreControl = "btnExportarPDF";
+            objEventTracking.NombreUsuario = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Local);
+            objEventTracking.CodigoHomologacionRol = await iLocalStorageService.GetItemAsync<string>(Inicializar.Datos_Usuario_Codigo_Rol_Local);
+            objEventTracking.ParametroJson = "{}";
+            objEventTracking.UbicacionJson = "";
+            await iBusquedaService.AddEventTrackingAsync(objEventTracking);
+
+            if (listasHevd == null || !listasHevd.Any())
+            {
+                return;
+            }
+
+            using var memoryStream = new MemoryStream();
+            var document = new Document(iTextSharp.text.PageSize.A4.Rotate()); // Documento en horizontal
+            var writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            var font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+            var table = new PdfPTable(7) { WidthPercentage = 100 }; // Cambié a 7 columnas
+
+            // Encabezados
+            table.AddCell(new Phrase("Migración", font));
+            table.AddCell(new Phrase("EsquemaVista", font));
+            table.AddCell(new Phrase("Estado", font));
+            table.AddCell(new Phrase("Inicio Migración", font));
+            table.AddCell(new Phrase("Final Migración", font));
+            table.AddCell(new Phrase("Nombre archivo", font));
+            table.AddCell(new Phrase("Error", font));
+
+            // Ajustar el ancho de las columnas
+            float[] widths = new float[] { 15f, 15f, 15f, 15f, 15f, 20f, 30f };
+            table.SetWidths(widths);
+
+            // Llenar la tabla con los datos
+            foreach (var item in listasHevd)
+            {
+                table.AddCell(new Phrase(item.IdLogMigracion.ToString()));
+                table.AddCell(new Phrase(item.EsquemaVista));
+                table.AddCell(new Phrase(item.Estado));
+                table.AddCell(new Phrase(item.Inicio.ToString()));
+                table.AddCell(new Phrase(item.Final.ToString()));
+                table.AddCell(new Phrase(item.ExcelFileName));
+                table.AddCell(new Phrase(item.Observacion ?? "-"));
+            }
+
+            document.Add(table);
+            document.Close();
+
+            var fileName = "Migraciones_Export.pdf";
+            var fileBase64 = Convert.ToBase64String(memoryStream.ToArray());
+
+            await JSRuntime.InvokeVoidAsync("downloadFile", fileName, "application/pdf", fileBase64);
         }
 
     }
