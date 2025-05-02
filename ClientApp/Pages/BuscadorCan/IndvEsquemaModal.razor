@@ -15,13 +15,14 @@
             <Content>
 
                 <div class="py-2">
-                    <Grid TItem="DataEsquemaDatoBuscar"
+                    <Grid @ref="gridRef"
+                          TItem="DataEsquemaDatoBuscar"
                           class="table table-hover table-bordered table-striped"
                           DataProvider="HomologacionEsquemasDataProvider"
                           Responsive="true"
                           FixedHeader="true"
                           Height="350"
-                          AllowFiltering="true"
+                          AllowFiltering="false"
                           AllowSorting="true"
                           Style="font-size: 10px !important;">
 
@@ -30,9 +31,9 @@
                             <GridColumn TItem="DataEsquemaDatoBuscar"
                                         PropertyName="@item.MostrarWeb"
                                         Sortable="true"
-                                        Filterable="true">
+                                        Filterable="false">
                                 <HeaderContent>
-          @*                           <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
                                         <Tooltip Title="@item.TooltipWeb">
                                             <span style="font-weight: bold; cursor: pointer;" @onclick="() => CambiarOrden(item.MostrarWeb)">
                                                 @item.MostrarWeb
@@ -42,18 +43,22 @@
                                                 }
                                             </span>
                                         </Tooltip>
-                                        <!-- ✅ Input de filtro dentro del HeaderContent -->
+
+                                        <select class="form-select form-select-sm"
+                                                style="font-size: 10px; margin-top: 5px;"
+                                                @onchange="@(e => CambiarOperadorFiltro(item.MostrarWeb, e.Value?.ToString() ?? ""))">
+                                            <option value="contains">Contiene</option>
+                                            <option value="starts">Empieza con</option>
+                                            <option value="ends">Termina con</option>
+                                        </select>
+
                                         <input type="text" class="form-control form-control-sm"
                                                placeholder="Filtrar..."
                                                style="width: 100%; font-size: 10px; margin-top: 5px;"
-<<<<<<< Updated upstream
-                                               @oninput="@(e => FiltrarTabla(item.MostrarWeb, e.Value?.ToString() ?? string.Empty))" />
+                                               @oninput="@(e => FiltrarTabla(item.MostrarWeb, e.Value?.ToString() ?? ""))" />
                                     </div>
-=======
-                                               @oninput="@(e => FiltrarTabla(item.IdHomologacion, e.Value?.ToString() ?? string.Empty))" />
-                                    </div> *@
->>>>>>> Stashed changes
                                 </HeaderContent>
+
                                 <ChildContent>
                                     @{
                                         var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;

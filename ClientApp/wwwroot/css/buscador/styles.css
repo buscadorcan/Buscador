@@ -288,7 +288,7 @@ header .login-cuenta {
     height: 36px;
     min-width: 128px;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .btn-general img {
@@ -414,14 +414,14 @@ header .login-cuenta {
 }
 
 .div-input-text {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 100% !important;
 }
 
 .div-input-text img {
-    margin-right: 8px;
+    margin-right: 8px !important;
 }
 
 input[type=text].input-search {
@@ -1178,4 +1178,32 @@ input[type=text].input-search {
 .buscador-page * {
     all: unset;
     all: revert;
+}
+
+.data-empresas {
+    align-items: flex-start; /* 🧭 asegura que todos se alineen arriba */
+}
+
+.data-empresas .info-empresa {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrado horizontal */
+    justify-content: flex-start; /* Alineación al tope */
+    text-align: center;
+    min-height: 150px; /* 🧱 fuerza altura mínima */
+    padding: 20px 10px;
+}
+
+.fuente-total {
+    font-size: 40px !important;
+    font-weight: 600;
+}
+
+.fuente-titulo{
+    font-size: 20px !important;
+    font-weight: 600;
+}
+
+.alinear-con-iconos {
+    padding-top: 47px !important; /* Ajusta según necesites: prueba entre 10px a 20px */
 }

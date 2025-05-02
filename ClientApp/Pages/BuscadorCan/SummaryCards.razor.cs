@@ -19,6 +19,8 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         [Parameter] public List<vwPanelONADto>? PanelONA { get; set; }
 
+        private int TotalOrganismos => PanelONA?.Sum(x => x.NroOrg) ?? 0;
+
         /// <summary>
         /// Evento para el cambio de panel de ONA.
         /// </summary>

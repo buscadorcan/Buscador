@@ -221,47 +221,49 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private async Task ObtenerCoordenadasYMarcarMapa()
         {
-            markers.Clear();
-            var processedLocations = new HashSet<string>();
-
-            // ✅ Agrupamos las ONAs por ciudad y contamos cuántos OECs distintos hay en cada ciudad
-            var agrupacionONAs = ListDataDto?
-                .Where(d => d.DataEsquemaJson != null)
-                .GroupBy(d => new
-                {
-                    Pais = d.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim(),
-                    Ciudad = d.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 85)?.Data?.Trim()
-                })
-                .Where(g => !string.IsNullOrEmpty(g.Key.Pais) && !string.IsNullOrEmpty(g.Key.Ciudad))
-                .ToDictionary(
-                    g => $"{g.Key.Pais}-{g.Key.Ciudad}",
-                    g => g.Select(x => x.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 81)?.Data?.Trim())
-                          .Where(oec => !string.IsNullOrEmpty(oec))
-                          .Distinct()
-                          .Count() // ✅ Cantidad de OECs diferentes por ciudad
-                );
-
-            foreach (var location in agrupacionONAs)
+            try
             {
-                string locationKey = location.Key;
-                string[] locationSplit = locationKey.Split('-');
-                string pais = locationSplit[0];
-                string ciudad = locationSplit[1];
+                markers.Clear();
+                var processedLocations = new HashSet<string>();
 
-                if (processedLocations.Contains(locationKey)) continue;
-
-                var coordenadas = await ObtenerCoordenadas(pais, ciudad);
-                if (coordenadas != null)
-                {
-                    string? iconoRuta = await ObtenerIconoONA(pais, ciudad);
-
-                    int cantidadOECs = location.Value;
-
-                    markers.Add(new GoogleMapMarker
+                // ✅ Agrupamos las ONAs por ciudad y contamos cuántos OECs distintos hay en cada ciudad
+                var agrupacionONAs = ListDataDto?
+                    .Where(d => d.DataEsquemaJson != null)
+                    .GroupBy(d => new
                     {
-                        Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
-                        Title = $"{ciudad}, {pais} - {cantidadOECs} OEC",
-                        Content = $@"
+                        Pais = d.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 84)?.Data?.Trim(),
+                        Ciudad = d.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 85)?.Data?.Trim()
+                    })
+                    .Where(g => !string.IsNullOrEmpty(g.Key.Pais) && !string.IsNullOrEmpty(g.Key.Ciudad))
+                    .ToDictionary(
+                        g => $"{g.Key.Pais}-{g.Key.Ciudad}",
+                        g => g.Select(x => x.DataEsquemaJson.FirstOrDefault(f => f.IdHomologacion == 81)?.Data?.Trim())
+                              .Where(oec => !string.IsNullOrEmpty(oec))
+                              .Distinct()
+                              .Count() // ✅ Cantidad de OECs diferentes por ciudad
+                    );
+
+                foreach (var location in agrupacionONAs)
+                {
+                    string locationKey = location.Key;
+                    string[] locationSplit = locationKey.Split('-');
+                    string pais = locationSplit[0];
+                    string ciudad = locationSplit[1];
+
+                    if (processedLocations.Contains(locationKey)) continue;
+
+                    var coordenadas = await ObtenerCoordenadas(pais, ciudad);
+                    if (coordenadas != null)
+                    {
+                        string? iconoRuta = await ObtenerIconoONA(pais, ciudad);
+
+                        int cantidadOECs = location.Value;
+
+                        markers.Add(new GoogleMapMarker
+                        {
+                            Position = new GoogleMapMarkerPosition(coordenadas.Latitude, coordenadas.Longitude),
+                            Title = $"{ciudad}, {pais} - {cantidadOECs} OEC",
+                            Content = $@"
                         <div style='text-align: center; font-size: 12px;'>                                   
                             <p style='margin: 2px 0; font-weight: bold;'>
                                 <span style='font-size: 13px;'>{ciudad}, {pais}</span><br />
@@ -269,22 +271,29 @@ namespace ClientApp.Pages.BuscadorCan
                             </p>
                             <img src='{iconoRuta}' width='32' height='32' style='border-radius:50%;' />
                         </div>"
-                    });
+                        });
 
-                    processedLocations.Add(locationKey);
-                    if (markers.Count == 1)
-                    {
-                        mapCenter = coordenadas;
+                        processedLocations.Add(locationKey);
+                        if (markers.Count == 1)
+                        {
+                            mapCenter = coordenadas;
+                        }
                     }
                 }
-            }
 
-            if (mapa != null)
+                if (mapa != null)
+                {
+                    await mapa.RefreshAsync();
+                }
+
+                markers = new List<GoogleMapMarker>(markers);
+            }
+            catch (Exception)
             {
-                await mapa.RefreshAsync();
-            }
 
-            markers = new List<GoogleMapMarker>(markers);
+                throw;
+            }
+          
         }
 
         /// <summary>
@@ -294,6 +303,7 @@ namespace ClientApp.Pages.BuscadorCan
         {
             try
             {
+
                 var response = await Servicio.ObtenerCoordenadasAsync(pais, ciudad);
 
                 if (response?.Results?.Length > 0)

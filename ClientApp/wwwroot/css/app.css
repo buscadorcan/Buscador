@@ -508,3 +508,47 @@ form.search-form {
     clip: rect(0, 0, 0, 0) !important;
     border: 0 !important;
 }
+
+.dropdown-menu .form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre checkbox y label */
+}
+
+.dropdown-menu .form-check-input {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin: 0; /* elimina desplazamiento */
+}
+
+.dropdown-menu .form-check-label {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.div-input-text {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px; /* o ajusta según tu diseño */
+    position: relative;
+}
+
+.input-search {
+    flex-grow: 1;
+    width: 100%;
+    padding-left: 36px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    height: 36px;
+    margin-right: 6px;
+}
+
+.div-input-text img {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}

@@ -61,6 +61,10 @@ namespace ClientApp.Pages.BuscadorCan
 
         List<ToastMessage> messages = new();
 
+        [Parameter]
+        public EventCallback<bool> onToggleFiltrosAvanzados { get; set; }
+
+        private bool filtrosAvanzadosVisibles = false;
 
         /// <summary>
         /// Evento que se dispara cuando se cambia el texto del input.
@@ -166,13 +170,21 @@ namespace ClientApp.Pages.BuscadorCan
                 await InvokeAsync(StateHasChanged);
             }
         }
-
-
+        private async Task CambiarVisualizacion(bool mostrarGrilla)
+        {
+            await isGridVisibleChanged.InvokeAsync(mostrarGrilla);
+        }
 
         private bool ContieneSQLInjection(string input)
         {
             string[] palabrasPeligrosas = { "DELETE FROM", "DROP TABLE", "INSERT INTO", "UPDATE ", "SELECT ", "--", ";" };
             return palabrasPeligrosas.Any(p => input.IndexOf(p, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        private async Task ToggleFiltrosAvanzados(ChangeEventArgs e)
+        {
+            filtrosAvanzadosVisibles = (bool)e.Value;
+            await onToggleFiltrosAvanzados.InvokeAsync(filtrosAvanzadosVisibles);
         }
     }
 }
