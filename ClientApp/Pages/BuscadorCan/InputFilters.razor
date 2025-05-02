@@ -76,7 +76,7 @@
                 <i class="fas fa-broom"></i>
             </button>
         </div>
-    </div> 
+    </div>
 </div>
 
 
@@ -85,6 +85,7 @@
 <!-- 🔥 Agregar JavaScript al final para alternar la visibilidad -->
 <script>
     let instanciaInputFilters = null;
+    let isClickInsideDropdown = false;
 
     function registrarInstanciaInputFilters(ref) {
         instanciaInputFilters = ref;
@@ -103,17 +104,18 @@
         }
     }
 
-    document.addEventListener("click", function (event) {
-        // Para cada combo desplegado
-        const combos = document.querySelectorAll(".dropdown-menu");
-        combos.forEach(menu => {
-            const toggle = menu.previousElementSibling;
+    // 🔁 Registrar si el clic empezó dentro de un dropdown
+    document.addEventListener("mousedown", function (event) {
+        const isDropdownClick = event.target.closest(".dropdown-menu") || event.target.closest(".dropdown-toggle");
+        isClickInsideDropdown = !!isDropdownClick;
+    });
 
-            // Si el click NO fue dentro del combo ni del botón que lo abre
-            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
-                invocarSeleccionados(); // Aquí llamamos a Blazor
-            }
-        });
+    // ✅ Llamar solo si se hace clic fuera
+    document.addEventListener("mouseup", function () {
+        if (!isClickInsideDropdown) {
+            invocarSeleccionados();
+        }
+        isClickInsideDropdown = false; // Reset
     });
 
     function invocarSeleccionados() {
@@ -141,6 +143,7 @@
         }
     }
 </script>
+
 
 
 

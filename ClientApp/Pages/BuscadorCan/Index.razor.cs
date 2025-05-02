@@ -143,7 +143,6 @@ namespace ClientApp.Pages.BuscadorCan
         private void HandlePanelONAChange (List<vwPanelONADto> newPanelONA)
         {
             var nroOrg = newPanelONA.Sum(x => x.NroOrg);
-            newPanelONA.Insert(0, new vwPanelONADto { NroOrg = nroOrg, Pais = "Total Resultados" });
             PanelONA = newPanelONA;
         }
 
@@ -247,7 +246,6 @@ namespace ClientApp.Pages.BuscadorCan
                     {
                         TotalItems = result.TotalCount;
                         TotalPages = (int)Math.Ceiling((double)TotalItems / DisplayPages);
-                        HandlePanelONAChange(result.PanelONA);
                     }
                 }
             }

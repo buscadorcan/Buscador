@@ -539,8 +539,11 @@ form.search-form {
 .input-search {
     flex-grow: 1;
     width: 100%;
-    padding-left: 30px; /* deja espacio para el ícono */
-    font-size: 14px;
+    padding-left: 36px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    height: 36px;
+    margin-right: 6px;
 }
 
 .div-input-text img {

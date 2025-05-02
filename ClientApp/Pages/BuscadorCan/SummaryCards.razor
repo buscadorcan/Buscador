@@ -11,6 +11,10 @@
     </div>
 
     <div class="data-empresas m-top-2">
+        <div class="info-empresa totales alinear-con-iconos">
+            <p class="inter-medium fuente-titulo">Total<br>Resultados</p>
+            <span class="c-black poppins-medium fuente-total">@TotalOrganismos</span>
+        </div>
         @foreach (var item in PanelONA)
         {
             var icono = string.Empty;
@@ -22,19 +26,12 @@
                     icono = $"{Inicializar.UrlBaseApi.TrimEnd('/')}/{deserialized["filePath"].TrimStart('/')}";
                 }
             }
-
-            <div class="info-empresa @(item.Pais == "Total Resultados" ? "totales" : "")">
-                @if (item.Pais == "Total Resultados")
-                {
-                    <p class="inter-medium">Total<br />Resultados</p>
-                }
-                else
-                {
-                    <img src="@icono" width="52" height="auto" alt="@item.Sigla" />
-                    <p class="inter-regular">@item.Pais</p>
-                }
+            <div class="info-empresa">
+                <img src="@icono" width="52" height="auto" alt="@item.Sigla">
+                <p class="inter-regular">@item.Pais</p>
                 <span class="c-black poppins-medium">@item.NroOrg</span>
             </div>
+           
         }
     </div>
 
