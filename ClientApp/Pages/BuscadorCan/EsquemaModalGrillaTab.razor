@@ -21,21 +21,28 @@
                 @* importante Filterable=false ya que es manual *@
 
                 <HeaderContent>
- @*                    <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
                         <Tooltip Title="@item.TooltipWeb">
-                            <span style="font-weight: bold;">
-                                @item.MostrarWeb
-                            </span>
+                            <span style="font-weight: bold;">@item.MostrarWeb</span>
                         </Tooltip>
 
-                        <!-- ✅ Filtro manual aquí mismo (HeaderContent) -->
+                        <select class="form-select form-select-sm"
+                                style="font-size: 10px; margin-top: 5px;"
+                                @onchange="@(e => CambiarOperadorFiltro(item.IdHomologacion, e.Value?.ToString() ?? ""))">
+                            <option value="contains">Contiene</option>
+                            <option value="starts">Empieza con</option>
+                            <option value="ends">Termina con</option>
+                        </select>
+
                         <input type="text"
                                class="form-control form-control-sm"
                                placeholder="Filtrar..."
                                style="width: 100%; font-size: 10px; margin-top: 5px;"
                                @oninput="@(e => FiltrarTabla(item.IdHomologacion, e.Value?.ToString() ?? ""))" />
-                    </div> *@
+                    </div>
                 </HeaderContent>
+
+
 
                 <ChildContent Context="context">
                     @{

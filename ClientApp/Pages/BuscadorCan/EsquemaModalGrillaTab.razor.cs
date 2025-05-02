@@ -68,9 +68,11 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
 
         private Dictionary<int, string> filtros = new();
+        private Dictionary<int, string> operadores = new();
 
         private Grid<DataHomologacionEsquema>? gridRef;
 
+        
         protected override async Task OnInitializedAsync()
         {
             try
@@ -110,12 +112,14 @@ namespace ClientApp.Pages.BuscadorCan
 
                 if (!string.IsNullOrEmpty(valorFiltro))
                 {
+                    string operador = operadores.ContainsKey(idHomologacionFiltro) ? operadores[idHomologacionFiltro] : "contains";
+
                     query = query.Where(r =>
                         r.DataEsquemaJson != null &&
                         r.DataEsquemaJson.Any(d =>
                             d.IdHomologacion == idHomologacionFiltro &&
                             d.Data != null &&
-                            d.Data.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase)));
+                            AplicaFiltro(d.Data, valorFiltro, operador)));
                 }
             }
 
@@ -140,16 +144,27 @@ namespace ClientApp.Pages.BuscadorCan
         }
 
 
+        private void CambiarOperadorFiltro(int idHomologacion, string operador)
+        {
+            operadores[idHomologacion] = operador;
+        }
+
         private async void FiltrarTabla(int idHomologacion, string valor)
         {
             filtros[idHomologacion] = valor;
-
             if (gridRef is not null)
-            {
                 await gridRef.RefreshDataAsync();
-            }
         }
 
+        private bool AplicaFiltro(string valor, string filtro, string operador)
+        {
+            return operador switch
+            {
+                "starts" => valor.StartsWith(filtro, StringComparison.OrdinalIgnoreCase),
+                "ends" => valor.EndsWith(filtro, StringComparison.OrdinalIgnoreCase),
+                _ => valor.Contains(filtro, StringComparison.OrdinalIgnoreCase),
+            };
+        }
         /// <summary>
         /// Método para extraer la fórmula de un texto.
         /// </summary>

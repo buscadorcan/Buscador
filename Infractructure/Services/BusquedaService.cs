@@ -22,7 +22,7 @@ namespace Infractruture.Services
 
             return (await response.Content.ReadFromJsonAsync<RespuestasAPI<BuscadorDto>>()).Result;
         }
-        public async Task<List<HomologacionEsquemaDto>> FnHomologacionEsquemaTodoAsync(string vistaFK, int idOna)
+        public async Task<List<HomologacionEsquemaDto>>     FnHomologacionEsquemaTodoAsync(string vistaFK, int idOna)
         {
             try
             {
@@ -194,14 +194,5 @@ namespace Infractruture.Services
             return await response.Content.ReadAsByteArrayAsync();
         }
 
-        Task<List<DataHomologacionEsquema>> IBusquedaService.FnHomologacionEsquemaDatoAsync(int idHomologacionEsquema, string VistaFK, int idOna)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<List<DataEsquemaDatoBuscar>> IBusquedaService.FnEsquemaDatoBuscarAsync(int idEsquemaData, string TextoBuscar)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

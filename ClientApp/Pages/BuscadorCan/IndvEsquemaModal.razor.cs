@@ -58,11 +58,11 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         /// 
 
-
+        private Grid<DataEsquemaDatoBuscar>? gridRef;
         private string sortColumn = "Id"; // Columna por defecto
         private bool sortDescending = false; // Orden predeterminado (ascendente)
         private Dictionary<string, string> filtros = new();
-
+        private Dictionary<string, string> operadores = new();
         protected override async Task OnInitializedAsync()
         {
             try
@@ -107,11 +107,17 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     foreach (var filtro in filtros)
                     {
-                        if (!string.IsNullOrWhiteSpace(filtro.Value))
+                        string columna = filtro.Key;
+                        string valorFiltro = filtro.Value;
+                        string operador = operadores.ContainsKey(columna) ? operadores[columna] : "contains";
+
+                        if (!string.IsNullOrWhiteSpace(valorFiltro))
                         {
                             datosFiltrados = datosFiltrados
                                 .Where(r => r.DataEsquemaJson != null && r.DataEsquemaJson.Any(d =>
-                                    d.Data != null && d.Data.Contains(filtro.Value, StringComparison.OrdinalIgnoreCase)))
+                                    d.Data != null &&
+                                    d.IdHomologacion == Columnas?.FirstOrDefault(c => c.MostrarWeb == columna)?.IdHomologacion &&
+                                    AplicaFiltro(d.Data, valorFiltro, operador)))
                                 .ToList();
                         }
                     }
@@ -137,19 +143,28 @@ namespace ClientApp.Pages.BuscadorCan
             }
         }
 
-
-        private void FiltrarTabla(string columna, string valor)
+        private async void FiltrarTabla(string columna, string valor)
         {
-            if (filtros.ContainsKey(columna))
-            {
-                filtros[columna] = valor;
-            }
-            else
-            {
-                filtros.Add(columna, valor);
-            }
+            filtros[columna] = valor;
+            if (gridRef is not null)
+                await gridRef.RefreshDataAsync();
+        }
 
-            StateHasChanged();
+        private bool AplicaFiltro(string valor, string filtro, string operador)
+        {
+            return operador switch
+            {
+                "starts" => valor.StartsWith(filtro, StringComparison.OrdinalIgnoreCase),
+                "ends" => valor.EndsWith(filtro, StringComparison.OrdinalIgnoreCase),
+                _ => valor.Contains(filtro, StringComparison.OrdinalIgnoreCase),
+            };
+        }
+
+        private async void CambiarOperadorFiltro(string columna, string operador)
+        {
+            operadores[columna] = operador;
+            if (gridRef is not null)
+                await gridRef.RefreshDataAsync();
         }
 
         /// <summary>
