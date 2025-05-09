@@ -39,12 +39,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="Pages\Administracion\Reportes\ReporteRead.razor">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Folder Include="wwwroot\admin\" />
 	  <Folder Include="wwwroot\asset\" />
 	</ItemGroup>
