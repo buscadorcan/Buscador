@@ -106,11 +106,14 @@
                                     var prod = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
                                 }
                                 <p class="poppins-medium">Esq. de certificación</p>
-                                <span class="organismo-certificacion" @onclick="() => showModalESQ(item)">@(string.IsNullOrWhiteSpace(esquema) ? "" : esquema)</span>
-                                <small class="inter-light c-black">
+                               @*  <span class="organismo-certificacion" @onclick="() => showModalESQ(item)">@(string.IsNullOrWhiteSpace(esquema) ? "" : esquema)</span> *@
+                                <a href="#" @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" class="organismo-certificacion">
+                                    @(string.IsNullOrWhiteSpace(esquema) ? "" : esquema)
+                                </a>
+                               <small class="inter-light c-black">
                                     @(string.IsNullOrWhiteSpace(prod) ? "Muestra, Item o Producto" : prod)
                                 </small>
-
+                        
                                 <button class="abrir-detalle-empresa btn-general btn-border-blue m-top-1" @onclick="() => MostrarDetalle(item)">Ver más</button>
                             </div>
                         </div>
