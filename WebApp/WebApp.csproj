@@ -51,9 +51,6 @@
 	  <None Include="wwwroot\Files\verification_code_template.html" />
 	  <None Include="wwwroot\Files\tokens\Google.Apis.Auth.OAuth2.Responses.TokenResponse-buscadorcan%40gmail.com" />
 	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\Core\Core.csproj" />
-	</ItemGroup>
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
