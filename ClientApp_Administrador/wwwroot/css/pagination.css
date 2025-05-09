@@ -1,0 +1,28 @@
+﻿.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Espacio entre elementos */
+    margin: 20px auto; /* Centrado */
+    padding: 10px;
+}
+
+.btn {
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .btn:disabled {
+        background-color: #d6d6d6 !important;
+        color: #6c757d !important;
+        cursor: not-allowed;
+    }
+
+.pagination-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}

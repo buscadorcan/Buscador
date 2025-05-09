@@ -48,4 +48,8 @@
 	  <Folder Include="wwwroot\admin\" />
 	  <Folder Include="wwwroot\asset\" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\ClientApp_Administrador\Component.razor" Link="Component.razor" />
+	</ItemGroup>
 </Project>

@@ -1,0 +1,393 @@
+/* screen - typography */
+
+.typography {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  height: 3978px;
+  width: 1920px;
+}
+
+.typography .root-tittle {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 96px 96px 24px;
+  position: relative;
+  width: 1920px;
+}
+
+.typography .frame-769 {
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+}
+
+.typography .frame-323 {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.typography .frame-770 {
+  align-items: center;
+  gap: 16px;
+}
+
+.typography .span1 {
+  text-decoration: underline;
+}
+
+.typography .body-1 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 96px;
+  margin-top: 32px;
+  position: relative;
+}
+
+.typography .body-table {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 1351px;
+}
+
+.typography .headline {
+  letter-spacing: 0;
+  line-height: 57.6px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .type-system {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--gull-gray);
+  display: flex;
+  gap: 216px;
+  height: 130px;
+  padding: 24px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.typography .metrics {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.typography .small {
+  font-weight: 600;
+}
+
+.typography .frame-782 {
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.typography .frame-7 {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.typography .line-height {
+  color: var(--storm-gray);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .css-variable {
+  color: var(--storm-gray);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .pack-my-red-box-with-4 {
+  font-weight: 600;
+  line-height: 40px;
+  margin-right: -18.00px;
+}
+
+.typography .pack-my-red-box-with-5 {
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.typography .pack-my-red-box-with-6 {
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.typography .pack-my-red-box-with-7 {
+  font-weight: 600;
+  line-height: 25.2px;
+}
+
+.typography .pack-my-red-box-with {
+  color: var(--primaryblack);
+  font-weight: 600;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .pack-my-red-box-with-1 {
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.typography .body-2 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
+  margin-top: 120px;
+  position: relative;
+  width: 1351px;
+}
+
+.typography .body-table-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.typography .body-3 {
+  letter-spacing: 0;
+  line-height: 57.6px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .pack-my-red-box-with-8 {
+  font-weight: 400;
+  line-height: 17px;
+}
+
+.typography .pack-my-red-box-with-9 {
+  font-weight: 600;
+  line-height: 17px;
+}
+
+.typography .pack-my-red-box-with-10 {
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.typography .small-1 {
+  font-weight: 400;
+}
+
+.typography .span0 {
+  font-weight: 600;
+}
+
+.typography .span1-1 {
+  font-family: var(--font-family-inter-bold);
+  font-size: var(--font-size-xxxl);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.typography .pack-my-red-box-with-11 {
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.typography .pack-my-red-box-with-12 {
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.typography .body {
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 96px;
+  margin-top: 120px;
+  position: relative;
+}
+
+.typography .buttons {
+  letter-spacing: 0;
+  line-height: 57.6px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .pack-my-red-box-with-2 {
+  font-weight: 600;
+  line-height: 14px;
+}
+
+.typography .pack-my-red-box-with-3 {
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.typography .labels {
+  letter-spacing: 0;
+  line-height: 57.6px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .pack-my-red-box-with-13 {
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.typography .pack-my-red-box-with-14 {
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.typography .css-variable-19 {
+  color: var(--storm-gray);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .family-19 {
+  color: var(--storm-gray);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .frame {
+  display: inline-flex;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.typography .inter-19 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .line-height-19 {
+  color: var(--storm-gray);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .number-32 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .pack-my-red-box-with-15 {
+  color: var(--primaryblack);
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .size-19 {
+  color: var(--storm-gray);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .small-2 {
+  color: var(--primaryblack);
+  line-height: 26px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .weight-19 {
+  color: var(--storm-gray);
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .x12-14 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .x17-17 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.typography .x400-13 {
+  color: var(--primaryblack);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}

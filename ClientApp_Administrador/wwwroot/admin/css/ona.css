@@ -1,0 +1,738 @@
+/* screen - ona */
+
+.ona {
+  align-items: flex-start;
+  background-color: var(--neutral-color00);
+  display: flex;
+  height: 871px;
+  overflow: hidden;
+  width: 1440px;
+}
+
+.ona .menu-adminitrador-can {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  height: 871px;
+  overflow-y: scroll;
+  padding: 16px 0px;
+  position: relative;
+  width: 260px;
+}
+
+.ona .user-info {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.ona .expand_more {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.ona .men {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.ona .inicio-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.ona .inicio-3 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .menu {
+  background-color: var(--white-lilac);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .place {
+  color: var(--mirage);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .usuarios {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.ona .usuarios-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .menu-1 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .estadisticas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .section {
+  flex: 0 0 auto;
+}
+
+.ona .menu-2 {
+  background-color: var(--neutral-color00);
+  flex: 0 0 auto;
+  padding: 0px 10px 8px;
+}
+
+.ona .subsection {
+  align-items: flex-start;
+}
+
+.ona .menu-3 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .menu-4 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .grupos {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .menu-5 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .surname {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .menu-6 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .esquemas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .menu-7 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .migracin-excel {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .menu-8 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .logs-de-migracin {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .section-1 {
+  flex: 1;
+  flex-grow: 1;
+  gap: 24px;
+  justify-content: flex-end;
+}
+
+.ona .menu-9 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.ona .ayuda {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.ona .flex-col {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  min-height: 866px;
+  width: 1181px;
+}
+
+.ona .top {
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+  display: flex;
+  height: 130px;
+  overflow: hidden;
+  width: 1180px;
+}
+
+.ona .overlap-group {
+  height: 301px;
+  margin-left: 56px;
+  margin-top: -203px;
+  position: relative;
+  width: 1485px;
+}
+
+.ona .vector-1 {
+  height: 301px;
+  left: 311px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 1174px;
+}
+
+.ona .frame {
+  cursor: pointer;
+  height: 62px;
+  left: 0;
+  position: absolute;
+  top: 235px;
+  width: 335px;
+}
+
+.ona .main-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 736px;
+  margin-left: 1px;
+  padding: 40px 0px;
+  position: relative;
+  width: 1180px;
+}
+
+.ona .title {
+  align-self: stretch;
+  color: var(--neutraldark80);
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.ona .table {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.ona .table-heading {
+  align-items: center;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  padding: 12px;
+}
+
+.ona .table-heading-1 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 127px;
+}
+
+.ona .header-label-1 {
+  margin-right: -2.00px;
+  padding: 1px 0px;
+}
+
+.ona .table-heading-2 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 105px;
+}
+
+.ona .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.ona .table-heading-3 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  justify-content: space-around;
+  width: 108px;
+}
+
+.ona .table-heading-4 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 117px;
+}
+
+.ona .table-heading-5 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 166px;
+}
+
+.ona .table-heading-6 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 205px;
+}
+
+.ona .table-heading-7 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 176px;
+}
+
+.ona .table-heading-8 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  justify-content: center;
+  width: 64px;
+}
+
+.ona .header-label-2 {
+  justify-content: center;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  padding: 1px 8px;
+}
+
+.ona .table-heading-9 {
+  justify-content: center;
+  width: 75px;
+}
+
+.ona .header-label-3 {
+  justify-content: center;
+  margin-left: -6.00px;
+  margin-right: -6.00px;
+  padding: 1px 8px;
+}
+
+.ona .content {
+  gap: 32px;
+}
+
+.ona .row {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.ona .componente {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 32px;
+  justify-content: center;
+  position: relative;
+  width: 1145px;
+}
+
+.ona .row-1 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.ona .row-2 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.ona .ads-rules-list {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  height: 75px;
+  position: relative;
+  width: 100%;
+}
+
+.ona .cell {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 127px;
+}
+
+.ona .text {
+  align-self: stretch;
+  color: var(--mako);
+  line-height: 20px;
+}
+
+.ona .landing-page {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 105px;
+}
+
+.ona .text-1 {
+  color: var(--mako);
+  flex: 1;
+  line-height: 20px;
+}
+
+.ona .landing-page-1 {
+  width: 109px;
+}
+
+.ona .landing-page-2 {
+  width: 116px;
+}
+
+.ona .text-2 {
+  color: var(--mirage);
+  flex: 1;
+  line-height: 16px;
+}
+
+.ona .landing-page-3 {
+  width: 165px;
+}
+
+.ona .landing-page-4 {
+  width: 206px;
+}
+
+.ona .landing-page-5 {
+  width: 176px;
+}
+
+.ona .landing-page-6 {
+  width: 64px;
+}
+
+.ona .actions-1 {
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.ona .button {
+  border-color: var(--neutrallight30);
+}
+
+.ona .landing-page-7 {
+  width: 88px;
+}
+
+.ona .actions {
+  display: flex;
+  margin-right: -30.00px;
+  width: 94px;
+}
+
+.ona .button-1 {
+  border-color: var(--red-orange);
+}
+
+.ona .row-3 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.ona .row-4 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.ona .row-5 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.ona .actions-2 {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.ona .row-6 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.ona .row-7 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.ona .row-8 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.ona .row-9 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.ona .row-10 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.ona .row-11 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.ona .actions-5 {
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.ona .button-2 {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.ona .content-2 {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.ona .header-label-4 {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 32px;
+  position: relative;
+}
+
+.ona .landing-page-8 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+}
+
+.ona .menu-10 {
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.ona .row-12 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.ona .section-2 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.ona .table-1 {
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  position: relative;
+  width: 100%;
+}
+
+.ona .table-heading-10 {
+  align-items: center;
+  display: flex;
+  padding: 8px;
+  position: relative;
+}
+
+.ona .text-3 {
+  font-weight: 400;
+  position: relative;
+}

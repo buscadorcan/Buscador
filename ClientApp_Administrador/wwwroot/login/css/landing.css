@@ -1,0 +1,454 @@
+/* screen - landing */
+
+.landing {
+  align-items: flex-start;
+  background-color: var(--neutra-light-10);
+  display: flex;
+  flex-direction: column;
+  height: 2026px;
+  overflow: hidden;
+  width: 1440px;
+}
+
+.landing .overlap-group1 {
+  height: 1134px;
+  margin-top: -503px;
+  position: relative;
+  width: 1726px;
+}
+
+.landing .gradiente {
+  background: linear-gradient(180deg, rgba(51, 138, 243, 0) 0%, rgb(240, 241, 245) 76.8%);
+  border-radius: 300px;
+  filter: blur(53.6px);;
+  height: 751px;
+  left: 1001px;
+  position: absolute;
+  top: 0;
+  width: 725px;
+}
+
+.landing .navbar-4 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 72px;
+  justify-content: center;
+  left: 0;
+  padding: 0px 65px;
+  position: absolute;
+  top: 503px;
+  width: 1440px;
+}
+
+.landing .container {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 32px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.landing .content {
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.landing .frame-890 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+.landing .button-2 {
+  align-items: center;
+  align-self: stretch;
+  border: 2px solid;
+  border-color: #ffcd38;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: flex;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  padding: 10px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.landing .button {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.landing .bloque-1 {
+  align-items: center;
+  padding: 25px 65px 30px;
+  top: 575px;
+}
+
+.landing .content-1 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 41px;
+  padding: 0px 32px 0px 0px;
+  position: relative;
+}
+
+.landing .text {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 35px;
+  height: 347px;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.landing .column {
+  display: inline-flex;
+  gap: 24px;
+}
+
+.landing .content-2 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+.landing .medium-length-hero-headline-goes-here {
+  align-self: stretch;
+  color: var(--congress-blue);
+  font-family: var(--font-family-inter);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 50px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.landing .lorem-ipsum-dolor-si {
+  align-self: stretch;
+  color: var(--congress-blue);
+  font-family: var(--font-family-inter);
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 35.0px;
+  position: relative;
+}
+
+.landing .boton {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 182px;
+}
+
+.landing .button-1 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: flex;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  padding: 10px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.landing .button-3 {
+  color: var(--black-pearl);
+  cursor: pointer;
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.landing .imagen-hero {
+  height: 504px;
+  position: relative;
+  width: 723px;
+}
+
+.landing .overlap-group {
+  height: 504px;
+  position: relative;
+}
+
+.landing .placeholder-image {
+  height: 456px;
+  left: 158px;
+  position: absolute;
+  top: 0;
+  width: 565px;
+}
+
+.landing .elemento {
+  height: 337px;
+  left: 0;
+  position: absolute;
+  top: 167px;
+  width: 412px;
+}
+
+.landing .overlap-group2 {
+  height: 1097px;
+  margin-top: 2px;
+  position: relative;
+  width: 1440px;
+}
+
+.landing .background {
+  height: 608px;
+  left: 0;
+  position: absolute;
+  top: 489px;
+  width: 1440px;
+}
+
+.landing .bloque-2 {
+  align-items: flex-start;
+  gap: 46px;
+  padding: 30px 65px;
+  top: 0;
+}
+
+.landing .placeholder-imageser {
+  flex: 1;
+  flex-grow: 1;
+  height: 483px;
+  object-fit: cover;
+  position: relative;
+}
+
+.landing .content-3 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  height: 373px;
+  justify-content: center;
+  position: relative;
+  width: 592px;
+}
+
+.landing .frame-1000004194 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+  width: 100%;
+}
+
+.landing .column-1 {
+  align-self: stretch;
+  display: flex;
+  width: 100%;
+}
+
+.landing .heading {
+  align-self: stretch;
+  color: var(--congress-blue);
+  font-weight: 600;
+  line-height: 40px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.landing .column-2 {
+  align-self: stretch;
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.landing .text-1 {
+  align-self: stretch;
+  color: var(--congress-blue);
+  font-weight: 400;
+  line-height: 27px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.landing .frame-890-1 {
+  align-items: flex-start;
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 226px;
+}
+
+.landing .logos {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  padding: 60px 0px;
+  position: relative;
+  width: 1440px;
+}
+
+.landing .lorem-ipsum-dolor-si-1 {
+  color: var(--congress-blue);
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.landing .frame-1000004196::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+.landing .frame-1000004196 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 99px;
+  overflow-x: scroll;
+  position: relative;
+  width: 100%;
+}
+
+.landing .frame-1000004196-item {
+  flex: 0 0 auto;
+  height: 52px;
+  position: relative;
+}
+
+.landing .frame-1000004196-item-1 {
+  flex: 0 0 auto;
+  height: 51px;
+  position: relative;
+}
+
+.landing .frame-1000004189 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 52px;
+  position: relative;
+}
+
+.landing .ona {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.71px;
+  height: 52px;
+  justify-content: center;
+  position: relative;
+  width: 52px;
+}
+
+.landing .image-193 {
+  height: 38px;
+  object-fit: cover;
+  position: relative;
+  width: 39px;
+}
+
+.landing .ibmetro {
+  height: 18.4px;
+  position: relative;
+  width: 108.5px;
+}
+
+.landing .ona-1 {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.landing .frame-1000004191 {
+  align-items: center;
+  display: flex;
+  height: 64px;
+  justify-content: space-between;
+  padding: 16px 65px;
+  position: relative;
+  width: 1440px;
+}
+
+.landing .logo {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-bottom: -0.01px;
+  margin-top: -0.01px;
+  position: relative;
+}
+
+.landing .frame {
+  cursor: pointer;
+  height: 32.03px;
+  position: relative;
+  width: 168px;
+}
+
+.landing .x2024-secretara-ge {
+  color: var(--congress-blue);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.landing .frame-1000004192 {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.landing .bloque {
+  display: flex;
+  left: 0;
+  position: absolute;
+  width: 1440px;
+}
+
+.landing .column-3 {
+  align-items: flex-start;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+}

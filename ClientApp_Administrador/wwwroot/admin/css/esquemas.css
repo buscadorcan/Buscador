@@ -1,0 +1,953 @@
+/* screen - esquemas */
+
+.esquemas {
+  align-items: flex-start;
+  background-color: var(--neutral-color00);
+  display: flex;
+  height: 871px;
+  width: 1440px;
+}
+
+.esquemas .menu-adminitrador-can {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  height: 871px;
+  overflow-y: scroll;
+  padding: 16px 0px;
+  position: relative;
+  width: 260px;
+}
+
+.esquemas .user-info {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .expand_more {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.esquemas .men {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .inicio-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .inicio-3 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .menu {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .place {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .usuarios {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .usuarios-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .menu-1 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .estadisticas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .menu-2 {
+  background-color: var(--neutral-color00);
+  flex: 0 0 auto;
+  padding: 0px 10px 8px;
+}
+
+.esquemas .menu-3 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .menu-4 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .grupos {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .menu-5 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .surname {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .menu-6 {
+  background-color: var(--white-lilac-2);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .esquemas-1 {
+  color: var(--mirage);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .menu-7 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .migracin-excel {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .menu-8 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .logs-de-migracin {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .help-section {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  justify-content: flex-end;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .help-container {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .help-item {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .menu-9 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.esquemas .ayuda {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .flex-col {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 867px;
+  width: 1180px;
+}
+
+.esquemas .top {
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+  display: flex;
+  height: 130px;
+  overflow: hidden;
+  width: 1180px;
+}
+
+.esquemas .overlap-group {
+  height: 301px;
+  margin-left: 56px;
+  margin-top: -203px;
+  position: relative;
+  width: 1485px;
+}
+
+.esquemas .vector-1 {
+  height: 301px;
+  left: 311px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 1174px;
+}
+
+.esquemas .frame {
+  cursor: pointer;
+  height: 62px;
+  left: 0;
+  position: absolute;
+  top: 235px;
+  width: 335px;
+}
+
+.esquemas .main-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 736px;
+  padding: 40px 0px;
+  position: relative;
+  width: 1180px;
+}
+
+.esquemas .administracin-de-esquemas-homologacin {
+  align-self: stretch;
+  color: var(--neutraldark80);
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.esquemas .header {
+  align-items: flex-start;
+  background-color: transparent;
+  flex: 0 0 auto;
+  width: 1155px;
+}
+
+.esquemas .dropdown {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border: 1px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  display: flex;
+  height: 36px;
+  justify-content: space-between;
+  padding: 0px 8px 0px 12px;
+  position: relative;
+  width: 229.8px;
+}
+
+.esquemas .label-container {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  position: relative;
+  width: 43px;
+}
+
+.esquemas .label {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-right: -84.00px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.esquemas .icon-container {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.esquemas .button-3 {
+  align-items: center;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 36px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 24px;
+  position: relative;
+}
+
+.esquemas .table {
+  align-items: flex-start;
+  align-self: stretch;
+  flex: 0 0 auto;
+  flex-direction: column;
+  width: 100%;
+}
+
+.esquemas .table-heading-3 {
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+.esquemas .table-heading-4 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  padding: 8px;
+  width: 220px;
+}
+
+.esquemas .header-label-5 {
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 8px;
+  padding: 1px 0px;
+}
+
+.esquemas .table-heading-5 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  padding: 8px;
+  width: 225px;
+}
+
+.esquemas .header-label {
+  align-items: center;
+  border-radius: 8px;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  padding: 1px 0px;
+}
+
+.esquemas .table-heading-6 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px;
+  width: 225px;
+}
+
+.esquemas .table-heading {
+  align-items: center;
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  padding: 8px;
+  width: 165px;
+}
+
+.esquemas .header-label-1 {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 0px;
+  width: 137px;
+}
+
+.esquemas .table-heading-7 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  padding: 8px;
+}
+
+.esquemas .header-label-6 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: center;
+  margin-right: -6.00px;
+  padding: 1px 8px;
+}
+
+.esquemas .table-heading-8 {
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  padding: 8px;
+}
+
+.esquemas .header-label-7 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: center;
+  margin-right: -21.00px;
+  padding: 1px 8px;
+}
+
+.esquemas .row {
+  align-self: stretch;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.esquemas .row-1 {
+  align-self: stretch;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.esquemas .button {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border: 1.5px solid;
+  border-color: var(--geyser);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 36px;
+  padding: 8px;
+  position: relative;
+  width: 36px;
+}
+
+.esquemas .ads-rules-list {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  justify-content: center;
+  padding: 4px 8px;
+  position: relative;
+  width: 225px;
+}
+
+.esquemas .ads-rules-list-1 {
+  align-items: center;
+  border-right-style: solid;
+  border-right-width: 1px;
+  justify-content: center;
+  padding: 4px 8px;
+  width: 165px;
+}
+
+.esquemas .table-heading-9 {
+  align-self: stretch;
+  background-color: var(--whisper);
+  border: 0px none;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 4px 24px;
+  width: 100%;
+}
+
+.esquemas .table-heading-10 {
+  border-color: var(--mystic);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  padding: 8px;
+  width: 220px;
+}
+
+.esquemas .header-label-2 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: center;
+  padding: 1px 0px;
+}
+
+.esquemas .table-heading-1 {
+  border-color: var(--mystic);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 8px;
+}
+
+.esquemas .header-label-3 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  padding: 1px 0px;
+}
+
+.esquemas .table-heading-2 {
+  border-color: var(--mystic);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  padding: 8px;
+  width: 165px;
+}
+
+.esquemas .header-label-4 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  opacity: 0;
+  padding: 1px 0px;
+}
+
+.esquemas .table-heading-11 {
+  border-color: var(--mystic);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  padding: 8px;
+  width: 68px;
+}
+
+.esquemas .content {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  padding: 0px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .row-2 {
+  flex-direction: column;
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  width: 1180px;
+}
+
+.esquemas .componente {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 32px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .row-3 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.esquemas .row-4 {
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  width: 1156px;
+}
+
+.esquemas .ads-rules-list-6 {
+  align-items: flex-start;
+  align-self: stretch;
+  height: 75px;
+  width: 100%;
+}
+
+.esquemas .cell {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding: 12px 12px 8px 24px;
+  width: 244px;
+}
+
+.esquemas .landing-page {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 217px;
+}
+
+.esquemas .landing-page-1 {
+  padding: 12px 12px 8px;
+  width: 233px;
+}
+
+.esquemas .landing-page-2 {
+  padding: 12px 12px 8px;
+  width: 164px;
+}
+
+.esquemas .landing-page-3 {
+  padding: 12px 12px 8px;
+  width: 74px;
+}
+
+.esquemas .actions {
+  margin-right: -44.00px;
+}
+
+.esquemas .button-1 {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border: 2px solid;
+  border-color: var(--neutrallight30);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.esquemas .landing-page-6 {
+  justify-content: center;
+  padding: 12px 12px 8px;
+  width: 60px;
+}
+
+.esquemas .landing-page-7 {
+  margin-left: -11.50px;
+  margin-right: -11.50px;
+  padding: 12px 12px 8px;
+  width: 59px;
+}
+
+.esquemas .actions-1 {
+  margin-right: -59.00px;
+}
+
+.esquemas .button-2 {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border: 2px solid;
+  border-color: var(--red-orange);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.esquemas .row-5 {
+  flex-direction: column;
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  width: 1180px;
+}
+
+.esquemas .row-6 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.esquemas .row-7 {
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  width: 1156px;
+}
+
+.esquemas .landing-page-4 {
+  padding: 12px 0px 8px;
+  width: 61px;
+}
+
+.esquemas .landing-page-5 {
+  padding: 12px 12px 8px;
+  width: 59px;
+}
+
+.esquemas .row-8 {
+  flex-direction: column;
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  width: 1180px;
+}
+
+.esquemas .row-9 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.esquemas .row-10 {
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  width: 1156px;
+}
+
+.esquemas .row-11 {
+  flex-direction: column;
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  width: 1180px;
+}
+
+.esquemas .row-12 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.esquemas .row-13 {
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  width: 1156px;
+}
+
+.esquemas .pagination-container {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  margin-bottom: -26.00px;
+  padding: 16px 0px 0px;
+  position: relative;
+  width: 1155px;
+}
+
+.esquemas .pagination {
+  align-items: flex-start;
+  display: inline-flex;
+  position: relative;
+}
+
+.esquemas .button-pagination {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: var(--neutrallight20);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-radius: 8px 0px 0px 8px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.esquemas .number {
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: -0.50px;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  margin-top: -4.50px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+.esquemas .actions-2 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  position: relative;
+  width: 94px;
+}
+
+.esquemas .ads-rules-list-7 {
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  position: relative;
+}
+
+.esquemas .landing-page-8 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  position: relative;
+}
+
+.esquemas .menu-10 {
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.esquemas .row-14 {
+  align-items: flex-start;
+  display: flex;
+  position: relative;
+}
+
+.esquemas .table-1 {
+  display: flex;
+  position: relative;
+}

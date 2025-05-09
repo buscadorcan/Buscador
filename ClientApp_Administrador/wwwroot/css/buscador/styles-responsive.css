@@ -1,0 +1,178 @@
+@media (max-width: 1366px) {
+    .mapa-resultados-tarjetas .tarjetas-grid.full .content-tarjeta-resultado {
+        width: 30%;
+    }
+
+    .mapa-resultados-tarjetas .mapa-resultado {
+        width: 40%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .filtros-data {
+        flex-direction: column-reverse;
+    }
+
+    .filtros-data .content-buscador-filtros {
+        width: 100%;
+        margin-top: 2rem;
+    }
+
+    .filtros-data .content-data {
+        width: 100%;
+    }
+
+    header {
+        min-height: 150px;
+    }
+
+    header::after {
+        opacity: .1;
+    }
+
+    .mapa-resultados-tarjetas .tarjetas-grid .content-tarjeta-resultado {
+        width: 100%;
+    }
+}
+
+@media (max-width: 990px) {
+    .mapa-resultados-tarjetas .tarjetas-grid.full .content-tarjeta-resultado {
+        width: 43%;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-lightbox-instrucciones .content-instruccion .instruccion {
+        max-width: 100%;
+    }
+
+    .content-lightbox-instrucciones .content-instruccion img {
+        display: none;
+    }
+
+    .mapa-resultados-tarjetas {
+        flex-wrap: wrap;
+    }
+
+    .mapa-resultados-tarjetas .mapa-resultado, .mapa-resultados-tarjetas .mapa-resultado {
+        width: 100%;
+    }
+
+    .mapa-resultados-tarjetas .tarjetas-grid .content-tarjeta-resultado {
+        width: 47%;
+    }
+
+    .mapa-resultados-tarjetas .tarjetas-grid {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .mapa-resultados-tarjetas .tarjetas-grid .content-tarjeta-resultado, .mapa-resultados-tarjetas .tarjetas-grid.full .content-tarjeta-resultado {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 37px 30px 15px 30px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header .title-header {
+        margin-top: 1rem;
+        max-width: 340px;
+    }
+
+    header .title-header span {
+        top: 5px;
+        position: relative;
+    }
+
+    header .login-cuenta {
+        right: 0;
+        top: 0;
+        min-width: 70px;
+    }
+
+    header .login-cuenta img {
+        margin-right: 0;
+    }
+
+    header .login-cuenta span {
+        display: none;
+    }
+
+    .btn-half-button {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 10px;
+    }
+
+    .filtros-data {
+        flex-direction: column;
+    }
+
+    .filtros-data .content-buscador-filtros {
+        margin-top: 0rem;
+    }
+
+    .filtros-data .content-buscador-filtros .content-buscador button.btn-search {
+        display: none;
+    }
+
+    .btn-filters-mobile, .btn-info-empresas {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        min-width: 55px;
+        margin: 0 5px;
+        background: #dfe1eb;
+        padding: 0;
+    }
+
+    .filtros-data .content-buscador-filtros .content-filtros, .filtros-data .content-data {
+        display: none;
+    }
+
+    .data-empresas {
+        justify-content: center;
+        flex-wrap: wrap;
+        border: 0;
+    }
+
+    .data-empresas .info-empresa {
+        border: 1px solid #dfe1eb;
+        width: 50%;
+        max-width: 200px;
+    }
+
+    .data-empresas .info-empresa:last-child {
+        border-top: 0;
+    }
+
+    .data-empresas .info-empresa.totales span {
+        font-size: 22px;
+    }
+
+    .data-empresas .info-empresa span {
+        font-size: 17px;
+    }
+    .panel-index-grilla{
+        display: none;
+    }
+    .no-info-div{
+        display: flex!important;
+    }
+    .show-mapa-responsive{
+        display: flex;
+        justify-content: center;
+    }
+    .ocultar-mapa{
+        display: none!important;
+    }
+    .no-info-div.ocultar{
+        display: flex!important;
+    }
+}

@@ -1,0 +1,24 @@
+<EditForm Model="inputCodedto" OnValidSubmit="ValidarCodigo" class="panel-edit-form" style="margin-top: 20px;;">
+    <DataAnnotationsValidator />
+
+    <div class="description">Ingresa el código de verificación</div>
+
+    <div class="input-component-code">
+        <input @bind="inputCodedto.Codigo1" maxlength="1" @ref="input1" @oninput="() => MoveNext(input2)" />
+        <input @bind="inputCodedto.Codigo2" maxlength="1" @ref="input2" @oninput="() => MoveNext(input3)" />
+        <input @bind="inputCodedto.Codigo3" maxlength="1" @ref="input3" @oninput="() => MoveNext(input4)" />
+        <input @bind="inputCodedto.Codigo4" maxlength="1" @ref="input4" @oninput="() => MoveNext(input5)" />
+        <input @bind="inputCodedto.Codigo5" maxlength="1" @ref="input5" @oninput="() => MoveNext(input6)" />
+        <input @bind="inputCodedto.Codigo6" maxlength="1" @ref="input6" />
+    </div>
+
+    <Button @ref="saveButton" Type="ButtonType.Submit" class="input-button">
+        <div class="input-button-label">Verificar</div>
+    </Button>
+
+    <Button Type="ButtonType.Link" Color="ButtonColor.Link" @onclick="GoLoginPage">
+        <div class="input-button-link-label">Login</div>
+    </Button>
+
+    <div style="font-size: 14px; font-weight: 600; color: #27A14A; text-align: center; margin-top: 20px;">Te enviamos un código a tu correo</div>
+</EditForm>

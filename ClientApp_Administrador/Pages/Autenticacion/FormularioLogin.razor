@@ -1,0 +1,24 @@
+<EditForm Model="usuarioAutenticacion" OnValidSubmit="AccesoUsuario" class="panel-edit-form">
+    <DataAnnotationsValidator />
+
+    <div class="title">Iniciar Sesión</div>
+    <div class="description">Inicia sesión para acceder a tu cuenta</div>
+    <div class="input-component">
+        <div class="input-label">Tu Correo Electrónico</div>
+        <InputText @bind-Value="usuarioAutenticacion.Email" placeholder="julio@gmail.com" class="input-text"/>
+        <ValidationMessage For="(() => usuarioAutenticacion.Email)" />
+    </div>
+    <div class="input-component">
+        <div class="input-label">Contraseña</div>
+        <InputText @bind-Value="usuarioAutenticacion.Clave" type="password" placeholder="Password" class="input-text"/>
+        <ValidationMessage For="(() => usuarioAutenticacion.Clave)" />
+    </div>
+
+
+    <Button class="input-button" @ref="saveButton" Type="ButtonType.Submit" style="margin-top: 10px;">
+        <div class="input-button-label">Iniciar Sesión</div>
+    </Button>
+    <Button Type="ButtonType.Link" Color="ButtonColor.Link" @onclick="Recovery">
+        <div class="input-button-link-label">Recuperar contraseña</div>
+    </Button>
+</EditForm>

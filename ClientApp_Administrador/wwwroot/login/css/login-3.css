@@ -1,0 +1,191 @@
+/* screen - login-3 */
+
+.login-3 {
+  align-items: flex-start;
+  background-color: var(--neutra-light-10);
+  display: flex;
+  width: 1440px;
+}
+
+.login-3 .login {
+  align-items: flex-start;
+  background-color: var(--white-lilac);
+  display: flex;
+  gap: 121px;
+  height: 1024px;
+  padding: 32px;
+  width: 970px;
+}
+
+.login-3 .component-10 {
+  align-items: center;
+  border-radius: 5px;
+  display: inline-flex;
+  gap: 10px;
+  height: 32px;
+  justify-content: center;
+  padding: 15px 24px;
+  position: relative;
+}
+
+.login-3 .login-1 {
+  align-items: flex-start;
+  align-self: center;
+  background-color: var(--neutrallight00);
+  border: 1px solid;
+  border-color: var(--mercury-2);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 40px;
+  position: relative;
+  width: 420px;
+}
+
+.login-3 .frame-2 {
+  height: 36px;
+  position: relative;
+  width: 192.22px;
+}
+
+.login-3 .frame-885 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+  width: 100%;
+}
+
+.login-3 .frame-882 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.login-3 .restablece-tu-contrasea {
+  color: var(--neutral-dark80);
+  font-weight: 500;
+  line-height: 26px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.login-3 .frame {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.login-3 .frame-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.login-3 .input {
+  align-items: flex-start;
+  align-self: stretch;
+  border-radius: 8px;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.login-3 .label {
+  color: var(--primaryblack);
+  font-weight: 600;
+  line-height: 20px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.login-3 .input-1 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutrallight00);
+  border: 1px solid;
+  border-color: var(--heather);
+  border-radius: 8px;
+  display: flex;
+  height: 44px;
+  padding: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.login-3 .frame-776 {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.login-3 .component-7 {
+  height: 16px;
+  position: relative;
+  width: 16px;
+}
+
+.login-3 .frame-1000004179 {
+  align-items: center;
+  align-self: stretch;
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.login-3 .button {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: flex;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  padding: 10px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.login-3 .button-1 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: 20px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}

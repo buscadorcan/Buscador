@@ -1,0 +1,1008 @@
+/* screen - usuario */
+
+.usuario {
+  align-items: flex-start;
+  background-color: var(--neutral-color00);
+  display: flex;
+  height: 886px;
+  overflow: hidden;
+  width: 1440px;
+}
+
+.usuario .menu-adminitrador-can {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  height: 889px;
+  margin-top: -3px;
+  overflow-y: scroll;
+  padding: 16px 0px;
+  position: relative;
+  width: 260px;
+}
+
+.usuario .expand_more {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.usuario .men {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .inicio-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .inicio-3 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .place {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu-1 {
+  background-color: var(--white-lilac);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .usuarios {
+  color: var(--eerie-black);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu-2 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .estadisticas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu-3 {
+  background-color: var(--neutral-color00);
+  flex: 0 0 auto;
+  padding: 0px 10px 8px;
+}
+
+.usuario .menu-4 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .menu-5 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .grupos {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu-6 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .surname {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu-7 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .esquemas {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu-8 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .migracin-excel {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .menu-9 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .logs-de-migracin {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .help-section {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  justify-content: flex-end;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .help-container {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .help-item {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .menu-10 {
+  background-color: var(--neutral-color00);
+  height: 48px;
+  padding: 10px;
+}
+
+.usuario .ayuda {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .flex-col {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  min-height: 866px;
+  width: 1181px;
+}
+
+.usuario .top {
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+  display: flex;
+  height: 130px;
+  overflow: hidden;
+  width: 1180px;
+}
+
+.usuario .overlap-group {
+  height: 301px;
+  margin-left: 56px;
+  margin-top: -203px;
+  position: relative;
+  width: 1485px;
+}
+
+.usuario .vector-1 {
+  height: 301px;
+  left: 311px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 1174px;
+}
+
+.usuario .frame {
+  cursor: pointer;
+  height: 62px;
+  left: 0;
+  position: absolute;
+  top: 235px;
+  width: 335px;
+}
+
+.usuario .main-container {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 736px;
+  margin-left: 1px;
+  padding: 40px 0px;
+  position: relative;
+  width: 1180px;
+}
+
+.usuario .title {
+  align-self: stretch;
+  color: var(--neutraldark80);
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.usuario .table {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.usuario .table-heading {
+  align-items: center;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  border-top-style: solid;
+  border-top-width: 1px;
+  padding: 12px;
+}
+
+.usuario .table-heading-1 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 127px;
+}
+
+.usuario .header-label-1 {
+  padding: 1px 0px;
+}
+
+.usuario .table-heading-2 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 105px;
+}
+
+.usuario .header-label {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 32px;
+  justify-content: space-between;
+  padding: 1px 0px;
+  position: relative;
+}
+
+.usuario .table-heading-3 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  justify-content: space-around;
+  width: 108px;
+}
+
+.usuario .table-heading-4 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 117px;
+}
+
+.usuario .table-heading-5 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 166px;
+}
+
+.usuario .table-heading-6 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 205px;
+}
+
+.usuario .table-heading-7 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  width: 176px;
+}
+
+.usuario .table-heading-8 {
+  border-color: var(--porcelain);
+  border-right-style: solid;
+  border-right-width: 1px;
+  justify-content: center;
+  width: 64px;
+}
+
+.usuario .header-label-2 {
+  justify-content: center;
+  margin-left: -4.00px;
+  margin-right: -4.00px;
+  padding: 1px 8px;
+}
+
+.usuario .table-heading-9 {
+  justify-content: center;
+  width: 75px;
+}
+
+.usuario .header-label-3 {
+  justify-content: center;
+  margin-left: -6.00px;
+  margin-right: -6.00px;
+  padding: 1px 8px;
+}
+
+.usuario .content {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  flex: 0 0 auto;
+  gap: 32px;
+  justify-content: center;
+  padding: 0px 24px;
+  width: 100%;
+}
+
+.usuario .row {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.usuario .componente {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 32px;
+  justify-content: center;
+  position: relative;
+  width: 1145px;
+}
+
+.usuario .row-1 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.usuario .row-2 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.usuario .ads-rules-list {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--athens-gray);
+  display: flex;
+  height: 75px;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .cell {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 127px;
+}
+
+.usuario .text {
+  align-self: stretch;
+  color: var(--mako);
+  line-height: 20px;
+}
+
+.usuario .landing-page {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+  width: 105px;
+}
+
+.usuario .last-name {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.usuario .landing-page-1 {
+  width: 109px;
+}
+
+.usuario .phone-number {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.usuario .landing-page-2 {
+  width: 116px;
+}
+
+.usuario .landing-page-3 {
+  width: 165px;
+}
+
+.usuario .landing-page-4 {
+  width: 206px;
+}
+
+.usuario .company {
+  flex: 1;
+}
+
+.usuario .landing-page-5 {
+  width: 176px;
+}
+
+.usuario .text-1 {
+  color: var(--mirage);
+  flex: 1;
+  line-height: 16px;
+}
+
+.usuario .landing-page-6 {
+  width: 64px;
+}
+
+.usuario .actions-1 {
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.usuario .button {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border: 2px solid;
+  border-color: var(--neutrallight30);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.usuario .landing-page-7 {
+  width: 88px;
+}
+
+.usuario .actions {
+  display: flex;
+  margin-right: -30.00px;
+  width: 94px;
+}
+
+.usuario .button-1 {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border: 2px solid;
+  border-color: var(--red-orange);
+  border-radius: 8px;
+  box-shadow: 4px 4px 4px #02536305;
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  width: 32px;
+}
+
+.usuario .row-3 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.usuario .row-4 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.usuario .row-5 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.usuario .text-2 {
+  align-self: stretch;
+  color: var(--mako);
+  line-height: 20px;
+}
+
+.usuario .company-1 {
+  flex: 1;
+}
+
+.usuario .text-3 {
+  color: var(--mirage);
+  flex: 1;
+  line-height: 16px;
+}
+
+.usuario .actions-2 {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.usuario .content-1 {
+  align-items: center;
+  align-self: stretch;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: var(--porcelain);
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 0px 24px;
+  width: 100%;
+}
+
+.usuario .row-6 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.usuario .row-7 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.usuario .row-8 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.usuario .text-4 {
+  align-self: stretch;
+  color: var(--mako);
+  line-height: 20px;
+}
+
+.usuario .company-2 {
+  flex: 1;
+}
+
+.usuario .text-5 {
+  color: var(--mirage);
+  flex: 1;
+  line-height: 16px;
+}
+
+.usuario .row-9 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.usuario .row-10 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.usuario .row-11 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.usuario .text-6 {
+  align-self: stretch;
+  color: var(--mako);
+  line-height: 20px;
+}
+
+.usuario .text-7 {
+  color: var(--mirage);
+  flex: 1;
+  line-height: 16px;
+}
+
+.usuario .company-3 {
+  flex: 1;
+}
+
+.usuario .text-8 {
+  color: var(--mirage);
+  flex: 1;
+  line-height: 16px;
+}
+
+.usuario .row-12 {
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.usuario .row-13 {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.usuario .row-14 {
+  flex: 0 0 auto;
+  gap: 4px;
+  margin-right: -11.00px;
+  width: 1156px;
+}
+
+.usuario .company-4 {
+  align-self: stretch;
+}
+
+.usuario .company-5 {
+  flex: 1;
+}
+
+.usuario .actions-5 {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.usuario .content-container {
+  align-items: flex-start;
+  gap: 12px;
+  height: 75px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  padding: 0px 12px;
+  width: 1180px;
+}
+
+.usuario .row-container {
+  align-self: stretch;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.usuario .row-container-1 {
+  align-items: flex-start;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: -11.00px;
+  position: relative;
+  width: 1156px;
+}
+
+.usuario .company-6 {
+  align-self: stretch;
+}
+
+.usuario .company-7 {
+  flex: 1;
+}
+
+.usuario .actions-6 {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.usuario .footer {
+  align-items: flex-start;
+  background-color: transparent;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 24px;
+  padding: 0px 24px 0px 0px;
+  position: relative;
+}
+
+.usuario .button-container {
+  align-items: flex-start;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+.usuario .button-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--amber);
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px #02536314;
+  display: flex;
+  gap: 8px;
+  height: 50px;
+  justify-content: center;
+  padding: 10px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .button-3 {
+  color: var(--black-pearl);
+  font-weight: 600;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.usuario .actions-7 {
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.usuario .company-8 {
+  color: var(--mako);
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.usuario .content-2 {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.usuario .delete-6 {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-left: -2.00px;
+  margin-right: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.usuario .edit-20px-6 {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-left: -2.00px;
+  margin-right: -2.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.usuario .email-6 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  position: relative;
+}
+
+.usuario .header-label-4 {
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  height: 32px;
+  position: relative;
+}
+
+.usuario .landing-page-8 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  position: relative;
+}
+
+.usuario .last-name-6 {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.usuario .menu-11 {
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .phone-number-6 {
+  color: var(--mako);
+  flex: 1;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+}
+
+.usuario .role-5 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  position: relative;
+}
+
+.usuario .row-15 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.usuario .status-2 {
+  color: var(--mirage);
+  flex: 1;
+  font-weight: 400;
+  line-height: 16px;
+  position: relative;
+}
+
+.usuario .table-1 {
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  position: relative;
+  width: 100%;
+}
+
+.usuario .table-heading-10 {
+  align-items: center;
+  display: flex;
+  padding: 8px;
+  position: relative;
+}
+
+.usuario .text-9 {
+  font-weight: 400;
+  position: relative;
+}

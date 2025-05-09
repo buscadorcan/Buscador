@@ -1,0 +1,102 @@
+﻿.chart-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.chart-wrapper {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.chart {
+    width: 100%;
+    height: auto;
+}
+
+.heatmap {
+    height: 300px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+h5 {
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.text-primary {
+    color: #007bff;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+/* exportar */
+.chart-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.chart-wrapper {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.title-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -20px; /* Ajuste para subir un poco el botón */
+    width: 100%;
+}
+
+.export-btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    width: 48px; /* Aumentado el tamaño */
+    height: 48px; /* Aumentado el tamaño */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .export-btn-icon img {
+        width: 100%;
+        height: auto;
+    }
