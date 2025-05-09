@@ -1,0 +1,19 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <p class="label valign-text-middle inter-regular-normal-comet-14px">Por favor, espere mientras autorizamos el usuario</p>
+            </Authorizing>
+            <NotAuthorized>
+                <ClientAppAdministrador.Pages.RedireccionarAlAcceso></ClientAppAdministrador.Pages.RedireccionarAlAcceso>
+            </NotAuthorized>
+        </AuthorizeRouteView>
+    </Found>
+    <NotFound>
+        <CascadingAuthenticationState>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p class="label valign-text-middle inter-regular-normal-comet-14px">Error, no se encuentra nada en esta dirección</p>
+            </LayoutView>
+        </CascadingAuthenticationState>
+    </NotFound>
+</Router>

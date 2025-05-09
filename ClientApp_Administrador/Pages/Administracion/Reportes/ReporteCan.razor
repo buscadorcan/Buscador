@@ -1,0 +1,567 @@
+﻿@page "/reportecan"
+@layout AdminLayout
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using Infractruture.Interfaces;
+@using SharedApp.Dtos
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+<div class="chart-container">
+    <div class="row">
+        <!-- Gráfico 1: Búsqueda por Fecha -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_BusquedaFecha</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'BusquedaFecha')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart1" class="chart" style="margin-top: 20% !important"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfico 2: Búsqueda por Filtro -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_BusquedaFiltro</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'BusquedaFiltro')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart2" class="chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Gráfico 3: Actualización ONA -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_ActualizacionONA</h5>
+                <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'ActualizacionONA')" title="Exportar a Excel">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                </button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="chart3" class="chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Mapa 1: Búsqueda por Ubicación (sin botón de exportación) -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="title-wrapper d-flex justify-content-between align-items-center">
+                <h5 class="bodybody-small mb-0" style="font-size:medium !important;font-weight: 700 !important;">@Titulo_vw_BusquedaUbicacion</h5>
+            </div>
+            <div id="heatmap1" class="heatmap"></div>
+        </div>
+    </div>
+</div>
+
+
+@* <div class="chart-container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_BusquedaFecha</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart1" class="chart" style="margin-top: 20% !important" ""></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'BusquedaFecha')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_BusquedaFiltro</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart2" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'BusquedaFiltro')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_ActualizacionONA</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart3" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'ActualizacionONA')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_BusquedaUbicacion</h5>
+            <div id="heatmap1" class="heatmap"></div>
+        </div>
+    </div>
+</div>
+ *@
+<script>
+    window.exportChartToExcel = async (chartId, fileName) => {
+        const canvas = document.getElementById(chartId);
+        if (!canvas) {
+            console.error(`No se encontró el gráfico con ID ${chartId}`);
+            return;
+        }
+
+        const chart = Chart.getChart(canvas);
+        if (!chart) {
+            console.error(`No se encontró el objeto Chart.js para ${chartId}`);
+            return;
+        }
+
+        const labels = chart.data.labels;
+        const data = chart.data.datasets[0].data;
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Reporte");
+
+        // Agregar los datos en la hoja de Excel
+        worksheet.columns = [
+            { header: "Categoría", key: "categoria", width: 20 },
+            { header: "Valor", key: "valor", width: 10 },
+        ];
+
+        labels.forEach((label, index) => {
+            worksheet.addRow({ categoria: label, valor: data[index] });
+        });
+
+        // Capturar el gráfico en imagen con html2canvas
+        html2canvas(canvas).then(async (capturedCanvas) => {
+            const imageData = capturedCanvas.toDataURL("image/png").replace(/^data:image\/png;base64,/, "");
+            const imageId = workbook.addImage({
+                base64: imageData,
+                extension: "png",
+            });
+
+            // Insertar la imagen en la hoja de Excel
+            worksheet.addImage(imageId, {
+                tl: { col: 3, row: 1 },
+                br: { col: 8, row: 10 },
+            });
+
+            // Guardar y descargar el archivo
+            workbook.xlsx.writeBuffer().then((buffer) => {
+                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                saveAs(blob, `${fileName}.xlsx`);
+            });
+        });
+    };
+
+    window.initCharts = (chartsData) => {
+        const createPieChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(item => item.label || 'Sin etiqueta'),
+                    datasets: [{
+                        data: data.map(item => item.value || 0),
+                        backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57'],
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        const createBarChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(item => item.label || 'Sin etiqueta'),
+                    datasets: [{
+                        label: 'Actualizaciones',
+                        data: data.map(item => item.value || 0),
+                        backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57', '#ff6b6b'],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: ''
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Actualizaciones'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    const ona = data[tooltipItem.dataIndex].ona; // Mostrar campo ONA
+                                    return `${tooltipItem.label}: ${tooltipItem.raw} (${ona})`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+        const createLineChart = (elementId, data) => {
+            const canvas = document.getElementById(elementId);
+            if (!canvas || canvas.tagName !== 'CANVAS') {
+                console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(item => item.label || 'Sin fecha'),
+                    datasets: [{
+                        label: 'Búsquedas',
+                        data: data.map(item => item.value || 0),
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: ''
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Actualizaciones'
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Inicializar gráficos
+        createLineChart('chart1', chartsData[0]); // Gráfico de líneas
+        createPieChart('chart2', chartsData[1]); // Gráfico de pastel
+        createBarChart('chart3', chartsData[2]); // Gráfico de barras para chart3
+    };
+
+    window.initHeatMaps = (mapsData, selectedCity = null) => {
+
+        const createHeatMap = (elementId, data) => {
+            if (typeof L === 'undefined') {
+                console.error("Leaflet.js no está cargado correctamente.");
+                return;
+            }
+
+            // Inicializa el mapa
+            const map = L.map(elementId);
+
+            // Capa base del mapa
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Ubicaciones predefinidas de las principales ciudades de Sudamérica
+            const coordenadasPredefinidas = {
+                // 🇦🇷 Argentina
+                "Buenos Aires, Argentina": [-34.6037, -58.3816],
+                "Córdoba, Argentina": [-31.4201, -64.1888],
+                "Rosario, Argentina": [-32.9468, -60.6393],
+                "Mendoza, Argentina": [-32.8902, -68.8441],
+                "Salta, Argentina": [-24.7821, -65.4232],
+
+                // 🇧🇴 Bolivia
+                "La Paz, Bolivia": [-16.5000, -68.1500],
+                "Santa Cruz de la Sierra, Bolivia": [-17.7833, -63.1833],
+                "Cochabamba, Bolivia": [-17.3936, -66.1573],
+                "Sucre, Bolivia": [-19.0333, -65.2627],
+                "Oruro, Bolivia": [-17.9833, -67.1500],
+
+                // 🇧🇷 Brasil
+                "Brasilia, Brasil": [-15.8267, -47.9218],
+                "São Paulo, Brasil": [-23.5505, -46.6333],
+                "Rio de Janeiro, Brasil": [-22.9068, -43.1729],
+                "Salvador, Brasil": [-12.9777, -38.5016],
+                "Fortaleza, Brasil": [-3.7319, -38.5267],
+                "Belo Horizonte, Brasil": [-19.9167, -43.9345],
+                "Manaus, Brasil": [-3.1190, -60.0217],
+                "Curitiba, Brasil": [-25.4296, -49.2713],
+                "Recife, Brasil": [-8.0476, -34.8770],
+                "Porto Alegre, Brasil": [-30.0346, -51.2177],
+
+                // 🇨🇱 Chile
+                "Santiago, Chile": [-33.4489, -70.6693],
+                "Valparaíso, Chile": [-33.0472, -71.6127],
+                "Concepción, Chile": [-36.8201, -73.0444],
+                "Antofagasta, Chile": [-23.6500, -70.4000],
+
+                // 🇨🇴 Colombia
+                "Bogotá, Colombia": [4.7110, -74.0721],
+                "Medellín, Colombia": [6.2442, -75.5812],
+                "Cali, Colombia": [3.4516, -76.5320],
+                "Barranquilla, Colombia": [10.9685, -74.7813],
+                "Cartagena, Colombia": [10.3910, -75.4794],
+                "Bucaramanga, Colombia": [7.1254, -73.1198],
+
+                // 🇪🇨 Ecuador
+                "Quito, Ecuador": [-0.2295, -78.5243],
+                "Guayaquil, Ecuador": [-2.1894, -79.8891],
+                "Cuenca, Ecuador": [-2.9006, -79.0045],
+                "Ambato, Ecuador": [-1.2417, -78.6197],
+                "Manta, Ecuador": [-0.9676, -80.7136],
+
+                // 🇬🇾 Guyana
+                "Georgetown, Guyana": [6.8013, -58.1551],
+
+                // 🇵🇾 Paraguay
+                "Asunción, Paraguay": [-25.2637, -57.5759],
+                "Ciudad del Este, Paraguay": [-25.5167, -54.6167],
+
+                // 🇵🇪 Perú
+                "Lima, Perú": [-12.0464, -77.0428],
+                "Arequipa, Perú": [-16.3988, -71.5350],
+                "Trujillo, Perú": [-8.1159, -79.0299],
+                "Cusco, Perú": [-13.5320, -71.9675],
+                "Chiclayo, Perú": [-6.7766, -79.8445],
+
+                // 🇸🇷 Surinam
+                "Paramaribo, Surinam": [5.8664, -55.1668],
+
+                // 🇺🇾 Uruguay
+                "Montevideo, Uruguay": [-34.9011, -56.1645],
+                "Punta del Este, Uruguay": [-34.9594, -54.9436],
+
+                // 🇻🇪 Venezuela
+                "Caracas, Venezuela": [10.4806, -66.9036],
+                "Maracaibo, Venezuela": [10.6333, -71.6333],
+                "Valencia, Venezuela": [10.1667, -68.0000],
+                "Barquisimeto, Venezuela": [10.0739, -69.3228],
+                "Maturín, Venezuela": [9.7500, -63.1767]
+            };
+
+            // Almacena los puntos de calor y los límites del mapa
+            let heatMapData = [];
+            let bounds = [];
+
+            data.forEach(item => {
+                const key = `${item.ciudad}, ${item.pais}`;
+                if (coordenadasPredefinidas[key]) {
+                    const intensidad = Math.random() * 1.5; // Intensidad aleatoria
+                    heatMapData.push([...coordenadasPredefinidas[key], intensidad]);
+
+                    const marker = L.circleMarker(coordenadasPredefinidas[key], {
+                        radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+                        color: 'red',
+                        fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+                        fillOpacity: 0.7,
+                        weight: 1
+                    }).bindPopup(
+                        `<strong>Ciudad:</strong> ${item.ciudad}<br>
+                     <strong>País:</strong> ${item.pais}<br>
+                     <strong>Búsquedas:</strong> ${item.organizacion}`
+                    ).addTo(map);
+
+                    bounds.push(coordenadasPredefinidas[key]); // Agregar coordenadas a los límites
+                } else {
+                    console.warn(`No hay coordenadas predefinidas para ${item.ciudad}, ${item.pais}`);
+                }
+            });
+
+            // Ajustar el mapa para que abarque todos los puntos
+            if (bounds.length > 0) {
+                map.fitBounds(bounds);
+            } else {
+                map.setView([-15, -60], 4); // Vista predeterminada si no hay datos
+            }
+
+            // Agregar la capa de calor
+            if (heatMapData.length > 0) {
+                L.heatLayer(heatMapData, {
+                    radius: 25,
+                    blur: 15,
+                    maxZoom: 10
+                }).addTo(map);
+            }
+        };
+
+
+
+    createHeatMap('heatmap1', mapsData.heatmap1);
+
+    };
+
+    
+    window.initMap = (data) => {
+        window.initCharts(data.chartsData);
+        window.initHeatMaps(data.mapsData);
+    };
+</script>
+
+
+<style>
+    .chart-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+    }
+
+    .chart {
+        width: 100%;
+        height: auto;
+    }
+
+    .heatmap {
+        height: 300px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    h5 {
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    /* exportar */
+    .chart-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .title-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -20px; /* Ajuste para subir un poco el botón */
+        width: 100%;
+    }
+
+    .export-btn-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        width: 48px; /* Aumentado el tamaño */
+        height: 48px; /* Aumentado el tamaño */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .export-btn-icon img {
+            width: 100%;
+            height: auto;
+        }
+
+</style>
+

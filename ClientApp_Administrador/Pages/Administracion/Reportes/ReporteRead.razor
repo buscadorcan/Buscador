@@ -1,0 +1,512 @@
+﻿@page "/reporteread"
+@layout AdminLayout
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using Infractruture.Interfaces;
+@using SharedApp.Dtos
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+<div class="chart-container">
+   @*  <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_ProfesionalCalificado</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart1" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart1', 'ProfesionalCalificado')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_ProfesionalOna</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart2" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart2', 'ProfesionalOna')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> *@
+    @* <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_ProfesionalEsquema</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart3" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart3', 'ProfesionalEsquema')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_ProfesionalFecha</h5>
+            <div class="chart-wrapper">
+                <canvas id="chart4" class="chart"></canvas>
+                <div class="button-container">
+                    <button class="export-btn-icon" onclick="exportChartToExcel('chart4', 'ProfesionalFecha')" title="Exportar a Excel">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Exportar Excel">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> *@
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 class="bodybody-small text-center" style="font-size:medium !important;font-weight: 700 !important">@Titulo_vw_CalificaUbicacion</h5>
+            <div id="heatmap1" class="heatmap"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.exportChartToExcel = async (chartId, fileName) => {
+        const canvas = document.getElementById(chartId);
+        if (!canvas) {
+            console.error(`No se encontró el gráfico con ID ${chartId}`);
+            return;
+        }
+
+        const chart = Chart.getChart(canvas);
+        if (!chart) {
+            console.error(`No se encontró el objeto Chart.js para ${chartId}`);
+            return;
+        }
+
+        const labels = chart.data.labels;
+        const data = chart.data.datasets[0].data;
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Reporte");
+
+        // Agregar los datos en la hoja de Excel
+        worksheet.columns = [
+            { header: "Categoría", key: "categoria", width: 20 },
+            { header: "Valor", key: "valor", width: 10 },
+        ];
+
+        labels.forEach((label, index) => {
+            worksheet.addRow({ categoria: label, valor: data[index] });
+        });
+
+        // Capturar el gráfico en imagen con html2canvas
+        html2canvas(canvas).then(async (capturedCanvas) => {
+            const imageData = capturedCanvas.toDataURL("image/png").replace(/^data:image\/png;base64,/, "");
+            const imageId = workbook.addImage({
+                base64: imageData,
+                extension: "png",
+            });
+
+            // Insertar la imagen en la hoja de Excel
+            worksheet.addImage(imageId, {
+                tl: { col: 3, row: 1 },
+                br: { col: 8, row: 10 },
+            });
+
+            // Guardar y descargar el archivo
+            workbook.xlsx.writeBuffer().then((buffer) => {
+                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                saveAs(blob, `${fileName}.xlsx`);
+            });
+        });
+    };
+
+    // window.initCharts = (chartsData) => {
+    //     const createPieChart = (elementId, data) => {
+    //         const canvas = document.getElementById(elementId);
+    //         if (!canvas || canvas.tagName !== 'CANVAS') {
+    //             console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+    //             return;
+    //         }
+
+    //         const ctx = canvas.getContext('2d');
+    //         new Chart(ctx, {
+    //             type: 'doughnut',
+    //             data: {
+    //                 labels: data.map(item => item.label || 'Sin etiqueta'),
+    //                 datasets: [{
+    //                     data: data.map(item => item.value || 0),
+    //                     backgroundColor: ['#6c63ff', '#63a4ff', '#00d1b2', '#ffdd57'],
+    //                     borderWidth: 2,
+    //                     borderColor: '#fff',
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 plugins: {
+    //                     legend: {
+    //                         position: 'right',
+    //                         labels: {
+    //                             font: {
+    //                                 size: 14
+    //                             }
+    //                         }
+    //                     },
+    //                     tooltip: {
+    //                         callbacks: {
+    //                             label: function (tooltipItem) {
+    //                                 return `${tooltipItem.label}: ${tooltipItem.raw}`;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     };
+
+    //     const createLineChart = (elementId, data) => {
+    //         const canvas = document.getElementById(elementId);
+    //         if (!canvas || canvas.tagName !== 'CANVAS') {
+    //             console.error(`El elemento con ID ${elementId} no es un <canvas> o no existe.`);
+    //             return;
+    //         }
+
+    //         const ctx = canvas.getContext('2d');
+    //         new Chart(ctx, {
+    //             type: 'line',
+    //             data: {
+    //                 labels: data.map(item => item.label || 'Sin fecha'),
+    //                 datasets: [{
+    //                     label: 'E&E calificados',
+    //                     data: data.map(item => item.value || 0),
+    //                     borderColor: '#4CAF50',
+    //                     backgroundColor: 'rgba(76, 175, 80, 0.2)',
+    //                     fill: true,
+    //                     tension: 0.4 // Suavizado de la curva
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 scales: {
+    //                     x: {
+    //                         title: {
+    //                             display: true,
+    //                             text: ''
+    //                         }
+    //                     },
+    //                     y: {
+    //                         title: {
+    //                             display: true,
+    //                             text: 'Profesionales'
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     };
+
+    //     // Inicializar gráficos
+    //     createPieChart('chart1', chartsData[0]);
+    //     createPieChart('chart2', chartsData[1]);
+    //     createPieChart('chart3', chartsData[2]);
+    //     createLineChart('chart4', chartsData[3]);
+    // };
+
+    // window.initHeatMaps = (mapsData) => {
+    //     const createHeatMap = (elementId, data) => {
+    //         if (typeof L === 'undefined') {
+    //             console.error("Leaflet.js no está cargado correctamente.");
+    //             return;
+    //         }
+
+    //         const map = L.map(elementId).setView([20, 0], 2);
+
+    //         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    //         }).addTo(map);
+
+    //         data.forEach(item => {
+    //             const marker = L.circleMarker([0, 0], {
+    //                 radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+    //                 color: 'red',
+    //                 fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+    //                 fillOpacity: 0.7,
+    //                 weight: 1
+    //             }).bindPopup(`<strong>País:</strong> ${item.pais}<br><strong>Calificados:</strong> ${item.organizacion}`);
+
+    //             fetch(`https://nominatim.openstreetmap.org/search?q=${item.pais}&format=json&limit=1`)
+    //                 .then(response => response.json())
+    //                 .then(locations => {
+    //                     if (locations.length > 0) {
+    //                         marker.setLatLng([locations[0].lat, locations[0].lon]).addTo(map);
+    //                     } else {
+    //                         console.error(`No se encontraron coordenadas para ${item.pais}`);
+    //                     }
+    //                 })
+    //                 .catch(err => console.error(`Error al buscar coordenadas para ${item.pais}:`, err));
+    //         });
+    //     };
+
+    //     createHeatMap('heatmap1', mapsData.heatmap1);
+    // };
+    window.initHeatMaps = (mapsData) => {
+
+        const createHeatMap = (elementId, data) => {
+            if (typeof L === 'undefined') {
+                console.error("Leaflet.js no está cargado correctamente.");
+                return;
+            }
+
+            // Función para normalizar nombres de países (elimina acentos y convierte en minúsculas)
+            const normalizeCountry = (name) => {
+                return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            };
+
+            // Coordenadas predefinidas para países de Sudamérica, Europa, América del Norte, Asia, África y Oceanía
+            const countryCoordinates = {
+                // América del Norte y Central
+                "mexico": [23.63, -102.55],
+                "estados unidos": [37.09, -95.71],
+                "canada": [56.13, -106.35],
+                "belice": [17.19, -88.49],
+                "costa rica": [9.75, -83.75],
+                "el salvador": [13.69, -89.19],
+                "guatemala": [15.78, -90.23],
+                "honduras": [14.64, -86.78],
+                "nicaragua": [12.87, -85.21],
+                "panama": [8.98, -79.52],
+
+                // Sudamérica
+                "argentina": [-38.42, -63.62],
+                "bolivia": [-16.29, -63.59],
+                "brasil": [-14.23, -51.92],
+                "chile": [-35.68, -71.54],
+                "colombia": [4.57, -74.30],
+                "ecuador": [-1.83, -78.18],
+                "guyana": [4.86, -58.93],
+                "paraguay": [-23.44, -58.44],
+                "peru": [-9.19, -75.02], // "Perú" y "Peru" ahora son equivalentes
+                "surinam": [3.92, -56.03],
+                "uruguay": [-32.52, -55.77],
+                "venezuela": [6.42, -66.59],
+
+                // Europa
+                "alemania": [51.17, 10.45],
+                "austria": [47.52, 14.55],
+                "belgica": [50.85, 4.35],
+                "bulgaria": [42.73, 25.49],
+                "croacia": [45.10, 15.20],
+                "dinamarca": [56.26, 9.50],
+                "eslovaquia": [48.67, 19.70],
+                "eslovenia": [46.15, 14.99],
+                "espana": [40.42, -3.70], // "España" y "Espana"
+                "estonia": [58.60, 25.01],
+                "finlandia": [61.92, 25.75],
+                "francia": [46.60, 1.89],
+                "grecia": [39.07, 21.82],
+                "hungria": [47.16, 19.50],
+                "irlanda": [53.41, -8.24],
+                "italia": [41.87, 12.57],
+                "letonia": [56.88, 24.60],
+                "lituania": [55.17, 23.88],
+                "noruega": [60.47, 8.47],
+                "paises bajos": [52.37, 4.90],
+                "polonia": [51.92, 19.14],
+                "portugal": [39.40, -8.22],
+                "reino unido": [55.38, -3.43],
+                "republica checa": [49.82, 15.47],
+                "rumania": [45.94, 24.97],
+                "suecia": [60.13, 18.64],
+                "suiza": [46.82, 8.23],
+
+                // Asia
+                "arabia saudita": [23.89, 45.08],
+                "china": [35.86, 104.19],
+                "corea del sur": [35.90, 127.76],
+                "emiratos arabes unidos": [23.42, 53.85],
+                "filipinas": [12.88, 121.77],
+                "india": [20.59, 78.96],
+                "indonesia": [-0.79, 113.92],
+                "iran": [32.43, 53.68],
+                "israel": [31.05, 34.85],
+                "japon": [36.20, 138.25],
+                "kazajistan": [48.01, 66.92],
+                "malasia": [4.21, 101.97],
+                "pakistan": [30.38, 69.35],
+                "qatar": [25.35, 51.18],
+                "singapur": [1.35, 103.82],
+                "tailandia": [15.87, 100.99],
+                "turquia": [38.96, 35.24],
+                "vietnam": [14.06, 108.28],
+
+                // África
+                "argelia": [28.03, 1.66],
+                "egipto": [26.82, 30.80],
+                "etiopia": [9.15, 40.49],
+                "kenia": [-1.29, 36.82],
+                "marruecos": [31.79, -7.09],
+                "nigeria": [9.08, 8.68],
+                "republica democratica del congo": [-4.03, 21.75],
+                "sudafrica": [-30.56, 22.94],
+                "tanzania": [-6.37, 34.89],
+                "tunez": [33.89, 9.54],
+
+                // Oceanía
+                "australia": [-25.27, 133.77],
+                "fiyi": [-17.71, 178.07],
+                "nueva zelanda": [-40.90, 174.88],
+                "papua nueva guinea": [-6.31, 143.96],
+                "samoa": [-13.76, -172.10]
+            };
+
+            const map = L.map(elementId);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            let bounds = [];  // Almacena las coordenadas de los marcadores
+
+            data.forEach(item => {
+                // Normalizar el nombre del país
+                const normalizedCountry = normalizeCountry(item.pais);
+                const coords = countryCoordinates[normalizedCountry];
+
+                if (coords) {
+                    const marker = L.circleMarker(coords, {
+                        radius: item.organizacion > 50 ? 20 : item.organizacion > 20 ? 15 : 10,
+                        color: 'red',
+                        fillColor: item.organizacion > 50 ? 'red' : item.organizacion > 20 ? 'orange' : 'yellow',
+                        fillOpacity: 0.7,
+                        weight: 1
+                    }).bindPopup(
+                        `<strong>País:</strong> ${item.pais}<br>
+                     <strong>Calificados:</strong> ${item.organizacion}`
+                    ).addTo(map);
+
+                    bounds.push(coords); // Agregar coordenadas al array de límites
+                }
+            });
+
+            if (bounds.length > 0) {
+                map.fitBounds(bounds); // Ajustar el mapa a los marcadores
+            } else {
+                map.setView([20, 0], 2); // Vista predeterminada si no hay datos
+            }
+        };
+
+    createHeatMap('heatmap1', mapsData.heatmap1);
+};
+
+    window.initMap = (data) => {
+        // window.initCharts(data.chartsData);
+        window.initHeatMaps(data.mapsData);
+    };
+</script>
+
+<style>
+    .chart-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+    }
+
+    .chart {
+        width: 100%;
+        height: auto;
+    }
+
+    .heatmap {
+        height: 300px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    h5 {
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    /* exportar */
+    .chart-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .title-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -20px; /* Ajuste para subir un poco el botón */
+        width: 100%;
+    }
+
+    .export-btn-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        width: 48px; /* Aumentado el tamaño */
+        height: 48px; /* Aumentado el tamaño */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .export-btn-icon img {
+            width: 100%;
+            height: auto;
+        }
+</style>

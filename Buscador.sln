@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infractructure", "Infractructure\Infractructure.csproj", "{ACD82329-9720-4D2B-B28C-ACEFC5D389ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientAppAdministrador", "ClientApp_Administrador\ClientAppAdministrador.csproj", "{424880BF-DAA8-434C-BB2E-7B643B627C2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{ACD82329-9720-4D2B-B28C-ACEFC5D389ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD82329-9720-4D2B-B28C-ACEFC5D389ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACD82329-9720-4D2B-B28C-ACEFC5D389ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{424880BF-DAA8-434C-BB2E-7B643B627C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{424880BF-DAA8-434C-BB2E-7B643B627C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{424880BF-DAA8-434C-BB2E-7B643B627C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{424880BF-DAA8-434C-BB2E-7B643B627C2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

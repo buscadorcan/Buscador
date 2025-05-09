@@ -1,0 +1,353 @@
+/* screen - pantalla-inicio */
+
+.pantalla-inicio {
+  align-items: flex-start;
+  background-color: var(--neutral-color00);
+  display: flex;
+  width: 1440px;
+}
+
+.pantalla-inicio .menu-adminitrador-can {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  height: 871px;
+  overflow-y: scroll;
+  padding: 16px 0px;
+  position: relative;
+  width: 260px;
+}
+
+.pantalla-inicio .menu {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .menu-1 {
+  align-items: flex-start;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pantalla-inicio .expand_more {
+  cursor: pointer;
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.pantalla-inicio .men {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .men-1 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .inicio-2 {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--white-lilac);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .inicio-3 {
+  color: var(--neutral-dark80);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .place {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .usuarios {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .usuarios-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .estadisticas {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .estadisticas-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .homologacin {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .menu-2 {
+  align-items: flex-start;
+  flex: 0 0 auto;
+  flex-direction: column;
+}
+
+.pantalla-inicio .conexion {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .grupos {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .grupos-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .campos {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .surname {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .esquemas {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .esquemas-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .excel {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .migracin-excel {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .logs {
+  align-items: center;
+  align-self: stretch;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .logs-de-migracin {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .ayuda {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 0px 8px;
+  position: relative;
+  width: 100%;
+}
+
+.pantalla-inicio .menu-3 {
+  align-items: center;
+  background-color: var(--neutral-color00);
+  border-radius: 8px;
+  gap: 10px;
+  height: 48px;
+  padding: 10px;
+}
+
+.pantalla-inicio .ayuda-1 {
+  color: var(--neutral-dark30);
+  font-weight: 600;
+  line-height: 18px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pantalla-inicio .banner {
+  align-items: flex-start;
+  /*background-image: url(../img/imagen.png);*/
+  background-position: 50% 50%;
+  background-size: cover;
+  display: flex;
+  min-width: 1180px;
+}
+
+.pantalla-inicio .top {
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgba(3, 72, 141, 0.95) 33.65%, rgba(3.91, 105.73, 183.6, 0.5) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 221px;
+  height: 871px;
+  width: 1180px;
+}
+
+.pantalla-inicio .logo {
+  align-self: center;
+  height: 96px;
+  margin-left: 1.0px;
+  margin-top: 387px;
+  width: 523px;
+}
+
+.pantalla-inicio .vector-1 {
+  height: 167px;
+  object-fit: cover;
+  width: 1153px;
+}
+
+.pantalla-inicio .menu-4 {
+  align-self: stretch;
+  display: flex;
+  position: relative;
+  width: 100%;
+}

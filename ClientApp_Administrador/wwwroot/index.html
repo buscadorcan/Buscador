@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Buscador Administrador</title>
+    <link rel="stylesheet" href="/css/buscador/styles.css">
+    <link rel="stylesheet" href="/css/buscador/styles-responsive.css">
+    <link rel="stylesheet" href="/css/buscador/owl.carousel.css">
+    <link rel="stylesheet" href="/css/buscador/owl.theme.css">
+    <link rel="stylesheet" href="/css/buscador/magnific-popup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
+    <base href="/" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link href="_content/Blazor.Bootstrap/blazor.bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="css/custom-styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+</head>
+
+<body style="margin: 0; background: #ffffff">
+    <input type="hidden" id="anPageName" name="page" value="pantalla-inicio">
+    <div id="app" class="container-center-horizontal">
+
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="js/resize.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.umd.js" integrity="sha512-gQhCDsnnnUfaRzD8k1L5llCCV6O9HN09zClIzzeJ8OJ9MpGmIlCxm+pdCkqTwqJ4JcjbojFr79rl2F1mzcoLMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="_content/Blazor.Bootstrap/blazor.bootstrap.js"></script>
+    <script src="js/sortable_grid.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet-heat.js"></script>
+    <!-- Leaflet CSS -->
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Heatmap.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- PDF.js -->
+    <script src="js/Pdf.js"></script>
+
+    <script src="js/site.js"></script>
+
+    <!--Autocompletado de palabras-->
+    <script src="js/site.js"></script>
+    <script src="js/exportar-excel-pdf.js"></script>
+    <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/core-js-bundle@3.6.5/minified.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="js/modalHelper.js"></script>
+    <script>
+        window.renderMathJax = function () {
+            if (window.MathJax && window.MathJax.typeset) {
+                console.log("✅ MathJax cargado. Procesando fórmulas...");
+                MathJax.typeset();
+            } else {
+                console.warn("⚠️ MathJax NO está disponible. Intentando de nuevo...");
+                setTimeout(window.renderMathJax, 1000);
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("📌 DOM completamente cargado, ejecutando MathJax...");
+            window.renderMathJax();
+        });
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/heatmap.js"></script>
+    <script src="https://unpkg.com/leaflet-heatmap"></script>
+    <script src="js/leaflet-heatmap.js"></script>
+    <script src="js/Buscador/jquery-1.9.1.min.js"></script>
+    <script src="js/Buscador/owl.carousel.min.js"></script>
+    <script src="js/Buscador/jquery.magnific-popup.min.js"></script>
+    <script src="js/Buscador/scripts.js"></script>
+    <!-- Lightbox oculto con carrusel para instrucciones -->
+    <div id="popupCarrusel" class="mfp-hide content-lightbox-instrucciones">
+        <h3 class="poppins-regular">Aprende a usar el buscador en 3 pasos</h3>
+        <div class="owl-carousel owl-theme">
+            <div class="content-instruccion">
+                <div class="instruccion">
+                    <span>01</span>
+                    <h4 class="inter-medium">Escribe el nombre o tema que buscas</h4>
+                    <p class="inter-light">
+                        EJ. "Leche", en el cuadro de texto, el sistema sugerira las palabras mas buscadas
+                        relacionadas a Leche, como "milk", "lechoso", "lacteo".
+                    </p>
+                </div>
+                <!--<img src="images/imagen-digite-palabra-o-frase.png" alt="Escribe el nombre o tema que buscas">-->
+            </div>
+            <div class="content-instruccion">
+                <div class="instruccion">
+                    <span>02</span>
+                    <h4 class="inter-medium">Filtrables</h4>
+                    <p class="inter-light">
+                        Si ademas de la busqueda anterior, requiere filtrar por Pais, Organismo o
+                        Esquema, despliegue y seleccione la opcion.
+                    </p>
+                </div>
+                <!--<img src="images/imagen-filtrables.png" alt="Filtrables">-->
+            </div>
+            <div class="content-instruccion">
+                <div class="instruccion">
+                    <span>03</span>
+                    <h4 class="inter-medium">Usuario experto</h4>
+                    <p class="inter-light">
+                        Si eres un usuario experto y necesitas filtrar por Norma Acreditada, Estado o
+                        Reconocimiento, despliega y selecciona la opcion.
+                    </p>
+                </div>
+                <!--<img src="images/imagen-usuario-experto.png" alt="Usuario experto">-->
+            </div>
+        </div>
+    </div>
+    <!-- Lightbox oculto para información empresas CAN responsive-->
+    <div id="popupInfoEmpresas" class="mfp-hide content-lightbox-general content-lightbox-empresas">
+        <h4>Organismos Evaluadores de la Conformidad acreditados de la CAN</h4>
+        <div class="data-empresas m-top-2">
+            <div class="info-empresa totales">
+                <p class="inter-medium">Total<br>Resultados</p>
+                <span class="c-black poppins-medium">1356</span>
+            </div>
+            <div class="info-empresa">
+                <img src="/images/logo-sae.png" width="52" height="auto" alt="SAE">
+                <p class="inter-regular">Ecuador</p>
+                <span class="c-black poppins-medium">1356</span>
+            </div>
+            <div class="info-empresa">
+                <img src="/images/logo-onac.png" width="65" height="auto" alt="ONAC">
+                <p class="inter-regular">Colombia</p>
+                <span class="c-black poppins-medium">270</span>
+            </div>
+            <div class="info-empresa">
+                <img src="/images/logo-inacal.png" width="75" height="auto" alt="INACAL">
+                <p class="inter-regular">Perú</p>
+                <span class="c-black poppins-medium">150</span>
+            </div>
+            <div class="info-empresa">
+                <img src="/images/logo-ibmetro.png" width="86" height="auto" alt="IBMETRO">
+                <p class="inter-regular">Bolivia</p>
+                <span class="c-black poppins-medium">100</span>
+            </div>
+        </div>
+    </div>
+    <!-- Lightbox oculto para información empresas CAN responsive-->
+    <div id="popupInfoDetallada" class="mfp-hide content-lightbox-general content-lightbox-empresas full">
+        <h4>Información Detallada</h4>
+        <img src="/images/info-detallada.png" width="100%" height="auto">
+    </div>
+    <div id="popupBusquedaResponsive" class="mfp-hide content-lightbox-general content-lightbox-empresas">
+        <h4>Filtros de búsqueda</h4>
+        <div class="content-filtros m-top-2">
+            <label class="container-checkbox c-light-blue" for="busqueda-exacta-mobile">
+                <input type="checkbox" checked="checked" id="busqueda-exacta-mobile">
+                <span class="checkmark"></span>
+                Búsqueda exacta
+            </label>
+        </div>
+        <div class="content-grid-filtros grid-filtros-responsive panel-input-filters-content">
+            <div class="form-check-label">
+                <div class="filter-content">
+                    <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-0"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Seleccionar Por País:
+                    </button><!--!-->
+                </div>
+            </div>
+            <div class="form-check-label">
+                <div class="filter-content">
+                    <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Seleccionar ONA:
+                    </button><!--!-->
+                </div>
+            </div>
+            <div class="form-check-label">
+                <div class="filter-content">
+                    <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Seleccionar Esquemas:
+                    </button><!--!-->
+                </div>
+            </div>
+            <div class="form-check-label">
+                <div class="filter-content">
+                    <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-3"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Seleccionar Norma:
+                    </button><!--!-->
+                </div>
+            </div>
+            <div class="form-check-label">
+                <div class="filter-content">
+                    <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-4"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Seleccionar Estado:
+                    </button><!--!-->
+                </div>
+            </div>
+            <div class="form-check-label">
+                <div class="filter-content">
+                    <button class="btn dropdown-toggle custom-bg " type="button" id="dropdownMenuButton-5"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Seleccionar Reconocimiento:
+                    </button><!--!-->
+                </div>
+            </div>
+            <div class="div-quitar-buscar m-top-1">
+                <a href="#" class="quitar-filtro-responsive poppins-medium">Quitar filtros</a>
+                <button class="btn-general btn-rounded b-yellow c-black btn-search-responsive">
+                    <img src="/images/ico-search.svg" width="18" height="18" alt="Accede a tu cuenta">Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

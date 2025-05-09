@@ -1,0 +1,48 @@
+/* screen - done */
+
+.done {
+  align-items: center;
+  background-color: var(--geyser);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 190px;
+  overflow: hidden;
+  padding: 58px 0;
+  width: 324px;
+}
+
+.done .overlap-group {
+  align-items: center;
+  background-color: #f4f4f4;
+  border: 1px solid;
+  border-color: #e3e3e3;
+  border-radius: 10px;
+  display: flex;
+  height: 20px;
+  margin-top: 27px;
+  min-width: 210px;
+  padding: 0 5px;
+}
+
+.done .rectangle-1 {
+  background-color: #27a14a;
+  border-radius: 6px;
+  height: 14px;
+  position: relative;
+  width: 200px;
+}
+
+.done .hecho {
+  color: #222222;
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-right: 2.0px;
+  min-height: 15px;
+  min-width: 46px;
+  text-align: center;
+}

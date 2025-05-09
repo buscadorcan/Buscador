@@ -1,0 +1,201 @@
+/* screen - icons */
+
+.icons {
+  align-items: flex-start;
+  background-color: var(--neutrallight00);
+  display: flex;
+  flex-direction: column;
+  height: 1844px;
+  width: 1627px;
+}
+
+.icons .root-tittle {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 96px 96px 24px;
+  position: relative;
+  width: 1627px;
+}
+
+.icons .frame-769 {
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+}
+
+.icons .frame-323 {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.icons .frame-770 {
+  align-items: center;
+  gap: 16px;
+}
+
+.icons .span1 {
+  text-decoration: underline;
+}
+
+.icons .flex-row {
+  height: 93px;
+  margin-left: 93px;
+  margin-top: 77px;
+  min-width: 1120px;
+}
+
+.icons .search-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 0.5px;
+  min-height: 80px;
+  width: 36px;
+}
+
+.icons .search {
+  height: 24px;
+  margin-left: 3px;
+  width: 24px;
+}
+
+.icons .line-mdfile-search {
+  height: 36px;
+  width: 36px;
+}
+
+.icons .flex-col {
+  align-self: flex-end;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: 13px;
+  min-height: 92px;
+  width: 58px;
+}
+
+.icons .search-1 {
+  align-self: flex-end;
+  height: 24px;
+  width: 24px;
+}
+
+.icons .button {
+  height: 53px;
+  position: relative;
+  width: 53px;
+}
+
+.icons .group {
+  align-self: flex-end;
+  height: 30px;
+  margin-bottom: 15.26px;
+  width: 30px;
+}
+
+.icons .account_circle-20px {
+  height: 24px;
+  margin-left: 26px;
+  margin-top: 0.5px;
+  width: 24px;
+}
+
+.icons .flex-row-item {
+  height: 24px;
+  margin-left: 56px;
+  margin-top: 0.5px;
+  width: 24px;
+}
+
+.icons .delete {
+  height: 24px;
+  margin-left: 36px;
+  margin-top: 0.5px;
+  width: 24px;
+}
+
+.icons .carbonfilter {
+  height: 20px;
+  margin-left: 26px;
+  margin-top: 2px;
+  width: 20px;
+}
+
+.icons .tabs {
+  align-items: center;
+  border-radius: 4px;
+  display: flex;
+  gap: 10px;
+  height: 24px;
+  justify-content: center;
+  margin-left: 30px;
+  padding: 4px 8px;
+  position: relative;
+  width: 24px;
+}
+
+.icons .format_list_bulleted {
+  height: 20px;
+  margin-bottom: -2.00px;
+  margin-left: -6.00px;
+  margin-right: -6.00px;
+  margin-top: -2.00px;
+  position: relative;
+  width: 20px;
+}
+
+.icons .flex-row-item-1 {
+  height: 20px;
+  margin-left: 56px;
+  margin-top: 2px;
+  width: 20px;
+}
+
+.icons .group-848 {
+  height: 20px;
+  margin-left: 34px;
+  margin-top: 2px;
+  width: 20px;
+}
+
+.icons .calendar_month {
+  height: 20px;
+  margin-left: 32px;
+  margin-top: 2px;
+  width: 20px;
+}
+
+.icons .group-847 {
+  height: 20px;
+  margin-left: 15px;
+  margin-top: 2px;
+  width: 20px;
+}
+
+.icons .ona-container {
+  align-items: flex-start;
+  display: flex;
+  gap: 28px;
+  margin-left: 96px;
+  margin-top: 16px;
+  min-width: 292px;
+}
+
+.icons .ona {
+  height: 52px;
+  position: relative;
+  width: 52px;
+}
+
+.icons .flex {
+  align-items: flex-start;
+  display: flex;
+}
+
+.icons .frame {
+  display: inline-flex;
+  flex: 0 0 auto;
+  position: relative;
+}

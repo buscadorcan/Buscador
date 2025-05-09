@@ -1,0 +1,165 @@
+/* screen - bar-1 */
+
+.bar-1 {
+  background-color: #dbdde6;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 190px;
+  left: 0px;
+  opacity: 1;
+  overflow: hidden;
+  position: relative;
+  top: 0px;
+  width: 324px;
+}
+
+.bar-1 .rectangle-2-C61RwL {
+  --z-index: 0;
+  background-color: #f4f4f4;
+  border: 1px solid;
+  border-color: #e3e3e3;
+  border-radius: 10px;
+  height: 20px;
+  left: 57px;
+  opacity: 1;
+  position: absolute;
+  top: 85px;
+  width: 210px;
+}
+
+.bar-1 .component-1-C61RwL {
+  --z-index: 1;
+  align-items: flex-start;
+  background-color: transparent;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  left: 62px;
+  opacity: 1;
+  position: absolute;
+  top: 89px;
+}
+
+.bar-1 .rectangle-1-9p2GBv {
+  --z-index: 0;
+  background-color: #1773fc;
+  border-radius: 6px;
+  height: 12px;
+  opacity: 1;
+  position: relative;
+  width: 12px;
+}
+
+.bar-1 .cargando-C61RwL {
+  --z-index: 2;
+  background-color: transparent;
+  color: #222222;
+  font-family: 'Inter', Helvetica;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  height: auto;
+  left: 134px;
+  letter-spacing: 0.00px;
+  line-height: normal;
+  opacity: 1;
+  position: absolute;
+  text-align: left;
+  top: 117px;
+  width: auto;
+}
+/* screen - bar-2 */
+
+.bar-2 {
+  background-color: #dbdde6;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 190px;
+  left: 0px;
+  opacity: 1;
+  overflow: hidden;
+  position: relative;
+  top: 0px;
+  width: 324px;
+}
+
+.bar-2 .rectangle-2-C61RwL {
+  --z-index: 0;
+  background-color: #f4f4f4;
+  border: 1px solid;
+  border-color: #e3e3e3;
+  border-radius: 10px;
+  height: 20px;
+  left: 57px;
+  opacity: 1;
+  position: absolute;
+  top: 85px;
+  width: 210px;
+}
+
+.bar-2 .component-1-C61RwL {
+  --z-index: 1;
+  align-items: flex-start;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  left: 62px;
+  opacity: 1;
+  position: absolute;
+  top: 89px;
+  width: 200px;
+}
+
+.bar-2 .rectangle-1-9p2GBv {
+  --z-index: 0;
+  align-self: stretch;
+  background-color: #1773fc;
+  border-radius: 6px;
+  height: 12px;
+  opacity: 1;
+  position: relative;
+  width: 100%;
+}
+
+.bar-2 .component-1-VMr6Om {
+  --z-index: 2;
+  align-items: flex-start;
+  background-color: transparent;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  left: 62px;
+  opacity: 1;
+  position: absolute;
+  top: 89px;
+}
+
+.bar-2 .rectangle-1-xlkmfx {
+  --z-index: 0;
+  background-color: #1773fc;
+  border-radius: 6px;
+  height: 12px;
+  opacity: 1;
+  position: relative;
+  width: 12px;
+}
+
+.bar-2 .cargando-C61RwL {
+  --z-index: 3;
+  background-color: transparent;
+  color: #222222;
+  font-family: 'Inter', Helvetica;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  height: auto;
+  left: 134px;
+  letter-spacing: 0.00px;
+  line-height: normal;
+  opacity: 1;
+  position: absolute;
+  text-align: left;
+  top: 117px;
+  width: auto;
+}

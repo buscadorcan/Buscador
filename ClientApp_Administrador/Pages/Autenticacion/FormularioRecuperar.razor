@@ -1,0 +1,21 @@
+﻿<EditForm Model="usuarioRecuperacion" OnValidSubmit="RecuperarClave" class="panel-edit-form" style="margin-top: 15px;">
+    <DataAnnotationsValidator />
+
+    <div class="description">Ingresa tu correo electrónico</div>
+
+    <div class="input-component">
+        <div class="input-label">Tu Correo Electrónico</div>
+        <InputText @bind-Value="usuarioRecuperacion.Email" placeholder="Dirección de coprreo electrónico" class="input-text"/>
+        <ValidationMessage For="(() => usuarioRecuperacion.Email)" />
+    </div>
+
+    <Button @ref="saveButton" Type="ButtonType.Submit" class="input-button" style="margin-top: 10px;">
+        <div class="input-button-label">Continuar</div>
+    </Button>
+
+    <Button Type="ButtonType.Link" Color="ButtonColor.Link" @onclick="GoLoginPage">
+        <div class="input-button-link-label">Login</div>
+    </Button>
+
+    <div style="color: #1C202B; font-size: 14px; font-weight: 300; margin-top: 20px;">Te enviamos una clave temporal a tu correo</div>
+</EditForm>

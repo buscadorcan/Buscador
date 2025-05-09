@@ -1,0 +1,1075 @@
+﻿.pagina {
+    position: relative;
+    width: 1440px;
+    height: 755px;
+    background-color: #ffffff;
+}
+
+    .pagina .main-container {
+        display: flex;
+        flex-direction: column;
+        width: 1393px;
+        align-items: center;
+        gap: 32px;
+        padding: 40px 0px;
+        position: absolute;
+        top: 377px;
+        left: 24px;
+    }
+
+    .pagina .title {
+        position: relative;
+        align-self: stretch;
+        margin-top: -1.00px;
+        font-family: "Poppins-Regular", Helvetica;
+        font-weight: 400;
+        color: #1e2024;
+        font-size: 24px;
+        text-align: center;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .content-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .pagina .data-table {
+        display: flex;
+        height: 248px;
+        align-items: center;
+        gap: 24px;
+        padding: 24px;
+        position: relative;
+        flex: 1;
+        flex-grow: 1;
+        background-color: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid;
+        border-color: #dfe1eb;
+    }
+
+    .pagina .step-container {
+        display: flex;
+        flex-direction: column;
+        width: 199px;
+        align-items: flex-start;
+        gap: 16px;
+        position: relative;
+        align-self: stretch;
+    }
+
+    .pagina .pais {
+        display: flex;
+        flex-direction: column;
+        width: 233px;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 4px 0px;
+        position: relative;
+        flex: 0 0 auto;
+        margin-right: -34.00px;
+        background-color: #ffffff;
+    }
+
+    .pagina .step-number {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 8px;
+        position: relative;
+        flex: 0 0 auto;
+        border-radius: 8px;
+        border: 1px solid;
+        border-color: #ffc000;
+    }
+
+    .pagina .text-wrapper {
+        position: relative;
+        width: fit-content;
+        margin-top: -1.00px;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #05277f;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .info-total {
+        display: flex;
+        height: 115px;
+        align-items: flex-start;
+        gap: 16px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+    }
+
+    .pagina .left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        position: relative;
+        flex: 1;
+        flex-grow: 1;
+        margin-bottom: -12.00px;
+    }
+
+    .pagina .razon-social {
+        display: flex;
+        flex-direction: column;
+        height: 19px;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 0px 0px 8px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+    }
+
+    .pagina .step-description {
+        position: relative;
+        align-self: stretch;
+        margin-top: -1.00px;
+        margin-bottom: -7.00px;
+        font-family: var(--heading-headline4-h4-font-family);
+        font-weight: var(--heading-headline4-h4-font-weight);
+        color: #1e1f23;
+        font-size: var(--heading-headline4-h4-font-size);
+        letter-spacing: var(--heading-headline4-h4-letter-spacing);
+        line-height: var(--heading-headline4-h4-line-height);
+        font-style: var(--heading-headline4-h4-font-style);
+    }
+
+    .pagina .div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .pagina .frame {
+        display: flex;
+        align-items: flex-start;
+        gap: 4px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .pagina .resultados {
+        position: relative;
+        flex: 1;
+        margin-top: -1.00px;
+        font-family: "Inter-ExtraLight Italic", Helvetica;
+        font-weight: 200;
+        font-style: italic;
+        color: #080f20;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .expanded-user-menu {
+        display: flex;
+        flex-direction: column;
+        width: 261px;
+        height: 187px;
+        align-items: flex-start;
+        padding: 12px;
+        position: relative;
+        margin-right: -24.00px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: var(--select);
+    }
+
+    .pagina .popular-search {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0px 0px 12px;
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .pagina .img {
+        position: relative;
+        width: 24px;
+        height: 24px;
+    }
+
+    .pagina .popular-search-title {
+        position: relative;
+        width: fit-content;
+        font-family: "Inter-SemiBold", Helvetica;
+        font-weight: 600;
+        color: #1e1f23;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .popular-search-tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 8px 8px;
+        padding: 0px 0px 0px 28px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .pagina .chips {
+        display: inline-flex;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px;
+        position: relative;
+        flex: 0 0 auto;
+        background-color: #dfe1eb;
+        border-radius: 16px;
+    }
+
+    .pagina .new {
+        position: relative;
+        width: fit-content;
+        margin-top: -10.50px;
+        margin-bottom: -6.50px;
+        font-family: "Inter-Medium", Helvetica;
+        font-weight: 500;
+        color: #464852;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .data-table-2 {
+        display: flex;
+        align-items: flex-start;
+        gap: 24px;
+        padding: 24px;
+        position: relative;
+        flex: 1;
+        flex-grow: 1;
+        background-color: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid;
+        border-color: #dfe1eb;
+    }
+
+    .pagina .step-container-2 {
+        display: flex;
+        flex-direction: column;
+        width: 185px;
+        align-items: flex-start;
+        gap: 16px;
+        position: relative;
+        align-self: stretch;
+    }
+
+    .pagina .step-number-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 233px;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 4px 0px;
+        position: relative;
+        flex: 0 0 auto;
+        margin-right: -48.00px;
+        background-color: #ffffff;
+    }
+
+    .pagina .left-wrapper {
+        display: flex;
+        height: 127px;
+        align-items: flex-start;
+        gap: 16px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+    }
+
+    .pagina .left-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        position: relative;
+        flex: 1;
+        flex-grow: 1;
+    }
+
+    .pagina .paises-filtro {
+        display: flex;
+        flex-direction: column;
+        width: 200px;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 12px;
+        position: relative;
+        margin-right: -6.00px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--selecct);
+    }
+
+    .pagina .button-select {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 12px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 8px;
+    }
+
+    .pagina .texas-location {
+        position: relative;
+        width: fit-content;
+        font-family: "Poppins-SemiBold", Helvetica;
+        font-weight: 600;
+        color: #252c2d;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+    .pagina .button-select-2 {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 8px;
+    }
+
+    .pagina .texas-location-2 {
+        position: relative;
+        width: fit-content;
+        font-family: "Poppins-Regular", Helvetica;
+        font-weight: 400;
+        color: var(--neutraldark-60);
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+    .pagina .chevron-right {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        margin-top: -2.00px;
+        margin-bottom: -2.00px;
+    }
+
+    .pagina .step-container-3 {
+        flex: 1;
+        flex-grow: 1;
+        position: relative;
+        align-self: stretch;
+    }
+
+    .pagina .top {
+        display: flex;
+        flex-direction: column;
+        width: 1440px;
+        align-items: center;
+        gap: 24px;
+        padding: 0px 0px 4px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #ffffff;
+    }
+
+    .pagina .top-2 {
+        height: 160px;
+        background: linear-gradient( 180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62% );
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+    }
+
+    .pagina .vector {
+        position: absolute;
+        width: 521px;
+        height: 160px;
+        top: 0;
+        left: 919px;
+        object-fit: cover;
+    }
+
+    .pagina .text {
+        display: flex;
+        flex-direction: column;
+        width: 514px;
+        align-items: flex-start;
+        gap: 24px;
+        position: absolute;
+        top: 60px;
+        left: 387px;
+    }
+
+    .pagina .red-de-organismos-de-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 543px;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 12px;
+        position: relative;
+        flex: 0 0 auto;
+        margin-right: -29.00px;
+    }
+
+    .pagina .red-de-organismos-de {
+        position: relative;
+        width: 514px;
+        margin-top: -1.00px;
+        font-family: "Poppins-Regular", Helvetica;
+        font-weight: 400;
+        color: transparent;
+        font-size: 24px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .span {
+        color: #ffffff;
+    }
+
+    .pagina .text-wrapper-2 {
+        color: #ffc000;
+    }
+
+    .pagina .logo {
+        display: flex;
+        width: 286px;
+        align-items: flex-start;
+        position: absolute;
+        top: 53px;
+        left: 29px;
+    }
+
+    .pagina .frame-2 {
+        position: relative;
+        width: 278px;
+        height: 53px;
+    }
+
+    .pagina .container {
+        display: flex;
+        flex-direction: column;
+        width: 1382px;
+        align-items: flex-start;
+        gap: 16px;
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .pagina .control {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .pagina .top-filters {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        flex: 0 0 auto;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+    }
+
+    .pagina .search-container {
+        flex-direction: column;
+        width: 820px;
+        align-items: flex-start;
+        gap: 10px;
+        display: flex;
+        position: relative;
+    }
+
+    .pagina .search-bar {
+        align-items: center;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+        display: flex;
+        position: relative;
+    }
+
+    .pagina .search-bar-2 {
+        display: flex;
+        width: 820px;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        align-self: stretch;
+    }
+
+    .pagina .search-input {
+        width: 684px;
+        align-items: center;
+        padding: 12px;
+        align-self: stretch;
+        background-color: #ffffff;
+        border-radius: 8px;
+        border: 1px solid;
+        border-color: #e0e1e5;
+        display: flex;
+        position: relative;
+    }
+
+    .pagina .frame-3 {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        flex: 0 0 auto;
+        margin-top: -6.00px;
+        margin-bottom: -6.00px;
+    }
+
+    .pagina .qu-certificaci-n {
+        position: relative;
+        width: fit-content;
+        font-family: "Poppins-Regular", Helvetica;
+        font-weight: 400;
+        color: #596387;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+    .pagina .button {
+        all: unset;
+        box-sizing: border-box;
+        display: inline-flex;
+        height: 36px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 24px;
+        position: relative;
+        flex: 0 0 auto;
+        background-color: #ffc000;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow-medium);
+    }
+
+    .pagina .search {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        margin-top: -4.00px;
+        margin-bottom: -4.00px;
+    }
+
+    .pagina .button-2 {
+        all: unset;
+        box-sizing: border-box;
+        position: relative;
+        width: fit-content;
+        margin-top: -1.50px;
+        font-family: "Inter-SemiBold", Helvetica;
+        font-weight: 600;
+        color: #080f20;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .div-2 {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .pagina .checkbox {
+        position: relative;
+        width: 18px;
+        height: 18px;
+    }
+
+    .pagina .exact-search-text {
+        position: relative;
+        width: fit-content;
+        font-family: "Poppins-Regular", Helvetica;
+        font-weight: 400;
+        color: #000000;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+    .pagina .dashboard {
+        display: flex;
+        width: 538px;
+        height: 84px;
+        align-items: center;
+        padding: 16px;
+        position: relative;
+        background-color: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid;
+        border-color: #dfe1eb;
+    }
+
+    .pagina .frame-4 {
+        display: flex;
+        flex-direction: column;
+        width: 100px;
+        align-items: flex-start;
+        justify-content: space-between;
+        position: relative;
+        align-self: stretch;
+    }
+
+    .pagina .text-wrapper-3 {
+        position: relative;
+        width: fit-content;
+        margin-top: -1.00px;
+        font-family: var(--heading-headline5-h5-font-family);
+        font-weight: var(--heading-headline5-h5-font-weight);
+        color: #464852;
+        font-size: var(--heading-headline5-h5-font-size);
+        text-align: center;
+        letter-spacing: var(--heading-headline5-h5-letter-spacing);
+        line-height: var(--heading-headline5-h5-line-height);
+        font-style: var(--heading-headline5-h5-font-style);
+    }
+
+    .pagina .element {
+        position: relative;
+        width: fit-content;
+        font-family: "Inter-Medium", Helvetica;
+        font-weight: 500;
+        color: #1e1f23;
+        font-size: 32px;
+        text-align: center;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+    .pagina .frame-5 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        flex: 1;
+        align-self: stretch;
+        flex-grow: 1;
+    }
+
+    .pagina .SAE {
+        display: flex;
+        flex-direction: column;
+        min-width: 82px;
+        height: 85px;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 8px;
+        position: relative;
+        flex: 1;
+        flex-grow: 1;
+        margin-top: -16.50px;
+        margin-bottom: -16.50px;
+        background-color: #ffffff;
+        border-radius: 8px;
+    }
+
+    .pagina .frame-6 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .pagina .div-3 {
+        display: inline-flex;
+        height: 20px;
+        align-items: center;
+        gap: 4px;
+        position: relative;
+    }
+
+    .pagina .img-2 {
+        position: relative;
+        width: 20px;
+        height: 20px;
+    }
+
+    .pagina .text-wrapper-4 {
+        position: relative;
+        width: fit-content;
+        font-family: "Inter-SemiBold", Helvetica;
+        font-weight: 600;
+        color: #464852;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .text-wrapper-5 {
+        position: relative;
+        width: fit-content;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #464852;
+        font-size: 12px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+    .pagina .element-2 {
+        position: relative;
+        align-self: stretch;
+        font-family: var(--heading-headline3-h3-font-family);
+        font-weight: var(--heading-headline3-h3-font-weight);
+        color: #1e1f23;
+        font-size: var(--heading-headline3-h3-font-size);
+        letter-spacing: var(--heading-headline3-h3-letter-spacing);
+        line-height: var(--heading-headline3-h3-line-height);
+        font-style: var(--heading-headline3-h3-font-style);
+    }
+
+    .pagina .divider {
+        position: relative;
+        align-self: stretch;
+        width: 1.04px;
+        background-color: #d9d9d9;
+        border-radius: 55px;
+    }
+
+    .pagina .ona-inacal-icontext {
+        display: inline-flex;
+        height: 20px;
+        align-items: center;
+        gap: 4px;
+        position: relative;
+        margin-right: -4.28px;
+    }
+
+    .pagina .ona-ibmetro-icontext {
+        display: inline-flex;
+        height: 20px;
+        align-items: center;
+        gap: 4px;
+        position: relative;
+        margin-right: -15.28px;
+    }
+
+    .pagina .ona {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.71px;
+        position: relative;
+        width: 20px;
+        height: 20px;
+    }
+
+    .pagina .image {
+        position: relative;
+        width: 19.89px;
+        height: 19.89px;
+        object-fit: cover;
+    }
+
+    .pagina .container-2 {
+        align-items: center;
+        align-self: stretch;
+        width: 100%;
+        flex: 0 0 auto;
+        display: flex;
+        gap: 12px;
+        position: relative;
+    }
+
+    .pagina .advanced-filters {
+        position: relative;
+        width: fit-content;
+        font-family: "Inter-Medium", Helvetica;
+        font-weight: 500;
+        color: #1672fc;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+    .pagina .divider-2 {
+        position: relative;
+        flex: 1;
+        flex-grow: 1;
+        height: 1px;
+        background-color: #dfe1eb;
+        border-radius: 11px;
+    }
+
+    .pagina .view-mode {
+        display: inline-flex;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 4px;
+        position: relative;
+        flex: 0 0 auto;
+        background-color: #dfe1eb;
+        border-radius: 8px;
+    }
+
+    .pagina .tabs {
+        display: inline-flex;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 4px 8px;
+        position: relative;
+        flex: 0 0 auto;
+        border-radius: 4px;
+    }
+
+    .pagina .tabs-2 {
+        display: inline-flex;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 4px 6px;
+        position: relative;
+        flex: 0 0 auto;
+        border-radius: 4px;
+    }
+
+    .pagina .container-wrapper {
+        width: 1382px;
+        align-items: flex-start;
+        flex: 0 0 auto;
+        display: flex;
+        gap: 12px;
+        position: relative;
+        font-family: "Inter-Medium", Helvetica;
+        font-size: 14px;
+    }
+
+    .pagina .container-3 {
+        align-items: flex-start;
+        flex: 1;
+        flex-grow: 1;
+        display: flex;
+        gap: 12px;
+        position: relative;
+    }
+
+    .pagina .div-4 {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .pagina .text-wrapper-6 {
+        position: relative;
+        width: fit-content;
+        margin-top: -1.00px;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #596387;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+
+    .pagina .label-container {
+        display: flex;
+        width: 43px;
+        align-items: center;
+        gap: 4px;
+        position: relative;
+    }
+
+    .pagina .label {
+        position: relative;
+        flex: 1;
+        margin-top: -1.00px;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #596387;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+    }
+
+
+    .pagina .frame-7 {
+        display: flex;
+        height: 36px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 8px 0px 12px;
+        position: relative;
+        align-self: stretch;
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 8px;
+        border: 1px solid;
+        border-color: #dbdde6;
+    }
+
+    .pagina .label-2 {
+        position: relative;
+        width: fit-content;
+        margin-top: -1.00px;
+        margin-right: -64.00px;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #596387;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: Truepx;
+        white-space: nowrap;
+    }
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
+    height: calc(100vh - 200px); /* Ajusta según la altura que desees (restando el header y otros elementos) */
+    overflow-y: auto; /* Permite el scroll si hay contenido extenso */
+}
+
+.result-container > * {
+    flex: 1; /* Ambos componentes ocuparán el mismo espacio */
+}
+
+.index-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%; /* Ocupa todo el espacio del contenedor */
+}
+
+.index-card .row {
+    flex: 1;
+    overflow-y: auto; /* Permite el scroll dentro del contenido */
+}
+
+.grid-header {
+    font-weight: bold; /* Negrita */
+    font-family: 'Inter-Medium', Helvetica, sans-serif;
+    font-size: 12px !important;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asegura que esté por encima de todo */
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #f3f3f3; /* Color del fondo */
+    border-top: 6px solid #3498db; /* Color del borde */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animación del spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.bifile-pdf {
+    height: 25px;
+    position: relative;
+    width: 25px;
+}
+.frame-1000003830 {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    position: relative;
+    width: 190px;
+}
+
+.button-1 {
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 4px 4px 12px #02536314;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    justify-content: center;
+    padding: 4px;
+    position: relative;
+}

@@ -209,7 +209,7 @@ namespace WebApp.Controllers
         /// Devuelve un objeto IActionResult con una lista de VwMenuDto que representa los elementos del menú.
         /// En caso de error, maneja la excepción y devuelve un mensaje adecuado.
         /// </returns>
-        [HttpGet(Routes.MENU)]
+        [HttpGet(Routes.MENU_CATALOGO)]
         public IActionResult ObtenerVwMenu()
         {
             try

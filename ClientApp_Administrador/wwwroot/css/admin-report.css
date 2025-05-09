@@ -1,0 +1,111 @@
+﻿.general .main-container {
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 24px;
+    height: 736px;
+    margin-left: 1px;
+    padding: 40px 0px;
+    position: relative;
+    width: 1180px;
+}
+
+general .flex-col {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    min-height: 866px;
+    width: 1181px;
+}
+
+.general .top {
+    align-items: flex-start;
+    background: linear-gradient(180deg, rgb(3.91, 105.73, 183.6) 0%, rgb(3, 72, 141) 66.62%);
+    display: flex;
+    height: 130px;
+    overflow: hidden;
+    width: 1180px;
+}
+
+.general .overlap-group {
+    height: 301px;
+    margin-left: 56px;
+    margin-top: -203px;
+    position: relative;
+    width: 1485px;
+}
+
+.general .vector-1 {
+    height: 301px;
+    left: 311px;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 1174px;
+}
+
+.general .frame {
+    cursor: pointer;
+    height: 62px;
+    left: 0;
+    position: absolute;
+    top: 235px;
+    width: 335px;
+}
+
+.general .title {
+    align-self: stretch;
+    color: var(--neutraldark80);
+    font-weight: 600;
+    line-height: 30px;
+    margin-top: 27px;
+    position: relative;
+    text-align: center;
+}
+
+.general .table {
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.general .header {
+    align-items: flex-start;
+    background-color: transparent;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 24px;
+    justify-content: flex-end;
+    position: relative;
+    width: 1155px;
+}
+
+.general .button {
+    align-items: center;
+    @* background-color: var(--amber);
+    *@ border-radius: 8px;
+    box-shadow: 4px 4px 12px #02536314;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    height: 36px;
+    justify-content: center;
+    overflow: hidden;
+    padding: 10px 24px;
+    position: relative;
+}
+
+.general .button-1 {
+    color: var(--blue);
+    font-weight: 600;
+    line-height: normal;
+    margin-top: -1.50px;
+    position: relative;
+    width: fit-content;
+}
+
+.headlineheadline2-h2 {
+    font-family: var(--font-family-inter-semibold);
+    font-size: var(--font-size-xxxl);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0;
+}
