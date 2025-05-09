@@ -1,19 +1,19 @@
 @using Newtonsoft.Json
 
 <div class="content-data">
-    <div class="titulo" style="display: flex; align-items: center; gap: 10px;">
-        <div class="icono b-neutral-gray" style="width: 48px; height: 48px; display: flex; justify-content: center; align-items: center;">
-            <img src="/images/ico-empresas.svg" width="24" height="24" alt="Empresas certificadas por país de la CAN">
+    <div class="titulo">
+        <div class="icono b-neutral-gray">
+            <img src="/images/ico-empresas.svg" width="20" height="21" alt="Empresas certificadas por pais de la CAN">
         </div>
-        <h3 class="c-black poppins-regular" style="font-size: 24px; margin: 0;">
+        <h3 class="c-black poppins-regular">
             Organismos Evaluadores de la Conformidad acreditados de la CAN
         </h3>
     </div>
 
     <div class="data-empresas m-top-2">
-        <div class="info-empresa totales alinear-con-iconos">
-            <p class="inter-medium fuente-titulo">Total<br>Resultados</p>
-            <span class="c-black poppins-medium fuente-total">@TotalOrganismos</span>
+        <div class="info-empresa totales">
+            <p class="inter-medium">Total<br>Resultados</p>
+            <span class="c-black poppins-medium">@TotalOrganismos</span>
         </div>
         @foreach (var item in PanelONA)
         {
@@ -27,7 +27,7 @@
                 }
             }
             <div class="info-empresa">
-                <img src="@icono" width="52" height="auto" alt="@item.Sigla">
+                <img src="@icono" width="52" height="15" alt="@item.Sigla">
                 <p class="inter-regular">@item.Pais</p>
                 <span class="c-black poppins-medium">@item.NroOrg</span>
             </div>

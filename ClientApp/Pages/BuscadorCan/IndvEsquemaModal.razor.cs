@@ -73,11 +73,12 @@ namespace ClientApp.Pages.BuscadorCan
 
                 if (servicio != null)
                 {
-                    //homologacionEsquema = await servicio.FnHomologacionEsquemaAsync(resultData.IdEsquema ?? 0);
+                   
                     EsquemaCabecera = await servicio.FnEsquemaCabeceraAsync(resultData.IdEsquemaData ?? 0);
-                    //Cabeceras = (List<fnEsquemaCabeceraDto>?)JsonConvert.DeserializeObject<List<fnEsquemaCabeceraDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
                     Columnas = (List<HomologacionDto>?)JsonConvert.DeserializeObject<List<HomologacionDto>>(EsquemaCabecera?.EsquemaJson ?? "[]");
                 }
+
+                await PrecargarDatosAsync();
                 StateHasChanged();
             }
             catch (Exception e)
@@ -227,6 +228,10 @@ namespace ClientApp.Pages.BuscadorCan
                 {
                     Console.WriteLine("📌 Llamando a renderMathJax desde Blazor...");
                     await JS.InvokeVoidAsync("setTimeout", "window.renderMathJax()", 1000);
+                    if (gridRef != null && (resultados?.Any() ?? false))
+                    {
+                        await gridRef.RefreshDataAsync(); // 🔁 Refrescar si ya hay datos
+                    }
                 }
                 catch (Exception e)
                 {
@@ -234,5 +239,19 @@ namespace ClientApp.Pages.BuscadorCan
                 }
             }
         }
+
+        private async Task PrecargarDatosAsync()
+        {
+            if (servicio != null && resultData != null)
+            {
+                resultados = await servicio.FnEsquemaDatoBuscarAsync(resultData.IdEsquemaData ?? 0, resultData.Texto);
+
+                if (gridRef != null)
+                {
+                    await gridRef.RefreshDataAsync(); // ⚠️ Esto forzará que el grid muestre los datos
+                }
+            }
+        }
+
     }
 }

@@ -106,6 +106,8 @@ namespace ClientApp.Pages.BuscadorCan
 
         private bool mostrarFiltrosAvanzados = false;
 
+        private bool isSearching = false;
+
         /// <summary>
         /// Método de inicialización del componente.
         /// </summary>
@@ -167,8 +169,9 @@ namespace ClientApp.Pages.BuscadorCan
             searchText = _searchText;
             isExactSearch = _isExactSearch;
             ActivePageNumber = 1;
+            isSearching = true; // ✅ comienza la búsqueda
             await BuscarEsquemas(_searchText, _isExactSearch);
-
+            isSearching = false; // ✅ termina la búsqueda
             // Registra los Eventos
             registeEvent("BuscarEsquema", "Buscar", "KEY_USER_SEARCH", JsonConvert.SerializeObject(filtros));
 
@@ -179,8 +182,12 @@ namespace ClientApp.Pages.BuscadorCan
         /// </summary>
         private async Task ActivePageNumberChanged(int pageNumber)
         {
+            if (isSearching) return; // ✅ bloqueo si aún está buscando
+
+            isSearching = true;
             ActivePageNumber = pageNumber;
             await BuscarEsquemas(searchText, isExactSearch);
+            isSearching = false;
         }
 
         /// <summary>
@@ -246,6 +253,7 @@ namespace ClientApp.Pages.BuscadorCan
                     {
                         TotalItems = result.TotalCount;
                         TotalPages = (int)Math.Ceiling((double)TotalItems / DisplayPages);
+                        PanelONA = result.PanelONA;
                     }
                 }
             }

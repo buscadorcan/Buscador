@@ -1,83 +1,72 @@
 ﻿@using Infractruture.Models;
 @using SharedApp.Dtos;
 
-<Tabs EnableFadeEffect="true">
-    @if (Columnas != null && Columnas.Any())
-    {
-        <Tab Active="true" style="font-size: 11px !important;">
-            <TitleTemplate>
-                <Tooltip Title="" style="font-size: 9px !important;">
-                    <span style="font-size: 9px !important; color: inherit;">
-                        @esquema
-                    </span>
-                </Tooltip>
-            </TitleTemplate>
-            <Content>
+@if (Columnas != null && Columnas.Any())
+{
+    <h5 class="poppins-medium m-bottom-1" style="font-size: 13px;">@esquema</h5>
 
-                <div class="py-2">
-                    <Grid @ref="gridRef"
-                          TItem="DataEsquemaDatoBuscar"
-                          class="table table-hover table-bordered table-striped"
-                          DataProvider="HomologacionEsquemasDataProvider"
-                          Responsive="true"
-                          FixedHeader="true"
-                          Height="350"
-                          AllowFiltering="false"
-                          AllowSorting="true"
-                          Style="font-size: 10px !important;">
+    <div class="py-2">
+        <Grid @ref="gridRef"
+              TItem="DataEsquemaDatoBuscar"
+              class="table table-hover table-bordered table-striped"
+              DataProvider="HomologacionEsquemasDataProvider"
+              Responsive="true"
+              FixedHeader="true"
+              Height="350"
+              AllowFiltering="false"
+              AllowSorting="true"
+              Style="font-size: 10px !important;">
 
-                        @foreach (var item in Columnas)
-                        {
-                            <GridColumn TItem="DataEsquemaDatoBuscar"
-                                        PropertyName="@item.MostrarWeb"
-                                        Sortable="true"
-                                        Filterable="false">
-                                <HeaderContent>
-                                    <div style="display: flex; flex-direction: column; align-items: center;">
-                                        <Tooltip Title="@item.TooltipWeb">
-                                            <span style="font-weight: bold; cursor: pointer;" @onclick="() => CambiarOrden(item.MostrarWeb)">
-                                                @item.MostrarWeb
-                                                @if (sortColumn == item.MostrarWeb)
-                                                {
-                                                    <span>@(sortDescending ? " 🔽" : " 🔼")</span>
-                                                }
-                                            </span>
-                                        </Tooltip>
-
-                                        <select class="form-select form-select-sm"
-                                                style="font-size: 10px; margin-top: 5px;"
-                                                @onchange="@(e => CambiarOperadorFiltro(item.MostrarWeb, e.Value?.ToString() ?? ""))">
-                                            <option value="contains">Contiene</option>
-                                            <option value="starts">Empieza con</option>
-                                            <option value="ends">Termina con</option>
-                                        </select>
-
-                                        <input type="text" class="form-control form-control-sm"
-                                               placeholder="Filtrar..."
-                                               style="width: 100%; font-size: 10px; margin-top: 5px;"
-                                               @oninput="@(e => FiltrarTabla(item.MostrarWeb, e.Value?.ToString() ?? ""))" />
-                                    </div>
-                                </HeaderContent>
-
-                                <ChildContent>
-                                    @{
-                                        var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;
-                                    }
-                                    @if (dato != null && dato.Contains("$$") && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
+            @foreach (var item in Columnas)
+            {
+                <GridColumn TItem="DataEsquemaDatoBuscar"
+                            PropertyName="@item.MostrarWeb"
+                            Sortable="true"
+                            Filterable="false">
+                    <HeaderContent>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <Tooltip Title="@item.TooltipWeb">
+                                <span style="font-weight: bold; cursor: pointer;" @onclick="() => CambiarOrden(item.MostrarWeb)">
+                                    @item.MostrarWeb
+                                    @if (sortColumn == item.MostrarWeb)
                                     {
-                                        string formulaExtraida = ExtraerFormula(dato);
-                                        <span class="latex-formula">@((MarkupString)$"\\( {formulaExtraida} \\)")</span>
+                                        <span>@(sortDescending ? " 🔽" : " 🔼")</span>
                                     }
-                                    else
-                                    {
-                                        @((MarkupString)dato)
-                                    }
-                                </ChildContent>
-                            </GridColumn>
+                                </span>
+                            </Tooltip>
+
+                            <select class="form-select form-select-sm"
+                                    style="font-size: 10px; margin-top: 5px;"
+                                    @onchange="@(e => CambiarOperadorFiltro(item.MostrarWeb, e.Value?.ToString() ?? ""))">
+                                <option value="contains">Contiene</option>
+                                <option value="starts">Empieza con</option>
+                                <option value="ends">Termina con</option>
+                            </select>
+
+                            <input type="text"
+                                   class="form-control form-control-sm"
+                                   placeholder="Filtrar..."
+                                   style="width: 100%; font-size: 10px; margin-top: 5px;"
+                                   @oninput="@(e => FiltrarTabla(item.MostrarWeb, e.Value?.ToString() ?? ""))" />
+                        </div>
+                    </HeaderContent>
+
+                    <ChildContent>
+                        @{
+                            var dato = context?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == item.IdHomologacion)?.Data;
                         }
-                    </Grid>
-                </div>
-            </Content>
-        </Tab>
-    }
-</Tabs>
+                        @if (dato != null && dato.Contains("$$") && (item.IdHomologacion == 64 || item.IdHomologacion == 72 || item.IdHomologacion == 73))
+                        {
+                            string formulaExtraida = ExtraerFormula(dato);
+                            <span class="latex-formula">@((MarkupString)$"\\( {formulaExtraida} \\)")</span>
+                        }
+                        else
+                        {
+                            @((MarkupString)dato)
+                        }
+                    </ChildContent>
+                </GridColumn>
+            }
+        </Grid>
+    </div>
+}

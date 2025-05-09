@@ -1,5 +1,5 @@
 ﻿
-<div class="mapa-resultados-tarjetas d-flex flex-row gap-3 mt-3">
+<div class="mapa-resultados-tarjetas">
     <Modal @ref="modal" Size="ModalSize.ExtraLarge" UseStaticBackdrop="true" />
     <div class="mapa-resultado">
         <GoogleMap @ref="@mapa"
@@ -8,185 +8,126 @@
                    Height="800"
                    Width="100"
                    Zoom="4"
+                   style="border:0;"
+                   allowfullscreen=""
                    Markers="markers" />
     </div>
 
     @if (listaEtiquetasGrilla != null)
     {
-        <div class="tarjetas-grid" style="width: 65%;">
-            <div class="row g-3">
-                @if (ListDataDto != null && ListDataDto.Any())
+        <div class="tarjetas-grid">
+
+            @if (ListDataDto != null && ListDataDto.Any())
+            {
+                @foreach (var item in PagedListDataDto)
                 {
-                    @foreach (var item in PagedListDataDto)
-                    {
-                        <div class="col-md-6 mb-4">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="row align-items-start">
-                                        <!-- Ícono ONA a la izquierda -->
-                                        <div class="col-auto d-flex flex-column align-items-center align-self-start">
-                                            <Button @onclick="() => showModalOna(item)">
-                                                <img src="@(iconUrls.ContainsKey(item.IdONA.GetValueOrDefault())
-                                                        ? iconUrls[item.IdONA.GetValueOrDefault()]
-                                                        : "https://via.placeholder.com/40")"
-                                                     alt="Icono ONA"
-                                                     class="img-fluid"
-                                                     style="width: 40px; height: 40px;">
-                                            </Button>
-                                        </div>
+                        <div class="content-tarjeta-resultado">
+                            <div class="info-tarjeta info-left">
+                                @{
+                                    var pais = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 84)?.Data;
+                                }
+                                <small class="pais"> @(string.IsNullOrWhiteSpace(pais) ? "" : pais) </small>
 
-                                        <!-- Contenido principal con dos columnas -->
-                                        <div class="col">
-                                            @{
-                                                var mitad = (int)Math.Ceiling(listaEtiquetasGrilla.Count / 2.0);
-                                                var primeraMitad = listaEtiquetasGrilla.Take(mitad).ToList();
-                                                var segundaMitad = listaEtiquetasGrilla.Skip(mitad).ToList();
-                                            }
-
-                                            <div class="row">
-                                                <!-- Primera columna -->
-                                                <div class="col-md-6">
-                                                    @foreach (var etiqueta in primeraMitad)
-                                                    {
-                                                        <div class="mb-2">
-                                                            <h6 class="mb-1" style="font-size: 11px !important;">@etiqueta.MostrarWeb</h6>
-                                                            @{
-                                                                // Obtener el dato correspondiente a la etiqueta
-                                                                var dato = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data;
-                                                            }
-
-                                                            <div class="text-muted small" style="font-size: 11px;">
-                                                                @if (etiqueta.IdHomologacion == 81)
-                                                                {
-                                                                    <p class="text-start">
-                                                                        <a href="#" @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px;">
-                                                                            @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                        </a>
-                                                                    </p>
-
-                                                                }
-                                                                else if (etiqueta.IdHomologacion == 91)
-                                                                {
-                                                                    <p class="text-start">
-                                                                        <a href="#" @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px;">
-                                                                            @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                        </a>
-                                                                    </p>
-
-                                                                }
-                                                                else if (etiqueta.IdHomologacion == 96 || etiqueta.IdHomologacion == 94 || etiqueta.IdHomologacion == 95)
-                                                                {
-                                                                    @if (DateTime.TryParse(dato, out DateTime fechaConvertida))
-                                                                    {
-                                                                        <span class="grid-row-text">
-                                                                            @fechaConvertida.ToString("yyyy-MM-dd")
-                                                                        </span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        @("--")
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    @(string.IsNullOrWhiteSpace(dato) ? "--" : dato)
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </div>
-
-
-                                                <!-- Segunda columna -->
-                                                <div class="col-md-6">
-                                                    @foreach (var etiqueta in segundaMitad)
-                                                    {
-                                                        <div class="mb-2">
-                                                            <h6 class="mb-1" style="font-size: 11px !important;">
-                                                                @etiqueta.MostrarWeb
-                                                            </h6>
-
-                                                            @{
-                                                                // Obtener el dato correspondiente a la etiqueta
-                                                                var dato = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == etiqueta.IdHomologacion)?.Data;
-                                                            }
-
-                                                            <div class="text-muted small" style="font-size: 11px;">
-                                                                @if (etiqueta.IdHomologacion == 81)
-                                                                {
-                                                                    <p class="text-start">
-                                                                        <a href="#" @onclick="() => showModalOEC(item)" Color="ButtonColor.Link" style="font-size: 10px;">
-                                                                            @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                        </a>
-                                                                    </p>
-
-                                                                }
-                                                                else if (etiqueta.IdHomologacion == 91)
-                                                                {
-                                                                    <p class="text-start">
-                                                                        <a href="#" @onclick="() => showModalESQ(item)" Color="ButtonColor.Link" style="font-size: 10px;">
-                                                                            @(string.IsNullOrWhiteSpace(dato) ? "ModalPrueba" : dato)
-                                                                        </a>
-                                                                    </p>
-                                                                }
-                                                                else if (etiqueta.IdHomologacion == 96 || etiqueta.IdHomologacion == 94 || etiqueta.IdHomologacion == 95)
-                                                                {
-                                                                    @if (DateTime.TryParse(dato, out DateTime fechaConvertida))
-                                                                    {
-                                                                        <span class="grid-row-text">
-                                                                            @fechaConvertida.ToString("yyyy-MM-dd")
-                                                                        </span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        @("--")
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    @(string.IsNullOrWhiteSpace(dato) ? "--" : dato)
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                <div class="empresa">
+                                    <div class="icono">
+                                        <Button @onclick="() => showModalOna(item)">
+                                            <img src="@(iconUrls.ContainsKey(item.IdONA.GetValueOrDefault())
+                                                    ? iconUrls[item.IdONA.GetValueOrDefault()]
+                                                    : "https://via.placeholder.com/40")"
+                                                 width="25"
+                                                 height="20">
+                                        </Button>
                                     </div>
+                                    @{
+                                        var ong = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 78)?.Data;
+                                    }
+                                    <p class="poppins-medium"> @(string.IsNullOrWhiteSpace(ong) ? "" : ong)</p>
+
+
                                 </div>
 
-                                <!-- Pie de tarjeta con botones -->
-                                <div class="card-footer d-flex justify-content-between align-items-center">
-                                    <button class="btn btn-outline-danger btn-sm" style="font-size: 12px !important;" @onclick="() => AbrirPdf(item)">
-                                        <i class="bi bi-file-pdf"></i> Ver PDF
-                                    </button>
-                                    <button class="btn btn-primary btn-sm" style="font-size: 12px !important;" @onclick="() => MostrarDetalle(item)">
-                                        Ver Detalle
-                                    </button>
+                                <div class="razon-social m-top-1 p-bottom-1 border-bottom">
+                                    @{
+                                        var razon = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 82)?.Data;
+                                    }
+                                    <p class="poppins-medium">Razon Social</p>
+                                    <p class="poppins-medium-italic c-gray">
+                                        @(string.IsNullOrWhiteSpace(razon) ? "" : razon)
+                                    </p>
+
+                                </div>
+
+                                <div class="identificacion-unica m-top-1 p-bottom-1 border-bottom">
+                                    @{
+                                        var iden = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 83)?.Data;
+                                    }
+                                    <p class="poppins-medium">Identificacion unica</p>
+                                    <p class="poppins-medium-italic c-gray">
+                                        @(string.IsNullOrWhiteSpace(iden) ? "" : iden)
+                                    </p>
+
+
+                                </div>
+                                @{
+                                    var acre = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 90)?.Data;
+                                }
+                                <div class="estado-empresa acreditado">
+                                    @(string.IsNullOrWhiteSpace(acre) ? "Sin Acreditar" : acre)
+                                </div>
+
+
+                                <button class="abrir-pdf-empresa m-top-half-1" @onclick="() => AbrirPdf(item)">
+                                    <img src="/images/ico-pdf.svg" width="40" height="40">
+                                </button>
+                            </div>
+
+                            <div class="info-tarjeta info-right">
+                                @{
+                                    var recon = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 81)?.Data;
+                                }
+                                <small class="poppins-light reconocimiento">Reconocimiento Nacional</small>
+                                <h4 class="poppins-medium m-top-1">
+                                    @(string.IsNullOrWhiteSpace(recon) ? "" : recon)
+                                </h4>
+
+
+
+                                <div class="identificacion-unica m-top-1 p-bottom-1">
+                                    @{
+                                        var acredi = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 92)?.Data;
+                                    }
+                                    <p class="poppins-medium">Norma acreditada</p>
+                                    <p class="poppins-light-italic c-gray">@(string.IsNullOrWhiteSpace(acredi) ? "" : acredi)</p>
+
+                                </div>
+                                <div class="esquema-certificacion p-bottom-1 flex-column">
+                                    @{
+                                        var esquema = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
+                                        var prod = item?.DataEsquemaJson?.FirstOrDefault(f => f.IdHomologacion == 91)?.Data;
+                                    }
+                                    <p class="poppins-medium">Esq. de certificación</p>
+                                    <span class="organismo-certificacion">@(string.IsNullOrWhiteSpace(esquema) ? "" : esquema)</span>
+                                    <small class="inter-light c-black">
+                                        @(string.IsNullOrWhiteSpace(prod) ? "Muestra, Item o Producto" : prod)
+                                    </small>
+
+                                    <button class="abrir-detalle-empresa btn-general btn-border-blue m-top-1" @onclick="() => MostrarDetalle(item)">Ver más</button>
                                 </div>
                             </div>
+
                         </div>
-                    }
-                    <div class="col-12 d-flex justify-content-center mt-3">
-                        <button class="btn btn-sm btn-outline-primary me-2" @onclick="PrevPage" disabled="@(!CanGoBack)">
-                            Anterior
-                        </button>
-                        <span class="align-self-center">Página @currentPage de @totalPages</span>
-                        <button class="btn btn-sm btn-outline-primary ms-2" @onclick="NextPage" disabled="@(!CanGoNext)">
-                            Siguiente
-                        </button>
-                    </div>
 
                 }
-                else
-                {
-                    <div class="col-12 text-center" style="font-size: 12px !important;">
-                        <p class="label valign-text-middle inter-regular-normal-comet-14px">No se encontraron resultados.</p>
-                    </div>
-                }
+            }
+            else
+            {
+                <div class="col-12 text-center" style="font-size: 12px !important;">
+                    <p class="label valign-text-middle inter-regular-normal-comet-14px">No se encontraron resultados.</p>
+                </div>
+            }
 
-            </div>
+
+
         </div>
     }
 
